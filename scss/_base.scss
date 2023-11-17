@@ -1,0 +1,64 @@
+// Spacing
+$paddingHor: 16px;
+$paddingTop: 48px;
+
+// Fonts
+@font-face {
+  font-family: "Circular";
+  src: url("/fonts/CircularStd-Book.woff2");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Circular";
+  src: url("/fonts/CircularStd-Medium.woff2");
+  font-weight: 600;
+}
+
+// Reset all transitions
+.preload * {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -ms-transition: none !important;
+  -o-transition: none !important;
+}
+
+body {
+  background-color: $backgroundColor;
+  color: $colorMain;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Circular;
+  font-weight: 400;
+}
+
+#app {
+  //   max-width: 100vw;
+  //   border: 1px solid red;
+  //   overflow-x: hidden;
+  @include media("<tablet") {
+    // margin-bottom: 30px;
+  }
+}
+
+.logo__main {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 55px;
+}
+.logo__mobile {
+  position: fixed;
+  top: $paddingTop;
+  left: 32px;
+  opacity: 0;
+}
+
+.info-text {
+  position: fixed;
+  bottom: 72px;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  visibility: hidden;
+}
