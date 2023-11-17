@@ -7,7 +7,7 @@
   $borderRadius: 24px;
 
   position: relative;
-  margin-bottom: 16px;
+  margin-bottom: 28px;
   border-radius: $borderRadius;
   width: 696px;
   overflow: hidden;
@@ -108,7 +108,7 @@
 
   .input-text__expand {
     @include inputTextExpand {
-      max-height: 50vh;
+      max-height: 30vh;
       padding: 0.5rem;
       font: inherit;
       font-size: 20px;

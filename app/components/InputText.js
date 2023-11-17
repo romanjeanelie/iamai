@@ -22,7 +22,6 @@ export default class InputText {
       onComplete: this.onCompleteRecording,
     });
     this.recordCounter = this.inputEl.querySelector(".record-counter");
-    this.isClickedOutside = false;
 
     // Transcripting
     this.transcriptingEl = this.inputEl.querySelector(".transcripting__container");
@@ -41,10 +40,23 @@ export default class InputText {
 
     this.addListeners();
 
-    this.logoMobileAnimated = false;
+    this.isClickedOutside = false;
+
     //TEMP
     this.transcriptingTime = 2000; //ms
     this.textRecorded = "text recorded";
+  }
+
+  onClickOutside(callback) {
+    document.body.addEventListener(
+      "click",
+      (event) => {
+        if (!this.inputEl.contains(event.target)) {
+          callback();
+        }
+      },
+      { capture: true }
+    );
   }
 
   // Audio
@@ -59,18 +71,12 @@ export default class InputText {
       this.recordCounter.textContent = time;
     });
 
-    document.body.addEventListener(
-      "click",
-      (event) => {
-        if (!this.inputEl.contains(event.target)) {
-          if (this.isClickedOutside) return;
-          this.stopRecording();
-          this.animToStopRecording();
-          this.isClickedOutside = true;
-        }
-      },
-      { capture: true }
-    );
+    this.onClickOutside(() => {
+      if (this.isClickedOutside) return;
+      this.stopRecording();
+      this.animToStopRecording();
+      this.isClickedOutside = true;
+    });
   }
 
   stopRecording() {
@@ -83,13 +89,49 @@ export default class InputText {
   }
 
   // Animations
-  animToWrite(delay = 0, animButtons = true, text = "") {
+  animToInitial() {
+    this.inputFrontEl.style.pointerEvents = "auto";
+    this.inputBackEl.style.pointerEvents = "none";
+
+    const animFrontInput = anim(this.inputFrontEl, [{ height: "110px" }, { height: `${this.inputFrontHeight}px` }], {
+      duration: 700,
+      fill: "forwards",
+      ease: "ease-in-out",
+    });
+    anim(this.inputBackEl, [{ opacity: 1 }, { opacity: 0 }], {
+      duration: 200,
+      fill: "forwards",
+      ease: "ease-in-out",
+    });
+    anim([this.frontMicBtn, this.frontCameraBtn, this.frontCenterBtn], [{ opacity: 0 }, { opacity: 1 }], {
+      duration: 500,
+      fill: "forwards",
+      ease: "ease-in-out",
+    });
+
+    animFrontInput.onfinish = () => {
+      this.isClickedOutside = false;
+    };
+    if (isMobile()) {
+      anim(this.logoMobileEl, [{ opacity: 1 }, { opacity: 0 }], {
+        duration: 300,
+        fill: "forwards",
+        ease: "ease-in-out",
+      });
+      anim(this.logoEl, [{ opacity: 0 }, { opacity: 1 }], {
+        delay: 300,
+        duration: 300,
+        fill: "forwards",
+        ease: "ease-in-out",
+      });
+    }
+  }
+  animToWrite({ delay = 0, animButtons = true, animLogos = false, text = "" }) {
     this.inputText.textContent = text;
     this.inputFrontEl.style.pointerEvents = "none";
     this.inputBackEl.style.pointerEvents = "auto";
 
-    if (isMobile() && !this.logoMobileAnimated) {
-      this.logoMobileAnimated = true;
+    if (isMobile() && animLogos) {
       anim(this.logoEl, [{ opacity: 1 }, { opacity: 0 }], {
         duration: 300,
         fill: "forwards",
@@ -110,16 +152,12 @@ export default class InputText {
       ease: "ease-in-out",
     });
     if (animButtons) {
-      anim(
-        [this.frontMicBtn, this.frontCameraBtn, this.frontCenterBtn, this.categoriesListEl, this.carousselEl],
-        [{ opacity: 1 }, { opacity: 0 }],
-        {
-          delay,
-          duration: 500,
-          fill: "forwards",
-          ease: "ease-in-out",
-        }
-      );
+      anim([this.frontMicBtn, this.frontCameraBtn, this.frontCenterBtn], [{ opacity: 1 }, { opacity: 0 }], {
+        delay,
+        duration: 500,
+        fill: "forwards",
+        ease: "ease-in-out",
+      });
     }
     anim(this.inputBackEl, [{ opacity: 0 }, { opacity: 1 }], {
       delay,
@@ -131,6 +169,12 @@ export default class InputText {
 
     this.inputText.focus();
     this.inputText.setSelectionRange(this.inputText.value.length, this.inputText.value.length);
+
+    this.onClickOutside(() => {
+      if (this.isClickedOutside) return;
+      this.animToInitial();
+      this.isClickedOutside = true;
+    });
   }
 
   animToStartRecording() {
@@ -138,8 +182,7 @@ export default class InputText {
     this.inputEl.style.overflow = "unset";
     this.inputEl.style.pointerEvents = "none";
 
-    if (isMobile() && !this.logoMobileAnimated) {
-      this.logoMobileAnimated = true;
+    if (isMobile()) {
       anim(this.logoEl, [{ opacity: 1 }, { opacity: 0 }], {
         duration: 300,
         fill: "forwards",
@@ -153,15 +196,12 @@ export default class InputText {
       });
     }
 
-    anim(
-      [this.frontMicBtn, this.frontCenterBtn, this.frontCameraBtn, this.categoriesListEl, this.carousselEl],
-      [{ opacity: 1 }, { opacity: 0 }],
-      {
-        duration: 200,
-        fill: "forwards",
-        ease: "ease-in-out",
-      }
-    );
+    anim([this.frontMicBtn, this.frontCenterBtn, this.frontCameraBtn], [{ opacity: 1 }, { opacity: 0 }], {
+      duration: 200,
+      fill: "forwards",
+      ease: "ease-in-out",
+    });
+
     anim([this.logoEl], [{ transform: "translateY(0)" }, { transform: "translateY(-50%)" }], {
       duration: 200,
       fill: "forwards",
@@ -321,13 +361,13 @@ export default class InputText {
       }
     );
 
-    this.animToWrite(1200, false, this.textRecorded);
+    this.animToWrite({ delay: 1200, animButtons: false, text: this.textRecorded });
   }
 
   // Listeners
   addListeners() {
     this.centerBtn.addEventListener("click", () => {
-      this.animToWrite();
+      this.animToWrite({ animLogos: true });
     });
     this.frontMicBtn.addEventListener("click", () => {
       this.startRecording();
