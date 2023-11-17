@@ -23,7 +23,7 @@ function animMask(mask, translateXValue, isShow) {
       { opacity: 1 },
     ],
     {
-      duration: 400,
+      duration: 500,
       fill: "forwards",
       ease: "ease-in-out",
     }
