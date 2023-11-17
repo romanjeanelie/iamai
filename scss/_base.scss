@@ -49,4 +49,8 @@ body {
   transform: translateX(-50%);
   opacity: 0;
   visibility: hidden;
+
+  @include media("<tablet") {
+    bottom: 22px;
+  }
 }
