@@ -40,24 +40,17 @@ export default class InputText {
 
     this.addListeners();
 
-    this.isClickedOutside = false;
+    this.onClickOutside = {
+      stopAudio: false,
+      animInitial: false,
+    };
 
     //TEMP
     this.transcriptingTime = 2000; //ms
     this.textRecorded = "text recorded";
   }
 
-  onClickOutside(callback) {
-    document.body.addEventListener(
-      "click",
-      (event) => {
-        if (!this.inputEl.contains(event.target)) {
-          callback();
-        }
-      },
-      { capture: true }
-    );
-  }
+  onClickOutside(callback) {}
 
   // Audio
   startRecording() {
@@ -68,13 +61,6 @@ export default class InputText {
     this.audioRecorder.onUpdate((sec) => {
       const time = minSecStr((sec / 60) | 0) + ":" + minSecStr(sec % 60);
       this.recordCounter.textContent = time;
-    });
-
-    this.onClickOutside(() => {
-      if (this.isClickedOutside) return;
-      this.stopRecording();
-      this.animToStopRecording();
-      this.isClickedOutside = true;
     });
   }
 
@@ -123,6 +109,7 @@ export default class InputText {
     }
   }
   animToWrite({ delay = 0, animButtons = true, animLogos = false, text = "" }) {
+    this.onClickOutside.animInitial = true;
     this.inputText.textContent = text;
     this.inputFrontEl.style.pointerEvents = "none";
     this.inputBackEl.style.pointerEvents = "auto";
@@ -165,17 +152,10 @@ export default class InputText {
 
     this.inputText.focus();
     this.inputText.setSelectionRange(this.inputText.value.length, this.inputText.value.length);
-    this.isClickedOutside = false;
-
-    this.onClickOutside(() => {
-      if (this.isClickedOutside) return;
-      this.animToInitial();
-      this.isClickedOutside = true;
-    });
   }
 
   animToStartRecording() {
-    this.isClickedOutside = false;
+    this.onClickOutside.stopAudio = true;
     this.navEl.classList.remove("active");
     this.inputEl.style.overflow = "unset";
     this.inputEl.style.pointerEvents = "none";
@@ -370,5 +350,23 @@ export default class InputText {
     this.frontMicBtn.addEventListener("click", () => {
       this.startRecording();
     });
+
+    document.body.addEventListener(
+      "click",
+      (event) => {
+        if (!this.inputEl.contains(event.target)) {
+          if (this.onClickOutside.stopAudio) {
+            this.stopRecording();
+            this.animToStopRecording();
+            this.onClickOutside.stopAudio = false;
+          }
+          if (this.onClickOutside.animInitial) {
+            this.animToInitial();
+            this.onClickOutside.animInitial = false;
+          }
+        }
+      },
+      { capture: true }
+    );
   }
 }
