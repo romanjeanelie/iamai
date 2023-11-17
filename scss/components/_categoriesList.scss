@@ -27,25 +27,9 @@
 
     @include media("<tablet") {
       max-width: 100vw;
-      overflow-x: scroll;
-      // Add these styles to customize the scrollbar
-      &::-webkit-scrollbar {
-        width: 0;
-      }
-
-      &::-webkit-scrollbar-track {
-        background: $backgroundColor;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background: $backgroundColor;
-      }
-
-      &::-webkit-scrollbar-thumb:hover {
-        background: $backgroundColor;
-      }
+      flex-wrap: wrap;
       li {
-        margin: 0 16px;
+        margin: 6px 16px;
       }
     }
 
