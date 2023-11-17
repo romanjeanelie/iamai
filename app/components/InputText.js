@@ -175,6 +175,7 @@ export default class InputText {
   }
 
   animToStartRecording() {
+    this.isClickedOutside = false;
     this.navEl.classList.remove("active");
     this.inputEl.style.overflow = "unset";
     this.inputEl.style.pointerEvents = "none";
