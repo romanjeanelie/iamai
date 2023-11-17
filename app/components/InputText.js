@@ -61,7 +61,6 @@ export default class InputText {
 
   // Audio
   startRecording() {
-    this.isClickedOutside = false;
     this.animToStartRecording();
 
     this.audioRecorder.startRecording();
@@ -93,7 +92,7 @@ export default class InputText {
     this.inputFrontEl.style.pointerEvents = "auto";
     this.inputBackEl.style.pointerEvents = "none";
 
-    const animFrontInput = anim(this.inputFrontEl, [{ height: "110px" }, { height: `${this.inputFrontHeight}px` }], {
+    anim(this.inputFrontEl, [{ height: "110px" }, { height: `${this.inputFrontHeight}px` }], {
       duration: 700,
       fill: "forwards",
       ease: "ease-in-out",
@@ -109,9 +108,6 @@ export default class InputText {
       ease: "ease-in-out",
     });
 
-    animFrontInput.onfinish = () => {
-      this.isClickedOutside = false;
-    };
     if (isMobile()) {
       anim(this.logoMobileEl, [{ opacity: 1 }, { opacity: 0 }], {
         duration: 300,
@@ -169,6 +165,7 @@ export default class InputText {
 
     this.inputText.focus();
     this.inputText.setSelectionRange(this.inputText.value.length, this.inputText.value.length);
+    this.isClickedOutside = false;
 
     this.onClickOutside(() => {
       if (this.isClickedOutside) return;
