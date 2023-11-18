@@ -25,7 +25,7 @@ export default class AudioRecorder {
 
         console.log(import.meta.env.MODE);
         this.recorder = new WebAudioRecorder(this.input, {
-          workerDir: "app/audios/libAudioRecorder/",
+          workerDir: import.meta.env.MODE === "development" ? "public/libAudioRecorder/" : "libAudioRecorder/",
           encoding: this.encodingType,
           numChannels: 2,
           onEncoderLoading: (recorder, encoding) => {
