@@ -24,7 +24,7 @@ export default class AudioRecorder {
         this.input = this.audioContext.createMediaStreamSource(stream);
 
         this.recorder = new WebAudioRecorder(this.input, {
-          workerDir: "app/audios/",
+          workerDir: "app/audios/libAudioRecorder/",
           encoding: this.encodingType,
           numChannels: 2,
           onEncoderLoading: (recorder, encoding) => {
