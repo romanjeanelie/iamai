@@ -102,10 +102,7 @@ export default class InputText {
             this.onClickOutside.stopAudio = false;
           }
           if (this.onClickOutside.animInitial) {
-            if (!this.inputText.value) {
-              this.inputText.focus();
-              return;
-            }
+            if (this.inputText.value) return;
             this.anims.toInitial();
             this.onClickOutside.animInitial = false;
           }
