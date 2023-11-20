@@ -10,8 +10,7 @@ export default class AudioRecorder {
   }
 
   startRecording() {
-    console.log("startRecording() called");
-
+    // console.log("startRecording() called");
     const constraints = { audio: true, video: false };
 
     navigator.mediaDevices
@@ -66,7 +65,7 @@ export default class AudioRecorder {
   }
 
   stopRecording() {
-    console.log("stopRecording() called");
+    // console.log("stopRecording() called");
 
     this.gumStream.getAudioTracks()[0].stop();
 

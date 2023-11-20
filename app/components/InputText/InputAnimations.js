@@ -112,12 +112,16 @@ export default class InputAnimations {
       ease: "ease-in-out",
     });
     if (animButtons) {
-      anim([this.frontMicBtn, this.frontCameraBtn, this.frontCenterBtn], [{ opacity: 1 }, { opacity: 0 }], {
-        delay,
-        duration: 500,
-        fill: "forwards",
-        ease: "ease-in-out",
-      });
+      anim(
+        [this.frontMicBtn, this.frontCameraBtn, this.frontCenterBtn, this.categoriesListEl, this.carousselEl],
+        [{ opacity: 1 }, { opacity: 0 }],
+        {
+          delay,
+          duration: 500,
+          fill: "forwards",
+          ease: "ease-in-out",
+        }
+      );
     }
     anim(this.inputBackEl, [{ opacity: 0 }, { opacity: 1 }], {
       delay,
@@ -150,11 +154,15 @@ export default class InputAnimations {
       });
     }
 
-    anim([this.frontMicBtn, this.frontCenterBtn, this.frontCameraBtn], [{ opacity: 1 }, { opacity: 0 }], {
-      duration: 200,
-      fill: "forwards",
-      ease: "ease-in-out",
-    });
+    anim(
+      [this.frontMicBtn, this.frontCenterBtn, this.frontCameraBtn, this.categoriesListEl, this.carousselEl],
+      [{ opacity: 1 }, { opacity: 0 }],
+      {
+        duration: 200,
+        fill: "forwards",
+        ease: "ease-in-out",
+      }
+    );
 
     anim([this.logoEl], [{ transform: "translateY(0)" }, { transform: "translateY(-50%)" }], {
       duration: 200,
