@@ -1,9 +1,7 @@
-import AudioRecorder from "../AudioRecorder";
-import minSecStr from "../utils/minSecStr";
-import anim from "../utils/anim";
-import isMobile from "../utils/isMobile";
+import isMobile from "../../utils/isMobile";
+import anim from "../../utils/anim";
 
-export default class InputText {
+export default class InputAnimations {
   constructor() {
     this.inputEl = document.querySelector(".input-text__container");
     this.inputFrontEl = this.inputEl.querySelector(".input-text__front");
@@ -18,9 +16,6 @@ export default class InputText {
     this.inputFrontHeight = this.inputFrontEl.offsetHeight;
 
     // Record
-    this.audioRecorder = new AudioRecorder({
-      onComplete: this.onCompleteRecording,
-    });
     this.recordCounter = this.inputEl.querySelector(".record-counter");
 
     // Transcripting
@@ -34,47 +29,13 @@ export default class InputText {
     this.logoEl = document.querySelector(".logo__main");
     this.logoMobileEl = document.querySelector(".logo__mobile");
     this.navEl = document.querySelector(".nav");
+    this.navBtn = this.navEl.querySelector(".nav__btn");
     this.categoriesListEl = document.querySelector(".categories__list--container");
     this.carousselEl = document.querySelector(".caroussel__container");
     this.infoTextEl = document.querySelector(".info-text");
-
-    this.addListeners();
-
-    this.onClickOutside = {
-      stopAudio: false,
-      animInitial: false,
-    };
-
-    //TEMP
-    this.transcriptingTime = 2000; //ms
-    this.textRecorded = "text recorded";
   }
 
-  onClickOutside(callback) {}
-
-  // Audio
-  startRecording() {
-    this.animToStartRecording();
-
-    this.audioRecorder.startRecording();
-
-    this.audioRecorder.onUpdate((sec) => {
-      const time = minSecStr((sec / 60) | 0) + ":" + minSecStr(sec % 60);
-      this.recordCounter.textContent = time;
-    });
-  }
-
-  stopRecording() {
-    this.audioRecorder.stopRecording();
-  }
-
-  onCompleteRecording(blob) {
-    // TODO : send audio to API endpoint
-    console.log("TODO add url endpoint to send audio file:", blob);
-  }
-
-  // Animations
-  animToInitial() {
+  toInitial() {
     this.inputFrontEl.style.pointerEvents = "auto";
     this.inputBackEl.style.pointerEvents = "none";
 
@@ -108,8 +69,7 @@ export default class InputText {
       });
     }
   }
-  animToWrite({ delay = 0, animButtons = true, animLogos = false, text = "" }) {
-    this.onClickOutside.animInitial = true;
+  toWrite({ delay = 0, animButtons = true, animLogos = false, text = "" } = {}) {
     this.inputText.textContent = text;
     this.inputFrontEl.style.pointerEvents = "none";
     this.inputBackEl.style.pointerEvents = "auto";
@@ -154,8 +114,7 @@ export default class InputText {
     this.inputText.setSelectionRange(this.inputText.value.length, this.inputText.value.length);
   }
 
-  animToStartRecording() {
-    this.onClickOutside.stopAudio = true;
+  toStartRecording() {
     this.navEl.classList.remove("active");
     this.inputEl.style.overflow = "unset";
     this.inputEl.style.pointerEvents = "none";
@@ -242,7 +201,8 @@ export default class InputText {
     );
   }
 
-  animToStopRecording() {
+  toStopRecording() {
+    this.navEl.classList.add("active");
     this.animCircleYoyo.cancel();
 
     anim(
@@ -276,17 +236,11 @@ export default class InputText {
     });
 
     lastStep.onfinish = () => {
-      this.animToStartTranscripting();
+      this.toStartTranscripting();
     };
   }
 
-  animToStartTranscripting() {
-    // TEMP
-    this.timeoutTranscripting = setTimeout(() => {
-      // TODO Call this function when audio is transcripted
-      this.animToStopTranscripting();
-    }, this.transcriptingTime);
-
+  toStartTranscripting() {
     this.animShowTranscripting = anim(
       this.transcriptingEl,
       [
@@ -321,7 +275,7 @@ export default class InputText {
     });
   }
 
-  animToStopTranscripting() {
+  toStopTranscripting({ textTranscripted = "" }) {
     this.inputEl.style.overflow = "hidden";
     this.blinkCursor.cancel();
     this.translateCursor.reverse();
@@ -339,34 +293,6 @@ export default class InputText {
       }
     );
 
-    this.animToWrite({ delay: 1200, animButtons: false, text: this.textRecorded });
-  }
-
-  // Listeners
-  addListeners() {
-    this.centerBtn.addEventListener("click", () => {
-      this.animToWrite({ animLogos: true });
-    });
-    this.frontMicBtn.addEventListener("click", () => {
-      this.startRecording();
-    });
-
-    document.body.addEventListener(
-      "click",
-      (event) => {
-        if (!this.inputEl.contains(event.target)) {
-          if (this.onClickOutside.stopAudio) {
-            this.stopRecording();
-            this.animToStopRecording();
-            this.onClickOutside.stopAudio = false;
-          }
-          if (this.onClickOutside.animInitial) {
-            this.animToInitial();
-            this.onClickOutside.animInitial = false;
-          }
-        }
-      },
-      { capture: true }
-    );
+    this.toWrite({ delay: 1200, animButtons: false, text: textTranscripted });
   }
 }
