@@ -6,6 +6,7 @@ export default class AudioRecorder {
     this.input = null;
     this.audioContext = window.AudioContext || window.webkitAudioContext;
     this.encodingType = "mp3"; // or 'ogg, mp3, wav'
+    this.audioContext = new this.audioContext();
   }
 
   startRecording() {
@@ -16,23 +17,19 @@ export default class AudioRecorder {
     navigator.mediaDevices
       .getUserMedia(constraints)
       .then((stream) => {
-        console.log("getUserMedia() success, stream created, initializing WebAudioRecorder...");
-
-        this.audioContext = new this.audioContext();
         this.gumStream = stream;
 
         this.input = this.audioContext.createMediaStreamSource(stream);
 
-        console.log(import.meta.env.MODE);
         this.recorder = new WebAudioRecorder(this.input, {
           workerDir: import.meta.env.MODE === "development" ? "public/libAudioRecorder/" : "./libAudioRecorder/",
           encoding: this.encodingType,
           numChannels: 2,
           onEncoderLoading: (recorder, encoding) => {
-            console.log("Loading " + encoding + " encoder...");
+            // console.log("Loading " + encoding + " encoder...");
           },
           onEncoderLoaded: (recorder, encoding) => {
-            console.log(encoding + " encoder loaded");
+            // console.log(encoding + " encoder loaded");
           },
         });
 

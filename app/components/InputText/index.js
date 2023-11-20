@@ -18,6 +18,7 @@ export default class InputText {
     this.audioRecorder = new AudioRecorder({
       onComplete: this.onCompleteRecording.bind(this),
     });
+    this.isRecordCanceled = false;
     this.recordCounter = this.inputEl.querySelector(".record-counter");
 
     // Write
@@ -42,6 +43,7 @@ export default class InputText {
 
   // Audio
   startRecording() {
+    this.isRecordCanceled = false;
     this.audioRecorder.startRecording();
 
     this.audioRecorder.onUpdate((sec) => {
@@ -55,6 +57,8 @@ export default class InputText {
   }
 
   onCompleteRecording(blob) {
+    if (this.isRecordCanceled) return;
+
     // TODO : send audio to API endpoint
     console.log("TODO add url endpoint to send audio file:", blob);
 
@@ -65,6 +69,15 @@ export default class InputText {
       });
       this.onClickOutside.animInitial = true;
     }, this.transcriptingTime);
+  }
+
+  cancelRecord() {
+    this.isRecordCanceled = true;
+    this.onClickOutside.stopAudio = false;
+    this.stopRecording();
+
+    this.anims.toStopRecording({ transcipting: false });
+    this.anims.fromRecordAudioToInitial();
   }
 
   // Listeners
@@ -98,8 +111,7 @@ export default class InputText {
     );
 
     this.navBtn.addEventListener("click", () => {
-      this.stopRecording();
-      //   this.anims.toStopRecording();
+      this.cancelRecord();
     });
   }
 }

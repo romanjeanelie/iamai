@@ -35,7 +35,7 @@ export default class InputAnimations {
     this.infoTextEl = document.querySelector(".info-text");
   }
 
-  toInitial() {
+  toInitial({ delay = 0, transformInput = true } = {}) {
     this.inputFrontEl.style.pointerEvents = "auto";
     this.inputBackEl.style.pointerEvents = "none";
 
@@ -45,11 +45,14 @@ export default class InputAnimations {
       ease: "ease-in-out",
     });
     anim(this.inputBackEl, [{ opacity: 1 }, { opacity: 0 }], {
+      delay,
       duration: 200,
       fill: "forwards",
       ease: "ease-in-out",
     });
     anim([this.frontMicBtn, this.frontCameraBtn, this.frontCenterBtn], [{ opacity: 0 }, { opacity: 1 }], {
+      delay,
+
       duration: 500,
       fill: "forwards",
       ease: "ease-in-out",
@@ -57,18 +60,32 @@ export default class InputAnimations {
 
     if (isMobile()) {
       anim(this.logoMobileEl, [{ opacity: 1 }, { opacity: 0 }], {
-        duration: 300,
+        duration: delay + 300,
         fill: "forwards",
         ease: "ease-in-out",
       });
       anim(this.logoEl, [{ opacity: 0 }, { opacity: 1 }], {
-        delay: 300,
+        delay: delay + 300,
         duration: 300,
         fill: "forwards",
         ease: "ease-in-out",
       });
     }
   }
+
+  fromRecordAudioToInitial() {
+    this.inputFrontEl.style.pointerEvents = "auto";
+    this.inputBackEl.style.pointerEvents = "none";
+    setTimeout(() => (this.inputEl.style.overflow = "hidden"), 300);
+
+    anim([this.frontMicBtn, this.frontCameraBtn, this.frontCenterBtn], [{ opacity: 0 }, { opacity: 1 }], {
+      delay: 1000,
+      duration: 500,
+      fill: "forwards",
+      ease: "ease-in-out",
+    });
+  }
+
   toWrite({ delay = 0, animButtons = true, animLogos = false, text = "" } = {}) {
     this.inputText.textContent = text;
     this.inputFrontEl.style.pointerEvents = "none";
@@ -201,7 +218,7 @@ export default class InputAnimations {
     );
   }
 
-  toStopRecording() {
+  toStopRecording({ transcipting = true } = {}) {
     this.navEl.classList.add("active");
     this.animCircleYoyo.cancel();
 
@@ -235,9 +252,11 @@ export default class InputAnimations {
       fill: "forwards",
     });
 
-    lastStep.onfinish = () => {
-      this.toStartTranscripting();
-    };
+    if (transcipting) {
+      lastStep.onfinish = () => {
+        this.toStartTranscripting();
+      };
+    }
   }
 
   toStartTranscripting() {
