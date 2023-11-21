@@ -1,5 +1,3 @@
-import AudioRecorder from "../../AudioRecorder-ca3201ab.js";
-import minSecStr from "../../utils/minSecStr-3b9ae0f7.js";
 import InputAnimations from "./InputAnimations-0490dce7.js";
 class InputText {
   constructor() {
@@ -10,9 +8,6 @@ class InputText {
     this.frontCameraBtn = this.inputFrontEl.querySelector(".camera-btn");
     this.frontMicBtn = this.inputFrontEl.querySelector(".mic-btn");
     this.frontCenterBtn = this.inputFrontEl.querySelector(".center-btn");
-    this.audioRecorder = new AudioRecorder({
-      onComplete: this.onCompleteRecording.bind(this)
-    });
     this.isRecordCanceled = false;
     this.recordCounter = this.inputEl.querySelector(".record-counter");
     this.inputText = this.inputBackEl.querySelector(".input-text");
@@ -30,14 +25,8 @@ class InputText {
   // Audio
   startRecording() {
     this.isRecordCanceled = false;
-    this.audioRecorder.startRecording();
-    this.audioRecorder.onUpdate((sec) => {
-      const time = minSecStr(sec / 60 | 0) + ":" + minSecStr(sec % 60);
-      this.recordCounter.textContent = time;
-    });
   }
   stopRecording() {
-    this.audioRecorder.stopRecording();
   }
   onCompleteRecording(blob) {
     if (this.isRecordCanceled)

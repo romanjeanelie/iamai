@@ -1,8 +1,7 @@
 /* empty css                           */import Caroussel from "./components/Caroussel-4b9dd825.js";
-import InputText from "./components/InputText/index-8c43bb48.js";
+import InputText from "./components/InputText/index-2a957e6b.js";
 class App {
   constructor() {
-    console.log("test");
     this.addListeners();
   }
   initApp() {
