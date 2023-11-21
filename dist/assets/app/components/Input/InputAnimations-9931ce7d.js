@@ -136,7 +136,7 @@ class InputAnimations {
     if (isMobile()) {
       this.toLogoMobile();
     }
-    this.fadeOutButtons();
+    this.fadeOutButtons(0, 100);
     this.fadeOutCategoriesAndCaroussel();
     anim([this.logoEl], [{ transform: "translateY(0)" }, { transform: "translateY(-50%)" }], {
       duration: 200,

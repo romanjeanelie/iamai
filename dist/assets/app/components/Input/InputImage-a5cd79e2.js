@@ -1,4 +1,4 @@
-class ImageDrop {
+class InputImage {
   constructor(anims) {
     this.dropImageEl = document.querySelector(".image-drop-zone");
     this.dropImageOverlayEl = document.querySelector(".image-drop-zone--overlay");
@@ -82,5 +82,5 @@ class ImageDrop {
   }
 }
 export {
-  ImageDrop as default
+  InputImage as default
 };

@@ -13,11 +13,11 @@
     <script type="module" crossorigin src="/assets/app/AudioRecorder-1e53bb0d.js"></script>
     <script type="module" crossorigin src="/assets/app/utils/minSecStr-3b9ae0f7.js"></script>
     <script type="module" crossorigin src="/assets/app/utils/isMobile-3c760e40.js"></script>
-    <script type="module" crossorigin src="/assets/app/components/Input/InputAnimations-6f2b0e97.js"></script>
-    <script type="module" crossorigin src="/assets/app/components/Input/ImageDrop-b5b05607.js"></script>
-    <script type="module" crossorigin src="/assets/app/components/Input/index-10b23dd3.js"></script>
-    <script type="module" crossorigin src="/assets/app/index-5defe0c9.js"></script>
-    <link rel="stylesheet" href="/assets/index-0f46b3dc.css">
+    <script type="module" crossorigin src="/assets/app/components/Input/InputAnimations-9931ce7d.js"></script>
+    <script type="module" crossorigin src="/assets/app/components/Input/InputImage-a5cd79e2.js"></script>
+    <script type="module" crossorigin src="/assets/app/components/Input/index-8283a783.js"></script>
+    <script type="module" crossorigin src="/assets/app/index-955c2769.js"></script>
+    <link rel="stylesheet" href="/assets/index-579fa9fa.css">
   </head>
   <body class="preload">
     <div id="app">
@@ -140,7 +140,6 @@
       <div class="input__wrapper">
         <div class="input__container">
           <p class="record-counter">00:00</p>
-
           <!-- Input front -->
           <div class="input__front">
             <div class="transcripting__container">
@@ -265,28 +264,31 @@
                       <circle cx="16" cy="17" r="3" stroke="#000" stroke-opacity=".72" stroke-width="1.6" />
                     </svg>
                   </button>
-                  <button class="mic-btn" type="button">
-                    <svg class="icon-mic" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none">
-                      <path
-                        fill="#000"
-                        fill-opacity=".72"
-                        fill-rule="evenodd"
-                        d="M9.6 13.916a.8.8 0 0 0-1.6 0v2.415a8.301 8.301 0 0 0 7.5 8.262V28h1.6v-3.407a8.301 8.301 0 0 0 7.5-8.262v-2.415a.8.8 0 0 0-1.6 0v2.415a6.7 6.7 0 0 1-13.4 0v-2.415Z"
-                        clip-rule="evenodd"
-                      />
-                      <rect
-                        width="6.971"
-                        height="15.098"
-                        x="12.8"
-                        y="4.8"
-                        stroke="#000"
-                        stroke-linejoin="round"
-                        stroke-opacity=".72"
-                        stroke-width="1.6"
-                        rx="3.486"
-                      />
-                    </svg>
-                  </button>
+                  <div class="mic-btn__container">
+                    <button class="mic-btn" type="button">
+                      <svg class="icon-mic" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none">
+                        <path
+                          fill="#000"
+                          fill-opacity=".72"
+                          fill-rule="evenodd"
+                          d="M9.6 13.916a.8.8 0 0 0-1.6 0v2.415a8.301 8.301 0 0 0 7.5 8.262V28h1.6v-3.407a8.301 8.301 0 0 0 7.5-8.262v-2.415a.8.8 0 0 0-1.6 0v2.415a6.7 6.7 0 0 1-13.4 0v-2.415Z"
+                          clip-rule="evenodd"
+                        />
+                        <rect
+                          width="6.971"
+                          height="15.098"
+                          x="12.8"
+                          y="4.8"
+                          stroke="#000"
+                          stroke-linejoin="round"
+                          stroke-opacity=".72"
+                          stroke-width="1.6"
+                          rx="3.486"
+                        />
+                      </svg>
+                    </button>
+                    <p class="small-record-counter">00:00</p>
+                  </div>
                 </div>
                 <div class="right">
                   <button type="submit" class="submit" id="submitBtn" aria-label="Submit">

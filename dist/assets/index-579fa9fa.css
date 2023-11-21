@@ -404,42 +404,6 @@ body {
   visibility: hidden;
   opacity: 0;
 }
-.input__container .transcripting__container {
-  position: absolute;
-  z-index: 1;
-  width: 99%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  visibility: hidden;
-  overflow: hidden;
-}
-.input__container .transcripting__container--cursor {
-  display: block;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  transform: translateX(0%);
-  background-color: #fff;
-}
-.input__container .transcripting__container--cursor:before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 22px;
-  height: 22px;
-  background: rgba(0, 0, 0, 0.72);
-  border-radius: 50%;
-}
-.input__container .transcripting__container--text {
-  margin-left: 16px;
-  position: relative;
-  color: rgba(0, 0, 0, 0.72);
-}
 .input__container .input__front {
   box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.091);
   border-radius: 24px;
@@ -473,6 +437,42 @@ body {
   color: rgba(0, 0, 0, 0.5);
   font-size: 20px;
   flex: 1;
+}
+.input__container .input__front .transcripting__container {
+  position: absolute;
+  z-index: 1;
+  width: 99%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  visibility: hidden;
+  overflow: hidden;
+}
+.input__container .input__front .transcripting__container--cursor {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform: translateX(0%);
+  background-color: #fff;
+}
+.input__container .input__front .transcripting__container--cursor:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  background: rgba(0, 0, 0, 0.72);
+  border-radius: 50%;
+}
+.input__container .input__front .transcripting__container--text {
+  margin-left: 16px;
+  position: relative;
+  color: rgba(0, 0, 0, 0.72);
 }
 .input__container .input__back {
   position: relative;
@@ -519,6 +519,24 @@ body {
 }
 .input__container .input__controls .left {
   gap: 8px;
+}
+.input__container .input__controls .left .mic-btn__container {
+  display: flex;
+  align-items: center;
+  color: red;
+  font-size: 14px;
+}
+.input__container .input__controls .left .mic-btn__container p {
+  visibility: hidden;
+}
+.input__container .input__controls .left .mic-btn__container.active p {
+  visibility: visible;
+}
+.input__container .input__controls .left .mic-btn__container.active path {
+  fill: red;
+}
+.input__container .input__controls .left .mic-btn__container.active rect {
+  stroke: red;
 }
 .input__container .input__controls .submit {
   width: 32px;
