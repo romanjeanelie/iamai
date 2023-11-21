@@ -28,46 +28,6 @@
     opacity: 0;
   }
 
-  .transcripting__container {
-    position: absolute;
-    z-index: 1;
-    width: 99%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    visibility: hidden;
-    overflow: hidden;
-
-    &--cursor {
-      display: block;
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      transform: translateX(0%);
-      background-color: $colorMain;
-
-      &:before {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 22px;
-        height: 22px;
-        background: $colorBlack;
-        border-radius: 50%;
-      }
-    }
-
-    &--text {
-      margin-left: 16px;
-      position: relative;
-      color: $colorBlack;
-    }
-  }
-
   .input__front {
     box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.091);
 
@@ -110,6 +70,46 @@
       font-size: 20px;
       flex: 1;
     }
+
+    .transcripting__container {
+      position: absolute;
+      z-index: 1;
+      width: 99%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      visibility: hidden;
+      overflow: hidden;
+
+      &--cursor {
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transform: translateX(0%);
+        background-color: $colorMain;
+
+        &:before {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 22px;
+          height: 22px;
+          background: $colorBlack;
+          border-radius: 50%;
+        }
+      }
+
+      &--text {
+        margin-left: 16px;
+        position: relative;
+        color: $colorBlack;
+      }
+    }
   }
 
   .input__back {
@@ -144,6 +144,28 @@
 
     .left {
       gap: 8px;
+
+      .mic-btn__container {
+        display: flex;
+        align-items: center;
+        color: red;
+        font-size: 14px;
+
+        p {
+          visibility: hidden;
+        }
+        &.active {
+          p {
+            visibility: visible;
+          }
+          path {
+            fill: red;
+          }
+          rect {
+            stroke: red;
+          }
+        }
+      }
     }
 
     .submit {

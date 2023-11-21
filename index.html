@@ -126,7 +126,6 @@
       <div class="input__wrapper">
         <div class="input__container">
           <p class="record-counter">00:00</p>
-
           <!-- Input front -->
           <div class="input__front">
             <div class="transcripting__container">
@@ -251,28 +250,31 @@
                       <circle cx="16" cy="17" r="3" stroke="#000" stroke-opacity=".72" stroke-width="1.6" />
                     </svg>
                   </button>
-                  <button class="mic-btn" type="button">
-                    <svg class="icon-mic" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none">
-                      <path
-                        fill="#000"
-                        fill-opacity=".72"
-                        fill-rule="evenodd"
-                        d="M9.6 13.916a.8.8 0 0 0-1.6 0v2.415a8.301 8.301 0 0 0 7.5 8.262V28h1.6v-3.407a8.301 8.301 0 0 0 7.5-8.262v-2.415a.8.8 0 0 0-1.6 0v2.415a6.7 6.7 0 0 1-13.4 0v-2.415Z"
-                        clip-rule="evenodd"
-                      />
-                      <rect
-                        width="6.971"
-                        height="15.098"
-                        x="12.8"
-                        y="4.8"
-                        stroke="#000"
-                        stroke-linejoin="round"
-                        stroke-opacity=".72"
-                        stroke-width="1.6"
-                        rx="3.486"
-                      />
-                    </svg>
-                  </button>
+                  <div class="mic-btn__container">
+                    <button class="mic-btn" type="button">
+                      <svg class="icon-mic" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none">
+                        <path
+                          fill="#000"
+                          fill-opacity=".72"
+                          fill-rule="evenodd"
+                          d="M9.6 13.916a.8.8 0 0 0-1.6 0v2.415a8.301 8.301 0 0 0 7.5 8.262V28h1.6v-3.407a8.301 8.301 0 0 0 7.5-8.262v-2.415a.8.8 0 0 0-1.6 0v2.415a6.7 6.7 0 0 1-13.4 0v-2.415Z"
+                          clip-rule="evenodd"
+                        />
+                        <rect
+                          width="6.971"
+                          height="15.098"
+                          x="12.8"
+                          y="4.8"
+                          stroke="#000"
+                          stroke-linejoin="round"
+                          stroke-opacity=".72"
+                          stroke-width="1.6"
+                          rx="3.486"
+                        />
+                      </svg>
+                    </button>
+                    <p class="small-record-counter">00:00</p>
+                  </div>
                 </div>
                 <div class="right">
                   <button type="submit" class="submit" id="submitBtn" aria-label="Submit">

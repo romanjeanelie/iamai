@@ -170,7 +170,7 @@ export default class InputAnimations {
       this.toLogoMobile();
     }
 
-    this.fadeOutButtons();
+    this.fadeOutButtons(0, 100);
     this.fadeOutCategoriesAndCaroussel();
 
     anim([this.logoEl], [{ transform: "translateY(0)" }, { transform: "translateY(-50%)" }], {

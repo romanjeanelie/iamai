@@ -1,4 +1,4 @@
-export default class ImageDrop {
+export default class InputImage {
   constructor(anims) {
     // DOM
     this.dropImageEl = document.querySelector(".image-drop-zone");
@@ -89,7 +89,7 @@ export default class ImageDrop {
     let imageType = /image.*/;
     if (file.type.match(imageType)) {
       let fReader = new FileReader();
-      //   let gallery = document.getElementById("gallery");
+
       fReader.readAsDataURL(file);
       fReader.onloadend = () => {
         let img = document.createElement("img");

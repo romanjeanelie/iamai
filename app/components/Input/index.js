@@ -1,7 +1,7 @@
 import AudioRecorder from "../../AudioRecorder";
 import minSecStr from "../../utils/minSecStr";
 import InputAnimations from "./InputAnimations";
-import ImageDrop from "./ImageDrop";
+import InputImage from "./InputImage";
 
 export default class Input {
   constructor() {
@@ -21,6 +21,10 @@ export default class Input {
     });
     this.isRecordCanceled = false;
     this.recordCounter = this.inputEl.querySelector(".record-counter");
+    this.backMicBtnContainer = this.inputBackEl.querySelector(".mic-btn__container");
+    this.backMicBtn = this.backMicBtnContainer.querySelector(".mic-btn");
+    this.backMicText = this.backMicBtnContainer.querySelector("p");
+    this.isSmallRecording = false;
 
     // Write
     this.inputText = this.inputBackEl.querySelector(".input-text");
@@ -28,17 +32,6 @@ export default class Input {
     // Other dom elements
     this.navEl = document.querySelector(".nav");
     this.navBtn = this.navEl.querySelector(".nav__btn");
-
-    // Anims
-    this.anims = new InputAnimations();
-
-    // Drop Image
-    this.imageDrop = new ImageDrop({
-      onDroped: () => this.anims.toImageDroped(),
-      onImageAnalyzed: () => this.anims.toImageAnalyzed(),
-    });
-
-    this.addListeners();
 
     this.onClickOutside = {
       stopAudio: false,
@@ -48,16 +41,27 @@ export default class Input {
     //TEMP
     this.transcriptingTime = 3000; //ms
     this.tempTextRecorded = "text recorded";
+
+    // Anims
+    this.anims = new InputAnimations();
+
+    // Drop Image
+    this.inputImage = new InputImage({
+      onDroped: () => this.anims.toImageDroped(),
+      onImageAnalyzed: () => this.anims.toImageAnalyzed(),
+    });
+
+    this.addListeners();
   }
 
   // Audio
   startRecording() {
     this.isRecordCanceled = false;
     this.audioRecorder.startRecording();
-
+    this.timecodeAudioEl = this.isSmallRecording ? this.backMicText : this.recordCounter;
     this.audioRecorder.onUpdate((sec) => {
       const time = minSecStr((sec / 60) | 0) + ":" + minSecStr(sec % 60);
-      this.recordCounter.textContent = time;
+      this.timecodeAudioEl.textContent = time;
     });
   }
 
@@ -72,7 +76,17 @@ export default class Input {
     console.log("TODO add url endpoint to send audio file:", blob);
 
     this.timeoutTranscripting = setTimeout(() => {
+      this.timecodeAudioEl.textContent = "00:00";
       // TODO Call this function when audio is transcripted
+      if (this.isSmallRecording) {
+        this.isSmallRecording = false;
+        this.inputText.textContent = this.tempTextRecorded;
+        this.inputText.focus();
+        this.inputText.setSelectionRange(this.inputText.value.length, this.inputText.value.length);
+
+        return;
+      }
+
       this.anims.toStopTranscripting({
         textTranscripted: this.tempTextRecorded,
       });
@@ -108,9 +122,20 @@ export default class Input {
       this.cancelRecord();
     });
 
+    this.backMicBtn.addEventListener("click", () => {
+      if (!this.isSmallRecording) {
+        this.isSmallRecording = true;
+        this.startRecording();
+        this.backMicBtnContainer.classList.add("active");
+      } else {
+        this.stopRecording();
+        this.backMicBtnContainer.classList.remove("active");
+      }
+    });
+
     // Image
     this.frontLeftBtn.addEventListener("click", () => {
-      this.imageDrop.enable();
+      this.inputImage.enable();
       this.anims.toReadyForDragImage();
     });
 
@@ -135,6 +160,6 @@ export default class Input {
     );
 
     // Drop Image
-    this.imageDrop.addListeners();
+    this.inputImage.addListeners();
   }
 }
