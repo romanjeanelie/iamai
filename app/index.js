@@ -4,7 +4,6 @@ import InputText from "./components/InputText";
 
 class App {
   constructor() {
-    console.log("test");
     this.addListeners();
   }
 

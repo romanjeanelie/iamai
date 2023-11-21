@@ -15,9 +15,9 @@ export default class InputText {
     this.frontCenterBtn = this.inputFrontEl.querySelector(".center-btn");
 
     // Record
-    this.audioRecorder = new AudioRecorder({
-      onComplete: this.onCompleteRecording.bind(this),
-    });
+    // this.audioRecorder = new AudioRecorder({
+    //   onComplete: this.onCompleteRecording.bind(this),
+    // });
     this.isRecordCanceled = false;
     this.recordCounter = this.inputEl.querySelector(".record-counter");
 
@@ -44,16 +44,16 @@ export default class InputText {
   // Audio
   startRecording() {
     this.isRecordCanceled = false;
-    this.audioRecorder.startRecording();
+    // this.audioRecorder.startRecording();
 
-    this.audioRecorder.onUpdate((sec) => {
-      const time = minSecStr((sec / 60) | 0) + ":" + minSecStr(sec % 60);
-      this.recordCounter.textContent = time;
-    });
+    // this.audioRecorder.onUpdate((sec) => {
+    //   const time = minSecStr((sec / 60) | 0) + ":" + minSecStr(sec % 60);
+    //   this.recordCounter.textContent = time;
+    // });
   }
 
   stopRecording() {
-    this.audioRecorder.stopRecording();
+    // this.audioRecorder.stopRecording();
   }
 
   onCompleteRecording(blob) {
