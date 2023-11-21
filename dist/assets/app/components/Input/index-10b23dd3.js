@@ -1,13 +1,14 @@
 import AudioRecorder from "../../AudioRecorder-1e53bb0d.js";
 import minSecStr from "../../utils/minSecStr-3b9ae0f7.js";
-import InputAnimations from "./InputAnimations-0490dce7.js";
-class InputText {
+import InputAnimations from "./InputAnimations-6f2b0e97.js";
+import ImageDrop from "./ImageDrop-b5b05607.js";
+class Input {
   constructor() {
-    this.inputEl = document.querySelector(".input-text__container");
-    this.inputFrontEl = this.inputEl.querySelector(".input-text__front");
-    this.inputBackEl = this.inputEl.querySelector(".input-text__back");
+    this.inputEl = document.querySelector(".input__container");
+    this.inputFrontEl = this.inputEl.querySelector(".input__front");
+    this.inputBackEl = this.inputEl.querySelector(".input__back");
     this.centerBtn = this.inputFrontEl.querySelector(".center-btn");
-    this.frontCameraBtn = this.inputFrontEl.querySelector(".camera-btn");
+    this.frontLeftBtn = this.inputFrontEl.querySelector(".left-btn");
     this.frontMicBtn = this.inputFrontEl.querySelector(".mic-btn");
     this.frontCenterBtn = this.inputFrontEl.querySelector(".center-btn");
     this.audioRecorder = new AudioRecorder({
@@ -19,6 +20,10 @@ class InputText {
     this.navEl = document.querySelector(".nav");
     this.navBtn = this.navEl.querySelector(".nav__btn");
     this.anims = new InputAnimations();
+    this.imageDrop = new ImageDrop({
+      onDroped: () => this.anims.toImageDroped(),
+      onImageAnalyzed: () => this.anims.toImageAnalyzed()
+    });
     this.addListeners();
     this.onClickOutside = {
       stopAudio: false,
@@ -68,6 +73,13 @@ class InputText {
       this.anims.toStartRecording();
       this.onClickOutside.stopAudio = true;
     });
+    this.navBtn.addEventListener("click", () => {
+      this.cancelRecord();
+    });
+    this.frontLeftBtn.addEventListener("click", () => {
+      this.imageDrop.enable();
+      this.anims.toReadyForDragImage();
+    });
     document.body.addEventListener(
       "click",
       (event) => {
@@ -87,11 +99,9 @@ class InputText {
       },
       { capture: true }
     );
-    this.navBtn.addEventListener("click", () => {
-      this.cancelRecord();
-    });
+    this.imageDrop.addListeners();
   }
 }
 export {
-  InputText as default
+  Input as default
 };

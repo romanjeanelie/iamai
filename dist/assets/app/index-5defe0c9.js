@@ -1,19 +1,19 @@
 /* empty css                           */import Caroussel from "./components/Caroussel-4b9dd825.js";
-import InputText from "./components/InputText/index-34baca1c.js";
+import Input from "./components/Input/index-10b23dd3.js";
 class App {
   constructor() {
     this.addListeners();
   }
   initApp() {
     this.initCaroussel();
-    this.initInputText();
+    this.initInput();
   }
   initCaroussel() {
     this.caroussel = new Caroussel();
     this.caroussel.init();
   }
-  initInputText() {
-    new InputText();
+  initInput() {
+    new Input();
   }
   addListeners() {
     window.addEventListener("load", () => {

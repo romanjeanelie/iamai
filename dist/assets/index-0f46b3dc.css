@@ -146,8 +146,12 @@ body {
     bottom: 22px;
   }
 }
+.image-drop {
+  position: fixed;
+}
 .nav {
   position: fixed;
+  z-index: 2;
   top: 48px;
   right: 40px;
   height: 100%;
@@ -287,24 +291,110 @@ body {
 .caroussel__container .caroussel__markers .marker.active {
   width: 20px;
 }
+.image-drop-zone,
+.image-drop-zone--overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+.image-drop-zone--overlay {
+  z-index: 3;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  background: #648ff2;
+  transition: opacity 0.3s ease-in-out;
+}
+.image-drop-zone--overlay.hovered {
+  opacity: 1;
+}
+.image-drop-zone {
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out 1000ms;
+}
+.image-drop-zone img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.image-drop-zone.active {
+  pointer-events: auto;
+}
+.image-drop-zone.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+.image-drop-zone.visible {
+  opacity: 1;
+}
+.input__image--container {
+  opacity: 0;
+  visibility: hidden;
+  padding: 4px 0 4px 16px;
+  position: absolute;
+  width: 92%;
+  height: 100%;
+  right: 0;
+  top: 50%;
+  transform: translate3d(0%, -50%, 0);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  overflow: hidden;
+}
+.input__image--container .input__image {
+  font-size: 20px;
+  background-color: #fff;
+  text-align: center;
+  width: 100%;
+  padding: 0.5rem;
+  font: inherit;
+  color: black;
+}
+.input__image--container .input__image:placeholder {
+  color: rgba(0, 0, 0, 0.5);
+}
+.input__image--container .input__image--closeBtn {
+  width: 32px;
+  height: 32px;
+  background: #c2c2c2;
+  margin-right: 8px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.input__image--container.active {
+  opacity: 1;
+  visibility: visible;
+}
 .input__wrapper {
   display: flex;
   justify-content: center;
   max-width: 100vw;
 }
-.input-text__container {
+.input__container {
   position: relative;
+  z-index: 2;
   margin-bottom: 28px;
   border-radius: 24px;
   width: 696px;
   overflow: hidden;
 }
 @media (max-width: 819px) {
-  .input-text__container {
+  .input__container {
     width: 90vw;
   }
 }
-.input-text__container .record-counter {
+.input__container .record-counter {
   color: rgba(0, 0, 0, 0.72);
   position: absolute;
   z-index: 1;
@@ -314,7 +404,7 @@ body {
   visibility: hidden;
   opacity: 0;
 }
-.input-text__container .transcripting__container {
+.input__container .transcripting__container {
   position: absolute;
   z-index: 1;
   width: 99%;
@@ -326,7 +416,7 @@ body {
   visibility: hidden;
   overflow: hidden;
 }
-.input-text__container .transcripting__container--cursor {
+.input__container .transcripting__container--cursor {
   display: block;
   position: absolute;
   width: 100%;
@@ -334,7 +424,7 @@ body {
   transform: translateX(0%);
   background-color: #fff;
 }
-.input-text__container .transcripting__container--cursor:before {
+.input__container .transcripting__container--cursor:before {
   content: "";
   position: absolute;
   left: 0;
@@ -345,12 +435,12 @@ body {
   background: rgba(0, 0, 0, 0.72);
   border-radius: 50%;
 }
-.input-text__container .transcripting__container--text {
+.input__container .transcripting__container--text {
   margin-left: 16px;
   position: relative;
   color: rgba(0, 0, 0, 0.72);
 }
-.input-text__container .input-text__front {
+.input__container .input__front {
   box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.091);
   border-radius: 24px;
   padding: 4px 16px;
@@ -359,7 +449,6 @@ body {
   left: 50%;
   top: 50%;
   transform: translate3d(-50%, -50%, 0);
-  background: #fff;
   display: flex;
   justify-content: space-between;
   background: #fff;
@@ -367,23 +456,36 @@ body {
   overflow: hidden;
   height: 48px;
 }
-.input-text__container .input-text__front .center-btn {
+.input__container .input__front .left-btn {
+  position: relative;
+}
+.input__container .input__front .left-btn .icon-upload {
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+}
+.input__container .input__front .left-btn.active-imagedrop .icon-upload {
+  opacity: 1;
+}
+.input__container .input__front .center-btn {
   color: rgba(0, 0, 0, 0.5);
   font-size: 20px;
   flex: 1;
 }
-.input-text__container .input-text__back {
+.input__container .input__back {
   position: relative;
   background-color: #fff;
   padding: 16px;
   pointer-events: none;
   opacity: 0;
 }
-.input-text__container .input-text__expand {
+.input__container .input-text__expand {
   /* easy way to plop the elements on top of each other and have them both sized based on the tallest one's height */
   display: grid;
 }
-.input-text__container .input-text__expand:after {
+.input__container .input-text__expand:after {
   /* Note the weird space! Needed to preventy jumpy behavior */
   content: attr(data-replicated-value) " ";
   /* This is how textarea text behaves */
@@ -391,13 +493,13 @@ body {
   /* Hidden from view, clicks, and screen readers */
   visibility: hidden;
 }
-.input-text__container .input-text__expand .input-text {
+.input__container .input-text__expand .input-text {
   /* You could leave this, but after a user resizes, then it ruins the auto sizing */
   resize: none;
   /* Firefox shows scrollbar on growth, you can hide like this. */
   color: rgba(0, 0, 0, 0.72);
 }
-.input-text__container .input-text__expand .input-text, .input-text__container .input-text__expand:after {
+.input__container .input-text__expand .input-text, .input__container .input-text__expand:after {
   /* Place on top of each other */
   grid-area: 1/1/2/2;
   max-height: 30vh;
@@ -406,19 +508,19 @@ body {
   font-size: 20px;
   padding-top: 0;
 }
-.input-text__container .input-text__controls {
+.input__container .input__controls {
   background-color: #fff;
   display: flex;
   justify-content: space-between;
 }
-.input-text__container .input-text__controls .left,
-.input-text__container .input-text__controls .right {
+.input__container .input__controls .left,
+.input__container .input__controls .right {
   display: flex;
 }
-.input-text__container .input-text__controls .left {
+.input__container .input__controls .left {
   gap: 8px;
 }
-.input-text__container .input-text__controls .submit {
+.input__container .input__controls .submit {
   width: 32px;
   height: 32px;
   display: flex;
