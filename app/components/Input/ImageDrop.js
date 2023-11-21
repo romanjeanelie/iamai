@@ -1,8 +1,13 @@
 export default class ImageDrop {
-  constructor() {
+  constructor(anims) {
+    // DOM
     this.dropImageEl = document.querySelector(".image-drop-zone");
-    // this.inputImage = this.dropImageEl.querySelector(".input-image");
-    this.imgDroppedContainer = document.querySelector(".img-dropped");
+    this.dropImageOverlayEl = document.querySelector(".image-drop-zone--overlay");
+
+    this.anims = anims;
+
+    //TEMP
+    this.analizingImageTime = 2000; //ms
   }
 
   filesManager(files) {
@@ -36,16 +41,24 @@ export default class ImageDrop {
     }
   }
 
-  onMouseEnter() {}
+  enable() {
+    this.dropImageEl.style.pointerEvents = "auto";
+  }
 
-  onMouseLeave(e) {
-    this.dropImageEl.classList.remove("hover");
+  disable() {
+    this.dropImageEl.style.pointerEvents = "none";
   }
 
   onDrop(e) {
     let dataTrans = e.dataTransfer;
     let files = dataTrans.files;
-    this.filesManager(files);
+    this.anims.onDroped();
+
+    this.timeoutTranscripting = setTimeout(() => {
+      // TODO Call this function when image is analyzed
+      this.anims.onImageAnalyzed();
+      this.filesManager(files);
+    }, this.analizingImageTime);
   }
 
   addListeners() {
@@ -59,13 +72,13 @@ export default class ImageDrop {
 
     ["dragenter", "dragover"].forEach((e) => {
       this.dropImageEl.addEventListener(e, () => {
-        this.dropImageEl.classList.add("hovered");
+        this.dropImageOverlayEl.classList.add("hovered");
       });
     });
 
     ["dragleave", "drop"].forEach((e) => {
       this.dropImageEl.addEventListener(e, () => {
-        this.dropImageEl.classList.remove("hovered");
+        this.dropImageOverlayEl.classList.remove("hovered");
       });
     });
 
@@ -81,10 +94,10 @@ export default class ImageDrop {
       fReader.onloadend = () => {
         let img = document.createElement("img");
         img.src = fReader.result;
-        img.classList.add("img-dropped'");
 
         let fSize = file.size / 1000 + " KB";
-        this.imgDroppedContainer.appendChild(img);
+        this.dropImageEl.appendChild(img);
+        this.dropImageEl.classList.add("visible");
       };
     } else {
       console.error("Only images are allowed!", file);

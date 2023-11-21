@@ -1,6 +1,6 @@
 import "../scss/index.scss";
 import Caroussel from "./components/Caroussel";
-import InputText from "./components/InputText";
+import Input from "./components/Input";
 
 class App {
   constructor() {
@@ -9,15 +9,16 @@ class App {
 
   initApp() {
     this.initCaroussel();
-    this.initInputText();
+    this.initInput();
   }
 
   initCaroussel() {
     this.caroussel = new Caroussel();
     this.caroussel.init();
   }
-  initInputText() {
-    new InputText();
+
+  initInput() {
+    new Input();
   }
 
   addListeners() {

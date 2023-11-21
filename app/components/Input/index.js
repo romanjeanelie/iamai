@@ -11,7 +11,7 @@ export default class Input {
 
     // Front input
     this.centerBtn = this.inputFrontEl.querySelector(".center-btn");
-    this.frontCameraBtn = this.inputFrontEl.querySelector(".camera-btn");
+    this.frontLeftBtn = this.inputFrontEl.querySelector(".left-btn");
     this.frontMicBtn = this.inputFrontEl.querySelector(".mic-btn");
     this.frontCenterBtn = this.inputFrontEl.querySelector(".center-btn");
 
@@ -29,11 +29,14 @@ export default class Input {
     this.navEl = document.querySelector(".nav");
     this.navBtn = this.navEl.querySelector(".nav__btn");
 
-    // Drop Image
-    this.imageDrop = new ImageDrop();
-
     // Anims
     this.anims = new InputAnimations();
+
+    // Drop Image
+    this.imageDrop = new ImageDrop({
+      onDroped: () => this.anims.toImageDroped(),
+      onImageAnalyzed: () => this.anims.toImageAnalyzed(),
+    });
 
     this.addListeners();
 
@@ -105,6 +108,12 @@ export default class Input {
       this.cancelRecord();
     });
 
+    // Image
+    this.frontLeftBtn.addEventListener("click", () => {
+      this.imageDrop.enable();
+      this.anims.toReadyForDragImage();
+    });
+
     // Click outside
     document.body.addEventListener(
       "click",
@@ -116,7 +125,6 @@ export default class Input {
             this.onClickOutside.stopAudio = false;
           }
           if (this.onClickOutside.animInitial) {
-            console.log(this.inputText.value);
             if (this.inputText.value) return;
             this.anims.toInitial();
             this.onClickOutside.animInitial = false;

@@ -1,37 +1,101 @@
+// Image drop
 .image-drop-zone,
-.img-dropped {
-  pointer-events: none;
+.image-drop-zone--overlay {
   position: fixed;
-  z-index: 2;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
 }
 
-.image-drop-zone {
+.image-drop-zone--overlay {
+  z-index: 3;
+  pointer-events: none;
   display: flex;
   justify-content: center;
   align-items: center;
   opacity: 0;
   background: $backgroundColor;
   transition: opacity 0.3s ease-in-out;
+
   &.hovered {
     opacity: 1;
   }
-
-  .input-image {
-    display: none;
-  }
 }
 
-.img-dropped {
-  z-index: -1;
+.image-drop-zone {
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out 1000ms;
 
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border: 1px solid red;
+  }
+
+  &.active {
+    pointer-events: auto;
+  }
+
+  &.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  &.visible {
+    opacity: 1;
+  }
+}
+
+// Input
+.input__image--container {
+  opacity: 0;
+  visibility: hidden;
+  padding: 4px 0 4px 16px;
+  position: absolute;
+  width: 92%;
+  height: 100%;
+  right: 0;
+  top: 50%;
+  transform: translate3d(0%, -50%, 0);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+
+  height: 48px;
+  overflow: hidden;
+
+  .input__image {
+    font-size: 20px;
+
+    background-color: $colorMain;
+    text-align: center;
+    width: 100%;
+    padding: 0.5rem;
+    font: inherit;
+    color: rgba($colorBlack, 1);
+
+    &:placeholder {
+      color: rgba($colorBlack, 0.5);
+    }
+  }
+
+  .input__image--closeBtn {
+    width: 32px;
+    height: 32px;
+    background: $colorGrey;
+    margin-right: 8px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
   }
 }
