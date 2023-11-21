@@ -56,7 +56,7 @@ export default class AudioRecorder {
 
   onUpdate(callback) {
     function updateTime() {
-      const sec = this.recorder.recordingTime() | 0;
+      const sec = this.recorder?.recordingTime() | 0;
       callback(sec);
     }
 
