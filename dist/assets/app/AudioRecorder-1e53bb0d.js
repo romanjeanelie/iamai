@@ -4,12 +4,12 @@ class AudioRecorder {
     this.gumStream = null;
     this.recorder = null;
     this.input = null;
-    this.audioContext = window.AudioContext || window.webkitAudioContext;
+    this.audioContext = null;
     this.encodingType = "mp3";
-    this.audioContext = new this.audioContext();
   }
   startRecording() {
     const constraints = { audio: true, video: false };
+    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
     navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
       this.gumStream = stream;
       this.input = this.audioContext.createMediaStreamSource(stream);

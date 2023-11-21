@@ -4,14 +4,14 @@ export default class AudioRecorder {
     this.gumStream = null;
     this.recorder = null;
     this.input = null;
-    this.audioContext = window.AudioContext || window.webkitAudioContext;
+    this.audioContext = null;
     this.encodingType = "mp3"; // or 'ogg, mp3, wav'
-    this.audioContext = new this.audioContext();
   }
 
   startRecording() {
-    // console.log("startRecording() called");
     const constraints = { audio: true, video: false };
+
+    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
     navigator.mediaDevices
       .getUserMedia(constraints)

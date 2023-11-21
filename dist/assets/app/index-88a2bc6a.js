@@ -1,5 +1,5 @@
 /* empty css                           */import Caroussel from "./components/Caroussel-4b9dd825.js";
-import InputText from "./components/InputText/index-68f308f9.js";
+import InputText from "./components/InputText/index-34baca1c.js";
 class App {
   constructor() {
     this.addListeners();
