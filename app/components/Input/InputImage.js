@@ -4,17 +4,14 @@ export default class InputImage {
     this.dropImageEl = document.querySelector(".image-drop-zone");
     this.dropImageOverlayEl = document.querySelector(".image-drop-zone--overlay");
 
+    this.inputFileUploadEl = document.querySelector("#file-upload");
+    this.inputImageEl = document.querySelector(".input__image");
+    this.closeBtn = document.querySelector(".input__image--closeBtn");
+
     this.anims = anims;
 
     //TEMP
     this.analizingImageTime = 2000; //ms
-  }
-
-  filesManager(files) {
-    files = [...files];
-    console.log("TODO: add end point to send the image file to the server", files[0]);
-    // files.forEach((file) => this.uploadFile(file));
-    files.forEach((file) => this.previewFile(file));
   }
 
   // TODO : send the file to the server
@@ -49,16 +46,38 @@ export default class InputImage {
     this.dropImageEl.style.pointerEvents = "none";
   }
 
-  onDrop(e) {
-    let dataTrans = e.dataTransfer;
-    let files = dataTrans.files;
+  onDrop(img) {
     this.anims.onDroped();
+
+    console.log("TODO: add end point to send the image file to the server", img);
+    // this.uploadFile(img)
 
     this.timeoutTranscripting = setTimeout(() => {
       // TODO Call this function when image is analyzed
-      this.anims.onImageAnalyzed();
-      this.filesManager(files);
+      this.previewImage(img);
     }, this.analizingImageTime);
+  }
+
+  previewImage(file) {
+    let imageType = /image.*/;
+    if (file.type.match(imageType)) {
+      this.anims.onImageAnalyzed();
+      let fReader = new FileReader();
+
+      fReader.readAsDataURL(file);
+      fReader.onloadend = () => {
+        let img = document.createElement("img");
+        img.src = fReader.result;
+
+        let fSize = file.size / 1000 + " KB";
+        this.dropImageEl.appendChild(img);
+        this.dropImageEl.classList.add("visible");
+      };
+    } else {
+      this.anims.reset();
+
+      console.error("Only images are allowed!", file);
+    }
   }
 
   addListeners() {
@@ -82,25 +101,22 @@ export default class InputImage {
       });
     });
 
-    this.dropImageEl.addEventListener("drop", this.onDrop.bind(this), false);
-  }
+    this.dropImageEl.addEventListener(
+      "drop",
+      (e) => {
+        let dataTrans = e.dataTransfer;
+        let files = dataTrans.files;
+        const img = files[0];
+        this.onDrop(img);
+      },
+      false
+    );
 
-  previewFile(file) {
-    let imageType = /image.*/;
-    if (file.type.match(imageType)) {
-      let fReader = new FileReader();
-
-      fReader.readAsDataURL(file);
-      fReader.onloadend = () => {
-        let img = document.createElement("img");
-        img.src = fReader.result;
-
-        let fSize = file.size / 1000 + " KB";
-        this.dropImageEl.appendChild(img);
-        this.dropImageEl.classList.add("visible");
-      };
-    } else {
-      console.error("Only images are allowed!", file);
-    }
+    this.inputFileUploadEl.addEventListener("change", (e) => {
+      if (this.inputFileUploadEl.files && this.inputFileUploadEl.files[0]) {
+        const img = this.inputFileUploadEl.files[0];
+        this.onDrop(img);
+      }
+    });
   }
 }

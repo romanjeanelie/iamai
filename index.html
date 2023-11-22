@@ -129,7 +129,7 @@
                 Converting to text
               </p>
             </div>
-            <button class="left-btn" type="button">
+            <button class="camera-btn" type="button">
               <svg class="icon-camera" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none">
                 <path
                   stroke="#000"
@@ -138,30 +138,6 @@
                   d="M26 22v-9a2 2 0 0 0-2-2h-2.5l-1.224-2.447A1 1 0 0 0 19.382 8h-6.764a1 1 0 0 0-.894.553L10.5 11H8a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2Z"
                 />
                 <circle cx="16" cy="17" r="3" stroke="#000" stroke-opacity=".72" stroke-width="1.6" />
-              </svg>
-              <svg class="icon-upload" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none">
-                <path fill="#fff" d="M0 0h40v40H0z" />
-                <rect width="1.6" height="14.933" x="19.24" y="9.603" fill="#000" rx=".8" />
-                <rect
-                  width="1.6"
-                  height="8.382"
-                  fill="#000"
-                  rx=".8"
-                  transform="scale(.98178 1.0179) rotate(45 .695 28.521)"
-                />
-                <rect
-                  width="8.382"
-                  height="1.6"
-                  fill="#000"
-                  rx=".8"
-                  transform="scale(.98178 1.0179) rotate(45 .695 28.521)"
-                />
-                <path
-                  stroke="#000"
-                  stroke-linecap="round"
-                  stroke-width="1.6"
-                  d="M15.2 18.67h-2.6a1.6 1.6 0 0 0-1.6 1.6v10.133a1.6 1.6 0 0 0 1.6 1.6h14.8a1.6 1.6 0 0 0 1.6-1.6V20.27a1.6 1.6 0 0 0-1.6-1.6h-2.45"
-                />
               </svg>
             </button>
             <button class="center-btn" type="button">Type away</button>
@@ -190,6 +166,33 @@
           </div>
           <!-- Input image -->
           <div class="input__image--container">
+            <label for="file-upload" class="icon-file-upload">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none">
+                <path fill="#fff" d="M0 0h40v40H0z" />
+                <rect width="1.6" height="14.933" x="19.24" y="9.603" fill="#000" rx=".8" />
+                <rect
+                  width="1.6"
+                  height="8.382"
+                  fill="#000"
+                  rx=".8"
+                  transform="scale(.98178 1.0179) rotate(45 .695 28.521)"
+                />
+                <rect
+                  width="8.382"
+                  height="1.6"
+                  fill="#000"
+                  rx=".8"
+                  transform="scale(.98178 1.0179) rotate(45 .695 28.521)"
+                />
+                <path
+                  stroke="#000"
+                  stroke-linecap="round"
+                  stroke-width="1.6"
+                  d="M15.2 18.67h-2.6a1.6 1.6 0 0 0-1.6 1.6v10.133a1.6 1.6 0 0 0 1.6 1.6h14.8a1.6 1.6 0 0 0 1.6-1.6V20.27a1.6 1.6 0 0 0-1.6-1.6h-2.45"
+                />
+              </svg>
+            </label>
+            <input id="file-upload" class="input__file-upload" type="file" accept="image/*" />
             <input class="input__image" type="text" placeholder="Paste an image link, drag an image" />
             <button class="input__image--closeBtn">
               <svg
@@ -234,7 +237,7 @@
               </div>
               <div class="input__controls">
                 <div class="left">
-                  <button class="left-btn" type="button">
+                  <button class="camera-btn" type="button">
                     <svg class="icon-camera" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none">
                       <path
                         stroke="#000"

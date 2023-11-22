@@ -12,9 +12,13 @@ export default class Input {
 
     // Front input
     this.centerBtn = this.inputFrontEl.querySelector(".center-btn");
-    this.frontLeftBtn = this.inputFrontEl.querySelector(".left-btn");
+    this.frontCameraBtn = this.inputFrontEl.querySelector(".camera-btn");
     this.frontMicBtn = this.inputFrontEl.querySelector(".mic-btn");
     this.frontCenterBtn = this.inputFrontEl.querySelector(".center-btn");
+
+    // Image
+    this.backCameraBtn = this.inputBackEl.querySelector(".camera-btn");
+    this.closeInputImageBtn = document.querySelector(".input__image--closeBtn");
 
     // Record
     this.audioRecorder = new AudioRecorder({
@@ -45,6 +49,7 @@ export default class Input {
 
     // Drop Image
     this.inputImage = new InputImage({
+      reset: () => this.anims.toImageReset(),
       onDroped: () => this.anims.toImageDroped(),
       onImageAnalyzed: () => this.anims.toImageAnalyzed(),
     });
@@ -139,15 +144,27 @@ export default class Input {
     });
 
     // Image
-    this.frontLeftBtn.addEventListener("click", () => {
+    this.frontCameraBtn.addEventListener("click", () => {
       this.inputImage.enable();
-      this.anims.toReadyForDragImage();
+      this.anims.toDragImage();
+    });
+    this.backCameraBtn.addEventListener("click", () => {
+      if (this.isSmallRecording) return;
+
+      this.anims.toInitial({ animBottom: false, animButtons: false });
+      this.anims.toDragImage({ animBottom: false, delay: 1000 });
+    });
+
+    this.closeInputImageBtn.addEventListener("click", () => {
+      this.inputImage.disable();
+      this.anims.leaveDragImage();
     });
 
     // Click outside
     document.body.addEventListener(
       "click",
       (event) => {
+        if (this.isSmallRecording) return;
         if (!this.inputEl.contains(event.target) && !this.cancelAudioBtn.contains(event.target)) {
           if (this.onClickOutside.stopAudio) {
             this.stopRecording();

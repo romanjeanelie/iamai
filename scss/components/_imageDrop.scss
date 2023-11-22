@@ -51,11 +51,9 @@
 
 // Input
 .input__image--container {
-  opacity: 0;
-  visibility: hidden;
   padding: 4px 0 4px 16px;
   position: absolute;
-  width: 92%;
+  width: 100%;
   height: 100%;
   right: 0;
   top: 50%;
@@ -64,10 +62,23 @@
   justify-content: space-between;
   align-items: center;
   gap: 10px;
-
   height: 48px;
   overflow: hidden;
 
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out;
+  &.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .icon-file-upload {
+    cursor: pointer;
+  }
+  .input__file-upload[type="file"] {
+    display: none;
+  }
   .input__image {
     font-size: 20px;
 
@@ -92,10 +103,5 @@
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-
-  &.active {
-    opacity: 1;
-    visibility: visible;
   }
 }

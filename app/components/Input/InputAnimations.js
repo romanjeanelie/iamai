@@ -9,7 +9,7 @@ export default class InputAnimations {
 
     // Front input
     this.centerBtn = this.inputFrontEl.querySelector(".center-btn");
-    this.frontLeftBtn = this.inputFrontEl.querySelector(".left-btn");
+    this.frontCameraBtn = this.inputFrontEl.querySelector(".camera-btn");
     this.frontMicBtn = this.inputFrontEl.querySelector(".mic-btn");
     this.frontCenterBtn = this.inputFrontEl.querySelector(".center-btn");
 
@@ -39,20 +39,16 @@ export default class InputAnimations {
 
   // Presets
   fadeInButtons(delay = 0, duration = 500) {
-    anim(
-      [this.frontMicBtn, this.frontLeftBtn, this.frontCenterBtn, this.categoriesListEl, this.carousselEl],
-      [{ opacity: 0 }, { opacity: 1 }],
-      {
-        delay,
-        duration,
-        fill: "forwards",
-        ease: "ease-in-out",
-      }
-    );
+    anim([this.frontMicBtn, this.frontCameraBtn, this.frontCenterBtn], [{ opacity: 0 }, { opacity: 1 }], {
+      delay,
+      duration,
+      fill: "forwards",
+      ease: "ease-in-out",
+    });
   }
 
   fadeOutButtons(delay = 0, duration = 500) {
-    anim([this.frontMicBtn, this.frontLeftBtn, this.frontCenterBtn], [{ opacity: 1 }, { opacity: 0 }], {
+    anim([this.frontMicBtn, this.frontCameraBtn, this.frontCenterBtn], [{ opacity: 1 }, { opacity: 0 }], {
       delay,
       duration,
       fill: "forwards",
@@ -106,7 +102,7 @@ export default class InputAnimations {
   }
 
   // To initial
-  toInitial({ delay = 0, transformInput = true } = {}) {
+  toInitial({ delay = 0, animButtons = true, animBottom = true } = {}) {
     this.inputFrontEl.style.pointerEvents = "auto";
     this.inputBackEl.style.pointerEvents = "none";
 
@@ -122,8 +118,13 @@ export default class InputAnimations {
       ease: "ease-in-out",
     });
 
-    this.fadeInButtons(delay);
-    this.fadeInCategoriesAndCaroussel(delay);
+    if (animButtons) {
+      this.fadeInButtons(delay);
+    }
+
+    if (animBottom) {
+      this.fadeInCategoriesAndCaroussel(delay);
+    }
 
     // if (isMobile()) {
     this.fadeInLogo(delay + 300);
@@ -359,15 +360,24 @@ export default class InputAnimations {
     this.toWrite({ delay: 1200, animButtons: false, animLogos: false, text: textTranscripted });
   }
 
-  toReadyForDragImage() {
-    this.frontLeftBtn.classList.add("active-imagedrop");
-    this.inputImageContainer.classList.add("active");
+  toDragImage({ animBottom = true, delay = 0 } = {}) {
+    setTimeout(() => {
+      this.frontCameraBtn.classList.add("active-imagedrop");
+      this.inputImageContainer.classList.add("active");
+    }, delay);
 
-    anim([this.categoriesListEl, this.carousselEl], [{ opacity: 1 }, { opacity: 0 }], {
-      duration: 500,
-      fill: "forwards",
-      ease: "ease-in-out",
-    });
+    if (animBottom) {
+      this.fadeOutCategoriesAndCaroussel(0, 500);
+    }
+  }
+
+  leaveDragImage({ animBottom = true } = {}) {
+    this.frontCameraBtn.classList.remove("active-imagedrop");
+    this.inputImageContainer.classList.remove("active");
+
+    if (animBottom) {
+      this.fadeInCategoriesAndCaroussel(0, 500);
+    }
   }
 
   toImageDroped() {
@@ -414,5 +424,24 @@ export default class InputAnimations {
     });
 
     this.toWrite({ delay: 1200, animButtons: false, animLogos: false, placeholder: "Ask a question about the image" });
+  }
+
+  toImageReset() {
+    this.animCircleYoyo.cancel();
+
+    const step1 = anim(this.inputFrontEl, [{ opacity: 0 }, { opacity: 1 }], {
+      duration: 300,
+      ease: "ease-in-out",
+      fill: "forwards",
+    });
+
+    const step2 = anim(this.inputFrontEl, [{ width: `${this.inputFrontHeight}px` }, { width: "100%" }], {
+      delay: step1.effect.getComputedTiming().duration + 500,
+      duration: 400,
+      ease: "ease-in-out",
+      fill: "forwards",
+    });
+
+    this.fadeInButtons(step1.effect.getComputedTiming().duration + step2.effect.getComputedTiming().duration + 500, 0);
   }
 }
