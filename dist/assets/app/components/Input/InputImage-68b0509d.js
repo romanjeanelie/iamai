@@ -2,13 +2,10 @@ class InputImage {
   constructor(anims) {
     this.dropImageEl = document.querySelector(".image-drop-zone");
     this.dropImageOverlayEl = document.querySelector(".image-drop-zone--overlay");
+    this.inputFileUploadEl = document.querySelector("#file-upload");
+    this.closeBtn = document.querySelector(".input__image--closeBtn");
     this.anims = anims;
     this.analizingImageTime = 2e3;
-  }
-  filesManager(files) {
-    files = [...files];
-    console.log("TODO: add end point to send the image file to the server", files[0]);
-    files.forEach((file) => this.previewFile(file));
   }
   // TODO : send the file to the server
   uploadFile(file) {
@@ -35,14 +32,30 @@ class InputImage {
   disable() {
     this.dropImageEl.style.pointerEvents = "none";
   }
-  onDrop(e) {
-    let dataTrans = e.dataTransfer;
-    let files = dataTrans.files;
+  onDrop(img) {
     this.anims.onDroped();
+    console.log("TODO: add end point to send the image file to the server", img);
     this.timeoutTranscripting = setTimeout(() => {
-      this.anims.onImageAnalyzed();
-      this.filesManager(files);
+      this.previewImage(img);
     }, this.analizingImageTime);
+  }
+  previewImage(file) {
+    let imageType = /image.*/;
+    if (file.type.match(imageType)) {
+      this.anims.onImageAnalyzed();
+      let fReader = new FileReader();
+      fReader.readAsDataURL(file);
+      fReader.onloadend = () => {
+        let img = document.createElement("img");
+        img.src = fReader.result;
+        file.size / 1e3 + " KB";
+        this.dropImageEl.appendChild(img);
+        this.dropImageEl.classList.add("visible");
+      };
+    } else {
+      this.anims.reset();
+      console.error("Only images are allowed!", file);
+    }
   }
   addListeners() {
     ["dragenter", "dragover", "dragleave", "drop"].forEach((e) => {
@@ -62,23 +75,22 @@ class InputImage {
         this.dropImageOverlayEl.classList.remove("hovered");
       });
     });
-    this.dropImageEl.addEventListener("drop", this.onDrop.bind(this), false);
-  }
-  previewFile(file) {
-    let imageType = /image.*/;
-    if (file.type.match(imageType)) {
-      let fReader = new FileReader();
-      fReader.readAsDataURL(file);
-      fReader.onloadend = () => {
-        let img = document.createElement("img");
-        img.src = fReader.result;
-        file.size / 1e3 + " KB";
-        this.dropImageEl.appendChild(img);
-        this.dropImageEl.classList.add("visible");
-      };
-    } else {
-      console.error("Only images are allowed!", file);
-    }
+    this.dropImageEl.addEventListener(
+      "drop",
+      (e) => {
+        let dataTrans = e.dataTransfer;
+        let files = dataTrans.files;
+        const img = files[0];
+        this.onDrop(img);
+      },
+      false
+    );
+    this.inputFileUploadEl.addEventListener("change", (e) => {
+      if (this.inputFileUploadEl.files && this.inputFileUploadEl.files[0]) {
+        const img = this.inputFileUploadEl.files[0];
+        this.onDrop(img);
+      }
+    });
   }
 }
 export {

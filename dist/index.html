@@ -12,45 +12,19 @@
     <script type="module" crossorigin src="/assets/app/components/Caroussel-4b9dd825.js"></script>
     <script type="module" crossorigin src="/assets/app/AudioRecorder-1e53bb0d.js"></script>
     <script type="module" crossorigin src="/assets/app/utils/minSecStr-3b9ae0f7.js"></script>
-    <script type="module" crossorigin src="/assets/app/utils/isMobile-3c760e40.js"></script>
-    <script type="module" crossorigin src="/assets/app/components/Input/InputAnimations-9931ce7d.js"></script>
-    <script type="module" crossorigin src="/assets/app/components/Input/InputImage-a5cd79e2.js"></script>
-    <script type="module" crossorigin src="/assets/app/components/Input/index-8283a783.js"></script>
-    <script type="module" crossorigin src="/assets/app/index-955c2769.js"></script>
-    <link rel="stylesheet" href="/assets/index-579fa9fa.css">
+    <script type="module" crossorigin src="/assets/app/components/Input/InputAnimations-497a828d.js"></script>
+    <script type="module" crossorigin src="/assets/app/components/Input/InputImage-68b0509d.js"></script>
+    <script type="module" crossorigin src="/assets/app/utils/sendToWhisper-92b3f1e2.js"></script>
+    <script type="module" crossorigin src="/assets/app/components/Input/index-9d178e65.js"></script>
+    <script type="module" crossorigin src="/assets/app/components/Navbar-31eeffd7.js"></script>
+    <script type="module" crossorigin src="/assets/app/index-d8aece8c.js"></script>
+    <link rel="stylesheet" href="/assets/index-3da67e8f.css">
   </head>
   <body class="preload">
     <div id="app">
-      <!-- Navbar -->
+      <!-- Menu Navbar -->
       <nav class="nav active">
         <button class="nav__btn">
-          <svg
-            class="close-icon"
-            width="40"
-            height="40"
-            viewBox="0 0 40 40"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect
-              x="13.002"
-              y="14.1318"
-              width="1.6"
-              height="17.6"
-              rx="0.8"
-              transform="rotate(-45 13.002 14.1318)"
-              fill="white"
-            />
-            <rect
-              x="13"
-              y="25.4453"
-              width="17.6"
-              height="1.6"
-              rx="0.8"
-              transform="rotate(-45 13 25.4453)"
-              fill="white"
-            />
-          </svg>
           <svg
             class="lines-icon"
             width="40"
@@ -65,6 +39,14 @@
         </button>
 
         <ul class="nav__list">
+          <li class="nav__plus">
+            <button>
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none">
+                <rect width="1.6" height="17.6" x="19.203" y="11.2" fill="#fff" rx=".8" />
+                <rect width="17.6" height="1.6" x="11.203" y="19.2" fill="#fff" rx=".8" />
+              </svg>
+            </button>
+          </li>
           <li class="nav__user">
             <button>
               <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -102,6 +84,28 @@
           </li>
         </ul>
       </nav>
+      <!-- Cancel audio recording -->
+      <button class="cancel-audio__btn">
+        <svg
+          class="close-icon"
+          width="40"
+          height="40"
+          viewBox="0 0 40 40"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect
+            x="13.002"
+            y="14.1318"
+            width="1.6"
+            height="17.6"
+            rx="0.8"
+            transform="rotate(-45 13.002 14.1318)"
+            fill="white"
+          />
+          <rect x="13" y="25.4453" width="17.6" height="1.6" rx="0.8" transform="rotate(-45 13 25.4453)" fill="white" />
+        </svg>
+      </button>
       <!-- Logo -->
       <div class="logo__main">
         <svg width="247" height="60" viewBox="0 0 247 60" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -148,7 +152,7 @@
                 Converting to text
               </p>
             </div>
-            <button class="left-btn" type="button">
+            <button class="camera-btn" type="button">
               <svg class="icon-camera" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none">
                 <path
                   stroke="#000"
@@ -157,30 +161,6 @@
                   d="M26 22v-9a2 2 0 0 0-2-2h-2.5l-1.224-2.447A1 1 0 0 0 19.382 8h-6.764a1 1 0 0 0-.894.553L10.5 11H8a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2Z"
                 />
                 <circle cx="16" cy="17" r="3" stroke="#000" stroke-opacity=".72" stroke-width="1.6" />
-              </svg>
-              <svg class="icon-upload" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none">
-                <path fill="#fff" d="M0 0h40v40H0z" />
-                <rect width="1.6" height="14.933" x="19.24" y="9.603" fill="#000" rx=".8" />
-                <rect
-                  width="1.6"
-                  height="8.382"
-                  fill="#000"
-                  rx=".8"
-                  transform="scale(.98178 1.0179) rotate(45 .695 28.521)"
-                />
-                <rect
-                  width="8.382"
-                  height="1.6"
-                  fill="#000"
-                  rx=".8"
-                  transform="scale(.98178 1.0179) rotate(45 .695 28.521)"
-                />
-                <path
-                  stroke="#000"
-                  stroke-linecap="round"
-                  stroke-width="1.6"
-                  d="M15.2 18.67h-2.6a1.6 1.6 0 0 0-1.6 1.6v10.133a1.6 1.6 0 0 0 1.6 1.6h14.8a1.6 1.6 0 0 0 1.6-1.6V20.27a1.6 1.6 0 0 0-1.6-1.6h-2.45"
-                />
               </svg>
             </button>
             <button class="center-btn" type="button">Type away</button>
@@ -209,6 +189,33 @@
           </div>
           <!-- Input image -->
           <div class="input__image--container">
+            <label for="file-upload" class="icon-file-upload">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none">
+                <path fill="#fff" d="M0 0h40v40H0z" />
+                <rect width="1.6" height="14.933" x="19.24" y="9.603" fill="#000" rx=".8" />
+                <rect
+                  width="1.6"
+                  height="8.382"
+                  fill="#000"
+                  rx=".8"
+                  transform="scale(.98178 1.0179) rotate(45 .695 28.521)"
+                />
+                <rect
+                  width="8.382"
+                  height="1.6"
+                  fill="#000"
+                  rx=".8"
+                  transform="scale(.98178 1.0179) rotate(45 .695 28.521)"
+                />
+                <path
+                  stroke="#000"
+                  stroke-linecap="round"
+                  stroke-width="1.6"
+                  d="M15.2 18.67h-2.6a1.6 1.6 0 0 0-1.6 1.6v10.133a1.6 1.6 0 0 0 1.6 1.6h14.8a1.6 1.6 0 0 0 1.6-1.6V20.27a1.6 1.6 0 0 0-1.6-1.6h-2.45"
+                />
+              </svg>
+            </label>
+            <input id="file-upload" class="input__file-upload" type="file" accept="image/*" />
             <input class="input__image" type="text" placeholder="Paste an image link, drag an image" />
             <button class="input__image--closeBtn">
               <svg
@@ -253,7 +260,7 @@
               </div>
               <div class="input__controls">
                 <div class="left">
-                  <button class="left-btn" type="button">
+                  <button class="camera-btn" type="button">
                     <svg class="icon-camera" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none">
                       <path
                         stroke="#000"
@@ -291,7 +298,7 @@
                   </div>
                 </div>
                 <div class="right">
-                  <button type="submit" class="submit" id="submitBtn" aria-label="Submit">
+                  <button type="submit" class="submit" id="submitBtn" aria-label="Submit" disabled>
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="none">
                       <path
                         fill="#fff"

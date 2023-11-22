@@ -1,12 +1,17 @@
 /* empty css                           */import Caroussel from "./components/Caroussel-4b9dd825.js";
-import Input from "./components/Input/index-8283a783.js";
+import Input from "./components/Input/index-9d178e65.js";
+import Navbar from "./components/Navbar-31eeffd7.js";
 class App {
   constructor() {
     this.addListeners();
   }
   initApp() {
+    this.initNavbar();
     this.initCaroussel();
     this.initInput();
+  }
+  initNavbar() {
+    new Navbar();
   }
   initCaroussel() {
     this.caroussel = new Caroussel();
