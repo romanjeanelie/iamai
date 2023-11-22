@@ -36,11 +36,17 @@ body {
   justify-content: center;
   margin-bottom: 55px;
 }
+
 .logo__mobile {
   position: fixed;
   top: $paddingTop;
   left: 32px;
   opacity: 0;
+  display: none;
+
+  @include media("<tablet") {
+    display: block;
+  }
 }
 
 .info-text {

@@ -79,14 +79,27 @@ export default class InputAnimations {
     });
   }
 
-  toLogoMobile(delay = 0) {
-    anim(this.logoMobileEl, [{ opacity: 1 }, { opacity: 0 }], {
+  fadeOutLogo(delay = 0) {
+    anim(this.logoEl, [{ opacity: 1 }, { opacity: 0 }], {
       duration: delay + 300,
       fill: "forwards",
       ease: "ease-in-out",
     });
-    anim(this.logoEl, [{ opacity: 0 }, { opacity: 1 }], {
+    anim(this.logoMobileEl, [{ opacity: 0 }, { opacity: 1 }], {
       delay: delay + 300,
+      duration: 300,
+      fill: "forwards",
+      ease: "ease-in-out",
+    });
+  }
+  fadeInLogo(delay = 0) {
+    anim(this.logoEl, [{ opacity: 0 }, { opacity: 1 }], {
+      //   duration: delay + 300,
+      fill: "forwards",
+      ease: "ease-in-out",
+    });
+    anim(this.logoMobileEl, [{ opacity: 1 }, { opacity: 0 }], {
+      //   delay: delay + 300,
       duration: 300,
       fill: "forwards",
       ease: "ease-in-out",
@@ -113,9 +126,9 @@ export default class InputAnimations {
     this.fadeInButtons(delay);
     this.fadeInCategoriesAndCaroussel(delay);
 
-    if (isMobile()) {
-      this.toLogoMobile(delay + 300);
-    }
+    // if (isMobile()) {
+    this.fadeInLogo(delay + 300);
+    // }
   }
 
   fromRecordAudioToInitial() {
@@ -126,15 +139,16 @@ export default class InputAnimations {
     this.fadeInCategoriesAndCaroussel(1000);
   }
 
-  toWrite({ delay = 0, animButtons = true, animLogos = false, text = "", placeholder = "" } = {}) {
+  toWrite({ delay = 0, animButtons = true, animLogos = true, text = "", placeholder = "" } = {}) {
     this.inputText.textContent = text;
     this.inputText.placeholder = placeholder;
     this.inputFrontEl.style.pointerEvents = "none";
     this.inputBackEl.style.pointerEvents = "auto";
     this.inputEl.style.overflow = "hidden";
 
-    if (isMobile() && animLogos) {
-      this.toLogoMobile();
+    // if (isMobile() && animLogos) {
+    if (animLogos) {
+      this.fadeOutLogo();
     }
 
     anim(this.inputFrontEl, [{ height: `${this.inputFrontHeight}px` }, { height: "110px" }], {
@@ -166,18 +180,18 @@ export default class InputAnimations {
     this.inputEl.style.overflow = "unset";
     this.inputEl.style.pointerEvents = "none";
 
-    if (isMobile()) {
-      this.toLogoMobile();
-    }
+    // if (isMobile()) {
+    this.fadeOutLogo();
+    // }
 
     this.fadeOutButtons(0, 100);
     this.fadeOutCategoriesAndCaroussel();
 
-    anim([this.logoEl], [{ transform: "translateY(0)" }, { transform: "translateY(-50%)" }], {
-      duration: 200,
-      fill: "forwards",
-      ease: "ease-in-out",
-    });
+    // anim([this.logoEl], [{ transform: "translateY(0)" }, { transform: "translateY(-50%)" }], {
+    //   duration: 200,
+    //   fill: "forwards",
+    //   ease: "ease-in-out",
+    // });
 
     const step1 = anim(
       this.inputFrontEl,
@@ -342,7 +356,7 @@ export default class InputAnimations {
       }
     );
 
-    this.toWrite({ delay: 1200, animButtons: false, text: textTranscripted });
+    this.toWrite({ delay: 1200, animButtons: false, animLogos: false, text: textTranscripted });
   }
 
   toReadyForDragImage() {
@@ -399,6 +413,6 @@ export default class InputAnimations {
       fill: "forwards",
     });
 
-    this.toWrite({ delay: 1200, animButtons: false, placeholder: "Ask a question about the image" });
+    this.toWrite({ delay: 1200, animButtons: false, animLogos: false, placeholder: "Ask a question about the image" });
   }
 }

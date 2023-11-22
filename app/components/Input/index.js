@@ -165,6 +165,9 @@ export default class Input {
     this.inputImage.addListeners();
 
     // Input text
+    this.inputText.addEventListener("focus", () => {
+      this.submitBtn.disabled = !this.inputText.value;
+    });
     this.inputText.addEventListener("input", () => {
       this.submitBtn.disabled = !this.inputText.value;
     });
