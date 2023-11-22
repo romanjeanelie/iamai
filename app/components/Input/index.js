@@ -3,7 +3,6 @@ import minSecStr from "../../utils/minSecStr";
 import InputAnimations from "./InputAnimations";
 import InputImage from "./InputImage";
 import sendtowispher from "../../utils/sendToWhisper";
-
 export default class Input {
   constructor() {
     this.inputEl = document.querySelector(".input__container");
@@ -165,7 +164,11 @@ export default class Input {
     // Drop Image
     this.inputImage.addListeners();
 
-    // Submit
+    // Input text
+    this.inputText.addEventListener("input", () => {
+      this.submitBtn.disabled = !this.inputText.value;
+    });
+
     this.submitBtn.addEventListener("click", (event) => {
       event.preventDefault();
       if (this.inputText.value && this.inputText.value.trim().length > 0) {

@@ -124,11 +124,14 @@
 
   .input-text__expand {
     @include inputTextExpand {
-      max-height: 30vh;
-      padding: 0.5rem;
+      max-height: calc(15 * 20px);
+      margin-bottom: 8px;
       font: inherit;
       font-size: 20px;
-      padding-top: 0;
+
+      @media (max-height: 780px) {
+        max-height: calc(10 * 20px);
+      }
     }
   }
 
@@ -176,6 +179,10 @@
       justify-content: center;
       background: $colorBlue;
       border-radius: 50%;
+
+      &:disabled {
+        background: $colorGrey;
+      }
     }
   }
 }
