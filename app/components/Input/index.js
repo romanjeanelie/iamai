@@ -55,6 +55,7 @@ export default class Input {
   // Audio
   startRecording() {
     this.isRecordCanceled = false;
+    this.inputText.disabled = true;
     this.audioRecorder.startRecording();
     this.timecodeAudioEl = this.isSmallRecording ? this.backMicText : this.recordCounter;
     this.audioRecorder.onUpdate((sec) => {
@@ -67,6 +68,25 @@ export default class Input {
     this.audioRecorder.stopRecording();
   }
 
+  onCompleteTranscripting() {
+    this.inputText.disabled = false;
+    this.timecodeAudioEl.textContent = "00:00";
+    // TODO Call this function when audio is transcripted
+    if (this.isSmallRecording) {
+      this.isSmallRecording = false;
+      this.inputText.textContent = this.tempTextRecorded;
+      this.inputText.focus();
+      this.inputText.setSelectionRange(this.inputText.value.length, this.inputText.value.length);
+
+      return;
+    }
+
+    this.anims.toStopTranscripting({
+      textTranscripted: this.tempTextRecorded,
+    });
+    this.onClickOutside.animInitial = true;
+  }
+
   async onCompleteRecording(blob) {
     if (this.isRecordCanceled) return;
 
@@ -75,21 +95,7 @@ export default class Input {
     this.tempTextRecorded = await sendtowispher(blob);
 
     this.timeoutTranscripting = setTimeout(() => {
-      this.timecodeAudioEl.textContent = "00:00";
-      // TODO Call this function when audio is transcripted
-      if (this.isSmallRecording) {
-        this.isSmallRecording = false;
-        this.inputText.textContent = this.tempTextRecorded;
-        this.inputText.focus();
-        this.inputText.setSelectionRange(this.inputText.value.length, this.inputText.value.length);
-
-        return;
-      }
-
-      this.anims.toStopTranscripting({
-        textTranscripted: this.tempTextRecorded,
-      });
-      this.onClickOutside.animInitial = true;
+      this.onCompleteTranscripting();
     }, this.transcriptingTime);
   }
 
