@@ -2,12 +2,14 @@ import AudioRecorder from "../../AudioRecorder";
 import minSecStr from "../../utils/minSecStr";
 import InputAnimations from "./InputAnimations";
 import InputImage from "./InputImage";
+import sendtowispher from "../../utils/sendToWhisper";
 
 export default class Input {
   constructor() {
     this.inputEl = document.querySelector(".input__container");
     this.inputFrontEl = this.inputEl.querySelector(".input__front");
     this.inputBackEl = this.inputEl.querySelector(".input__back");
+    this.submitBtn = this.inputBackEl.querySelector(".submit");
 
     // Front input
     this.centerBtn = this.inputFrontEl.querySelector(".center-btn");
@@ -39,7 +41,7 @@ export default class Input {
     };
 
     //TEMP
-    this.transcriptingTime = 3000; //ms
+    this.transcriptingTime = 2000; //ms
     this.tempTextRecorded = "text recorded";
 
     // Anims
@@ -69,11 +71,12 @@ export default class Input {
     this.audioRecorder.stopRecording();
   }
 
-  onCompleteRecording(blob) {
+  async onCompleteRecording(blob) {
     if (this.isRecordCanceled) return;
 
     // TODO : send audio to API endpoint
     console.log("TODO add url endpoint to send audio file:", blob);
+    this.tempTextRecorded = await sendtowispher(blob);
 
     this.timeoutTranscripting = setTimeout(() => {
       this.timecodeAudioEl.textContent = "00:00";
@@ -161,5 +164,15 @@ export default class Input {
 
     // Drop Image
     this.inputImage.addListeners();
+
+    // Submit
+    this.submitBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      if (this.inputText.value && this.inputText.value.trim().length > 0) {
+        window.location.replace(
+          "https://ai.iamplus.services/chatbot/webchat/chat.html?q=" + this.inputText.value.trim()
+        );
+      }
+    });
   }
 }
