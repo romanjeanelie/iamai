@@ -5,7 +5,6 @@ export default class InputImage {
     this.dropImageOverlayEl = document.querySelector(".image-drop-zone--overlay");
 
     this.inputFileUploadEl = document.querySelector("#file-upload");
-    this.inputImageEl = document.querySelector(".input__image");
     this.closeBtn = document.querySelector(".input__image--closeBtn");
 
     this.anims = anims;

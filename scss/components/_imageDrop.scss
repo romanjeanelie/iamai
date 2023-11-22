@@ -92,6 +92,9 @@
     &:placeholder {
       color: rgba($colorBlack, 0.5);
     }
+    &:focus::placeholder {
+      opacity: 0;
+    }
   }
 
   .input__image--closeBtn {

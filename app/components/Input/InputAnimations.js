@@ -89,12 +89,13 @@ export default class InputAnimations {
   }
   fadeInLogo(delay = 0) {
     anim(this.logoEl, [{ opacity: 0 }, { opacity: 1 }], {
-      //   duration: delay + 300,
+      delay,
+      duration: 300,
       fill: "forwards",
       ease: "ease-in-out",
     });
     anim(this.logoMobileEl, [{ opacity: 1 }, { opacity: 0 }], {
-      //   delay: delay + 300,
+      delay,
       duration: 300,
       fill: "forwards",
       ease: "ease-in-out",
@@ -107,7 +108,7 @@ export default class InputAnimations {
     this.inputBackEl.style.pointerEvents = "none";
 
     anim(this.inputFrontEl, [{ height: "110px" }, { height: `${this.inputFrontHeight}px` }], {
-      duration: 700,
+      duration: 400,
       fill: "forwards",
       ease: "ease-in-out",
     });
@@ -137,6 +138,7 @@ export default class InputAnimations {
 
     this.fadeInButtons(1000);
     this.fadeInCategoriesAndCaroussel(1000);
+    this.fadeInLogo(1000);
   }
 
   toWrite({ delay = 0, animButtons = true, animLogos = true, text = "", placeholder = "" } = {}) {
@@ -153,7 +155,7 @@ export default class InputAnimations {
 
     anim(this.inputFrontEl, [{ height: `${this.inputFrontHeight}px` }, { height: "110px" }], {
       delay,
-      duration: 700,
+      duration: 400,
       fill: "forwards",
       ease: "ease-in-out",
     });
@@ -166,7 +168,7 @@ export default class InputAnimations {
     anim(this.inputBackEl, [{ opacity: 0 }, { opacity: 1 }], {
       delay,
       duration: 500,
-      delay: delay ? delay + 700 : 700,
+      delay: delay ? delay + 400 : 400,
       fill: "forwards",
       ease: "ease-in-out",
     });
@@ -200,7 +202,7 @@ export default class InputAnimations {
         { width: `${this.inputFrontHeight}px`, offset: 1 },
       ],
       {
-        duration: 800,
+        duration: 600,
         fill: "forwards",
         ease: "ease-out",
       }
@@ -220,26 +222,26 @@ export default class InputAnimations {
         this.inputFrontEl,
         [
           { transform: "translate3d(-50%, -50%, 0) scale(1)", offset: 0 },
-          { transform: "translate3d(-50%, -50%, 0) scale(3)", offset: 1 },
+          { transform: "translate3d(-50%, -50%, 0) scale(3.5)", offset: 1 },
         ],
         {
-          delay: 400,
+          delay: step1.effect.getComputedTiming().duration - 300,
           duration: 400,
           fill: "forwards",
-          ease: "ease-out",
+          ease: "ease-in",
         }
       );
 
       this.animCircleYoyo = anim(
         this.inputFrontEl,
         [
-          { transform: "translate3d(-50%, -50%, 0) scale(3)" },
+          { transform: "translate3d(-50%, -50%, 0) scale(3.5)" },
           { transform: "translate3d(-50%, -50%, 0) scale(2.4)" },
-          { transform: "translate3d(-50%, -50%, 0) scale(3)" },
+          { transform: "translate3d(-50%, -50%, 0) scale(3.5)" },
         ],
         {
-          delay: step1.effect.getComputedTiming().duration + step2.effect.getComputedTiming().duration * 0.2,
-          duration: 1000,
+          delay: step1.effect.getComputedTiming().duration + step2.effect.getComputedTiming().duration - 300,
+          duration: 800,
           iterations: Infinity,
           ease: "ease-in-out",
         }
