@@ -1,13 +1,4 @@
 $backgroundLine: $backgroundColor;
-$animDuration: 600ms;
-
-@mixin lineAnimation($name) {
-  animation: $name;
-  animation-play-state: running;
-  animation-duration: $animDuration;
-  animation-fill-mode: forwards;
-  animation-direction: normal;
-}
 
 .caroussel__container {
   text-align: center;
