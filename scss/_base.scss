@@ -1,6 +1,7 @@
 // Spacing
-$paddingHor: 16px;
+$paddingHor: 40px;
 $paddingTop: 48px;
+$paddingHorMobile: 20px;
 $paddingTopMobile: 28px;
 
 // Fonts
@@ -47,6 +48,27 @@ body {
 
   @include media("<tablet") {
     display: block;
+  }
+}
+
+.cancel-audio__btn {
+  position: fixed;
+  z-index: 3;
+  top: $paddingTop;
+  right: $paddingHor;
+  background-color: $backgroundColor;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+
+  @include media("<tablet") {
+    right: $paddingHorMobile;
+    top: $paddingTopMobile;
+  }
+
+  &.show {
+    opacity: 1;
+    visibility: visible;
   }
 }
 

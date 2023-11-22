@@ -1,6 +1,7 @@
 import "../scss/index.scss";
 import Caroussel from "./components/Caroussel";
 import Input from "./components/Input";
+import Navbar from "./components/Navbar";
 
 class App {
   constructor() {
@@ -8,8 +9,13 @@ class App {
   }
 
   initApp() {
+    this.initNavbar();
     this.initCaroussel();
     this.initInput();
+  }
+
+  initNavbar() {
+    new Navbar();
   }
 
   initCaroussel() {

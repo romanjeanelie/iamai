@@ -1,16 +1,19 @@
 .nav {
   position: fixed;
-  z-index: 2;
+  z-index: 3;
   top: $paddingTop;
-  right: 40px;
+  right: $paddingHor;
   height: 100%;
 
   @include media("<tablet") {
-    right: 20px;
+    right: $paddingHorMobile;
     top: $paddingTopMobile;
+    height: unset;
   }
 
   .nav__btn {
+    position: relative;
+    z-index: 1;
     pointer-events: auto;
 
     .lines-icon {
@@ -18,17 +21,13 @@
       visibility: hidden;
       transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
     }
-    .close-icon {
-      position: absolute;
-      opacity: 1;
-      visibility: visible;
-      transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-    }
   }
 
   .nav__list {
     visibility: hidden;
     opacity: 0;
+    pointer-events: none;
+
     transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
     li {
       margin-top: 40px;
@@ -37,25 +36,24 @@
       background: rgba($colorMain, 0.2);
       border-radius: 50%;
     }
-  }
 
-  &.active {
-    &:hover {
-      .nav__list {
-        visibility: visible;
-        opacity: 1;
-      }
+    @include media("<tablet") {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: $backgroundColor;
     }
-    .nav__btn {
-      pointer-events: none;
-      .lines-icon {
-        opacity: 1;
-        visibility: visible;
-      }
-      .close-icon {
-        opacity: 0;
-        visibility: hidden;
-      }
+
+    &.show {
+      pointer-events: auto;
+      visibility: visible;
+      opacity: 1;
     }
   }
 }

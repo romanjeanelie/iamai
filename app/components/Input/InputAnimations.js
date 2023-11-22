@@ -17,6 +17,7 @@ export default class InputAnimations {
 
     // Record
     this.recordCounter = this.inputEl.querySelector(".record-counter");
+    this.cancelAudioBtn = document.querySelector(".cancel-audio__btn");
 
     // Transcripting
     this.transcriptingEl = this.inputEl.querySelector(".transcripting__container");
@@ -31,8 +32,6 @@ export default class InputAnimations {
     // Other dom elements
     this.logoEl = document.querySelector(".logo__main");
     this.logoMobileEl = document.querySelector(".logo__mobile");
-    this.navEl = document.querySelector(".nav");
-    this.navBtn = this.navEl.querySelector(".nav__btn");
     this.categoriesListEl = document.querySelector(".categories__list--container");
     this.carousselEl = document.querySelector(".caroussel__container");
     this.infoTextEl = document.querySelector(".info-text");
@@ -176,7 +175,7 @@ export default class InputAnimations {
   }
 
   toStartRecording({ animOpacity = false, animScale = true, displayTextAudioInfo = true } = {}) {
-    this.navEl.classList.remove("active");
+    this.cancelAudioBtn.classList.add("show");
     this.inputEl.style.overflow = "unset";
     this.inputEl.style.pointerEvents = "none";
 
@@ -264,7 +263,8 @@ export default class InputAnimations {
   }
 
   toStopRecording({ transcipting = true } = {}) {
-    this.navEl.classList.add("active");
+    this.cancelAudioBtn.classList.remove("show");
+
     this.animCircleYoyo.cancel();
 
     anim(
