@@ -28,6 +28,8 @@
     @include media("<tablet") {
       max-width: 100vw;
       flex-wrap: wrap;
+      justify-content: center;
+
       li {
         margin: 6px 16px;
       }
