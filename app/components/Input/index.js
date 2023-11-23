@@ -3,6 +3,14 @@ import minSecStr from "../../utils/minSecStr";
 import InputAnimations from "./InputAnimations";
 import InputImage from "./InputImage";
 import sendtowispher from "../../utils/sendToWhisper";
+
+const STATUS = {
+  INITIAL: "INITIAL",
+  RECORD_AUDIO: "RECORD_AUDIO",
+  UPLOAD_IMAGE: "UPLOAD_IMAGE",
+  WRITE: "WRITE",
+};
+
 export default class Input {
   constructor() {
     this.inputEl = document.querySelector(".input__container");
@@ -39,6 +47,7 @@ export default class Input {
       stopAudio: false,
       animInitial: false,
     };
+    this.currentStatus = STATUS.INITIAL;
 
     //TEMP
     this.transcriptingTime = 2000; //ms
@@ -113,22 +122,33 @@ export default class Input {
     this.anims.fromRecordAudioToInitial();
   }
 
+  // Submit
+  onSubmit(event) {
+    event.preventDefault();
+    // if (this.inputText.value && this.inputText.value.trim().length > 0) {
+    //   window.location.replace("https://ai.iamplus.services/chatbot/webchat/chat.html?q=" + this.inputText.value.trim());
+    // }
+  }
+
   // Listeners
   addListeners() {
     // Write
     this.centerBtn.addEventListener("click", () => {
+      this.currentStatus = STATUS.WRITE;
       this.anims.toWrite();
       this.onClickOutside.animInitial = true;
     });
 
     // Record
     this.frontMicBtn.addEventListener("click", () => {
+      this.currentStatus = STATUS.RECORD_AUDIO;
       this.startRecording();
       this.anims.toStartRecording();
       this.onClickOutside.stopAudio = true;
     });
 
     this.cancelAudioBtn.addEventListener("click", () => {
+      this.currentStatus = STATUS.INITIAL;
       this.cancelRecord();
     });
 
@@ -145,17 +165,20 @@ export default class Input {
 
     // Image
     this.frontCameraBtn.addEventListener("click", () => {
+      this.currentStatus = STATUS.UPLOAD_IMAGE;
       this.inputImage.enable();
       this.anims.toDragImage();
     });
     this.backCameraBtn.addEventListener("click", () => {
       if (this.isSmallRecording) return;
-
+      this.currentStatus = STATUS.UPLOAD_IMAGE;
       this.anims.toInitial({ animBottom: false, animButtons: false });
-      this.anims.toDragImage({ animBottom: false, delay: 1000 });
+      this.anims.toDragImage({ animBottom: false, delay: 300 });
+      this.onClickOutside.animInitial = false;
     });
 
     this.closeInputImageBtn.addEventListener("click", () => {
+      this.currentStatus = STATUS.INITIAL;
       this.inputImage.disable();
       this.anims.leaveDragImage();
     });
@@ -173,6 +196,7 @@ export default class Input {
           }
           if (this.onClickOutside.animInitial) {
             if (this.inputText.value) return;
+            this.currentStatus = STATUS.INITIAL;
             this.anims.toInitial();
             this.onClickOutside.animInitial = false;
           }
@@ -180,9 +204,6 @@ export default class Input {
       },
       { capture: true }
     );
-
-    // Drop Image
-    this.inputImage.addListeners();
 
     // Input text
     this.inputText.addEventListener("focus", () => {
@@ -192,13 +213,6 @@ export default class Input {
       this.submitBtn.disabled = !this.inputText.value;
     });
 
-    this.submitBtn.addEventListener("click", (event) => {
-      event.preventDefault();
-      if (this.inputText.value && this.inputText.value.trim().length > 0) {
-        window.location.replace(
-          "https://ai.iamplus.services/chatbot/webchat/chat.html?q=" + this.inputText.value.trim()
-        );
-      }
-    });
+    this.submitBtn.addEventListener("click", (event) => this.onSubmit(event));
   }
 }

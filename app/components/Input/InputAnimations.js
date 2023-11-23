@@ -187,7 +187,7 @@ export default class InputAnimations {
     this.expandHeightInputFront({ delay: delay, duration: 250 });
 
     if (animButtons) {
-      this.fadeOutButtons(0, delay);
+      this.fadeOutButtons(delay, 100);
       this.fadeOutCategoriesAndCaroussel(delay);
     }
 
@@ -394,6 +394,7 @@ export default class InputAnimations {
   leaveDragImage({ animBottom = true } = {}) {
     this.frontCameraBtn.classList.remove("active-imagedrop");
     this.inputImageContainer.classList.remove("active");
+    this.fadeInButtons();
 
     if (animBottom) {
       this.fadeInCategoriesAndCaroussel(0, 500);
@@ -439,6 +440,8 @@ export default class InputAnimations {
 
   toImageReset() {
     this.animCircleYoyo.cancel();
+
+    this.fadeInButtons(300, delay);
 
     const step1 = this.fadeInInputFront({ delay: 0, duration: 300 });
     const step2 = this.expandWidthInputFront({ delay: step1.effect.getComputedTiming().duration + 500, duration: 250 });
