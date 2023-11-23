@@ -1,8 +1,16 @@
 @import "./navBar";
 @import "./cancelBtn";
-@import "./caroussel";
 @import "./imageDrop";
 @import "./infoText";
 @import "./input";
-@import "./logos";
-@import "./categoriesList";
+
+.page-blue {
+  @import "./pageBlue/caroussel";
+  @import "./pageBlue/logos";
+  @import "./pageBlue/categoriesList";
+}
+
+.page-grey {
+  @import "./pageGrey/logo";
+  @import "./pageGrey/discussion";
+}

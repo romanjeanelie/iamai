@@ -1,0 +1,18 @@
+.discussion__container {
+  flex: 1;
+
+  .user,
+  .ai {
+    margin-bottom: 32px;
+    width: 80%;
+  }
+  .user {
+    color: $colorBlue;
+    text-align: right;
+    margin-left: auto;
+  }
+
+  .ai {
+    color: $colorBlack;
+  }
+}

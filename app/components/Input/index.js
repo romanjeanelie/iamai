@@ -17,8 +17,9 @@ const PAGES = {
 };
 
 export default class Input {
-  constructor() {
-    this.inputEl = document.querySelector(".input__container");
+  constructor({ pageEl }) {
+    this.pageEl = pageEl;
+    this.inputEl = this.pageEl.querySelector(".input__container");
     this.inputFrontEl = this.inputEl.querySelector(".input__front");
     this.inputBackEl = this.inputEl.querySelector(".input__back");
     this.submitBtn = this.inputBackEl.querySelector(".submit");
@@ -31,7 +32,7 @@ export default class Input {
 
     // Image
     this.backCameraBtn = this.inputBackEl.querySelector(".camera-btn");
-    this.closeInputImageBtn = document.querySelector(".input__image--closeBtn");
+    this.closeInputImageBtn = this.pageEl.querySelector(".input__image--closeBtn");
 
     // Record
     this.audioRecorder = new AudioRecorder({
@@ -48,7 +49,7 @@ export default class Input {
     this.inputText = this.inputBackEl.querySelector(".input-text");
 
     // Other DOM elements
-    this.cancelBtn = document.querySelector(".cancel-btn");
+    this.cancelBtn = document.body.querySelector(".cancel-btn");
 
     this.onClickOutside = {
       stopAudio: false,
@@ -63,7 +64,9 @@ export default class Input {
     this.tempTextRecorded = "text recorded";
 
     // Anims
-    this.anims = new InputAnimations();
+    this.anims = new InputAnimations({
+      pageEl: this.pageEl,
+    });
 
     // Drop Image
     this.inputImage = new InputImage({
@@ -215,7 +218,7 @@ export default class Input {
     });
 
     // Click outside
-    document.body.addEventListener(
+    this.pageEl.addEventListener(
       "click",
       (event) => {
         if (this.isSmallRecording) return;

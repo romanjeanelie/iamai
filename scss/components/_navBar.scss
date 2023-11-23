@@ -5,6 +5,23 @@
   right: $paddingHor;
   height: 100%;
 
+  &.dark {
+    rect {
+      fill: $colorBlack;
+    }
+    circle {
+      stroke: $colorBlack;
+    }
+    path {
+      stroke: $colorBlack;
+    }
+    .nav__typo {
+      path {
+        fill: $colorBlack;
+      }
+    }
+  }
+
   @include media("<tablet") {
     right: $paddingHorMobile;
     top: $paddingTopMobile;

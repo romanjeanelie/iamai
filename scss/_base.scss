@@ -37,20 +37,34 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
 
   transition: transform 1100ms $ease-in-out-cubic;
 }
 
-.page__blue {
+.page-blue {
   background: $backgroundColorBluePage;
+
+  main {
+    width: 100%;
+    max-width: 696px;
+  }
   &.hidden {
     transform: translateY(-100%);
   }
 }
 
-.page__grey {
+.page-grey {
   background-color: $backgroundColorGreyPage;
+
+  main {
+    padding-top: $paddingTop;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 870px;
+    margin: 0 120px;
+  }
   &.show {
     transform: translateY(-100%);
   }

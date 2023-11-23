@@ -1,10 +1,12 @@
-import "../scss/index.scss";
 import Caroussel from "./components/Caroussel";
 import Input from "./components/Input";
 import Navbar from "./components/Navbar";
 
 class App {
   constructor() {
+    this.pageBlue = document.querySelector(".page-blue");
+    this.pageGrey = document.querySelector(".page-grey");
+
     this.addListeners();
     this.resetScroll();
   }
@@ -25,7 +27,8 @@ class App {
   }
 
   initInput() {
-    new Input();
+    new Input({ pageEl: this.pageBlue });
+    new Input({ pageEl: this.pageGrey });
   }
 
   resetScroll() {

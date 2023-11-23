@@ -2,8 +2,9 @@ import isMobile from "../../utils/isMobile";
 import anim from "../../utils/anim";
 
 export default class InputAnimations {
-  constructor() {
-    this.inputEl = document.querySelector(".input__container");
+  constructor({ pageEl }) {
+    this.pageEl = pageEl;
+    this.inputEl = this.pageEl.querySelector(".input__container");
     this.inputFrontEl = this.inputEl.querySelector(".input__front");
     this.inputBackEl = this.inputEl.querySelector(".input__back");
 
@@ -29,8 +30,8 @@ export default class InputAnimations {
     this.inputImageContainer = this.inputEl.querySelector(".input__image--container");
 
     // Other dom elements
-    this.pageBlue = document.querySelector(".page__blue");
-    this.pageGrey = document.querySelector(".page__grey");
+    this.pageBlue = document.querySelector(".page-blue");
+    this.pageGrey = document.querySelector(".page-grey");
     this.cancelBtn = document.querySelector(".cancel-btn");
     this.logoEl = document.querySelector(".logo__main");
     this.logoMobileEl = document.querySelector(".logo__mobile");

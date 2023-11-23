@@ -4,28 +4,57 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>IAMAI</title>
+    <link rel="stylesheet" href="/scss/index.scss" />
   </head>
   <body class="preload">
     <div id="app">
-      <div class="page page__blue">
-        <!-- Menu Navbar -->
-        {{> bluePage/navBar}}
-        <!-- Cancel  btn -->
-        {{> bluePage/cancelBtn}}
-        <!-- Logo -->
-        {{> bluePage/logo}}
-        <!-- Image drop -->
-        {{> bluePage/imageDrop}}
-        <!-- Input -->
-        {{> bluePage/input}}
-        <!-- Categories list -->
-        {{> bluePage/categoriesList}}
-        <!-- Caroussel -->
-        {{> bluePage/caroussel}}
-        <!-- Info -->
-        {{> bluePage/infoText}}
+      <!-- Menu Navbar -->
+      {{> navBar}}
+      <div class="page page-blue hidden">
+        <main>
+          <!-- Cancel  btn -->
+          {{> bluePage/cancelBtn}}
+          <!-- Logo -->
+          {{> bluePage/logo}}
+          <!-- Image drop -->
+          {{> bluePage/imageDrop}}
+          <!-- Input -->
+          {{> input}}
+          <!-- Categories list -->
+          {{> bluePage/categoriesList}}
+          <!-- Caroussel -->
+          {{> bluePage/caroussel}}
+          <!-- Info -->
+          {{> bluePage/infoText}}
+        </main>
       </div>
-      <div class="page page__grey"></div>
+      <div class="page page-grey show">
+        <!-- Input -->
+        <main>
+          <div class="discussion__container">
+            <div class="user">
+              I want to watch John Wick 4 on Saturday at 2pm, check if Kieran, Shiju and Appu are free to join I want to
+              watch John Wick 4 on Safqzefzeezturday at 2pm, check if Kieran, Shiju and Appu are free to join
+            </div>
+            <div class="ai">
+              Unfortunately there is no showing at 2pm. There is a 3pm showing at The Cathay Cineleisure (2 adult
+              tickets would cost $28). There is a 4:30pm showing at Lido, Shaw House. Alternatively there is a showing
+              at GV Grand Gold Class at 4:15pm (2 adult tickets would cost $42)
+            </div>
+          </div>
+          {{> input}}
+        </main>
+
+        <div class="logo">
+          <svg xmlns="http://www.w3.org/2000/svg" width="33" height="24" fill="none">
+            <path
+              fill="#000"
+              fill-opacity=".24"
+              d="M32.085 23.966h-4.733V0h4.733v23.966ZM9.169 0 0 24h4.944l6.845-18.76L18.676 24h5.113L14.578 0H9.169Z"
+            />
+          </svg>
+        </div>
+      </div>
     </div>
     <script src="/libAudioRecorder/WebAudioRecorder.min.js"></script>
     <script type="module" src="/app/index.js"></script>
