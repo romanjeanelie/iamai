@@ -17,7 +17,6 @@ export default class InputAnimations {
 
     // Record
     this.recordCounter = this.inputEl.querySelector(".record-counter");
-    this.cancelAudioBtn = document.querySelector(".cancel-audio__btn");
 
     // Transcripting
     this.transcriptingEl = this.inputEl.querySelector(".transcripting__container");
@@ -30,6 +29,7 @@ export default class InputAnimations {
     this.inputImageContainer = this.inputEl.querySelector(".input__image--container");
 
     // Other dom elements
+    this.cancelBtn = document.querySelector(".cancel-btn");
     this.logoEl = document.querySelector(".logo__main");
     this.logoMobileEl = document.querySelector(".logo__mobile");
     this.categoriesListEl = document.querySelector(".categories__list--container");
@@ -204,7 +204,7 @@ export default class InputAnimations {
   }
 
   toStartRecording({ animOpacity = false, animScale = true, displayTextAudioInfo = true } = {}) {
-    this.cancelAudioBtn.classList.add("show");
+    this.cancelBtn.classList.add("show");
     this.inputEl.style.overflow = "unset";
     this.inputEl.style.pointerEvents = "none";
 
@@ -286,7 +286,7 @@ export default class InputAnimations {
   }
 
   toStopRecording({ transcipting = true } = {}) {
-    this.cancelAudioBtn.classList.remove("show");
+    this.cancelBtn.classList.remove("show");
 
     this.animCircleYoyo.cancel();
 
@@ -381,6 +381,8 @@ export default class InputAnimations {
   }
 
   toDragImage({ animBottom = true, delay = 0 } = {}) {
+    // this.cancelBtn.classList.add("show");
+
     setTimeout(() => {
       this.frontCameraBtn.classList.add("active-imagedrop");
       this.inputImageContainer.classList.add("active");
@@ -392,6 +394,8 @@ export default class InputAnimations {
   }
 
   leaveDragImage({ animBottom = true } = {}) {
+    // this.cancelBtn.classList.remove("show");
+
     this.frontCameraBtn.classList.remove("active-imagedrop");
     this.inputImageContainer.classList.remove("active");
     this.fadeInButtons();

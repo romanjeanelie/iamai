@@ -1,3 +1,5 @@
+import { tablet } from "../../scss/variables/_breakpoints.module.scss";
+
 export default function isMobile() {
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  return window.innerWidth <= parseInt(tablet);
 }

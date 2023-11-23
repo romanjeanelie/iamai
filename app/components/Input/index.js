@@ -37,11 +37,12 @@ export default class Input {
     this.backMicBtnContainer = this.inputBackEl.querySelector(".mic-btn__container");
     this.backMicBtn = this.backMicBtnContainer.querySelector(".mic-btn");
     this.backMicText = this.backMicBtnContainer.querySelector("p");
-    this.cancelAudioBtn = document.querySelector(".cancel-audio__btn");
     this.isSmallRecording = false;
 
     // Write
     this.inputText = this.inputBackEl.querySelector(".input-text");
+
+    this.cancelBtn = document.querySelector(".cancel-btn");
 
     this.onClickOutside = {
       stopAudio: false,
@@ -147,9 +148,17 @@ export default class Input {
       this.onClickOutside.stopAudio = true;
     });
 
-    this.cancelAudioBtn.addEventListener("click", () => {
+    this.cancelBtn.addEventListener("click", () => {
+      if (this.currentStatus === STATUS.RECORD_AUDIO) {
+        this.cancelRecord();
+      }
+
+      //   if (this.currentStatus === STATUS.UPLOAD_IMAGE) {
+      //     this.inputImage.disable();
+      //     this.anims.leaveDragImage();
+      //   }
+
       this.currentStatus = STATUS.INITIAL;
-      this.cancelRecord();
     });
 
     this.backMicBtn.addEventListener("click", () => {
@@ -188,7 +197,7 @@ export default class Input {
       "click",
       (event) => {
         if (this.isSmallRecording) return;
-        if (!this.inputEl.contains(event.target) && !this.cancelAudioBtn.contains(event.target)) {
+        if (!this.inputEl.contains(event.target) && !this.cancelBtn.contains(event.target)) {
           if (this.onClickOutside.stopAudio) {
             this.stopRecording();
             this.anims.toStopRecording();

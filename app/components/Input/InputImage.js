@@ -11,6 +11,8 @@ export default class InputImage {
 
     //TEMP
     this.analizingImageTime = 2000; //ms
+
+    this.addListeners();
   }
 
   // TODO : send the file to the server
@@ -80,6 +82,7 @@ export default class InputImage {
   }
 
   addListeners() {
+    console.log("listener");
     ["dragenter", "dragover", "dragleave", "drop"].forEach((e) => {
       this.dropImageEl.addEventListener(e, prevDefault, false);
     });
@@ -112,6 +115,7 @@ export default class InputImage {
     );
 
     this.inputFileUploadEl.addEventListener("change", (e) => {
+      console.log("oui");
       if (this.inputFileUploadEl.files && this.inputFileUploadEl.files[0]) {
         const img = this.inputFileUploadEl.files[0];
         this.onDrop(img);
