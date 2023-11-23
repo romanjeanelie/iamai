@@ -22,69 +22,36 @@ $paddingTopMobile: 28px;
 }
 
 body {
-  background-color: $backgroundColor;
   color: $colorMain;
   height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  overflow: hidden;
   font-family: Circular;
   font-weight: 400;
   font-feature-settings: "liga" 0;
 }
 
-.logo__main {
+.page {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   justify-content: center;
-  margin-bottom: 55px;
+  align-items: center;
+  flex-direction: column;
+
+  transition: transform 1100ms $ease-in-out-cubic;
 }
 
-.logo__mobile {
-  position: fixed;
-  top: $paddingTop;
-  left: 32px;
-  opacity: 0;
-  display: none;
-
-  @include media("<tablet") {
-    display: block;
+.page__blue {
+  background: $backgroundColorBluePage;
+  &.hidden {
+    transform: translateY(-100%);
   }
 }
 
-.cancel-btn {
-  position: fixed;
-  z-index: 3;
-  top: $paddingTop;
-  right: $paddingHor;
-  background-color: $backgroundColor;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-
-  @include media("<tablet") {
-    right: $paddingHorMobile;
-    top: $paddingTopMobile;
-  }
-
+.page__grey {
+  background-color: $backgroundColorGreyPage;
   &.show {
-    opacity: 1;
-    visibility: visible;
+    transform: translateY(-100%);
   }
-}
-
-.info-text {
-  position: fixed;
-  bottom: 72px;
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0;
-  visibility: hidden;
-
-  @include media("<tablet") {
-    bottom: 22px;
-  }
-}
-
-.image-drop {
-  position: fixed;
 }

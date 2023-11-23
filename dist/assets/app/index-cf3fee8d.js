@@ -1,6 +1,6 @@
 /* empty css                           */import Caroussel from "./components/Caroussel-4b9dd825.js";
-import Input from "./components/Input/index-9d178e65.js";
-import Navbar from "./components/Navbar-31eeffd7.js";
+import Input from "./components/Input/index-b8838e60.js";
+import Navbar from "./components/Navbar-991c0115.js";
 class App {
   constructor() {
     this.addListeners();

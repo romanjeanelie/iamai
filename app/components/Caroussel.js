@@ -1,7 +1,7 @@
 import { split, calculate } from "../utils/text";
 import { sortArrayFromMiddleToEnds } from "../utils/sortArrayFromMiddleToEnds";
 import anim from "../utils/anim";
-import { colorMain, backgroundColor } from "../../scss/variables/_colors.module.scss";
+import { colorMain, backgroundColorBluePage } from "../../scss/variables/_colors.module.scss";
 
 const texts = [
   "Book me a flight from Singapore to Kuala Lumpur on  flight from Singapore to Kuala Lumpur",
@@ -16,10 +16,10 @@ function animMask(mask, translateXValue, isShow) {
   return anim(
     mask,
     [
-      { color: backgroundColor, transform: transformStart, offset: 0 },
+      { color: backgroundColorBluePage, transform: transformStart, offset: 0 },
       { color: colorMain, offset: 0.5 },
       { color: colorMain, offset: 0.95 },
-      { color: backgroundColor, transform: transformEnd, offset: 1 },
+      { color: backgroundColorBluePage, transform: transformEnd, offset: 1 },
       { opacity: 1 },
     ],
     {

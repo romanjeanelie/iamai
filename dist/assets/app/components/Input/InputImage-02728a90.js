@@ -6,6 +6,7 @@ class InputImage {
     this.closeBtn = document.querySelector(".input__image--closeBtn");
     this.anims = anims;
     this.analizingImageTime = 2e3;
+    this.addListeners();
   }
   // TODO : send the file to the server
   uploadFile(file) {
@@ -58,6 +59,7 @@ class InputImage {
     }
   }
   addListeners() {
+    console.log("listener");
     ["dragenter", "dragover", "dragleave", "drop"].forEach((e) => {
       this.dropImageEl.addEventListener(e, prevDefault, false);
     });
@@ -86,6 +88,7 @@ class InputImage {
       false
     );
     this.inputFileUploadEl.addEventListener("change", (e) => {
+      console.log("oui");
       if (this.inputFileUploadEl.files && this.inputFileUploadEl.files[0]) {
         const img = this.inputFileUploadEl.files[0];
         this.onDrop(img);

@@ -1,6 +1,7 @@
 .categories__list--container {
   display: flex;
   justify-content: center;
+  width: 100%;
   .categories__list {
     flex: 1;
     display: flex;
@@ -14,7 +15,7 @@
 
     li {
       border-top: 4px solid;
-      border-top-color: $backgroundColor;
+      border-top-color: $backgroundColorBluePage;
       opacity: 0.6;
 
       transition: opacity 0.3s ease-in-out, border-color 0.3s ease-in-out;

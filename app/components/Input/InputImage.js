@@ -82,7 +82,6 @@ export default class InputImage {
   }
 
   addListeners() {
-    console.log("listener");
     ["dragenter", "dragover", "dragleave", "drop"].forEach((e) => {
       this.dropImageEl.addEventListener(e, prevDefault, false);
     });

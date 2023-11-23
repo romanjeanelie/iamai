@@ -29,6 +29,8 @@ export default class InputAnimations {
     this.inputImageContainer = this.inputEl.querySelector(".input__image--container");
 
     // Other dom elements
+    this.pageBlue = document.querySelector(".page__blue");
+    this.pageGrey = document.querySelector(".page__grey");
     this.cancelBtn = document.querySelector(".cancel-btn");
     this.logoEl = document.querySelector(".logo__main");
     this.logoMobileEl = document.querySelector(".logo__mobile");
@@ -451,5 +453,11 @@ export default class InputAnimations {
     const step2 = this.expandWidthInputFront({ delay: step1.effect.getComputedTiming().duration + 500, duration: 250 });
 
     this.fadeInButtons(step1.effect.getComputedTiming().duration + step2.effect.getComputedTiming().duration + 500, 0);
+  }
+
+  // Pages
+  toPageGrey() {
+    this.pageBlue.classList.add("hidden");
+    this.pageGrey.classList.add("show");
   }
 }

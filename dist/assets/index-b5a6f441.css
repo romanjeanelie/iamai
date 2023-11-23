@@ -94,6 +94,7 @@ iframe {
 }
 :export {
   desktop: 1024px;
+  tablet: 820px;
 }
 :export {
   colorMain: #fff;
@@ -140,7 +141,7 @@ body {
     display: block;
   }
 }
-.cancel-audio__btn {
+.cancel-btn {
   position: fixed;
   z-index: 3;
   top: 48px;
@@ -151,12 +152,12 @@ body {
   transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
 }
 @media (max-width: 819px) {
-  .cancel-audio__btn {
+  .cancel-btn {
     right: 20px;
     top: 28px;
   }
 }
-.cancel-audio__btn.show {
+.cancel-btn.show {
   opacity: 1;
   visibility: visible;
 }

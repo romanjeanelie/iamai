@@ -11,6 +11,11 @@ const STATUS = {
   WRITE: "WRITE",
 };
 
+const PAGES = {
+  PAGE_BLUE: "PAGE_BLUE",
+  PAGE_GREY: "PAGE_GREY",
+};
+
 export default class Input {
   constructor() {
     this.inputEl = document.querySelector(".input__container");
@@ -42,13 +47,16 @@ export default class Input {
     // Write
     this.inputText = this.inputBackEl.querySelector(".input-text");
 
+    // Other DOM elements
     this.cancelBtn = document.querySelector(".cancel-btn");
 
     this.onClickOutside = {
       stopAudio: false,
       animInitial: false,
     };
+
     this.currentStatus = STATUS.INITIAL;
+    this.currentPage = PAGES.PAGE_BLUE;
 
     //TEMP
     this.transcriptingTime = 2000; //ms
@@ -132,9 +140,17 @@ export default class Input {
   // Submit
   onSubmit(event) {
     event.preventDefault();
+    if (this.currentPage === PAGES.PAGE_BLUE) {
+      this.goToPageGrey();
+    }
     // if (this.inputText.value && this.inputText.value.trim().length > 0) {
     //   window.location.replace("https://ai.iamplus.services/chatbot/webchat/chat.html?q=" + this.inputText.value.trim());
     // }
+  }
+
+  goToPageGrey() {
+    this.currentPage = PAGES.PAGE_GREY;
+    this.anims.toPageGrey();
   }
 
   // Listeners
@@ -225,7 +241,6 @@ export default class Input {
       this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
     });
     this.inputText.addEventListener("input", (e) => {
-      console.log("input", e);
       this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
     });
 

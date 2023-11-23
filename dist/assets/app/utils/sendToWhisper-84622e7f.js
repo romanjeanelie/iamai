@@ -1,4 +1,4 @@
-const sendtowispher = (url) => new Promise((resolve, reject) => {
+const sendToWispher = (url) => new Promise((resolve, reject) => {
   var xhr = new XMLHttpRequest();
   var data = new FormData();
   data.append("audio_file", url, crypto.randomUUID() + ".wav");
@@ -16,10 +16,12 @@ const sendtowispher = (url) => new Promise((resolve, reject) => {
   };
   xhr.addEventListener("error", function(e) {
     console.log("error: " + e);
-    resolve("error: text was not transcribed");
+    resolve(
+      "error: text was not transcribederror: text was not transcribederror: text was not transcribederror: text was not transcribederror: text was not transcribederror: text was not transcribederror: text was not transcribed"
+    );
   });
   xhr.send(data);
 });
 export {
-  sendtowispher as default
+  sendToWispher as default
 };

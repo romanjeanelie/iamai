@@ -1,8 +1,14 @@
 import AudioRecorder from "../../AudioRecorder-1e53bb0d.js";
 import minSecStr from "../../utils/minSecStr-3b9ae0f7.js";
-import InputAnimations from "./InputAnimations-497a828d.js";
-import InputImage from "./InputImage-68b0509d.js";
-import sendtowispher from "../../utils/sendToWhisper-92b3f1e2.js";
+import InputAnimations from "./InputAnimations-9a194acb.js";
+import InputImage from "./InputImage-02728a90.js";
+import sendToWispher from "../../utils/sendToWhisper-84622e7f.js";
+const STATUS = {
+  INITIAL: "INITIAL",
+  RECORD_AUDIO: "RECORD_AUDIO",
+  UPLOAD_IMAGE: "UPLOAD_IMAGE",
+  WRITE: "WRITE"
+};
 class Input {
   constructor() {
     this.inputEl = document.querySelector(".input__container");
@@ -23,13 +29,14 @@ class Input {
     this.backMicBtnContainer = this.inputBackEl.querySelector(".mic-btn__container");
     this.backMicBtn = this.backMicBtnContainer.querySelector(".mic-btn");
     this.backMicText = this.backMicBtnContainer.querySelector("p");
-    this.cancelAudioBtn = document.querySelector(".cancel-audio__btn");
     this.isSmallRecording = false;
     this.inputText = this.inputBackEl.querySelector(".input-text");
+    this.cancelBtn = document.querySelector(".cancel-btn");
     this.onClickOutside = {
       stopAudio: false,
       animInitial: false
     };
+    this.currentStatus = STATUS.INITIAL;
     this.transcriptingTime = 2e3;
     this.tempTextRecorded = "text recorded";
     this.anims = new InputAnimations();
@@ -59,21 +66,24 @@ class Input {
     this.timecodeAudioEl.textContent = "00:00";
     if (this.isSmallRecording) {
       this.isSmallRecording = false;
-      this.inputText.textContent = this.tempTextRecorded;
       this.inputText.focus();
       this.inputText.setSelectionRange(this.inputText.value.length, this.inputText.value.length);
       return;
     }
-    this.anims.toStopTranscripting({
-      textTranscripted: this.tempTextRecorded
+    this.inputText.textContent = this.tempTextRecorded;
+    const event = new Event("input", {
+      bubbles: true,
+      cancelable: true
     });
+    this.inputText.dispatchEvent(event);
+    this.anims.toStopTranscripting();
     this.onClickOutside.animInitial = true;
   }
   async onCompleteRecording(blob) {
     if (this.isRecordCanceled)
       return;
     console.log("TODO add url endpoint to send audio file:", blob);
-    this.tempTextRecorded = await sendtowispher(blob);
+    this.tempTextRecorded = await sendToWispher(blob);
     this.timeoutTranscripting = setTimeout(() => {
       this.onCompleteTranscripting();
     }, this.transcriptingTime);
@@ -85,19 +95,28 @@ class Input {
     this.anims.toStopRecording({ transcipting: false });
     this.anims.fromRecordAudioToInitial();
   }
+  // Submit
+  onSubmit(event) {
+    event.preventDefault();
+  }
   // Listeners
   addListeners() {
     this.centerBtn.addEventListener("click", () => {
+      this.currentStatus = STATUS.WRITE;
       this.anims.toWrite();
       this.onClickOutside.animInitial = true;
     });
     this.frontMicBtn.addEventListener("click", () => {
+      this.currentStatus = STATUS.RECORD_AUDIO;
       this.startRecording();
       this.anims.toStartRecording();
       this.onClickOutside.stopAudio = true;
     });
-    this.cancelAudioBtn.addEventListener("click", () => {
-      this.cancelRecord();
+    this.cancelBtn.addEventListener("click", () => {
+      if (this.currentStatus === STATUS.RECORD_AUDIO) {
+        this.cancelRecord();
+      }
+      this.currentStatus = STATUS.INITIAL;
     });
     this.backMicBtn.addEventListener("click", () => {
       if (!this.isSmallRecording) {
@@ -110,16 +129,20 @@ class Input {
       }
     });
     this.frontCameraBtn.addEventListener("click", () => {
+      this.currentStatus = STATUS.UPLOAD_IMAGE;
       this.inputImage.enable();
       this.anims.toDragImage();
     });
     this.backCameraBtn.addEventListener("click", () => {
       if (this.isSmallRecording)
         return;
+      this.currentStatus = STATUS.UPLOAD_IMAGE;
       this.anims.toInitial({ animBottom: false, animButtons: false });
-      this.anims.toDragImage({ animBottom: false, delay: 1e3 });
+      this.anims.toDragImage({ animBottom: false, delay: 300 });
+      this.onClickOutside.animInitial = false;
     });
     this.closeInputImageBtn.addEventListener("click", () => {
+      this.currentStatus = STATUS.INITIAL;
       this.inputImage.disable();
       this.anims.leaveDragImage();
     });
@@ -128,7 +151,7 @@ class Input {
       (event) => {
         if (this.isSmallRecording)
           return;
-        if (!this.inputEl.contains(event.target) && !this.cancelAudioBtn.contains(event.target)) {
+        if (!this.inputEl.contains(event.target) && !this.cancelBtn.contains(event.target)) {
           if (this.onClickOutside.stopAudio) {
             this.stopRecording();
             this.anims.toStopRecording();
@@ -137,6 +160,7 @@ class Input {
           if (this.onClickOutside.animInitial) {
             if (this.inputText.value)
               return;
+            this.currentStatus = STATUS.INITIAL;
             this.anims.toInitial();
             this.onClickOutside.animInitial = false;
           }
@@ -144,21 +168,14 @@ class Input {
       },
       { capture: true }
     );
-    this.inputImage.addListeners();
     this.inputText.addEventListener("focus", () => {
-      this.submitBtn.disabled = !this.inputText.value;
+      this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
     });
-    this.inputText.addEventListener("input", () => {
-      this.submitBtn.disabled = !this.inputText.value;
+    this.inputText.addEventListener("input", (e) => {
+      console.log("input", e);
+      this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
     });
-    this.submitBtn.addEventListener("click", (event) => {
-      event.preventDefault();
-      if (this.inputText.value && this.inputText.value.trim().length > 0) {
-        window.location.replace(
-          "https://ai.iamplus.services/chatbot/webchat/chat.html?q=" + this.inputText.value.trim()
-        );
-      }
-    });
+    this.submitBtn.addEventListener("click", (event) => this.onSubmit(event));
   }
 }
 export {

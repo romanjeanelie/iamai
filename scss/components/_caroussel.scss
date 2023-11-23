@@ -1,4 +1,4 @@
-$backgroundLine: $backgroundColor;
+$backgroundLine: $backgroundColorBluePage;
 
 .caroussel__container {
   text-align: center;
@@ -45,7 +45,7 @@ $backgroundLine: $backgroundColor;
     white-space: nowrap;
 
     .mask {
-      color: $backgroundColor;
+      color: $backgroundColorBluePage;
       position: absolute;
       top: 0;
       left: 0;
@@ -66,7 +66,7 @@ $backgroundLine: $backgroundColor;
   .mask-left,
   .mask-right {
     content: "/";
-    color: $backgroundColor;
+    color: $backgroundColorBluePage;
     position: absolute;
     top: 0;
     width: 50%;

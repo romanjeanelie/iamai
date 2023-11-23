@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 class App {
   constructor() {
     this.addListeners();
+    this.resetScroll();
   }
 
   initApp() {
@@ -25,6 +26,10 @@ class App {
 
   initInput() {
     new Input();
+  }
+
+  resetScroll() {
+    window.scrollTo(0, 0);
   }
 
   addListeners() {
