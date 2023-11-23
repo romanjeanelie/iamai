@@ -53,7 +53,7 @@ export default class InputImage {
     console.log("TODO: add end point to send the image file to the server", img);
     // this.uploadFile(img)
 
-    this.timeoutTranscripting = setTimeout(() => {
+    setTimeout(() => {
       // TODO Call this function when image is analyzed
       this.previewImage(img);
     }, this.analizingImageTime);

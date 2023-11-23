@@ -1,6 +1,7 @@
 import Caroussel from "./components/Caroussel";
 import Input from "./components/Input";
 import Navbar from "./components/Navbar";
+import Discussion from "./components/Discussion";
 
 class App {
   constructor() {
@@ -14,6 +15,7 @@ class App {
   initApp() {
     this.initNavbar();
     this.initCaroussel();
+    this.initDiscussion();
     this.initInput();
   }
 
@@ -26,9 +28,13 @@ class App {
     this.caroussel.init();
   }
 
+  initDiscussion() {
+    this.discussion = new Discussion();
+  }
+
   initInput() {
     new Input({ pageEl: this.pageBlue });
-    new Input({ pageEl: this.pageGrey });
+    new Input({ pageEl: this.pageGrey, addDiscussionText: this.discussion.addUserText });
   }
 
   resetScroll() {

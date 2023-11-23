@@ -1,18 +1,20 @@
 .discussion__container {
   flex: 1;
+  overflow: scroll;
+  padding-right: 16px;
 
-  .user,
-  .ai {
+  .discussion__user,
+  .discussion__ai {
     margin-bottom: 32px;
     width: 80%;
   }
-  .user {
+  .discussion__user {
     color: $colorBlue;
     text-align: right;
     margin-left: auto;
   }
 
-  .ai {
+  .discussion__ai {
     color: $colorBlack;
   }
 }

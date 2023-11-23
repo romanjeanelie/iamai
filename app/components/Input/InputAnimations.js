@@ -19,10 +19,6 @@ export default class InputAnimations {
     // Record
     this.recordCounter = this.inputEl.querySelector(".record-counter");
 
-    // Transcripting
-    this.transcriptingEl = this.inputEl.querySelector(".transcripting__container");
-    this.transcriptingCursor = this.transcriptingEl.querySelector(".transcripting__container--cursor");
-
     // Write
     this.inputText = this.inputBackEl.querySelector(".input-text");
 
@@ -288,7 +284,7 @@ export default class InputAnimations {
     }
   }
 
-  toStopRecording({ transcipting = true } = {}) {
+  toStopRecording(callback) {
     this.cancelBtn.classList.remove("show");
 
     this.animCircleYoyo.cancel();
@@ -321,66 +317,9 @@ export default class InputAnimations {
       duration: 250,
     });
 
-    if (transcipting) {
-      lastStep.onfinish = () => {
-        this.toStartTranscripting();
-      };
+    if (callback?.onComplete) {
+      lastStep.onfinish = callback.onComplete;
     }
-  }
-
-  toStartTranscripting() {
-    this.animShowTranscripting = anim(
-      this.transcriptingEl,
-      [
-        { opacity: 0, visibility: "visible" },
-        { opacity: 1, visibility: "visible" },
-      ],
-      {
-        duration: 700,
-        fill: "forwards",
-        ease: "ease-in-out",
-      }
-    );
-
-    this.translateCursor = anim(
-      this.transcriptingCursor,
-      [{ transform: "translateX(0%)" }, { transform: "translateX(105%)" }],
-      {
-        delay: this.animShowTranscripting.effect.getComputedTiming().duration,
-        duration: 400,
-        fill: "forwards",
-        ease: "ease-in-out",
-      }
-    );
-
-    this.blinkCursor = anim(this.transcriptingCursor, [{ opacity: 1 }, { opacity: 0 }, { opacity: 1 }], {
-      delay:
-        this.animShowTranscripting.effect.getComputedTiming().duration +
-        this.translateCursor.effect.getComputedTiming().duration,
-      duration: 500,
-      iterations: Infinity,
-      ease: "ease-in-out",
-    });
-  }
-
-  toStopTranscripting() {
-    this.blinkCursor.cancel();
-    this.translateCursor.reverse();
-    anim(
-      this.transcriptingEl,
-      [
-        { opacity: 1, visibility: "visible" },
-        { opacity: 0, visibility: "hidden" },
-      ],
-      {
-        delay: 500,
-        duration: 700,
-        fill: "forwards",
-        ease: "ease-in-out",
-      }
-    );
-
-    this.toWrite({ delay: 1200, animButtons: false, animLogos: false });
   }
 
   toDragImage({ animBottom = true, delay = 0 } = {}) {

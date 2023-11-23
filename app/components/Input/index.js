@@ -3,6 +3,7 @@ import minSecStr from "../../utils/minSecStr";
 import InputAnimations from "./InputAnimations";
 import InputImage from "./InputImage";
 import sendToWispher from "../../utils/sendToWhisper";
+import TypingText from "../../TypingText";
 
 const STATUS = {
   INITIAL: "INITIAL",
@@ -17,7 +18,7 @@ const PAGES = {
 };
 
 export default class Input {
-  constructor({ pageEl }) {
+  constructor({ pageEl, addDiscussionText }) {
     this.pageEl = pageEl;
     this.inputEl = this.pageEl.querySelector(".input__container");
     this.inputFrontEl = this.inputEl.querySelector(".input__front");
@@ -57,7 +58,8 @@ export default class Input {
     };
 
     this.currentStatus = STATUS.INITIAL;
-    this.currentPage = PAGES.PAGE_BLUE;
+    this.isPageBlue = this.pageEl.classList.contains("page-blue");
+    if (!this.isPageBlue) this.addDiscussionText = addDiscussionText;
 
     //TEMP
     this.transcriptingTime = 2000; //ms
@@ -94,6 +96,17 @@ export default class Input {
     this.audioRecorder.stopRecording();
   }
 
+  onTranscripting() {
+    console.log("oui");
+    this.typingText = new TypingText({
+      text: "Converting to text",
+      container: this.inputFrontEl,
+    });
+    this.typingText.writing({
+      onComplete: this.typingText.blink,
+    });
+  }
+
   onCompleteTranscripting() {
     this.inputText.disabled = false;
     this.timecodeAudioEl.textContent = "00:00";
@@ -108,14 +121,11 @@ export default class Input {
     }
 
     this.inputText.textContent = this.tempTextRecorded;
-    // Simulate input event to have split lines
-    const event = new Event("input", {
-      bubbles: true,
-      cancelable: true,
-    });
-    this.inputText.dispatchEvent(event);
+    this.updateInputHeight();
 
-    this.anims.toStopTranscripting();
+    if (this.typingText) this.typingText.reverse();
+    this.anims.toWrite({ delay: 1200, animButtons: false, animLogos: false });
+
     this.onClickOutside.animInitial = true;
   }
 
@@ -136,19 +146,35 @@ export default class Input {
     this.onClickOutside.stopAudio = false;
     this.stopRecording();
 
-    this.anims.toStopRecording({ transcipting: false });
+    this.anims.toStopRecording();
     this.anims.fromRecordAudioToInitial();
   }
 
   // Submit
   onSubmit(event) {
     event.preventDefault();
-    if (this.currentPage === PAGES.PAGE_BLUE) {
+    if (this.isPageBlue) {
       this.goToPageGrey();
+    } else {
+      console.log();
+      this.addDiscussionText({ type: "user", text: this.inputText.value });
+      console.log(this.inputText.value.trim());
+      this.inputText.value = "";
+      this.inputText.focus();
+      this.updateInputHeight();
     }
     // if (this.inputText.value && this.inputText.value.trim().length > 0) {
     //   window.location.replace("https://ai.iamplus.services/chatbot/webchat/chat.html?q=" + this.inputText.value.trim());
     // }
+  }
+
+  updateInputHeight() {
+    // Simulate input event to have split lines
+    const event = new Event("input", {
+      bubbles: true,
+      cancelable: true,
+    });
+    this.inputText.dispatchEvent(event);
   }
 
   goToPageGrey() {
@@ -225,7 +251,9 @@ export default class Input {
         if (!this.inputEl.contains(event.target) && !this.cancelBtn.contains(event.target)) {
           if (this.onClickOutside.stopAudio) {
             this.stopRecording();
-            this.anims.toStopRecording();
+            this.anims.toStopRecording({
+              onComplete: this.onTranscripting.bind(this),
+            });
             this.onClickOutside.stopAudio = false;
           }
           if (this.onClickOutside.animInitial) {
