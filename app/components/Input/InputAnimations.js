@@ -110,8 +110,9 @@ export default class InputAnimations {
       ease: "ease-in-out",
     });
   }
-  expandHeightInputFront({ delay = 0, duration = 250 } = {}) {
-    return anim(this.inputFrontEl, [{ height: `${this.inputFrontHeight}px` }, { height: "110px" }], {
+
+  expandHeightInputFront({ delay = 0, duration = 250, heighTarget = 110 } = {}) {
+    return anim(this.inputFrontEl, [{ height: `${this.inputFrontHeight}px` }, { height: `${heighTarget}px` }], {
       delay,
       duration,
       fill: "forwards",
@@ -172,8 +173,7 @@ export default class InputAnimations {
     this.fadeInLogo(1000);
   }
 
-  toWrite({ delay = 0, animButtons = true, animLogos = true, text = "", placeholder = "" } = {}) {
-    this.inputText.textContent = text;
+  toWrite({ delay = 0, animButtons = true, animLogos = true, placeholder = "" } = {}) {
     this.inputText.placeholder = placeholder;
     this.inputFrontEl.style.pointerEvents = "none";
     this.inputBackEl.style.pointerEvents = "auto";
@@ -360,7 +360,7 @@ export default class InputAnimations {
     });
   }
 
-  toStopTranscripting({ textTranscripted = "" }) {
+  toStopTranscripting() {
     this.blinkCursor.cancel();
     this.translateCursor.reverse();
     anim(
@@ -377,7 +377,7 @@ export default class InputAnimations {
       }
     );
 
-    this.toWrite({ delay: 1200, animButtons: false, animLogos: false, text: textTranscripted });
+    this.toWrite({ delay: 1200, animButtons: false, animLogos: false });
   }
 
   toDragImage({ animBottom = true, delay = 0 } = {}) {

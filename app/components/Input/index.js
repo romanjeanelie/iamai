@@ -2,7 +2,7 @@ import AudioRecorder from "../../AudioRecorder";
 import minSecStr from "../../utils/minSecStr";
 import InputAnimations from "./InputAnimations";
 import InputImage from "./InputImage";
-import sendtowispher from "../../utils/sendToWhisper";
+import sendToWispher from "../../utils/sendToWhisper";
 
 const STATUS = {
   INITIAL: "INITIAL",
@@ -86,19 +86,25 @@ export default class Input {
   onCompleteTranscripting() {
     this.inputText.disabled = false;
     this.timecodeAudioEl.textContent = "00:00";
+
     // TODO Call this function when audio is transcripted
     if (this.isSmallRecording) {
       this.isSmallRecording = false;
-      this.inputText.textContent = this.tempTextRecorded;
       this.inputText.focus();
       this.inputText.setSelectionRange(this.inputText.value.length, this.inputText.value.length);
 
       return;
     }
 
-    this.anims.toStopTranscripting({
-      textTranscripted: this.tempTextRecorded,
+    this.inputText.textContent = this.tempTextRecorded;
+    // Simulate input event to have split lines
+    const event = new Event("input", {
+      bubbles: true,
+      cancelable: true,
     });
+    this.inputText.dispatchEvent(event);
+
+    this.anims.toStopTranscripting();
     this.onClickOutside.animInitial = true;
   }
 
@@ -107,7 +113,7 @@ export default class Input {
 
     // TODO : send audio to API endpoint
     console.log("TODO add url endpoint to send audio file:", blob);
-    this.tempTextRecorded = await sendtowispher(blob);
+    this.tempTextRecorded = await sendToWispher(blob);
 
     this.timeoutTranscripting = setTimeout(() => {
       this.onCompleteTranscripting();
@@ -218,7 +224,8 @@ export default class Input {
     this.inputText.addEventListener("focus", () => {
       this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
     });
-    this.inputText.addEventListener("input", () => {
+    this.inputText.addEventListener("input", (e) => {
+      console.log("input", e);
       this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
     });
 
