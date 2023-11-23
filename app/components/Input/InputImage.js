@@ -114,7 +114,6 @@ export default class InputImage {
     );
 
     this.inputFileUploadEl.addEventListener("change", (e) => {
-      console.log("oui");
       if (this.inputFileUploadEl.files && this.inputFileUploadEl.files[0]) {
         const img = this.inputFileUploadEl.files[0];
         this.onDrop(img);

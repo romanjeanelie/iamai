@@ -9,8 +9,6 @@ export default class TypingText {
   }
 
   init() {
-    console.log("init");
-
     this.typingContainer = document.createElement("div");
     this.cursorEl = document.createElement("span");
     const textEl = document.createElement("p");
@@ -26,7 +24,6 @@ export default class TypingText {
   }
 
   blink() {
-    console.log("blink");
     this.typingContainer.style.visibility = "visible";
     this.typingContainer.style.opacity = 1;
 
@@ -39,7 +36,6 @@ export default class TypingText {
   }
 
   writing(callback) {
-    console.log("writing");
     if (this.blinkCursor) this.blinkCursor.cancel();
 
     this.animShowtyping = anim(

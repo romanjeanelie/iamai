@@ -97,7 +97,6 @@ export default class Input {
   }
 
   onTranscripting() {
-    console.log("oui");
     this.typingText = new TypingText({
       text: "Converting to text",
       container: this.inputFrontEl,
@@ -156,9 +155,7 @@ export default class Input {
     if (this.isPageBlue) {
       this.goToPageGrey();
     } else {
-      console.log();
       this.addDiscussionText({ type: "user", text: this.inputText.value });
-      console.log(this.inputText.value.trim());
       this.inputText.value = "";
       this.inputText.focus();
       this.updateInputHeight();
