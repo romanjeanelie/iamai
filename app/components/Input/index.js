@@ -216,10 +216,10 @@ export default class Input {
 
     // Input text
     this.inputText.addEventListener("focus", () => {
-      this.submitBtn.disabled = !this.inputText.value;
+      this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
     });
     this.inputText.addEventListener("input", () => {
-      this.submitBtn.disabled = !this.inputText.value;
+      this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
     });
 
     this.submitBtn.addEventListener("click", (event) => this.onSubmit(event));
