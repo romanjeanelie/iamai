@@ -102,19 +102,50 @@ export default class InputAnimations {
     });
   }
 
+  collapseHeightInputFront({ delay = 0, duration = 400 } = {}) {
+    return anim(this.inputFrontEl, [{ height: "110px" }, { height: `${this.inputFrontHeight}px` }], {
+      delay,
+      duration,
+      fill: "forwards",
+      ease: "ease-in-out",
+    });
+  }
+  expandHeightInputFront({ delay = 0, duration = 250 } = {}) {
+    return anim(this.inputFrontEl, [{ height: `${this.inputFrontHeight}px` }, { height: "110px" }], {
+      delay,
+      duration,
+      fill: "forwards",
+      ease: "ease-in-out",
+    });
+  }
+  expandWidthInputFront({ delay = 0, duration = 400 } = {}) {
+    return anim(this.inputFrontEl, [{ width: `${this.inputFrontHeight}px` }, { width: "100%" }], {
+      delay,
+      duration,
+      ease: "ease-in-out",
+      fill: "forwards",
+    });
+  }
+
+  fadeInInputFront({ delay = 0, duration = 400 } = {}) {
+    return anim(this.inputFrontEl, [{ opacity: 0 }, { opacity: 1 }], {
+      delay,
+      duration,
+      ease: "ease-in-out",
+      fill: "forwards",
+    });
+  }
+
   // To initial
   toInitial({ delay = 0, animButtons = true, animBottom = true } = {}) {
     this.inputFrontEl.style.pointerEvents = "auto";
     this.inputBackEl.style.pointerEvents = "none";
 
-    anim(this.inputFrontEl, [{ height: "110px" }, { height: `${this.inputFrontHeight}px` }], {
-      duration: 400,
-      fill: "forwards",
-      ease: "ease-in-out",
-    });
+    this.collapseHeightInputFront({ duration: 250 });
+
     anim(this.inputBackEl, [{ opacity: 1 }, { opacity: 0 }], {
       delay,
-      duration: 200,
+      duration: 100,
       fill: "forwards",
       ease: "ease-in-out",
     });
@@ -153,12 +184,7 @@ export default class InputAnimations {
       this.fadeOutLogo();
     }
 
-    anim(this.inputFrontEl, [{ height: `${this.inputFrontHeight}px` }, { height: "110px" }], {
-      delay,
-      duration: 400,
-      fill: "forwards",
-      ease: "ease-in-out",
-    });
+    this.expandHeightInputFront({ delay: delay, duration: 250 });
 
     if (animButtons) {
       this.fadeOutButtons(0, delay);
@@ -188,12 +214,6 @@ export default class InputAnimations {
 
     this.fadeOutButtons(0, 100);
     this.fadeOutCategoriesAndCaroussel();
-
-    // anim([this.logoEl], [{ transform: "translateY(0)" }, { transform: "translateY(-50%)" }], {
-    //   duration: 200,
-    //   fill: "forwards",
-    //   ease: "ease-in-out",
-    // });
 
     const step1 = anim(
       this.inputFrontEl,
@@ -293,11 +313,9 @@ export default class InputAnimations {
       }
     );
 
-    const lastStep = anim(this.inputFrontEl, [{ width: `${this.inputFrontHeight}px` }, { width: "100%" }], {
+    const lastStep = this.expandWidthInputFront({
       delay: step3.effect.getComputedTiming().duration + 500,
-      duration: 400,
-      ease: "ease-in-out",
-      fill: "forwards",
+      duration: 250,
     });
 
     if (transcipting) {
@@ -412,18 +430,9 @@ export default class InputAnimations {
   toImageAnalyzed() {
     this.animCircleYoyo.cancel();
 
-    const step3 = anim(this.inputFrontEl, [{ opacity: 0 }, { opacity: 1 }], {
-      duration: 300,
-      ease: "ease-in-out",
-      fill: "forwards",
-    });
+    const step3 = this.fadeInInputFront({ delay: 0, duration: 300 });
 
-    anim(this.inputFrontEl, [{ width: `${this.inputFrontHeight}px` }, { width: "100%" }], {
-      delay: step3.effect.getComputedTiming().duration + 500,
-      duration: 400,
-      ease: "ease-in-out",
-      fill: "forwards",
-    });
+    this.expandWidthInputFront({ delay: step3.effect.getComputedTiming().duration + 500, duration: 250 });
 
     this.toWrite({ delay: 1200, animButtons: false, animLogos: false, placeholder: "Ask a question about the image" });
   }
@@ -431,18 +440,8 @@ export default class InputAnimations {
   toImageReset() {
     this.animCircleYoyo.cancel();
 
-    const step1 = anim(this.inputFrontEl, [{ opacity: 0 }, { opacity: 1 }], {
-      duration: 300,
-      ease: "ease-in-out",
-      fill: "forwards",
-    });
-
-    const step2 = anim(this.inputFrontEl, [{ width: `${this.inputFrontHeight}px` }, { width: "100%" }], {
-      delay: step1.effect.getComputedTiming().duration + 500,
-      duration: 400,
-      ease: "ease-in-out",
-      fill: "forwards",
-    });
+    const step1 = this.fadeInInputFront({ delay: 0, duration: 300 });
+    const step2 = this.expandWidthInputFront({ delay: step1.effect.getComputedTiming().duration + 500, duration: 250 });
 
     this.fadeInButtons(step1.effect.getComputedTiming().duration + step2.effect.getComputedTiming().duration + 500, 0);
   }
