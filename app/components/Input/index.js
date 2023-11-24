@@ -4,6 +4,7 @@ import InputAnimations from "./InputAnimations";
 import InputImage from "./InputImage";
 import sendToWispher from "../../utils/sendToWhisper";
 import TypingText from "../../TypingText";
+import { colorMain } from "../../../scss/variables/_colors.module.scss";
 
 const STATUS = {
   INITIAL: "INITIAL",
@@ -35,7 +36,7 @@ export default class Input {
       onComplete: this.onCompleteRecording.bind(this),
     });
     this.isRecordCanceled = false;
-    this.recordCounter = this.inputEl.querySelector(".record-counter");
+    this.recordCounter = this.pageEl.querySelector(".record-counter");
     this.backMicBtnContainer = this.inputBackEl.querySelector(".mic-btn__container");
     this.backMicBtn = this.backMicBtnContainer.querySelector(".mic-btn");
     this.backMicText = this.backMicBtnContainer.querySelector("p");
@@ -57,7 +58,7 @@ export default class Input {
     this.addUserText = addUserText;
 
     //TEMP
-    this.transcriptingTime = 2000; //ms
+    this.minTranscriptingTime = 1400; //ms
     this.tempTextRecorded = "text recorded";
 
     // Anims
@@ -73,6 +74,11 @@ export default class Input {
     });
 
     this.addListeners();
+
+    // TEMP
+    if (this.isPageBlue) {
+      //   this.anims.toPageGrey();
+    }
   }
 
   // Audio
@@ -95,6 +101,8 @@ export default class Input {
     this.typingText = new TypingText({
       text: "Converting to text",
       container: this.inputFrontEl,
+      backgroundColor: colorMain,
+      marginLeft: 8,
     });
     this.typingText.writing({
       onComplete: this.typingText.blink,
@@ -105,17 +113,15 @@ export default class Input {
     this.inputText.disabled = false;
     this.timecodeAudioEl.textContent = "00:00";
 
+    this.inputText.value = this.tempTextRecorded;
+
     // TODO Call this function when audio is transcripted
     if (this.isSmallRecording) {
       this.isSmallRecording = false;
       this.inputText.focus();
       this.inputText.setSelectionRange(this.inputText.value.length, this.inputText.value.length);
-
       return;
     }
-
-    this.inputText.textContent = this.tempTextRecorded;
-    this.updateInputHeight();
 
     if (this.typingText) this.typingText.reverse();
     this.anims.toWrite({ delay: 1200, animButtons: false, animLogos: false });
@@ -129,10 +135,10 @@ export default class Input {
     // TODO : send audio to API endpoint
     console.log("TODO add url endpoint to send audio file:", blob);
     this.tempTextRecorded = await sendToWispher(blob);
-
+    console.log("new text !", this.tempTextRecorded);
     this.timeoutTranscripting = setTimeout(() => {
       this.onCompleteTranscripting();
-    }, this.transcriptingTime);
+    }, this.minTranscriptingTime);
   }
 
   cancelRecord() {
@@ -149,16 +155,10 @@ export default class Input {
     event.preventDefault();
     if (this.isPageBlue) {
       this.goToPageGrey();
-      this.addUserText({ text: this.inputText.value });
-      this.inputText.value = "";
-      //   this.inputText.focus();
-      //   this.updateInputHeight();
-    } else {
-      this.addUserText({ text: this.inputText.value });
-      this.inputText.value = "";
-      this.inputText.focus();
-      this.updateInputHeight();
     }
+    this.addUserText({ text: this.inputText.value });
+    this.inputText.value = "";
+    this.updateInputHeight();
     // if (this.inputText.value && this.inputText.value.trim().length > 0) {
     //   window.location.replace("https://ai.iamplus.services/chatbot/webchat/chat.html?q=" + this.inputText.value.trim());
     // }

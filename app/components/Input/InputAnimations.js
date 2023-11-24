@@ -4,11 +4,12 @@ import anim from "../../utils/anim";
 export default class InputAnimations {
   constructor({ pageEl }) {
     this.pageEl = pageEl;
+    this.isPageBlue = this.pageEl.classList.contains("page-blue");
+
     this.inputEl = this.pageEl.querySelector(".input__container");
     this.inputFrontEl = this.inputEl.querySelector(".input__front");
     this.inputBackEl = this.inputEl.querySelector(".input__back");
 
-    // Front input
     this.centerBtn = this.inputFrontEl.querySelector(".center-btn");
     this.frontCameraBtn = this.inputFrontEl.querySelector(".camera-btn");
     this.frontMicBtn = this.inputFrontEl.querySelector(".mic-btn");
@@ -17,7 +18,16 @@ export default class InputAnimations {
     this.inputFrontHeight = this.inputFrontEl.offsetHeight;
 
     // Record
-    this.recordCounter = this.inputEl.querySelector(".record-counter");
+    // Front input
+    if (this.isPageBlue) {
+      this.recordCounter = this.inputEl.querySelector(".record-counter");
+      this.infoTextEl = document.querySelector(".info-text");
+    } else {
+      this.overlayRecordingEl = this.pageEl.querySelector(".overlay__recording");
+      this.recordCircle = this.overlayRecordingEl.querySelector(".circle");
+      this.recordCounter = this.overlayRecordingEl.querySelector(".record-counter");
+      this.infoTextEl = this.overlayRecordingEl.querySelector(".info-text");
+    }
 
     // Write
     this.inputText = this.inputBackEl.querySelector(".input-text");
@@ -33,7 +43,6 @@ export default class InputAnimations {
     this.logoMobileEl = document.querySelector(".logo__mobile");
     this.categoriesListEl = document.querySelector(".categories__list--container");
     this.carousselEl = document.querySelector(".caroussel__container");
-    this.infoTextEl = document.querySelector(".info-text");
     this.navbarEl = document.querySelector(".nav");
   }
 
@@ -203,41 +212,30 @@ export default class InputAnimations {
     this.inputText.setSelectionRange(this.inputText.value.length, this.inputText.value.length);
   }
 
-  toStartRecording({ animOpacity = false, animScale = true, displayTextAudioInfo = true } = {}) {
+  toStartRecording() {
     this.cancelBtn.classList.add("show");
-    this.inputEl.style.overflow = "unset";
+    this.fadeOutButtons(0, 100);
     this.inputEl.style.pointerEvents = "none";
 
-    // if (isMobile()) {
-    this.fadeOutLogo();
-    // }
+    if (this.isPageBlue) {
+      this.inputEl.style.overflow = "unset";
 
-    this.fadeOutButtons(0, 100);
-    this.fadeOutCategoriesAndCaroussel();
+      this.fadeOutLogo();
+      this.fadeOutCategoriesAndCaroussel();
 
-    const step1 = anim(
-      this.inputFrontEl,
-      [
-        { width: `${this.inputFrontHeight}px`, offset: 0.45 },
-        { width: `${this.inputFrontHeight}px`, offset: 1 },
-      ],
-      {
-        duration: 600,
-        fill: "forwards",
-        ease: "ease-out",
-      }
-    );
+      const step1 = anim(
+        this.inputFrontEl,
+        [
+          { width: `${this.inputFrontHeight}px`, offset: 0.45 },
+          { width: `${this.inputFrontHeight}px`, offset: 1 },
+        ],
+        {
+          duration: 600,
+          fill: "forwards",
+          ease: "ease-out",
+        }
+      );
 
-    if (animOpacity) {
-      this.animCircleYoyo = anim(this.inputFrontEl, [{ opacity: 1 }, { opacity: 0 }, { opacity: 1 }], {
-        delay: step1.effect.getComputedTiming().duration,
-        duration: 400,
-        iterations: Infinity,
-        ease: "ease-in-out",
-      });
-    }
-
-    if (animScale) {
       const step2 = anim(
         this.inputFrontEl,
         [
@@ -266,9 +264,7 @@ export default class InputAnimations {
           ease: "ease-in-out",
         }
       );
-    }
 
-    if (displayTextAudioInfo) {
       anim(
         [this.recordCounter, this.infoTextEl],
         [
@@ -282,50 +278,85 @@ export default class InputAnimations {
           ease: "ease-in-out",
         }
       );
+    } else {
+      this.overlayRecordingEl.classList.add("show");
+      this.inputEl.classList.add("hidden");
+
+      this.animCircleYoyo = anim(
+        this.recordCircle,
+        [
+          { transform: "translate3d(-50%, -50%, 0) scale(1.3)" },
+          { transform: "translate3d(-50%, -50%, 0) scale(1)" },
+          { transform: "translate3d(-50%, -50%, 0) scale(1.3)" },
+        ],
+        {
+          duration: 800,
+          iterations: Infinity,
+          ease: "ease-in-out",
+        }
+      );
+
+      anim(
+        [this.recordCounter, this.infoTextEl],
+        [
+          { opacity: 0, visibility: "visible" },
+          { opacity: 1, visibility: "visible" },
+        ],
+        {
+          duration: 700,
+          fill: "forwards",
+          ease: "ease-in-out",
+        }
+      );
     }
   }
 
   toStopRecording(callback) {
     this.cancelBtn.classList.remove("show");
-
     this.animCircleYoyo.cancel();
 
-    anim(
-      [this.recordCounter, this.infoTextEl],
-      [
-        { opacity: 1, visibility: "visible" },
-        { opacity: 0, visibility: "visible" },
-      ],
-      {
-        duration: 300,
-        fill: "forwards",
-        ease: "ease-in-out",
+    if (this.isPageBlue) {
+      anim(
+        [this.recordCounter, this.infoTextEl],
+        [
+          { opacity: 1, visibility: "visible" },
+          { opacity: 0, visibility: "visible" },
+        ],
+        {
+          duration: 300,
+          fill: "forwards",
+          ease: "ease-in-out",
+        }
+      );
+
+      const step3 = anim(
+        this.inputFrontEl,
+        [{ transform: "translate3d(-50%, -50%, 0) scale(3)" }, { transform: "translate3d(-50%, -50%, 0) scale(1)" }],
+        {
+          duration: 300,
+          ease: "ease-in-out",
+          fill: "forwards",
+        }
+      );
+
+      const lastStep = this.expandWidthInputFront({
+        delay: step3.effect.getComputedTiming().duration + 500,
+        duration: 250,
+      });
+
+      if (callback?.onComplete) {
+        lastStep.onfinish = callback.onComplete;
       }
-    );
-
-    const step3 = anim(
-      this.inputFrontEl,
-      [{ transform: "translate3d(-50%, -50%, 0) scale(3)" }, { transform: "translate3d(-50%, -50%, 0) scale(1)" }],
-      {
-        duration: 300,
-        ease: "ease-in-out",
-        fill: "forwards",
+    } else {
+      this.overlayRecordingEl.classList.remove("show");
+      this.inputEl.classList.remove("hidden");
+      if (callback?.onComplete) {
+        callback.onComplete();
       }
-    );
-
-    const lastStep = this.expandWidthInputFront({
-      delay: step3.effect.getComputedTiming().duration + 500,
-      duration: 250,
-    });
-
-    if (callback?.onComplete) {
-      lastStep.onfinish = callback.onComplete;
     }
   }
 
   toDragImage({ animBottom = true, delay = 0 } = {}) {
-    // this.cancelBtn.classList.add("show");
-
     setTimeout(() => {
       this.frontCameraBtn.classList.add("active-imagedrop");
       this.inputImageContainer.classList.add("active");
@@ -337,8 +368,6 @@ export default class InputAnimations {
   }
 
   leaveDragImage({ animBottom = true } = {}) {
-    // this.cancelBtn.classList.remove("show");
-
     this.frontCameraBtn.classList.remove("active-imagedrop");
     this.inputImageContainer.classList.remove("active");
     this.fadeInButtons();
@@ -401,5 +430,6 @@ export default class InputAnimations {
     this.pageBlue.classList.add("hidden");
     this.pageGrey.classList.add("show");
     this.navbarEl.classList.add("dark");
+    this.cancelBtn.classList.add("dark");
   }
 }

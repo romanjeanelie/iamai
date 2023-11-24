@@ -18,7 +18,7 @@ const sendToWispher = (url) =>
     };
     xhr.addEventListener("error", function (e) {
       console.log("error: " + e);
-      resolve("error: tror: text was not transcribed");
+      resolve("error: text was not transcribed");
     });
     xhr.send(data);
   });

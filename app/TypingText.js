@@ -1,10 +1,11 @@
 import anim from "./utils/anim";
 
 export default class TypingText {
-  constructor({ text, container, backgroundColor }) {
+  constructor({ text, container, backgroundColor, marginLeft }) {
     this.text = text;
     this.container = container;
     this.backgroundColor = backgroundColor;
+    this.marginLeft = marginLeft;
 
     this.init();
   }
@@ -20,8 +21,8 @@ export default class TypingText {
     this.textEl.classList.add("typing__text");
 
     this.textEl.textContent = this.text;
-
     this.maskEl.style.backgroundColor = this.backgroundColor;
+    this.typingContainer.style.left = `${this.marginLeft}px`;
 
     this.maskEl.appendChild(this.cursorEl);
     this.textEl.appendChild(this.maskEl);

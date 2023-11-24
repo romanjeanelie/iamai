@@ -1,7 +1,7 @@
 .cancel-btn {
   position: fixed;
   z-index: 3;
-  top: $paddingTop;
+  top: calc($paddingTop - 12px);
   right: $paddingHor;
   background-color: $backgroundColorBluePage;
   opacity: 0;
@@ -16,5 +16,12 @@
   &.show {
     opacity: 1;
     visibility: visible;
+  }
+
+  &.dark {
+    background-color: $backgroundColorGreyPage;
+    rect {
+      fill: $colorBlack;
+    }
   }
 }
