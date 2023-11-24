@@ -138,7 +138,6 @@ export default class Input {
     // TODO : send audio to API endpoint
     console.log("TODO add url endpoint to send audio file:", blob);
     this.tempTextRecorded = await sendToWispher(blob);
-    console.log("new text !", this.tempTextRecorded);
     this.timeoutTranscripting = setTimeout(() => {
       this.onCompleteTranscripting();
     }, this.minTranscriptingTime);

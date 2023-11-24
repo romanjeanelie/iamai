@@ -11,7 +11,7 @@ export default class InputImage {
     this.anims = anims;
 
     //TEMP
-    this.analizingImageTime = 2000; //ms
+    this.analizingImageMinTime = 1000; //ms
 
     this.addListeners();
   }
@@ -46,6 +46,8 @@ export default class InputImage {
 
   disable() {
     this.dropImageEl.style.pointerEvents = "none";
+    this.inputFileUploadEl.value = "";
+    this.dropImageEl.innerHTML = "";
   }
 
   onDrop(img) {
@@ -57,7 +59,7 @@ export default class InputImage {
     setTimeout(() => {
       // TODO Call this function when image is analyzed
       this.previewImage(img);
-    }, this.analizingImageTime);
+    }, this.analizingImageMinTime);
   }
 
   previewImage(file) {
@@ -80,10 +82,6 @@ export default class InputImage {
 
       console.error("Only images are allowed!", file);
     }
-  }
-
-  removeImage() {
-    // this.dropImageEl.classList.remove("visible");
   }
 
   addListeners() {

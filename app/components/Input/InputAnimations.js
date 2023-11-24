@@ -392,7 +392,6 @@ export default class InputAnimations {
   }
 
   leaveDragImage({ animBottom = true } = {}) {
-    console.log("leave drag image");
     this.frontCameraBtn.classList.remove("active-imagedrop");
     this.inputImageContainer.classList.remove("active");
     this.fadeInButtons();
