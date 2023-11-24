@@ -1,14 +1,15 @@
 export default class InputImage {
-  constructor(anims, pageEl) {
+  constructor(anims, callbacks, pageEl) {
     // DOM
     this.pageEl = pageEl;
     this.imageDroppedContainer = this.pageEl.querySelector(".image-dropped__container");
     this.dropImageOverlayEl = this.pageEl.querySelector(".image-drop-zone--overlay");
 
-    this.inputFileUploadEl = this.pageEl.querySelector("#file-upload");
+    this.inputFileUploadEl = this.pageEl.querySelector(".input__file-upload");
     this.closeBtn = this.pageEl.querySelector(".input__image--closeBtn");
 
     this.anims = anims;
+    this.callbacks = callbacks;
 
     //TEMP
     this.analizingImageMinTime = 1000; //ms
@@ -76,11 +77,10 @@ export default class InputImage {
 
         let fSize = file.size / 1000 + " KB";
         this.imageDroppedContainer.appendChild(img);
-        this.anims.onImage;
+        this.callbacks.onImageUploaded(img);
       };
     } else {
       this.anims.reset();
-
       console.error("Only images are allowed!", file);
     }
   }

@@ -3,6 +3,13 @@
   overflow: scroll;
   padding-right: 16px;
 
+  img {
+    max-height: 60vh;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 20px;
+  }
+
   .discussion__user,
   .discussion__ai {
     position: relative;

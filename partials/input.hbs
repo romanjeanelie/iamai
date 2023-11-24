@@ -40,7 +40,7 @@
     </div>
     <!-- Input image -->
     <div class="input__image--container">
-      <label for="file-upload" class="icon-file-upload">
+      <label for="file-upload-{{labelPage}}" class="icon-file-upload">
         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none">
           <path fill="#fff" d="M0 0h40v40H0z" />
           <rect width="1.6" height="14.933" x="19.24" y="9.603" fill="#000" rx=".8" />
@@ -66,7 +66,7 @@
           />
         </svg>
       </label>
-      <input id="file-upload" class="input__file-upload" type="file" accept="image/*" />
+      <input id="file-upload-{{labelPage}}" class="input__file-upload" type="file" accept="image/*" />
       <input class="input__image" type="text" placeholder="Paste an image link, drag an image" />
       <button class="input__image--closeBtn">
         <svg
@@ -141,7 +141,7 @@
             </div>
           </div>
           <div class="right">
-            <button type="submit" class="submit" id="submitBtn" aria-label="Submit" disabled>
+            <button type="submit" class="submit" aria-label="Submit" disabled>
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="none">
                 <path
                   fill="#fff"

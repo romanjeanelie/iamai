@@ -14,7 +14,7 @@ const STATUS = {
 };
 
 export default class Input {
-  constructor({ pageEl, addUserText }) {
+  constructor({ pageEl, addUserElement }) {
     this.pageEl = pageEl;
     this.inputEl = this.pageEl.querySelector(".input__container");
     this.inputFrontEl = this.inputEl.querySelector(".input__front");
@@ -30,6 +30,7 @@ export default class Input {
     // Image
     this.backCameraBtn = this.inputBackEl.querySelector(".camera-btn");
     this.closeInputImageBtn = this.pageEl.querySelector(".input__image--closeBtn");
+    this.currentImage = null;
 
     // Record
     this.audioRecorder = new AudioRecorder({
@@ -44,22 +45,18 @@ export default class Input {
 
     // Write
     this.inputText = this.inputBackEl.querySelector(".input-text");
+    this.addUserElement = addUserElement;
 
     // Other DOM elements
     this.cancelBtn = document.body.querySelector(".cancel-btn");
+    this.navbarEl = document.querySelector(".nav");
 
     this.onClickOutside = {
       stopAudio: false,
       animInitial: false,
     };
-
     this.currentStatus = STATUS.INITIAL;
     this.isPageBlue = this.pageEl.classList.contains("page-blue");
-    this.addUserText = addUserText;
-
-    //TEMP
-    this.minTranscriptingTime = 1400; //ms
-    this.tempTextRecorded = "text recorded";
 
     // Anims
     this.anims = new InputAnimations({
@@ -73,15 +70,22 @@ export default class Input {
         toImageDroped: () => this.anims.toImageDroped(),
         toImageAnalyzed: () => this.anims.toImageAnalyzed(),
       },
+      {
+        onImageUploaded: (img) => {
+          this.currentImage = img;
+        },
+      },
       this.pageEl
     );
 
     this.addListeners();
 
     // TEMP
-    if (this.isPageBlue) {
-      //   this.anims.toPageGrey();
-    }
+    this.minTranscriptingTime = 1400; //ms
+    this.tempTextRecorded = "text recorded";
+    // if (this.isPageBlue) {
+    //   this.anims.toPageGrey();
+    // }
   }
 
   // Audio
@@ -158,9 +162,12 @@ export default class Input {
     if (this.isPageBlue) {
       this.goToPageGrey();
     }
-    this.addUserText({ text: this.inputText.value });
+    this.addUserElement({ text: this.inputText.value, img: this.currentImage });
     this.inputText.value = "";
+    this.currentImage = null;
     this.updateInputHeight();
+    this.cancelBtn.classList.remove("show");
+    this.navbarEl.classList.remove("hidden");
     // if (this.inputText.value && this.inputText.value.trim().length > 0) {
     //   window.location.replace("https://ai.iamplus.services/chatbot/webchat/chat.html?q=" + this.inputText.value.trim());
     // }
@@ -204,6 +211,7 @@ export default class Input {
       if (this.currentStatus === STATUS.UPLOAD_IMAGE) {
         this.anims.toRemoveImage();
         this.inputImage.disable();
+        this.currentImage = null;
       }
 
       this.currentStatus = STATUS.INITIAL;

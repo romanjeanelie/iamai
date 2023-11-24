@@ -34,7 +34,7 @@ export default class InputAnimations {
 
     // Image
     this.inputImageContainer = this.inputEl.querySelector(".input__image--container");
-    this.imageDroppedContainer = document.querySelector(".image-dropped__container");
+    this.imageDroppedContainer = this.pageEl.querySelector(".image-dropped__container");
 
     // Other dom elements
     this.pageBlue = document.querySelector(".page-blue");
@@ -381,6 +381,8 @@ export default class InputAnimations {
    * Image
    */
   toDragImage({ animBottom = true, delay = 0 } = {}) {
+    this.imageDroppedContainer.classList.remove("visible");
+
     setTimeout(() => {
       this.frontCameraBtn.classList.add("active-imagedrop");
       this.inputImageContainer.classList.add("show");
@@ -468,6 +470,5 @@ export default class InputAnimations {
     this.pageGrey.classList.add("show");
     this.navbarEl.classList.add("dark");
     this.cancelBtn.classList.add("dark");
-    this.navbarEl.classList.add("hidden");
   }
 }

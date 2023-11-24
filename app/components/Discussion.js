@@ -6,7 +6,8 @@ export default class Discussion {
     this.page = document.querySelector(".page-grey");
     this.inputText = this.page.querySelector(".input-text");
     this.discussionContainer = document.querySelector(".discussion__container");
-    this.addUserText = this.addUserText.bind(this);
+
+    this.addUserElement = this.addUserElement.bind(this);
 
     // TEMP
     this.tempAIAnswer = "AI answer";
@@ -22,7 +23,7 @@ export default class Discussion {
     this.inputText.disabled = false;
     this.inputText.focus();
   }
-  getAiAnswer() {
+  getAiAnswer({ text, img }) {
     const aiEl = document.createElement("div");
     aiEl.classList.add("discussion__ai");
     this.discussionContainer.appendChild(aiEl);
@@ -44,7 +45,14 @@ export default class Discussion {
     }, this.tempAIAnswerTiming);
   }
 
-  addUserText({ text }) {
+  addUserElement({ text, img }) {
+    if (img) {
+      const userEl = document.createElement("div");
+      userEl.classList.add("discussion__user");
+      userEl.appendChild(img);
+      this.discussionContainer.appendChild(userEl);
+    }
+
     const userEl = document.createElement("div");
     userEl.classList.add("discussion__user");
     userEl.innerHTML = text.replace(/\n/g, "<br>");
@@ -52,7 +60,7 @@ export default class Discussion {
 
     this.scrollToBottom();
     this.disableInput();
-    this.getAiAnswer(text);
+    this.getAiAnswer({ text, img });
   }
   addAIText({ text, container }) {
     const textEl = document.createElement("p");
@@ -64,7 +72,10 @@ export default class Discussion {
   }
 
   scrollToBottom() {
-    this.discussionContainer.scrollTop = this.discussionContainer.scrollHeight;
+    this.discussionContainer.scrollTo({
+      top: this.discussionContainer.scrollHeight,
+      behavior: "smooth",
+    });
   }
 
   addListeners() {

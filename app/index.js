@@ -33,8 +33,12 @@ class App {
   }
 
   initInput() {
-    new Input({ pageEl: this.pageBlue, addUserText: this.discussion.addUserText });
-    new Input({ pageEl: this.pageGrey, addUserText: this.discussion.addUserText });
+    const callbacks = {
+      addUserElement: this.discussion.addUserElement,
+    };
+
+    new Input({ pageEl: this.pageBlue, ...callbacks });
+    new Input({ pageEl: this.pageGrey, ...callbacks });
   }
 
   resetScroll() {
