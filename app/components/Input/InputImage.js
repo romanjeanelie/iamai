@@ -1,18 +1,19 @@
 export default class InputImage {
-  constructor(anims, inputEl) {
+  constructor(anims, pageEl) {
     // DOM
-    this.dropImageEl = document.querySelector(".image-drop-zone");
-    this.dropImageOverlayEl = document.querySelector(".image-drop-zone--overlay");
+    this.pageEl = pageEl;
+    this.imageDroppedContainer = this.pageEl.querySelector(".image-dropped__container");
+    this.dropImageOverlayEl = this.pageEl.querySelector(".image-drop-zone--overlay");
 
-    this.inputEl = inputEl;
-    this.inputFileUploadEl = this.inputEl.querySelector("#file-upload");
-    this.closeBtn = this.inputEl.querySelector(".input__image--closeBtn");
+    this.inputFileUploadEl = this.pageEl.querySelector("#file-upload");
+    this.closeBtn = this.pageEl.querySelector(".input__image--closeBtn");
 
     this.anims = anims;
 
     //TEMP
     this.analizingImageMinTime = 1000; //ms
 
+    this.isEnabled = false;
     this.addListeners();
   }
 
@@ -41,13 +42,13 @@ export default class InputImage {
   }
 
   enable() {
-    this.dropImageEl.style.pointerEvents = "auto";
+    this.isEnabled = true;
   }
 
   disable() {
-    this.dropImageEl.style.pointerEvents = "none";
     this.inputFileUploadEl.value = "";
-    this.dropImageEl.innerHTML = "";
+    this.imageDroppedContainer.innerHTML = "";
+    this.isEnabled = false;
   }
 
   onDrop(img) {
@@ -74,7 +75,7 @@ export default class InputImage {
         img.src = fReader.result;
 
         let fSize = file.size / 1000 + " KB";
-        this.dropImageEl.appendChild(img);
+        this.imageDroppedContainer.appendChild(img);
         this.anims.onImage;
       };
     } else {
@@ -86,7 +87,7 @@ export default class InputImage {
 
   addListeners() {
     ["dragenter", "dragover", "dragleave", "drop"].forEach((e) => {
-      this.dropImageEl.addEventListener(e, prevDefault, false);
+      this.pageEl.addEventListener(e, prevDefault);
     });
     function prevDefault(e) {
       e.preventDefault();
@@ -94,27 +95,26 @@ export default class InputImage {
     }
 
     ["dragenter", "dragover"].forEach((e) => {
-      this.dropImageEl.addEventListener(e, () => {
+      this.pageEl.addEventListener(e, () => {
+        if (!this.isEnabled) return;
         this.dropImageOverlayEl.classList.add("hovered");
       });
     });
 
     ["dragleave", "drop"].forEach((e) => {
-      this.dropImageEl.addEventListener(e, () => {
+      this.pageEl.addEventListener(e, () => {
+        if (!this.isEnabled) return;
         this.dropImageOverlayEl.classList.remove("hovered");
       });
     });
 
-    this.dropImageEl.addEventListener(
-      "drop",
-      (e) => {
-        let dataTrans = e.dataTransfer;
-        let files = dataTrans.files;
-        const img = files[0];
-        this.onDrop(img);
-      },
-      false
-    );
+    this.pageEl.addEventListener("drop", (e) => {
+      if (!this.isEnabled) return;
+      let dataTrans = e.dataTransfer;
+      let files = dataTrans.files;
+      const img = files[0];
+      this.onDrop(img);
+    });
 
     this.inputFileUploadEl.addEventListener("change", (e) => {
       if (this.inputFileUploadEl.files && this.inputFileUploadEl.files[0]) {

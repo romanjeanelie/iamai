@@ -73,7 +73,7 @@ export default class Input {
         toImageDroped: () => this.anims.toImageDroped(),
         toImageAnalyzed: () => this.anims.toImageAnalyzed(),
       },
-      this.inputEl
+      this.pageEl
     );
 
     this.addListeners();

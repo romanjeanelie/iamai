@@ -34,7 +34,7 @@ export default class InputAnimations {
 
     // Image
     this.inputImageContainer = this.inputEl.querySelector(".input__image--container");
-    this.dropImageEl = document.querySelector(".image-drop-zone");
+    this.imageDroppedContainer = document.querySelector(".image-dropped__container");
 
     // Other dom elements
     this.pageBlue = document.querySelector(".page-blue");
@@ -383,7 +383,7 @@ export default class InputAnimations {
   toDragImage({ animBottom = true, delay = 0 } = {}) {
     setTimeout(() => {
       this.frontCameraBtn.classList.add("active-imagedrop");
-      this.inputImageContainer.classList.add("active");
+      this.inputImageContainer.classList.add("show");
     }, delay);
 
     if (animBottom) {
@@ -393,7 +393,7 @@ export default class InputAnimations {
 
   leaveDragImage({ animBottom = true } = {}) {
     this.frontCameraBtn.classList.remove("active-imagedrop");
-    this.inputImageContainer.classList.remove("active");
+    this.inputImageContainer.classList.remove("show");
     this.fadeInButtons();
 
     if (animBottom) {
@@ -402,8 +402,8 @@ export default class InputAnimations {
   }
 
   toImageDroped() {
-    this.inputImageContainer.classList.remove("active");
-    this.inputImageContainer.classList.add("hidden");
+    this.inputImageContainer.classList.remove("show");
+    // this.inputImageContainer.classList.add("hidden");
 
     this.fadeOutButtons(0, 0);
 
@@ -439,11 +439,11 @@ export default class InputAnimations {
     this.expandWidthInputFront({ delay: step3.effect.getComputedTiming().duration + 500, duration: 250 });
 
     this.toWrite({ delay: 1200, animButtons: false, animLogos: false, placeholder: "Ask a question about the image" });
-    this.dropImageEl.classList.add("visible");
+    this.imageDroppedContainer.classList.add("visible");
   }
 
   toRemoveImage() {
-    this.dropImageEl.classList.remove("visible");
+    this.imageDroppedContainer.classList.remove("visible");
     this.cancelBtn.classList.remove("show");
     this.navbarEl.classList.remove("hidden");
     this.toInitial({ animLogo: false });

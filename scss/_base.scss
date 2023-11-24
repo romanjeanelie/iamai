@@ -39,6 +39,10 @@ body {
   align-items: center;
 
   transition: transform 1100ms $ease-in-out-cubic;
+
+  main {
+    z-index: 2;
+  }
 }
 
 .page-blue {
