@@ -34,6 +34,7 @@ export default class InputAnimations {
     this.categoriesListEl = document.querySelector(".categories__list--container");
     this.carousselEl = document.querySelector(".caroussel__container");
     this.infoTextEl = document.querySelector(".info-text");
+    this.navbarEl = document.querySelector(".nav");
   }
 
   // Presets
@@ -399,5 +400,6 @@ export default class InputAnimations {
   toPageGrey() {
     this.pageBlue.classList.add("hidden");
     this.pageGrey.classList.add("show");
+    this.navbarEl.classList.add("dark");
   }
 }

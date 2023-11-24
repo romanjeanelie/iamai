@@ -12,13 +12,8 @@ const STATUS = {
   WRITE: "WRITE",
 };
 
-const PAGES = {
-  PAGE_BLUE: "PAGE_BLUE",
-  PAGE_GREY: "PAGE_GREY",
-};
-
 export default class Input {
-  constructor({ pageEl, addDiscussionText }) {
+  constructor({ pageEl, addUserText }) {
     this.pageEl = pageEl;
     this.inputEl = this.pageEl.querySelector(".input__container");
     this.inputFrontEl = this.inputEl.querySelector(".input__front");
@@ -59,7 +54,7 @@ export default class Input {
 
     this.currentStatus = STATUS.INITIAL;
     this.isPageBlue = this.pageEl.classList.contains("page-blue");
-    if (!this.isPageBlue) this.addDiscussionText = addDiscussionText;
+    this.addUserText = addUserText;
 
     //TEMP
     this.transcriptingTime = 2000; //ms
@@ -154,8 +149,12 @@ export default class Input {
     event.preventDefault();
     if (this.isPageBlue) {
       this.goToPageGrey();
+      this.addUserText({ text: this.inputText.value });
+      this.inputText.value = "";
+      //   this.inputText.focus();
+      //   this.updateInputHeight();
     } else {
-      this.addDiscussionText({ type: "user", text: this.inputText.value });
+      this.addUserText({ text: this.inputText.value });
       this.inputText.value = "";
       this.inputText.focus();
       this.updateInputHeight();
@@ -175,7 +174,6 @@ export default class Input {
   }
 
   goToPageGrey() {
-    this.currentPage = PAGES.PAGE_GREY;
     this.anims.toPageGrey();
   }
 

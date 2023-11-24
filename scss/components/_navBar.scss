@@ -1,17 +1,23 @@
 .nav {
   position: fixed;
   z-index: 3;
-  top: $paddingTop;
+  top: calc($paddingTop - 12px);
   right: $paddingHor;
   height: 100%;
+
+  rect {
+    transition: fill 1s ease-in-out;
+  }
+  circle,
+  path {
+    transition: stroke 1s ease-in-out;
+  }
 
   &.dark {
     rect {
       fill: $colorBlack;
     }
-    circle {
-      stroke: $colorBlack;
-    }
+    circle,
     path {
       stroke: $colorBlack;
     }

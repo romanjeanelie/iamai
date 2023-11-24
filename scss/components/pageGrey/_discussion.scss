@@ -5,6 +5,7 @@
 
   .discussion__user,
   .discussion__ai {
+    position: relative;
     margin-bottom: 32px;
     width: 80%;
   }
@@ -16,5 +17,7 @@
 
   .discussion__ai {
     color: $colorBlack;
+    // For cursor
+    min-height: 24px;
   }
 }

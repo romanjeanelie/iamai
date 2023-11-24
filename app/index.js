@@ -33,8 +33,8 @@ class App {
   }
 
   initInput() {
-    new Input({ pageEl: this.pageBlue });
-    new Input({ pageEl: this.pageGrey, addDiscussionText: this.discussion.addUserText });
+    new Input({ pageEl: this.pageBlue, addUserText: this.discussion.addUserText });
+    new Input({ pageEl: this.pageGrey, addUserText: this.discussion.addUserText });
   }
 
   resetScroll() {

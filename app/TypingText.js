@@ -1,24 +1,31 @@
 import anim from "./utils/anim";
 
 export default class TypingText {
-  constructor({ text, container }) {
+  constructor({ text, container, backgroundColor }) {
     this.text = text;
     this.container = container;
+    this.backgroundColor = backgroundColor;
 
     this.init();
   }
 
   init() {
     this.typingContainer = document.createElement("div");
+    this.maskEl = document.createElement("div");
     this.cursorEl = document.createElement("span");
-    const textEl = document.createElement("p");
+    this.textEl = document.createElement("p");
     this.typingContainer.classList.add("typing__container");
+    this.maskEl.classList.add("typing__mask");
     this.cursorEl.classList.add("typing__cursor");
-    textEl.classList.add("typing__text");
-    textEl.textContent = this.text;
+    this.textEl.classList.add("typing__text");
 
-    textEl.appendChild(this.cursorEl);
-    this.typingContainer.appendChild(textEl);
+    this.textEl.textContent = this.text;
+
+    this.maskEl.style.backgroundColor = this.backgroundColor;
+
+    this.maskEl.appendChild(this.cursorEl);
+    this.textEl.appendChild(this.maskEl);
+    this.typingContainer.appendChild(this.textEl);
 
     this.container.appendChild(this.typingContainer);
   }
@@ -29,8 +36,17 @@ export default class TypingText {
 
     this.blinkCursor = anim(this.cursorEl, [{ opacity: 1 }, { opacity: 0 }, { opacity: 1 }], {
       //   delay:
-      duration: 500,
+      duration: 300,
       iterations: Infinity,
+      ease: "ease-in-out",
+    });
+  }
+
+  fadeOut() {
+    if (this.blinkCursor) this.blinkCursor.cancel();
+    anim(this.cursorEl, [{ opacity: 1 }, { opacity: 0 }], {
+      duration: 10,
+      fill: "forwards",
       ease: "ease-in-out",
     });
   }
@@ -51,7 +67,7 @@ export default class TypingText {
       }
     );
 
-    this.translateCursor = anim(this.cursorEl, [{ transform: "translateX(0%)" }, { transform: "translateX(105%)" }], {
+    this.translateCursor = anim(this.maskEl, [{ transform: "translateX(0%)" }, { transform: "translateX(105%)" }], {
       delay: this.animShowtyping.effect.getComputedTiming().duration,
       duration: 400,
       fill: "forwards",
