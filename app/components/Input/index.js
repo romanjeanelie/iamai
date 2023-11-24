@@ -67,11 +67,14 @@ export default class Input {
     });
 
     // Drop Image
-    this.inputImage = new InputImage({
-      reset: () => this.anims.toImageReset(),
-      onDroped: () => this.anims.toImageDroped(),
-      onImageAnalyzed: () => this.anims.toImageAnalyzed(),
-    });
+    this.inputImage = new InputImage(
+      {
+        reset: () => this.anims.toImageReset(),
+        toImageDroped: () => this.anims.toImageDroped(),
+        toImageAnalyzed: () => this.anims.toImageAnalyzed(),
+      },
+      this.inputEl
+    );
 
     this.addListeners();
 
@@ -113,7 +116,7 @@ export default class Input {
     this.inputText.disabled = false;
     this.timecodeAudioEl.textContent = "00:00";
 
-    this.inputText.value = this.tempTextRecorded;
+    this.inputText.value += this.tempTextRecorded;
 
     // TODO Call this function when audio is transcripted
     if (this.isSmallRecording) {
@@ -199,10 +202,10 @@ export default class Input {
         this.cancelRecord();
       }
 
-      //   if (this.currentStatus === STATUS.UPLOAD_IMAGE) {
-      //     this.inputImage.disable();
-      //     this.anims.leaveDragImage();
-      //   }
+      if (this.currentStatus === STATUS.UPLOAD_IMAGE) {
+        this.anims.toRemoveImage();
+        this.inputImage.disable();
+      }
 
       this.currentStatus = STATUS.INITIAL;
     });
@@ -224,6 +227,7 @@ export default class Input {
       this.inputImage.enable();
       this.anims.toDragImage();
     });
+
     this.backCameraBtn.addEventListener("click", () => {
       if (this.isSmallRecording) return;
       this.currentStatus = STATUS.UPLOAD_IMAGE;

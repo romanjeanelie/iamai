@@ -1,11 +1,12 @@
 export default class InputImage {
-  constructor(anims) {
+  constructor(anims, inputEl) {
     // DOM
     this.dropImageEl = document.querySelector(".image-drop-zone");
     this.dropImageOverlayEl = document.querySelector(".image-drop-zone--overlay");
 
-    this.inputFileUploadEl = document.querySelector("#file-upload");
-    this.closeBtn = document.querySelector(".input__image--closeBtn");
+    this.inputEl = inputEl;
+    this.inputFileUploadEl = this.inputEl.querySelector("#file-upload");
+    this.closeBtn = this.inputEl.querySelector(".input__image--closeBtn");
 
     this.anims = anims;
 
@@ -48,7 +49,7 @@ export default class InputImage {
   }
 
   onDrop(img) {
-    this.anims.onDroped();
+    this.anims.toImageDroped();
 
     console.log("TODO: add end point to send the image file to the server", img);
     // this.uploadFile(img)
@@ -62,7 +63,7 @@ export default class InputImage {
   previewImage(file) {
     let imageType = /image.*/;
     if (file.type.match(imageType)) {
-      this.anims.onImageAnalyzed();
+      this.anims.toImageAnalyzed();
       let fReader = new FileReader();
 
       fReader.readAsDataURL(file);
@@ -72,13 +73,17 @@ export default class InputImage {
 
         let fSize = file.size / 1000 + " KB";
         this.dropImageEl.appendChild(img);
-        this.dropImageEl.classList.add("visible");
+        this.anims.onImage;
       };
     } else {
       this.anims.reset();
 
       console.error("Only images are allowed!", file);
     }
+  }
+
+  removeImage() {
+    // this.dropImageEl.classList.remove("visible");
   }
 
   addListeners() {
