@@ -11,7 +11,6 @@ class Navbar {
       this.navList.classList.toggle("show");
     });
     this.navEl.addEventListener("mouseenter", () => {
-      console.log(isMobile());
       if (isMobile())
         return;
       this.navList.classList.add("show");

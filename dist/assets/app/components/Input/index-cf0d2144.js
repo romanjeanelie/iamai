@@ -1,8 +1,10 @@
 import AudioRecorder from "../../AudioRecorder-1e53bb0d.js";
 import minSecStr from "../../utils/minSecStr-3b9ae0f7.js";
-import InputAnimations from "./InputAnimations-9a194acb.js";
-import InputImage from "./InputImage-02728a90.js";
-import sendToWispher from "../../utils/sendToWhisper-84622e7f.js";
+import InputAnimations from "./InputAnimations-65f65112.js";
+import InputImage from "./InputImage-115ff9a2.js";
+import sendToWispher from "../../utils/sendToWhisper-a6374299.js";
+import TypingText from "../../TypingText-15c55674.js";
+import { colorMain } from "../../../scss/variables/_colors.module.scss-f9d2d4d4.js";
 const STATUS = {
   INITIAL: "INITIAL",
   RECORD_AUDIO: "RECORD_AUDIO",
@@ -10,8 +12,9 @@ const STATUS = {
   WRITE: "WRITE"
 };
 class Input {
-  constructor() {
-    this.inputEl = document.querySelector(".input__container");
+  constructor({ pageEl, addUserElement }) {
+    this.pageEl = pageEl;
+    this.inputEl = this.pageEl.querySelector(".input__container");
     this.inputFrontEl = this.inputEl.querySelector(".input__front");
     this.inputBackEl = this.inputEl.querySelector(".input__back");
     this.submitBtn = this.inputBackEl.querySelector(".submit");
@@ -20,32 +23,46 @@ class Input {
     this.frontMicBtn = this.inputFrontEl.querySelector(".mic-btn");
     this.frontCenterBtn = this.inputFrontEl.querySelector(".center-btn");
     this.backCameraBtn = this.inputBackEl.querySelector(".camera-btn");
-    this.closeInputImageBtn = document.querySelector(".input__image--closeBtn");
+    this.closeInputImageBtn = this.pageEl.querySelector(".input__image--closeBtn");
+    this.currentImage = null;
     this.audioRecorder = new AudioRecorder({
       onComplete: this.onCompleteRecording.bind(this)
     });
     this.isRecordCanceled = false;
-    this.recordCounter = this.inputEl.querySelector(".record-counter");
+    this.recordCounter = this.pageEl.querySelector(".record-counter");
     this.backMicBtnContainer = this.inputBackEl.querySelector(".mic-btn__container");
     this.backMicBtn = this.backMicBtnContainer.querySelector(".mic-btn");
     this.backMicText = this.backMicBtnContainer.querySelector("p");
     this.isSmallRecording = false;
     this.inputText = this.inputBackEl.querySelector(".input-text");
-    this.cancelBtn = document.querySelector(".cancel-btn");
+    this.addUserElement = addUserElement;
+    this.cancelBtn = document.body.querySelector(".cancel-btn");
+    this.navbarEl = document.querySelector(".nav");
     this.onClickOutside = {
       stopAudio: false,
       animInitial: false
     };
     this.currentStatus = STATUS.INITIAL;
-    this.transcriptingTime = 2e3;
-    this.tempTextRecorded = "text recorded";
-    this.anims = new InputAnimations();
-    this.inputImage = new InputImage({
-      reset: () => this.anims.toImageReset(),
-      onDroped: () => this.anims.toImageDroped(),
-      onImageAnalyzed: () => this.anims.toImageAnalyzed()
+    this.isPageBlue = this.pageEl.classList.contains("page-blue");
+    this.anims = new InputAnimations({
+      pageEl: this.pageEl
     });
+    this.inputImage = new InputImage(
+      {
+        reset: () => this.anims.toImageReset(),
+        toImageDroped: () => this.anims.toImageDroped(),
+        toImageAnalyzed: () => this.anims.toImageAnalyzed()
+      },
+      {
+        onImageUploaded: (img) => {
+          this.currentImage = img;
+        }
+      },
+      this.pageEl
+    );
     this.addListeners();
+    this.minTranscriptingTime = 1400;
+    this.tempTextRecorded = "text recorded";
   }
   // Audio
   startRecording() {
@@ -61,22 +78,30 @@ class Input {
   stopRecording() {
     this.audioRecorder.stopRecording();
   }
+  onTranscripting() {
+    this.typingText = new TypingText({
+      text: "Converting to text",
+      container: this.inputFrontEl,
+      backgroundColor: colorMain,
+      marginLeft: 8
+    });
+    this.typingText.writing({
+      onComplete: this.typingText.blink
+    });
+  }
   onCompleteTranscripting() {
     this.inputText.disabled = false;
     this.timecodeAudioEl.textContent = "00:00";
+    this.inputText.value += this.tempTextRecorded;
     if (this.isSmallRecording) {
       this.isSmallRecording = false;
       this.inputText.focus();
       this.inputText.setSelectionRange(this.inputText.value.length, this.inputText.value.length);
       return;
     }
-    this.inputText.textContent = this.tempTextRecorded;
-    const event = new Event("input", {
-      bubbles: true,
-      cancelable: true
-    });
-    this.inputText.dispatchEvent(event);
-    this.anims.toStopTranscripting();
+    if (this.typingText)
+      this.typingText.reverse();
+    this.anims.toWrite({ delay: 1200, animButtons: false, animLogos: false });
     this.onClickOutside.animInitial = true;
   }
   async onCompleteRecording(blob) {
@@ -86,18 +111,37 @@ class Input {
     this.tempTextRecorded = await sendToWispher(blob);
     this.timeoutTranscripting = setTimeout(() => {
       this.onCompleteTranscripting();
-    }, this.transcriptingTime);
+    }, this.minTranscriptingTime);
   }
   cancelRecord() {
     this.isRecordCanceled = true;
     this.onClickOutside.stopAudio = false;
     this.stopRecording();
-    this.anims.toStopRecording({ transcipting: false });
+    this.anims.toStopRecording();
     this.anims.fromRecordAudioToInitial();
   }
   // Submit
   onSubmit(event) {
     event.preventDefault();
+    if (this.isPageBlue) {
+      this.goToPageGrey();
+    }
+    this.addUserElement({ text: this.inputText.value, img: this.currentImage });
+    this.inputText.value = "";
+    this.currentImage = null;
+    this.updateInputHeight();
+    this.cancelBtn.classList.remove("show");
+    this.navbarEl.classList.remove("hidden");
+  }
+  updateInputHeight() {
+    const event = new Event("input", {
+      bubbles: true,
+      cancelable: true
+    });
+    this.inputText.dispatchEvent(event);
+  }
+  goToPageGrey() {
+    this.anims.toPageGrey();
   }
   // Listeners
   addListeners() {
@@ -115,6 +159,11 @@ class Input {
     this.cancelBtn.addEventListener("click", () => {
       if (this.currentStatus === STATUS.RECORD_AUDIO) {
         this.cancelRecord();
+      }
+      if (this.currentStatus === STATUS.UPLOAD_IMAGE) {
+        this.anims.toRemoveImage();
+        this.inputImage.disable();
+        this.currentImage = null;
       }
       this.currentStatus = STATUS.INITIAL;
     });
@@ -146,7 +195,7 @@ class Input {
       this.inputImage.disable();
       this.anims.leaveDragImage();
     });
-    document.body.addEventListener(
+    this.pageEl.addEventListener(
       "click",
       (event) => {
         if (this.isSmallRecording)
@@ -154,7 +203,9 @@ class Input {
         if (!this.inputEl.contains(event.target) && !this.cancelBtn.contains(event.target)) {
           if (this.onClickOutside.stopAudio) {
             this.stopRecording();
-            this.anims.toStopRecording();
+            this.anims.toStopRecording({
+              onComplete: this.onTranscripting.bind(this)
+            });
             this.onClickOutside.stopAudio = false;
           }
           if (this.onClickOutside.animInitial) {
@@ -172,7 +223,6 @@ class Input {
       this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
     });
     this.inputText.addEventListener("input", (e) => {
-      console.log("input", e);
       this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
     });
     this.submitBtn.addEventListener("click", (event) => this.onSubmit(event));

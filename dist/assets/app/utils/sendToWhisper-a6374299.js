@@ -16,9 +16,7 @@ const sendToWispher = (url) => new Promise((resolve, reject) => {
   };
   xhr.addEventListener("error", function(e) {
     console.log("error: " + e);
-    resolve(
-      "error: text was not transcribederror: text was not transcribederror: text was not transcribederror: text was not transcribederror: text was not transcribederror: text was not transcribederror: text was not transcribed"
-    );
+    resolve("error: text was not transcribed");
   });
   xhr.send(data);
 });
