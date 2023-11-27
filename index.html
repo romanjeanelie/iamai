@@ -15,19 +15,25 @@
 
       <div class="page page-blue">
         <main>
-          <!-- Logo -->
-          {{> bluePage/logo}}
-          <!-- Input -->
-          {{> input labelPage="blue"}}
-          <!-- Image drop -->
-          {{> imageDrop}}
-          <!-- Categories list -->
-          {{> bluePage/categoriesList}}
-          <!-- Caroussel -->
-          {{> bluePage/caroussel}}
-          <!-- Info -->
-          {{> bluePage/infoText}}
+          <div class="top">
+            <!-- Logo -->
+            {{> bluePage/logo}}
+          </div>
+          <div class="center">
+            <!-- Input -->
+            {{> input labelPage="blue"}}
+          </div>
+          <div class="bottom">
+            <!-- Categories list -->
+            {{> bluePage/categoriesList}}
+            <!-- Caroussel -->
+            {{> bluePage/caroussel}}
+          </div>
         </main>
+        <!-- Image drop -->
+        {{> imageDrop}}
+        <!-- Info -->
+        {{> bluePage/infoText}}
       </div>
       <div class="page page-grey">
         <!-- Overlay recording -->

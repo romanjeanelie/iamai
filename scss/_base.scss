@@ -49,8 +49,21 @@ body {
   background: $backgroundColorBluePage;
 
   main {
+    display: grid;
+    grid-template-rows: 1fr auto 1fr;
     width: 100%;
     max-width: 696px;
+    height: 100%;
+    .top {
+      align-self: self-end;
+    }
+    .center {
+      justify-self: center;
+      width: 100%;
+    }
+
+    .bottom {
+    }
   }
   &.hidden {
     transform: translateY(-100%);

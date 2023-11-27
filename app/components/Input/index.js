@@ -84,7 +84,7 @@ export default class Input {
     this.minTranscriptingTime = 1400; //ms
     this.tempTextRecorded = "text recorded";
     if (this.isPageBlue) {
-      this.anims.toPageGrey();
+      //   this.anims.toPageGrey();
     }
   }
 
