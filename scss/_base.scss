@@ -23,7 +23,7 @@ $paddingTopMobile: 28px;
 
 body {
   color: $colorMain;
-  height: 100vh;
+  height: 100svh;
   overflow: hidden;
   font-family: Circular;
   font-weight: 400;
@@ -33,7 +33,7 @@ body {
 .page {
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 100svh;
   display: flex;
   justify-content: center;
   align-items: center;

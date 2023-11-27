@@ -214,7 +214,9 @@ export default class InputAnimations {
       ease: "ease-in-out",
     });
 
-    this.inputText.focus();
+    if (!isMobile()) {
+      this.inputText.focus();
+    }
     this.inputText.setSelectionRange(this.inputText.value.length, this.inputText.value.length);
   }
 
