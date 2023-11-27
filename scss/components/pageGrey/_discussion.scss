@@ -1,7 +1,6 @@
 .discussion__container {
   flex: 1;
   overflow: scroll;
-  padding-right: 16px;
 
   img {
     max-height: 60vh;
@@ -14,17 +13,20 @@
   .discussion__ai {
     position: relative;
     margin-bottom: 32px;
-    width: 80%;
   }
   .discussion__user {
     color: $colorBlue;
     text-align: right;
     margin-left: auto;
+    padding-right: 16px;
+    margin-left: 112px;
   }
 
   .discussion__ai {
     color: $colorBlack;
     // For cursor
     min-height: 24px;
+    padding-left: 16px;
+    margin-right: 112px;
   }
 }

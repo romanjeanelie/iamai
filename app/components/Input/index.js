@@ -83,9 +83,9 @@ export default class Input {
     // TEMP
     this.minTranscriptingTime = 1400; //ms
     this.tempTextRecorded = "text recorded";
-    // if (this.isPageBlue) {
-    //   this.anims.toPageGrey();
-    // }
+    if (this.isPageBlue) {
+      this.anims.toPageGrey();
+    }
   }
 
   // Audio
