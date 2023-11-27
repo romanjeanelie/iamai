@@ -114,9 +114,12 @@ iframe {
 .preload * {
   transition: none !important;
 }
+html {
+  overflow: hidden;
+}
 body {
   color: #fff;
-  height: 100vh;
+  height: 100svh;
   overflow: hidden;
   font-family: Circular;
   font-weight: 400;
@@ -125,7 +128,7 @@ body {
 .page {
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 100svh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -138,8 +141,18 @@ body {
   background: #648ff2;
 }
 .page-blue main {
+  display: grid;
+  grid-template-rows: 1fr auto 1fr;
   width: 100%;
   max-width: 696px;
+  height: 100%;
+}
+.page-blue main .top {
+  align-self: self-end;
+}
+.page-blue main .center {
+  justify-self: center;
+  width: 100%;
 }
 .page-blue.hidden {
   transform: translateY(-100%);
@@ -155,6 +168,12 @@ body {
   width: 100%;
   max-width: 870px;
   margin: 0 120px;
+}
+@media (max-width: 819px) {
+  .page-grey main {
+    padding-top: 76px;
+    margin: 0;
+  }
 }
 .page-grey.show {
   transform: translateY(-100%);
@@ -224,7 +243,7 @@ body {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100svh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -380,7 +399,8 @@ body {
 }
 @media (max-width: 819px) {
   .input__container {
-    width: 90vw;
+    margin-bottom: 10px;
+    margin: 0 16px 10px;
   }
 }
 .input__container .record-counter {
@@ -427,6 +447,11 @@ body {
   font-size: 20px;
   flex: 1;
 }
+@media (max-height: 780px) {
+  .input__container .input__front .center-btn {
+    font-size: 18px;
+  }
+}
 .input__container .input__back {
   position: relative;
   background-color: #fff;
@@ -463,6 +488,11 @@ body {
 @media (max-height: 780px) {
   .input__container .input-text__expand .input-text, .input__container .input-text__expand:after {
     max-height: 200px;
+  }
+}
+@media (max-width: 819px) {
+  .input__container .input-text__expand .input-text, .input__container .input-text__expand:after {
+    font-size: 18px;
   }
 }
 .input__container .input__controls {
@@ -720,10 +750,17 @@ body {
   left: 48px;
   bottom: 60px;
 }
+@media (max-width: 819px) {
+  .page-grey .logo {
+    bottom: unset;
+    top: 42px;
+    transform: scale(0.7);
+    left: 33px;
+  }
+}
 .page-grey .discussion__container {
   flex: 1;
   overflow: scroll;
-  padding-right: 16px;
 }
 .page-grey .discussion__container img {
   max-height: 60vh;
@@ -735,20 +772,23 @@ body {
 .page-grey .discussion__container .discussion__ai {
   position: relative;
   margin-bottom: 32px;
-  width: 80%;
 }
 .page-grey .discussion__container .discussion__user {
   color: #4d79ec;
   text-align: right;
   margin-left: auto;
+  padding-right: 16px;
+  margin-left: 112px;
 }
 .page-grey .discussion__container .discussion__ai {
   color: rgba(0, 0, 0, 0.72);
   min-height: 24px;
+  padding-left: 16px;
+  margin-right: 112px;
 }
 .page-grey .overlay__recording {
   position: fixed;
-  z-index: 1;
+  z-index: 3;
   top: 0;
   width: 100%;
   height: 100%;

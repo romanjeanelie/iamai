@@ -1,6 +1,6 @@
 import AudioRecorder from "../../AudioRecorder-1e53bb0d.js";
 import minSecStr from "../../utils/minSecStr-3b9ae0f7.js";
-import InputAnimations from "./InputAnimations-65f65112.js";
+import InputAnimations from "./InputAnimations-bc620f7f.js";
 import InputImage from "./InputImage-115ff9a2.js";
 import sendToWispher from "../../utils/sendToWhisper-a6374299.js";
 import TypingText from "../../TypingText-15c55674.js";
@@ -63,6 +63,8 @@ class Input {
     this.addListeners();
     this.minTranscriptingTime = 1400;
     this.tempTextRecorded = "text recorded";
+    if (this.isPageBlue)
+      ;
   }
   // Audio
   startRecording() {
@@ -83,7 +85,7 @@ class Input {
       text: "Converting to text",
       container: this.inputFrontEl,
       backgroundColor: colorMain,
-      marginLeft: 8
+      marginLeft: 16
     });
     this.typingText.writing({
       onComplete: this.typingText.blink
@@ -93,6 +95,7 @@ class Input {
     this.inputText.disabled = false;
     this.timecodeAudioEl.textContent = "00:00";
     this.inputText.value += this.tempTextRecorded;
+    this.updateInputHeight();
     if (this.isSmallRecording) {
       this.isSmallRecording = false;
       this.inputText.focus();

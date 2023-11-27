@@ -25,7 +25,8 @@ class Discussion {
     this.typingText = new TypingText({
       text: "",
       container: aiEl,
-      backgroundColor: backgroundColorGreyPage
+      backgroundColor: backgroundColorGreyPage,
+      marginLeft: 16
     });
     this.typingText.blink();
     console.log("TODO fetch answer AI");

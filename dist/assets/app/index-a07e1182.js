@@ -1,7 +1,7 @@
 import Caroussel from "./components/Caroussel-97d86629.js";
-import Input from "./components/Input/index-cf0d2144.js";
+import Input from "./components/Input/index-d100f44b.js";
 import Navbar from "./components/Navbar-967e2a81.js";
-import Discussion from "./components/Discussion-749aa4de.js";
+import Discussion from "./components/Discussion-470baf45.js";
 class App {
   constructor() {
     this.pageBlue = document.querySelector(".page-blue");

@@ -1,4 +1,4 @@
-import "../../../scss/variables/_breakpoints.module.scss-bbb4a233.js";
+import isMobile from "../../utils/isMobile-f8de8c05.js";
 import anim from "../../utils/anim-f36d42a6.js";
 class InputAnimations {
   constructor({ pageEl }) {
@@ -178,8 +178,12 @@ class InputAnimations {
       fill: "forwards",
       ease: "ease-in-out"
     });
-    this.inputText.focus();
-    this.inputText.setSelectionRange(this.inputText.value.length, this.inputText.value.length);
+    if (isMobile() && !this.isPageBlue) {
+      this.inputText.click();
+    } else {
+      this.inputText.focus();
+      this.inputText.setSelectionRange(this.inputText.value.length, this.inputText.value.length);
+    }
   }
   /**
    * Record audio
