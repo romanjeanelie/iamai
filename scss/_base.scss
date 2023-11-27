@@ -68,6 +68,10 @@ body {
     width: 100%;
     max-width: 870px;
     margin: 0 120px;
+
+    @include media("<tablet") {
+      padding-top: 76px;
+    }
   }
   &.show {
     transform: translateY(-100%);
