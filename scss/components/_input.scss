@@ -7,7 +7,6 @@
   $borderRadius: 24px;
 
   position: relative;
-  //   z-index: 2;
   margin-bottom: 28px;
   border-radius: $borderRadius;
   width: 100%;
@@ -22,7 +21,8 @@
   }
 
   @include media("<tablet") {
-    width: 90vw;
+    margin-bottom: 10px;
+    margin: 0 16px 10px;
   }
 
   .record-counter {
@@ -102,6 +102,10 @@
 
       @media (max-height: 780px) {
         max-height: calc(10 * 20px);
+      }
+
+      @include media("<tablet") {
+        font-size: 18px;
       }
     }
   }

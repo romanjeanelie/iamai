@@ -33,6 +33,7 @@ export default class Discussion {
       text: "",
       container: aiEl,
       backgroundColor: backgroundColorGreyPage,
+      marginLeft: 16,
     });
 
     this.typingText.blink();
