@@ -121,6 +121,7 @@ export default class Input {
     this.timecodeAudioEl.textContent = "00:00";
 
     this.inputText.value += this.tempTextRecorded;
+    this.updateInputHeight();
 
     // TODO Call this function when audio is transcripted
     if (this.isSmallRecording) {
