@@ -214,10 +214,12 @@ export default class InputAnimations {
       ease: "ease-in-out",
     });
 
-    if (!isMobile()) {
+    if (isMobile() && !this.isPageBlue) {
+      this.inputText.click();
+    } else {
       this.inputText.focus();
+      this.inputText.setSelectionRange(this.inputText.value.length, this.inputText.value.length);
     }
-    this.inputText.setSelectionRange(this.inputText.value.length, this.inputText.value.length);
   }
 
   /**
