@@ -21,6 +21,9 @@ $paddingTopMobile: 28px;
   transition: none !important;
 }
 
+html {
+  overflow: hidden;
+}
 body {
   color: $colorMain;
   height: 100svh;
