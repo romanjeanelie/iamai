@@ -84,7 +84,7 @@ export default class Input {
     this.minTranscriptingTime = 1400; //ms
     this.tempTextRecorded = "text recorded";
     if (this.isPageBlue) {
-      this.anims.toPageGrey();
+      //   this.anims.toPageGrey();
     }
   }
 
@@ -109,7 +109,7 @@ export default class Input {
       text: "Converting to text",
       container: this.inputFrontEl,
       backgroundColor: colorMain,
-      marginLeft: 8,
+      marginLeft: 16,
     });
     this.typingText.writing({
       onComplete: this.typingText.blink,
