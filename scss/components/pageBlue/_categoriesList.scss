@@ -2,6 +2,9 @@
   display: flex;
   justify-content: center;
   width: 100%;
+  @include media("<tablet") {
+    display: none;
+  }
   .categories__list {
     flex: 1;
     display: flex;

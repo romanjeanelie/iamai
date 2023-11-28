@@ -1,7 +1,7 @@
 // Spacing
 $paddingHor: 40px;
 $paddingTop: 48px;
-$paddingHorMobile: 20px;
+$paddingHorMobile: 12px;
 $paddingTopMobile: 28px;
 
 // Fonts
@@ -33,6 +33,10 @@ body {
   font-family: Circular;
   font-weight: 400;
   font-feature-settings: "liga" 0;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
 }
 
 .page {

@@ -13,6 +13,12 @@
   .discussion__ai {
     position: relative;
     margin-bottom: 32px;
+    font-size: 20px;
+    line-height: 24px;
+
+    @include media("<tablet") {
+      font-size: 18px;
+    }
   }
   .discussion__user {
     color: $colorBlue;
@@ -20,6 +26,10 @@
     margin-left: auto;
     padding-right: 16px;
     margin-left: 112px;
+
+    @include media("<tablet") {
+      padding-right: 24px;
+    }
   }
 
   .discussion__ai {
@@ -28,5 +38,9 @@
     min-height: 24px;
     padding-left: 16px;
     margin-right: 112px;
+
+    @include media("<tablet") {
+      padding-left: 24px;
+    }
   }
 }

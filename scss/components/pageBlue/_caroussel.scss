@@ -3,6 +3,9 @@ $backgroundLine: $backgroundColorBluePage;
 .caroussel__container {
   text-align: center;
   overflow: hidden;
+  @include media("<tablet") {
+    display: none;
+  }
   .caroussel__inner {
     display: flex;
     justify-content: center;
