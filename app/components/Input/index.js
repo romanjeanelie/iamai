@@ -86,9 +86,9 @@ export default class Input {
     this.minTranscriptingTime = 1400; //ms
     this.tempTextRecorded = "text recorded";
 
-    if (this.isPageBlue) {
-      this.anims.toPageGrey();
-    }
+    // if (this.isPageBlue) {
+    //   //   this.anims.toPageGrey();
+    // }
   }
 
   // Audio
@@ -247,6 +247,7 @@ export default class Input {
     this.backCameraBtn.addEventListener("click", () => {
       if (this.isSmallRecording) return;
       this.currentStatus = STATUS.UPLOAD_IMAGE;
+      this.inputImage.enable();
       this.anims.toInitial({ animBottom: false, animButtons: false });
       this.anims.toDragImage({ animBottom: false, delay: 300 });
       this.onClickOutside.animInitial = false;
