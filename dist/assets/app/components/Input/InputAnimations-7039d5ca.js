@@ -288,6 +288,7 @@ class InputAnimations {
   toStopRecording(callback) {
     this.cancelBtn.classList.remove("show");
     this.navbarEl.classList.remove("hidden");
+    this.inputEl.style.pointerEvents = "unset";
     this.animCircleYoyo.cancel();
     if (this.isPageBlue) {
       anim(

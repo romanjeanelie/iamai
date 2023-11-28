@@ -116,14 +116,19 @@ iframe {
 }
 html {
   overflow: hidden;
+  height: 100svh;
+  background: #eaeced;
 }
 body {
   color: #fff;
-  height: 100svh;
+  height: 100%;
   overflow: hidden;
   font-family: Circular;
   font-weight: 400;
   font-feature-settings: "liga" 0;
+}
+button {
+  -webkit-tap-highlight-color: transparent;
 }
 .page {
   position: relative;
@@ -211,7 +216,7 @@ body {
 }
 @media (max-width: 819px) {
   .nav {
-    right: 20px;
+    right: 12px;
     top: 28px;
     height: unset;
   }
@@ -270,7 +275,7 @@ body {
 }
 @media (max-width: 819px) {
   .cancel-btn {
-    right: 20px;
+    right: 12px;
     top: 28px;
   }
 }
@@ -302,7 +307,7 @@ body {
   opacity: 1;
 }
 .image-dropped__container {
-  z-index: -1;
+  z-index: 0;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
@@ -374,7 +379,7 @@ body {
   width: 32px;
   height: 32px;
   background: #c2c2c2;
-  margin-right: 8px;
+  margin-right: 12px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -587,6 +592,11 @@ body {
   text-align: center;
   overflow: hidden;
 }
+@media (max-width: 819px) {
+  .page-blue .caroussel__container {
+    display: none;
+  }
+}
 .page-blue .caroussel__container .caroussel__inner {
   display: flex;
   justify-content: center;
@@ -694,6 +704,11 @@ body {
   justify-content: center;
   width: 100%;
 }
+@media (max-width: 819px) {
+  .page-blue .categories__list--container {
+    display: none;
+  }
+}
 .page-blue .categories__list--container .categories__list {
   flex: 1;
   display: flex;
@@ -755,7 +770,7 @@ body {
     bottom: unset;
     top: 42px;
     transform: scale(0.7);
-    left: 33px;
+    left: 24px;
   }
 }
 .page-grey .discussion__container {
@@ -772,6 +787,14 @@ body {
 .page-grey .discussion__container .discussion__ai {
   position: relative;
   margin-bottom: 32px;
+  font-size: 20px;
+  line-height: 24px;
+}
+@media (max-width: 819px) {
+  .page-grey .discussion__container .discussion__user,
+  .page-grey .discussion__container .discussion__ai {
+    font-size: 18px;
+  }
 }
 .page-grey .discussion__container .discussion__user {
   color: #4d79ec;
@@ -780,11 +803,21 @@ body {
   padding-right: 16px;
   margin-left: 112px;
 }
+@media (max-width: 819px) {
+  .page-grey .discussion__container .discussion__user {
+    padding-right: 24px;
+  }
+}
 .page-grey .discussion__container .discussion__ai {
   color: rgba(0, 0, 0, 0.72);
   min-height: 24px;
   padding-left: 16px;
   margin-right: 112px;
+}
+@media (max-width: 819px) {
+  .page-grey .discussion__container .discussion__ai {
+    padding-left: 24px;
+  }
 }
 .page-grey .overlay__recording {
   position: fixed;

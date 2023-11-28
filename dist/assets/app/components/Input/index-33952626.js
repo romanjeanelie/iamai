@@ -1,10 +1,11 @@
 import AudioRecorder from "../../AudioRecorder-1e53bb0d.js";
 import minSecStr from "../../utils/minSecStr-3b9ae0f7.js";
-import InputAnimations from "./InputAnimations-bc620f7f.js";
+import InputAnimations from "./InputAnimations-7039d5ca.js";
 import InputImage from "./InputImage-115ff9a2.js";
 import sendToWispher from "../../utils/sendToWhisper-a6374299.js";
 import TypingText from "../../TypingText-15c55674.js";
 import { colorMain } from "../../../scss/variables/_colors.module.scss-f9d2d4d4.js";
+import "../../../scss/variables/_breakpoints.module.scss-bbb4a233.js";
 const STATUS = {
   INITIAL: "INITIAL",
   RECORD_AUDIO: "RECORD_AUDIO",
@@ -25,6 +26,7 @@ class Input {
     this.backCameraBtn = this.inputBackEl.querySelector(".camera-btn");
     this.closeInputImageBtn = this.pageEl.querySelector(".input__image--closeBtn");
     this.currentImage = null;
+    this.inputImageEl = this.pageEl.querySelector(".input__image");
     this.audioRecorder = new AudioRecorder({
       onComplete: this.onCompleteRecording.bind(this)
     });
@@ -63,8 +65,6 @@ class Input {
     this.addListeners();
     this.minTranscriptingTime = 1400;
     this.tempTextRecorded = "text recorded";
-    if (this.isPageBlue)
-      ;
   }
   // Audio
   startRecording() {
@@ -135,6 +135,7 @@ class Input {
     this.updateInputHeight();
     this.cancelBtn.classList.remove("show");
     this.navbarEl.classList.remove("hidden");
+    this.goToInitial();
   }
   updateInputHeight() {
     const event = new Event("input", {
@@ -145,6 +146,11 @@ class Input {
   }
   goToPageGrey() {
     this.anims.toPageGrey();
+  }
+  goToInitial() {
+    this.currentStatus = STATUS.INITIAL;
+    this.anims.toInitial();
+    this.onClickOutside.animInitial = false;
   }
   // Listeners
   addListeners() {
@@ -189,6 +195,7 @@ class Input {
       if (this.isSmallRecording)
         return;
       this.currentStatus = STATUS.UPLOAD_IMAGE;
+      this.inputImage.enable();
       this.anims.toInitial({ animBottom: false, animButtons: false });
       this.anims.toDragImage({ animBottom: false, delay: 300 });
       this.onClickOutside.animInitial = false;
@@ -197,6 +204,14 @@ class Input {
       this.currentStatus = STATUS.INITIAL;
       this.inputImage.disable();
       this.anims.leaveDragImage();
+    });
+    this.inputImageEl.addEventListener("focus", (e) => {
+      document.documentElement.style.overflow = "unset";
+      window.scrollTo(0, document.body.scrollHeight);
+    });
+    this.inputImageEl.addEventListener("blur", (e) => {
+      document.documentElement.style.overflow = "hidden";
+      window.scrollTo(0, 0);
     });
     this.pageEl.addEventListener(
       "click",
@@ -214,9 +229,7 @@ class Input {
           if (this.onClickOutside.animInitial) {
             if (this.inputText.value)
               return;
-            this.currentStatus = STATUS.INITIAL;
-            this.anims.toInitial();
-            this.onClickOutside.animInitial = false;
+            this.goToInitial();
           }
         }
       },
