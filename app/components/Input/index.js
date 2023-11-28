@@ -5,6 +5,7 @@ import InputImage from "./InputImage";
 import sendToWispher from "../../utils/sendToWhisper";
 import TypingText from "../../TypingText";
 import { colorMain } from "../../../scss/variables/_colors.module.scss";
+import isMobile from "../../utils/isMobile";
 
 const STATUS = {
   INITIAL: "INITIAL",
@@ -31,6 +32,7 @@ export default class Input {
     this.backCameraBtn = this.inputBackEl.querySelector(".camera-btn");
     this.closeInputImageBtn = this.pageEl.querySelector(".input__image--closeBtn");
     this.currentImage = null;
+    this.inputImageEl = this.pageEl.querySelector(".input__image");
 
     // Record
     this.audioRecorder = new AudioRecorder({
@@ -83,8 +85,9 @@ export default class Input {
     // TEMP
     this.minTranscriptingTime = 1400; //ms
     this.tempTextRecorded = "text recorded";
+
     if (this.isPageBlue) {
-      //   this.anims.toPageGrey();
+      this.anims.toPageGrey();
     }
   }
 
@@ -248,6 +251,16 @@ export default class Input {
       this.currentStatus = STATUS.INITIAL;
       this.inputImage.disable();
       this.anims.leaveDragImage();
+    });
+
+    // Prevent input hidden by keyboard on mobile
+    this.inputImageEl.addEventListener("focus", (e) => {
+      document.documentElement.style.overflow = "unset";
+      window.scrollTo(0, document.body.scrollHeight);
+    });
+    this.inputImageEl.addEventListener("blur", (e) => {
+      document.documentElement.style.overflow = "hidden";
+      window.scrollTo(0, 0);
     });
 
     // Click outside

@@ -23,10 +23,12 @@ $paddingTopMobile: 28px;
 
 html {
   overflow: hidden;
+  height: 100svh;
+  background: $backgroundColorGreyPage;
 }
 body {
   color: $colorMain;
-  height: 100svh;
+  height: 100%;
   overflow: hidden;
   font-family: Circular;
   font-weight: 400;

@@ -35,7 +35,7 @@ export default class InputAnimations {
     // Image
     this.inputImageContainer = this.inputEl.querySelector(".input__image--container");
     this.imageDroppedContainer = this.pageEl.querySelector(".image-dropped__container");
-
+	
     // Other dom elements
     this.pageBlue = document.querySelector(".page-blue");
     this.pageGrey = document.querySelector(".page-grey");
