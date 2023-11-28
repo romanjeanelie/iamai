@@ -172,9 +172,8 @@ export default class Input {
     this.updateInputHeight();
     this.cancelBtn.classList.remove("show");
     this.navbarEl.classList.remove("hidden");
-    // if (this.inputText.value && this.inputText.value.trim().length > 0) {
-    //   window.location.replace("https://ai.iamplus.services/chatbot/webchat/chat.html?q=" + this.inputText.value.trim());
-    // }
+
+    this.goToInitial();
   }
 
   updateInputHeight() {
@@ -188,6 +187,12 @@ export default class Input {
 
   goToPageGrey() {
     this.anims.toPageGrey();
+  }
+
+  goToInitial() {
+    this.currentStatus = STATUS.INITIAL;
+    this.anims.toInitial();
+    this.onClickOutside.animInitial = false;
   }
 
   // Listeners
@@ -278,9 +283,7 @@ export default class Input {
           }
           if (this.onClickOutside.animInitial) {
             if (this.inputText.value) return;
-            this.currentStatus = STATUS.INITIAL;
-            this.anims.toInitial();
-            this.onClickOutside.animInitial = false;
+            this.goToInitial();
           }
         }
       },
