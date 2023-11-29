@@ -4,6 +4,7 @@ import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scs
 export default class Discussion {
   constructor() {
     this.page = document.querySelector(".page-grey");
+	this.mainEl = this.page.querySelector('main')
     this.inputText = this.page.querySelector(".input-text");
     this.discussionContainer = document.querySelector(".discussion__container");
 
@@ -73,7 +74,7 @@ export default class Discussion {
   }
 
   scrollToBottom() {
-    this.discussionContainer.scrollTo({
+    this.mainEl.scrollTo({
       top: this.discussionContainer.scrollHeight,
       behavior: "smooth",
     });
