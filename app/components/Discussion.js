@@ -1,10 +1,13 @@
 import TypingText from "../TypingText";
 import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scss";
+import typeText from "../utils/typeText";
+
+// type();
 
 export default class Discussion {
   constructor() {
     this.page = document.querySelector(".page-grey");
-	this.mainEl = this.page.querySelector('main')
+    this.mainEl = this.page.querySelector("main");
     this.inputText = this.page.querySelector(".input-text");
     this.discussionContainer = document.querySelector(".discussion__container");
 
@@ -58,6 +61,7 @@ export default class Discussion {
     const userEl = document.createElement("div");
     userEl.classList.add("discussion__user");
     userEl.innerHTML = text.replace(/\n/g, "<br>");
+
     this.discussionContainer.appendChild(userEl);
 
     this.scrollToBottom();
@@ -66,7 +70,8 @@ export default class Discussion {
   }
   addAIText({ text, container }) {
     const textEl = document.createElement("p");
-    textEl.innerHTML = text.replace(/\n/g, "<br>");
+    // textEl.innerHTML = text.replace(/\n/g, "<br>");
+    typeText(textEl, text);
     container.appendChild(textEl);
 
     this.scrollToBottom();
