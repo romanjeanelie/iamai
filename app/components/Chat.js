@@ -13,14 +13,18 @@ class Chat {
     this.workflowid = "";
     this.awaiting = false;
     this.domain = "";
-    (this.FlightSearch = ""), (this.FlightSearchResults = "");
-    (this.MovieTitle = ""),
-      (this.Theatre = ""),
-      (this.StartDate = ""),
-      (this.EndDate = ""),
-      (this.StartTime = ""),
-      (this.EndTime = "");
-    (this.Source = ""), (this.Destination = "");
+    this.FlightSearch = "";
+    this.FlightSearchResults = "";
+    this.MovieTitle = "";
+    this.Theatre = "";
+    this.StartDate = "";
+    this.EndDate = "";
+    this.StartTime = "";
+    this.EndTime = "";
+    this.Source = "";
+    this.Destination = "";
+
+    this.addListeners();
   }
   callsubmit = (cssession_id, text, img, container, typingText) => {
     this.discussion = new Discussion();
@@ -537,31 +541,34 @@ class Chat {
     var n = 200;
     return str && str.length > n ? str.slice(0, n - 1) + "&hellip;" : str;
   }
+
+  async onLoad() {
+    var queryString = window.location.search;
+    var urlParams = new URLSearchParams(queryString);
+    var q = urlParams.get("q");
+    var session_id = urlParams.get("session_id");
+
+    console.log(q);
+    console.log(session_id);
+    if (urlParams.get("location") && urlParams.get("location") != "") {
+      location = urlParams.get("location");
+    }
+    if (urlParams.get("lang") && urlParams.get("lang") != "") {
+      sourcelang = urlParams.get("lang");
+      if (sourcelang == "ad") sourcelang = "";
+      autodetect = true;
+    }
+    if (q && q != "") {
+      textGenInput.value = q;
+      this.callsubmit("", "");
+    }
+    if (session_id && session_id != "") {
+      this.callsubmit(session_id, "");
+    }
+  }
+
+  addListeners() {
+    window.addEventListener("load", this.onLoad.bind(this));
+  }
 }
 export { Chat as default };
-
-// window.addEventListener("load", load);
-// async function load() {
-//     var queryString = window.location.search;
-//     var urlParams = new URLSearchParams(queryString);
-//     var q = urlParams.get("q");
-//     var session_id = urlParams.get("session_id");
-//     var discussionContainer = document.querySelector(".discussion__container");
-//     console.log(q);
-//     console.log(session_id);
-//     if (urlParams.get("location") && urlParams.get("location") != "") {
-//         location = urlParams.get("location");
-//     }
-//     if (urlParams.get("lang") && urlParams.get("lang") != "") {
-//         sourcelang = urlParams.get("lang");
-//         if (sourcelang == "ad")
-//             sourcelang = "";
-//         autodetect = true;
-//     }
-//     if (q && q != "") {
-
-//     }
-//     if (session_id && session_id != "") {
-//         callsubmit(session_id, "")
-//     }
-// }
