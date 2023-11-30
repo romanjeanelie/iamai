@@ -1,11 +1,21 @@
 let typeIndex = 0;
+
 export default function typeText(container, text) {
-  // container.classList.add("type");
-  if (typeIndex < text.length) {
-    container.textContent += text.charAt(typeIndex);
-    typeIndex++;
-    setTimeout(() => typeText(container, text), 30); // Adjust speed as needed
-  } else {
-    typeIndex = 0;
-  }
+  return new Promise((resolve) => {
+    function type() {
+      if (typeIndex < text.length) {
+        if (text.charAt(typeIndex) === "\n") {
+          container.innerHTML += "<br>";
+        } else {
+          container.innerHTML += text.charAt(typeIndex);
+        }
+        typeIndex++;
+        setTimeout(type, 10); // Adjust speed as needed
+      } else {
+        typeIndex = 0;
+        resolve();
+      }
+    }
+    type();
+  });
 }

@@ -1,6 +1,7 @@
 import TypingText from "../TypingText";
 import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scss";
 import typeText from "../utils/typeText";
+import Chat from "./Chat.js";
 
 // type();
 
@@ -13,9 +14,11 @@ export default class Discussion {
 
     this.addUserElement = this.addUserElement.bind(this);
 
-    // TEMP
-    this.tempAIAnswer = "AI answer";
-    this.tempAIAnswerTiming = 1000;
+    this.Chat = new Chat({
+      addAIText: this.addAIText.bind(this),
+      disableInput: this.disableInput.bind(this),
+      enableInput: this.enableInput.bind(this),
+    });
 
     this.addListeners();
   }
@@ -41,13 +44,7 @@ export default class Discussion {
     });
 
     this.typingText.blink();
-
-    // TODO fetch answer AI
-    console.log("TODO fetch answer AI");
-    setTimeout(() => {
-      this.typingText.fadeOut();
-      this.addAIText({ text: this.tempAIAnswer, container: aiEl });
-    }, this.tempAIAnswerTiming);
+    this.Chat.callsubmit("", text, img, aiEl, this.typingText);
   }
 
   addUserElement({ text, img }) {
@@ -68,14 +65,13 @@ export default class Discussion {
     this.disableInput();
     this.getAiAnswer({ text, img });
   }
-  addAIText({ text, container }) {
+  async addAIText({ text, container }) {
     const textEl = document.createElement("p");
-    // textEl.innerHTML = text.replace(/\n/g, "<br>");
-    typeText(textEl, text);
+    text = text.replace(/<br\/?>\s*/g, "\n");
     container.appendChild(textEl);
+    return typeText(textEl, text);
 
     this.scrollToBottom();
-    this.enableInput();
   }
 
   scrollToBottom() {

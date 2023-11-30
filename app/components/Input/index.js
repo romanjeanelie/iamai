@@ -87,7 +87,7 @@ export default class Input {
     this.tempTextRecorded = "text recorded";
 
     if (this.isPageBlue) {
-      // this.anims.toPageGrey();
+      //   this.anims.toPageGrey();
     }
   }
 
@@ -295,8 +295,16 @@ export default class Input {
     this.inputText.addEventListener("focus", () => {
       this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
     });
-    this.inputText.addEventListener("input", (e) => {
+    // this.inputText.addEventListener("input", (e) => {
+    //   this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
+    // });
+    this.inputText.addEventListener("keyup", (event) => {
       this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
+    });
+    this.inputText.addEventListener("keydown", (event) => {
+      if (this.inputText.value.trim().length > 0 && event.key === "Enter" && !event.shiftKey) {
+        this.onSubmit(event);
+      }
     });
 
     this.submitBtn.addEventListener("click", (event) => this.onSubmit(event));
