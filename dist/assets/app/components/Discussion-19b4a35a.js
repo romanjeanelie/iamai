@@ -1,13 +1,19 @@
 import TypingText from "../TypingText-15c55674.js";
 import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scss-f9d2d4d4.js";
+import typeText from "../utils/typeText-a16d99d7.js";
+import Chat from "./Chat-7218dceb.js";
 class Discussion {
   constructor() {
     this.page = document.querySelector(".page-grey");
+    this.mainEl = this.page.querySelector("main");
     this.inputText = this.page.querySelector(".input-text");
     this.discussionContainer = document.querySelector(".discussion__container");
     this.addUserElement = this.addUserElement.bind(this);
-    this.tempAIAnswer = "AI answer";
-    this.tempAIAnswerTiming = 1e3;
+    this.Chat = new Chat({
+      addAIText: this.addAIText.bind(this),
+      disableInput: this.disableInput.bind(this),
+      enableInput: this.enableInput.bind(this)
+    });
     this.addListeners();
   }
   disableInput() {
@@ -29,11 +35,7 @@ class Discussion {
       marginLeft: 16
     });
     this.typingText.blink();
-    console.log("TODO fetch answer AI");
-    setTimeout(() => {
-      this.typingText.fadeOut();
-      this.addAIText({ text: this.tempAIAnswer, container: aiEl });
-    }, this.tempAIAnswerTiming);
+    this.Chat.callsubmit("", text, img, aiEl, this.typingText);
   }
   addUserElement({ text, img }) {
     if (img) {
@@ -50,15 +52,14 @@ class Discussion {
     this.disableInput();
     this.getAiAnswer({ text, img });
   }
-  addAIText({ text, container }) {
+  async addAIText({ text, container }) {
     const textEl = document.createElement("p");
-    textEl.innerHTML = text.replace(/\n/g, "<br>");
+    text = text.replace(/<br\/?>\s*/g, "\n");
     container.appendChild(textEl);
-    this.scrollToBottom();
-    this.enableInput();
+    return typeText(textEl, text);
   }
   scrollToBottom() {
-    this.discussionContainer.scrollTo({
+    this.mainEl.scrollTo({
       top: this.discussionContainer.scrollHeight,
       behavior: "smooth"
     });

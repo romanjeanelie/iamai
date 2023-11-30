@@ -65,6 +65,8 @@ class Input {
     this.addListeners();
     this.minTranscriptingTime = 1400;
     this.tempTextRecorded = "text recorded";
+    if (this.isPageBlue)
+      ;
   }
   // Audio
   startRecording() {
@@ -238,8 +240,13 @@ class Input {
     this.inputText.addEventListener("focus", () => {
       this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
     });
-    this.inputText.addEventListener("input", (e) => {
+    this.inputText.addEventListener("keyup", (event) => {
       this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
+    });
+    this.inputText.addEventListener("keydown", (event) => {
+      if (this.inputText.value.trim().length > 0 && event.key === "Enter" && !event.shiftKey) {
+        this.onSubmit(event);
+      }
     });
     this.submitBtn.addEventListener("click", (event) => this.onSubmit(event));
   }
