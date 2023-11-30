@@ -1,7 +1,7 @@
 import TypingText from "../TypingText-15c55674.js";
 import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scss-f9d2d4d4.js";
 import typeText from "../utils/typeText-a16d99d7.js";
-import Chat from "./Chat-7218dceb.js";
+import Chat from "./Chat-413f5183.js";
 class Discussion {
   constructor() {
     this.page = document.querySelector(".page-grey");

@@ -4,7 +4,7 @@ var __publicField = (obj, key, value) => {
   __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   return value;
 };
-import Discussion from "./Discussion-19b4a35a.js";
+import Discussion from "./Discussion-9652e326.js";
 import { StringCodec, connect } from "https://cdn.jsdelivr.net/npm/nats.ws@1.17.0/esm/nats.js";
 const uuid = "omega_" + crypto.randomUUID();
 class Chat {
@@ -305,7 +305,7 @@ class Chat {
       });
       xhr.send(data);
     }));
-    __publicField(this, "googletranslate", (text, lang, sourcelang) => new Promise(async (resolve, reject) => {
+    __publicField(this, "googletranslate", (text, lang, sourcelang2) => new Promise(async (resolve, reject) => {
       var xhr = new XMLHttpRequest();
       var url = "https://translation.googleapis.com/language/translate/v2";
       var apiKey = "AIzaSyC1I58b1AR5z5V0b32ROnw55iFUjVso5dY";
@@ -325,7 +325,7 @@ class Chat {
       var data = JSON.stringify({
         q: text,
         target: lang,
-        source: sourcelang
+        source: sourcelang2
       });
       xhr.send(data);
     }));
@@ -336,9 +336,17 @@ class Chat {
     this.workflowid = "";
     this.awaiting = false;
     this.domain = "";
-    this.FlightSearch = "", this.FlightSearchResults = "";
-    this.MovieTitle = "", this.Theatre = "", this.StartDate = "", this.EndDate = "", this.StartTime = "", this.EndTime = "";
-    this.Source = "", this.Destination = "";
+    this.FlightSearch = "";
+    this.FlightSearchResults = "";
+    this.MovieTitle = "";
+    this.Theatre = "";
+    this.StartDate = "";
+    this.EndDate = "";
+    this.StartTime = "";
+    this.EndTime = "";
+    this.Source = "";
+    this.Destination = "";
+    this.addListeners();
   }
   toTitleCase(str) {
     str = str.replace(/\w\S*/g, function(txt) {
@@ -356,6 +364,33 @@ class Chat {
   truncate(str) {
     var n = 200;
     return str && str.length > n ? str.slice(0, n - 1) + "&hellip;" : str;
+  }
+  async onLoad() {
+    var queryString = window.location.search;
+    var urlParams = new URLSearchParams(queryString);
+    var q = urlParams.get("q");
+    var session_id = urlParams.get("session_id");
+    console.log(q);
+    console.log(session_id);
+    if (urlParams.get("location") && urlParams.get("location") != "") {
+      location = urlParams.get("location");
+    }
+    if (urlParams.get("lang") && urlParams.get("lang") != "") {
+      sourcelang = urlParams.get("lang");
+      if (sourcelang == "ad")
+        sourcelang = "";
+      autodetect = true;
+    }
+    if (q && q != "") {
+      textGenInput.value = q;
+      this.callsubmit("", "");
+    }
+    if (session_id && session_id != "") {
+      this.callsubmit(session_id, "");
+    }
+  }
+  addListeners() {
+    window.addEventListener("load", this.onLoad.bind(this));
   }
 }
 export {
