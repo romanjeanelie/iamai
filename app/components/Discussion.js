@@ -66,6 +66,7 @@ export default class Discussion {
     this.getAiAnswer({ text, img });
   }
   async addAIText({ text, container }) {
+    this.typingText.fadeOut();
     const textEl = document.createElement("p");
     text = text.replace(/<br\/?>\s*/g, "\n");
     container.appendChild(textEl);

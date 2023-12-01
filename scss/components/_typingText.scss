@@ -31,6 +31,13 @@
   height: 22px;
   background: $colorBlack;
   border-radius: 50%;
+
+  transition: opacity 0.3s ease-in-out;
+
+  &.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
 }
 
 .typing__text {

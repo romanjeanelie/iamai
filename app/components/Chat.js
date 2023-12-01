@@ -23,10 +23,13 @@ class Chat {
     this.EndTime = "";
     this.Source = "";
     this.Destination = "";
+    this.container = null;
 
     this.addListeners();
   }
-  callsubmit = (cssession_id, text, img, container, typingText) => {
+  callsubmit = (cssession_id, text, img, container) => {
+    this.container = container;
+    console.log("NEW CALL");
     this.discussion = new Discussion();
     var input_text = text;
     var original_text = input_text;
@@ -123,8 +126,7 @@ class Chat {
               AIAnswer = transresponse.data.translations[0].translatedText;
               // target.innerHTML += "<p style='padding:15px;'><span>" + transresponse.data.translations[0].translatedText + "</span><br/><br/></p>";
             }
-            typingText.fadeOut();
-            await this.callbacks.addAIText({ text: AIAnswer, container: container });
+            await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
           } else {
             if (mdata.status == "central finished") {
               var mtext1 = mtext.slice(0, mtext.indexOf(":"));
@@ -139,8 +141,7 @@ class Chat {
                 // AIAnswer = "<p style='background-color: rgba(255, 255, 255, 0.48);padding:15px;'><span class='aicsheader'>" + this.toTitleCase(mtext1) + "</span><br/><span class='aics'>" + mtext2 + "</span></p><br><br>";
                 AIAnswer = this.toTitleCase(mtext1) + "<br/>" + mtext2;
               }
-              typingText.fadeOut();
-              await this.callbacks.addAIText({ text: AIAnswer, container: container });
+              await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
 
               if (this.domain == "MovieSearch") {
                 target.innerHTML +=
@@ -380,8 +381,7 @@ class Chat {
                   // AIAnswer = "<p style='padding:15px;'><span class='aiheader'>" + transresponse.data.translations[0].translatedText + "</span></p>";
                   AIAnswer = transresponse.data.translations[0].translatedText;
                 }
-                typingText.fadeOut();
-                await this.callbacks.addAIText({ text: AIAnswer, container: container });
+                await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
                 if (mdata.message_type != "conversation_question") {
                   // if (this.domain == "MovieSearch") {
                   //     console.log("mtext:" + mtext);
@@ -421,8 +421,7 @@ class Chat {
                   // target.innerHTML += "<p style='padding:15px;'><span class='aiheader'>" + this.toTitleCase(mtext1) + "</span><br/><span>" + this.toTitleCase2(mtext2) + "</span></p>";
                   // var AIAnswer = "<p style='padding:15px;'><span class='aiheader'>" + this.toTitleCase(mtext1) + "</span><br/><span>" + this.toTitleCase2(mtext2) + "</span></p>";
                   var AIAnswer = this.toTitleCase(mtext1) + "<br/>" + this.toTitleCase2(mtext2);
-                  typingText.fadeOut();
-                  await this.callbacks.addAIText({ text: AIAnswer, container: container });
+                  await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
                 }
               }
             }
@@ -435,8 +434,7 @@ class Chat {
     xhr.addEventListener("error", async function (e) {
       console.log("error: " + e);
       var AIAnswer = "An error occurred while attempting to connect.";
-      typingText.fadeOut();
-      await this.callbacks.addAIText({ text: AIAnswer, container: container });
+      await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
 
       this.callbacks.enableInput();
     });

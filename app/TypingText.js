@@ -45,11 +45,7 @@ export default class TypingText {
 
   fadeOut() {
     if (this.blinkCursor) this.blinkCursor.cancel();
-    anim(this.cursorEl, [{ opacity: 1 }, { opacity: 0 }], {
-      duration: 10,
-      fill: "forwards",
-      ease: "ease-in-out",
-    });
+    this.cursorEl.classList.add("hidden");
   }
 
   writing(callback) {
