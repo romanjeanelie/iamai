@@ -7,10 +7,12 @@ class Chat {
   constructor(callbacks) {
     this.callbacks = callbacks;
 
+    this.autodetect = null;
     this.targetlang = "en";
     this.sourcelang = "en";
     this.location = "US";
-    this.workflowid = "";
+    this.sessionID = "";
+    this.workflowID = "";
     this.awaiting = false;
     this.domain = "";
     this.FlightSearch = "";
@@ -24,13 +26,9 @@ class Chat {
     this.Source = "";
     this.Destination = "";
     this.container = null;
-
-    this.addListeners();
   }
-  callsubmit = (cssession_id, text, img, container) => {
+  callsubmit = (text, img, container) => {
     this.container = container;
-    console.log("NEW CALL");
-    this.discussion = new Discussion();
     var input_text = text;
     var original_text = input_text;
     if (this.sourcelang != this.targetlang) {
@@ -112,7 +110,7 @@ class Chat {
           }
 
           if (mdata.status == "Agent ended") {
-            this.workflowid = "";
+            this.workflowID = "";
             this.awaiting = false;
             this.callbacks.enableInput();
             return;
@@ -370,7 +368,7 @@ class Chat {
             } else {
               if (mdata.awaiting) {
                 console.log("awaiting:" + mdata.message_type);
-                this.workflowid = mdata.session_id;
+                this.workflowID = mdata.session_id;
                 this.awaiting = true;
                 // target.innerHTML += "<p style='padding:15px;'><span class='aiheader'>" + this.toTitleCase2(mtext) + "</span></p>";
                 // var AIAnswer = "<p style='padding:15px;'><span class='aiheader'>" + this.toTitleCase2(mtext) + "</span></p>";
@@ -438,12 +436,12 @@ class Chat {
 
       this.callbacks.enableInput();
     });
-    if (cssession_id && cssession_id != "") {
+    if (this.sessionID && this.sessionID != "") {
       xhr.open("POST", "https://ai.iamplus.services/workflow/conversation", true);
       xhr.setRequestHeader("Content-Type", "application/json");
       xhr.send(
         JSON.stringify({
-          session_id: cssession_id,
+          session_id: this.sessionID,
           uuid: uuid + "@iamplus.com",
         })
       );
@@ -538,35 +536,6 @@ class Chat {
   truncate(str) {
     var n = 200;
     return str && str.length > n ? str.slice(0, n - 1) + "&hellip;" : str;
-  }
-
-  async onLoad() {
-    var queryString = window.location.search;
-    var urlParams = new URLSearchParams(queryString);
-    var q = urlParams.get("q");
-    var session_id = urlParams.get("session_id");
-
-    console.log(q);
-    console.log(session_id);
-    if (urlParams.get("location") && urlParams.get("location") != "") {
-      location = urlParams.get("location");
-    }
-    if (urlParams.get("lang") && urlParams.get("lang") != "") {
-      sourcelang = urlParams.get("lang");
-      if (sourcelang == "ad") sourcelang = "";
-      autodetect = true;
-    }
-    if (q && q != "") {
-      textGenInput.value = q;
-      this.callsubmit("", "");
-    }
-    if (session_id && session_id != "") {
-      this.callsubmit(session_id, "");
-    }
-  }
-
-  addListeners() {
-    window.addEventListener("load", this.onLoad.bind(this));
   }
 }
 export { Chat as default };

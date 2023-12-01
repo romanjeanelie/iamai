@@ -44,7 +44,7 @@ export default class Discussion {
     });
 
     this.typingText.blink();
-    this.Chat.callsubmit("", text, img, aiEl, this.typingText);
+    this.Chat.callsubmit(text, img, aiEl, this.typingText);
   }
 
   addUserElement({ text, img }) {
@@ -82,7 +82,34 @@ export default class Discussion {
     });
   }
 
+  async onLoad() {
+    var queryString = window.location.search;
+    var urlParams = new URLSearchParams(queryString);
+    var q = urlParams.get("q");
+    const sessionID = urlParams.get("session_id");
+
+    console.log(q);
+    console.log(this.Chat.sessionID);
+
+    if (urlParams.get("location") && urlParams.get("location") != "") {
+      this.Chat.location = urlParams.get("location");
+    }
+    if (urlParams.get("lang") && urlParams.get("lang") != "") {
+      this.Chat.sourcelang = urlParams.get("lang");
+      if (this.Chat.sourcelang == "ad") this.Chat.sourcelang = "";
+      this.Chat.autodetect = true;
+    }
+    if (q && q != "") {
+      this.getAiAnswer();
+    }
+    if (sessionID && sessionID != "") {
+      this.Chat.sessionID = sessionID;
+      this.getAiAnswer();
+    }
+  }
+
   addListeners() {
+    window.addEventListener("load", this.onLoad.bind(this));
     const resizeObserver = new ResizeObserver(this.scrollToBottom.bind(this));
 
     resizeObserver.observe(this.discussionContainer);
