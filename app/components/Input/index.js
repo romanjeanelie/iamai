@@ -15,7 +15,9 @@ const STATUS = {
 };
 
 export default class Input {
-  constructor({ pageEl, addUserElement }) {
+  constructor({ pageEl, addUserElement, toPageGrey }) {
+    this.toPageGrey = toPageGrey;
+
     this.pageEl = pageEl;
     this.inputEl = this.pageEl.querySelector(".input__container");
     this.inputFrontEl = this.inputEl.querySelector(".input__front");
@@ -87,7 +89,7 @@ export default class Input {
     this.tempTextRecorded = "text recorded";
 
     if (this.isPageBlue) {
-      //   this.anims.toPageGrey();
+      //   this.toPageGrey();
     }
   }
 
@@ -164,7 +166,7 @@ export default class Input {
   onSubmit(event) {
     event.preventDefault();
     if (this.isPageBlue) {
-      this.goToPageGrey();
+      this.toPageGrey({ duration: 1200 });
     }
     this.addUserElement({ text: this.inputText.value, img: this.currentImage });
     this.inputText.value = "";
@@ -183,10 +185,6 @@ export default class Input {
       cancelable: true,
     });
     this.inputText.dispatchEvent(event);
-  }
-
-  goToPageGrey() {
-    this.anims.toPageGrey();
   }
 
   goToInitial() {

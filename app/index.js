@@ -7,9 +7,21 @@ class App {
   constructor() {
     this.pageBlue = document.querySelector(".page-blue");
     this.pageGrey = document.querySelector(".page-grey");
+    this.navbarEl = document.querySelector(".nav");
+    this.cancelBtn = document.querySelector(".cancel-btn");
 
     this.addListeners();
     this.resetScroll();
+  }
+
+  // Anim
+  toPageGrey({ duration = 0 } = {}) {
+    this.pageBlue.style.transitionDuration = duration + "ms";
+    this.pageGrey.style.transitionDuration = duration + "ms";
+    this.pageBlue.classList.add("hidden");
+    this.pageGrey.classList.add("show");
+    this.navbarEl.classList.add("dark");
+    this.cancelBtn.classList.add("dark");
   }
 
   initApp() {
@@ -29,12 +41,15 @@ class App {
   }
 
   initDiscussion() {
-    this.discussion = new Discussion();
+    this.discussion = new Discussion({
+      toPageGrey: this.toPageGrey.bind(this),
+    });
   }
 
   initInput() {
     const callbacks = {
       addUserElement: this.discussion.addUserElement,
+      toPageGrey: this.toPageGrey.bind(this),
     };
 
     new Input({ pageEl: this.pageBlue, ...callbacks });
