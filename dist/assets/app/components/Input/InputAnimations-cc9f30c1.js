@@ -392,15 +392,6 @@ class InputAnimations {
     const step2 = this.expandWidthInputFront({ delay: step1.effect.getComputedTiming().duration + 500, duration: 250 });
     this.fadeInButtons(step1.effect.getComputedTiming().duration + step2.effect.getComputedTiming().duration + 500, 0);
   }
-  /**
-   * Page
-   */
-  toPageGrey() {
-    this.pageBlue.classList.add("hidden");
-    this.pageGrey.classList.add("show");
-    this.navbarEl.classList.add("dark");
-    this.cancelBtn.classList.add("dark");
-  }
 }
 export {
   InputAnimations as default

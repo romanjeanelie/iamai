@@ -3,7 +3,8 @@ import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scs
 import typeText from "../utils/typeText-a16d99d7.js";
 import Chat from "./Chat-8434e108.js";
 class Discussion {
-  constructor() {
+  constructor(callbacks) {
+    this.callbacks = callbacks;
     this.page = document.querySelector(".page-grey");
     this.mainEl = this.page.querySelector("main");
     this.inputText = this.page.querySelector(".input-text");
@@ -35,7 +36,7 @@ class Discussion {
       marginLeft: 16
     });
     this.typingText.blink();
-    this.Chat.callsubmit(text, img, aiEl, this.typingText);
+    this.Chat.callsubmit(text, img, aiEl);
   }
   addUserElement({ text, img }) {
     if (img) {
@@ -82,11 +83,12 @@ class Discussion {
       this.Chat.autodetect = true;
     }
     if (q && q != "") {
-      this.getAiAnswer();
+      this.getAiAnswer({ text: "" });
     }
     if (sessionID && sessionID != "") {
+      this.callbacks.toPageGrey();
       this.Chat.sessionID = sessionID;
-      this.getAiAnswer();
+      this.getAiAnswer({ text: "" });
     }
   }
   addListeners() {

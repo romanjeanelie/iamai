@@ -1,6 +1,6 @@
 import AudioRecorder from "../../AudioRecorder-1e53bb0d.js";
 import minSecStr from "../../utils/minSecStr-3b9ae0f7.js";
-import InputAnimations from "./InputAnimations-7039d5ca.js";
+import InputAnimations from "./InputAnimations-cc9f30c1.js";
 import InputImage from "./InputImage-115ff9a2.js";
 import sendToWispher from "../../utils/sendToWhisper-a6374299.js";
 import TypingText from "../../TypingText-05e288b5.js";
@@ -13,7 +13,8 @@ const STATUS = {
   WRITE: "WRITE"
 };
 class Input {
-  constructor({ pageEl, addUserElement }) {
+  constructor({ pageEl, addUserElement, toPageGrey }) {
+    this.toPageGrey = toPageGrey;
     this.pageEl = pageEl;
     this.inputEl = this.pageEl.querySelector(".input__container");
     this.inputFrontEl = this.inputEl.querySelector(".input__front");
@@ -129,7 +130,7 @@ class Input {
   onSubmit(event) {
     event.preventDefault();
     if (this.isPageBlue) {
-      this.goToPageGrey();
+      this.toPageGrey({ duration: 1200 });
     }
     this.addUserElement({ text: this.inputText.value, img: this.currentImage });
     this.inputText.value = "";
@@ -145,9 +146,6 @@ class Input {
       cancelable: true
     });
     this.inputText.dispatchEvent(event);
-  }
-  goToPageGrey() {
-    this.anims.toPageGrey();
   }
   goToInitial() {
     this.currentStatus = STATUS.INITIAL;
