@@ -3,7 +3,7 @@ import minSecStr from "../../utils/minSecStr-3b9ae0f7.js";
 import InputAnimations from "./InputAnimations-7039d5ca.js";
 import InputImage from "./InputImage-115ff9a2.js";
 import sendToWispher from "../../utils/sendToWhisper-a6374299.js";
-import TypingText from "../../TypingText-15c55674.js";
+import TypingText from "../../TypingText-05e288b5.js";
 import { colorMain } from "../../../scss/variables/_colors.module.scss-f9d2d4d4.js";
 import "../../../scss/variables/_breakpoints.module.scss-bbb4a233.js";
 const STATUS = {

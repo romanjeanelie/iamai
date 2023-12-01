@@ -1,7 +1,7 @@
-import TypingText from "../TypingText-15c55674.js";
+import TypingText from "../TypingText-05e288b5.js";
 import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scss-f9d2d4d4.js";
 import typeText from "../utils/typeText-a16d99d7.js";
-import Chat from "./Chat-413f5183.js";
+import Chat from "./Chat-8434e108.js";
 class Discussion {
   constructor() {
     this.page = document.querySelector(".page-grey");
@@ -35,7 +35,7 @@ class Discussion {
       marginLeft: 16
     });
     this.typingText.blink();
-    this.Chat.callsubmit("", text, img, aiEl, this.typingText);
+    this.Chat.callsubmit(text, img, aiEl, this.typingText);
   }
   addUserElement({ text, img }) {
     if (img) {
@@ -53,6 +53,7 @@ class Discussion {
     this.getAiAnswer({ text, img });
   }
   async addAIText({ text, container }) {
+    this.typingText.fadeOut();
     const textEl = document.createElement("p");
     text = text.replace(/<br\/?>\s*/g, "\n");
     container.appendChild(textEl);
@@ -64,7 +65,32 @@ class Discussion {
       behavior: "smooth"
     });
   }
+  async onLoad() {
+    var queryString = window.location.search;
+    var urlParams = new URLSearchParams(queryString);
+    var q = urlParams.get("q");
+    const sessionID = urlParams.get("session_id");
+    console.log(q);
+    console.log(this.Chat.sessionID);
+    if (urlParams.get("location") && urlParams.get("location") != "") {
+      this.Chat.location = urlParams.get("location");
+    }
+    if (urlParams.get("lang") && urlParams.get("lang") != "") {
+      this.Chat.sourcelang = urlParams.get("lang");
+      if (this.Chat.sourcelang == "ad")
+        this.Chat.sourcelang = "";
+      this.Chat.autodetect = true;
+    }
+    if (q && q != "") {
+      this.getAiAnswer();
+    }
+    if (sessionID && sessionID != "") {
+      this.Chat.sessionID = sessionID;
+      this.getAiAnswer();
+    }
+  }
   addListeners() {
+    window.addEventListener("load", this.onLoad.bind(this));
     const resizeObserver = new ResizeObserver(this.scrollToBottom.bind(this));
     resizeObserver.observe(this.discussionContainer);
   }

@@ -4,13 +4,13 @@ var __publicField = (obj, key, value) => {
   __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   return value;
 };
-import Discussion from "./Discussion-9652e326.js";
+import "../../scss/variables/_colors.module.scss-f9d2d4d4.js";
 import { StringCodec, connect } from "https://cdn.jsdelivr.net/npm/nats.ws@1.17.0/esm/nats.js";
 const uuid = "omega_" + crypto.randomUUID();
 class Chat {
   constructor(callbacks) {
-    __publicField(this, "callsubmit", (cssession_id, text, img, container, typingText) => {
-      this.discussion = new Discussion();
+    __publicField(this, "callsubmit", (text, img, container) => {
+      this.container = container;
       var input_text = text;
       if (this.sourcelang != this.targetlang) {
         var response = this.googletranslate(input_text, this.targetlang, this.sourcelang);
@@ -60,7 +60,7 @@ class Chat {
               console.log("domain:" + this.domain);
             }
             if (mdata.status == "Agent ended") {
-              this.workflowid = "";
+              this.workflowID = "";
               this.awaiting = false;
               this.callbacks.enableInput();
               return;
@@ -70,8 +70,7 @@ class Chat {
                 var transresponse = this.googletranslate(this.toTitleCase2(mtext), this.sourcelang, this.targetlang);
                 AIAnswer = transresponse.data.translations[0].translatedText;
               }
-              typingText.fadeOut();
-              await this.callbacks.addAIText({ text: AIAnswer, container });
+              await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
             } else {
               if (mdata.status == "central finished") {
                 var mtext1 = mtext.slice(0, mtext.indexOf(":"));
@@ -82,8 +81,7 @@ class Chat {
                   mtext2 = transresponse.data.translations[0].translatedText;
                   AIAnswer = this.toTitleCase(mtext1) + "<br/>" + mtext2;
                 }
-                typingText.fadeOut();
-                await this.callbacks.addAIText({ text: AIAnswer, container });
+                await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
                 if (this.domain == "MovieSearch") {
                   target.innerHTML += '<div class="movie-list" id="movie-list' + y + '"><div class="card-group"><div class="movie-list-wrapper" id="movie-list-wrapper' + y + '"><ul class="movie-list-content" id="movietile' + y + '"></ul></div><button class="movie-list-button" id="movie-list-button' + y + '" onclick="expands(' + y + ');return false;"><i class="fa fa-angle-down"></i></button></div></div><div class="movie" id ="moviedetails' + y + '"></div>';
                   getMovies(
@@ -229,15 +227,14 @@ class Chat {
               } else {
                 if (mdata.awaiting) {
                   console.log("awaiting:" + mdata.message_type);
-                  this.workflowid = mdata.session_id;
+                  this.workflowID = mdata.session_id;
                   this.awaiting = true;
                   var AIAnswer = this.toTitleCase2(mtext);
                   if (this.sourcelang != "en") {
                     var transresponse = this.googletranslate(this.toTitleCase2(mtext), this.sourcelang, this.targetlang);
                     AIAnswer = transresponse.data.translations[0].translatedText;
                   }
-                  typingText.fadeOut();
-                  await this.callbacks.addAIText({ text: AIAnswer, container });
+                  await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
                   if (mdata.message_type != "conversation_question")
                     ;
                   console.log("domain:" + this.domain);
@@ -247,8 +244,7 @@ class Chat {
                     var mtext1 = mtext.slice(0, mtext.indexOf(":"));
                     var mtext2 = mtext.slice(mtext.indexOf(":") + 1, -1);
                     var AIAnswer = this.toTitleCase(mtext1) + "<br/>" + this.toTitleCase2(mtext2);
-                    typingText.fadeOut();
-                    await this.callbacks.addAIText({ text: AIAnswer, container });
+                    await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
                   }
                 }
               }
@@ -260,16 +256,15 @@ class Chat {
       xhr.addEventListener("error", async function(e) {
         console.log("error: " + e);
         var AIAnswer = "An error occurred while attempting to connect.";
-        typingText.fadeOut();
-        await this.callbacks.addAIText({ text: AIAnswer, container });
+        await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
         this.callbacks.enableInput();
       });
-      if (cssession_id && cssession_id != "") {
+      if (this.sessionID && this.sessionID != "") {
         xhr.open("POST", "https://ai.iamplus.services/workflow/conversation", true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.send(
           JSON.stringify({
-            session_id: cssession_id,
+            session_id: this.sessionID,
             uuid: uuid + "@iamplus.com"
           })
         );
@@ -305,7 +300,7 @@ class Chat {
       });
       xhr.send(data);
     }));
-    __publicField(this, "googletranslate", (text, lang, sourcelang2) => new Promise(async (resolve, reject) => {
+    __publicField(this, "googletranslate", (text, lang, sourcelang) => new Promise(async (resolve, reject) => {
       var xhr = new XMLHttpRequest();
       var url = "https://translation.googleapis.com/language/translate/v2";
       var apiKey = "AIzaSyC1I58b1AR5z5V0b32ROnw55iFUjVso5dY";
@@ -325,15 +320,17 @@ class Chat {
       var data = JSON.stringify({
         q: text,
         target: lang,
-        source: sourcelang2
+        source: sourcelang
       });
       xhr.send(data);
     }));
     this.callbacks = callbacks;
+    this.autodetect = null;
     this.targetlang = "en";
     this.sourcelang = "en";
     this.location = "US";
-    this.workflowid = "";
+    this.sessionID = "";
+    this.workflowID = "";
     this.awaiting = false;
     this.domain = "";
     this.FlightSearch = "";
@@ -346,7 +343,7 @@ class Chat {
     this.EndTime = "";
     this.Source = "";
     this.Destination = "";
-    this.addListeners();
+    this.container = null;
   }
   toTitleCase(str) {
     str = str.replace(/\w\S*/g, function(txt) {
@@ -364,33 +361,6 @@ class Chat {
   truncate(str) {
     var n = 200;
     return str && str.length > n ? str.slice(0, n - 1) + "&hellip;" : str;
-  }
-  async onLoad() {
-    var queryString = window.location.search;
-    var urlParams = new URLSearchParams(queryString);
-    var q = urlParams.get("q");
-    var session_id = urlParams.get("session_id");
-    console.log(q);
-    console.log(session_id);
-    if (urlParams.get("location") && urlParams.get("location") != "") {
-      location = urlParams.get("location");
-    }
-    if (urlParams.get("lang") && urlParams.get("lang") != "") {
-      sourcelang = urlParams.get("lang");
-      if (sourcelang == "ad")
-        sourcelang = "";
-      autodetect = true;
-    }
-    if (q && q != "") {
-      textGenInput.value = q;
-      this.callsubmit("", "");
-    }
-    if (session_id && session_id != "") {
-      this.callsubmit(session_id, "");
-    }
-  }
-  addListeners() {
-    window.addEventListener("load", this.onLoad.bind(this));
   }
 }
 export {
