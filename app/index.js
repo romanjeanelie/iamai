@@ -12,7 +12,6 @@ class App {
 
     this.addListeners();
     this.resetScroll();
-    console.log("test")
   }
 
   // Anim

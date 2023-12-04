@@ -89,7 +89,7 @@ export default class Input {
     this.tempTextRecorded = "text recorded";
 
     if (this.isPageBlue) {
-      //   this.toPageGrey();
+      this.toPageGrey();
     }
   }
 
