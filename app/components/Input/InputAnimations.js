@@ -12,7 +12,7 @@ export default class InputAnimations {
 
     this.centerBtn = this.inputFrontEl.querySelector(".center-btn");
     this.frontCameraBtn = this.inputFrontEl.querySelector(".camera-btn");
-    this.frontMicBtn = this.inputFrontEl.querySelector(".mic-btn");
+    this.frontMicBtn = this.inputFrontEl.querySelector(".mic-btn") || this.inputFrontEl.querySelector(".phone-btn");
     this.frontCenterBtn = this.inputFrontEl.querySelector(".center-btn");
 
     this.inputFrontHeight = this.inputFrontEl.offsetHeight;
@@ -35,6 +35,9 @@ export default class InputAnimations {
     // Image
     this.inputImageContainer = this.inputEl.querySelector(".input__image--container");
     this.imageDroppedContainer = this.pageEl.querySelector(".image-dropped__container");
+
+    // Phone
+    this.phoneContainer = this.pageEl.querySelector(".phone__container");
 
     // Other dom elements
     this.pageBlue = document.querySelector(".page-blue");
@@ -380,6 +383,19 @@ export default class InputAnimations {
         callback.onComplete();
       }
     }
+  }
+
+  /**
+   * Phone
+   */
+
+  toStartPhoneRecording() {
+    this.inputEl.classList.add("hidden");
+    this.phoneContainer.classList.add("show");
+  }
+  toStopPhoneRecording() {
+    this.inputEl.classList.remove("hidden");
+    this.phoneContainer.classList.remove("show");
   }
 
   /**

@@ -1,0 +1,44 @@
+.phone__container {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 872px;
+  font-size: 12px;
+  max-width: 100vw;
+  transform: translateY(-80%);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease-in-out;
+  color: $colorBlack;
+
+  @include media("<tablet") {
+    padding: 0 12px;
+  }
+
+  button {
+    transition: background 300ms ease-in-out;
+    border-radius: 50%;
+
+    path {
+      transition: stroke 300ms ease-in-out;
+    }
+
+    &:hover,
+    &.active {
+      background: $colorBlack;
+
+      path {
+        stroke: $colorMain;
+      }
+    }
+  }
+
+  &.show {
+    opacity: 1;
+    visibility: visible;
+  }
+}

@@ -35,7 +35,6 @@ export default class AudioRecorder {
         this.recorder.onComplete = (recorder, blob) => {
           console.log("Encoding complete");
           this.blob = blob;
-          this.createDownloadLink(blob, recorder.encoding);
           this.callbacks.onComplete(blob);
         };
 
@@ -73,20 +72,5 @@ export default class AudioRecorder {
     clearInterval(this.timeInterval);
 
     console.log("Recording stopped");
-  }
-
-  createDownloadLink(blob, encoding) {
-    const audioUrl = URL.createObjectURL(blob);
-    const au = document.createElement("audio");
-    const audioLink = document.createElement("a");
-
-    au.controls = true;
-    au.src = audioUrl;
-
-    audioLink.href = audioUrl;
-    audioLink.download = new Date().toISOString() + "." + encoding;
-
-    // temp download audio
-    // audioLink.click();
   }
 }

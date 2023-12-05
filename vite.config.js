@@ -5,6 +5,9 @@ export default {
   plugins: [
     handlebars({
       partialDirectory: resolve(__dirname, "partials"),
+      helpers: {
+        isBlue: (labelPage) => labelPage === "blue",
+      },
     }),
   ],
   build: {

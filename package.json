@@ -13,6 +13,7 @@
 		"vite-plugin-handlebars": "^1.6.0"
 	},
 	"dependencies": {
+		"lamejs": "^1.2.1",
 		"sass": "^1.69.5"
 	}
 }

@@ -47,13 +47,13 @@ class App {
   }
 
   initInput() {
-    const callbacks = {
-      addUserElement: this.discussion.addUserElement,
+    const props = {
+      discussion: this.discussion,
       toPageGrey: this.toPageGrey.bind(this),
     };
 
-    new Input({ pageEl: this.pageBlue, ...callbacks });
-    new Input({ pageEl: this.pageGrey, ...callbacks });
+    new Input({ pageEl: this.pageBlue, ...props });
+    new Input({ pageEl: this.pageGrey, ...props });
   }
 
   resetScroll() {

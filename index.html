@@ -20,8 +20,10 @@
             {{> bluePage/logo}}
           </div>
           <div class="center">
-            <!-- Input -->
-            {{> input labelPage="blue"}}
+            <div class="input__wrapper">
+              <!-- Input -->
+              {{> input labelPage="blue"}}
+            </div>
           </div>
           <div class="bottom">
             <!-- Categories list -->
@@ -40,9 +42,14 @@
         {{> greyPage/overlayRecording}}
         <main>
           <!-- Discussion -->
+
           <div class="discussion__container"></div>
-          <!-- Input -->
-          {{> input labelPage="grey"}}
+          <div class="input__wrapper">
+            <!-- Input -->
+            {{> input labelPage="grey"}}
+            <!-- Phone -->
+            {{> phone}}
+          </div>
         </main>
         <!-- Image drop -->
         {{> imageDrop}}
@@ -53,5 +60,8 @@
     <script src="/libAudioRecorder/WebAudioRecorder.min.js"></script>
     <script type="module" src="/app/index.js"></script>
     <script crossorigin="" src="/app/showProductDetail.js"></script>
+    <!-- Audio detection -->
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@ricky0123/vad-web@0.0.7/dist/bundle.min.js"></script>
   </body>
 </html>

@@ -1,11 +1,17 @@
-import AudioRecorder from "../../AudioRecorder";
-import minSecStr from "../../utils/minSecStr";
-import InputAnimations from "./InputAnimations";
+// Components
 import InputImage from "./InputImage";
-import sendToWispher from "../../utils/sendToWhisper";
+import Phone from "../Phone";
 import TypingText from "../../TypingText";
-import { colorMain } from "../../../scss/variables/_colors.module.scss";
+
+// Utils
+import minSecStr from "../../utils/minSecStr";
 import isMobile from "../../utils/isMobile";
+
+import AudioRecorder from "../../AudioRecorder";
+import InputAnimations from "./InputAnimations";
+import sendToWispher from "../../utils/audio/sendToWhisper";
+
+import { colorMain } from "../../../scss/variables/_colors.module.scss";
 
 const STATUS = {
   INITIAL: "INITIAL",
@@ -15,8 +21,9 @@ const STATUS = {
 };
 
 export default class Input {
-  constructor({ pageEl, addUserElement, toPageGrey }) {
+  constructor({ pageEl, toPageGrey, discussion }) {
     this.toPageGrey = toPageGrey;
+    this.discussion = discussion;
 
     this.pageEl = pageEl;
     this.inputEl = this.pageEl.querySelector(".input__container");
@@ -49,7 +56,6 @@ export default class Input {
 
     // Write
     this.inputText = this.inputBackEl.querySelector(".input-text");
-    this.addUserElement = addUserElement;
 
     // Other DOM elements
     this.cancelBtn = document.body.querySelector(".cancel-btn");
@@ -82,14 +88,26 @@ export default class Input {
       this.pageEl
     );
 
+    // Phone
+    if (!this.isPageBlue) {
+      this.phone = new Phone({
+        pageEl: this.pageEl,
+        discussion: this.discussion,
+        anims: {
+          toStartPhoneRecording: () => this.anims.toStartPhoneRecording(),
+          toStopPhoneRecording: () => this.anims.toStopPhoneRecording(),
+        },
+      });
+    }
+
     this.addListeners();
 
     // TEMP
     this.minTranscriptingTime = 1400; //ms
-    this.tempTextRecorded = "text recorded";
+    this.textRecorded = "text recorded";
 
     if (this.isPageBlue) {
-      this.toPageGrey();
+      //   this.toPageGrey();
     }
   }
 
@@ -125,7 +143,7 @@ export default class Input {
     this.inputText.disabled = false;
     this.timecodeAudioEl.textContent = "00:00";
 
-    this.inputText.value += this.tempTextRecorded;
+    this.inputText.value += this.textRecorded;
     this.updateInputHeight();
 
     // TODO Call this function when audio is transcripted
@@ -145,9 +163,7 @@ export default class Input {
   async onCompleteRecording(blob) {
     if (this.isRecordCanceled) return;
 
-    // TODO : send audio to API endpoint
-    console.log("TODO add url endpoint to send audio file:", blob);
-    this.tempTextRecorded = await sendToWispher(blob);
+    this.textRecorded = await sendToWispher(blob);
     this.timeoutTranscripting = setTimeout(() => {
       this.onCompleteTranscripting();
     }, this.minTranscriptingTime);
@@ -168,7 +184,7 @@ export default class Input {
     if (this.isPageBlue) {
       this.toPageGrey({ duration: 1200 });
     }
-    this.addUserElement({ text: this.inputText.value, img: this.currentImage });
+    this.discussion.addUserElement({ text: this.inputText.value, img: this.currentImage });
     this.inputText.value = "";
     this.currentImage = null;
     this.updateInputHeight();
@@ -203,12 +219,13 @@ export default class Input {
     });
 
     // Record
-    this.frontMicBtn.addEventListener("click", () => {
-      this.currentStatus = STATUS.RECORD_AUDIO;
-      this.startRecording();
-      this.anims.toStartRecording();
-      this.onClickOutside.stopAudio = true;
-    });
+    if (this.frontMicBtn)
+      this.frontMicBtn.addEventListener("click", () => {
+        this.currentStatus = STATUS.RECORD_AUDIO;
+        this.startRecording();
+        this.anims.toStartRecording();
+        this.onClickOutside.stopAudio = true;
+      });
 
     this.cancelBtn.addEventListener("click", () => {
       if (this.currentStatus === STATUS.RECORD_AUDIO) {
