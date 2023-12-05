@@ -1,5 +1,5 @@
 import Discussion from "./Discussion.js";
-import { connect, StringCodec } from "https://cdn.jsdelivr.net/npm/nats.ws@1.17.0/esm/nats.js";
+import { connect, StringCodec } from "https://cdn.jsdelivr.net/npm/nats.ws@latest/esm/nats.js";
 const uuid = "omega_" + crypto.randomUUID();
 
 class Chat {
@@ -50,7 +50,7 @@ class Chat {
           console.log(xhr.response);
           let text = JSON.parse(xhr.response);
           console.log(text.stream_id);
-          const sc = new StringCodec();
+          // const sc = new StringCodec();
           let nc = await connect({
             servers: ["wss://ai.iamplus.services/tasks:8443"],
             user: "acc",
@@ -61,7 +61,8 @@ class Chat {
           console.log(stream_name);
           const js = nc.jetstream();
           const c = await js.consumers.get(stream_name, stream_name);
-          let iter = await c.fetch({ expires: 200000000 });
+          // let iter = await c.fetch({ expires: 200000000 });
+          let iter = await c.consume();
           nc.onclose = function (e) {
             console.log("Socket is closed. Reconnect will be attempted in 1 second.", e.reason);
             setTimeout(async function () {
@@ -82,7 +83,6 @@ class Chat {
             var mdata = m.json();
             console.log(mdata);
             var mtext = mdata.data;
-            m.ack();
             if (mdata.streaming && mdata.streaming == true) {
               var AIAnswer = await this.toTitleCase2(mtext);
               if (this.sourcelang != "en") {
@@ -93,9 +93,10 @@ class Chat {
                 );
                 AIAnswer = transresponse.data.translations[0].translatedText;
               }
-              await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
+              // await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
+              this.container.innerHTML += AIAnswer;
               if (mdata.awaiting) {
-                this.workflowid = mdata.session_id;
+                this.workflowID = mdata.session_id;
                 this.awaiting = true;
               }
               if (mdata.stream_status && mdata.stream_status == "ended")
@@ -471,6 +472,7 @@ class Chat {
                 }
               }
             }
+            m.ack();
           }
           nc.drain();
         }
