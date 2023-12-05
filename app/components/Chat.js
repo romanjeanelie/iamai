@@ -21,8 +21,10 @@ class Chat {
     this.EndDate = "";
     this.StartTime = "";
     this.EndTime = "";
-    this.Source = "";
-    this.Destination = "";
+    this.TaxiSearch = "";
+    this.TaxiSearchResults = "";
+    // this.Source = "";
+    // this.Destination = "";
     this.container = null;
     this.RAG_CHAT = "";
     this.FlightSearch = "";
@@ -115,10 +117,12 @@ class Chat {
                     this.StartTime = moviedata.start_time;
                   if (moviedata.end_time != undefined && moviedata.end_time != "") this.EndTime = moviedata.end_time;
                 } else if (this.domain == "TaxiSearch") {
-                  let ridesdata = JSON.parse(mdata.ui_params.TaxiSearch);
-                  if (ridesdata.source != undefined && ridesdata.source != "") this.Source = ridesdata.source;
-                  if (ridesdata.destination != undefined && ridesdata.destination != "")
-                    this.Destination = ridesdata.destination;
+                  this.TaxiSearch = JSON.parse(mdata.ui_params.TaxiSearch);
+                  this.TaxiSearchResults = JSON.parse(mdata.ui_params.TaxiSearchResults);
+                  // let ridesdata = JSON.parse(mdata.ui_params.TaxiSearch);
+                  // if (ridesdata.source != undefined && ridesdata.source != "") this.Source = ridesdata.source;
+                  // if (ridesdata.destination != undefined && ridesdata.destination != "")
+                  // this.Destination = ridesdata.destination;
                 } else if (this.domain == "RAG_CHAT") {
                   this.RAG_CHAT = JSON.parse(mdata.ui_params.RAG_CHAT);
                   console.log("domain RAG_CHAT:" + this.RAG_CHAT);
@@ -193,72 +197,111 @@ class Chat {
                       (this.domain = "");
                     y++;
                   } else if (this.domain == "TaxiSearch") {
-                    // con.className = "console-underscore stopani hidden";
-                    this.container.innerHTML +=
-                      '<div class="ridesinput-container"><div class="ridesinput-card"><div class="ridesinput-content" id="ridesinput-source' +
-                      (x - 1) +
-                      '"><span class="ridesinfo">From</span><p id="ridesinputdetails-source' +
-                      (x - 1) +
-                      '" contenteditable="true">' +
-                      Source +
-                      '</p></div><div class="autocomplete-results" id="source-autocomplete-results' +
-                      (x - 1) +
-                      '"></div><div class="ridesinput-icon-right" id="editBtn-source' +
-                      (x - 1) +
-                      '"><img src="./images/pencil.svg"/></div></div><div class="ridesinput-card"><div class="ridesinput-content" id="ridesinput-dest' +
-                      (x - 1) +
-                      '"><span class="ridesinfo">To</span><p id="ridesinputdetails-dest' +
-                      (x - 1) +
-                      '" contenteditable="true">' +
-                      Destination +
-                      '</p></div> <div class="autocomplete-results" id="dest-autocomplete-results' +
-                      (x - 1) +
-                      '"></div><div class="ridesinput-icon-right" id="editBtn-dest' +
-                      (x - 1) +
-                      '"><img src="./images/pencil.svg"/></div></div></div><div class="rides-list" id="rides-list' +
-                      (x - 1) +
-                      '"></div><div class="console-underscore hidden" id="taxiconsole' +
-                      (x - 1) +
-                      '">&nbsp;</div>';
-                    var myDivsource = document.getElementById("ridesinput-source" + (x - 1));
-                    var myDivsdest = document.getElementById("ridesinput-dest" + (x - 1));
-                    var mypsource = myDivsource.querySelector("p");
-                    var mypdest = myDivsdest.querySelector("p");
-                    var myDivsourceac = document.getElementById("source-autocomplete-results" + (x - 1));
-                    var myDivsdestac = document.getElementById("dest-autocomplete-results" + (x - 1));
-                    var ridelist = document.getElementById("rides-list" + (x - 1));
-                    let taxicons = "taxiconsole" + (x - 1);
-                    let taxicon = document.getElementById(taxicons);
-                    mypsource.addEventListener("click", function () {
-                      mypsource.focus();
-                      var range = document.createRange();
-                      var selection = window.getSelection();
-                      range.selectNodeContents(mypsource);
-                      range.collapse(false);
-                      selection.removeAllRanges();
-                      selection.addRange(range);
-                      mypsource.addEventListener("keyup", async function (e) {
-                        autocomplete(myDivsource, myDivsourceac, ridelist, taxicon, false);
-                      });
-                    });
-                    mypdest.addEventListener("click", function () {
-                      mypdest.focus();
-                      var range = document.createRange();
-                      var selection = window.getSelection();
-                      range.selectNodeContents(mypdest);
-                      range.collapse(false);
-                      selection.removeAllRanges();
-                      selection.addRange(range);
-                      mypdest.addEventListener("keyup", async function (e) {
-                        autocomplete(myDivsdest, myDivsdestac, ridelist, taxicon, false);
-                      });
-                    });
-                    autocomplete(myDivsource, myDivsourceac, ridelist, taxicon, true);
-                    autocomplete(myDivsdest, myDivsdestac, ridelist, taxicon, true);
-                    (this.Source = ""), (this.Destination = ""), (this.domain = "");
+                    let str = '<div class="rides-list-wrapper">';
+                    let data = this.TaxiSearchResults;
+                    console.log("data:" + data);
+                    for (let taxii = 0; taxii < data.services.length; taxii++) {
+                      let service = data.services[taxii];
+                      if (service) {
+                        str = str + '<div class="rides-list-item"><div class="rides-list-item-header"><figure class="rides-list-item-header-logo"><img src="./images/logo/' + service.provider + '-logo.svg" alt="' + service.provider + '"/></figure>';
+                        if (service.name.includes('TAXI_HAILING'))
+                          str = str + '<div class="rides-list-item-header-info"><p>Taxi Hailing</p>';
+                        else
+                          str = str + '<div class="rides-list-item-header-info"><p>' + service.name + '</p>';
+
+                        str = str + '<p>' + service.description + '</p>';
+                        str = str + '<p>' + service.seats + ' seats</p>';
+                        if (service.deeplink)
+                          str = str + '<a href="' + service.deeplink + '" target="_blank">Link</a>';
+                        str = str + '</div></div>';
+
+                        str = str + '<div class="rides-list-item-content"><div class="rides-list-item-content-prices">';
+                        // <span class="rides-list-item-content-sticker">cheapest</span>
+
+                        if (service.price) {
+                          if (service.price.length > 1)
+                            str = str + '<span>$</span><span>' + service.price[0] + '-' + service.price[1] + '</span></div>' + (taxii == 0 ? '<span class="rides-list-item-content-sticker">cheapest</span>' : "");
+                          else
+                            str = str + '<span>$</span><span>' + service.price + '</span></div>' + (taxii == 0 ? '<span class="rides-list-item-content-sticker">cheapest</span>' : "");
+                        } else {
+                          str = str + '<span></span><span></span></div>';
+                        }
+                        str = str + '</div></div>';
+                      }
+                    }
+                    str = str + '</div>'
+                    this.container.innerHTML += str;
+                    this.TaxiSearchResults = "";
+                    this.TaxiSearch = "";
+                    this.domain = "";
+
+
+                    // this.container.innerHTML +=
+                    //   '<div class="ridesinput-container"><div class="ridesinput-card"><div class="ridesinput-content" id="ridesinput-source' +
+                    //   (x - 1) +
+                    //   '"><span class="ridesinfo">From</span><p id="ridesinputdetails-source' +
+                    //   (x - 1) +
+                    //   '" contenteditable="true">' +
+                    //   Source +
+                    //   '</p></div><div class="autocomplete-results" id="source-autocomplete-results' +
+                    //   (x - 1) +
+                    //   '"></div><div class="ridesinput-icon-right" id="editBtn-source' +
+                    //   (x - 1) +
+                    //   '"><img src="./images/pencil.svg"/></div></div><div class="ridesinput-card"><div class="ridesinput-content" id="ridesinput-dest' +
+                    //   (x - 1) +
+                    //   '"><span class="ridesinfo">To</span><p id="ridesinputdetails-dest' +
+                    //   (x - 1) +
+                    //   '" contenteditable="true">' +
+                    //   Destination +
+                    //   '</p></div> <div class="autocomplete-results" id="dest-autocomplete-results' +
+                    //   (x - 1) +
+                    //   '"></div><div class="ridesinput-icon-right" id="editBtn-dest' +
+                    //   (x - 1) +
+                    //   '"><img src="./images/pencil.svg"/></div></div></div><div class="rides-list" id="rides-list' +
+                    //   (x - 1) +
+                    //   '"></div><div class="console-underscore hidden" id="taxiconsole' +
+                    //   (x - 1) +
+                    //   '">&nbsp;</div>';
+                    // var myDivsource = document.getElementById("ridesinput-source" + (x - 1));
+                    // var myDivsdest = document.getElementById("ridesinput-dest" + (x - 1));
+                    // var mypsource = myDivsource.querySelector("p");
+                    // var mypdest = myDivsdest.querySelector("p");
+                    // var myDivsourceac = document.getElementById("source-autocomplete-results" + (x - 1));
+                    // var myDivsdestac = document.getElementById("dest-autocomplete-results" + (x - 1));
+                    // var ridelist = document.getElementById("rides-list" + (x - 1));
+                    // let taxicons = "taxiconsole" + (x - 1);
+                    // let taxicon = document.getElementById(taxicons);
+                    // mypsource.addEventListener("click", function () {
+                    //   mypsource.focus();
+                    //   var range = document.createRange();
+                    //   var selection = window.getSelection();
+                    //   range.selectNodeContents(mypsource);
+                    //   range.collapse(false);
+                    //   selection.removeAllRanges();
+                    //   selection.addRange(range);
+                    //   mypsource.addEventListener("keyup", async function (e) {
+                    //     autocomplete(myDivsource, myDivsourceac, ridelist, taxicon, false);
+                    //   });
+                    // });
+                    // mypdest.addEventListener("click", function () {
+                    //   mypdest.focus();
+                    //   var range = document.createRange();
+                    //   var selection = window.getSelection();
+                    //   range.selectNodeContents(mypdest);
+                    //   range.collapse(false);
+                    //   selection.removeAllRanges();
+                    //   selection.addRange(range);
+                    //   mypdest.addEventListener("keyup", async function (e) {
+                    //     autocomplete(myDivsdest, myDivsdestac, ridelist, taxicon, false);
+                    //   });
+                    // });
+                    // autocomplete(myDivsource, myDivsourceac, ridelist, taxicon, true);
+                    // autocomplete(myDivsdest, myDivsdestac, ridelist, taxicon, true);
+                    // (this.Source = ""), (this.Destination = ""), (this.domain = "");
+
                   } else if (this.domain == "FlightSearch") {
                     let flightsresultsstr = '<div class="FlightContainer Flight-Container" name="flightResult">';
-                    if (FlightSearch.departure_end_date.length > 0 && FlightSearch.return_end_date.length > 0) {
+                    if (this.FlightSearch.departure_end_date.length > 0 && this.FlightSearch.return_end_date.length > 0) {
                       flightsresultsstr += '<div class="flight-toggle-button-container">';
                       flightsresultsstr +=
                         '<button id="Outbound" class="flight-toggle-button active" onclick="toggleflights(this);return false;">Outbound</button>';
@@ -266,9 +309,9 @@ class Chat {
                         '<button id="Return" class="flight-toggle-button" onclick="toggleflights(this);return false;">Return</button>';
                       flightsresultsstr += "</div>";
                     }
-                    let FlightSearchResultsArr = FlightSearchResults.Outbound;
+                    let FlightSearchResultsArr = this.FlightSearchResults.Outbound;
                     for (let flightsi = 0; flightsi < 2; flightsi++) {
-                      if (flightsi == 1) FlightSearchResultsArr = FlightSearchResults.Return;
+                      if (flightsi == 1) FlightSearchResultsArr = this.FlightSearchResults.Return;
                       if (FlightSearchResultsArr.length > 0) {
                         if (flightsi == 0) flightsresultsstr += '<div class="flightResult" id="flightResultOutbound">';
                         if (flightsi == 1)
@@ -372,7 +415,7 @@ class Chat {
                       }
                     }
                     flightsresultsstr += "</div>";
-                    target.innerHTML += flightsresultsstr;
+                    this.container.innerHTML += flightsresultsstr;
                     (this.FlightSearch = ""), (this.domain = ""), (this.FlightSearchResults = "");
                   }
                 } else {
@@ -579,7 +622,7 @@ class Chat {
       }
     });
 
-    xhr.open("PUT", "https://ai.iamplus.services/workflow/message/" + suworkflowid);
+    xhr.open("POST", "https://ai.iamplus.services/workflow/message/" + suworkflowid);
     xhr.setRequestHeader("Content-Type", "application/json");
 
     xhr.send(data);

@@ -24,3 +24,22 @@ function showProductDetail(element) {
   divele.innerHTML = divinnerhtml;
   // scrollToDiv(element.getAttribute('data-info'));
 }
+
+function toggleflights(element)
+{
+    // element.parent.querySelectorAll('.toggle-button').forEach(btn => btn.classList.remove('active'));
+    // this.classList.add('active');
+    if(element.id=="Outbound"){
+        element.classList.add('active');
+        element.parentElement.querySelector('#Return').classList.remove('active');
+        // .getElementById("Return").remove('active');
+        element.parentElement.parentElement.querySelector("#flightResultOutbound").style.display = "flex";
+        element.parentElement.parentElement.querySelector("#flightResultReturn").style.display = "none";
+    }else{
+        element.classList.add('active');
+        element.parentElement.querySelector('#Outbound').classList.remove('active');
+        // element.parentElement.getElementById("Outbound").remove('active');
+        element.parentElement.parentElement.querySelector("#flightResultOutbound").style.display = "none";
+        element.parentElement.parentElement.querySelector("#flightResultReturn").style.display = "flex";
+    }
+}

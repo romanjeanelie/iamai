@@ -179,7 +179,7 @@ button {
   color: var(--Text, rgba(0, 0, 0, 0.72));
   text-align: center;
   font-feature-settings: 'liga' off;
-  font-family: Circular Std;
+  // font-family: Circular Std;
   font-size: 16px;
   font-style: normal;
   font-weight: 450;
@@ -198,7 +198,7 @@ button {
   color: var(--B48-W60, rgba(0, 0, 0, 0.48));
   text-align: center;
   font-feature-settings: 'liga' off;
-  font-family: Circular Std;
+  // font-family: Circular Std;
   font-size: 14px;
   font-style: normal;
   font-weight: 450;
@@ -357,4 +357,546 @@ button {
   list-style: none;
   padding-left: 0;
   /* ... other styles ... */
+}
+
+
+/* ##########      rides       ############*/
+
+.rides-list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.rides-list-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  margin-top: 15px;
+}
+
+
+.rides-list-item {
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  padding: 20px 16px;
+  border-radius: 16px;
+  background-color: rgba(255, 255, 255, 0.48);
+  position: relative;
+}
+
+.rides-list-item.active {
+  background-color: #ffffff;
+}
+
+.rides-list-item-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: 24px;
+}
+
+.rides-list-item-header-logo {
+  width: 48px;
+  height: 48px;
+}
+
+.rides-list-item-header-info p {
+  margin: 0;
+}
+
+.rides-list-item-header-info p:nth-of-type(1) {
+  font-size: 1rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.72);
+}
+
+.rides-list-item-header-info p:nth-of-type(2) {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: rgba(0, 0, 0, 0.48);
+}
+
+.rides-list-item-header-info p:nth-of-type(3) {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: rgba(0, 0, 0, 0.48);
+}
+
+.rides-list-item-content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.rides-list-item-content-sticker {
+  position: absolute;
+  bottom: calc(100% - 16px);
+  right: 20%;
+  background-color: red;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  padding: 4px 12px;
+  border-radius: 24px;
+  background-color: #CFF3D5;
+  color: #008053;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.rides-list-item-content-prices {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 8px;
+}
+
+.rides-list-item-content-prices span {
+  margin: 0;
+}
+
+.rides-list-item-content-prices span:nth-of-type(1) {
+  font-size: 1rem;
+  line-height: 1.25rem;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.rides-list-item-content-prices span:nth-of-type(2) {
+  font-size: 1.75rem;
+  line-height: 2rem;
+  color: rgba(0, 0, 0, 0.72);
+}
+
+.rides-list-content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.rides-timepicker {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  gap: 52px;
+  padding: 36px 60px;
+  background-color: rgba(255, 255, 255, 0.48);
+  border-radius: 24px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  margin: 24px auto;
+}
+
+.rides-timepicker-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: flex;
+  gap: 16px;
+}
+
+.rides-timepicker-wrapper span.time {
+  font-size: 6rem;
+  line-height: 6rem;
+  color: rgba(0, 0, 0, 0.24);
+}
+
+.rides-timepicker-wrapper .time-group {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.rides-timepicker-wrapper .time {
+  position: relative;
+}
+
+.rides-timepicker-wrapper .time p {
+  font-size: 6rem;
+  line-height: 6rem;
+  color: rgba(0, 0, 0, 0.24);
+}
+
+.rides-timepicker-wrapper .time .arrow {
+  font-size: 1.5rem;
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  opacity: 0;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  color: rgba(0, 0, 0, 0.24);
+}
+
+.rides-timepicker-wrapper .time .arrow.arrow-up {
+  top: -24px;
+}
+
+.rides-timepicker-wrapper .time:hover {
+  cursor: pointer;
+}
+
+.rides-timepicker-wrapper .time:hover>.arrow {
+  opacity: 1;
+}
+
+.rides-timepicker-wrapper .btn-group {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.ridesinput-container {
+  display: flex;
+  /* Establishes a flex container */
+  justify-content: space-between;
+  /* Distributes space between and around flex items */
+  align-items: flex-start;
+  /* Vertically aligns flex items */
+  flex-wrap: wrap;
+  /* Allows the boxes to wrap onto the next line on small screens */
+  height: 70px;
+}
+
+.ridesinput-card {
+  display: block;
+  align-items: center;
+  background-color: #f9f9f9;
+  border-radius: 16px;
+  padding: 8px 20px;
+  /* margin: 10px; */
+  /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+  width: 360px;
+  min-height: 64px;
+  z-index: 8;
+}
+
+.ridesinput-icon-left,
+.icon-right {
+  font-size: 24px;
+  /* Adjust size accordingly */
+  padding: 0 10px;
+  /* Add styles for your icons here */
+}
+
+.ridesinput-icon-right {
+  margin-left: auto;
+  display: none;
+  /* Pushes the right icon to the end of the container */
+}
+
+.ridesinput-content {
+  /* margin: 0 10px; */
+  height: 100%;
+  width: 100%;
+}
+
+.ridesinput-content h2 {
+  margin: 0;
+  font-size: 16px;
+  /* Adjust size accordingly */
+  color: #333;
+}
+
+.ridesinput-content p {
+  margin: 0;
+  overflow: hidden;
+  color: var(--Text, rgba(0, 0, 0, 0.72));
+  font-feature-settings: 'liga' off;
+  text-overflow: ellipsis;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  /* 125% */
+  letter-spacing: 0.6px;
+  // font-family: "Circular Std Medium";
+}
+
+.rides-location-list {
+  list-style: none;
+  /* Removes default list styling */
+  padding: 0;
+  /* Removes default padding */
+  width: 100%;
+  /* Set to the desired width */
+  max-width: 600px;
+  /* Adjust as needed */
+  margin: 0 auto;
+  /* Centers the list if smaller than the full width */
+}
+
+.ridesinfo {
+  overflow: hidden;
+  color: var(--B48-W60, rgba(0, 0, 0, 0.48));
+  font-feature-settings: 'liga' off;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 450;
+  line-height: 20px;
+  /* 142.857% */
+  letter-spacing: 0.6px;
+}
+
+.rides-location-item {
+  color: var(--B48-W60, rgba(0, 0, 0, 0.48));
+  font-feature-settings: 'liga' off;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 450;
+  line-height: 20px;
+  /* 142.857% */
+  letter-spacing: 0.6px;
+  padding: 12px 16px 12px 0;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.rides-location-item:hover {
+  cursor: pointer;
+  color: var(--B48-W60, rgba(0, 0, 0, 0.72));
+  /* background: var(--White, #FFF);
+   */
+}
+
+.autocomplete-results {
+  z-index: 1000;
+  /* Ensures the autocomplete results appear above other content */
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  display: none;
+  /* Hide by default */
+}
+
+@media (max-width: 600px) {
+  .ridesinput-container {
+    justify-content: center;
+    /* Centers boxes on small screens if they don't wrap */
+  }
+
+  .ridesinput-card {
+    flex-basis: 100%;
+    /* Each box takes full width on small screens */
+    max-width: 100%;
+    /* Ensures the box doesn't exceed the container's width */
+  }
+}
+
+
+
+/* #########################   FLIGHT ######################### */
+
+.flight-toggle-button-container {
+  display: flex;
+  margin-bottom: 24px;
+  /* border-radius: 20px; */
+  /* overflow: hidden; */
+}
+
+.flight-toggle-button {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.3s;
+}
+
+.flight-toggle-button.active {
+  border-radius: var(--24, 24px);
+  background: var(--B6-W8, rgba(0, 0, 0, 0.06));
+}
+
+.FlightContainer {
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin: 20px 0;
+  align-self: flex-start;
+}
+
+.FlightContainer:not(.Travellers-Mini) {
+  /* min-width: 900px; */
+}
+
+.flightResult {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0 1.2rem;
+}
+
+.flightCard {
+  width: 48%;
+  position: relative;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  border-radius: 24px;
+  padding: 16px 16px 12px 16px;
+  margin-bottom: 2.2rem;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-content: space-between;
+  gap: 10px;
+
+  color: rgba(0, 0, 0, 0.72);
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 100;
+  line-height: 20px;
+  letter-spacing: 1.2px;
+}
+
+@media (width <=600px) {
+  .flightCard {
+      width: 95%;
+  }
+}
+
+.recommand {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(-35%, -50%);
+  padding: 4px 12px;
+  border-radius: 24px;
+  background: #cff3d5;
+  color: #008053;
+  text-align: right;
+  font-size: 0.8rem;
+  font-style: normal;
+  font-weight: 100;
+  line-height: 16px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.rowFlightCard {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  /* align-items: center; */
+}
+
+.logoFight {
+  display: flex;
+}
+
+.flghtCost {
+  text-align: right;
+}
+
+.currency {
+  font-size: 0.8rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.big {
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 32px;
+  letter-spacing: 0.8px;
+  /* margin-bottom: 0; */
+  // font-family: Circular Std Medium;
+  // font-weight: 600;
+}
+
+.small {
+  color: var(--B60--W80, rgba(0, 0, 0, 0.60));
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  /* 171.429% */
+  letter-spacing: 1.2px;
+}
+
+.duration {
+  max-width: 50%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+
+  .timeHourMin {
+      position: relative;
+      bottom: -6px;
+      margin-bottom: 0;
+  }
+
+  .direction {
+      font-size: 0.8rem;
+      position: relative;
+      top: -6px;
+      margin-bottom: 0;
+  }
+}
+
+.dDirection {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.destination {
+  text-align: right;
+}
+
+.site {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  transform: translate(30%, 140%);
+  color: rgba(0, 0, 0, 0.48);
+  font-size: 0.8rem;
+  font-style: normal;
+  font-weight: 100;
+  line-height: 16px;
+  letter-spacing: 1.2px;
 }
