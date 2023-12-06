@@ -15,20 +15,20 @@ class Chat {
     this.domain = "";
     this.FlightSearch = "";
     this.FlightSearchResults = "";
-    this.MovieTitle = "";
-    this.Theatre = "";
-    this.StartDate = "";
-    this.EndDate = "";
-    this.StartTime = "";
-    this.EndTime = "";
+    // this.MovieTitle = "";
+    // this.Theatre = "";
+    // this.StartDate = "";
+    // this.EndDate = "";
+    // this.StartTime = "";
+    // this.EndTime = "";
     this.TaxiSearch = "";
     this.TaxiSearchResults = "";
     // this.Source = "";
     // this.Destination = "";
     this.container = null;
     this.RAG_CHAT = "";
-    this.FlightSearch = "";
-    this.FlightSearchResults = "";
+    this.MovieSearch = "";
+    this.MovieSearchResults = "";
   }
   callsubmit = async (text, img, container) => {
     this.container = container;
@@ -106,17 +106,19 @@ class Chat {
                 this.domain = mdata.ui_params.domain;
                 console.log("domain:" + this.domain);
                 if (this.domain == "MovieSearch") {
-                  let moviedata = JSON.parse(mdata.ui_params.MovieSearch);
-                  if (moviedata.movie_name != undefined && moviedata.movie_name != "")
-                    this.MovieTitle = moviedata.movie_name;
-                  if (moviedata.theatre_name != undefined && moviedata.theatre_name != "")
-                    this.Theatre = moviedata.theatre_name;
-                  if (moviedata.start_date != undefined && moviedata.start_date != "")
-                    this.StartDate = moviedata.start_date;
-                  if (moviedata.end_date != undefined && moviedata.end_date != "") this.EndDate = moviedata.end_date;
-                  if (moviedata.start_time != undefined && moviedata.start_time != "")
-                    this.StartTime = moviedata.start_time;
-                  if (moviedata.end_time != undefined && moviedata.end_time != "") this.EndTime = moviedata.end_time;
+                  this.MovieSearch = JSON.parse(mdata.ui_params.MovieSearch);
+                  this.MovieSearchResults = JSON.parse(mdata.ui_params.MovieSearchResults);
+                  // let moviedata = JSON.parse(mdata.ui_params.MovieSearch);
+                  // if (moviedata.movie_name != undefined && moviedata.movie_name != "")
+                  //   this.MovieTitle = moviedata.movie_name;
+                  // if (moviedata.theatre_name != undefined && moviedata.theatre_name != "")
+                  //   this.Theatre = moviedata.theatre_name;
+                  // if (moviedata.start_date != undefined && moviedata.start_date != "")
+                  //   this.StartDate = moviedata.start_date;
+                  // if (moviedata.end_date != undefined && moviedata.end_date != "") this.EndDate = moviedata.end_date;
+                  // if (moviedata.start_time != undefined && moviedata.start_time != "")
+                  //   this.StartTime = moviedata.start_time;
+                  // if (moviedata.end_time != undefined && moviedata.end_time != "") this.EndTime = moviedata.end_time;
                 } else if (this.domain == "TaxiSearch") {
                   this.TaxiSearch = JSON.parse(mdata.ui_params.TaxiSearch);
                   this.TaxiSearchResults = JSON.parse(mdata.ui_params.TaxiSearchResults);
@@ -165,38 +167,18 @@ class Chat {
                   }
                   await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
                   if (this.domain == "MovieSearch") {
-                    target.innerHTML +=
-                      '<div class="movie-list" id="movie-list' +
-                      y +
-                      '"><div class="card-group"><div class="movie-list-wrapper" id="movie-list-wrapper' +
-                      y +
-                      '"><ul class="movie-list-content" id="movietile' +
-                      y +
-                      '"></ul></div><button class="movie-list-button" id="movie-list-button' +
-                      y +
-                      '" onclick="expands(' +
-                      y +
-                      ');return false;"><i class="fa fa-angle-down"></i></button></div></div><div class="movie" id ="moviedetails' +
-                      y +
-                      '"></div>';
-                    getMovies(
-                      this.MovieTitle,
-                      this.Theatre,
-                      this.StartDate,
-                      this.EndDate,
-                      this.StartTime,
-                      this.EndTime,
-                      y,
-                      mdata.session_id
-                    );
-                    (this.MovieTitle = ""),
-                      (this.Theatre = ""),
-                      (this.StartDate = ""),
-                      (this.EndDate = ""),
-                      (this.StartTime = ""),
-                      (this.EndTime = ""),
-                      (this.domain = "");
-                    y++;
+                      var displaytext = '<div><div class="moviescard-container">';
+
+                      this.MovieSearchResults.list.forEach((element) => {
+                        displaytext +='<div class="movies-card" data-info="movies-details"  data-details=\'' + JSON.stringify(element).replace(/'/g, "&#39;") + '\' onclick="showMovieDetail(this);return false;">';
+                        displaytext +='<img src="' + element.MoviePoster + '" alt="' + element.MovieTitle.replace(/'/g, "&#39;") + '" class="movies-image">';
+                          displaytext += '<p class="movies-title">' + element.MovieTitle + "</p>";
+                        displaytext += '</div>';
+                      });
+                      displaytext += '</div><div id="movie-details"></div></div>';
+                      this.container.innerHTML += displaytext;
+                      (this.domain = ""), (this.MovieSearchResults = ""), (this.MovieSearch = "");
+
                   } else if (this.domain == "TaxiSearch") {
                     let str = '<div class="rides-list-wrapper">';
                     let data = this.TaxiSearchResults;

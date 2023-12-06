@@ -25,6 +25,9 @@ function showProductDetail(element) {
   // scrollToDiv(element.getAttribute('data-info'));
 }
 
+function showMovieDetail(element) {
+}
+
 function toggleflights(element)
 {
     // element.parent.querySelectorAll('.toggle-button').forEach(btn => btn.classList.remove('active'));
