@@ -44,8 +44,6 @@ export default class Phone {
 
   leave() {
     this.isActive = false;
-    this.discussion.off("addAIText");
-
     this.stopRecording();
     this.stopAITalking();
   }
@@ -95,18 +93,30 @@ export default class Phone {
       this.infoText.textContent = "Click to interrupt";
     };
 
+    this.checkIfNextAudio();
+  }
+
+  checkIfNextAudio() {
+    if (!this.isActive) return;
     this.audiosAI[this.currentIndexAudioAI].onended = () => {
       this.currentIndexAudioAI++;
       if (this.audiosAI[this.currentIndexAudioAI]) {
         console.log("Stil one sound");
         this.audiosAI[this.currentIndexAudioAI].play();
+        this.checkIfNextAudio();
       } else {
         console.log("all sounds plaid");
-        this.currentIndexAudioAI = 0;
-        this.isAITalking = false;
+        this.clearAIAudios();
         this.startListening();
       }
     };
+  }
+
+  clearAIAudios() {
+    this.currentIndexAudioAI = null;
+    this.audiosAI = [];
+    this.discussion.off("addAIText");
+    this.isAITalking = false;
   }
 
   stopAITalking() {
@@ -114,9 +124,7 @@ export default class Phone {
     this.audiosAI.forEach((audio) => {
       audio.pause();
     });
-    this.audiosAI = [];
-    this.currentIndexAudioAI = null;
-    this.isAITalking = false;
+    this.clearAIAudios();
   }
 
   async startRecording() {
