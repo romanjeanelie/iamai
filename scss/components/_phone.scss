@@ -11,6 +11,7 @@ $colorTalkAI: black;
 
   &.show {
     display: flex;
+    align-items: center;
   }
 
   button {
@@ -22,6 +23,10 @@ $colorTalkAI: black;
     &:hover {
       background: grey;
     }
+  }
+
+  @include media("<tablet") {
+    top: -100px;
   }
 }
 

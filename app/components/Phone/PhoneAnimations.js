@@ -81,8 +81,6 @@ export default class PhoneAnimations {
    * User bar
    */
   toConnecting() {
-    console.log("to cennecting", this.phoneBarYoyoAnimations);
-
     this.dotsYoyoAnimations = this.createAnimation(
       [this.phoneBarOneDots[0], this.phoneBarOneDots[1]],
       [{ width: "30px" }, { width: "8px" }, { width: "30px" }],
@@ -133,7 +131,6 @@ export default class PhoneAnimations {
       };
     }
 
-    console.log("talk");
     this.phoneBarOne.classList.add("talkToMe");
     this.phoneBarYoyoAnimations = this.createAnimation(this.phoneBarOne, this.keyframes.phoneBarYoyo, {
       duration: 900,

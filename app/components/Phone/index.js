@@ -4,6 +4,8 @@ import htmlToText from "../../utils/htmlToText";
 import textToSpeech from "../../utils/textToSpeech";
 import downloadAudio from "../../utils/audio/downloadAudio";
 import PhoneAnimations from "./PhoneAnimations";
+import playAudio from "../../utils/audio/playAudio";
+import unlockAudio from "../../utils/audio/unlockAudio";
 export default class Phone {
   constructor({ anims, pageEl, discussion }) {
     // DOM Elements
@@ -27,6 +29,7 @@ export default class Phone {
 
     this.isActive = false;
     // AI
+    this.audioContext = null;
     this.currentIndexAudioAI = null;
     this.audioAI = null;
     this.audiosAI = [];
@@ -112,12 +115,20 @@ export default class Phone {
     this.discussion.addUserElement({ text: this.textRecorded });
   }
 
+  onPlay() {
+    this.isAITalking = true;
+    this.onClickOutside.interrupt = true;
+  }
+
   async startAITalking(html) {
     if (!this.isActive) return;
     if (!this.isAITalking) {
-      this.phoneAnimations.newInfoText("Click to interrupt");
-      this.phoneAnimations.toAITalking();
+      setTimeout(() => {
+        this.phoneAnimations.newInfoText("Click to interrupt");
+        this.phoneAnimations.toAITalking();
+      }, 6000);
     }
+
     console.log("new AIAnswer");
     const audio = await textToSpeech(htmlToText(html));
     this.audiosAI.push(audio);
@@ -125,32 +136,35 @@ export default class Phone {
     if (this.currentIndexAudioAI === null) {
       console.log("First sound");
       this.currentIndexAudioAI = 0;
-      this.audiosAI[this.currentIndexAudioAI].play();
+      playAudio({
+        audioUrl: this.audiosAI[this.currentIndexAudioAI].src,
+        audioContext: this.audioContext,
+        onPlay: this.onPlay.bind(this),
+        onEnded: this.checkIfNextAudio.bind(this),
+      });
     }
 
-    this.audiosAI[this.currentIndexAudioAI].onplay = () => {
-      this.isAITalking = true;
-      this.onClickOutside.interrupt = true;
-    };
-
-    this.checkIfNextAudio();
+    this.audiosAI[this.currentIndexAudioAI].onplay = () => {};
   }
 
   checkIfNextAudio() {
     if (!this.isActive) return;
-    this.audiosAI[this.currentIndexAudioAI].onended = () => {
-      this.currentIndexAudioAI++;
-      if (this.audiosAI[this.currentIndexAudioAI]) {
-        console.log("Stil one sound");
-        this.audiosAI[this.currentIndexAudioAI].play();
-        this.checkIfNextAudio();
-      } else {
-        console.log("all sounds plaid");
-        this.clearAIAudios();
-        if (this.debug) return;
-        this.toTalkToMe();
-      }
-    };
+    this.currentIndexAudioAI++;
+    if (this.audiosAI[this.currentIndexAudioAI]) {
+      console.log("Stil one sound");
+      // this.audiosAI[this.currentIndexAudioAI].play();
+      playAudio({
+        audioUrl: this.audiosAI[this.currentIndexAudioAI].src,
+        audioContext: this.audioContext,
+        onPlay: this.onPlay.bind(this),
+        onEnded: this.checkIfNextAudio.bind(this),
+      });
+    } else {
+      console.log("all sounds plaid");
+      this.clearAIAudios();
+      if (this.debug) return;
+      this.toTalkToMe();
+    }
   }
 
   clearAIAudios() {
@@ -271,6 +285,7 @@ export default class Phone {
   addListeners() {
     // Open
     this.phoneBtn.addEventListener("click", async () => {
+      this.audioContext = unlockAudio();
       this.anims.toStartPhoneRecording();
       if (this.debug) {
         this.startConnecting();

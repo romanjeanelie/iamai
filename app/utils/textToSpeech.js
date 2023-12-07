@@ -1,6 +1,11 @@
 function getAudio(blob) {
   const audioURL = URL.createObjectURL(blob);
-  return new Audio(audioURL);
+  const audio = new Audio(audioURL);
+  //   let audio = document.createElement("audio");
+  //   audio.setAttribute("x-webkit-airplay", "deny"); // Disable the iOS control center media widget
+  //   audio.preload = "auto";
+  //   audio.src = audioURL;
+  return audio;
 }
 
 export default function textToSpeech(text) {
