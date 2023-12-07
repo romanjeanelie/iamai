@@ -1,5 +1,5 @@
 import isMobile from "../../utils/isMobile-f8de8c05.js";
-import anim from "../../utils/anim-f36d42a6.js";
+import anim from "../../utils/anim-54bd80a9.js";
 class InputAnimations {
   constructor({ pageEl }) {
     this.pageEl = pageEl;
@@ -9,7 +9,7 @@ class InputAnimations {
     this.inputBackEl = this.inputEl.querySelector(".input__back");
     this.centerBtn = this.inputFrontEl.querySelector(".center-btn");
     this.frontCameraBtn = this.inputFrontEl.querySelector(".camera-btn");
-    this.frontMicBtn = this.inputFrontEl.querySelector(".mic-btn");
+    this.frontMicBtn = this.inputFrontEl.querySelector(".mic-btn") || this.inputFrontEl.querySelector(".phone-btn");
     this.frontCenterBtn = this.inputFrontEl.querySelector(".center-btn");
     this.inputFrontHeight = this.inputFrontEl.offsetHeight;
     if (this.isPageBlue) {
@@ -24,6 +24,7 @@ class InputAnimations {
     this.inputText = this.inputBackEl.querySelector(".input-text");
     this.inputImageContainer = this.inputEl.querySelector(".input__image--container");
     this.imageDroppedContainer = this.pageEl.querySelector(".image-dropped__container");
+    this.phoneContainer = this.pageEl.querySelector(".phone__container");
     this.pageBlue = document.querySelector(".page-blue");
     this.pageGrey = document.querySelector(".page-grey");
     this.cancelBtn = document.querySelector(".cancel-btn");
@@ -326,6 +327,47 @@ class InputAnimations {
         callback.onComplete();
       }
     }
+  }
+  /**
+   * Phone
+   */
+  toStartPhoneRecording() {
+    this.inputEl.classList.add("hidden");
+    this.phoneContainer.classList.add("show");
+  }
+  toStopPhoneRecording() {
+    const fadeOutPhoneContainer = anim(
+      this.phoneContainer,
+      [
+        { opacity: 1, transform: "translateY(0px)" },
+        { topacity: 0, transform: "translateY(100%)" }
+      ],
+      {
+        duration: 300,
+        ease: "ease-in-out",
+        fill: "forwards"
+      }
+    );
+    fadeOutPhoneContainer.onfinish = () => {
+      const fadeInIput = anim(
+        this.inputEl,
+        [
+          { opacity: 0, transform: "translateY(100%)" },
+          { topacity: 1, transform: "translateY(0)" }
+        ],
+        {
+          duration: 300,
+          ease: "ease-in-out",
+          fill: "forwards"
+        }
+      );
+      fadeOutPhoneContainer.cancel();
+      this.inputEl.classList.remove("hidden");
+      this.phoneContainer.classList.remove("show");
+      fadeInIput.onfinish = () => {
+        fadeInIput.cancel();
+      };
+    };
   }
   /**
    * Image

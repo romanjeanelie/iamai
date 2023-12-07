@@ -1,9 +1,11 @@
-import TypingText from "../TypingText-05e288b5.js";
+import TypingText from "../TypingText-25eb2a14.js";
 import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scss-f9d2d4d4.js";
 import typeText from "../utils/typeText-a16d99d7.js";
-import Chat from "./Chat-8434e108.js";
-class Discussion {
+import Chat from "./Chat-f6e4bd6b.js";
+import EventEmitter from "../utils/EventEmitter-e1772399.js";
+class Discussion extends EventEmitter {
   constructor(callbacks) {
+    super();
     this.callbacks = callbacks;
     this.page = document.querySelector(".page-grey");
     this.mainEl = this.page.querySelector("main");
@@ -54,6 +56,7 @@ class Discussion {
     this.getAiAnswer({ text, img });
   }
   async addAIText({ text, container }) {
+    this.trigger("addAIText", [text]);
     this.typingText.fadeOut();
     const textEl = document.createElement("p");
     text = text.replace(/<br\/?>\s*/g, "\n");
@@ -71,8 +74,6 @@ class Discussion {
     var urlParams = new URLSearchParams(queryString);
     var q = urlParams.get("q");
     const sessionID = urlParams.get("session_id");
-    console.log(q);
-    console.log(this.Chat.sessionID);
     if (urlParams.get("location") && urlParams.get("location") != "") {
       this.Chat.location = urlParams.get("location");
     }

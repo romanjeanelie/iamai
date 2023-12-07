@@ -1,11 +1,12 @@
-import AudioRecorder from "../../AudioRecorder-1e53bb0d.js";
-import minSecStr from "../../utils/minSecStr-3b9ae0f7.js";
-import InputAnimations from "./InputAnimations-cc9f30c1.js";
 import InputImage from "./InputImage-115ff9a2.js";
-import sendToWispher from "../../utils/sendToWhisper-a6374299.js";
-import TypingText from "../../TypingText-05e288b5.js";
-import { colorMain } from "../../../scss/variables/_colors.module.scss-f9d2d4d4.js";
+import Phone from "../Phone/index-68539487.js";
+import TypingText from "../../TypingText-25eb2a14.js";
+import minSecStr from "../../utils/minSecStr-3b9ae0f7.js";
 import "../../../scss/variables/_breakpoints.module.scss-bbb4a233.js";
+import AudioRecorder from "../../AudioRecorder-0aa2c077.js";
+import InputAnimations from "./InputAnimations-7fa7c504.js";
+import sendToWispher from "../../utils/audio/sendToWhisper-a6374299.js";
+import { colorMain } from "../../../scss/variables/_colors.module.scss-f9d2d4d4.js";
 const STATUS = {
   INITIAL: "INITIAL",
   RECORD_AUDIO: "RECORD_AUDIO",
@@ -13,8 +14,9 @@ const STATUS = {
   WRITE: "WRITE"
 };
 class Input {
-  constructor({ pageEl, addUserElement, toPageGrey }) {
+  constructor({ pageEl, toPageGrey, discussion }) {
     this.toPageGrey = toPageGrey;
+    this.discussion = discussion;
     this.pageEl = pageEl;
     this.inputEl = this.pageEl.querySelector(".input__container");
     this.inputFrontEl = this.inputEl.querySelector(".input__front");
@@ -38,7 +40,6 @@ class Input {
     this.backMicText = this.backMicBtnContainer.querySelector("p");
     this.isSmallRecording = false;
     this.inputText = this.inputBackEl.querySelector(".input-text");
-    this.addUserElement = addUserElement;
     this.cancelBtn = document.body.querySelector(".cancel-btn");
     this.navbarEl = document.querySelector(".nav");
     this.onClickOutside = {
@@ -63,9 +64,19 @@ class Input {
       },
       this.pageEl
     );
+    if (!this.isPageBlue) {
+      this.phone = new Phone({
+        pageEl: this.pageEl,
+        discussion: this.discussion,
+        anims: {
+          toStartPhoneRecording: () => this.anims.toStartPhoneRecording(),
+          toStopPhoneRecording: () => this.anims.toStopPhoneRecording()
+        }
+      });
+    }
     this.addListeners();
     this.minTranscriptingTime = 1400;
-    this.tempTextRecorded = "text recorded";
+    this.textRecorded = "text recorded";
     if (this.isPageBlue)
       ;
   }
@@ -97,7 +108,7 @@ class Input {
   onCompleteTranscripting() {
     this.inputText.disabled = false;
     this.timecodeAudioEl.textContent = "00:00";
-    this.inputText.value += this.tempTextRecorded;
+    this.inputText.value += this.textRecorded;
     this.updateInputHeight();
     if (this.isSmallRecording) {
       this.isSmallRecording = false;
@@ -113,8 +124,7 @@ class Input {
   async onCompleteRecording(blob) {
     if (this.isRecordCanceled)
       return;
-    console.log("TODO add url endpoint to send audio file:", blob);
-    this.tempTextRecorded = await sendToWispher(blob);
+    this.textRecorded = await sendToWispher(blob);
     this.timeoutTranscripting = setTimeout(() => {
       this.onCompleteTranscripting();
     }, this.minTranscriptingTime);
@@ -132,7 +142,7 @@ class Input {
     if (this.isPageBlue) {
       this.toPageGrey({ duration: 1200 });
     }
-    this.addUserElement({ text: this.inputText.value, img: this.currentImage });
+    this.discussion.addUserElement({ text: this.inputText.value, img: this.currentImage });
     this.inputText.value = "";
     this.currentImage = null;
     this.updateInputHeight();
@@ -159,12 +169,13 @@ class Input {
       this.anims.toWrite();
       this.onClickOutside.animInitial = true;
     });
-    this.frontMicBtn.addEventListener("click", () => {
-      this.currentStatus = STATUS.RECORD_AUDIO;
-      this.startRecording();
-      this.anims.toStartRecording();
-      this.onClickOutside.stopAudio = true;
-    });
+    if (this.frontMicBtn)
+      this.frontMicBtn.addEventListener("click", () => {
+        this.currentStatus = STATUS.RECORD_AUDIO;
+        this.startRecording();
+        this.anims.toStartRecording();
+        this.onClickOutside.stopAudio = true;
+      });
     this.cancelBtn.addEventListener("click", () => {
       if (this.currentStatus === STATUS.RECORD_AUDIO) {
         this.cancelRecord();

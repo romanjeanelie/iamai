@@ -1,6 +1,6 @@
 import { calculate, split } from "../utils/text-43126ad4.js";
 import { sortArrayFromMiddleToEnds } from "../utils/sortArrayFromMiddleToEnds-f167eb8d.js";
-import anim from "../utils/anim-f36d42a6.js";
+import anim from "../utils/anim-54bd80a9.js";
 import { backgroundColorBluePage, colorMain } from "../../scss/variables/_colors.module.scss-f9d2d4d4.js";
 const texts = [
   "Book me a flight from Singapore to Kuala Lumpur on  flight from Singapore to Kuala Lumpur",

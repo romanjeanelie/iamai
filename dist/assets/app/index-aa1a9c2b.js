@@ -1,7 +1,7 @@
-import Caroussel from "./components/Caroussel-97d86629.js";
-import Input from "./components/Input/index-86eb14cd.js";
+import Caroussel from "./components/Caroussel-7626d3d8.js";
+import Input from "./components/Input/index-afa37693.js";
 import Navbar from "./components/Navbar-967e2a81.js";
-import Discussion from "./components/Discussion-aedd2003.js";
+import Discussion from "./components/Discussion-2b5d6e54.js";
 class App {
   constructor() {
     this.pageBlue = document.querySelector(".page-blue");
@@ -39,12 +39,12 @@ class App {
     });
   }
   initInput() {
-    const callbacks = {
-      addUserElement: this.discussion.addUserElement,
+    const props = {
+      discussion: this.discussion,
       toPageGrey: this.toPageGrey.bind(this)
     };
-    new Input({ pageEl: this.pageBlue, ...callbacks });
-    new Input({ pageEl: this.pageGrey, ...callbacks });
+    new Input({ pageEl: this.pageBlue, ...props });
+    new Input({ pageEl: this.pageGrey, ...props });
   }
   resetScroll() {
     window.scrollTo(0, 0);

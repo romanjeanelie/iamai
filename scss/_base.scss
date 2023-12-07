@@ -163,13 +163,13 @@ button {
   max-width: 166px;
   position: relative;
   overflow: hidden;
-  
+
 }
 
-.movies-image:hover
-{
+.movies-image:hover {
   opacity: 100%;
 }
+
 .movies-image {
   width: 166px;
   height: auto;
@@ -441,7 +441,8 @@ button {
   flex-direction: column;
   gap: 16px;
   width: 100%;
-  margin-top: 15px;
+  margin-top: 16px;
+  margin-bottom: 32px;
 }
 
 
@@ -476,6 +477,10 @@ button {
 .rides-list-item-header-logo {
   width: 48px;
   height: 48px;
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
 }
 
 .rides-list-item-header-info p {

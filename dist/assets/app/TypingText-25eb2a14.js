@@ -1,4 +1,4 @@
-import anim from "./utils/anim-f36d42a6.js";
+import anim from "./utils/anim-54bd80a9.js";
 class TypingText {
   constructor({ text, container, backgroundColor, marginLeft }) {
     this.text = text;
