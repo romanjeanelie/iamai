@@ -388,14 +388,45 @@ export default class InputAnimations {
   /**
    * Phone
    */
-
   toStartPhoneRecording() {
     this.inputEl.classList.add("hidden");
     this.phoneContainer.classList.add("show");
   }
   toStopPhoneRecording() {
-    this.inputEl.classList.remove("hidden");
-    this.phoneContainer.classList.remove("show");
+    const fadeOutPhoneContainer = anim(
+      this.phoneContainer,
+      [
+        { opacity: 1, transform: "translateY(0px)" },
+        { topacity: 0, transform: "translateY(100%)" },
+      ],
+      {
+        duration: 300,
+        ease: "ease-in-out",
+        fill: "forwards",
+      }
+    );
+
+    fadeOutPhoneContainer.onfinish = () => {
+      const fadeInIput = anim(
+        this.inputEl,
+        [
+          { opacity: 0, transform: "translateY(100%)" },
+          { topacity: 1, transform: "translateY(0)" },
+        ],
+        {
+          duration: 300,
+          ease: "ease-in-out",
+          fill: "forwards",
+        }
+      );
+      fadeOutPhoneContainer.cancel();
+      this.inputEl.classList.remove("hidden");
+      this.phoneContainer.classList.remove("show");
+
+      fadeInIput.onfinish = () => {
+        fadeInIput.cancel();
+      };
+    };
   }
 
   /**
@@ -426,7 +457,6 @@ export default class InputAnimations {
 
   toImageDroped() {
     this.inputImageContainer.classList.remove("show");
-    // this.inputImageContainer.classList.add("hidden");
 
     this.fadeOutButtons(0, 0);
 
