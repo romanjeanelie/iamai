@@ -24,4 +24,5 @@ export default async function playAudio({ audioUrl, audioContext, onPlay, onEnde
   };
 
   source.start(0);
+  return source;
 }
