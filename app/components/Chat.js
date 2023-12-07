@@ -169,7 +169,7 @@ class Chat {
                   if (this.domain == "MovieSearch") {
                       var displaytext = '<div><div class="moviescard-container">';
 
-                      this.MovieSearchResults.list.forEach((element) => {
+                      this.MovieSearchResults.forEach((element) => {
                         displaytext +='<div class="movies-card" data-info="movies-details"  data-details=\'' + JSON.stringify(element).replace(/'/g, "&#39;") + '\' onclick="showMovieDetail(this);return false;">';
                         displaytext +='<img src="' + element.MoviePoster + '" alt="' + element.MovieTitle.replace(/'/g, "&#39;") + '" class="movies-image">';
                           displaytext += '<p class="movies-title">' + element.MovieTitle + "</p>";
