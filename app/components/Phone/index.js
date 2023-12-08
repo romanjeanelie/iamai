@@ -8,6 +8,8 @@ import playAudio from "../../utils/audio/playAudio";
 import unlockAudio from "../../utils/audio/unlockAudio";
 export default class Phone {
   constructor({ anims, pageEl, discussion, emitter }) {
+    // Event
+    this.unbindEvent = null;
     this.emitter = emitter;
 
     // DOM Elements
@@ -84,7 +86,8 @@ export default class Phone {
 
   leave() {
     console.log("leave");
-    this.discussion.off("addAIText");
+    this.unbindEvent();
+    this.unbindEvent = null;
     this.isActive = false;
     this.phoneAnimations.leave();
     this.stopRecording();
@@ -94,7 +97,9 @@ export default class Phone {
   toTalkToMe() {
     if (!this.isActive) return;
     console.log("Talk to me");
-    this.emitter.on("addAITextTest", (html) => this.startAITalking(html));
+    if (!this.unbindEvent) {
+      this.unbindEvent = this.emitter.on("addAITextTest", (html) => this.startAITalking(html));
+    }
     this.phoneAnimations.toTalkToMe();
     this.phoneAnimations.newInfoText("Talk to me");
     if (this.myvad) this.myvad.start();
@@ -172,7 +177,6 @@ export default class Phone {
   clearAIAudios() {
     this.currentIndexAudioAI = null;
     this.audiosAI = [];
-    // this.discussion.off("addAIText");
     this.isAITalking = false;
     this.onClickOutside.interrupt = false;
   }
