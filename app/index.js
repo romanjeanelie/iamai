@@ -4,6 +4,14 @@ import Navbar from "./components/Navbar";
 import Discussion from "./components/Discussion";
 import { createNanoEvents } from "nanoevents";
 
+class User {
+  constructor(uuid, name, picture, email) {
+    this.uuid = uuid;
+    this.name = name;
+    this.picture = picture;
+    this.email = email;
+  }
+}
 class App {
   constructor() {
     this.pageBlue = document.querySelector(".page-blue");
@@ -12,11 +20,23 @@ class App {
     this.cancelBtn = document.querySelector(".cancel-btn");
 
     this.emitter = createNanoEvents();
+    this.user = this.getUser();
 
     this.addListeners();
     this.resetScroll();
 
-    // this.redirectToLogin();
+    if (!this.user) {
+      //   this.redirectToLogin();
+    }
+  }
+
+  getUser() {
+    if (sessionStorage.getItem("googleToken")) {
+      const responsePayload = decodeJwtResponse(sessionStorage.getItem("googleToken"));
+      return new User(responsePayload.sub, responsePayload.name, responsePayload.picture, responsePayload.email);
+    } else {
+      return null;
+    }
   }
 
   redirectToLogin() {
