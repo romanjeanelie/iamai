@@ -4,6 +4,7 @@ export function isUser() {
 
 window.onload = function () {
   if (isUser()) {
+    redirectToHome();
     const responsePayload = decodeJwtResponse(isUser());
     user = new User(responsePayload.sub, responsePayload.name, responsePayload.picture, responsePayload.email);
     divgoogle.style.display = "none";
@@ -21,8 +22,13 @@ class User {
   }
 }
 
+function redirectToHome() {
+  window.location.href = "/app/index.html";
+}
+
 window.handleCredentialResponse = async (response) => {
   console.log(response);
+  redirectToHome();
   const responsePayload = decodeJwtResponse(response.credential);
   user = new User(responsePayload.sub, responsePayload.name, responsePayload.picture, responsePayload.email);
   divgoogle.style.display = "none";
