@@ -12,19 +12,12 @@ class Chat {
     this.sessionID = "";
     this.workflowID = "";
     this.awaiting = false;
+    this.agentawaiting = false;
     this.domain = "";
     this.FlightSearch = "";
     this.FlightSearchResults = "";
-    // this.MovieTitle = "";
-    // this.Theatre = "";
-    // this.StartDate = "";
-    // this.EndDate = "";
-    // this.StartTime = "";
-    // this.EndTime = "";
     this.TaxiSearch = "";
     this.TaxiSearchResults = "";
-    // this.Source = "";
-    // this.Destination = "";
     this.container = null;
     this.RAG_CHAT = "";
     this.MovieSearch = "";
@@ -44,13 +37,11 @@ class Chat {
       this.submituserreply(input_text, this.workflowID, img);
     } else {
       var xhr = new XMLHttpRequest();
-      // xhr.onreadystatechange = async function () {
       xhr.onreadystatechange = async () => {
         if (xhr.readyState == 4) {
           console.log(xhr.response);
           let text = JSON.parse(xhr.response);
           console.log(text.stream_id);
-          // const sc = new StringCodec();
           let nc = await connect({
             servers: ["wss://ai.iamplus.services/tasks:8443"],
             user: "acc",
@@ -61,7 +52,6 @@ class Chat {
           console.log(stream_name);
           const js = nc.jetstream();
           const c = await js.consumers.get(stream_name, stream_name);
-          // let iter = await c.fetch({ expires: 200000000 });
           let iter = await c.consume();
           nc.onclose = function (e) {
             console.log("Socket is closed. Reconnect will be attempted in 1 second.", e.reason);
@@ -93,11 +83,13 @@ class Chat {
                 );
                 AIAnswer = transresponse.data.translations[0].translatedText;
               }
-              // await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
-              this.container.innerHTML += AIAnswer;
+              await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
               if (mdata.awaiting) {
                 this.workflowID = mdata.session_id;
                 this.awaiting = true;
+              }
+              if (mdata.awaiting && mdata.message_type == "user_question") {
+                this.agentawaiting = true;
               }
               if (mdata.stream_status && mdata.stream_status == "ended")
                 this.callbacks.enableInput();
@@ -108,24 +100,9 @@ class Chat {
                 if (this.domain == "MovieSearch") {
                   this.MovieSearch = JSON.parse(mdata.ui_params.MovieSearch);
                   this.MovieSearchResults = JSON.parse(mdata.ui_params.MovieSearchResults);
-                  // let moviedata = JSON.parse(mdata.ui_params.MovieSearch);
-                  // if (moviedata.movie_name != undefined && moviedata.movie_name != "")
-                  //   this.MovieTitle = moviedata.movie_name;
-                  // if (moviedata.theatre_name != undefined && moviedata.theatre_name != "")
-                  //   this.Theatre = moviedata.theatre_name;
-                  // if (moviedata.start_date != undefined && moviedata.start_date != "")
-                  //   this.StartDate = moviedata.start_date;
-                  // if (moviedata.end_date != undefined && moviedata.end_date != "") this.EndDate = moviedata.end_date;
-                  // if (moviedata.start_time != undefined && moviedata.start_time != "")
-                  //   this.StartTime = moviedata.start_time;
-                  // if (moviedata.end_time != undefined && moviedata.end_time != "") this.EndTime = moviedata.end_time;
                 } else if (this.domain == "TaxiSearch") {
                   this.TaxiSearch = JSON.parse(mdata.ui_params.TaxiSearch);
                   this.TaxiSearchResults = JSON.parse(mdata.ui_params.TaxiSearchResults);
-                  // let ridesdata = JSON.parse(mdata.ui_params.TaxiSearch);
-                  // if (ridesdata.source != undefined && ridesdata.source != "") this.Source = ridesdata.source;
-                  // if (ridesdata.destination != undefined && ridesdata.destination != "")
-                  // this.Destination = ridesdata.destination;
                 } else if (this.domain == "RAG_CHAT") {
                   this.RAG_CHAT = JSON.parse(mdata.ui_params.RAG_CHAT);
                   console.log("domain RAG_CHAT:" + this.RAG_CHAT);
@@ -167,17 +144,42 @@ class Chat {
                   }
                   await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
                   if (this.domain == "MovieSearch") {
-                      var displaytext = '<div><div class="moviescard-container">';
 
-                      this.MovieSearchResults.forEach((element) => {
-                        displaytext +='<div class="movies-card" data-info="movies-details"  data-details=\'' + JSON.stringify(element).replace(/'/g, "&#39;") + '\' onclick="showMovieDetail(this);return false;">';
-                        displaytext +='<img src="' + element.MoviePoster + '" alt="' + element.MovieTitle.replace(/'/g, "&#39;") + '" class="movies-image">';
-                          displaytext += '<p class="movies-title">' + element.MovieTitle + "</p>";
-                        displaytext += '</div>';
-                      });
-                      displaytext += '</div><div id="movie-details"></div></div>';
-                      this.container.innerHTML += displaytext;
-                      (this.domain = ""), (this.MovieSearchResults = ""), (this.MovieSearch = "");
+                    const moviesdiv = document.createElement("div");
+                    const moviescardcontainerdiv = document.createElement("div");
+                    moviescardcontainerdiv.className = "moviescard-container";
+                    // var displaytext = '<div><div class="moviescard-container">';
+
+                    this.MovieSearchResults.forEach((element) => {
+                      const moviescarddiv = document.createElement("div");
+                      moviescarddiv.className = "movies-card";
+                      moviescarddiv.setAttribute('data-info', 'movies-details');
+                      moviescarddiv.setAttribute('data-details', JSON.stringify(element).replace(/'/g, "&#39;"));
+                      moviescarddiv.addEventListener('click', (event) => this.showMovieDetail(event));
+
+                      // displaytext +='<div class="movies-card" data-info="movies-details"  data-details=\'' + JSON.stringify(element).replace(/'/g, "&#39;") + '\' onclick="showMovieDetail(this);return false;">';
+                      const moviesimg = document.createElement("img");
+                      moviesimg.className = "movies-image";
+                      moviesimg.setAttribute('alt', element.MovieTitle.replace(/'/g, "&#39;"));
+                      moviesimg.setAttribute('src', element.MoviePoster);
+                      moviescarddiv.appendChild(moviesimg)
+                      // displaytext +='<img src="' + element.MoviePoster + '" alt="' + element.MovieTitle.replace(/'/g, "&#39;") + '" class="movies-image">';
+                      const moviestitlep = document.createElement("p");
+                      moviestitlep.className = "movies-title";
+                      moviestitlep.innerText = element.MovieTitle;
+                      moviescarddiv.appendChild(moviestitlep)
+                      // displaytext += '<p class="movies-title">' + element.MovieTitle + "</p>";
+                      // displaytext += '</div>';
+                      moviescardcontainerdiv.appendChild(moviescarddiv);
+                    });
+                    moviesdiv.appendChild(moviescardcontainerdiv);
+                    const moviedetailsdiv = document.createElement("div");
+                    moviedetailsdiv.setAttribute('id', "movie-details");
+                    moviesdiv.appendChild(moviedetailsdiv);
+                    // displaytext += '</div><div id="movie-details"></div></div>';
+                    // this.container.innerHTML += displaytext;
+                    this.container.appendChild(moviesdiv);
+                    (this.domain = ""), (this.MovieSearchResults = ""), (this.MovieSearch = "");
 
                   } else if (this.domain == "TaxiSearch") {
                     let str = '<div class="rides-list-wrapper">';
@@ -610,6 +612,133 @@ class Chat {
     xhr.setRequestHeader("Content-Type", "application/json");
 
     xhr.send(data);
+  }
+
+  showMovieDetail(event) {
+    let element = event.target;
+    let moviedetail = element.parentElement.parentElement.parentElement.querySelector("#movie-details");
+    let moviedetaildata = JSON.parse(element.parentElement.getAttribute("data-details").replace("&#39;", /'/g));
+    // let divinnerhtml = "";
+    moviedetaildata.Theatre.forEach((theatre) => {
+      const moviedetailscarddiv = document.createElement("div");
+      moviedetailscarddiv.className = "movie-details-card";
+      const moviedetailstheaterdiv = document.createElement("div");
+      moviedetailstheaterdiv.className = "movie-details-theater-header";
+      moviedetailstheaterdiv.innerHTML = theatre.Name;
+      moviedetailscarddiv.appendChild(moviedetailstheaterdiv);
+      const moviedetailsdatesdiv = document.createElement("div");
+      moviedetailsdatesdiv.className = "movie-details-dates";
+      moviedetailsdatesdiv.setAttribute('data-details', JSON.stringify(theatre).replace(/'/g, "&#39;"));
+      this.getMoviesDateShowtime(moviedetaildata.MovieTitle, theatre, theatre.DateTime[0].Date, moviedetailsdatesdiv);
+      console.log(moviedetaildata.MovieTitle);
+      moviedetailscarddiv.appendChild(moviedetailsdatesdiv);
+      moviedetail.appendChild(moviedetailscarddiv)
+    });
+  }
+
+  getMoviesDateShowtime(MovieTitle, theatre, date, moviedetailsdatesdiv) {
+    const moviedetailsdateselectordiv = document.createElement("div");
+    moviedetailsdateselectordiv.className = "movie-details-date-selector";
+    const moviedetailsdateleftbuttonbutton = document.createElement("button");
+    moviedetailsdateleftbuttonbutton.className = "arrow left-arrow";
+    moviedetailsdateleftbuttonbutton.innerHTML = "&lt;&nbsp;&nbsp;";
+    moviedetailsdateleftbuttonbutton.addEventListener('click', (event) => this.getmovieshowtimes(event, -1, MovieTitle));
+    if (theatre.DateTime[0].Date == date)
+      moviedetailsdateleftbuttonbutton.disabled = true;
+    moviedetailsdateselectordiv.appendChild(moviedetailsdateleftbuttonbutton);
+
+    const moviedetailsdatespan = document.createElement("span");
+    moviedetailsdatespan.innerText = date;
+    moviedetailsdateselectordiv.appendChild(moviedetailsdatespan);
+
+    const moviedetailsdaterightbuttonbutton = document.createElement("button");
+    moviedetailsdaterightbuttonbutton.className = "arrow right-arrow";
+    moviedetailsdaterightbuttonbutton.innerHTML = "&nbsp;&nbsp;&gt;";
+    moviedetailsdaterightbuttonbutton.addEventListener('click', (event) => this.getmovieshowtimes(event, 1, MovieTitle));
+    if (theatre.DateTime[theatre.DateTime.length - 1].Date == date)
+      moviedetailsdaterightbuttonbutton.disabled = true;
+    moviedetailsdateselectordiv.appendChild(moviedetailsdaterightbuttonbutton);
+    moviedetailsdatesdiv.appendChild(moviedetailsdateselectordiv);
+
+    theatre.DateTime.forEach((moviesdatetime) => {
+      if (moviesdatetime.Date == date) {
+        const moviedetailsshowtimesdiv = document.createElement("div");
+        moviedetailsshowtimesdiv.className = "movie-details-showtimes";
+        moviesdatetime.Time.forEach((moviestime) => {
+          const moviedetailsshowtimebutton = document.createElement("button");
+          moviedetailsshowtimebutton.className = "movie-details-showtime";
+          moviedetailsshowtimebutton.innerHTML = moviestime.slice(0, -3);
+          moviedetailsshowtimebutton.addEventListener('click', (event) => this.submitmovieselection(MovieTitle, theatre.Name, moviesdatetime.Date, moviestime.slice(0, -3)));
+          moviedetailsshowtimesdiv.appendChild(moviedetailsshowtimebutton);
+        });
+        moviedetailsdatesdiv.appendChild(moviedetailsshowtimesdiv);
+      }
+    });
+  }
+
+
+  getmovieshowtimes(event, day, MovieTitle) {
+    let element = event.target;
+    let moviedetail = element.parentElement.parentElement.parentElement.querySelector(".movie-details-dates");
+    let moviedetaildata = JSON.parse(moviedetail.getAttribute("data-details").replace("&#39;", /'/g));
+    if (day == 1) {
+      const previousSiblingSpan = element.previousElementSibling.tagName === 'SPAN' ? element.previousElementSibling : null;
+      let date = new Date(previousSiblingSpan.innerHTML);
+      date.setDate(date.getDate() + 1);
+      moviedetail.innerHTML = "";
+      this.getMoviesDateShowtime(MovieTitle, moviedetaildata, date.toISOString().slice(0, 10), moviedetail);
+    } else {
+      const nextSiblingSpan = element.nextElementSibling.tagName === 'SPAN' ? element.nextElementSibling : null;
+      let date = new Date(nextSiblingSpan.innerHTML);
+      date.setDate(date.getDate() - 1);
+      moviedetail.innerHTML = "";
+      this.getMoviesDateShowtime(MovieTitle, moviedetaildata, date.toISOString().slice(0, 10), moviedetail);
+    }
+  }
+
+  async submitmovieselection(MovieTitle, Theatre, Date, Time) {
+    MovieTitle = MovieTitle.replace("’", "'");
+    if (this.agentawaiting) {
+      var texttosend = "book movie ticket for " + JSON.stringify({
+        "movie_name": MovieTitle,
+        "theatre_name": Theatre,
+        "movie_date": Date,
+        "movie_time": Time
+      });
+      var data = JSON.stringify({
+        "message_type": "user_reply",
+        "user": "User",
+        "message": {
+          "type": "text",
+          "json": {},
+          "text": texttosend
+        }
+      });
+
+      var xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+
+      xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === 4) {
+          console.log(this.responseText);
+        }
+      });
+
+      xhr.open("POST", "https://ai.iamplus.services/workflow/message/" + this.workflowID);
+      xhr.setRequestHeader("Content-Type", "application/json");
+
+      xhr.send(data);
+      this.agentawaiting = false;
+    } else {
+      var texttosend = "book movie ticket for " + JSON.stringify({
+        "movie_name": MovieTitle,
+        "theatre_name": Theatre,
+        "movie_date": Date,
+        "movie_time": Time
+      });
+      console.log("texttosend:" + texttosend)
+      this.callsubmit(texttosend, "", this.container);
+    }
   }
 }
 export { Chat as default };
