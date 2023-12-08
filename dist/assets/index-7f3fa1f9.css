@@ -234,6 +234,7 @@ button {
   max-width: 166px;
   position: relative;
   overflow: hidden;
+  cursor: pointer;
 }
 .movies-image:hover {
   opacity: 100%;
@@ -256,6 +257,76 @@ button {
   letter-spacing: 0.6px;
   padding: 8px 8px 24px 8px;
   text-align: left;
+}
+.movie-details-card {
+  display: flex;
+  width: 100%;
+  padding: var(--16, 16px);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--0, 0px);
+  border-radius: var(--24, 24px);
+  background: #ffffff;
+  margin-left: -16px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+.movie-details-theater-header h2 {
+  color: var(--Text, rgba(0, 0, 0, 0.72));
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0.6px;
+  margin-bottom: 16px;
+}
+.movie-details-theater-header {
+  display: block;
+}
+.movie-details-date-selector {
+  display: flex;
+  align-items: center;
+  margin-top: 16px;
+  margin-bottom: 32px;
+}
+.movie-details-date-selector .arrow {
+  background: none;
+  border: none;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+.movie-details-date-selector .arrow:disabled {
+  color: rgba(0, 0, 0, 0.24);
+  cursor: auto;
+}
+.movie-details-showtimes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+  margin-bottom: 16px;
+}
+.movie-details-showtime {
+  display: flex;
+  width: 98px;
+  padding: var(--8, 8px) var(--16, 16px);
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: var(--8, 8px);
+  border-top: 1px solid var(--B40-W48, rgba(0, 0, 0, 0.4));
+  border-right: var(--0, 1px) solid var(--B40-W48, rgba(0, 0, 0, 0.4));
+  border-bottom: var(--0, 1px) solid var(--B40-W48, rgba(0, 0, 0, 0.4));
+  border-left: var(--0, 1px) solid var(--B40-W48, rgba(0, 0, 0, 0.4));
+  margin-bottom: 8px;
+}
+.movie-details-showtime.selected {
+  background: #6200ea;
+  color: white;
+  border-color: #6200ea;
+}
+.movie-details-showtime:focus {
+  outline: none;
 }
 /* #######  GUCCI  ##########*/
 .productcard-container {
@@ -476,7 +547,8 @@ button {
   flex-direction: column;
   gap: 16px;
   width: 100%;
-  margin-top: 15px;
+  margin-top: 16px;
+  margin-bottom: 32px;
 }
 .rides-list-item {
   -webkit-box-pack: justify;
@@ -506,6 +578,10 @@ button {
 .rides-list-item-header-logo {
   width: 48px;
   height: 48px;
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
 }
 .rides-list-item-header-info p {
   margin: 0;

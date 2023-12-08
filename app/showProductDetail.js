@@ -83,6 +83,50 @@ function getmovieshowtimes(day,element)
   moviedetail.innerHTML = divinnerhtml;
 }
 
+async function submitmovieselection(MovieTitle, Theatre, Date, Time, suworkflowid) {
+  MovieTitle = MovieTitle.replace("’", "'");
+  // if (window.awaiting) {
+  //     var texttosend = "book movie ticket for " + JSON.stringify({
+  //         "movie_name": MovieTitle,
+  //         "theatre_name": Theatre,
+  //         "movie_date": Date,
+  //         "movie_time": Time
+  //     });
+  //     var data = JSON.stringify({
+  //         "message_type": "user_reply",
+  //         "user": "User",
+  //         "message": {
+  //             "type": "text",
+  //             "json": {},
+  //             "text": texttosend
+  //         }
+  //     });
+
+  //     var xhr = new XMLHttpRequest();
+  //     xhr.withCredentials = true;
+
+  //     xhr.addEventListener("readystatechange", function () {
+  //         if (this.readyState === 4) {
+  //             console.log(this.responseText);
+  //         }
+  //     });
+
+  //     xhr.open("PUT", "https://ai.iamplus.services/workflow/message/" + workflowid);
+  //     xhr.setRequestHeader("Content-Type", "application/json");
+
+  //     xhr.send(data);
+  // } else {
+      var texttosend = "book movie ticket for " + JSON.stringify({
+          "movie_name": MovieTitle,
+          "theatre_name": Theatre,
+          "movie_date": Date,
+          "movie_time": Time
+      });
+      console.log("texttosend:" + texttosend)
+      callsubmit("", texttosend);
+  // }
+}
+
 function toggleflights(element) {
   // element.parent.querySelectorAll('.toggle-button').forEach(btn => btn.classList.remove('active'));
   // this.classList.add('active');

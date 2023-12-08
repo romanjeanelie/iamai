@@ -1,7 +1,7 @@
 import TypingText from "../TypingText-25eb2a14.js";
 import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scss-f9d2d4d4.js";
 import typeText from "../utils/typeText-a16d99d7.js";
-import Chat from "./Chat-f6e4bd6b.js";
+import Chat from "./Chat-9656f12f.js";
 import EventEmitter from "../utils/EventEmitter-e1772399.js";
 class Discussion extends EventEmitter {
   constructor(callbacks) {
