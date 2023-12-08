@@ -5,11 +5,12 @@ export function isUser() {
 window.onload = function () {
   if (isUser()) {
     redirectToHome();
-    const responsePayload = decodeJwtResponse(isUser());
-    user = new User(responsePayload.sub, responsePayload.name, responsePayload.picture, responsePayload.email);
-    divgoogle.style.display = "none";
+    // const responsePayload = decodeJwtResponse(isUser());
+    // const user = new User(responsePayload.sub, responsePayload.name, responsePayload.picture, responsePayload.email);
+    // divgoogle.style.display = "none";
   } else {
-    divgoogle.style.display = "block";
+    console.log("no logged in");
+    // divgoogle.style.display = "block";
   }
 };
 
@@ -29,10 +30,10 @@ function redirectToHome() {
 window.handleCredentialResponse = async (response) => {
   console.log(response);
   redirectToHome();
-  const responsePayload = decodeJwtResponse(response.credential);
-  user = new User(responsePayload.sub, responsePayload.name, responsePayload.picture, responsePayload.email);
-  divgoogle.style.display = "none";
-  localStorage.setItem("googleToken", response.credential);
+  //   const responsePayload = decodeJwtResponse(response.credential);
+  //   const user = new User(responsePayload.sub, responsePayload.name, responsePayload.picture, responsePayload.email);
+  //   divgoogle.style.display = "none";
+  //   localStorage.setItem("googleToken", response.credential);
 };
 
 // Sign out the user
