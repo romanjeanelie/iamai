@@ -1,8 +1,10 @@
-console.log("login");
+export function isUser() {
+  return sessionStorage.getItem("googleToken");
+}
 
 window.onload = function () {
-  if (sessionStorage.getItem("googleToken")) {
-    const responsePayload = decodeJwtResponse(sessionStorage.getItem("googleToken"));
+  if (isUser()) {
+    const responsePayload = decodeJwtResponse(isUser());
     user = new User(responsePayload.sub, responsePayload.name, responsePayload.picture, responsePayload.email);
     divgoogle.style.display = "none";
   } else {

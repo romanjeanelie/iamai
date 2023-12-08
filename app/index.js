@@ -15,6 +15,12 @@ class App {
 
     this.addListeners();
     this.resetScroll();
+
+    // this.redirectToLogin();
+  }
+
+  redirectToLogin() {
+    window.location.href = "/login/index.html";
   }
 
   // Anim

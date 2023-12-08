@@ -6,6 +6,7 @@ import downloadAudio from "../../utils/audio/downloadAudio";
 import PhoneAnimations from "./PhoneAnimations";
 import playAudio from "../../utils/audio/playAudio";
 import unlockAudio from "../../utils/audio/unlockAudio";
+import AudioPlayer from "../../utils/audio/AudioPlayer";
 export default class Phone {
   constructor({ anims, pageEl, discussion, emitter }) {
     // Event
@@ -32,11 +33,14 @@ export default class Phone {
     this.anims = anims;
 
     this.isActive = false;
-    // AI
     this.audioContext = null;
-    this.currentAudioPlaying = null;
+
+    // Sounds
+    this.audioConnected = null;
+    this.audioProcessing = null;
+    // AI
+    this.currentAudioAIPlaying = null;
     this.currentIndexAudioAI = null;
-    this.audioAI = null;
     this.audiosAI = [];
     this.isAITalking = false;
     this.isAIPaused = false;
@@ -80,12 +84,17 @@ export default class Phone {
     this.phoneAnimations.toConnected();
     this.phoneAnimations.newInfoText("connected");
     console.log("connected");
+    this.audioConnected = new AudioPlayer({
+      audioUrl: "/sounds/connected.mp3",
+      audioContext: this.audioContext,
+    });
     if (this.debug) return;
     this.toTalkToMe();
   }
 
   leave() {
     console.log("leave");
+    this.audioProcessing?.stopAudio();
     this.unbindEvent();
     this.unbindEvent = null;
     this.isActive = false;
@@ -120,30 +129,37 @@ export default class Phone {
     this.myvad.pause();
     console.log("processing");
 
+    this.audioProcessing = new AudioPlayer({
+      audioUrl: "/sounds/processing.mp3",
+      audioContext: this.audioContext,
+      loop: true,
+    });
     const blob = float32ArrayToMp3Blob(audio, 16000);
     this.textRecorded = await sendToWispher(blob);
     this.discussion.addUserElement({ text: this.textRecorded });
   }
 
   onPlay() {
+    if (!this.isAITalking) {
+      this.phoneAnimations.newInfoText("Click to interrupt");
+      this.phoneAnimations.toAITalking();
+    }
     this.isAITalking = true;
     this.onClickOutside.interrupt = true;
   }
 
   async startAITalking(html) {
     if (!this.isActive) return;
-    if (!this.isAITalking) {
-      this.phoneAnimations.newInfoText("Click to interrupt");
-      this.phoneAnimations.toAITalking();
-    }
     console.log("new AIAnswer");
     const audio = await textToSpeech(htmlToText(html));
     this.audiosAI.push(audio);
 
     if (this.currentIndexAudioAI === null) {
-      console.log("First sound");
+      console.log("first sound");
+      this.audioProcessing?.stopAudio();
+
       this.currentIndexAudioAI = 0;
-      this.currentAudioPlaying = await playAudio({
+      this.currentAudioAIPlaying = new AudioPlayer({
         audioUrl: this.audiosAI[this.currentIndexAudioAI].src,
         audioContext: this.audioContext,
         onPlay: this.onPlay.bind(this),
@@ -160,7 +176,7 @@ export default class Phone {
     if (this.audiosAI[this.currentIndexAudioAI]) {
       console.log("Stil one sound");
       // this.audiosAI[this.currentIndexAudioAI].play();
-      this.currentAudioPlaying = await playAudio({
+      this.currentAudioAIPlaying = new AudioPlayer({
         audioUrl: this.audiosAI[this.currentIndexAudioAI].src,
         audioContext: this.audioContext,
         onPlay: this.onPlay.bind(this),
@@ -183,8 +199,8 @@ export default class Phone {
 
   stopAITalking() {
     console.log("stop talking");
-    this.currentAudioPlaying.stop();
-    this.currentAudioPlaying = null;
+    this.currentAudioAIPlaying?.pauseAudio();
+    this.currentAudioAIPlaying = null;
     this.clearAIAudios();
   }
 
@@ -252,14 +268,16 @@ export default class Phone {
 
     this.onClickOutside.interrupt = false;
     this.onClickOutside.resumeAI = true;
+
     if (this.debug) return;
-    this.audiosAI[this.currentIndexAudioAI].pause();
+    this.currentAudioAIPlaying?.pauseAudio();
   }
+
   resumeAI() {
     this.isAIPaused = false;
     this.phoneAnimations.toResume("AI");
     this.pauseBtn.classList.remove("active");
-    this.audiosAI[this.currentIndexAudioAI].play();
+    this.currentAudioAIPlaying?.resumeAudio();
 
     this.onClickOutside.resumeAI = false;
   }
@@ -326,7 +344,6 @@ export default class Phone {
     this.pageEl.addEventListener(
       "click",
       (event) => {
-        if (this.isSmallRecording) return;
         // TODO add close btn to expetion
         if (this.pauseBtn.contains(event.target) || this.closeBtn.contains(event.target)) return;
         if (this.onClickOutside.resumeAI) {
