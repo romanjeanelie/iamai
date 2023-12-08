@@ -7,10 +7,12 @@ import PhoneAnimations from "./PhoneAnimations";
 import playAudio from "../../utils/audio/playAudio";
 import unlockAudio from "../../utils/audio/unlockAudio";
 export default class Phone {
-  constructor({ anims, pageEl, discussion }) {
+  constructor({ anims, pageEl, discussion, emitter }) {
+    this.emitter = emitter;
+
     // DOM Elements
-    this.discussion = discussion;
     this.pageEl = pageEl;
+    this.discussion = discussion;
     this.phoneContainer = this.pageEl.querySelector(".phone__container");
     this.phoneBtn = this.pageEl.querySelector(".phone-btn");
     this.infoText = this.phoneContainer.querySelector(".phone__info.active");
@@ -42,6 +44,11 @@ export default class Phone {
     this.isMicMuted = false;
     this.micAccessConfirmed = false;
 
+    // Anims
+    this.phoneAnimations = new PhoneAnimations({
+      pageEl: this.pageEl,
+    });
+
     this.onClickOutside = {
       interrupt: false,
       resumeAI: false,
@@ -49,11 +56,6 @@ export default class Phone {
     };
 
     this.addListeners();
-
-    // Anims
-    this.phoneAnimations = new PhoneAnimations({
-      pageEl: this.pageEl,
-    });
 
     // Debug
     this.debug = false;
@@ -91,10 +93,9 @@ export default class Phone {
 
   toTalkToMe() {
     if (!this.isActive) return;
-    this.discussion.on("addAIText", (aiAnswer) => this.startAITalking(aiAnswer));
-
-    this.phoneAnimations.toTalkToMe();
     console.log("Talk to me");
+    this.emitter.on("addAITextTest", (html) => this.startAITalking(html));
+    this.phoneAnimations.toTalkToMe();
     this.phoneAnimations.newInfoText("Talk to me");
     if (this.myvad) this.myvad.start();
   }
@@ -109,8 +110,6 @@ export default class Phone {
   }
 
   async toProcessing(audio) {
-    // this.discussion.on("addAIText", (aiAnswer) => this.startAITalking(aiAnswer));
-
     this.phoneAnimations.newInfoText("processing");
     this.phoneAnimations.toProcessing();
     this.myvad.pause();
@@ -132,7 +131,6 @@ export default class Phone {
       this.phoneAnimations.newInfoText("Click to interrupt");
       this.phoneAnimations.toAITalking();
     }
-
     console.log("new AIAnswer");
     const audio = await textToSpeech(htmlToText(html));
     this.audiosAI.push(audio);

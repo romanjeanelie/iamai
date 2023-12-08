@@ -21,9 +21,10 @@ const STATUS = {
 };
 
 export default class Input {
-  constructor({ pageEl, toPageGrey, discussion }) {
+  constructor({ pageEl, toPageGrey, discussion, emitter }) {
     this.toPageGrey = toPageGrey;
     this.discussion = discussion;
+    this.emitter = emitter;
 
     this.pageEl = pageEl;
     this.inputEl = this.pageEl.querySelector(".input__container");
@@ -93,6 +94,7 @@ export default class Input {
       this.phone = new Phone({
         pageEl: this.pageEl,
         discussion: this.discussion,
+        emitter: this.emitter,
         anims: {
           toStartPhoneRecording: () => this.anims.toStartPhoneRecording(),
           toStopPhoneRecording: () => this.anims.toStopPhoneRecording(),

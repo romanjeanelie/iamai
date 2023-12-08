@@ -2,6 +2,7 @@ import Caroussel from "./components/Caroussel";
 import Input from "./components/Input";
 import Navbar from "./components/Navbar";
 import Discussion from "./components/Discussion";
+import { createNanoEvents } from "nanoevents";
 
 class App {
   constructor() {
@@ -9,6 +10,8 @@ class App {
     this.pageGrey = document.querySelector(".page-grey");
     this.navbarEl = document.querySelector(".nav");
     this.cancelBtn = document.querySelector(".cancel-btn");
+
+    this.emitter = createNanoEvents();
 
     this.addListeners();
     this.resetScroll();
@@ -42,6 +45,7 @@ class App {
 
   initDiscussion() {
     this.discussion = new Discussion({
+      emitter: this.emitter,
       toPageGrey: this.toPageGrey.bind(this),
     });
   }
@@ -50,6 +54,7 @@ class App {
     const props = {
       discussion: this.discussion,
       toPageGrey: this.toPageGrey.bind(this),
+      emitter: this.emitter,
     };
 
     new Input({ pageEl: this.pageBlue, ...props });

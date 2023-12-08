@@ -3,12 +3,12 @@ import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scs
 import typeText from "../utils/typeText";
 import Chat from "./Chat.js";
 import EventEmitter from "../utils/EventEmitter.js";
-// type();
+import isMobile from "../utils/isMobile.js";
 
-export default class Discussion extends EventEmitter {
-  constructor(callbacks) {
-    super();
-    this.callbacks = callbacks;
+export default class Discussion {
+  constructor({ toPageGrey, emitter }) {
+    this.emitter = emitter;
+    this.toPageGrey = toPageGrey;
 
     this.page = document.querySelector(".page-grey");
     this.mainEl = this.page.querySelector("main");
@@ -70,12 +70,18 @@ export default class Discussion extends EventEmitter {
   }
 
   async addAIText({ text, container }) {
-    this.trigger("addAIText", [text]);
+    this.emitter.emit("addAITextTest", text);
+
     this.typingText.fadeOut();
-    const textEl = document.createElement("p");
-    text = text.replace(/<br\/?>\s*/g, "\n");
+    const textEl = document.createElement("span");
     container.appendChild(textEl);
-    return typeText(textEl, text);
+    text = text.replace(/<br\/?>\s*/g, "\n");
+    if (isMobile()) {
+      return (textEl.innerHTML = text);
+    } else {
+      text = text.replace(/<br\/?>\s*/g, "\n");
+      return typeText(textEl, text);
+    }
   }
 
   scrollToBottom() {
@@ -106,7 +112,7 @@ export default class Discussion extends EventEmitter {
       this.getAiAnswer({ text: "" });
     }
     if (sessionID && sessionID != "") {
-      this.callbacks.toPageGrey();
+      this.toPageGrey();
       this.Chat.sessionID = sessionID;
       this.getAiAnswer({ text: "" });
     }
