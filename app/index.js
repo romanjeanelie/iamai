@@ -31,8 +31,8 @@ class App {
   }
 
   getUser() {
-    if (sessionStorage.getItem("googleToken")) {
-      const responsePayload = decodeJwtResponse(sessionStorage.getItem("googleToken"));
+    if (localStorage.getItem("googleToken")) {
+      const responsePayload = decodeJwtResponse(localStorage.getItem("googleToken"));
       return new User(responsePayload.sub, responsePayload.name, responsePayload.picture, responsePayload.email);
     } else {
       return null;

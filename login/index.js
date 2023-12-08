@@ -1,5 +1,5 @@
 export function isUser() {
-  return sessionStorage.getItem("googleToken");
+  return localStorage.getItem("googleToken");
 }
 
 window.onload = function () {
@@ -32,7 +32,7 @@ window.handleCredentialResponse = async (response) => {
   const responsePayload = decodeJwtResponse(response.credential);
   user = new User(responsePayload.sub, responsePayload.name, responsePayload.picture, responsePayload.email);
   divgoogle.style.display = "none";
-  sessionStorage.setItem("googleToken", response.credential);
+  localStorage.setItem("googleToken", response.credential);
 };
 
 // Sign out the user
