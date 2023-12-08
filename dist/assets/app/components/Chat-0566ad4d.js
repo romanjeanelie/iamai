@@ -5,6 +5,7 @@ var __publicField = (obj, key, value) => {
   return value;
 };
 import "../../scss/variables/_colors.module.scss-f9d2d4d4.js";
+import "../../scss/variables/_breakpoints.module.scss-bbb4a233.js";
 import { connect } from "https://cdn.jsdelivr.net/npm/nats.ws@latest/esm/nats.js";
 const uuid = "omega_" + crypto.randomUUID();
 class Chat {

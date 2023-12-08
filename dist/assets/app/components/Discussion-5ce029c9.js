@@ -1,12 +1,12 @@
 import TypingText from "../TypingText-25eb2a14.js";
 import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scss-f9d2d4d4.js";
 import typeText from "../utils/typeText-a16d99d7.js";
-import Chat from "./Chat-9656f12f.js";
-import EventEmitter from "../utils/EventEmitter-e1772399.js";
-class Discussion extends EventEmitter {
-  constructor(callbacks) {
-    super();
-    this.callbacks = callbacks;
+import Chat from "./Chat-0566ad4d.js";
+import isMobile from "../utils/isMobile-f8de8c05.js";
+class Discussion {
+  constructor({ toPageGrey, emitter }) {
+    this.emitter = emitter;
+    this.toPageGrey = toPageGrey;
     this.page = document.querySelector(".page-grey");
     this.mainEl = this.page.querySelector("main");
     this.inputText = this.page.querySelector(".input-text");
@@ -56,12 +56,17 @@ class Discussion extends EventEmitter {
     this.getAiAnswer({ text, img });
   }
   async addAIText({ text, container }) {
-    this.trigger("addAIText", [text]);
+    this.emitter.emit("addAITextTest", text);
     this.typingText.fadeOut();
-    const textEl = document.createElement("p");
-    text = text.replace(/<br\/?>\s*/g, "\n");
+    const textEl = document.createElement("span");
     container.appendChild(textEl);
-    return typeText(textEl, text);
+    text = text.replace(/<br\/?>\s*/g, "\n");
+    if (isMobile()) {
+      return textEl.innerHTML = text;
+    } else {
+      text = text.replace(/<br\/?>\s*/g, "\n");
+      return typeText(textEl, text);
+    }
   }
   scrollToBottom() {
     this.mainEl.scrollTo({
@@ -87,7 +92,7 @@ class Discussion extends EventEmitter {
       this.getAiAnswer({ text: "" });
     }
     if (sessionID && sessionID != "") {
-      this.callbacks.toPageGrey();
+      this.toPageGrey();
       this.Chat.sessionID = sessionID;
       this.getAiAnswer({ text: "" });
     }

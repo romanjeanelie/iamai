@@ -16,6 +16,10 @@ export default {
   build: {
     minify: false,
     rollupOptions: {
+      input: {
+        main: resolve(__dirname, "index.html"),
+        login: resolve(__dirname, "login/index.html"),
+      },
       output: {
         preserveModules: true,
       },

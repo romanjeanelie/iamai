@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IAMAI</title>
+    <link rel="stylesheet" href="../scss/index.scss" />
+  </head>
+  <body class="preload">
+    <div id="app" class="login-page">
+      <div class="login__container">
+        {{> bluePage/logo}}
+        <p>Welcome. Please create an account or sign in so that you can save and see your chat history.</p>
+      </div>
+      <button id="divgoogle" class="divgoogle">
+        <div
+          id="g_id_onload"
+          data-client_id="76388500854-l7ksm3dpfrtr3vl8oc1674ttkvo5upl4.apps.googleusercontent.com"
+          data-context="signin"
+          data-ux_mode="popup"
+          data-callback="handleCredentialResponse"
+          data-auto_prompt="false"
+        ></div>
+        <div
+          class="g_id_signin"
+          data-type="standard"
+          data-shape="pill"
+          data-theme="outline"
+          data-text="signin_with"
+          data-size="large"
+          data-logo_alignment="left"
+        ></div>
+      </button>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <script type="module" src="./index.js"></script>
+  </body>
+</html>

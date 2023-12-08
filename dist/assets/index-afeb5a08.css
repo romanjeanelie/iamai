@@ -1891,3 +1891,6 @@ button {
     bottom: 22px;
   }
 }
+.login-page {
+  color: rgba(0, 0, 0, 0.72);
+}

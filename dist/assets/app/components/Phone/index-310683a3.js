@@ -6,9 +6,11 @@ import PhoneAnimations from "./PhoneAnimations-26ae0021.js";
 import playAudio from "../../utils/audio/playAudio-ffd61d6a.js";
 import unlockAudio from "../../utils/audio/unlockAudio-1f7f4888.js";
 class Phone {
-  constructor({ anims, pageEl, discussion }) {
-    this.discussion = discussion;
+  constructor({ anims, pageEl, discussion, emitter }) {
+    this.unbindEvent = null;
+    this.emitter = emitter;
     this.pageEl = pageEl;
+    this.discussion = discussion;
     this.phoneContainer = this.pageEl.querySelector(".phone__container");
     this.phoneBtn = this.pageEl.querySelector(".phone-btn");
     this.infoText = this.phoneContainer.querySelector(".phone__info.active");
@@ -33,15 +35,15 @@ class Phone {
     this.isListening = false;
     this.isMicMuted = false;
     this.micAccessConfirmed = false;
+    this.phoneAnimations = new PhoneAnimations({
+      pageEl: this.pageEl
+    });
     this.onClickOutside = {
       interrupt: false,
       resumeAI: false,
       unmuteMic: false
     };
     this.addListeners();
-    this.phoneAnimations = new PhoneAnimations({
-      pageEl: this.pageEl
-    });
     this.debug = false;
     if (this.debug) {
       this.phoneDebugContainer.classList.add("show");
@@ -64,7 +66,8 @@ class Phone {
   }
   leave() {
     console.log("leave");
-    this.discussion.off("addAIText");
+    this.unbindEvent();
+    this.unbindEvent = null;
     this.isActive = false;
     this.phoneAnimations.leave();
     this.stopRecording();
@@ -73,9 +76,11 @@ class Phone {
   toTalkToMe() {
     if (!this.isActive)
       return;
-    this.discussion.on("addAIText", (aiAnswer) => this.startAITalking(aiAnswer));
-    this.phoneAnimations.toTalkToMe();
     console.log("Talk to me");
+    if (!this.unbindEvent) {
+      this.unbindEvent = this.emitter.on("addAITextTest", (html) => this.startAITalking(html));
+    }
+    this.phoneAnimations.toTalkToMe();
     this.phoneAnimations.newInfoText("Talk to me");
     if (this.myvad)
       this.myvad.start();

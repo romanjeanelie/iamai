@@ -1,5 +1,5 @@
 import InputImage from "./InputImage-115ff9a2.js";
-import Phone from "../Phone/index-68539487.js";
+import Phone from "../Phone/index-310683a3.js";
 import TypingText from "../../TypingText-25eb2a14.js";
 import minSecStr from "../../utils/minSecStr-3b9ae0f7.js";
 import "../../../scss/variables/_breakpoints.module.scss-bbb4a233.js";
@@ -14,9 +14,10 @@ const STATUS = {
   WRITE: "WRITE"
 };
 class Input {
-  constructor({ pageEl, toPageGrey, discussion }) {
+  constructor({ pageEl, toPageGrey, discussion, emitter }) {
     this.toPageGrey = toPageGrey;
     this.discussion = discussion;
+    this.emitter = emitter;
     this.pageEl = pageEl;
     this.inputEl = this.pageEl.querySelector(".input__container");
     this.inputFrontEl = this.inputEl.querySelector(".input__front");
@@ -68,6 +69,7 @@ class Input {
       this.phone = new Phone({
         pageEl: this.pageEl,
         discussion: this.discussion,
+        emitter: this.emitter,
         anims: {
           toStartPhoneRecording: () => this.anims.toStartPhoneRecording(),
           toStopPhoneRecording: () => this.anims.toStopPhoneRecording()
