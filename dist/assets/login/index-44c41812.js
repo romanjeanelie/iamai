@@ -1,25 +1,19 @@
-export function isUser() {
+function isUser() {
   return localStorage.getItem("googleToken");
 }
-
-window.onload = async function () {
+window.onload = async function() {
   if (isUser()) {
     const responsePayload = decodeJwtResponse(isUser());
     console.log(responsePayload);
-
     const user = new User(responsePayload.sub, responsePayload.name, responsePayload.picture, responsePayload.email);
     await user.setuseraddress();
     console.log(user);
     divgoogle.style.display = "none";
     redirectToHome(user);
-
-
   } else {
     console.log("no logged in");
-    // divgoogle.style.display = "block";
   }
 };
-
 class User {
   constructor(uuid, name, picture, email) {
     this.uuid = uuid;
@@ -35,7 +29,7 @@ class User {
     this.administrative_area_level_2 = "";
   }
   async setuseraddress() {
-    let address = await getuserAddress()
+    let address = await getuserAddress();
     this.area_name = address.area_name;
     this.country_name = address.country_name;
     this.pincode = address.pincode;
@@ -44,13 +38,10 @@ class User {
     this.administrative_area_level_2 = address.administrative_area_level_2;
   }
 }
-
 async function redirectToHome(user) {
   console.log("redirect to home");
-  let data = await getsessionID(user);
-  window.location.href = "../index.html?lang=ad&session_id=" + data.SessionID + "&deploy_id=" + data.deploy_id;
+  await getsessionID(user);
 }
-
 window.handleCredentialResponse = async (response) => {
   console.log(response);
   const responsePayload = decodeJwtResponse(response.credential);
@@ -61,37 +52,20 @@ window.handleCredentialResponse = async (response) => {
   divgoogle.style.display = "none";
   localStorage.setItem("googleToken", response.credential);
   redirectToHome(user);
-
 };
-
-// Sign out the user
-function signout() {
-  google.accounts.id.disableAutoSelect();
-  divgoogle.style.display = "flex";
-}
-
 function decodeJwtResponse(token) {
   var base64Url = token.split(".")[1];
   var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
   var jsonPayload = decodeURIComponent(
-    window
-      .atob(base64)
-      .split("")
-      .map(function (c) {
-        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-      })
-      .join("")
+    window.atob(base64).split("").map(function(c) {
+      return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join("")
   );
-
   return JSON.parse(jsonPayload);
 }
-
-
-const getsessionID = (user) => new Promise(function (resolve, reject) {
-  // WARNING: For GET requests, body is set to null by browsers.
+const getsessionID = (user) => new Promise(function(resolve, reject) {
   var xhr = new XMLHttpRequest();
-  // xhr.withCredentials = true;
-  xhr.addEventListener("readystatechange", function () {
+  xhr.addEventListener("readystatechange", function() {
     if (this.readyState === 4) {
       console.log(this.responseText);
       resolve(JSON.parse(this.responseText));
@@ -101,11 +75,9 @@ const getsessionID = (user) => new Promise(function (resolve, reject) {
   xhr.setRequestHeader("Content-Type", "application/json");
   xhr.send(JSON.stringify(user));
 });
-
 function getUserTimezone() {
   return Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
-
 async function getuserAddress() {
   return new Promise(async (resolve, reject) => {
     let location;
@@ -119,18 +91,15 @@ async function getuserAddress() {
     console.log(location);
     console.log(location.lat);
     var xhr = new XMLHttpRequest();
-    xhr.addEventListener("readystatechange", function () {
+    xhr.addEventListener("readystatechange", function() {
       if (this.readyState === 4) {
-        // console.log(this.responseText);
-        resolve(JSON.parse(this.responseText))
+        resolve(JSON.parse(this.responseText));
       }
     });
-
     xhr.open("GET", "https://ai.iamplus.services/location/getaddress?latitude=" + location.lat + "&longitude=" + location.long);
     xhr.send();
   });
 }
-
 function getUserLocation() {
   return new Promise((resolve, reject) => {
     if (!navigator.geolocation) {
@@ -140,30 +109,29 @@ function getUserLocation() {
     }
   });
 }
-
 const success = (position) => {
   return new Promise((resolve, reject) => {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
-    const altitude = position.coords.altitude;
-    const accuracy = position.coords.accuracy;
-    // console.log(`lat: ${latitude} long: ${longitude}`);
-    resolve(JSON.stringify({"lat": latitude,"long": longitude}))
+    position.coords.altitude;
+    position.coords.accuracy;
+    resolve(JSON.stringify({ "lat": latitude, "long": longitude }));
   });
-}
-
+};
 const error = () => {
   return new Promise((resolve, reject) => {
     var request = new XMLHttpRequest();
-    request.open('GET', 'https://api.ipdata.co/?api-key=edadfa1ba2f38b1066342735ae303338478afada8e5eeb770929fafd');
-    request.setRequestHeader('Accept', 'application/json');
-    request.onreadystatechange = function () {
+    request.open("GET", "https://api.ipdata.co/?api-key=edadfa1ba2f38b1066342735ae303338478afada8e5eeb770929fafd");
+    request.setRequestHeader("Accept", "application/json");
+    request.onreadystatechange = function() {
       if (this.readyState === 4) {
-        var data = JSON.parse(this.responseText)
-        // console.log(`lat: ${data.latitude} long: ${data.longitude}`);
-        resolve(JSON.stringify({"lat": data.latitude,"long": data.longitude}))
+        var data = JSON.parse(this.responseText);
+        resolve(JSON.stringify({ "lat": data.latitude, "long": data.longitude }));
       }
     };
     request.send();
   });
-}
+};
+export {
+  isUser
+};

@@ -6,11 +6,63 @@
     <title>IAMAI</title>
     
     <script type="module" crossorigin src="/assets/_virtual/modulepreload-polyfill-7faf532e.js"></script>
-    <script type="module" crossorigin src="/assets/login/index-6103dd79.js"></script>
-    <link rel="stylesheet" href="/assets/index-afeb5a08.css">
+    <script type="module" crossorigin src="/assets/login/index-44c41812.js"></script>
+    <link rel="stylesheet" href="/assets/index-b4f78beb.css">
   </head>
   <body class="preload">
-    <div id="app" class="login-page">Login</div>
+    <div id="app" class="login-page">
+      <div class="login__container">
+        <div class="logo__main">
+          <svg width="247" height="60" viewBox="0 0 247 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11.831 59.9155H0V0H11.831V59.9155Z" fill="black" fill-opacity="0.4" />
+            <path
+              d="M156.721 59.9155H145.228V17.9155L127.989 59.9155H118.27L101.031 18.2535V59.9155H89.876V0H105.256L123.256 43.2676L140.834 0H156.721V59.9155Z"
+              fill="black"
+              fill-opacity="0.4"
+            />
+            <path d="M246.608 59.9155H234.777V0H246.608V59.9155Z" fill="black" />
+            <path
+              d="M44.069 0L21.1465 60H33.5056L50.6183 13.0986L67.8366 60H80.6183L57.5906 0H44.069Z"
+              fill="black"
+              fill-opacity="0.4"
+            />
+            <path d="M189.319 0L166.396 60H178.756L195.868 13.0986L213.087 60H225.868L202.841 0H189.319Z" fill="black" />
+          </svg>
+        </div>
+        <div class="logo__mobile">
+          <svg width="24" height="18" viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M23.9998 17.9746H20.46V0H23.9998V17.9746Z" fill="black" fill-opacity="0.4" />
+            <path
+              d="M6.85852 0L0 18H3.69791L8.81809 3.92958L13.9699 18H17.7942L10.9042 0H6.85852Z"
+              fill="black"
+              fill-opacity="0.4"
+            />
+          </svg>
+        </div>        <p>Welcome. Please create an account or sign in so that you can save and see your chat history.</p>
+      </div>
+      <button id="divgoogle" class="divgoogle">
+        <div
+          id="g_id_onload"
+          data-client_id="76388500854-l7ksm3dpfrtr3vl8oc1674ttkvo5upl4.apps.googleusercontent.com"
+          data-context="signin"
+          data-ux_mode="popup"
+          data-callback="handleCredentialResponse"
+          data-auto_prompt="false"
+        ></div>
+        <div
+          class="g_id_signin"
+          data-type="standard"
+          data-shape="pill"
+          data-theme="outline"
+          data-text="signin_with"
+          data-size="large"
+          data-logo_alignment="left"
+        ></div>
+      </button>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
     
   </body>
 </html>

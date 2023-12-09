@@ -1,5 +1,5 @@
 import InputImage from "./InputImage-115ff9a2.js";
-import Phone from "../Phone/index-310683a3.js";
+import Phone from "../Phone/index-adf3dd32.js";
 import TypingText from "../../TypingText-25eb2a14.js";
 import minSecStr from "../../utils/minSecStr-3b9ae0f7.js";
 import "../../../scss/variables/_breakpoints.module.scss-bbb4a233.js";

@@ -96,6 +96,7 @@ export default class Discussion {
     var urlParams = new URLSearchParams(queryString);
     var q = urlParams.get("q");
     const sessionID = urlParams.get("session_id");
+    const deploy_ID = urlParams.get("deploy_id");
 
     // console.log(q);
     // console.log(this.Chat.sessionID);
@@ -114,6 +115,7 @@ export default class Discussion {
     if (sessionID && sessionID != "") {
       this.toPageGrey();
       this.Chat.sessionID = sessionID;
+      this.Chat.deploy_ID = deploy_ID;
       this.getAiAnswer({ text: "" });
     }
   }

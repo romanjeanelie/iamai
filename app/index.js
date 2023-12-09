@@ -42,7 +42,7 @@ class App {
     this.resetScroll();
 
     if (!this.user) {
-      //   this.redirectToLogin();
+        this.redirectToLogin();
     }
   }
 
@@ -56,7 +56,8 @@ class App {
   }
 
   redirectToLogin() {
-    window.location.href = "/login/index.html";
+    console.log("notloggedin");
+    window.location.href = "./login/index.html";
   }
 
   // Anim

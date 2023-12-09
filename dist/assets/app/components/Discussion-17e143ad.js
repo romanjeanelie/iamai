@@ -1,7 +1,7 @@
 import TypingText from "../TypingText-25eb2a14.js";
 import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scss-f9d2d4d4.js";
 import typeText from "../utils/typeText-a16d99d7.js";
-import Chat from "./Chat-0566ad4d.js";
+import Chat from "./Chat-fe70e412.js";
 import isMobile from "../utils/isMobile-f8de8c05.js";
 class Discussion {
   constructor({ toPageGrey, emitter }) {
@@ -79,6 +79,7 @@ class Discussion {
     var urlParams = new URLSearchParams(queryString);
     var q = urlParams.get("q");
     const sessionID = urlParams.get("session_id");
+    const deploy_ID = urlParams.get("deploy_id");
     if (urlParams.get("location") && urlParams.get("location") != "") {
       this.Chat.location = urlParams.get("location");
     }
@@ -94,6 +95,7 @@ class Discussion {
     if (sessionID && sessionID != "") {
       this.toPageGrey();
       this.Chat.sessionID = sessionID;
+      this.Chat.deploy_ID = deploy_ID;
       this.getAiAnswer({ text: "" });
     }
   }
