@@ -448,6 +448,7 @@ class Chat {
       this.getMoviesDateShowtime(moviedetaildata.MovieTitle, theatre, theatre.DateTime[0].Date, moviedetailsdatesdiv);
       console.log(moviedetaildata.MovieTitle);
       moviedetailscarddiv.appendChild(moviedetailsdatesdiv);
+      moviedetail.innerHTML="";
       moviedetail.appendChild(moviedetailscarddiv)
     });
   }
@@ -955,6 +956,7 @@ class Chat {
     productdetailsdescription.className = "product-details-description";
     productdetailsdescription.innerHTML = divdata.desc.replaceAll("\n", "<br>");
     productdetailsdiv.appendChild(productdetailsdescription)
+    divele.innerHTML="";
     divele.appendChild(productdetailscard)
     // scrollToDiv(element.getAttribute('data-info'));
   }
