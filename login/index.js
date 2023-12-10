@@ -1,3 +1,6 @@
+let latitude;
+let longitude;
+
 export function isUser() {
   return localStorage.getItem("googleToken");
 }
@@ -35,7 +38,7 @@ class User {
     this.administrative_area_level_2 = "";
   }
   async setuseraddress() {
-    let address = await getuserAddress()
+    let address = await getaddressdetails()
     this.area_name = address.area_name;
     this.country_name = address.country_name;
     this.pincode = address.pincode;
@@ -106,27 +109,20 @@ function getUserTimezone() {
   return Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
 
-async function getuserAddress() {
+function getaddressdetails() {
   return new Promise(async (resolve, reject) => {
-    let location;
-    try {
-      location = await getUserLocation();
-      location = await JSON.parse(success(location));
-    } catch (execption) {
-      location = await error();
-    }
+    let location = await getUserLocation();
     location = JSON.parse(location);
-    console.log(location);
-    console.log(location.lat);
     var xhr = new XMLHttpRequest();
     xhr.addEventListener("readystatechange", function () {
       if (this.readyState === 4) {
-        // console.log(this.responseText);
+        console.log(this.responseText);
         resolve(JSON.parse(this.responseText))
       }
     });
-
-    xhr.open("GET", "https://ai.iamplus.services/location/getaddress?latitude=" + location.lat + "&longitude=" + location.long);
+    let url = "https://ai.iamplus.services/location/getaddress?latitude=" + location.lat + "&longitude=" + location.long;
+    console.log("URL:" + url)
+    xhr.open("GET", url);
     xhr.send();
   });
 }
@@ -134,25 +130,24 @@ async function getuserAddress() {
 function getUserLocation() {
   return new Promise((resolve, reject) => {
     if (!navigator.geolocation) {
-      reject(new Error("Geolocation is not supported by your browser"));
+      console.log("Geolocation is not supported by your browser");
+      resolve(getipadress());
+      // reject(new Error("Geolocation is not supported by your browser"));
     } else {
-      navigator.geolocation.getCurrentPosition(resolve, reject);
+      // navigator.geolocation.getCurrentPosition(success, getipadress);
+      navigator.geolocation.getCurrentPosition((pos) => {
+        console.log("got geo location");
+        resolve(JSON.stringify({ "lat": pos.coords.latitude, "long": pos.coords.longitude }))
+      },
+      (error) => {
+        console.log("Geolocation permission denied");
+        resolve(getipadress());
+      });
     }
   });
 }
 
-const success = (position) => {
-  return new Promise((resolve, reject) => {
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
-    const altitude = position.coords.altitude;
-    const accuracy = position.coords.accuracy;
-    // console.log(`lat: ${latitude} long: ${longitude}`);
-    resolve(JSON.stringify({"lat": latitude,"long": longitude}))
-  });
-}
-
-const error = () => {
+const getipadress = () => {
   return new Promise((resolve, reject) => {
     var request = new XMLHttpRequest();
     request.open('GET', 'https://api.ipdata.co/?api-key=edadfa1ba2f38b1066342735ae303338478afada8e5eeb770929fafd');
@@ -160,8 +155,10 @@ const error = () => {
     request.onreadystatechange = function () {
       if (this.readyState === 4) {
         var data = JSON.parse(this.responseText)
-        // console.log(`lat: ${data.latitude} long: ${data.longitude}`);
-        resolve(JSON.stringify({"lat": data.latitude,"long": data.longitude}))
+        console.log(`ip lat: ${data.latitude} long: ${data.longitude}`);
+        latitude = data.latitude;
+        longitude = data.longitude;
+        resolve(JSON.stringify({ "lat": data.latitude, "long": data.longitude }))
       }
     };
     request.send();
