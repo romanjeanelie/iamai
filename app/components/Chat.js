@@ -714,7 +714,8 @@ class Chat {
           logoFightdiv.appendChild(logoFightdivdiv);
 
           const flightlogoimg = document.createElement("img");
-          flightlogoimg.setAttribute("src", FlightSearchResult.travel.airlines_logo);
+          // flightlogoimg.setAttribute("src", FlightSearchResult.travel.airlines_logo);
+          flightlogoimg.setAttribute('src', (FlightSearchResult.travel.airlines_logo)?FlightSearchResult.travel.airlines_logo:"./images/flight.jpg");
           flightlogoimg.setAttribute("style", "height: 40px;mix-blend-mode: multiply;");
           logoFightdivdiv.appendChild(flightlogoimg);
 
