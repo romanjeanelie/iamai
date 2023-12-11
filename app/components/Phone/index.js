@@ -44,6 +44,8 @@ export default class Phone {
     this.audiosAI = [];
     this.isAITalking = false;
     this.isAIPaused = false;
+    this.isStreamEnded = false;
+    this.emitter.on("endStream", () => (this.isStreamEnded = true));
     // Mic
     this.isConnected = false;
     this.myvad = null;
@@ -186,11 +188,12 @@ export default class Phone {
         onPlay: this.onPlay.bind(this),
         onEnded: this.checkIfNextAudio.bind(this),
       });
-    } else {
+    } else if (this.isStreamEnded) {
       console.log("all sounds plaid");
       this.clearAIAudios();
       if (this.debug) return;
       this.toTalkToMe();
+      this.isStreamEnded = false;
     }
   }
 

@@ -21,6 +21,7 @@ export default class Discussion {
       addAIText: this.addAIText.bind(this),
       disableInput: this.disableInput.bind(this),
       enableInput: this.enableInput.bind(this),
+      emitter: emitter,
     });
 
     this.addListeners();

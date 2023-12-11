@@ -151,6 +151,7 @@ class Chat {
               }
               await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
               if (mdata.stream_status && mdata.stream_status == "ended") {
+                this.callbacks.emitter.emit("endStream");
                 this.callbacks.enableInput();
                 await this.callbacks.addAIText({ text: "\n\n", container: this.container });
               }
@@ -175,6 +176,8 @@ class Chat {
                 AIAnswer = transresponse.data.translations[0].translatedText;
               }
               await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
+              this.callbacks.emitter.emit("endStream");
+
               if (this.domain == "RAG_CHAT") {
                 console.log("here RAG_CHAT:" + this.RAG_CHAT);
                 // var displaytext = '<div><div class="productcard-container">';
@@ -228,13 +231,9 @@ class Chat {
               }
             } else if (mdata.message_type == "status") {
               if (mtext != "") {
-                var AIAnswer = (await this.toTitleCase2(mtext));
+                var AIAnswer = await this.toTitleCase2(mtext);
                 if (this.sourcelang != "en") {
-                  var transresponse = await this.googletranslate(
-                    AIAnswer,
-                    this.sourcelang,
-                    this.targetlang
-                  );
+                  var transresponse = await this.googletranslate(AIAnswer, this.sourcelang, this.targetlang);
                   AIAnswer = transresponse.data.translations[0].translatedText;
                 }
                 AIAnswer += "\n\n";
@@ -261,7 +260,7 @@ class Chat {
           JSON.stringify({
             session_id: this.sessionID,
             // uuid: uuid + "@iamplus.com",
-            uuid:this.deploy_ID
+            uuid: this.deploy_ID,
           })
         );
       } else {
@@ -271,7 +270,7 @@ class Chat {
           JSON.stringify({
             query: input_text,
             // uuid: uuid + "@iamplus.com",
-            uuid:this.user.uuid
+            uuid: this.user.uuid,
           })
         );
       }
@@ -409,23 +408,23 @@ class Chat {
     this.MovieSearchResults.forEach((element) => {
       const moviescarddiv = document.createElement("div");
       moviescarddiv.className = "movies-card";
-      moviescarddiv.setAttribute('data-info', 'movies-details');
-      moviescarddiv.setAttribute('data-details', JSON.stringify(element).replace(/'/g, "&#39;"));
-      moviescarddiv.addEventListener('click', (event) => this.showMovieDetail(event));
+      moviescarddiv.setAttribute("data-info", "movies-details");
+      moviescarddiv.setAttribute("data-details", JSON.stringify(element).replace(/'/g, "&#39;"));
+      moviescarddiv.addEventListener("click", (event) => this.showMovieDetail(event));
       const moviesimg = document.createElement("img");
       moviesimg.className = "movies-image";
-      moviesimg.setAttribute('alt', element.MovieTitle.replace(/'/g, "&#39;"));
-      moviesimg.setAttribute('src', element.MoviePoster);
-      moviescarddiv.appendChild(moviesimg)
+      moviesimg.setAttribute("alt", element.MovieTitle.replace(/'/g, "&#39;"));
+      moviesimg.setAttribute("src", element.MoviePoster);
+      moviescarddiv.appendChild(moviesimg);
       const moviestitlep = document.createElement("p");
       moviestitlep.className = "movies-title";
       moviestitlep.innerText = element.MovieTitle;
-      moviescarddiv.appendChild(moviestitlep)
+      moviescarddiv.appendChild(moviestitlep);
       moviescardcontainerdiv.appendChild(moviescarddiv);
     });
     moviesdiv.appendChild(moviescardcontainerdiv);
     const moviedetailsdiv = document.createElement("div");
-    moviedetailsdiv.setAttribute('id', "movie-details");
+    moviedetailsdiv.setAttribute("id", "movie-details");
     moviesdiv.appendChild(moviedetailsdiv);
     this.container.appendChild(moviesdiv);
   }
@@ -444,12 +443,12 @@ class Chat {
       moviedetailscarddiv.appendChild(moviedetailstheaterdiv);
       const moviedetailsdatesdiv = document.createElement("div");
       moviedetailsdatesdiv.className = "movie-details-dates";
-      moviedetailsdatesdiv.setAttribute('data-details', JSON.stringify(theatre).replace(/'/g, "&#39;"));
+      moviedetailsdatesdiv.setAttribute("data-details", JSON.stringify(theatre).replace(/'/g, "&#39;"));
       this.getMoviesDateShowtime(moviedetaildata.MovieTitle, theatre, theatre.DateTime[0].Date, moviedetailsdatesdiv);
       console.log(moviedetaildata.MovieTitle);
       moviedetailscarddiv.appendChild(moviedetailsdatesdiv);
-      moviedetail.innerHTML="";
-      moviedetail.appendChild(moviedetailscarddiv)
+      moviedetail.innerHTML = "";
+      moviedetail.appendChild(moviedetailscarddiv);
     });
   }
 
@@ -459,9 +458,10 @@ class Chat {
     const moviedetailsdateleftbuttonbutton = document.createElement("button");
     moviedetailsdateleftbuttonbutton.className = "arrow left-arrow";
     moviedetailsdateleftbuttonbutton.innerHTML = "&lt;&nbsp;&nbsp;";
-    moviedetailsdateleftbuttonbutton.addEventListener('click', (event) => this.getmovieshowtimes(event, -1, MovieTitle));
-    if (theatre.DateTime[0].Date == date)
-      moviedetailsdateleftbuttonbutton.disabled = true;
+    moviedetailsdateleftbuttonbutton.addEventListener("click", (event) =>
+      this.getmovieshowtimes(event, -1, MovieTitle)
+    );
+    if (theatre.DateTime[0].Date == date) moviedetailsdateleftbuttonbutton.disabled = true;
     moviedetailsdateselectordiv.appendChild(moviedetailsdateleftbuttonbutton);
 
     const moviedetailsdatespan = document.createElement("span");
@@ -471,9 +471,10 @@ class Chat {
     const moviedetailsdaterightbuttonbutton = document.createElement("button");
     moviedetailsdaterightbuttonbutton.className = "arrow right-arrow";
     moviedetailsdaterightbuttonbutton.innerHTML = "&nbsp;&nbsp;&gt;";
-    moviedetailsdaterightbuttonbutton.addEventListener('click', (event) => this.getmovieshowtimes(event, 1, MovieTitle));
-    if (theatre.DateTime[theatre.DateTime.length - 1].Date == date)
-      moviedetailsdaterightbuttonbutton.disabled = true;
+    moviedetailsdaterightbuttonbutton.addEventListener("click", (event) =>
+      this.getmovieshowtimes(event, 1, MovieTitle)
+    );
+    if (theatre.DateTime[theatre.DateTime.length - 1].Date == date) moviedetailsdaterightbuttonbutton.disabled = true;
     moviedetailsdateselectordiv.appendChild(moviedetailsdaterightbuttonbutton);
     moviedetailsdatesdiv.appendChild(moviedetailsdateselectordiv);
 
@@ -485,7 +486,9 @@ class Chat {
           const moviedetailsshowtimebutton = document.createElement("button");
           moviedetailsshowtimebutton.className = "movie-details-showtime";
           moviedetailsshowtimebutton.innerHTML = moviestime.slice(0, -3);
-          moviedetailsshowtimebutton.addEventListener('click', (event) => this.submitmovieselection(MovieTitle, theatre.Name, moviesdatetime.Date, moviestime.slice(0, -3)));
+          moviedetailsshowtimebutton.addEventListener("click", (event) =>
+            this.submitmovieselection(MovieTitle, theatre.Name, moviesdatetime.Date, moviestime.slice(0, -3))
+          );
           moviedetailsshowtimesdiv.appendChild(moviedetailsshowtimebutton);
         });
         moviedetailsdatesdiv.appendChild(moviedetailsshowtimesdiv);
@@ -493,19 +496,19 @@ class Chat {
     });
   }
 
-
   getmovieshowtimes(event, day, MovieTitle) {
     let element = event.target;
     let moviedetail = element.parentElement.parentElement.parentElement.querySelector(".movie-details-dates");
     let moviedetaildata = JSON.parse(moviedetail.getAttribute("data-details").replace("&#39;", /'/g));
     if (day == 1) {
-      const previousSiblingSpan = element.previousElementSibling.tagName === 'SPAN' ? element.previousElementSibling : null;
+      const previousSiblingSpan =
+        element.previousElementSibling.tagName === "SPAN" ? element.previousElementSibling : null;
       let date = new Date(previousSiblingSpan.innerHTML);
       date.setDate(date.getDate() + 1);
       moviedetail.innerHTML = "";
       this.getMoviesDateShowtime(MovieTitle, moviedetaildata, date.toISOString().slice(0, 10), moviedetail);
     } else {
-      const nextSiblingSpan = element.nextElementSibling.tagName === 'SPAN' ? element.nextElementSibling : null;
+      const nextSiblingSpan = element.nextElementSibling.tagName === "SPAN" ? element.nextElementSibling : null;
       let date = new Date(nextSiblingSpan.innerHTML);
       date.setDate(date.getDate() - 1);
       moviedetail.innerHTML = "";
@@ -516,20 +519,22 @@ class Chat {
   async submitmovieselection(MovieTitle, Theatre, Date, Time) {
     MovieTitle = MovieTitle.replace("’", "'");
     if (this.agentawaiting) {
-      var texttosend = "book movie ticket for " + JSON.stringify({
-        "movie_name": MovieTitle,
-        "theatre_name": Theatre,
-        "movie_date": Date,
-        "movie_time": Time
-      });
+      var texttosend =
+        "book movie ticket for " +
+        JSON.stringify({
+          movie_name: MovieTitle,
+          theatre_name: Theatre,
+          movie_date: Date,
+          movie_time: Time,
+        });
       var data = JSON.stringify({
-        "message_type": "user_reply",
-        "user": "User",
-        "message": {
-          "type": "text",
-          "json": {},
-          "text": texttosend
-        }
+        message_type: "user_reply",
+        user: "User",
+        message: {
+          type: "text",
+          json: {},
+          text: texttosend,
+        },
       });
 
       var xhr = new XMLHttpRequest();
@@ -547,13 +552,15 @@ class Chat {
       xhr.send(data);
       this.agentawaiting = false;
     } else {
-      var texttosend = "book movie ticket for " + JSON.stringify({
-        "movie_name": MovieTitle,
-        "theatre_name": Theatre,
-        "movie_date": Date,
-        "movie_time": Time
-      });
-      console.log("texttosend:" + texttosend)
+      var texttosend =
+        "book movie ticket for " +
+        JSON.stringify({
+          movie_name: MovieTitle,
+          theatre_name: Theatre,
+          movie_date: Date,
+          movie_time: Time,
+        });
+      console.log("texttosend:" + texttosend);
       this.callsubmit(texttosend, "", this.container);
     }
   }
@@ -576,32 +583,30 @@ class Chat {
         rideslistitemheaderlogo.className = "rides-list-item-header-logo";
         rideslistitemheaderdiv.appendChild(rideslistitemheaderlogo);
         const rideslistitemheaderlogoimg = document.createElement("img");
-        rideslistitemheaderlogoimg.setAttribute('src', './images/logo/' + service.provider + '-logo.svg');
-        rideslistitemheaderlogoimg.setAttribute('alt', service.provider);
+        rideslistitemheaderlogoimg.setAttribute("src", "./images/logo/" + service.provider + "-logo.svg");
+        rideslistitemheaderlogoimg.setAttribute("alt", service.provider);
         rideslistitemheaderlogo.appendChild(rideslistitemheaderlogoimg);
         const rideslistitemheaderinfodiv = document.createElement("div");
         rideslistitemheaderinfodiv.className = "rides-list-item-header-info";
         const rideslistitemheaderinfodivp = document.createElement("p");
-        if (service.name.includes('TAXI_HAILING'))
-          rideslistitemheaderinfodivp.innerHTML = "Taxi Hailing"
-        else
-          rideslistitemheaderinfodivp.innerHTML = service.name
+        if (service.name.includes("TAXI_HAILING")) rideslistitemheaderinfodivp.innerHTML = "Taxi Hailing";
+        else rideslistitemheaderinfodivp.innerHTML = service.name;
 
         rideslistitemheaderinfodiv.appendChild(rideslistitemheaderinfodivp);
         const rideslistitemheaderinfodescriptionp = document.createElement("p");
-        rideslistitemheaderinfodescriptionp.innerHTML = service.description
+        rideslistitemheaderinfodescriptionp.innerHTML = service.description;
         rideslistitemheaderinfodiv.appendChild(rideslistitemheaderinfodescriptionp);
         const rideslistitemheaderinfoseatsp = document.createElement("p");
-        rideslistitemheaderinfoseatsp.innerHTML = service.seats
+        rideslistitemheaderinfoseatsp.innerHTML = service.seats;
         rideslistitemheaderinfodiv.appendChild(rideslistitemheaderinfoseatsp);
         if (service.deeplink) {
           const rideslistitemheaderinfollink = document.createElement("a");
-          rideslistitemheaderinfollink.setAttribute('href', service.deeplink);
-          rideslistitemheaderinfollink.setAttribute('target', '_blank');
+          rideslistitemheaderinfollink.setAttribute("href", service.deeplink);
+          rideslistitemheaderinfollink.setAttribute("target", "_blank");
           rideslistitemheaderinfollink.innerHTML = "Link";
           rideslistitemheaderinfodiv.appendChild(rideslistitemheaderinfollink);
         }
-        rideslistitemheaderdiv.appendChild(rideslistitemheaderinfodiv)
+        rideslistitemheaderdiv.appendChild(rideslistitemheaderinfodiv);
         // rideslistitemdiv.appendChild(rideslistitemheaderdiv)
         const rideslistitemcontentdiv = document.createElement("div");
         rideslistitemcontentdiv.className = "rides-list-item-content";
@@ -614,12 +619,12 @@ class Chat {
             ridespricespan1.innerText = "$";
             rideslistitemcontentpricesdiv.appendChild(ridespricespan1);
             const ridespricespan2 = document.createElement("span");
-            ridespricespan2.innerText = service.price[0] + '-' + service.price[1];
+            ridespricespan2.innerText = service.price[0] + "-" + service.price[1];
             rideslistitemcontentpricesdiv.appendChild(ridespricespan2);
 
             if (taxii == 0) {
               const ridespricecheapestspan = document.createElement("span");
-              ridespricecheapestspan.className = "rides-list-item-content-sticker"
+              ridespricecheapestspan.className = "rides-list-item-content-sticker";
               ridespricecheapestspan.innerText = "cheapest";
               rideslistitemcontentdiv.appendChild(ridespricecheapestspan);
             }
@@ -633,7 +638,7 @@ class Chat {
 
             if (taxii == 0) {
               const ridespricecheapestspan = document.createElement("span");
-              ridespricecheapestspan.className = "rides-list-item-content-sticker"
+              ridespricecheapestspan.className = "rides-list-item-content-sticker";
               ridespricecheapestspan.innerText = "cheapest";
               rideslistitemcontentdiv.appendChild(ridespricecheapestspan);
             }
@@ -656,7 +661,7 @@ class Chat {
   getFlightUI() {
     const FlightContainerdiv = document.createElement("div");
     FlightContainerdiv.className = "FlightContainer Flight-Container";
-    FlightContainerdiv.setAttribute('name', 'flightResult');
+    FlightContainerdiv.setAttribute("name", "flightResult");
 
     if (this.FlightSearch.departure_end_date.length > 0 && this.FlightSearch.return_end_date.length > 0) {
       const flighttogglebuttoncontainerdiv = document.createElement("div");
@@ -665,14 +670,14 @@ class Chat {
 
       const flighttogglebutton = document.createElement("button");
       flighttogglebutton.className = "flight-toggle-button active";
-      flighttogglebutton.addEventListener('click', (event) => this.toggleflights(event));
+      flighttogglebutton.addEventListener("click", (event) => this.toggleflights(event));
       flighttogglebutton.innerHTML = "Outbound";
       flighttogglebutton.id = "Outbound";
       flighttogglebuttoncontainerdiv.appendChild(flighttogglebutton);
 
       const flighttogglebutton2 = document.createElement("button");
       flighttogglebutton2.className = "flight-toggle-button";
-      flighttogglebutton2.addEventListener('click', (event) => this.toggleflights(event));
+      flighttogglebutton2.addEventListener("click", (event) => this.toggleflights(event));
       flighttogglebutton2.id = "Return";
       flighttogglebutton2.innerHTML = "Return";
       flighttogglebuttoncontainerdiv.appendChild(flighttogglebutton2);
@@ -685,12 +690,12 @@ class Chat {
         flightResultdiv.className = "flightResult";
         if (flightsi == 0) {
           flightResultdiv.className = "flightResult";
-          flightResultdiv.setAttribute('id', 'flightResultOutbound');
+          flightResultdiv.setAttribute("id", "flightResultOutbound");
           FlightContainerdiv.appendChild(flightResultdiv);
         }
         if (flightsi == 1) {
-          flightResultdiv.setAttribute('id', 'flightResultReturn');
-          flightResultdiv.setAttribute('style', 'display:None');
+          flightResultdiv.setAttribute("id", "flightResultReturn");
+          flightResultdiv.setAttribute("style", "display:None");
           FlightContainerdiv.appendChild(flightResultdiv);
         }
         let flightcheapest = 0;
@@ -709,8 +714,8 @@ class Chat {
           logoFightdiv.appendChild(logoFightdivdiv);
 
           const flightlogoimg = document.createElement("img");
-          flightlogoimg.setAttribute('src', FlightSearchResult.travel.airlines_logo);
-          flightlogoimg.setAttribute('style', "height: 40px;mix-blend-mode: multiply;");
+          flightlogoimg.setAttribute("src", FlightSearchResult.travel.airlines_logo);
+          flightlogoimg.setAttribute("style", "height: 40px;mix-blend-mode: multiply;");
           logoFightdivdiv.appendChild(flightlogoimg);
 
           const flghtCostdiv = document.createElement("div");
@@ -741,7 +746,8 @@ class Chat {
 
           const flghtdurationP = document.createElement("p");
           flghtdurationP.className = "big";
-          flghtdurationP.innerHTML = FlightSearchResult.travel.start_time.split("\n")[0] +
+          flghtdurationP.innerHTML =
+            FlightSearchResult.travel.start_time.split("\n")[0] +
             (FlightSearchResult.travel.start_time.split("\n")[1]
               ? '<span class="small">' + FlightSearchResult.travel.start_time.split("\n")[1] + "</span>"
               : "");
@@ -753,11 +759,14 @@ class Chat {
 
           const timeHourMinP = document.createElement("p");
           timeHourMinP.className = "timeHourMin";
-          timeHourMinP.innerHTML = FlightSearchResult.travel.duration.split("h")[0] + '<span style="color: rgba(0, 0, 0, 0.40);">h</span> ' +
+          timeHourMinP.innerHTML =
+            FlightSearchResult.travel.duration.split("h")[0] +
+            '<span style="color: rgba(0, 0, 0, 0.40);">h</span> ' +
             FlightSearchResult.travel.duration.substring(
               FlightSearchResult.travel.duration.indexOf(" "),
               FlightSearchResult.travel.duration.indexOf("m")
-            ) + '<span style="color: rgba(0, 0, 0, 0.40);">m</span>';
+            ) +
+            '<span style="color: rgba(0, 0, 0, 0.40);">m</span>';
           durationdiv.appendChild(timeHourMinP);
 
           const dDirectiondiv = document.createElement("div");
@@ -786,16 +795,14 @@ class Chat {
               '<line x1="77.1" y1="13.4" x2="134.9" y2="13.4" stroke="black" stroke-opacity="0.4" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="0.1 4"/>';
             flightsresultsstr += "<defs>";
             flightsresultsstr += '<clipPath id="clip0_10855_133720">';
-            flightsresultsstr +=
-              '<rect width="18" height="28" fill="white" transform="translate(58.5)"/>';
+            flightsresultsstr += '<rect width="18" height="28" fill="white" transform="translate(58.5)"/>';
             flightsresultsstr += "</clipPath>";
             flightsresultsstr += "</defs>";
             flightsresultsstr += "</svg>";
           }
           flightsresultsstr +=
             '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20" fill="none">';
-          flightsresultsstr +=
-            '<circle cx="9.50002" cy="10.0001" r="3.75002" fill="black" fill-opacity="0.4" />';
+          flightsresultsstr += '<circle cx="9.50002" cy="10.0001" r="3.75002" fill="black" fill-opacity="0.4" />';
           flightsresultsstr += "</svg>";
           durationdiv.innerHTML = flightsresultsstr;
 
@@ -821,7 +828,8 @@ class Chat {
 
           const destinationdivP = document.createElement("p");
           destinationdivP.className = "big";
-          destinationdivP.innerHTML = FlightSearchResult.travel.end_time.split("\n")[0] +
+          destinationdivP.innerHTML =
+            FlightSearchResult.travel.end_time.split("\n")[0] +
             (FlightSearchResult.travel.end_time.split("\n")[1]
               ? '<span class="small">' + FlightSearchResult.travel.end_time.split("\n")[1] + "</span>"
               : "");
@@ -847,13 +855,13 @@ class Chat {
   toggleflights(event) {
     let element = event.target;
     if (element.id == "Outbound") {
-      element.classList.add('active');
-      element.parentElement.querySelector('#Return').classList.remove('active');
+      element.classList.add("active");
+      element.parentElement.querySelector("#Return").classList.remove("active");
       element.parentElement.parentElement.querySelector("#flightResultOutbound").style.display = "flex";
       element.parentElement.parentElement.querySelector("#flightResultReturn").style.display = "none";
     } else {
-      element.classList.add('active');
-      element.parentElement.querySelector('#Outbound').classList.remove('active');
+      element.classList.add("active");
+      element.parentElement.querySelector("#Outbound").classList.remove("active");
       element.parentElement.parentElement.querySelector("#flightResultOutbound").style.display = "none";
       element.parentElement.parentElement.querySelector("#flightResultReturn").style.display = "flex";
     }
@@ -868,15 +876,15 @@ class Chat {
     this.RAG_CHAT.forEach((element) => {
       const productcarddiv = document.createElement("div");
       productcarddiv.className = "product-card";
-      productcarddiv.setAttribute('data-info', "product-details");
-      productcarddiv.setAttribute('data-details', JSON.stringify(element).replace(/'/g, "&#39;"));
-      productcarddiv.addEventListener('click', (event) => this.showProductDetail(event));
+      productcarddiv.setAttribute("data-info", "product-details");
+      productcarddiv.setAttribute("data-details", JSON.stringify(element).replace(/'/g, "&#39;"));
+      productcarddiv.addEventListener("click", (event) => this.showProductDetail(event));
       productcardcontainerdiv.appendChild(productcarddiv);
 
       const productimage = document.createElement("img");
       productimage.className = "product-image";
-      productimage.setAttribute('src', element.image_url);
-      productimage.setAttribute('alt', element.name);
+      productimage.setAttribute("src", element.image_url);
+      productimage.setAttribute("alt", element.name);
       productcarddiv.appendChild(productimage);
 
       const productname = document.createElement("h3");
@@ -903,66 +911,65 @@ class Chat {
     let element = event.target;
     var divdata = JSON.parse(element.parentElement.getAttribute("data-details"));
     var divele = element.parentElement.parentElement.parentElement.querySelector("#product-details");
-    
+
     const productdetailscard = document.createElement("div");
     productdetailscard.className = "product-details-card";
     const productdetailsimage = document.createElement("div");
     productdetailsimage.className = "product-details-image";
-    productdetailscard.appendChild(productdetailsimage)
-
+    productdetailscard.appendChild(productdetailsimage);
 
     const carouseldiv = document.createElement("div");
     carouseldiv.className = "carousel";
-    productdetailsimage.appendChild(carouseldiv)
-    
+    productdetailsimage.appendChild(carouseldiv);
+
     divdata.image_urls.forEach((image_url) => {
       const carouselitemdiv = document.createElement("div");
       carouselitemdiv.className = "carouselitem";
       const carouselitemimg = document.createElement("img");
-      carouselitemimg.setAttribute('src',image_url);
-      carouselitemimg.setAttribute('alt',divdata.name );
-      carouselitemdiv.appendChild(carouselitemimg)
-      carouseldiv.appendChild(carouselitemdiv)
+      carouselitemimg.setAttribute("src", image_url);
+      carouselitemimg.setAttribute("alt", divdata.name);
+      carouselitemdiv.appendChild(carouselitemimg);
+      carouseldiv.appendChild(carouselitemdiv);
     });
 
     const productdetailsdiv = document.createElement("div");
     productdetailsdiv.className = "product-details";
-    productdetailscard.appendChild(productdetailsdiv)
+    productdetailscard.appendChild(productdetailsdiv);
 
     const productdetailstitlediv = document.createElement("h1");
     productdetailstitlediv.className = "product-details-title";
     productdetailstitlediv.innerHTML = divdata.name;
-    productdetailsdiv.appendChild(productdetailstitlediv)
+    productdetailsdiv.appendChild(productdetailstitlediv);
 
     const productdetailspricediv = document.createElement("div");
     productdetailspricediv.className = "product-details-price";
     productdetailspricediv.innerHTML = divdata.price;
-    productdetailsdiv.appendChild(productdetailspricediv)
+    productdetailsdiv.appendChild(productdetailspricediv);
 
     const productdetailsbuybtn = document.createElement("button");
     productdetailsbuybtn.className = "product-details-add-btn";
-    productdetailsdiv.appendChild(productdetailsbuybtn)
+    productdetailsdiv.appendChild(productdetailsbuybtn);
 
     const productdetailsbuybtnA = document.createElement("a");
-    productdetailsbuybtnA.setAttribute('href',divdata.link_url);
-    productdetailsbuybtnA.setAttribute('target','_blank');
+    productdetailsbuybtnA.setAttribute("href", divdata.link_url);
+    productdetailsbuybtnA.setAttribute("target", "_blank");
     productdetailsbuybtn.appendChild(productdetailsbuybtnA);
 
     const productdetailsbuybtnimg = document.createElement("img");
-    productdetailsbuybtnimg.setAttribute('src','./images/buy.svg');
+    productdetailsbuybtnimg.setAttribute("src", "./images/buy.svg");
     productdetailsbuybtnA.appendChild(productdetailsbuybtnimg);
 
     const productdetailsdescription = document.createElement("p");
     productdetailsdescription.className = "product-details-description";
     productdetailsdescription.innerHTML = divdata.desc.replaceAll("\n", "<br>");
-    productdetailsdiv.appendChild(productdetailsdescription)
-    divele.innerHTML="";
-    divele.appendChild(productdetailscard)
+    productdetailsdiv.appendChild(productdetailsdescription);
+    divele.innerHTML = "";
+    divele.appendChild(productdetailscard);
     // scrollToDiv(element.getAttribute('data-info'));
   }
   formatDateToString(date) {
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
     date = new Date(date);
     const dayName = days[date.getDay()];
@@ -971,7 +978,5 @@ class Chat {
 
     return `${dayName}, ${day} ${monthName}`;
   }
-
-  
 }
 export { Chat as default };
