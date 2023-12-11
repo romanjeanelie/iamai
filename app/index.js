@@ -42,7 +42,7 @@ class App {
     this.resetScroll();
 
     if (!this.user) {
-        this.redirectToLogin();
+      this.redirectToLogin();
     }
   }
 
@@ -68,6 +68,9 @@ class App {
     this.pageGrey.classList.add("show");
     this.navbarEl.classList.add("dark");
     this.cancelBtn.classList.add("dark");
+
+    this.inputBluePage.isActive = false;
+    this.inputGreyPage.isActive = true;
   }
 
   initApp() {
@@ -100,8 +103,8 @@ class App {
       emitter: this.emitter,
     };
 
-    new Input({ pageEl: this.pageBlue, ...props });
-    new Input({ pageEl: this.pageGrey, ...props });
+    this.inputBluePage = new Input({ pageEl: this.pageBlue, isActive: true, ...props });
+    this.inputGreyPage = new Input({ pageEl: this.pageGrey, isActive: false, ...props });
   }
 
   resetScroll() {

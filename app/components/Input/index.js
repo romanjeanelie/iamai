@@ -21,7 +21,9 @@ const STATUS = {
 };
 
 export default class Input {
-  constructor({ pageEl, toPageGrey, discussion, emitter }) {
+  constructor({ pageEl, isActive, toPageGrey, discussion, emitter }) {
+    this.isActive = isActive;
+
     this.toPageGrey = toPageGrey;
     this.discussion = discussion;
     this.emitter = emitter;
@@ -316,7 +318,7 @@ export default class Input {
     document.addEventListener(
       "keydown",
       () => {
-        if (this.isPageBlue) return;
+        if (!this.isActive) return;
         if (this.currentStatus !== STATUS.WRITE && !this.inputText.disabled) {
           this.toWrite();
         }
