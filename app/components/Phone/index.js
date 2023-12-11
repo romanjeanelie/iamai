@@ -45,7 +45,10 @@ export default class Phone {
     this.isAITalking = false;
     this.isAIPaused = false;
     this.isStreamEnded = false;
-    this.emitter.on("endStream", () => (this.isStreamEnded = true));
+    this.emitter.on("endStream", () => {
+      console.log("stream end /////// ");
+      this.isStreamEnded = true;
+    });
     // Mic
     this.isConnected = false;
     this.myvad = null;
