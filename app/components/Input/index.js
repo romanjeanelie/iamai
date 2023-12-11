@@ -113,6 +113,13 @@ export default class Input {
     }
   }
 
+  // Write
+  toWrite({ delay = 0, animButtons = true, animLogos = true } = {}) {
+    this.currentStatus = STATUS.WRITE;
+    this.anims.toWrite({ delay, animButtons, animLogos });
+    this.onClickOutside.animInitial = true;
+  }
+
   // Audio
   startRecording() {
     this.isRecordCanceled = false;
@@ -157,9 +164,7 @@ export default class Input {
     }
 
     if (this.typingText) this.typingText.reverse();
-    this.anims.toWrite({ delay: 1200, animButtons: false, animLogos: false });
-
-    this.onClickOutside.animInitial = true;
+    this.toWrite({ delay: 1200, animButtons: false, animLogos: false });
   }
 
   async onCompleteRecording(blob) {
@@ -209,15 +214,14 @@ export default class Input {
     this.currentStatus = STATUS.INITIAL;
     this.anims.toInitial();
     this.onClickOutside.animInitial = false;
+    this.inputText.disabled = false;
   }
 
   // Listeners
   addListeners() {
     // Write
     this.centerBtn.addEventListener("click", () => {
-      this.currentStatus = STATUS.WRITE;
-      this.anims.toWrite();
-      this.onClickOutside.animInitial = true;
+      this.toWrite();
     });
 
     // Record
@@ -309,6 +313,17 @@ export default class Input {
     );
 
     // Input text
+    document.addEventListener(
+      "keydown",
+      () => {
+        if (this.isPageBlue) return;
+        if (this.currentStatus !== STATUS.WRITE && !this.inputText.disabled) {
+          this.toWrite();
+        }
+      },
+      { capture: true }
+    );
+
     this.inputText.addEventListener("focus", () => {
       this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
     });
