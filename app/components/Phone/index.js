@@ -118,6 +118,7 @@ export default class Phone {
     if (!this.unbindEvent) {
       this.unbindEvent = this.emitter.on("addAITextTest", (html) => this.startAITalking(html));
     }
+    this.isStreamEnded = false;
     this.phoneAnimations.toTalkToMe();
     this.phoneAnimations.newInfoText("Talk to me");
     if (this.myvad) this.myvad.start();
@@ -181,8 +182,8 @@ export default class Phone {
 
   async checkIfNextAudio() {
     if (!this.isActive) return;
-    this.currentIndexAudioAI++;
-    if (this.audiosAI[this.currentIndexAudioAI]) {
+    if (this.audiosAI[this.currentIndexAudioAI + 1]) {
+      this.currentIndexAudioAI++;
       console.log("Stil one sound");
       // this.audiosAI[this.currentIndexAudioAI].play();
       this.currentAudioAIPlaying = new AudioPlayer({
@@ -191,19 +192,21 @@ export default class Phone {
         onPlay: this.onPlay.bind(this),
         onEnded: this.checkIfNextAudio.bind(this),
       });
-    } else if (this.isStreamEnded) {
-      console.log("all sounds plaid");
+    } else {
       this.clearAIAudios();
-      if (this.debug) return;
-      this.toTalkToMe();
-      this.isStreamEnded = false;
+      if (this.isStreamEnded) {
+        console.log("all sounds plaid", this.isStreamEnded);
+        if (this.debug) return;
+        this.toTalkToMe();
+
+        this.isAITalking = false;
+      }
     }
   }
 
   clearAIAudios() {
     this.currentIndexAudioAI = null;
     this.audiosAI = [];
-    this.isAITalking = false;
     this.onClickOutside.interrupt = false;
   }
 
@@ -211,6 +214,7 @@ export default class Phone {
     console.log("stop talking");
     this.currentAudioAIPlaying?.pauseAudio();
     this.currentAudioAIPlaying = null;
+    this.isAITalking = false;
     this.clearAIAudios();
   }
 
