@@ -45,6 +45,7 @@ export default class Phone {
     this.isAITalking = false;
     this.isAIPaused = false;
     // Mic
+    this.isConnected = false;
     this.myvad = null;
     this.isListening = false;
     this.isMicMuted = false;
@@ -89,7 +90,10 @@ export default class Phone {
       audioContext: this.audioContext,
     });
     if (this.debug) return;
-    this.toTalkToMe();
+    setTimeout(() => {
+      this.isConnected = true;
+      this.toTalkToMe();
+    }, 2000);
   }
 
   leave() {
@@ -227,6 +231,7 @@ export default class Phone {
           }
         },
         onSpeechStart: () => {
+          if (!this.isConnected) return;
           this.toListening();
         },
         onSpeechEnd: (audio) => {
