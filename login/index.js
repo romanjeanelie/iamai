@@ -156,8 +156,6 @@ const getipadress = () => {
       if (this.readyState === 4) {
         var data = JSON.parse(this.responseText)
         console.log(`ip lat: ${data.latitude} long: ${data.longitude}`);
-        latitude = data.latitude;
-        longitude = data.longitude;
         resolve(JSON.stringify({ "lat": data.latitude, "long": data.longitude }))
       }
     };

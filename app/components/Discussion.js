@@ -122,7 +122,7 @@ export default class Discussion {
 
   addListeners() {
     window.addEventListener("load", this.onLoad());
-    // window.addEventListener("load", this.onLoad.bind(this););
+    // window.addEventListener("load", this.onLoad.bind(this));
     const resizeObserver = new ResizeObserver(this.scrollToBottom.bind(this));
 
     resizeObserver.observe(this.discussionContainer);
