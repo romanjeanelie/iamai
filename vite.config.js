@@ -14,14 +14,14 @@ export default {
     }),
   ],
   build: {
-    minify: true,
+    minify: false,
     rollupOptions: {
       input: {
         main: resolve(__dirname, "index.html"),
         login: resolve(__dirname, "login/index.html"),
       },
       output: {
-        preserveModules: false,
+        preserveModules: true,
       },
       preserveEntrySignatures: "strict",
     },
