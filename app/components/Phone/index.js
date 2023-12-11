@@ -93,7 +93,7 @@ export default class Phone {
     setTimeout(() => {
       this.isConnected = true;
       this.toTalkToMe();
-    }, 2000);
+    }, 1500);
   }
 
   leave() {
@@ -238,6 +238,8 @@ export default class Phone {
           this.toProcessing(audio);
           this.isListening = false;
         },
+        // Time to wait before onSpeechEnd (10 frames * X seconds)
+        redemptionFrames: 10 * 1.4,
       });
     }
 
