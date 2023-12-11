@@ -69,8 +69,10 @@ class App {
     this.navbarEl.classList.add("dark");
     this.cancelBtn.classList.add("dark");
 
-    this.inputBluePage.isActive = false;
-    this.inputGreyPage.isActive = true;
+    setTimeout(() => {
+      this.inputBluePage.isActive = false;
+      this.inputGreyPage.isActive = true;
+    });
   }
 
   initApp() {

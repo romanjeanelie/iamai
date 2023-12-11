@@ -225,6 +225,16 @@ export default class Input {
     this.centerBtn.addEventListener("click", () => {
       this.toWrite();
     });
+    document.addEventListener(
+      "keydown",
+      () => {
+        if (!this.isActive) return;
+        if (this.currentStatus !== STATUS.WRITE && !this.inputText.disabled) {
+          this.toWrite();
+        }
+      },
+      { capture: true }
+    );
 
     // Record
     if (this.frontMicBtn)
@@ -315,16 +325,6 @@ export default class Input {
     );
 
     // Input text
-    document.addEventListener(
-      "keydown",
-      () => {
-        if (!this.isActive) return;
-        if (this.currentStatus !== STATUS.WRITE && !this.inputText.disabled) {
-          this.toWrite();
-        }
-      },
-      { capture: true }
-    );
 
     this.inputText.addEventListener("focus", () => {
       this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
