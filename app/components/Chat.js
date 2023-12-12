@@ -109,7 +109,8 @@ class Chat {
             var mtext = mdata.data;
 
             //get UI and RAG params
-            if (mdata.message_type == "ui" || mdata.message_type == "conversation_question") {
+            // if (mdata.message_type == "ui" || mdata.message_type == "conversation_question") {
+            if (mdata.message_type == "ui") {
               this.domain = mdata.ui_params.domain;
               console.log("domain:" + this.domain);
               if (this.domain == "MovieSearch") {
