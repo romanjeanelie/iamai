@@ -198,7 +198,6 @@ export default class Phone {
         console.log("all sounds plaid", this.isStreamEnded);
         if (this.debug) return;
         this.toTalkToMe();
-
         this.isAITalking = false;
       }
     }

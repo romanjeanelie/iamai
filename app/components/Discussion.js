@@ -17,6 +17,8 @@ export default class Discussion {
 
     this.addUserElement = this.addUserElement.bind(this);
 
+    this.lastStatus = null;
+
     this.Chat = new Chat({
       addAIText: this.addAIText.bind(this),
       disableInput: this.disableInput.bind(this),
@@ -70,11 +72,21 @@ export default class Discussion {
     this.getAiAnswer({ text, img });
   }
 
-  async addAIText({ text, container }) {
+  async addAIText({ text, container, type = null } = {}) {
     this.emitter.emit("addAITextTest", text);
-
     this.typingText.fadeOut();
     const textEl = document.createElement("span");
+
+    if (type === "status") {
+      container.innerHTML = "";
+      //   console.log("/// Status :", text, container);
+      this.lastStatus = textEl;
+    } else if (this.lastStatus) {
+      container.removeChild(this.lastStatus);
+      //   console.log("/// replace last status text", this.lastStatus);
+      this.lastStatus = null;
+    }
+
     container.appendChild(textEl);
     text = text.replace(/<br\/?>\s*/g, "\n");
     if (isMobile()) {

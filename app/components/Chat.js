@@ -237,7 +237,8 @@ class Chat {
                   AIAnswer = transresponse.data.translations[0].translatedText;
                 }
                 AIAnswer += "\n\n";
-                await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
+
+                await this.callbacks.addAIText({ text: AIAnswer, container: this.container, type: "status" });
               }
             }
             m.ack();
@@ -715,7 +716,10 @@ class Chat {
 
           const flightlogoimg = document.createElement("img");
           // flightlogoimg.setAttribute("src", FlightSearchResult.travel.airlines_logo);
-          flightlogoimg.setAttribute('src', (FlightSearchResult.travel.airlines_logo)?FlightSearchResult.travel.airlines_logo:"./images/flight.jpg");
+          flightlogoimg.setAttribute(
+            "src",
+            FlightSearchResult.travel.airlines_logo ? FlightSearchResult.travel.airlines_logo : "./images/flight.jpg"
+          );
           flightlogoimg.setAttribute("style", "height: 40px;mix-blend-mode: multiply;");
           logoFightdivdiv.appendChild(flightlogoimg);
 
