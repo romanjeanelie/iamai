@@ -80,6 +80,7 @@ export default class Discussion {
     if (type === "status") {
       container.innerHTML = "";
       //   console.log("/// Status :", text, container);
+      textEl.className = "AIstatus";
       this.lastStatus = textEl;
     } else if (this.lastStatus) {
       container.removeChild(this.lastStatus);
