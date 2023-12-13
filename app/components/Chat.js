@@ -704,6 +704,7 @@ class Chat {
         FlightSearchResultsArr.forEach((FlightSearchResult) => {
           const flightCarddiv = document.createElement("div");
           flightCarddiv.className = "flightCard";
+          flightCarddiv.setAttribute("onclick", "window.open('"+FlightSearchResult.link_url+"', '_blank');")
           flightResultdiv.appendChild(flightCarddiv);
 
           const rowFlightCarddiv = document.createElement("div");
