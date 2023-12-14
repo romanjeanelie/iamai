@@ -1,5 +1,5 @@
 import Discussion from "./Discussion.js";
-import { connect, StringCodec } from "https://cdn.jsdelivr.net/npm/nats.ws@latest/esm/nats.js";
+import { connect, AckPolicy, JSONCodec } from "https://cdn.jsdelivr.net/npm/nats.ws@latest/esm/nats.js";
 // const uuid = "omega_" + crypto.randomUUID();
 
 const IS_DEV_MODE = import.meta.env.MODE === "development";
@@ -71,217 +71,425 @@ class Chat {
       if (response.data.translations[0].detectedSourceLanguage)
         this.sourcelang = response.data.translations[0].detectedSourceLanguage;
     }
-    if (this.awaiting && this.workflowID != "") {
-      this.submituserreply(input_text, this.workflowID, img);
-    } else {
-      var xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = async () => {
-        if (xhr.readyState == 4) {
-          console.log(xhr.response);
-          let text = JSON.parse(xhr.response);
-          console.log(text.stream_id);
-          let nc = await connect({
-            servers: ["wss://ai.iamplus.services/tasks:8443"],
-            user: "acc",
-            pass: "user@123",
-          });
-
-          const stream_name = text.stream_id;
-          console.log(stream_name);
-          const js = nc.jetstream();
-          const c = await js.consumers.get(stream_name, stream_name);
-          let iter = await c.consume();
-          nc.onclose = function (e) {
-            console.log("Socket is closed. Reconnect will be attempted in 1 second.", e.reason);
-            setTimeout(async function () {
-              console.log("Socket is closed. Reconnect will be attempted in 1 second.", e.reason);
-              nc = await connect({
-                servers: ["wss://ai.iamplus.services/tasks:8443"],
-                user: "acc",
-                pass: "user@123",
-              });
-            }, 1000);
-          };
-
-          nc.onerror = function (err) {
-            console.error("Socket encountered error: ", err.message, "Closing socket");
-            ws.close();
-          };
-          for await (const m of iter) {
-            var mdata = m.json();
-            console.log(mdata);
-            var mtext = mdata.data;
-
-            //get UI and RAG params
-            // if (mdata.message_type == "ui" || mdata.message_type == "conversation_question") {
-            if (mdata.message_type == "ui") {
-              this.domain = mdata.ui_params.domain;
-              console.log("domain:" + this.domain);
-              if (this.domain == "MovieSearch") {
-                this.MovieSearch = JSON.parse(mdata.ui_params.MovieSearch);
-                this.MovieSearchResults = JSON.parse(mdata.ui_params.MovieSearchResults);
-              } else if (this.domain == "TaxiSearch") {
-                this.TaxiSearch = JSON.parse(mdata.ui_params.TaxiSearch);
-                this.TaxiSearchResults = JSON.parse(mdata.ui_params.TaxiSearchResults);
-              } else if (this.domain == "RAG_CHAT") {
-                this.RAG_CHAT = JSON.parse(mdata.ui_params.RAG_CHAT);
-                console.log("domain RAG_CHAT:" + this.RAG_CHAT);
-              } else if (this.domain == "FlightSearch") {
-                this.FlightSearch = JSON.parse(mdata.ui_params.FlightSearch);
-                this.FlightSearchResults = JSON.parse(mdata.ui_params.FlightSearchResults);
-              }
-            }
-
-            //check if awaiting
-            if (mdata.awaiting) {
-              this.workflowID = mdata.session_id;
-              this.awaiting = true;
-            }
-
-            //check if agent is awaiting
-            if (mdata.awaiting && mdata.message_type == "user_question") {
-              this.agentawaiting = true;
-            }
-
-            //generate data
-            if (mdata.streaming && mdata.streaming == true) {
-              var AIAnswer = await this.toTitleCase2(mtext);
-              if (this.sourcelang != "en") {
-                var transresponse = await this.googletranslate(
-                  await this.toTitleCase2(mtext),
-                  this.sourcelang,
-                  this.targetlang
-                );
-                AIAnswer = transresponse.data.translations[0].translatedText;
-              }
-              await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
-              if (mdata.stream_status && mdata.stream_status == "ended") {
-                this.callbacks.emitter.emit("endStream");
-                this.callbacks.enableInput();
-                await this.callbacks.addAIText({ text: "\n\n", container: this.container });
-              }
-            } else if (mdata.status == "Agent ended") {
-              this.workflowID = "";
-              this.awaiting = false;
-              this.callbacks.enableInput();
-              return;
-            } else if (mdata.awaiting) {
-              console.log("awaiting:" + mdata.message_type);
-              console.log("mtext:" + mtext);
-              this.workflowID = mdata.session_id;
-              this.awaiting = true;
-              var AIAnswer = await this.toTitleCase2(mtext);
-              console.log("AIAnswer:" + AIAnswer);
-              if (this.sourcelang != "en") {
-                var transresponse = await this.googletranslate(
-                  await this.toTitleCase2(mtext),
-                  this.sourcelang,
-                  this.targetlang
-                );
-                AIAnswer = transresponse.data.translations[0].translatedText;
-              }
-              await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
-              this.callbacks.emitter.emit("endStream");
-
-              if (this.domain == "RAG_CHAT") {
-                console.log("here RAG_CHAT:" + this.RAG_CHAT);
-                // var displaytext = '<div><div class="productcard-container">';
-
-                // this.RAG_CHAT.forEach((element) => {
-                //   console.log("element:" + element);
-                //   displaytext +=
-                //     '<div class="product-card" data-info="product-details"  data-details=\'' +
-                //     JSON.stringify(element).replace(/'/g, "&#39;") +
-                //     '\' onclick="showProductDetail(this);return false;">';
-                //   displaytext +=
-                //     '<img src="' + element.image_url + '" alt="' + element.name + '" class="product-image">';
-                //   displaytext += '<h3 class="product-name">' + element.name + "</h3>";
-                //   displaytext += '<p class="product-price">' + element.price + "</p>";
-                //   displaytext += '<div class="product-overlay"></div></div>';
-                // });
-                // displaytext += '</div><div id="product-details"></div></div>';
-                // console.log("here displaytext:" + displaytext);
-                // this.container.innerHTML += displaytext;
-
-                this.getGucciUI();
-                (this.domain = ""), (this.RAG_CHAT = "");
-              } else if (this.domain == "MovieSearch") {
-                this.getMovies();
-                (this.domain = ""), (this.MovieSearchResults = ""), (this.MovieSearch = "");
-              }
-              this.callbacks.enableInput();
-            } else if (mdata.status == "central finished") {
-              // var mtext1 = mtext.slice(0, mtext.indexOf(":"));
-              // var mtext2 = mtext.slice(mtext.indexOf(":") + 1, -1);
-              // var AIAnswer = (await this.toTitleCase(mtext1)) + "<br/>" + (await this.toTitleCase2(mtext2));
-              // if (this.sourcelang != "en") {
-              //   var transresponse = await this.googletranslate(
-              //     await this.toTitleCase2(mtext2),
-              //     this.sourcelang,
-              //     this.targetlang
-              //   );
-              //   mtext2 = transresponse.data.translations[0].translatedText;
-              //   AIAnswer = (await this.toTitleCase(mtext1)) + "<br/>" + mtext2;
-              // }
-              // await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
-              if (this.domain == "MovieSearch") {
-                this.getMovies();
-                (this.domain = ""), (this.MovieSearchResults = ""), (this.MovieSearch = "");
-              } else if (this.domain == "TaxiSearch") {
-                this.getTaxiUI();
-                (this.TaxiSearchResults = ""), (this.TaxiSearch = ""), (this.domain = "");
-              } else if (this.domain == "FlightSearch") {
-                this.getFlightUI();
-                (this.FlightSearch = ""), (this.domain = ""), (this.FlightSearchResults = "");
-              }
-            } else if (mdata.message_type == "status") {
-              if (mtext != "") {
-                var AIAnswer = await this.toTitleCase2(mtext);
-                if (this.sourcelang != "en") {
-                  var transresponse = await this.googletranslate(AIAnswer, this.sourcelang, this.targetlang);
-                  AIAnswer = transresponse.data.translations[0].translatedText;
-                }
-                AIAnswer += "\n\n";
-
-                await this.callbacks.addAIText({ text: AIAnswer, container: this.container, type: "status" });
-              }
-            }
-            m.ack();
-          }
-          nc.drain();
-        }
-      };
-
-      xhr.addEventListener("error", async function (e) {
-        console.log("error: " + e);
-        var AIAnswer = "An error occurred while attempting to connect.";
-        await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
-
-        this.callbacks.enableInput();
-      });
-      if (this.sessionID && this.sessionID != "") {
-        xhr.open("POST", "https://ai.iamplus.services/workflow/conversation", true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.send(
-          JSON.stringify({
-            session_id: this.sessionID,
-            // uuid: uuid + "@iamplus.com",
-            uuid: this.deploy_ID,
-          })
-        );
+    if (!IS_DEV_MODE) {
+      if (this.awaiting && this.workflowID != "") {
+        this.submituserreply(input_text, this.workflowID, img);
       } else {
-        xhr.open("POST", "https://ai.iamplus.services/workflow/tasks", true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.send(
-          JSON.stringify({
-            query: input_text,
-            // uuid: uuid + "@iamplus.com",
-            uuid: this.user.uuid,
-          })
-        );
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = async () => {
+          if (xhr.readyState == 4) {
+            console.log(xhr.response);
+            let text = JSON.parse(xhr.response);
+            console.log(text.stream_id);
+            let stream_name = text.stream_id;
+            this.getstreamdata(stream_name);
+          }
+        };
+
+        xhr.addEventListener("error", async function (e) {
+          console.log("error: " + e);
+          var AIAnswer = "An error occurred while attempting to connect.";
+          await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
+
+          this.callbacks.enableInput();
+        });
+        if (this.sessionID && this.sessionID != "") {
+          xhr.open("POST", "https://ai.iamplus.services/workflow/conversation", true);
+          xhr.setRequestHeader("Content-Type", "application/json");
+          xhr.send(
+            JSON.stringify({
+              session_id: this.sessionID,
+              // uuid: uuid + "@iamplus.com",
+              uuid: this.deploy_ID,
+            })
+          );
+        } else {
+          xhr.open("POST", "https://ai.iamplus.services/workflow/tasks", true);
+          xhr.setRequestHeader("Content-Type", "application/json");
+          xhr.send(
+            JSON.stringify({
+              query: input_text,
+              // uuid: uuid + "@iamplus.com",
+              uuid: this.user.uuid,
+            })
+          );
+        }
       }
+    } else {
+      await this.getdevstream("DEV_STREAM");
+      this.getstreamdata("DEV_STREAM");
     }
   };
+  getstreamdata = async (stream_name) => {
+    console.log(stream_name);
+    let nc = await connect({
+      servers: ["wss://ai.iamplus.services/tasks:8443"],
+      user: "acc",
+      pass: "user@123",
+    });
+
+    const js = nc.jetstream();
+    const c = await js.consumers.get(stream_name, stream_name);
+    let iter = await c.consume();
+    nc.onclose = function (e) {
+      console.log("Socket is closed. Reconnect will be attempted in 1 second.", e.reason);
+      setTimeout(async function () {
+        console.log("Socket is closed. Reconnect will be attempted in 1 second.", e.reason);
+        nc = await connect({
+          servers: ["wss://ai.iamplus.services/tasks:8443"],
+          user: "acc",
+          pass: "user@123",
+        });
+      }, 1000);
+    };
+
+    nc.onerror = function (err) {
+      console.error("Socket encountered error: ", err.message, "Closing socket");
+      ws.close();
+    };
+    for await (const m of iter) {
+      var mdata = m.json();
+      console.log(mdata);
+      var mtext = mdata.data;
+
+      //get UI and RAG params
+      // if (mdata.message_type == "ui" || mdata.message_type == "conversation_question") {
+      if (mdata.message_type == "ui") {
+        this.domain = mdata.ui_params.domain;
+        console.log("domain:" + this.domain);
+        if (this.domain == "MovieSearch") {
+          this.MovieSearch = JSON.parse(mdata.ui_params.MovieSearch);
+          this.MovieSearchResults = JSON.parse(mdata.ui_params.MovieSearchResults);
+        } else if (this.domain == "TaxiSearch") {
+          this.TaxiSearch = JSON.parse(mdata.ui_params.TaxiSearch);
+          this.TaxiSearchResults = JSON.parse(mdata.ui_params.TaxiSearchResults);
+        } else if (this.domain == "RAG_CHAT") {
+          this.RAG_CHAT = JSON.parse(mdata.ui_params.RAG_CHAT);
+          console.log("domain RAG_CHAT:" + this.RAG_CHAT);
+        } else if (this.domain == "FlightSearch") {
+          this.FlightSearch = JSON.parse(mdata.ui_params.FlightSearch);
+          this.FlightSearchResults = JSON.parse(mdata.ui_params.FlightSearchResults);
+        }
+      }
+
+      //check if awaiting
+      if (mdata.awaiting) {
+        this.workflowID = mdata.session_id;
+        this.awaiting = true;
+      }
+
+      //check if agent is awaiting
+      if (mdata.awaiting && mdata.message_type == "user_question") {
+        this.agentawaiting = true;
+      }
+
+      //generate data
+      if (mdata.streaming && mdata.streaming == true) {
+        var AIAnswer = await this.toTitleCase2(mtext);
+        if (this.sourcelang != "en") {
+          var transresponse = await this.googletranslate(
+            await this.toTitleCase2(mtext),
+            this.sourcelang,
+            this.targetlang
+          );
+          AIAnswer = transresponse.data.translations[0].translatedText;
+        }
+        await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
+        if (mdata.stream_status && mdata.stream_status == "ended") {
+          this.callbacks.emitter.emit("endStream");
+          this.callbacks.enableInput();
+          await this.callbacks.addAIText({ text: "\n\n", container: this.container });
+        }
+      } else if (mdata.status == "Agent ended") {
+        this.workflowID = "";
+        this.awaiting = false;
+        this.callbacks.enableInput();
+        return;
+      } else if (mdata.awaiting) {
+        console.log("awaiting:" + mdata.message_type);
+        console.log("mtext:" + mtext);
+        this.workflowID = mdata.session_id;
+        this.awaiting = true;
+        var AIAnswer = await this.toTitleCase2(mtext);
+        console.log("AIAnswer:" + AIAnswer);
+        if (this.sourcelang != "en") {
+          var transresponse = await this.googletranslate(
+            await this.toTitleCase2(mtext),
+            this.sourcelang,
+            this.targetlang
+          );
+          AIAnswer = transresponse.data.translations[0].translatedText;
+        }
+        await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
+        this.callbacks.emitter.emit("endStream");
+
+        if (this.domain == "RAG_CHAT") {
+          console.log("here RAG_CHAT:" + this.RAG_CHAT);
+          this.getGucciUI();
+          (this.domain = ""), (this.RAG_CHAT = "");
+        } else if (this.domain == "MovieSearch") {
+          this.getMovies();
+          (this.domain = ""), (this.MovieSearchResults = ""), (this.MovieSearch = "");
+        }
+        this.callbacks.enableInput();
+      } else if (mdata.status == "central finished") {
+        if (this.domain == "MovieSearch") {
+          this.getMovies();
+          (this.domain = ""), (this.MovieSearchResults = ""), (this.MovieSearch = "");
+        } else if (this.domain == "TaxiSearch") {
+          this.getTaxiUI();
+          (this.TaxiSearchResults = ""), (this.TaxiSearch = ""), (this.domain = "");
+        } else if (this.domain == "FlightSearch") {
+          this.getFlightUI();
+          (this.FlightSearch = ""), (this.domain = ""), (this.FlightSearchResults = "");
+        }
+      } else if (mdata.message_type == "status") {
+        if (mtext != "") {
+          var AIAnswer = await this.toTitleCase2(mtext);
+          if (this.sourcelang != "en") {
+            var transresponse = await this.googletranslate(AIAnswer, this.sourcelang, this.targetlang);
+            AIAnswer = transresponse.data.translations[0].translatedText;
+          }
+          AIAnswer += "\n\n";
+
+          await this.callbacks.addAIText({ text: AIAnswer, container: this.container, type: "status" });
+        }
+      }
+      m.ack();
+    }
+    nc.drain();
+  }
+
+  getdevstream = (stream_name) => new Promise(async (resolve, reject) => {
+    let nc = await connect({
+      servers: ["wss://ai.iamplus.services/tasks:8443"],
+      user: "acc",
+      pass: "user@123",
+    });
+    // create the stream
+    const jsm = await nc.jetstreamManager();
+
+
+
+    const cfg = {
+      name: stream_name,
+      subjects: ["DEV_STREAM"],
+    };
+
+    await jsm.streams.add(cfg)
+    console.log("created the stream")
+    await jsm.consumers.add(stream_name, {
+      durable_name: stream_name,
+      ack_policy: AckPolicy.Explicit,
+    });
+    const jc = JSONCodec();
+
+    const js = nc.jetstream();
+    this.pushstramingdata(js);
+    // this.pushlightdata(js);
+
+    // console.log("published messages");
+    // let info = await jsm.streams.info(cfg.name);
+    // console.log(info.state);
+
+    resolve("");
+  });
+
+  delay(milliseconds) {
+    return new Promise(resolve => {
+      setTimeout(resolve, milliseconds);
+    });
+  }
+
+  async pushstramingdata(js) {
+    const jc = JSONCodec();
+    await js.publish("DEV_STREAM",
+      jc.encode({
+        "session_id": "wf-personal_assistant-7d5f4251-02e6-43a2-9770-17c7c13a9834_117821391875821748405-a7d3f581-8a9f-44fa-b77b-5ead185531d8",
+        "task_name": "Conversation with user",
+        "data": " Hello! It's great to hear from you.",
+        "uuid": "7d5f4251-02e6-43a2-9770-17c7c13a9834_117821391875821748405",
+        "status": "active",
+        "message_type": "conversation_question",
+        "ui_params": {},
+        "awaiting": true,
+        "streaming": true,
+        "stream_status": "started"
+      }));
+
+    await js.publish("DEV_STREAM",
+      jc.encode({
+        "session_id": "wf-personal_assistant-7d5f4251-02e6-43a2-9770-17c7c13a9834_117821391875821748405-a7d3f581-8a9f-44fa-b77b-5ead185531d8",
+        "task_name": "Conversation with user",
+        "data": " How can I assist you today?",
+        "uuid": "7d5f4251-02e6-43a2-9770-17c7c13a9834_117821391875821748405",
+        "status": "active",
+        "message_type": "conversation_question",
+        "ui_params": {},
+        "awaiting": true,
+        "streaming": true,
+        "stream_status": "started"
+      }));
+    await js.publish("DEV_STREAM",
+      jc.encode({
+        "session_id": "wf-personal_assistant-7d5f4251-02e6-43a2-9770-17c7c13a9834_117821391875821748405-a7d3f581-8a9f-44fa-b77b-5ead185531d8",
+        "task_name": "Conversation with user",
+        "data": " Is there anything on your mind that you'd like to talk about?",
+        "uuid": "7d5f4251-02e6-43a2-9770-17c7c13a9834_117821391875821748405",
+        "status": "active",
+        "message_type": "conversation_question",
+        "ui_params": {},
+        "awaiting": true,
+        "streaming": true,
+        "stream_status": "started"
+      }));
+    await js.publish("DEV_STREAM",
+      jc.encode({
+        "session_id": "wf-personal_assistant-7d5f4251-02e6-43a2-9770-17c7c13a9834_117821391875821748405-a7d3f581-8a9f-44fa-b77b-5ead185531d8",
+        "task_name": "Conversation with user",
+        "data": " ",
+        "uuid": "7d5f4251-02e6-43a2-9770-17c7c13a9834_117821391875821748405",
+        "status": "active",
+        "message_type": "conversation_question",
+        "ui_params": {},
+        "awaiting": true,
+        "streaming": true,
+        "stream_status": "ended"
+      }));
+  }
+  async pushlightdata(js) {
+    const jc = JSONCodec();
+    await js.publish("DEV_STREAM",
+      jc.encode({
+        "session_id": "wf-personal_assistant-7d5f4251-02e6-43a2-9770-17c7c13a9834_117821391875821748405-a7d3f581-8a9f-44fa-b77b-5ead185531d8",
+        "task_name": "Status Push",
+        "data": "Working on it! Searching the web for the dates you need. . .\n",
+        "uuid": "7d5f4251-02e6-43a2-9770-17c7c13a9834_117821391875821748405",
+        "status": "Status Push started",
+        "message_type": "status",
+        "ui_params": {},
+        "awaiting": false,
+        "streaming": false,
+        "stream_status": ""
+      }));
+    await this.delay(4000);
+    await js.publish("DEV_STREAM",
+      jc.encode({
+        "session_id": "wf-personal_assistant-7d5f4251-02e6-43a2-9770-17c7c13a9834_117821391875821748405-a7d3f581-8a9f-44fa-b77b-5ead185531d8",
+        "task_name": "Status Push",
+        "data": "Finding the date for this Thursday. Stay tuned! . .\n",
+        "uuid": "7d5f4251-02e6-43a2-9770-17c7c13a9834_117821391875821748405",
+        "status": "Status Push started",
+        "message_type": "status",
+        "ui_params": {},
+        "awaiting": false,
+        "streaming": false,
+        "stream_status": ""
+      }));
+    await this.delay(4000);
+    await js.publish("DEV_STREAM",
+      jc.encode({
+        "session_id": "wf-personal_assistant-7d5f4251-02e6-43a2-9770-17c7c13a9834_117821391875821748405-a7d3f581-8a9f-44fa-b77b-5ead185531d8",
+        "task_name": "Status Push",
+        "data": "Searching for the date of the following Monday, please wait. . .\n",
+        "uuid": "7d5f4251-02e6-43a2-9770-17c7c13a9834_117821391875821748405",
+        "status": "Status Push started",
+        "message_type": "status",
+        "ui_params": {},
+        "awaiting": false,
+        "streaming": false,
+        "stream_status": ""
+      }));
+    await this.delay(4000);
+    await js.publish("DEV_STREAM",
+      jc.encode({
+        "session_id": "wf-personal_assistant-7d5f4251-02e6-43a2-9770-17c7c13a9834_117821391875821748405-a7d3f581-8a9f-44fa-b77b-5ead185531d8",
+        "task_name": "Status Push",
+        "data": "Wrapping up the task, all plans executed and completed, task resolved. . .\n",
+        "uuid": "7d5f4251-02e6-43a2-9770-17c7c13a9834_117821391875821748405",
+        "status": "Status Push started",
+        "message_type": "status",
+        "ui_params": {},
+        "awaiting": false,
+        "streaming": false,
+        "stream_status": ""
+      }));
+    await this.delay(4000);
+    await js.publish("DEV_STREAM",
+      jc.encode({
+        "session_id": "wf-personal_assistant-7d5f4251-02e6-43a2-9770-17c7c13a9834_117821391875821748405-a7d3f581-8a9f-44fa-b77b-5ead185531d8",
+        "task_name": "Status Push",
+        "data": "I'm currently searching for the best round-trip flights from Singapore to Bali on your preferred dates. . .\n",
+        "uuid": "7d5f4251-02e6-43a2-9770-17c7c13a9834_117821391875821748405",
+        "status": "Status Push started",
+        "message_type": "status",
+        "ui_params": {},
+        "awaiting": false,
+        "streaming": false,
+        "stream_status": ""
+      }));
+    await this.delay(4000);
+    await js.publish("DEV_STREAM",
+      jc.encode({
+        "session_id": "wf-personal_assistant-7d5f4251-02e6-43a2-9770-17c7c13a9834_117821391875821748405-a7d3f581-8a9f-44fa-b77b-5ead185531d8",
+        "task_name": "Status Push",
+        "data": "Analyzing travel details for flights from Singapore to Bali on Dec 14-18, 2023. . .\n",
+        "uuid": "7d5f4251-02e6-43a2-9770-17c7c13a9834_117821391875821748405",
+        "status": "Status Push started",
+        "message_type": "status",
+        "ui_params": {},
+        "awaiting": false,
+        "streaming": false,
+        "stream_status": ""
+      }));
+    await this.delay(4000);
+    await js.publish("DEV_STREAM",
+      jc.encode({
+        "session_id": "wf-personal_assistant-7d5f4251-02e6-43a2-9770-17c7c13a9834_117821391875821748405-a7d3f581-8a9f-44fa-b77b-5ead185531d8",
+        "task_name": "Status Push",
+        "data": "Finding the best flights for your Singapore-Bali trip, stay tuned! . .\n",
+        "uuid": "7d5f4251-02e6-43a2-9770-17c7c13a9834_117821391875821748405",
+        "status": "Status Push started",
+        "message_type": "status",
+        "ui_params": {},
+        "awaiting": false,
+        "streaming": false,
+        "stream_status": ""
+      }));
+    await this.delay(4000);
+    await js.publish("DEV_STREAM",
+      jc.encode({
+        "session_id": "wf-personal_assistant-7d5f4251-02e6-43a2-9770-17c7c13a9834_117821391875821748405-a7d3f581-8a9f-44fa-b77b-5ead185531d8",
+        "task_name": "Search for round-trip flights from Singapore to Bali on December 14, 2023, returning on December 18, 2023, including the cheapest options",
+        "data": "",
+        "uuid": "7d5f4251-02e6-43a2-9770-17c7c13a9834_117821391875821748405",
+        "status": "flight_search_booking_tool params and results",
+        "message_type": "ui",
+        "ui_params": {
+          "domain": "FlightSearch",
+          "FlightSearch": "{\"departure_start_date\": \"\", \"departure_end_date\": \"2024-12-14\", \"departure_start_time\": \"\", \"departure_end_time\": \"\", \"return_start_date\": \"\", \"return_end_date\": \"2023-12-18\", \"return_start_time\": \"\", \"return_end_time\": \"\", \"source\": \"Singapore\", \"source_airport_name\": \"Changi Airport\", \"source_airport_code\": \"SIN\", \"destination\": \"Bali\", \"destination_airport_name\": \"Ngurah Rai International Airport\", \"destination_airport_code\": \"DPS\", \"class\": \"\", \"num_of_tickets\": 1, \"sort\": \"Price\", \"round_trip\": \"True\", \"preferred_airline\": null}",
+          "FlightSearchResults": "{\"Outbound\": [], \"Return\": [{\"website\": \"skyscanner\", \"currency\": \"USD\", \"price\": \"$95.0\", \"airport1_code\": \"DPS\", \"airport2_code\": \"SIN\", \"airport1_name\": \"Ngurah Rai (Bali) International Airport\", \"airport2_name\": \"Singapore Changi International Airport\", \"number_of_tickets\": 1, \"travel_type\": \"Return\", \"cabin_type\": \"economy\", \"link_url\": \"https://www.skyscanner.com/transport/flights/DPS/SIN/231218/?adultsv2=1&childrenv2=&inboundaltsenabled=false&outboundaltsenabled=false&preferdirects=false&ref=home&rtn=1&cabinclass=economy\", \"travel_date\": \"18-12-2023\", \"travel\": {\"airlines\": \"LionAir Indonesia\", \"airlines_logo\": \"http://www.skyscanner.net/images/airlines/small/JT.png\", \"start_time\": \"13:50\", \"end_time\": \"16:25\", \"duration\": \"2h 35\", \"stops\": 0}}, {\"website\": \"kayak\", \"currency\": \"USD\", \"price\": \"$96.0\", \"airport1_code\": \"DPS\", \"airport2_code\": \"SIN\", \"airport1_name\": \"Ngurah Rai (Bali) International Airport\", \"airport2_name\": \"Singapore Changi International Airport\", \"number_of_tickets\": 1, \"travel_type\": \"Return\", \"cabin_type\": \"economy\", \"link_url\": \"https://www.kayak.com/flights/DPS-SIN/2023-12-18/economy/1adults?fs=fdDir=true;stops=~0&sort=price_a\", \"travel_date\": \"18-12-2023\", \"travel\": {\"airlines\": \"KLM\", \"airlines_logo\": \"https://content.r9cdn.net/rimg/provider-logos/airlines/v/KL.png?crop=false&width=108&height=92&fallback=default2.png&_v=c00721138846ce25f134390de9e21708\", \"start_time\": \"21:40\", \"end_time\": \"00:10\", \"duration\": \"2h 30m\", \"stops\": 0}}, {\"website\": \"skyscanner\", \"currency\": \"USD\", \"price\": \"$96.0\", \"airport1_code\": \"DPS\", \"airport2_code\": \"SIN\", \"airport1_name\": \"Ngurah Rai (Bali) International Airport\", \"airport2_name\": \"Singapore Changi International Airport\", \"number_of_tickets\": 1, \"travel_type\": \"Return\", \"cabin_type\": \"economy\", \"link_url\": \"https://www.skyscanner.com/transport/flights/DPS/SIN/231218/?adultsv2=1&childrenv2=&inboundaltsenabled=false&outboundaltsenabled=false&preferdirects=false&ref=home&rtn=1&cabinclass=economy\", \"travel_date\": \"18-12-2023\", \"travel\": {\"airlines\": \"Indonesia AirAsia\", \"airlines_logo\": \"http://www.skyscanner.net/images/airlines/small/QZ.png\", \"start_time\": \"07:10\", \"end_time\": \"09:55\", \"duration\": \"2h 45\", \"stops\": 0}}, {\"website\": \"airasia\", \"currency\": \"USD\", \"price\": \"$96\", \"airport1_code\": \"DPS\", \"airport2_code\": \"SIN\", \"airport1_name\": \"Ngurah Rai (Bali) International Airport\", \"airport2_name\": \"Singapore Changi International Airport\", \"number_of_tickets\": 1, \"travel_type\": \"Return\", \"cabin_type\": \"economy\", \"link_url\": \"https://www.airasia.com/flights/search/?origin=DPS&destination=SIN&departDate=18/12/2023&child=0&infant=0&locale=en-gb&currency=USD&airlineProfile=k,g&type=bundled&isOC=false&isDC=false&uce=false&ancillaryAbTest=true&adult=1&cabinClass=economy&tripType=O\", \"travel_date\": \"18-12-2023\", \"travel\": {\"airlines\": \" Batik Air\", \"airlines_logo\": \"https://static.airasia.com/flights/images/airlines/logos/64/ID.png?default=airline.png&key=0.18836108081040548_1702572090186\", \"start_time\": \"13:50\", \"end_time\": \"16:25\", \"duration\": \"2h 35m\", \"stops\": 0}}, {\"website\": \"skyscanner\", \"currency\": \"USD\", \"price\": \"$97.0\", \"airport1_code\": \"DPS\", \"airport2_code\": \"SIN\", \"airport1_name\": \"Ngurah Rai (Bali) International Airport\", \"airport2_name\": \"Singapore Changi International Airport\", \"number_of_tickets\": 1, \"travel_type\": \"Return\", \"cabin_type\": \"economy\", \"link_url\": \"https://www.skyscanner.com/transport/flights/DPS/SIN/231218/?adultsv2=1&childrenv2=&inboundaltsenabled=false&outboundaltsenabled=false&preferdirects=false&ref=home&rtn=1&cabinclass=economy\", \"travel_date\": \"18-12-2023\", \"travel\": {\"airlines\": \"KLM\", \"airlines_logo\": \"http://www.skyscanner.net/images/airlines/small/KL.png\", \"start_time\": \"21:40\", \"end_time\": \"00:10\", \"duration\": \"2h 30\", \"stops\": 0}}, {\"website\": \"skyscanner\", \"currency\": \"USD\", \"price\": \"$97.0\", \"airport1_code\": \"DPS\", \"airport2_code\": \"SIN\", \"airport1_name\": \"Ngurah Rai (Bali) International Airport\", \"airport2_name\": \"Singapore Changi International Airport\", \"number_of_tickets\": 1, \"travel_type\": \"Return\", \"cabin_type\": \"economy\", \"link_url\": \"https://www.skyscanner.com/transport/flights/DPS/SIN/231218/?adultsv2=1&childrenv2=&inboundaltsenabled=false&outboundaltsenabled=false&preferdirects=false&ref=home&rtn=1&cabinclass=economy\", \"travel_date\": \"18-12-2023\", \"travel\": {\"airlines\": \"Jetstar\", \"airlines_logo\": \"http://www.skyscanner.net/images/airlines/small/JQ.png\", \"start_time\": \"10:45\", \"end_time\": \"13:25\", \"duration\": \"2h 40\", \"stops\": 0}}, {\"website\": \"kayak\", \"currency\": \"USD\", \"price\": \"$99.0\", \"airport1_code\": \"DPS\", \"airport2_code\": \"SIN\", \"airport1_name\": \"Ngurah Rai (Bali) International Airport\", \"airport2_name\": \"Singapore Changi International Airport\", \"number_of_tickets\": 1, \"travel_type\": \"Return\", \"cabin_type\": \"economy\", \"link_url\": \"https://www.kayak.com/flights/DPS-SIN/2023-12-18/economy/1adults?fs=fdDir=true;stops=~0&sort=price_a\", \"travel_date\": \"18-12-2023\", \"travel\": {\"airlines\": \"Indonesia AirAsia\", \"airlines_logo\": \"https://content.r9cdn.net/rimg/provider-logos/airlines/v/QZ.png?crop=false&width=108&height=92&fallback=default1.png&_v=2b88720c140bed98f0c9fc7a63612fed\", \"start_time\": \"07:10\", \"end_time\": \"09:55\", \"duration\": \"2h 45m\", \"stops\": 0}}, {\"website\": \"expedia\", \"currency\": \"USD\", \"price\": \"$100.0\", \"airport1_code\": \"DPS\", \"airport2_code\": \"SIN\", \"airport1_name\": \"Ngurah Rai (Bali) International Airport\", \"airport2_name\": \"Singapore Changi International Airport\", \"number_of_tickets\": 1, \"travel_type\": \"Return\", \"cabin_type\": \"economy\", \"link_url\": \"https://www.expedia.com/Flights-Search?flight-type=on&leg1=from:DPS,to:SIN,departure:12/18/2023TANYT&mode=search&passengers=adults:1,infantinlap:N&trip=oneway&sortOrder=INCREASING&sortType=CHEAPEST&options=cabinclass:economy\", \"travel_date\": \"18-12-2023\", \"travel\": {\"airlines\": \"Indonesia AirAsia\", \"airlines_logo\": \"https://images.trvl-media.com/media/content/expus/graphics/static_content/fusion/v0.1b/images/airlines/vector/s/QZ_sq.svg\", \"start_time\": \"07:10\", \"end_time\": \"09:55\", \"duration\": \"2h 45m \", \"stops\": 0}}, {\"website\": \"kayak\", \"currency\": \"USD\", \"price\": \"$101.0\", \"airport1_code\": \"DPS\", \"airport2_code\": \"SIN\", \"airport1_name\": \"Ngurah Rai (Bali) International Airport\", \"airport2_name\": \"Singapore Changi International Airport\", \"number_of_tickets\": 1, \"travel_type\": \"Return\", \"cabin_type\": \"economy\", \"link_url\": \"https://www.kayak.com/flights/DPS-SIN/2023-12-18/economy/1adults?fs=fdDir=true;stops=~0&sort=price_a\", \"travel_date\": \"18-12-2023\", \"travel\": {\"airlines\": \"Batik Air\", \"airlines_logo\": \"https://content.r9cdn.net/rimg/provider-logos/airlines/v/ID.png?crop=false&width=108&height=92&fallback=default1.png&_v=8bb7f65340e1b6513de5f3e58f53a4b9\", \"start_time\": \"13:50\", \"end_time\": \"16:25\", \"duration\": \"2h 35m\", \"stops\": 0}}, {\"website\": \"skyscanner\", \"currency\": \"USD\", \"price\": \"$101.0\", \"airport1_code\": \"DPS\", \"airport2_code\": \"SIN\", \"airport1_name\": \"Ngurah Rai (Bali) International Airport\", \"airport2_name\": \"Singapore Changi International Airport\", \"number_of_tickets\": 1, \"travel_type\": \"Return\", \"cabin_type\": \"economy\", \"link_url\": \"https://www.skyscanner.com/transport/flights/DPS/SIN/231218/?adultsv2=1&childrenv2=&inboundaltsenabled=false&outboundaltsenabled=false&preferdirects=false&ref=home&rtn=1&cabinclass=economy\", \"travel_date\": \"18-12-2023\", \"travel\": {\"airlines\": \"BatikAir Indonesia\", \"airlines_logo\": \"http://www.skyscanner.net/images/airlines/small/ID.png\", \"start_time\": \"13:50\", \"end_time\": \"16:25\", \"duration\": \"2h 35\", \"stops\": 0}}, {\"website\": \"expedia\", \"currency\": \"USD\", \"price\": \"$101.0\", \"airport1_code\": \"DPS\", \"airport2_code\": \"SIN\", \"airport1_name\": \"Ngurah Rai (Bali) International Airport\", \"airport2_name\": \"Singapore Changi International Airport\", \"number_of_tickets\": 1, \"travel_type\": \"Return\", \"cabin_type\": \"economy\", \"link_url\": \"https://www.expedia.com/Flights-Search?flight-type=on&leg1=from:DPS,to:SIN,departure:12/18/2023TANYT&mode=search&passengers=adults:1,infantinlap:N&trip=oneway&sortOrder=INCREASING&sortType=CHEAPEST&options=cabinclass:economy\", \"travel_date\": \"18-12-2023\", \"travel\": {\"airlines\": \"Jetstar Asia\", \"airlines_logo\": \"https://images.trvl-media.com/media/content/expus/graphics/static_content/fusion/v0.1b/images/airlines/vector/s/3K_sq.svg\", \"start_time\": \"10:45\", \"end_time\": \"13:25\", \"duration\": \"2h 40m \", \"stops\": 0}}, {\"website\": \"airasia\", \"currency\": \"USD\", \"price\": \"$103\", \"airport1_code\": \"DPS\", \"airport2_code\": \"SIN\", \"airport1_name\": \"Ngurah Rai (Bali) International Airport\", \"airport2_name\": \"Singapore Changi International Airport\", \"number_of_tickets\": 1, \"travel_type\": \"Return\", \"cabin_type\": \"economy\", \"link_url\": \"https://www.airasia.com/flights/search/?origin=DPS&destination=SIN&departDate=18/12/2023&child=0&infant=0&locale=en-gb&currency=USD&airlineProfile=k,g&type=bundled&isOC=false&isDC=false&uce=false&ancillaryAbTest=true&adult=1&cabinClass=economy&tripType=O\", \"travel_date\": \"18-12-2023\", \"travel\": {\"airlines\": \" KLM Royal Dutch Airlines\", \"airlines_logo\": \"https://static.airasia.com/flights/images/airlines/logos/64/KL.png?default=airline.png&key=0.18836108081040548_1702572090186\", \"start_time\": \"21:40\", \"end_time\": \"00:10\", \"duration\": \"2h 30m\", \"stops\": 0}}, {\"website\": \"booking\", \"currency\": \"USD\", \"price\": \"$103.38\", \"airport1_code\": \"DPS\", \"airport2_code\": \"SIN\", \"airport1_name\": \"Ngurah Rai (Bali) International Airport\", \"airport2_name\": \"Singapore Changi International Airport\", \"number_of_tickets\": 1, \"travel_type\": \"Return\", \"cabin_type\": \"economy\", \"link_url\": \"https://flights.booking.com/flights/DPS.AIRPORT-SIN.AIRPORT/?adults=1&children=&from=DPS.AIRPORT&to=SIN.AIRPORT&depart=2023-12-18&sort=CHEAPEST&cabinClass=ECONOMY&type=ONEWAY\", \"travel_date\": \"18-12-2023\", \"travel\": {\"airlines\": \"Batik Air Indonesia\", \"airlines_logo\": \"https://r-xx.bstatic.com/data/airlines_logo/ID.png\", \"start_time\": \"13:50\", \"end_time\": \"16:25\", \"duration\": \"2h 35m\", \"stops\": 0}}, {\"website\": \"booking\", \"currency\": \"USD\", \"price\": \"$104.17\", \"airport1_code\": \"DPS\", \"airport2_code\": \"SIN\", \"airport1_name\": \"Ngurah Rai (Bali) International Airport\", \"airport2_name\": \"Singapore Changi International Airport\", \"number_of_tickets\": 1, \"travel_type\": \"Return\", \"cabin_type\": \"economy\", \"link_url\": \"https://flights.booking.com/flights/DPS.AIRPORT-SIN.AIRPORT/?adults=1&children=&from=DPS.AIRPORT&to=SIN.AIRPORT&depart=2023-12-18&sort=CHEAPEST&cabinClass=ECONOMY&type=ONEWAY\", \"travel_date\": \"18-12-2023\", \"travel\": {\"airlines\": \"KLM\", \"airlines_logo\": \"https://r-xx.bstatic.com/data/airlines_logo/KL.png\", \"start_time\": \"21:40\", \"end_time\": \"00:10\", \"duration\": \"2h 30m\", \"stops\": 0}}, {\"website\": \"kayak\", \"currency\": \"USD\", \"price\": \"$107.0\", \"airport1_code\": \"DPS\", \"airport2_code\": \"SIN\", \"airport1_name\": \"Ngurah Rai (Bali) International Airport\", \"airport2_name\": \"Singapore Changi International Airport\", \"number_of_tickets\": 1, \"travel_type\": \"Return\", \"cabin_type\": \"economy\", \"link_url\": \"https://www.kayak.com/flights/DPS-SIN/2023-12-18/economy/1adults?fs=fdDir=true;stops=~0&sort=price_a\", \"travel_date\": \"18-12-2023\", \"travel\": {\"airlines\": \"Jetstar Asia\", \"airlines_logo\": \"https://content.r9cdn.net/rimg/provider-logos/airlines/v/3K.png?crop=false&width=108&height=92&fallback=default1.png&_v=8afe46d7f75c92f0bff8ca0d36ea9be9\", \"start_time\": \"10:45\", \"end_time\": \"13:25\", \"duration\": \"2h 40m\", \"stops\": 0}}, {\"website\": \"airasia\", \"currency\": \"USD\", \"price\": \"$108\", \"airport1_code\": \"DPS\", \"airport2_code\": \"SIN\", \"airport1_name\": \"Ngurah Rai (Bali) International Airport\", \"airport2_name\": \"Singapore Changi International Airport\", \"number_of_tickets\": 1, \"travel_type\": \"Return\", \"cabin_type\": \"economy\", \"link_url\": \"https://www.airasia.com/flights/search/?origin=DPS&destination=SIN&departDate=18/12/2023&child=0&infant=0&locale=en-gb&currency=USD&airlineProfile=k,g&type=bundled&isOC=false&isDC=false&uce=false&ancillaryAbTest=true&adult=1&cabinClass=economy&tripType=O\", \"travel_date\": \"18-12-2023\", \"travel\": {\"airlines\": \" Jetstar Asia Airways\", \"airlines_logo\": \"https://static.airasia.com/flights/images/airlines/logos/64/3K.png?default=airline.png&key=0.18836108081040548_1702572090186\", \"start_time\": \"10:45\", \"end_time\": \"13:25\", \"duration\": \"2h 40m\", \"stops\": 0}}, {\"website\": \"kayak\", \"currency\": \"USD\", \"price\": \"$109.0\", \"airport1_code\": \"DPS\", \"airport2_code\": \"SIN\", \"airport1_name\": \"Ngurah Rai (Bali) International Airport\", \"airport2_name\": \"Singapore Changi International Airport\", \"number_of_tickets\": 1, \"travel_type\": \"Return\", \"cabin_type\": \"economy\", \"link_url\": \"https://www.kayak.com/flights/DPS-SIN/2023-12-18/economy/1adults?fs=fdDir=true;stops=~0&sort=price_a\", \"travel_date\": \"18-12-2023\", \"travel\": {\"airlines\": \"Jetstar Asia\", \"airlines_logo\": \"https://content.r9cdn.net/rimg/provider-logos/airlines/v/3K.png?crop=false&width=108&height=92&fallback=default1.png&_v=8afe46d7f75c92f0bff8ca0d36ea9be9\", \"start_time\": \"19:25\", \"end_time\": \"22:10\", \"duration\": \"2h 45m\", \"stops\": 0}}, {\"website\": \"skyscanner\", \"currency\": \"USD\", \"price\": \"$110.0\", \"airport1_code\": \"DPS\", \"airport2_code\": \"SIN\", \"airport1_name\": \"Ngurah Rai (Bali) International Airport\", \"airport2_name\": \"Singapore Changi International Airport\", \"number_of_tickets\": 1, \"travel_type\": \"Return\", \"cabin_type\": \"economy\", \"link_url\": \"https://www.skyscanner.com/transport/flights/DPS/SIN/231218/?adultsv2=1&childrenv2=&inboundaltsenabled=false&outboundaltsenabled=false&preferdirects=false&ref=home&rtn=1&cabinclass=economy\", \"travel_date\": \"18-12-2023\", \"travel\": {\"airlines\": \"Jetstar\", \"airlines_logo\": \"http://www.skyscanner.net/images/airlines/small/JQ.png\", \"start_time\": \"19:25\", \"end_time\": \"22:10\", \"duration\": \"2h 45\", \"stops\": 0}}, {\"website\": \"booking\", \"currency\": \"USD\", \"price\": \"$112.72\", \"airport1_code\": \"DPS\", \"airport2_code\": \"SIN\", \"airport1_name\": \"Ngurah Rai (Bali) International Airport\", \"airport2_name\": \"Singapore Changi International Airport\", \"number_of_tickets\": 1, \"travel_type\": \"Return\", \"cabin_type\": \"economy\", \"link_url\": \"https://flights.booking.com/flights/DPS.AIRPORT-SIN.AIRPORT/?adults=1&children=&from=DPS.AIRPORT&to=SIN.AIRPORT&depart=2023-12-18&sort=CHEAPEST&cabinClass=ECONOMY&type=ONEWAY\", \"travel_date\": \"18-12-2023\", \"travel\": {\"airlines\": \"Jetstar Asia\", \"airlines_logo\": \"https://r-xx.bstatic.com/data/airlines_logo/3K.png\", \"start_time\": \"10:45\", \"end_time\": \"13:25\", \"duration\": \"2h 40m\", \"stops\": 0}}, {\"website\": \"expedia\", \"currency\": \"USD\", \"price\": \"$114.0\", \"airport1_code\": \"DPS\", \"airport2_code\": \"SIN\", \"airport1_name\": \"Ngurah Rai (Bali) International Airport\", \"airport2_name\": \"Singapore Changi International Airport\", \"number_of_tickets\": 1, \"travel_type\": \"Return\", \"cabin_type\": \"economy\", \"link_url\": \"https://www.expedia.com/Flights-Search?flight-type=on&leg1=from:DPS,to:SIN,departure:12/18/2023TANYT&mode=search&passengers=adults:1,infantinlap:N&trip=oneway&sortOrder=INCREASING&sortType=CHEAPEST&options=cabinclass:economy\", \"travel_date\": \"18-12-2023\", \"travel\": {\"airlines\": \"Jetstar Asia\", \"airlines_logo\": \"https://images.trvl-media.com/media/content/expus/graphics/static_content/fusion/v0.1b/images/airlines/vector/s/3K_sq.svg\", \"start_time\": \"19:25\", \"end_time\": \"22:10\", \"duration\": \"2h 45m \", \"stops\": 0}}]}"
+        },
+        "awaiting": false,
+        "streaming": false,
+        "stream_status": ""
+      }));
+    await this.delay(4000);
+    await js.publish("DEV_STREAM",
+      jc.encode({
+        "session_id": "wf-personal_assistant-7d5f4251-02e6-43a2-9770-17c7c13a9834_117821391875821748405-a7d3f581-8a9f-44fa-b77b-5ead185531d8",
+        "task_name": "Status Push",
+        "data": "Finalizing the planner flow, all plans are complete. Task is resolved. . .\n",
+        "uuid": "7d5f4251-02e6-43a2-9770-17c7c13a9834_117821391875821748405",
+        "status": "Status Push started",
+        "message_type": "status",
+        "ui_params": {},
+        "awaiting": false,
+        "streaming": false,
+        "stream_status": ""
+      }));
+  }
+
   translate = (text, lang) =>
     new Promise(async (resolve, reject) => {
       var data = JSON.stringify([{ text: text }]);
