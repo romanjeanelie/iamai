@@ -1,6 +1,9 @@
 import Discussion from "./Discussion.js";
 import { connect, StringCodec } from "https://cdn.jsdelivr.net/npm/nats.ws@latest/esm/nats.js";
 // const uuid = "omega_" + crypto.randomUUID();
+
+const IS_DEV_MODE = import.meta.env.MODE === "development";
+
 function decodeJwtResponse(token) {
   var base64Url = token.split(".")[1];
   var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
@@ -48,6 +51,7 @@ class Chat {
     this.user = this.getUser();
     this.deploy_ID = "";
   }
+
   getUser() {
     if (localStorage.getItem("googleToken")) {
       const responsePayload = decodeJwtResponse(localStorage.getItem("googleToken"));
@@ -704,7 +708,7 @@ class Chat {
         FlightSearchResultsArr.forEach((FlightSearchResult) => {
           const flightCarddiv = document.createElement("div");
           flightCarddiv.className = "flightCard";
-          flightCarddiv.setAttribute("onclick", "window.open('"+FlightSearchResult.link_url+"', '_blank');")
+          flightCarddiv.setAttribute("onclick", "window.open('" + FlightSearchResult.link_url + "', '_blank');");
           flightResultdiv.appendChild(flightCarddiv);
 
           const rowFlightCarddiv = document.createElement("div");
