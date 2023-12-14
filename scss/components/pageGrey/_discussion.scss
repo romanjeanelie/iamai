@@ -48,6 +48,49 @@
     padding-left: 16px;
     margin-right: 112px;
 
+    .top-status {
+      color: $colorBlack;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 450;
+      line-height: 20px;
+      letter-spacing: 0.6px;
+      text-transform: capitalize;
+      position: relative;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      //   border: 1px solid red;
+
+      letter-spacing: 0.6px;
+
+      &:after {
+        content: "";
+        z-index: 1;
+        display: block;
+        height: 1px;
+        width: 79%;
+        // margin-right: 40px;
+        background: #0000001f;
+      }
+
+      .typing__container {
+        // border: 1px solid red;
+      }
+    }
+
+    .AIstatus {
+      display: block;
+      margin-top: 24px;
+      margin-bottom: 8px;
+      font-size: 20px;
+      font-weight: 450;
+      line-height: 24px;
+      letter-spacing: 0.6px;
+      text-align: left;
+    }
+
     @include media("<tablet") {
       padding-left: 24px;
       margin-right: unset;

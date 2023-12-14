@@ -5,6 +5,16 @@ import Chat from "./Chat.js";
 import EventEmitter from "../utils/EventEmitter.js";
 import isMobile from "../utils/isMobile.js";
 
+const topStatusText = ["finding", "checking", "searching", "analyzing", "scanning", "finalizing", "processing"];
+const defaultTopStatus = "searching";
+function getTopStatus(text) {
+  for (let status of topStatusText) {
+    if (text.toLowerCase().includes(status)) {
+      return status;
+    }
+  }
+  return defaultTopStatus;
+}
 export default class Discussion {
   constructor({ toPageGrey, emitter }) {
     this.emitter = emitter;
@@ -17,6 +27,7 @@ export default class Discussion {
 
     this.addUserElement = this.addUserElement.bind(this);
 
+    this.currentTopStatus = null;
     this.lastStatus = null;
 
     this.Chat = new Chat({
@@ -27,6 +38,16 @@ export default class Discussion {
     });
 
     this.addListeners();
+
+    // DEBUG
+    // const tempContainer = document.createElement("div");
+    // tempContainer.classList.add("discussion__ai");
+    // this.discussionContainer.appendChild(tempContainer);
+    // this.addAIText({
+    //   text: "I'm searching filghts...",
+    //   container: tempContainer,
+    //   type: "status",
+    // });
   }
 
   disableInput() {
@@ -81,23 +102,70 @@ export default class Discussion {
     this.getAiAnswer({ text, img });
   }
 
+  async updateTopStatus({ status, container }) {
+    if (!this.typingStatus) {
+      this.typingStatus = new TypingText({
+        text: status,
+        container: this.topStatus,
+        backgroundColor: backgroundColorGreyPage,
+      });
+      this.typingStatus.blink();
+      this.typingStatus.writing();
+      this.typingStatus.blink();
+    } else {
+      await this.typingStatus.reverse();
+      this.typingStatus.blink();
+      this.typingStatus.updateText(status);
+      await this.typingStatus.writing();
+      this.typingStatus.blink();
+    }
+  }
+
+  async addStatus({ text, textEl, container }) {
+    const newStatus = getTopStatus(text);
+
+    if (!this.lastStatus) {
+      // Init status
+      this.topStatus = document.createElement("div");
+      this.topStatus.className = "top-status";
+      container.appendChild(this.topStatus);
+    } else {
+      // Update status
+      container.removeChild(this.lastStatus);
+    }
+
+    if (newStatus && (newStatus !== this.currentTopStatus || !this.currentTopStatus)) {
+      this.updateTopStatus({ status: newStatus, container: this.topStatus });
+      this.currentTopStatus = newStatus;
+    }
+
+    container.appendChild(textEl);
+    this.lastStatus = textEl;
+  }
+
+  removeStatus({ container }) {
+    container.removeChild(this.topStatus);
+    container.removeChild(this.lastStatus);
+    this.typingStatus = null;
+    this.lastStatus = null;
+    this.currentTopStatus = null;
+  }
+
   async addAIText({ text, container, type = null } = {}) {
     this.emitter.emit("addAIText", text);
     this.typingText.fadeOut();
     const textEl = document.createElement("span");
 
     if (type === "status") {
-      container.innerHTML = "";
       textEl.className = "AIstatus";
-      this.lastStatus = textEl;
+      this.addStatus({ text, textEl, container });
     } else if (this.lastStatus) {
-      container.removeChild(this.lastStatus);
-      this.lastStatus = null;
+      this.removeStatus({ container });
     }
 
     container.appendChild(textEl);
     text = text.replace(/<br\/?>\s*/g, "\n");
-    return typeText(textEl, text);
+    return await typeText(textEl, text);
   }
 
   scrollToBottom() {
@@ -113,9 +181,6 @@ export default class Discussion {
     var q = urlParams.get("q");
     const sessionID = urlParams.get("session_id");
     const deploy_ID = urlParams.get("deploy_id");
-
-    // console.log(q);
-    // console.log(this.Chat.sessionID);
 
     if (urlParams.get("location") && urlParams.get("location") != "") {
       this.Chat.location = urlParams.get("location");

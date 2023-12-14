@@ -29,6 +29,13 @@ export default class TypingText {
     this.typingContainer.appendChild(this.textEl);
 
     this.container.appendChild(this.typingContainer);
+
+    this.translateCursor = null;
+  }
+
+  updateText(text) {
+    this.textEl.textContent = text;
+    this.textEl.appendChild(this.maskEl);
   }
 
   blink() {
@@ -48,50 +55,55 @@ export default class TypingText {
     this.cursorEl.classList.add("hidden");
   }
 
-  writing(callback) {
-    if (this.blinkCursor) this.blinkCursor.cancel();
+  writing() {
+    return new Promise((resolve) => {
+      if (this.blinkCursor) this.blinkCursor.cancel();
 
-    this.animShowtyping = anim(
-      this.typingContainer,
-      [
-        { opacity: 0, visibility: "visible" },
-        { opacity: 1, visibility: "visible" },
-      ],
-      {
-        duration: 700,
+      this.animShowtyping = anim(
+        this.typingContainer,
+        [
+          { opacity: 0, visibility: "visible" },
+          { opacity: 1, visibility: "visible" },
+        ],
+        {
+          duration: 700,
+          fill: "forwards",
+          ease: "ease-in-out",
+        }
+      );
+
+      this.translateCursor = anim(this.maskEl, [{ transform: "translateX(0%)" }, { transform: "translateX(105%)" }], {
+        delay: this.animShowtyping.effect.getComputedTiming().duration,
+        duration: 200,
         fill: "forwards",
         ease: "ease-in-out",
-      }
-    );
+      });
 
-    this.translateCursor = anim(this.maskEl, [{ transform: "translateX(0%)" }, { transform: "translateX(105%)" }], {
-      delay: this.animShowtyping.effect.getComputedTiming().duration,
-      duration: 400,
-      fill: "forwards",
-      ease: "ease-in-out",
+      this.translateCursor.onfinish = () => {
+        resolve();
+      };
     });
-
-    if (callback?.onComplete) {
-      this.translateCursor.onfinish = callback.onComplete.bind(this);
-    }
   }
 
   reverse() {
-    if (this.blinkCursor) this.blinkCursor.cancel();
-    this.translateCursor.reverse();
+    return new Promise((resolve) => {
+      this.translateCursor.reverse();
 
-    anim(
-      this.typingContainer,
-      [
-        { opacity: 1, visibility: "visible" },
-        { opacity: 0, visibility: "hidden" },
-      ],
-      {
-        delay: 500,
-        duration: 700,
-        fill: "forwards",
-        ease: "ease-in-out",
-      }
-    );
+      anim(
+        this.typingContainer,
+        [
+          { opacity: 1, visibility: "visible" },
+          { opacity: 0, visibility: "hidden" },
+        ],
+        {
+          delay: 200,
+          duration: 1,
+          fill: "forwards",
+          ease: "ease-in-out",
+        }
+      ).onfinish = () => {
+        resolve();
+      };
+    });
   }
 }
