@@ -53,7 +53,7 @@ export default class Discussion {
     this.Chat.callsubmit(text, img, aiEl);
   }
 
-  addUserElement({ text, img }) {
+  addUserElement({ text, img, debug = false } = {}) {
     if (img) {
       const userEl = document.createElement("div");
       userEl.classList.add("discussion__user");
@@ -69,33 +69,35 @@ export default class Discussion {
 
     this.scrollToBottom();
     this.disableInput();
+    if (debug) {
+      setTimeout(() => {
+        this.addAIText({
+          text: "Hello test Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo pariatur sapiente, aliquam velit consectetur soluta esse cupiditate alias illo deleniti earum vel! Consequuntur ipsam quisquam nemo voluptatem id molestiae, reprehenderit illum natus omnis nobis porro sit sint veniam earum sapiente dolorem eum non deserunt! Saepe nostrum reprehenderit modi voluptatem corporis culpa accusantium. Maxime fuga, aliquam laboriosam culpa ipsum, minus officiis quasi aperiam ratione, vel beatae. Repellat, iusto placeat? Architecto sequi nam ullam numquam odio. Soluta dolore quas vel quaerat doloribus, vitae explicabo assumenda sunt fugiat consequatur illo, ipsa nam quia sit! Praesentium aliquid animi ex libero necessitatibus modi voluptas! Consequatur?",
+          container: userEl,
+        });
+      }, 1000);
+      return;
+    }
     this.getAiAnswer({ text, img });
   }
 
   async addAIText({ text, container, type = null } = {}) {
-    this.emitter.emit("addAITextTest", text);
+    this.emitter.emit("addAIText", text);
     this.typingText.fadeOut();
     const textEl = document.createElement("span");
 
     if (type === "status") {
       container.innerHTML = "";
-      //   console.log("/// Status :", text, container);
       textEl.className = "AIstatus";
       this.lastStatus = textEl;
     } else if (this.lastStatus) {
       container.removeChild(this.lastStatus);
-      //   console.log("/// replace last status text", this.lastStatus);
       this.lastStatus = null;
     }
 
     container.appendChild(textEl);
     text = text.replace(/<br\/?>\s*/g, "\n");
-    if (isMobile()) {
-      return (textEl.innerHTML = text);
-    } else {
-      text = text.replace(/<br\/?>\s*/g, "\n");
-      return typeText(textEl, text);
-    }
+    return typeText(textEl, text);
   }
 
   scrollToBottom() {

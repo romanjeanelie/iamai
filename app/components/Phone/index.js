@@ -90,11 +90,12 @@ export default class Phone {
     this.phoneAnimations.toConnected();
     this.phoneAnimations.newInfoText("connected");
     console.log("connected");
+    if (this.debug) return;
+
     this.audioConnected = new AudioPlayer({
       audioUrl: "/sounds/connected.mp3",
       audioContext: this.audioContext,
     });
-    if (this.debug) return;
     setTimeout(() => {
       this.isConnected = true;
       this.toTalkToMe();
@@ -116,7 +117,7 @@ export default class Phone {
     if (!this.isActive) return;
     console.log("Talk to me");
     if (!this.unbindEvent) {
-      this.unbindEvent = this.emitter.on("addAITextTest", (html) => this.startAITalking(html));
+      this.unbindEvent = this.emitter.on("addAIText", (html) => this.startAITalking(html));
     }
     this.isStreamEnded = false;
     this.phoneAnimations.toTalkToMe();
@@ -136,8 +137,13 @@ export default class Phone {
   async toProcessing(audio) {
     this.phoneAnimations.newInfoText("processing");
     this.phoneAnimations.toProcessing();
-    this.myvad.pause();
     console.log("processing");
+
+    if (this.debug) {
+      this.discussion.addUserElement({ text: "Hi I am a test", debug: true });
+      return;
+    }
+    this.myvad.pause();
 
     this.audioProcessing = new AudioPlayer({
       audioUrl: "/sounds/processing.mp3",
@@ -146,6 +152,7 @@ export default class Phone {
     });
     const blob = float32ArrayToMp3Blob(audio, 16000);
     this.textRecorded = await sendToWispher(blob);
+
     this.discussion.addUserElement({ text: this.textRecorded });
   }
 
@@ -161,6 +168,10 @@ export default class Phone {
   async startAITalking(html) {
     if (!this.isActive) return;
     console.log("new AIAnswer");
+    if (this.debug) {
+      this.onPlay();
+      return;
+    }
     const audio = await textToSpeech(htmlToText(html));
     this.audiosAI.push(audio);
 
@@ -196,7 +207,7 @@ export default class Phone {
       this.clearAIAudios();
       if (this.isStreamEnded) {
         console.log("all sounds plaid", this.isStreamEnded);
-        if (this.debug) return;
+        // if (this.debug) return;
         this.toTalkToMe();
         this.isAITalking = false;
       }
@@ -378,6 +389,7 @@ export default class Phone {
 
     // Tests
     this.btnToConnected.addEventListener("click", () => {
+      this.isActive = true;
       this.connected();
     });
     this.btnToTalkToMe.addEventListener("click", () => {
@@ -390,8 +402,7 @@ export default class Phone {
       this.toProcessing();
     });
     this.btnFinishProcessing.addEventListener("click", () => {
-      this.isActive = true;
-      this.startAITalking("Bonjour je suis un test");
+      //   this.startAITalking("Bonjour je suis un test");
     });
   }
 }
