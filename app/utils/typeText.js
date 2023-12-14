@@ -1,7 +1,13 @@
 let typeIndex = 0;
+import isMobile from "./isMobile";
 
 export default function typeText(container, text) {
   return new Promise((resolve) => {
+    if (isMobile()) {
+      container.innerHTML = text;
+      resolve();
+      return;
+    }
     function type() {
       if (typeIndex < text.length) {
         if (text.charAt(typeIndex) === "\n") {
