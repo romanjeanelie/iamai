@@ -210,11 +210,11 @@ export default class Phone {
       });
     } else {
       this.clearAIAudios();
+      this.isAITalking = false;
       if (this.isStreamEnded) {
         console.log("all sounds plaid", this.isStreamEnded);
         // if (this.debug) return;
         this.toTalkToMe();
-        this.isAITalking = false;
       } else {
         this.toProcessing();
       }
