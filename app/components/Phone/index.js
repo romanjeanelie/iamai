@@ -138,7 +138,6 @@ export default class Phone {
   }
 
   async toProcessing(audio) {
-    // downloadAudio(audio);
     this.phoneAnimations.newInfoText("processing");
     this.phoneAnimations.toProcessing();
     console.log("processing");
