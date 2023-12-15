@@ -108,6 +108,8 @@ export default class PhoneAnimations {
     if (!this.isConnected) {
       this.toConnected();
     }
+
+    // Remove AI
     if (this.phoneBarAIYoyoAnimations) {
       this.phoneBarAIYoyoAnimations.cancel();
       const fadeOutPhoneBarAI = this.createAnimation(this.phoneBarAI, this.keyframes.fadeOutPhoneBarAI, {
@@ -158,6 +160,30 @@ export default class PhoneAnimations {
    * Processing bar
    */
   toProcessing() {
+    // Remove AI
+    if (this.phoneBarAIYoyoAnimations) {
+      this.phoneBarAIYoyoAnimations.cancel();
+      const fadeOutPhoneBarAI = this.createAnimation(this.phoneBarAI, this.keyframes.fadeOutPhoneBarAI, {
+        duration: 300,
+        ease: "ease-out",
+        fill: "forwards",
+      });
+
+      this.phoneBarOne.classList.add("active");
+      this.phoneBarOne.classList.add("talkToMe");
+      const fadeInPhoneBarUser = this.createAnimation(this.phoneBarOne, this.keyframes.fadeInPhoneBarUser, {
+        duration: 300,
+        ease: "ease-out",
+        fill: "forwards",
+      });
+
+      fadeInPhoneBarUser.onfinish = () => {
+        this.expandPhoneBarAI.cancel();
+        this.phoneBarAI.classList.remove("active");
+        fadeOutPhoneBarAI.cancel();
+      };
+    }
+
     this.phoneBarYoyoAnimations.cancel();
     const reducePhoneBarOne = this.createAnimation(this.phoneBarOne, this.keyframes.reducePhoneBarOne, {
       duration: 400,

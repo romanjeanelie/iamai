@@ -153,7 +153,7 @@ export default class Discussion {
 
   async addAIText({ text, container, type = null } = {}) {
     this.emitter.emit("addAIText", text);
-    this.typingText.fadeOut();
+    this.typingText?.fadeOut();
     const textEl = document.createElement("span");
 
     if (type === "status") {

@@ -7,6 +7,8 @@ import PhoneAnimations from "./PhoneAnimations";
 import playAudio from "../../utils/audio/playAudio";
 import unlockAudio from "../../utils/audio/unlockAudio";
 import AudioPlayer from "../../utils/audio/AudioPlayer";
+import audioFlights from "/sounds/debugFlights.mp3";
+
 export default class Phone {
   constructor({ anims, pageEl, discussion, emitter }) {
     // Event
@@ -71,6 +73,7 @@ export default class Phone {
 
     // Debug
     this.debug = false;
+    this.debugFlights = false;
 
     if (this.debug) {
       this.phoneDebugContainer.classList.add("show");
@@ -135,6 +138,7 @@ export default class Phone {
   }
 
   async toProcessing(audio) {
+    // downloadAudio(audio);
     this.phoneAnimations.newInfoText("processing");
     this.phoneAnimations.toProcessing();
     console.log("processing");
@@ -150,6 +154,8 @@ export default class Phone {
       audioContext: this.audioContext,
       loop: true,
     });
+
+    if (!audio) return;
     const blob = float32ArrayToMp3Blob(audio, 16000);
     this.textRecorded = await sendToWispher(blob);
 
@@ -210,6 +216,8 @@ export default class Phone {
         // if (this.debug) return;
         this.toTalkToMe();
         this.isAITalking = false;
+      } else {
+        this.toProcessing();
       }
     }
   }
@@ -255,12 +263,23 @@ export default class Phone {
           this.toListening();
         },
         onSpeechEnd: (audio) => {
-          this.toProcessing(audio);
+          if (this.debugFlights) return;
           this.isListening = false;
+          this.toProcessing(audio);
         },
         // Time to wait before onSpeechEnd (10 frames * X seconds)
         redemptionFrames: 10 * 1.4,
       });
+    }
+
+    if (this.debugFlights) {
+      setTimeout(() => {
+        this.myvad.pause();
+        const testAudio = new Audio();
+        testAudio.src = audioFlights;
+        this.toProcessing(testAudio);
+        return;
+      }, 2500);
     }
 
     if (this.debug) {
