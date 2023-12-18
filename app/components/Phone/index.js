@@ -43,6 +43,7 @@ export default class Phone {
     // AI
     this.currentAudioAIPlaying = null;
     this.currentIndexAudioAI = null;
+    this.currentIndexTextAI = null;
     this.audiosAI = [];
     this.isAITalking = false;
     this.isAIPaused = false;
@@ -177,8 +178,10 @@ export default class Phone {
       this.onPlay();
       return;
     }
-    const audio = await textToSpeech(htmlToText(html));
-    this.audiosAI.push(audio);
+
+    this.currentIndexTextAI === null ? (this.currentIndexTextAI = 0) : this.currentIndexTextAI++;
+    const { audio, index } = await textToSpeech(htmlToText(html), this.currentIndexTextAI);
+    this.audiosAI[index] = audio;
 
     if (this.currentIndexAudioAI === null) {
       console.log("first sound");
@@ -192,8 +195,6 @@ export default class Phone {
         onEnded: this.checkIfNextAudio.bind(this),
       });
     }
-
-    this.audiosAI[this.currentIndexAudioAI].onplay = () => {};
   }
 
   async checkIfNextAudio() {
@@ -223,6 +224,7 @@ export default class Phone {
 
   clearAIAudios() {
     this.currentIndexAudioAI = null;
+    this.currentIndexTextAI = null;
     this.audiosAI = [];
     this.onClickOutside.interrupt = false;
   }
