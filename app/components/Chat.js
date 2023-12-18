@@ -701,9 +701,10 @@ class Chat {
           const moviedetailsshowtimebutton = document.createElement("button");
           moviedetailsshowtimebutton.className = "movie-details-showtime";
           moviedetailsshowtimebutton.innerHTML = moviestime.Time.slice(0, -3);
-          moviedetailsshowtimebutton.addEventListener("click", (event) =>
-            this.submitmovieselection(MovieTitle, theatre.Name, moviesdatetime.Date, moviestime.Time.slice(0, -3),moviestime.BookingUrl)
-          );
+          moviedetailsshowtimebutton.setAttribute("onclick", "window.open('" + moviestime.BookingUrl + "', '_blank');");
+          // moviedetailsshowtimebutton.addEventListener("click", (event) =>
+          //   this.submitmovieselection(MovieTitle, theatre.Name, moviesdatetime.Date, moviestime.Time.slice(0, -3),moviestime.BookingUrl)
+          // );
           moviedetailsshowtimesdiv.appendChild(moviedetailsshowtimebutton);
         });
         moviedetailsdatesdiv.appendChild(moviedetailsshowtimesdiv);
