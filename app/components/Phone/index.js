@@ -144,7 +144,7 @@ export default class Phone {
     console.log("processing");
 
     if (this.debug) {
-      this.discussion.addUserElement({ text: "Hi I am a test", debug: true });
+      //   this.discussion.addUserElement({ text: "Hi I am a test", debug: true });
       return;
     }
     this.myvad.pause();
@@ -175,6 +175,7 @@ export default class Phone {
     if (!this.isActive) return;
     console.log("new AIAnswer");
     if (this.debug) {
+      this.isAITalking = false;
       this.onPlay();
       return;
     }
@@ -391,6 +392,8 @@ export default class Phone {
     this.pageEl.addEventListener(
       "click",
       (event) => {
+        if (this.debug) return;
+
         // TODO add close btn to expetion
         if (this.pauseBtn.contains(event.target) || this.closeBtn.contains(event.target)) return;
         if (this.onClickOutside.resumeAI) {
@@ -400,7 +403,6 @@ export default class Phone {
           this.unmuteMic();
         }
         if (this.onClickOutside.interrupt) {
-          console.log("interrupt");
           this.interrupt();
         }
       },
@@ -422,7 +424,7 @@ export default class Phone {
       this.toProcessing();
     });
     this.btnFinishProcessing.addEventListener("click", () => {
-      //   this.startAITalking("Bonjour je suis un test");
+      this.startAITalking("Bonjour je suis un test");
     });
   }
 }

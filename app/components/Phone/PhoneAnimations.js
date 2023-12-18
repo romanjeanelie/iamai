@@ -134,7 +134,7 @@ export default class PhoneAnimations {
     }
 
     this.phoneBarOne.classList.add("talkToMe");
-    this.phoneBarYoyoAnimations = this.createAnimation(this.phoneBarOne, this.keyframes.phoneBarYoyo, {
+    this.phoneBarUserYoyoAnimations = this.createAnimation(this.phoneBarOne, this.keyframes.phoneBarYoyo, {
       duration: 900,
       ease: "ease-out",
       iterations: Infinity,
@@ -142,8 +142,8 @@ export default class PhoneAnimations {
   }
 
   toListening() {
-    this.phoneBarYoyoAnimations?.cancel();
-    this.phoneBarYoyoAnimations = this.createAnimation(this.phoneBarOne, this.keyframes.phoneBarListeningYoyo, {
+    this.phoneBarUserYoyoAnimations?.cancel();
+    this.phoneBarUserYoyoAnimations = this.createAnimation(this.phoneBarOne, this.keyframes.phoneBarListeningYoyo, {
       duration: 900,
       ease: "ease-out",
       iterations: Infinity,
@@ -160,40 +160,40 @@ export default class PhoneAnimations {
    * Processing bar
    */
   toProcessing() {
-    // Remove AI
-    if (this.phoneBarAIYoyoAnimations) {
+    const isPhoneBarUserActive =
+      this.phoneBarOne.classList.contains("active") || this.phoneBarOne.classList.contains("talkToMe");
+    const fadeOutDuration = 400;
+    // Remove User
+    if (isPhoneBarUserActive) {
+      this.phoneBarUserYoyoAnimations.cancel();
+      this.createAnimation(this.phoneBarOne, this.keyframes.reducePhoneBarOne, {
+        duration: fadeOutDuration,
+        ease: "ease-out",
+        fill: "forwards",
+      });
+      this.phoneBarOne.classList.remove("active");
+      // Remove AI
+    } else {
+      this.expandPhoneBarAI.cancel();
       this.phoneBarAIYoyoAnimations.cancel();
       const fadeOutPhoneBarAI = this.createAnimation(this.phoneBarAI, this.keyframes.fadeOutPhoneBarAI, {
-        duration: 300,
+        duration: fadeOutDuration,
         ease: "ease-out",
         fill: "forwards",
       });
 
-      this.phoneBarOne.classList.add("active");
-      this.phoneBarOne.classList.add("talkToMe");
-      const fadeInPhoneBarUser = this.createAnimation(this.phoneBarOne, this.keyframes.fadeInPhoneBarUser, {
-        duration: 300,
-        ease: "ease-out",
-        fill: "forwards",
-      });
+      this.phoneBarAI.classList.remove("active");
 
-      fadeInPhoneBarUser.onfinish = () => {
-        this.expandPhoneBarAI.cancel();
-        this.phoneBarAI.classList.remove("active");
+      fadeOutPhoneBarAI.onfinish = () => {
         fadeOutPhoneBarAI.cancel();
       };
     }
 
-    this.phoneBarYoyoAnimations.cancel();
-    const reducePhoneBarOne = this.createAnimation(this.phoneBarOne, this.keyframes.reducePhoneBarOne, {
-      duration: 400,
-      ease: "ease-out",
-      fill: "forwards",
-    });
-
-    reducePhoneBarOne.onfinish = () => {
-      this.phoneBarOne.classList.remove("active");
-      this.phoneBarOne.classList.remove("talkToMe");
+    setTimeout(() => {
+      if (isPhoneBarUserActive) {
+        this.phoneBarOne.classList.remove("active");
+        this.phoneBarOne.classList.remove("talkToMe");
+      }
       this.phoneBarProcessing.classList.add("active");
 
       const expandPhoneBarProcessing = this.createAnimation(
@@ -225,7 +225,7 @@ export default class PhoneAnimations {
           iterations: Infinity,
         }
       );
-    };
+    }, fadeOutDuration);
   }
 
   resetProcessingBar() {
@@ -238,7 +238,7 @@ export default class PhoneAnimations {
    */
   toAITalking() {
     this.dotsYoyoAnimations.forEach((anim) => anim.cancel());
-    this.backgroundBarProcessingYoyo.cancel();
+    this.backgroundBarProcessingYoyo?.cancel();
     const reducePhoneBarProcessing = this.createAnimation(
       this.phoneBarProcessing,
       this.keyframes.reducePhoneBarProcessing,
