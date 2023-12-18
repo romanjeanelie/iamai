@@ -1,4 +1,6 @@
 import anim from "../../utils/anim";
+import { isSafari } from "../../utils/detectNavigators";
+import isMobile from "../../utils/isMobile";
 
 export default class PhoneAnimations {
   constructor({ pageEl }) {
@@ -23,6 +25,16 @@ export default class PhoneAnimations {
     };
 
     this.animations = [];
+
+    // Remove animations for iOS Safari
+    this.isIOSSafari = isMobile() && isSafari();
+
+    if (this.isIOSSafari) {
+      this.phoneBarOne.style.display = "none";
+      this.phoneBarProcessing.style.display = "none";
+      this.phoneBarAI.style.display = "none";
+      this.phoneBarPause.style.display = "none";
+    }
   }
 
   animateTextTransition(text, activeText, notActiveText, animations) {
@@ -45,6 +57,7 @@ export default class PhoneAnimations {
   }
 
   createAnimation(target, keyframes, options) {
+    if (this.isIOSSafari) return null;
     const animation = anim(target, keyframes, options);
     this.animations.push(animation);
     return animation;
@@ -61,6 +74,10 @@ export default class PhoneAnimations {
 
   newInfoText(text) {
     const activeText = this.phoneContainer.querySelector(".phone__info.active");
+    if (this.isIOSSafari) {
+      activeText.textContent = text;
+      return;
+    }
     const notActiveText = this.phoneContainer.querySelector(".phone__info:not(.active)");
 
     const animations = {
@@ -81,6 +98,7 @@ export default class PhoneAnimations {
    * User bar
    */
   toConnecting() {
+    if (this.isIOSSafari) return;
     this.dotsYoyoAnimations = this.createAnimation(
       [this.phoneBarOneDots[0], this.phoneBarOneDots[1]],
       [{ width: "30px" }, { width: "8px" }, { width: "30px" }],
@@ -94,6 +112,7 @@ export default class PhoneAnimations {
 
   toConnected() {
     this.isConnected = true;
+    if (this.isIOSSafari) return;
     this.dotsYoyoAnimations.forEach((anim) => anim.cancel());
     this.phoneBarOneDots.forEach((dot) => dot.classList.add("expand"));
     this.phoneBarOne.classList.add("active");
@@ -108,6 +127,8 @@ export default class PhoneAnimations {
     if (!this.isConnected) {
       this.toConnected();
     }
+
+    if (this.isIOSSafari) return;
 
     // Remove AI
     if (this.phoneBarAIYoyoAnimations) {
@@ -142,6 +163,8 @@ export default class PhoneAnimations {
   }
 
   toListening() {
+    if (this.isIOSSafari) return;
+
     this.phoneBarUserYoyoAnimations?.cancel();
     this.phoneBarUserYoyoAnimations = this.createAnimation(this.phoneBarOne, this.keyframes.phoneBarListeningYoyo, {
       duration: 900,
@@ -151,6 +174,8 @@ export default class PhoneAnimations {
   }
 
   resetUserBar() {
+    if (this.isIOSSafari) return;
+
     this.phoneBarOne.classList.remove("active");
     this.phoneBarOne.classList.remove("talkToMe");
     this.phoneBarOneDots.forEach((dot) => dot.classList.remove("expand"));
@@ -160,6 +185,8 @@ export default class PhoneAnimations {
    * Processing bar
    */
   toProcessing() {
+    if (this.isIOSSafari) return;
+
     const isPhoneBarUserActive =
       this.phoneBarOne.classList.contains("active") || this.phoneBarOne.classList.contains("talkToMe");
     const fadeOutDuration = 400;
@@ -229,6 +256,8 @@ export default class PhoneAnimations {
   }
 
   resetProcessingBar() {
+    if (this.isIOSSafari) return;
+
     this.phoneBarProcessing.classList.remove("active");
     this.phoneBarProcessingDots.forEach((dot) => dot.classList.remove("expand"));
   }
@@ -237,6 +266,8 @@ export default class PhoneAnimations {
    * AI bar
    */
   toAITalking() {
+    if (this.isIOSSafari) return;
+
     this.dotsYoyoAnimations.forEach((anim) => anim.cancel());
     this.backgroundBarProcessingYoyo?.cancel();
     const reducePhoneBarProcessing = this.createAnimation(
@@ -270,6 +301,8 @@ export default class PhoneAnimations {
   }
 
   resetAIBar() {
+    if (this.isIOSSafari) return;
+
     this.phoneBarAI.classList.remove("active");
     this.phoneBarAIYoyoAnimations?.cancel();
     this.phoneBarAIYoyoAnimations = null;
@@ -279,6 +312,8 @@ export default class PhoneAnimations {
    * Pause bar
    */
   toPause(type) {
+    if (this.isIOSSafari) return;
+
     this.phoneBarPause.classList.add("active");
 
     if (type === "user") {
@@ -294,6 +329,8 @@ export default class PhoneAnimations {
   }
 
   toResume(type) {
+    if (this.isIOSSafari) return;
+
     this.phoneBarPause.classList.remove("active");
 
     if (type === "user") {
@@ -307,6 +344,8 @@ export default class PhoneAnimations {
   }
 
   leave() {
+    if (this.isIOSSafari) return;
+
     this.cancelAllAnimations();
     this.resetUserBar();
     this.resetProcessingBar();

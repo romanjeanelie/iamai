@@ -8,7 +8,6 @@ import playAudio from "../../utils/audio/playAudio";
 import unlockAudio from "../../utils/audio/unlockAudio";
 import AudioPlayer from "../../utils/audio/AudioPlayer";
 import audioFlights from "/sounds/debugFlights.mp3";
-
 export default class Phone {
   constructor({ anims, pageEl, discussion, emitter }) {
     // Event
@@ -74,6 +73,7 @@ export default class Phone {
 
     // Debug
     this.debug = false;
+    this.debugIOSAnim = false;
     this.debugFlights = false;
 
     if (this.debug) {
@@ -143,8 +143,8 @@ export default class Phone {
     this.phoneAnimations.toProcessing();
     console.log("processing");
 
-    if (this.debug) {
-      //   this.discussion.addUserElement({ text: "Hi I am a test", debug: true });
+    if (this.debugIOSAnim) {
+      this.discussion.addUserElement({ text: "Hi I am a test", debug: true });
       return;
     }
     this.myvad.pause();
