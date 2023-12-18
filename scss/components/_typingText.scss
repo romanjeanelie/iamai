@@ -1,8 +1,10 @@
+$radiusDotTyping: 22px;
+
 .typing__container {
   position: absolute;
   z-index: 1;
   width: 99%;
-  height: 100%;
+  height: $radiusDotTyping;
   top: 0;
   left: 0;
   display: flex;
@@ -27,8 +29,8 @@
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 22px;
-  height: 22px;
+  width: $radiusDotTyping;
+  height: $radiusDotTyping;
   background: $colorBlack;
   border-radius: 50%;
 
