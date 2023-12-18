@@ -2,7 +2,8 @@ import Discussion from "./Discussion.js";
 import { connect, AckPolicy, JSONCodec } from "https://cdn.jsdelivr.net/npm/nats.ws@latest/esm/nats.js";
 // const uuid = "omega_" + crypto.randomUUID();
 
-const IS_DEV_MODE = import.meta.env.MODE === "development";
+// const IS_DEV_MODE = import.meta.env.MODE === "development";
+const IS_DEV_MODE = false;
 
 function decodeJwtResponse(token) {
   var base64Url = token.split(".")[1];
@@ -696,12 +697,12 @@ class Chat {
       if (moviesdatetime.Date == date) {
         const moviedetailsshowtimesdiv = document.createElement("div");
         moviedetailsshowtimesdiv.className = "movie-details-showtimes";
-        moviesdatetime.Time.forEach((moviestime) => {
+        moviesdatetime.Show.forEach((moviestime) => {
           const moviedetailsshowtimebutton = document.createElement("button");
           moviedetailsshowtimebutton.className = "movie-details-showtime";
-          moviedetailsshowtimebutton.innerHTML = moviestime.slice(0, -3);
+          moviedetailsshowtimebutton.innerHTML = moviestime.Time.slice(0, -3);
           moviedetailsshowtimebutton.addEventListener("click", (event) =>
-            this.submitmovieselection(MovieTitle, theatre.Name, moviesdatetime.Date, moviestime.slice(0, -3))
+            this.submitmovieselection(MovieTitle, theatre.Name, moviesdatetime.Date, moviestime.Time.slice(0, -3),moviestime.BookingUrl)
           );
           moviedetailsshowtimesdiv.appendChild(moviedetailsshowtimebutton);
         });
@@ -730,7 +731,7 @@ class Chat {
     }
   }
 
-  async submitmovieselection(MovieTitle, Theatre, Date, Time) {
+  async submitmovieselection(MovieTitle, Theatre, Date, Time, BookingUrl) {
     MovieTitle = MovieTitle.replace("’", "'");
     if (this.agentawaiting) {
       var texttosend =
