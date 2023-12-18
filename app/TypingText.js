@@ -44,7 +44,7 @@ export default class TypingText {
 
     this.blinkCursor = anim(this.cursorEl, [{ opacity: 1 }, { opacity: 0 }, { opacity: 1 }], {
       //   delay:
-      duration: 300,
+      duration: 500,
       iterations: Infinity,
       ease: "ease-in-out",
     });
