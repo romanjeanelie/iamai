@@ -51,6 +51,7 @@ class Chat {
     this.MovieSearchResults = "";
     this.user = this.getUser();
     this.deploy_ID = "";
+    this.image_urls = "";
   }
 
   getUser() {
@@ -171,6 +172,10 @@ class Chat {
           this.FlightSearch = JSON.parse(mdata.ui_params.FlightSearch);
           this.FlightSearchResults = JSON.parse(mdata.ui_params.FlightSearchResults);
         }
+      }else if(mdata.message_type == "image")
+      {
+        this.image_urls = JSON.parse(mdata.ui_params.image_urls);
+        console.log("this.image_urls:"+this.image_urls);
       }
 
       //check if awaiting
