@@ -98,13 +98,23 @@ class Chat {
         if (this.sessionID && this.sessionID != "") {
           xhr.open("POST", "https://ai.iamplus.services/workflow/conversation", true);
           xhr.setRequestHeader("Content-Type", "application/json");
-          xhr.send(
-            JSON.stringify({
-              session_id: this.sessionID,
-              // uuid: uuid + "@iamplus.com",
-              uuid: this.deploy_ID,
-            })
-          );
+          if (this.sessionID.startsWith("wf-external-conversation")) {
+            xhr.send(
+              JSON.stringify({
+                session_id: this.sessionID,
+                uuid: "omega_" + crypto.randomUUID() + "@iamplus.com",
+              })
+            );
+          }
+          else {
+            xhr.send(
+              JSON.stringify({
+                session_id: this.sessionID,
+                // uuid: uuid + "@iamplus.com",
+                uuid: this.deploy_ID,
+              })
+            );
+          }
         } else {
           xhr.open("POST", "https://ai.iamplus.services/workflow/tasks", true);
           xhr.setRequestHeader("Content-Type", "application/json");
@@ -172,10 +182,9 @@ class Chat {
           this.FlightSearch = JSON.parse(mdata.ui_params.FlightSearch);
           this.FlightSearchResults = JSON.parse(mdata.ui_params.FlightSearchResults);
         }
-      }else if(mdata.message_type == "image")
-      {
+      } else if (mdata.message_type == "image") {
         this.image_urls = JSON.parse(mdata.ui_params.image_urls);
-        console.log("this.image_urls:"+this.image_urls);
+        console.log("this.image_urls:" + this.image_urls);
       }
 
       //check if awaiting
