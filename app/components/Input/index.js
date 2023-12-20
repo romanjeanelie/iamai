@@ -206,6 +206,10 @@ export default class Input {
     this.cancelBtn.classList.remove("show");
     this.navbarEl.classList.remove("hidden");
 
+    if (this.inputImage.isEnabled) {
+      this.inputImage.disable();
+    }
+
     this.goToInitial();
   }
 

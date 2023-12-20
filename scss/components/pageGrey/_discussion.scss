@@ -7,13 +7,6 @@
     max-width: 95vw;
   }
 
-  img {
-    max-height: 60vh;
-    object-fit: cover;
-    object-position: center;
-    border-radius: 20px;
-  }
-
   .discussion__user,
   .discussion__ai {
     position: relative;
@@ -48,6 +41,17 @@
     margin-left: auto;
     padding-right: 16px;
     margin-left: 112px;
+
+    img {
+      margin-left: auto;
+      width: unset;
+      height: unset;
+      max-width: 100%;
+      max-height: 60vh;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 20px;
+    }
 
     @include media("<tablet") {
       padding-right: 24px;

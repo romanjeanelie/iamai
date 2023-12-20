@@ -50,6 +50,7 @@ export default class InputImage {
   disable() {
     this.inputFileUploadEl.value = "";
     this.imageDroppedContainer.innerHTML = "";
+    this.imageDroppedContainer.classList.remove("visible");
     this.isEnabled = false;
   }
 
@@ -77,10 +78,12 @@ export default class InputImage {
       let fReader = new FileReader();
 
       fReader.readAsDataURL(file);
-      fReader.onloadend = () => {
-        let img = document.createElement("img");
-        img.src = fReader.result;
-        this.addImageToContainer(img);
+      fReader.onloadend = (event) => {
+        let img = new Image();
+        img.onload = () => {
+          this.addImageToContainer(img);
+        };
+        img.src = event.target.result;
       };
     } else {
       this.anims.reset();
@@ -146,7 +149,7 @@ export default class InputImage {
     });
 
     this.inputImageEl.addEventListener("keydown", (e) => {
-      // If key === enter submit
+      // If key === enter
       if (e.keyCode == 13) {
         this.fetchImage({ url: this.inputImageEl.value });
       }
