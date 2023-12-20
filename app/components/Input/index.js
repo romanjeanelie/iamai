@@ -236,7 +236,7 @@ export default class Input {
       () => {
         if (!this.isActive) return;
         if (!isLetterKey(event)) return;
-        if (this.currentStatus !== STATUS.WRITE && !this.inputText.disabled) {
+        if (this.currentStatus === STATUS.INITIAL && !this.inputText.disabled) {
           this.toWrite();
         }
       },
