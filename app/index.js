@@ -2,6 +2,8 @@ import Caroussel from "./components/Caroussel";
 import Input from "./components/Input";
 import Navbar from "./components/Navbar";
 import Discussion from "./components/Discussion";
+import Slider from "./components/Slider";
+
 import { createNanoEvents } from "nanoevents";
 
 function decodeJwtResponse(token) {
@@ -80,6 +82,7 @@ class App {
     this.initCaroussel();
     this.initDiscussion();
     this.initInput();
+    this.initSlider();
   }
 
   initNavbar() {
@@ -107,6 +110,10 @@ class App {
 
     this.inputBluePage = new Input({ pageEl: this.pageBlue, isActive: true, ...props });
     this.inputGreyPage = new Input({ pageEl: this.pageGrey, isActive: false, ...props });
+  }
+
+  initSlider() {
+    this.slider = new Slider({ emitter: this.emitter });
   }
 
   resetScroll() {

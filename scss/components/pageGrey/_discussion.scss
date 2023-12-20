@@ -25,6 +25,19 @@
       overflow-wrap: break-word;
     }
 
+    .images__container {
+      margin-top: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+
+      img {
+        width: 98px;
+        height: 98px;
+        border-radius: 4px;
+      }
+    }
+
     @include media("<tablet") {
       font-size: 18px;
     }

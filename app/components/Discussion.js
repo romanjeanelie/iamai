@@ -20,9 +20,9 @@ export default class Discussion {
     this.emitter = emitter;
     this.toPageGrey = toPageGrey;
 
-    this.page = document.querySelector(".page-grey");
-    this.mainEl = this.page.querySelector("main");
-    this.inputText = this.page.querySelector(".input-text");
+    this.pageEl = document.querySelector(".page-grey");
+    this.mainEl = this.pageEl.querySelector("main");
+    this.inputText = this.pageEl.querySelector(".input-text");
     this.discussionContainer = document.querySelector(".discussion__container");
 
     this.addUserElement = this.addUserElement.bind(this);
@@ -32,6 +32,7 @@ export default class Discussion {
 
     this.Chat = new Chat({
       addAIText: this.addAIText.bind(this),
+      addAIImages: this.addAIImages.bind(this),
       disableInput: this.disableInput.bind(this),
       enableInput: this.enableInput.bind(this),
       emitter: emitter,
@@ -44,9 +45,18 @@ export default class Discussion {
     // tempContainer.classList.add("discussion__ai");
     // this.discussionContainer.appendChild(tempContainer);
     // this.addAIText({
-    //   text: "I'm searching filghts...",
+    //   text: "I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...",
     //   container: tempContainer,
-    //   type: "status",
+    // });
+    // this.addAIImages({
+    //   srcs: [
+    //     "https://picsum.photos/400/300",
+    //     "https://picsum.photos/200/300",
+    //     "https://picsum.photos/200/300",
+    //     "https://picsum.photos/200/300",
+    //     "https://picsum.photos/200/300",
+    //   ],
+    //   container: tempContainer,
     // });
   }
 
@@ -151,7 +161,7 @@ export default class Discussion {
     this.currentTopStatus = null;
   }
 
-  async addAIText({ text, container, type = null } = {}) {
+  async addAIText({ text, container, type = null, images = null } = {}) {
     this.emitter.emit("addAIText", text);
     this.typingText?.fadeOut();
     const textEl = document.createElement("span");
@@ -166,6 +176,31 @@ export default class Discussion {
     container.appendChild(textEl);
     text = text.replace(/<br\/?>\s*/g, "\n");
     return await typeText(textEl, text);
+  }
+
+  openSlider(imgs, currentIndex) {
+    this.emitter.emit("slider:open", { imgs, currentIndex });
+  }
+
+  async addAIImages({ container, srcs = [] } = {}) {
+    if (srcs.length == 0) return;
+    const imagesContainer = document.createElement("div");
+    imagesContainer.className = "images__container";
+
+    const imgs = srcs.map((src) => {
+      const img = document.createElement("img");
+      img.src = src;
+      imagesContainer.appendChild(img);
+      return img;
+    });
+
+    imgs.forEach((img, i) => {
+      img.addEventListener("click", () => {
+        this.openSlider(imgs, i);
+      });
+    });
+
+    container.appendChild(imagesContainer);
   }
 
   scrollToBottom() {
