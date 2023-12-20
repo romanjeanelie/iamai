@@ -23,6 +23,18 @@
       }
     }
 
+    .input__image--container {
+      path {
+        &:first-child {
+          fill: $backgroundColorGreyPage;
+        }
+      }
+
+      .input__image {
+        background-color: $backgroundColorGreyPage;
+      }
+    }
+
     .input__back {
       border: 4px solid #dee0e1;
       background-color: $backgroundColorGreyPage;
