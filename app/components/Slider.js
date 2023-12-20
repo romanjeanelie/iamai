@@ -58,6 +58,7 @@ export default class Slider {
 
     this.sliderEl.classList.add("show");
     this.goTo({ index: currentIndex, immediate: true });
+    this.checkButtons();
   }
 
   next() {
