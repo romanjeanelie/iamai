@@ -185,7 +185,7 @@ class Chat {
         this.image_urls = JSON.parse(mdata.ui_params.image_urls);
         console.log("this.image_urls:" + this.image_urls);
         // CALL THIS TO ADD IMAGES
-        // this.callbacks.addAIImages({ srcs: this.image_urls, container: this.container });
+        this.callbacks.addAIImages({ srcs: this.image_urls, container: this.container });
       }
 
       //check if awaiting

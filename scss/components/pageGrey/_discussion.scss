@@ -25,9 +25,12 @@
       gap: 8px;
 
       img {
-        width: 98px;
+        width: auto;
         height: 98px;
         border-radius: 4px;
+      }
+      img:hover{
+        cursor: pointer;
       }
     }
 
