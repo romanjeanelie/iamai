@@ -22,6 +22,11 @@
     visibility: visible;
   }
 
+  &.image-drop {
+    background: $colorMain;
+    border-radius: 50%;
+  }
+
   &.dark {
     rect {
       fill: $colorBlack;

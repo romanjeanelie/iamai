@@ -490,6 +490,7 @@ export default class InputAnimations {
 
   toImageAnalyzed() {
     this.cancelBtn.classList.add("show");
+    this.cancelBtn.classList.add("image-drop");
     this.navbarEl.classList.add("hidden");
 
     this.animCircleYoyo.cancel();
@@ -505,12 +506,13 @@ export default class InputAnimations {
   toRemoveImage() {
     this.imageDroppedContainer.classList.remove("visible");
     this.cancelBtn.classList.remove("show");
+    this.cancelBtn.classList.remove("image-drop");
+
     this.navbarEl.classList.remove("hidden");
     this.toInitial({ animLogo: false });
   }
 
   toImageReset(delay = 0) {
-    console.log(delay);
     this.animCircleYoyo.cancel();
 
     const step1 = this.fadeInInputFront({ delay: 0, duration: 300 });
