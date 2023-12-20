@@ -19,17 +19,21 @@
 
       path,
       circle {
-        stroke: rgba(0, 0, 0, 0.4);
+        stroke: $colorBlackForGreyPage;
       }
     }
 
     .input__image--container {
-      path {
-        &:first-child {
-          fill: $backgroundColorGreyPage;
+      .icon-file-upload {
+        background-color: $backgroundColorGreyPage;
+
+        path:not(:first-child) {
+          stroke: $colorBlackForGreyPage;
+        }
+        rect {
+          fill: $colorBlackForGreyPage;
         }
       }
-
       .input__image {
         background-color: $backgroundColorGreyPage;
       }
@@ -46,15 +50,15 @@
             path,
             circle,
             rect {
-              stroke: rgba(0, 0, 0, 0.4);
+              stroke: $colorBlackForGreyPage;
             }
           }
           .mic-btn {
             path {
-              fill: rgba(0, 0, 0, 0.4);
+              fill: $colorBlackForGreyPage;
             }
             rect {
-              stroke: rgba(0, 0, 0, 0.4);
+              stroke: $colorBlackForGreyPage;
             }
           }
         }
