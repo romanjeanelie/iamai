@@ -13,6 +13,11 @@ import sendToWispher from "../../utils/audio/sendToWhisper";
 
 import { colorMain } from "../../../scss/variables/_colors.module.scss";
 
+function isLetterKey(event) {
+  const keyCode = event.keyCode;
+  return keyCode >= 65 && keyCode <= 90; // Key codes for A-Z
+}
+
 const STATUS = {
   INITIAL: "INITIAL",
   RECORD_AUDIO: "RECORD_AUDIO",
@@ -229,6 +234,7 @@ export default class Input {
       "keydown",
       () => {
         if (!this.isActive) return;
+        if (!isLetterKey(event)) return;
         if (this.currentStatus !== STATUS.WRITE && !this.inputText.disabled) {
           this.toWrite();
         }
