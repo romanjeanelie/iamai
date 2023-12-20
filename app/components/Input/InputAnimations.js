@@ -197,7 +197,6 @@ export default class InputAnimations {
     this.inputBackEl.style.pointerEvents = "auto";
     this.inputEl.style.overflow = "hidden";
 
-    // if (isMobile() && animLogos) {
     if (animLogos) {
       this.fadeOutLogo();
     }
@@ -216,6 +215,11 @@ export default class InputAnimations {
       fill: "forwards",
       ease: "ease-in-out",
     });
+
+    // Fix when we come back from image input to not hav break lines on input
+    setTimeout(() => {
+      this.inputText.disabled = false;
+    }, 1);
 
     if (isMobile() && !this.isPageBlue) {
       this.inputText.click();
@@ -433,6 +437,9 @@ export default class InputAnimations {
    * Image
    */
   toDragImage({ animBottom = true, delay = 0 } = {}) {
+    // Prvent break lines when we enter url
+    this.inputText.disabled = true;
+
     this.imageDroppedContainer.classList.remove("visible");
 
     setTimeout(() => {
@@ -502,14 +509,16 @@ export default class InputAnimations {
     this.toInitial({ animLogo: false });
   }
 
-  toImageReset() {
+  toImageReset(delay = 0) {
+    console.log(delay);
     this.animCircleYoyo.cancel();
-
-    this.fadeInButtons(300, delay);
 
     const step1 = this.fadeInInputFront({ delay: 0, duration: 300 });
     const step2 = this.expandWidthInputFront({ delay: step1.effect.getComputedTiming().duration + 500, duration: 250 });
 
-    this.fadeInButtons(step1.effect.getComputedTiming().duration + step2.effect.getComputedTiming().duration + 500, 0);
+    this.fadeInButtons(
+      step1.effect.getComputedTiming().duration + step2.effect.getComputedTiming().duration + 500,
+      delay
+    );
   }
 }

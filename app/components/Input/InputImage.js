@@ -6,6 +6,7 @@ export default class InputImage {
     this.dropImageOverlayEl = this.pageEl.querySelector(".image-drop-zone--overlay");
 
     this.inputFileUploadEl = this.pageEl.querySelector(".input__file-upload");
+    this.inputImageEl = this.pageEl.querySelector(".input__image");
     this.closeBtn = this.pageEl.querySelector(".input__image--closeBtn");
 
     this.anims = anims;
@@ -64,6 +65,11 @@ export default class InputImage {
     }, this.analizingImageMinTime);
   }
 
+  addImageToContainer(img) {
+    this.imageDroppedContainer.appendChild(img);
+    this.callbacks.onImageUploaded(img);
+  }
+
   previewImage(file) {
     let imageType = /image.*/;
     if (file.type.match(imageType)) {
@@ -74,15 +80,31 @@ export default class InputImage {
       fReader.onloadend = () => {
         let img = document.createElement("img");
         img.src = fReader.result;
-
-        let fSize = file.size / 1000 + " KB";
-        this.imageDroppedContainer.appendChild(img);
-        this.callbacks.onImageUploaded(img);
+        this.addImageToContainer(img);
       };
     } else {
       this.anims.reset();
       console.error("Only images are allowed!", file);
     }
+  }
+
+  fetchImage({ url }) {
+    this.anims.toImageDroped();
+
+    const image = new Image();
+    image.crossOrigin = "Anonymous";
+    image.onload = () => {
+      this.anims.toImageAnalyzed();
+
+      setTimeout(() => {
+        this.addImageToContainer(image);
+      }, this.analizingImageMinTime);
+    };
+
+    image.onerror = () => {
+      this.anims.reset(500);
+    };
+    image.src = url;
   }
 
   addListeners() {
@@ -120,6 +142,13 @@ export default class InputImage {
       if (this.inputFileUploadEl.files && this.inputFileUploadEl.files[0]) {
         const img = this.inputFileUploadEl.files[0];
         this.onDrop(img);
+      }
+    });
+
+    this.inputImageEl.addEventListener("keydown", (e) => {
+      // If key === enter submit
+      if (e.keyCode == 13) {
+        this.fetchImage({ url: this.inputImageEl.value });
       }
     });
   }

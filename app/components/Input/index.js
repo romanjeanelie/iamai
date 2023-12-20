@@ -85,7 +85,7 @@ export default class Input {
     // Drop Image
     this.inputImage = new InputImage(
       {
-        reset: () => this.anims.toImageReset(),
+        reset: (delay) => this.anims.toImageReset(delay),
         toImageDroped: () => this.anims.toImageDroped(),
         toImageAnalyzed: () => this.anims.toImageAnalyzed(),
       },
@@ -337,9 +337,7 @@ export default class Input {
     this.inputText.addEventListener("focus", () => {
       this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
     });
-    // this.inputText.addEventListener("input", (e) => {
-    //   this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
-    // });
+
     this.inputText.addEventListener("keyup", (event) => {
       this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
     });
