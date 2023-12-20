@@ -27,7 +27,8 @@ export default class PhoneAnimations {
     this.animations = [];
 
     // Remove animations for iOS Safari
-    this.isIOSSafari = isMobile() && isSafari();
+    // this.isIOSSafari = isMobile() && isSafari();
+    this.isIOSSafari = false;
 
     if (this.isIOSSafari) {
       this.phoneBarOne.style.display = "none";

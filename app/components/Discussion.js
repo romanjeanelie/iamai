@@ -21,7 +21,6 @@ export default class Discussion {
     this.toPageGrey = toPageGrey;
 
     this.pageEl = document.querySelector(".page-grey");
-    this.mainEl = this.pageEl.querySelector("main");
     this.inputText = this.pageEl.querySelector(".input-text");
     this.discussionContainer = document.querySelector(".discussion__container");
 
@@ -175,6 +174,7 @@ export default class Discussion {
 
     container.appendChild(textEl);
     text = text.replace(/<br\/?>\s*/g, "\n");
+    this.scrollToBottom();
     return await typeText(textEl, text);
   }
 
@@ -204,7 +204,9 @@ export default class Discussion {
   }
 
   scrollToBottom() {
-    this.mainEl.scrollTo({
+    // Go to bottom of the page
+
+    this.discussionContainer.scrollTo({
       top: this.discussionContainer.scrollHeight,
       behavior: "smooth",
     });

@@ -91,25 +91,27 @@ button {
 }
 
 .page-grey {
+  position: unset;
   background-color: $backgroundColorGreyPage;
 
   main {
-    padding-top: $paddingTop;
+    position: relative;
+    // padding-top: $paddingTop;
     height: 100%;
     display: flex;
     align-items: center;
     flex-direction: column;
     width: 100%;
     height: 100svh;
-    overflow: scroll;
-    padding: 0 120px;
-    padding-bottom: 120px;
-    padding-top: 50px;
+    // overflow: scroll;
+    // padding: 0 120px;
+    // padding-bottom: 120px;
+    // padding-top: 50px;
 
     @include media("<tablet") {
-      padding: 0;
-      padding-bottom: 80px;
-      padding-top: 76px;
+      //   padding: 0;
+      //   padding-bottom: 80px;
+      //   padding-top: 76px;
 
       // Mask top for mobile
       &:before {
