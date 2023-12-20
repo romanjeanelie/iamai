@@ -3,4 +3,8 @@ const isSafari = () => {
   return ua.indexOf("safari") !== -1 && ua.indexOf("chrome") === -1;
 };
 
-export { isSafari };
+const isTouch = () => {
+  return "ontouchstart" in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+};
+
+export { isSafari, isTouch };

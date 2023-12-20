@@ -6,6 +6,7 @@ import TypingText from "../../TypingText";
 // Utils
 import minSecStr from "../../utils/minSecStr";
 import isMobile from "../../utils/isMobile";
+import { isTouch } from "../../utils/detectNavigators";
 
 import AudioRecorder from "../../AudioRecorder";
 import InputAnimations from "./InputAnimations";
@@ -299,14 +300,16 @@ export default class Input {
     });
 
     // Prevent input hidden by keyboard on mobile
-    this.inputImageEl.addEventListener("focus", (e) => {
-      document.documentElement.style.overflow = "unset";
-      window.scrollTo(0, document.body.scrollHeight);
-    });
-    this.inputImageEl.addEventListener("blur", (e) => {
-      document.documentElement.style.overflow = "hidden";
-      window.scrollTo(0, 0);
-    });
+    if (isMobile() && isTouch()) {
+      this.inputImageEl.addEventListener("focus", (e) => {
+        document.documentElement.style.overflow = "unset";
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+      this.inputImageEl.addEventListener("blur", (e) => {
+        document.documentElement.style.overflow = "hidden";
+        window.scrollTo(0, 0);
+      });
+    }
 
     // Click outside
     this.pageEl.addEventListener(
@@ -331,7 +334,6 @@ export default class Input {
     );
 
     // Input text
-
     this.inputText.addEventListener("focus", () => {
       this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
     });
