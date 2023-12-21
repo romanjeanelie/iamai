@@ -89,6 +89,15 @@
     padding-left: 16px;
     margin-right: 112px;
 
+    .text-beforeLink {
+      margin-right: 4px;
+    }
+    a {
+      color: $colorBlue;
+      text-decoration: underline;
+      display: inline-block;
+    }
+
     .top-status {
       margin-top: 16px;
       color: $colorBlack;

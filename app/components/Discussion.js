@@ -61,6 +61,7 @@ export default class Discussion {
       discussionContainer: this.discussionContainer,
       addAIText: this.addAIText.bind(this),
       addAIImages: this.addAIImages.bind(this),
+      addURL: this.addURL.bind(this),
       disableInput: this.disableInput.bind(this),
       enableInput: this.enableInput.bind(this),
       emitter: emitter,
@@ -70,13 +71,13 @@ export default class Discussion {
 
     // DEBUG
     // const tempContainer = document.createElement("div");
-    // const tempContainer2 = document.createElement("div");
     // tempContainer.classList.add("discussion__ai");
     // this.discussionContainer.appendChild(tempContainer);
-    // this.discussionContainer.appendChild(tempContainer2);
-    // this.addAIText({
-    //   text: "I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...",
+    // this.addURL({
+    //   text: "mois...",
+    //   label: "I'm searching filghthts...",
     //   container: tempContainer,
+    //   url: "https://www.google.com",
     // });
     // tempContainer2.textContent =
     //   "I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts..." +
@@ -215,7 +216,7 @@ export default class Discussion {
     this.currentTopStatus = null;
   }
 
-  async addAIText({ text, container, type = null, images = null } = {}) {
+  async addAIText({ text, container, type = null } = {}) {
     this.emitter.emit("addAIText", text);
     this.typingText?.fadeOut();
     const textEl = document.createElement("span");
@@ -231,6 +232,23 @@ export default class Discussion {
     text = text.replace(/<br\/?>\s*/g, "\n");
     this.scrollToBottom();
     return await typeText(textEl, text);
+  }
+
+  addURL({ text, label, url, container }) {
+    const linkEl = document.createElement("a");
+    linkEl.href = url;
+    linkEl.target = "_blank";
+    linkEl.textContent = label;
+
+    if (text) {
+      const textEL = document.createElement("span");
+      textEL.classList.add("text-beforeLink");
+      textEL.textContent = text;
+
+      container.appendChild(textEL);
+    }
+    container.appendChild(linkEl);
+    this.scrollToBottom();
   }
 
   openSlider(imgs, currentIndex) {
