@@ -728,7 +728,7 @@ class Chat {
       moviedetailscarddiv.appendChild(moviedetailsdatesdiv);
       moviedetail.innerHTML = "";
       moviedetail.appendChild(moviedetailscarddiv);
-      // this.scrollToDiv(moviedetail);
+      this.scrollToDiv(moviedetail);
     });
   }
   scrollToDiv(element) {
