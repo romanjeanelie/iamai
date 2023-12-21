@@ -32,6 +32,7 @@ class User {
 class Chat {
   constructor(callbacks) {
     this.callbacks = callbacks;
+    this.discussionContainer = this.callbacks.discussionContainer;
     this.autodetect = null;
     this.targetlang = "en";
     this.sourcelang = "en";
@@ -216,18 +217,19 @@ class Chat {
           this.callbacks.enableInput();
           await this.callbacks.addAIText({ text: "\n\n", container: this.container });
         }
-      // } else if (mdata.status == "Agent ended") {
-      //   this.workflowID = "";
-      //   this.awaiting = false;
-      //   this.callbacks.enableInput();
-      //   return;
-      
-      // this is for external conversation
-      }else if (mdata.status == "Agent ended" && mdata.message_type == "system"){
-        this.sessionID="";
-        this.deploy_ID="";
+        // } else if (mdata.status == "Agent ended") {
+        //   this.workflowID = "";
+        //   this.awaiting = false;
+        //   this.callbacks.enableInput();
+        //   return;
+
+        // this is for external conversation
+      } else if (mdata.status == "Agent ended" && mdata.message_type == "system") {
+        this.sessionID = "";
+        this.deploy_ID = "";
         const textEl = document.createElement("span");
-        textEl.innerHTML = "Please click <a href='./login/index.html'>here</a>, to start a new session to chat or close the browser.";
+        textEl.innerHTML =
+          "Please click <a href='./login/index.html'>here</a>, to start a new session to chat or close the browser.";
         this.container.appendChild(textEl);
       } else if (mdata.awaiting) {
         console.log("awaiting:" + mdata.message_type);
@@ -731,9 +733,18 @@ class Chat {
       this.scrollToDiv(moviedetail);
     });
   }
+  //   scrollToDiv(element) {
+  //     element.scrollIntoView({
+  //       behavior: "smooth",
+  //     });
+  //   }
+
   scrollToDiv(element) {
-    element.scrollIntoView({
-      behavior: "smooth"
+    const divOffset = element.offsetTop;
+    console.log({ divOffset });
+    this.discussionContainer.scrollTo({
+      top: divOffset,
+      behavior: "smooth",
     });
   }
 

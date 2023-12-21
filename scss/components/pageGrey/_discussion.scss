@@ -26,8 +26,6 @@
     padding-top: 76px;
   }
 
-
-
   .discussion__user,
   .discussion__ai {
     position: relative;
@@ -92,6 +90,7 @@
     margin-right: 112px;
 
     .top-status {
+      margin-top: 16px;
       color: $colorBlack;
       font-size: 16px;
       font-style: normal;
