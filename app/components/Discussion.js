@@ -187,20 +187,51 @@ export default class Discussion {
     const imagesContainer = document.createElement("div");
     imagesContainer.className = "images__container";
 
-    const imgs = srcs.map((src) => {
-      const img = document.createElement("img");
-      img.src = src;
-      imagesContainer.appendChild(img);
-      return img;
-    });
+    let removeIndices = [];
+    Promise.all(srcs.map((src, index) =>
+      this.loadImage(src).catch(error => {
+        removeIndices.push(index);
+        console.log('Error loading image:', error);
+      })
+    )).then(() => {
+      // Remove failed indices starting from the last index
+      for (let i = removeIndices.length - 1; i >= 0; i--) {
+        srcs.splice(removeIndices[i], 1);
+      }
 
-    imgs.forEach((img, i) => {
-      img.addEventListener("click", () => {
-        this.openSlider(imgs, i);
+
+
+      const imgs = srcs.map((src) => {
+        const img = document.createElement("img");
+        img.src = src;
+        imagesContainer.appendChild(img);
+        return img;
       });
-    });
 
-    container.appendChild(imagesContainer);
+      imgs.forEach((img, i) => {
+        img.addEventListener("click", () => {
+          this.openSlider(imgs, i);
+        });
+      });
+
+      container.appendChild(imagesContainer);
+    });
+  }
+
+  loadImage(url) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+
+      img.onload = () => {
+        resolve(true);  // Image loaded successfully
+      };
+
+      img.onerror = () => {
+        reject(false);  // Error loading image
+      };
+
+      img.src = url;
+    });
   }
 
   scrollToBottom() {
