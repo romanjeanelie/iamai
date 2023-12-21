@@ -11,6 +11,7 @@ $radiusDotTyping: 22px;
   align-items: center;
   visibility: hidden;
   overflow: hidden;
+  pointer-events: none;
 }
 
 .typing__mask {
