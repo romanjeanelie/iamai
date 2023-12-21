@@ -88,12 +88,14 @@ export default class Discussion {
   }
 
   disableInput() {
+    this.inputText.disabled = true;
     const childNodes = this.inputContainer.getElementsByTagName("*");
     for (var node of childNodes) {
       node.disabled = true;
     }
   }
   enableInput() {
+    this.inputText.disabled = false;
     const childNodes = this.inputContainer.getElementsByTagName("*");
     for (var node of childNodes) {
       node.disabled = false;

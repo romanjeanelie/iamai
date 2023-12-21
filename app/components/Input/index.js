@@ -210,7 +210,7 @@ export default class Input {
       this.inputImage.disable();
     }
 
-    this.goToInitial();
+    this.goToInitial({ disableInput: false });
   }
 
   updateInputHeight() {
@@ -222,11 +222,13 @@ export default class Input {
     this.inputText.dispatchEvent(event);
   }
 
-  goToInitial() {
+  goToInitial({ disableInput = true } = {}) {
     this.currentStatus = STATUS.INITIAL;
     this.anims.toInitial();
     this.onClickOutside.animInitial = false;
-    this.inputText.disabled = false;
+    if (disableInput) {
+      this.inputText.disabled = false;
+    }
   }
 
   // Listeners
