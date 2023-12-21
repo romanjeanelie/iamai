@@ -21,6 +21,7 @@ export default class Discussion {
     this.toPageGrey = toPageGrey;
 
     this.pageEl = document.querySelector(".page-grey");
+    this.inputContainer = this.pageEl.querySelector("div.input__container.grey");
     this.inputText = this.pageEl.querySelector(".input-text");
     this.discussionContainer = document.querySelector(".discussion__container");
 
@@ -60,10 +61,20 @@ export default class Discussion {
   }
 
   disableInput() {
-    this.inputText.disabled = true;
+    // this.inputText.disabled = true;
+    this.inputContainer.disabled = true;
+    var childNodes = this.inputContainer.getElementsByTagName('*');
+    for (var node of childNodes) {
+      node.disabled = true;
+    }
   }
   enableInput() {
-    this.inputText.disabled = false;
+    this.inputContainer.disabled = false;
+    // this.inputText.disabled = false;
+    var childNodes = this.inputContainer.getElementsByTagName('*');
+    for (var node of childNodes) {
+      node.disabled = false;
+    }
     this.inputText.focus();
   }
   getAiAnswer({ text, img }) {
