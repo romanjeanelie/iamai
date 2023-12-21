@@ -224,13 +224,17 @@ class Chat {
         //   return;
 
         // this is for external conversation
-      } else if (mdata.status == "Agent ended" && mdata.message_type == "system") {
+      } else if (mdata.status.toLowerCase() == "agent ended" && mdata.message_type == "system") {
         this.sessionID = "";
         this.deploy_ID = "";
-        const textEl = document.createElement("span");
-        textEl.innerHTML =
-          "Please click <a href='./login/index.html'>here</a>, to start a new session to chat or close the browser.";
-        this.container.appendChild(textEl);
+        this.callbacks.addURL({
+          text: "",
+          label: "Please click here, to start a new session to chat or close the browser.",
+          container: this.container,
+          url: "./login/index.html",
+        });
+        // await this.callbacks.addAIText({ text: "Please click here, to start a new session to chat or close the browser.", type: 'link', container: this.container });
+        // textEl.innerHTML = 'Please click <a href="./login/index.html">here</a>, to start a new session to chat or close the browser.';
       } else if (mdata.awaiting) {
         console.log("awaiting:" + mdata.message_type);
         console.log("mtext:" + mtext);
@@ -733,12 +737,6 @@ class Chat {
       this.scrollToDiv(moviedetail);
     });
   }
-  //   scrollToDiv(element) {
-  //     element.scrollIntoView({
-  //       behavior: "smooth",
-  //     });
-  //   }
-
   scrollToDiv(element) {
     const divOffset = element.offsetTop;
     console.log({ divOffset });

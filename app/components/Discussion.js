@@ -235,6 +235,7 @@ export default class Discussion {
   }
 
   addURL({ text, label, url, container }) {
+    this.typingText?.fadeOut();
     const linkEl = document.createElement("a");
     linkEl.href = url;
     linkEl.target = "_blank";
