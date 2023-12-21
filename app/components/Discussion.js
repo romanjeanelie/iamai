@@ -5,6 +5,33 @@ import Chat from "./Chat.js";
 import EventEmitter from "../utils/EventEmitter.js";
 import isMobile from "../utils/isMobile.js";
 
+function loadImage(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve();
+    img.onerror = (error) => reject(error);
+    img.src = src;
+  });
+}
+
+async function loadImages(srcs) {
+  const successfulSrcs = [];
+  const errors = [];
+
+  await Promise.all(
+    srcs.map((src) =>
+      loadImage(src)
+        .then(() => successfulSrcs.push(src))
+        .catch((error) => {
+          errors.push({ src, error });
+          console.log("Error loading image:", error);
+        })
+    )
+  );
+
+  return successfulSrcs;
+}
+
 const topStatusText = ["finding", "checking", "searching", "analyzing", "scanning", "finalizing", "processing"];
 const defaultTopStatus = "searching";
 function getTopStatus(text) {
@@ -61,17 +88,13 @@ export default class Discussion {
   }
 
   disableInput() {
-    // this.inputText.disabled = true;
-    this.inputContainer.disabled = true;
-    var childNodes = this.inputContainer.getElementsByTagName('*');
+    const childNodes = this.inputContainer.getElementsByTagName("*");
     for (var node of childNodes) {
       node.disabled = true;
     }
   }
   enableInput() {
-    this.inputContainer.disabled = false;
-    // this.inputText.disabled = false;
-    var childNodes = this.inputContainer.getElementsByTagName('*');
+    const childNodes = this.inputContainer.getElementsByTagName("*");
     for (var node of childNodes) {
       node.disabled = false;
     }
@@ -194,38 +217,31 @@ export default class Discussion {
   }
 
   async addAIImages({ container, srcs = [] } = {}) {
-    if (srcs.length == 0) return;
+    if (srcs.length === 0) return;
+
     const imagesContainer = document.createElement("div");
     imagesContainer.className = "images__container";
 
-    let removeIndices = [];
-    Promise.all(srcs.map((src, index) =>
-      this.loadImage(src).catch(error => {
-        removeIndices.push(index);
-        console.log('Error loading image:', error);
-      })
-    )).then(() => {
-      // Remove failed indices starting from the last index
-      for (let i = removeIndices.length - 1; i >= 0; i--) {
-        srcs.splice(removeIndices[i], 1);
-      }
+    const successfulSrcs = await loadImages(srcs);
 
+    const imgs = successfulSrcs.map((src) => {
+      const img = document.createElement("img");
+      img.src = src;
+      imagesContainer.appendChild(img);
+      return img;
+    });
 
+    this.attachClickEvent(imgs);
 
-      const imgs = srcs.map((src) => {
-        const img = document.createElement("img");
-        img.src = src;
-        imagesContainer.appendChild(img);
-        return img;
+    container.appendChild(imagesContainer);
+    this.scrollToBottom();
+  }
+
+  attachClickEvent(imgs) {
+    imgs.forEach((img, i) => {
+      img.addEventListener("click", () => {
+        this.openSlider(imgs, i);
       });
-
-      imgs.forEach((img, i) => {
-        img.addEventListener("click", () => {
-          this.openSlider(imgs, i);
-        });
-      });
-
-      container.appendChild(imagesContainer);
     });
   }
 
@@ -234,11 +250,11 @@ export default class Discussion {
       const img = new Image();
 
       img.onload = () => {
-        resolve(true);  // Image loaded successfully
+        resolve(true); // Image loaded successfully
       };
 
       img.onerror = () => {
-        reject(false);  // Error loading image
+        reject(false); // Error loading image
       };
 
       img.src = url;
