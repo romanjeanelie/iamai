@@ -76,9 +76,10 @@ class Chat {
     }
     if (!IS_DEV_MODE) {
       if (this.awaiting && this.workflowID != "") {
-        if(img)
-          this.submituserreply(input_text, this.workflowID, img.src.split(',')[1]);
-        else
+        if (img) {
+          let imageURL = await this.uplaodfiles(img.src);
+          this.submituserreply(input_text, this.workflowID, imageURL);
+        } else
           this.submituserreply(input_text, this.workflowID, img);
       } else {
         var xhr = new XMLHttpRequest();
@@ -564,6 +565,26 @@ class Chat {
     );
   }
 
+  uplaodfiles = imageData => new Promise(function (resolve, reject) {
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'https://ai.iamplus.services/files/uploadimage', true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        // alert('Files uploaded successfully');
+        console.log(this.responseText);
+        resolve(this.responseText);
+      } else {
+        // alert('An error occurred!');
+        reject('An error occurred!');
+      }
+    };
+    console.log("imageData",imageData)
+    xhr.send(JSON.stringify({ image: imageData }));
+  });
+
   translate = (text, lang) =>
     new Promise(async (resolve, reject) => {
       var data = JSON.stringify([{ text: text }]);
@@ -658,7 +679,7 @@ class Chat {
         },
         user_data: {
           type: "image",
-          data: [img],
+          url: [img],
         },
       });
     } else {
