@@ -272,7 +272,7 @@ export default class Discussion {
     });
 
     this.attachClickEvent(imgs);
-
+    this.removeStatus({ container });
     container.appendChild(imagesContainer);
     this.scrollToBottom();
   }

@@ -76,7 +76,10 @@ class Chat {
     }
     if (!IS_DEV_MODE) {
       if (this.awaiting && this.workflowID != "") {
-        this.submituserreply(input_text, this.workflowID, img);
+        if(img)
+          this.submituserreply(input_text, this.workflowID, img.src.split(',')[1]);
+        else
+          this.submituserreply(input_text, this.workflowID, img);
       } else {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = async () => {
@@ -642,9 +645,9 @@ class Chat {
     var n = 200;
     return str && str.length > n ? str.slice(0, n - 1) + "&hellip;" : str;
   }
-  submituserreply(text, suworkflowid, filesurls) {
+  submituserreply(text, suworkflowid, img) {
     var data = "";
-    if (filesurls && filesurls.length > 0) {
+    if (img && img.length > 0) {
       data = JSON.stringify({
         message_type: "user_reply",
         user: "User",
@@ -655,7 +658,7 @@ class Chat {
         },
         user_data: {
           type: "image",
-          url: filesurls[0],
+          data: [img],
         },
       });
     } else {

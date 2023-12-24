@@ -60,7 +60,8 @@
   }
 
   .discussion__user {
-    color: rgba($colorBlue, 0.72);
+    // color: rgba($colorBlue, 0.72);
+    color: $colorBlue;
     text-align: right;
     margin-left: auto;
     padding-right: 16px;
