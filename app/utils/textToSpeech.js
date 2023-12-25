@@ -95,7 +95,7 @@ function getAudio(blob) {
 //   });
 // }
 export default function textToSpeech(text, index) {
-  const url = "https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM/stream?optimize_streaming_latency=4";
+  const url = "https://api.elevenlabs.io/v1/text-to-speech/gNcsqB4VGXaZ9GSqJ0zc/stream?optimize_streaming_latency=4";
   const headers = {
     accept: "audio/mpeg",
     "xi-api-key": "bddfcabff8951ebb9e925d506452df93",
