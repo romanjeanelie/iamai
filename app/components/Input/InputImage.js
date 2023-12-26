@@ -17,6 +17,7 @@ export default class InputImage {
     this.analizingImageMinTime = 1000; //ms
 
     this.isEnabled = false;
+    this.imgs = [];
     this.addListeners();
   }
 
@@ -74,7 +75,13 @@ export default class InputImage {
   //   }
 
   addImageToSlider(img) {
-    this.emitter.emit("slider:open", { imgs: [img], currentIndex: 0, allPage: false });
+    if (this.imgs.length === 0) {
+      this.emitter.emit("slider:open", { imgs: [img], currentIndex: 0, allPage: false });
+    } else {
+      this.emitter.emit("slider:addImg", img);
+      this.emitter.emit("slider:goTo", { index: this.imgs.length + 1 });
+    }
+    this.imgs.push(img);
     this.callbacks.onImageUploaded(img);
   }
 

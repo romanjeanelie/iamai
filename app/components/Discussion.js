@@ -60,7 +60,7 @@ export default class Discussion {
     this.Chat = new Chat({
       discussionContainer: this.discussionContainer,
       addAIText: this.addAIText.bind(this),
-      addAIImages: this.addAIImages.bind(this),
+      addImages: this.addImages.bind(this),
       addURL: this.addURL.bind(this),
       disableInput: this.disableInput.bind(this),
       enableInput: this.enableInput.bind(this),
@@ -73,7 +73,7 @@ export default class Discussion {
     const tempContainer = document.createElement("div");
     tempContainer.classList.add("discussion__ai");
     this.discussionContainer.appendChild(tempContainer);
-    // LINK
+    // Link
     // this.addURL({
     //   text: "mois...",
     //   label: "I'm searching filghthts...",
@@ -81,8 +81,8 @@ export default class Discussion {
     //   url: "https://www.google.com",
     // });
 
-    // AI Images
-    // this.addAIImages({
+    // Images
+    // this.addImages({
     //   srcs: [
     //     "https://picsum.photos/400/300",
     //     "https://picsum.photos/200/300",
@@ -130,10 +130,8 @@ export default class Discussion {
     if (imgs.length > 0) {
       const userEl = document.createElement("div");
       userEl.classList.add("discussion__user");
-      imgs.forEach((img) => {
-        userEl.appendChild(img);
-      });
       this.discussionContainer.appendChild(userEl);
+      this.addImages({ container: userEl, srcs: imgs.map((img) => img.src) });
     }
 
     const userEl = document.createElement("div");
@@ -245,7 +243,7 @@ export default class Discussion {
     this.emitter.emit("slider:open", { imgs, currentIndex });
   }
 
-  async addAIImages({ container, srcs = [] } = {}) {
+  async addImages({ container, srcs = [] } = {}) {
     if (srcs.length === 0) return;
 
     const imagesContainer = document.createElement("div");

@@ -13,10 +13,12 @@ export default class Slider {
     // Other DOM elements
     this.navbarEl = document.querySelector(".nav");
 
-    this.imgs = null;
+    this.imgs = [];
     this.currentIndex = 0;
 
     this.emitter.on("slider:open", (data) => this.open(data));
+    this.emitter.on("slider:addImg", (img) => this.addImg(img));
+    this.emitter.on("slider:goTo", ({ index }) => this.goTo({ index }));
     this.emitter.on("slider:close", () => this.close());
     this.addListeners();
   }
@@ -47,17 +49,17 @@ export default class Slider {
   }
 
   open({ imgs = [], currentIndex = 0, allPage = true } = {}) {
-    this.imgs = imgs;
     this.sliderContentEl.innerHTML = "";
 
-    this.imgs.forEach((img, i) => {
-      const imgContainer = document.createElement("div");
-      imgContainer.className = "slider__img-container";
-      const imgCopy = img.cloneNode(true);
-      const orientation = getImageOrientation(imgCopy);
-      imgCopy.classList.add(orientation);
-      imgContainer.appendChild(imgCopy);
-      this.sliderContentEl.appendChild(imgContainer);
+    imgs.forEach((img, i) => {
+      //   const imgContainer = document.createElement("div");
+      //   imgContainer.className = "slider__img-container";
+      //   const imgCopy = img.cloneNode(true);
+      //   const orientation = getImageOrientation(imgCopy);
+      //   imgCopy.classList.add(orientation);
+      //   imgContainer.appendChild(imgCopy);
+      //   this.sliderContentEl.appendChild(imgContainer);
+      this.addImg(img);
     });
 
     this.navbarEl.classList.add("hidden");
@@ -67,6 +69,17 @@ export default class Slider {
     }
     this.goTo({ index: currentIndex, immediate: true });
     this.checkButtons();
+  }
+
+  addImg(img) {
+    this.imgs.push(img);
+    const imgContainer = document.createElement("div");
+    imgContainer.className = "slider__img-container";
+    const imgCopy = img.cloneNode(true);
+    const orientation = getImageOrientation(imgCopy);
+    imgCopy.classList.add(orientation);
+    imgContainer.appendChild(imgCopy);
+    this.sliderContentEl.appendChild(imgContainer);
   }
 
   next() {
@@ -80,6 +93,7 @@ export default class Slider {
   }
 
   close() {
+    this.imgs = [];
     this.navbarEl.classList.remove("hidden");
     this.sliderEl.classList.remove("show");
   }
