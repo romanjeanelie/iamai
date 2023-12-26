@@ -49,7 +49,7 @@ export default class Input {
     // Image
     this.backCameraBtn = this.inputBackEl.querySelector(".camera-btn");
     this.closeInputImageBtn = this.pageEl.querySelector(".input__image--closeBtn");
-    this.currentImage = null;
+    this.currentImages = [];
     this.inputImageEl = this.pageEl.querySelector(".input__image");
 
     // Record
@@ -91,10 +91,11 @@ export default class Input {
       },
       {
         onImageUploaded: (img) => {
-          this.currentImage = img;
+          this.currentImages.push(img);
         },
       },
-      this.pageEl
+      this.pageEl,
+      this.emitter
     );
 
     // Phone
@@ -199,9 +200,9 @@ export default class Input {
     if (this.isPageBlue) {
       this.toPageGrey({ duration: 1200 });
     }
-    this.discussion.addUserElement({ text: this.inputText.value, img: this.currentImage });
+    this.discussion.addUserElement({ text: this.inputText.value, imgs: this.currentImages });
     this.inputText.value = "";
-    this.currentImage = null;
+    this.currentImages = [];
     this.updateInputHeight();
     this.cancelBtn.classList.remove("show");
     this.navbarEl.classList.remove("hidden");
@@ -266,7 +267,7 @@ export default class Input {
       if (this.currentStatus === STATUS.UPLOAD_IMAGE) {
         this.anims.toRemoveImage();
         this.inputImage.disable();
-        this.currentImage = null;
+        this.currentImages = [];
       }
 
       this.currentStatus = STATUS.INITIAL;

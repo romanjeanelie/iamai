@@ -70,20 +70,18 @@ export default class Discussion {
     this.addListeners();
 
     // DEBUG
-    // const tempContainer = document.createElement("div");
-    // tempContainer.classList.add("discussion__ai");
-    // this.discussionContainer.appendChild(tempContainer);
+    const tempContainer = document.createElement("div");
+    tempContainer.classList.add("discussion__ai");
+    this.discussionContainer.appendChild(tempContainer);
+    // LINK
     // this.addURL({
     //   text: "mois...",
     //   label: "I'm searching filghthts...",
     //   container: tempContainer,
     //   url: "https://www.google.com",
     // });
-    // tempContainer2.textContent =
-    //   "I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts..." +
-    //   "I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts..." +
-    //   "I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts..." +
-    //   "I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...I'm searching filghts...";
+
+    // AI Images
     // this.addAIImages({
     //   srcs: [
     //     "https://picsum.photos/400/300",
@@ -94,19 +92,8 @@ export default class Discussion {
     //   ],
     //   container: tempContainer,
     // });
-    // tempContainer.addEventListener("click", () => {
-    //   this.scrollToDiv(tempContainer);
-    // });
   }
 
-  //   scrollToDiv(element) {
-  //     const divOffset = element.offsetTop;
-  //     console.log({ divOffset });
-  //     this.discussionContainer.scrollTo({
-  //       top: divOffset,
-  //       behavior: "smooth",
-  //     });
-  //   }
   disableInput() {
     this.inputText.disabled = true;
     const childNodes = this.inputContainer.getElementsByTagName("*");
@@ -139,11 +126,13 @@ export default class Discussion {
     this.Chat.callsubmit(text, img, aiEl);
   }
 
-  addUserElement({ text, img, debug = false } = {}) {
-    if (img) {
+  addUserElement({ text, imgs, debug = false } = {}) {
+    if (imgs.length > 0) {
       const userEl = document.createElement("div");
       userEl.classList.add("discussion__user");
-      userEl.appendChild(img);
+      imgs.forEach((img) => {
+        userEl.appendChild(img);
+      });
       this.discussionContainer.appendChild(userEl);
     }
 
@@ -164,7 +153,7 @@ export default class Discussion {
       }, 1000);
       return;
     }
-    this.getAiAnswer({ text, img });
+    this.getAiAnswer({ text, img: imgs[0] });
   }
 
   async updateTopStatus({ status, container }) {
@@ -272,7 +261,8 @@ export default class Discussion {
     });
 
     this.attachClickEvent(imgs);
-    this.removeStatus({ container });
+    // @APPU Why did you add that ?
+    // this.removeStatus({ container });
     container.appendChild(imagesContainer);
     this.scrollToBottom();
   }

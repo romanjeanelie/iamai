@@ -1,5 +1,6 @@
 export default class InputImage {
-  constructor(anims, callbacks, pageEl) {
+  constructor(anims, callbacks, pageEl, emitter) {
+    this.emitter = emitter;
     // DOM
     this.pageEl = pageEl;
     this.imageDroppedContainer = this.pageEl.querySelector(".image-dropped__container");
@@ -51,6 +52,7 @@ export default class InputImage {
     this.inputFileUploadEl.value = "";
     this.imageDroppedContainer.innerHTML = "";
     this.imageDroppedContainer.classList.remove("visible");
+    this.emitter.emit("slider:close");
     this.isEnabled = false;
   }
 
@@ -66,8 +68,13 @@ export default class InputImage {
     }, this.analizingImageMinTime);
   }
 
-  addImageToContainer(img) {
-    this.imageDroppedContainer.appendChild(img);
+  //   addImageToContainer(img) {
+  //     this.imageDroppedContainer.appendChild(img);
+  //     this.callbacks.onImageUploaded(img);
+  //   }
+
+  addImageToSlider(img) {
+    this.emitter.emit("slider:open", { imgs: [img], currentIndex: 0, allPage: false });
     this.callbacks.onImageUploaded(img);
   }
 
@@ -81,7 +88,7 @@ export default class InputImage {
       fReader.onloadend = (event) => {
         let img = new Image();
         img.onload = () => {
-          this.addImageToContainer(img);
+          this.addImageToSlider(img);
         };
         img.src = event.target.result;
       };

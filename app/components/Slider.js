@@ -10,10 +10,14 @@ export default class Slider {
     this.prevBtn = this.sliderEl.querySelector(".slider__prev");
     this.clostBtn = this.sliderEl.querySelector(".slider__close");
 
+    // Other DOM elements
+    this.navbarEl = document.querySelector(".nav");
+
     this.imgs = null;
     this.currentIndex = 0;
 
     this.emitter.on("slider:open", (data) => this.open(data));
+    this.emitter.on("slider:close", () => this.close());
     this.addListeners();
   }
 
@@ -42,7 +46,7 @@ export default class Slider {
     });
   }
 
-  open({ imgs = [], currentIndex = 0 } = {}) {
+  open({ imgs = [], currentIndex = 0, allPage = true } = {}) {
     this.imgs = imgs;
     this.sliderContentEl.innerHTML = "";
 
@@ -56,7 +60,11 @@ export default class Slider {
       this.sliderContentEl.appendChild(imgContainer);
     });
 
+    this.navbarEl.classList.add("hidden");
     this.sliderEl.classList.add("show");
+    if (allPage) {
+      this.sliderEl.classList.add("all-page");
+    }
     this.goTo({ index: currentIndex, immediate: true });
     this.checkButtons();
   }
@@ -72,6 +80,7 @@ export default class Slider {
   }
 
   close() {
+    this.navbarEl.classList.remove("hidden");
     this.sliderEl.classList.remove("show");
   }
 
