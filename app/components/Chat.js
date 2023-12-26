@@ -79,8 +79,7 @@ class Chat {
         if (img) {
           let imageURL = await this.uplaodfiles(img.src);
           this.submituserreply(input_text, this.workflowID, imageURL);
-        } else
-          this.submituserreply(input_text, this.workflowID, img);
+        } else this.submituserreply(input_text, this.workflowID, img);
       } else {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = async () => {
@@ -190,7 +189,7 @@ class Chat {
         this.image_urls = JSON.parse(mdata.ui_params.image_urls);
         console.log("this.image_urls:" + this.image_urls);
         // CALL THIS TO ADD IMAGES
-        this.callbacks.addAIImages({ srcs: this.image_urls, container: this.container });
+        this.callbacks.addImages({ srcs: this.image_urls, container: this.container });
       }
 
       //check if awaiting
@@ -565,25 +564,25 @@ class Chat {
     );
   }
 
-  uplaodfiles = imageData => new Promise(function (resolve, reject) {
+  uplaodfiles = (imageData) =>
+    new Promise(function (resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "https://ai.iamplus.services/files/uploadimage", true);
+      xhr.setRequestHeader("Content-Type", "application/json");
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'https://ai.iamplus.services/files/uploadimage', true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-
-    xhr.onload = function () {
-      if (xhr.status === 200) {
-        // alert('Files uploaded successfully');
-        console.log(this.responseText);
-        resolve(this.responseText);
-      } else {
-        // alert('An error occurred!');
-        reject('An error occurred!');
-      }
-    };
-    console.log("imageData",imageData)
-    xhr.send(JSON.stringify({ image: imageData }));
-  });
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          // alert('Files uploaded successfully');
+          console.log(this.responseText);
+          resolve(this.responseText);
+        } else {
+          // alert('An error occurred!');
+          reject("An error occurred!");
+        }
+      };
+      console.log("imageData", imageData);
+      xhr.send(JSON.stringify({ image: imageData }));
+    });
 
   translate = (text, lang) =>
     new Promise(async (resolve, reject) => {
