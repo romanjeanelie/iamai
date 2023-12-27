@@ -1,3 +1,23 @@
+const uplaodfiles = (imageData) =>
+  new Promise(function (resolve, reject) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "https://ai.iamplus.services/files/uploadimage", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        // alert('Files uploaded successfully');
+        console.log(this.responseText);
+        resolve(this.responseText);
+      } else {
+        // alert('An error occurred!');
+        reject("An error occurred!");
+      }
+    };
+    console.log("imageData", imageData);
+    xhr.send(JSON.stringify({ image: imageData }));
+  });
+
 export default class InputImage {
   constructor(anims, callbacks, pageEl, emitter) {
     this.emitter = emitter;
@@ -57,11 +77,13 @@ export default class InputImage {
     this.isEnabled = false;
   }
 
-  onDrop(img) {
+  async onDrop(img) {
     this.anims.toImageDroped();
 
     console.log("TODO: add end point to send the image file to the server", img);
     // this.uploadFile(img)
+    const imgUploaded = await uplaodfiles(img.src);
+    console.log("imgUploaded", imgUploaded);
 
     setTimeout(() => {
       // TODO Call this function when image is analyzed
