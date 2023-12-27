@@ -760,9 +760,15 @@ class Chat {
       this.scrollToDiv(moviedetail);
     });
   }
+
   scrollToDiv(element) {
-    const divOffset = element.offsetTop;
-    console.log({ divOffset });
+    let divOffset = 0;
+    let currentElement = element;
+    // Fix to compute the proper disctance from this.discussionContainer
+    while (currentElement && this.discussionContainer.contains(currentElement)) {
+      divOffset += currentElement.offsetTop;
+      currentElement = currentElement.offsetParent;
+    }
     this.discussionContainer.scrollTo({
       top: divOffset,
       behavior: "smooth",

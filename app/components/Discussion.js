@@ -73,6 +73,14 @@ export default class Discussion {
     const tempContainer = document.createElement("div");
     tempContainer.classList.add("discussion__ai");
     this.discussionContainer.appendChild(tempContainer);
+    // Scroll to div
+    // const moviesCards = document.querySelectorAll(".movies-card");
+    // const movieDetails = document.querySelector("#movie-details");
+    // moviesCards.forEach((movieCard) => {
+    //   movieCard.addEventListener("click", () => {
+    //     this.scrollToDiv(movieDetails);
+    //   });
+    // });
     // Link
     // this.addURL({
     //   text: "mois...",
@@ -93,6 +101,21 @@ export default class Discussion {
     //   container: tempContainer,
     // });
   }
+
+  //   scrollToDiv(element) {
+  //     console.log("scroll to", element);
+  //     let divOffset = 0;
+  //     let currentElement = element;
+  //     while (currentElement && this.discussionContainer.contains(currentElement)) {
+  //       divOffset += currentElement.offsetTop;
+  //       currentElement = currentElement.offsetParent;
+  //     }
+  //     console.log({ divOffset });
+  //     this.discussionContainer.scrollTo({
+  //       top: divOffset,
+  //       behavior: "smooth",
+  //     });
+  //   }
 
   disableInput() {
     this.inputText.disabled = true;
@@ -196,6 +219,7 @@ export default class Discussion {
   }
 
   removeStatus({ container }) {
+    if (!this.lastStatus) return;
     container.removeChild(this.topStatus);
     container.removeChild(this.lastStatus);
     this.typingStatus = null;
@@ -259,8 +283,7 @@ export default class Discussion {
     });
 
     this.attachClickEvent(imgs);
-    // @APPU Why did you add that ?
-    // this.removeStatus({ container });
+    this.removeStatus({ container });
     container.appendChild(imagesContainer);
     this.scrollToBottom();
   }
