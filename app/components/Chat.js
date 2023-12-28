@@ -740,6 +740,7 @@ class Chat {
   showMovieDetail(event) {
     let element = event.target;
     let moviedetail = element.parentElement.parentElement.parentElement.querySelector("#movie-details");
+    moviedetail.innerHTML = "";
     let moviedetaildata = JSON.parse(element.parentElement.getAttribute("data-details").replace("&#39;", /'/g));
     // let divinnerhtml = "";
     moviedetaildata.Theatre.forEach((theatre) => {
@@ -755,10 +756,9 @@ class Chat {
       this.getMoviesDateShowtime(moviedetaildata.MovieTitle, theatre, theatre.DateTime[0].Date, moviedetailsdatesdiv);
       console.log(moviedetaildata.MovieTitle);
       moviedetailscarddiv.appendChild(moviedetailsdatesdiv);
-      moviedetail.innerHTML = "";
       moviedetail.appendChild(moviedetailscarddiv);
-      this.scrollToDiv(moviedetail);
     });
+    this.scrollToDiv(moviedetail);
   }
 
   scrollToDiv(element) {

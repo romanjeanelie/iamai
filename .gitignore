@@ -24,4 +24,4 @@ yarn.lock
 package-lock.json
 .gitignore
 yarn.lock
-dist/
+dist/*
