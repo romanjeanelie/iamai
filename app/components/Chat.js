@@ -77,6 +77,7 @@ class Chat {
     if (!IS_DEV_MODE) {
       if (this.awaiting && this.workflowID != "") {
         if (img) {
+          console.log("img:",img)
           let imageURL = await this.uplaodfiles(img.src);
           this.submituserreply(input_text, this.workflowID, imageURL);
         } else this.submituserreply(input_text, this.workflowID, img);
@@ -205,20 +206,22 @@ class Chat {
 
       //generate data
       if (mdata.streaming && mdata.streaming == true) {
-        var AIAnswer = await this.toTitleCase2(mtext);
-        if (this.sourcelang != "en") {
-          var transresponse = await this.googletranslate(
-            await this.toTitleCase2(mtext),
-            this.sourcelang,
-            this.targetlang
-          );
-          AIAnswer = transresponse.data.translations[0].translatedText;
+        if (mtext.trim().length > 0) {
+          var AIAnswer = await this.toTitleCase2(mtext);
+          if (this.sourcelang != "en") {
+            var transresponse = await this.googletranslate(
+              await this.toTitleCase2(mtext),
+              this.sourcelang,
+              this.targetlang
+            );
+            AIAnswer = transresponse.data.translations[0].translatedText;
+          }
+          await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
         }
-        await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
         if (mdata.stream_status && mdata.stream_status == "ended") {
           this.callbacks.emitter.emit("endStream");
           this.callbacks.enableInput();
-          await this.callbacks.addAIText({ text: "\n\n", container: this.container });
+          // await this.callbacks.addAIText({ text: "\n\n", container: this.container });
         }
         // } else if (mdata.status == "Agent ended") {
         //   this.workflowID = "";

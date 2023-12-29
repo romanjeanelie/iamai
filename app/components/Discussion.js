@@ -150,7 +150,7 @@ export default class Discussion {
   }
 
   addUserElement({ text, imgs, debug = false } = {}) {
-    if (imgs.length > 0) {
+    if (imgs && imgs.length > 0) {
       const userEl = document.createElement("div");
       userEl.classList.add("discussion__user");
       this.discussionContainer.appendChild(userEl);
@@ -174,7 +174,10 @@ export default class Discussion {
       }, 1000);
       return;
     }
-    this.getAiAnswer({ text, img: imgs[0] });
+    if (imgs && imgs.length > 0)
+      this.getAiAnswer({ text, img: imgs[0] });
+    else
+      this.getAiAnswer({ text, img: "" });
   }
 
   async updateTopStatus({ status, container }) {

@@ -1,22 +1,49 @@
-const uplaodfiles = (imageData) =>
-  new Promise(function (resolve, reject) {
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "https://ai.iamplus.services/files/uploadimage", true);
-    xhr.setRequestHeader("Content-Type", "application/json");
+// const uplaodfiles = (imageData) =>
+//   new Promise(function (resolve, reject) {
+//     var xhr = new XMLHttpRequest();
+//     xhr.open("POST", "https://ai.iamplus.services/files/uploadimage", true);
+//     xhr.setRequestHeader("Content-Type", "application/json");
 
-    xhr.onload = function () {
+//     xhr.onload = function () {
+//       if (xhr.status === 200) {
+//         // alert('Files uploaded successfully');
+//         console.log(this.responseText);
+//         resolve(this.responseText);
+//       } else {
+//         // alert('An error occurred!');
+//         reject("An error occurred!");
+//       }
+//     };
+//     console.log("imageData", imageData);
+//     xhr.send(JSON.stringify({ image: imageData }));
+//   });
+
+const uplaodfiles = files => new Promise(function (resolve, reject) {
+  var formData = new FormData();
+
+  for (var i = 0; i < files.length; i++) {
+      var file = files[i];
+      formData.append('files', file, file.name);
+  }
+  console.log("formData:",formData);
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'https://ai.iamplus.services/files/upload', true);
+
+  xhr.onload = function () {
       if (xhr.status === 200) {
-        // alert('Files uploaded successfully');
-        console.log(this.responseText);
-        resolve(this.responseText);
+          // alert('Files uploaded successfully');
+          console.log("this.responseText:",this.responseText);
+          let data = JSON.parse(this.responseText);
+          resolve(data.urls);
       } else {
-        // alert('An error occurred!');
-        reject("An error occurred!");
+          // alert('An error occurred!');
+          reject('An error occurred!');
       }
-    };
-    console.log("imageData", imageData);
-    xhr.send(JSON.stringify({ image: imageData }));
-  });
+  };
+
+  xhr.send(formData);
+});
 
 export default class InputImage {
   constructor(anims, callbacks, pageEl, emitter) {
@@ -82,12 +109,12 @@ export default class InputImage {
 
     console.log("TODO: add end point to send the image file to the server", img);
     // this.uploadFile(img)
-    const imgUploaded = await uplaodfiles(img.src);
-    console.log("imgUploaded", imgUploaded);
+    // const imgUploaded = await uplaodfiles(img);
+    // console.log("imgUploaded", imgUploaded);
 
     setTimeout(() => {
       // TODO Call this function when image is analyzed
-      this.previewImage(img);
+      this.previewImage(img[0]);
     }, this.analizingImageMinTime);
   }
 
@@ -174,13 +201,15 @@ export default class InputImage {
       let dataTrans = e.dataTransfer;
       let files = dataTrans.files;
       const img = files[0];
-      this.onDrop(img);
+      // this.onDrop(img);
+      this.onDrop(files);
     });
 
     this.inputFileUploadEl.addEventListener("change", (e) => {
       if (this.inputFileUploadEl.files && this.inputFileUploadEl.files[0]) {
         const img = this.inputFileUploadEl.files[0];
-        this.onDrop(img);
+        // this.onDrop(img);
+        this.onDrop(this.inputFileUploadEl.files);
       }
     });
 
