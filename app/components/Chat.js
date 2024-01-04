@@ -77,8 +77,8 @@ class Chat {
     if (!IS_DEV_MODE) {
       if (this.awaiting && this.workflowID != "") {
         if (img) {
-          console.log("img:",img)
-          let imageURL = await this.uplaodfiles(img.src);
+          console.log("img:", img);
+          let imageURL = await this.uploadFiles(img.src);
           this.submituserreply(input_text, this.workflowID, imageURL);
         } else this.submituserreply(input_text, this.workflowID, img);
       } else {
@@ -567,7 +567,7 @@ class Chat {
     );
   }
 
-  uplaodfiles = (imageData) =>
+  uploadFiles = (imageData) =>
     new Promise(function (resolve, reject) {
       var xhr = new XMLHttpRequest();
       xhr.open("POST", "https://ai.iamplus.services/files/uploadimage", true);
