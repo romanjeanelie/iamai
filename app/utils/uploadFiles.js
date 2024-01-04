@@ -9,7 +9,7 @@ const uploadFiles = (files) =>
     console.log("formData:", formData);
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "https://ai.iamplus.services/files/upload", true);
+    xhr.open("POST", "https://ai.iamplus.services/files/uploads", true);
 
     xhr.onload = function () {
       if (xhr.status === 200) {

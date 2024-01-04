@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>IAMAI</title>
     
-    <script type="module" crossorigin src="/assets/main-acd92df7.js"></script>
-    <link rel="modulepreload" crossorigin href="/assets/index-f3f97720.js">
-    <link rel="stylesheet" href="/assets/index-ddf87f3e.css">
+    <script type="module" crossorigin src="/assets/main-459d2939.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/index-b0cac69d.js">
+    <link rel="stylesheet" href="/assets/index-752a42ba.css">
   </head>
   <body class="preload">
     <div id="app">
@@ -149,7 +149,7 @@
                 <div class="input__image--container">
                   <label for="file-upload-blue" class="icon-file-upload">
                     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none">
-                      <path fill="#fff" d="M0 0h40v40H0z" />
+                      <path d="M0 0h40v40H0z" />
                       <rect width="1.6" height="14.933" x="19.24" y="9.603" fill="#000" rx=".8" />
                       <rect width="1.6" height="8.382" fill="#000" rx=".8" transform="scale(.98178 1.0179) rotate(45 .695 28.521)" />
                       <rect width="8.382" height="1.6" fill="#000" rx=".8" transform="scale(.98178 1.0179) rotate(45 .695 28.521)" />
@@ -337,7 +337,7 @@
               <div class="input__image--container">
                 <label for="file-upload-grey" class="icon-file-upload">
                   <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none">
-                    <path fill="#fff" d="M0 0h40v40H0z" />
+                    <path d="M0 0h40v40H0z" />
                     <rect width="1.6" height="14.933" x="19.24" y="9.603" fill="#000" rx=".8" />
                     <rect width="1.6" height="8.382" fill="#000" rx=".8" transform="scale(.98178 1.0179) rotate(45 .695 28.521)" />
                     <rect width="8.382" height="1.6" fill="#000" rx=".8" transform="scale(.98178 1.0179) rotate(45 .695 28.521)" />
@@ -431,75 +431,113 @@
                   </div>
                 </form>
               </div>
-            </div>            <!-- Phone -->
-            <div class="phone__debug">
-              <button id="btn-toConnected">To connected</button>
-              <button id="btn-toTalkToMe">To Talk to me</button>
-              <button id="btn-toListening">To Listening</button>
-              <button id="btn-finishTalk">Finish talk</button>
-              <button id="btn-finishProcessing">Finish processing</button>
-            </div>
-            
-            <div class="phone__container">
-              <div class="phone__top">
-                <button class="phone__pause">
-                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M15.5 14L15.5 26" stroke="black" stroke-width="1.2" stroke-linecap="round" />
-                    <path d="M24.5 14L24.5 26" stroke="black" stroke-width="1.2" stroke-linecap="round" />
-                  </svg>
-            
-                </button>
-                <div class="phone-bar__container">
-                  <div class="phone-bar__one">
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                  </div>
-                  <div class="phone-bar__processing">
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                  </div>
-                  <div class="phone-bar__AI">
-                  </div>
-                  <div class="phone-bar__pause">
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                  </div>
-                </div>
-            
-                <button class="phone__close">
-                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M15.6797 24.2959L25.2258 14.7498"
-                      stroke="black"
-                      stroke-opacity="0.72"
-                      stroke-width="1.23752"
-                      stroke-linecap="round"
-                    />
-                    <path
-                      d="M25.0469 24.5703L15.5008 15.0242"
-                      stroke="black"
-                      stroke-opacity="0.72"
-                      stroke-width="1.23752"
-                      stroke-linecap="round"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <div class="phone__bottom">
-                <p class="phone__info active"></p>
-                <p class="phone__info">not active</p>
-              </div>
             </div>          </div>
-        </main>
-        <!-- Image drop -->
-        <div class="image-dropped__container"></div>
-        <div class="image-drop-zone--overlay">
-          <p>Drop the image here</p>
-        </div>        <!-- Logo-->
+          <!-- Phone -->
+          <div class="phone__debug">
+            <button id="btn-toConnected">To connected</button>
+            <button id="btn-toTalkToMe">To Talk to me</button>
+            <button id="btn-toListening">To Listening</button>
+            <button id="btn-finishTalk">Finish talk</button>
+            <button id="btn-finishProcessing">Finish processing</button>
+          </div>
+          
+          <div class="phone__container">
+            <div class="phone__top">
+              <button class="phone__pause">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M15.5 14L15.5 26" stroke="black" stroke-width="1.2" stroke-linecap="round" />
+                  <path d="M24.5 14L24.5 26" stroke="black" stroke-width="1.2" stroke-linecap="round" />
+                </svg>
+          
+              </button>
+              <div class="phone-bar__container">
+                <div class="phone-bar__one">
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                </div>
+                <div class="phone-bar__processing">
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                </div>
+                <div class="phone-bar__AI">
+                </div>
+                <div class="phone-bar__pause">
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                </div>
+              </div>
+          
+              <button class="phone__close">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M15.6797 24.2959L25.2258 14.7498"
+                    stroke="black"
+                    stroke-opacity="0.72"
+                    stroke-width="1.23752"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M25.0469 24.5703L15.5008 15.0242"
+                    stroke="black"
+                    stroke-opacity="0.72"
+                    stroke-width="1.23752"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div class="phone__bottom">
+              <p class="phone__info active"></p>
+              <p class="phone__info">not active</p>
+            </div>
+          </div>          <!-- Image drop -->
+          <div class="image-dropped__container"></div>
+          <div class="image-drop-zone--overlay">
+            <p>Drop the image here</p>
+          </div>          <!--Slider -->
+          <div class="slider">
+            <button class="slider__close">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none"><rect
+                  width="1.6"
+                  height="17.6"
+                  y="1.132"
+                  fill="#000"
+                  rx=".8"
+                  transform="rotate(-45 0 1.132)"
+                /><rect width="17.6" height="1.6" y="12.445" fill="#000" rx=".8" transform="rotate(-45 0 12.445)" />
+              </svg>
+            </button>
+            <button class="slider__prev"><svg width="28" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M6.24164 10.5742C5.92922 10.2617 5.92922 9.75522 6.24164 9.4428C6.55406 9.13038 7.06059 9.13038 7.37301 9.4428L13.0219 15.0917C13.3343 15.4041 13.3343 15.9107 13.0219 16.2231C12.7095 16.5355 12.203 16.5355 11.8906 16.2231L6.24164 10.5742Z"
+                  fill="black"
+                />
+                <path
+                  d="M6.23431 10.5659C5.9219 10.2534 5.9219 9.74692 6.23431 9.4345L11.8906 3.77826C12.203 3.46584 12.7095 3.46584 13.0219 3.77826C13.3343 4.09068 13.3343 4.59721 13.0219 4.90963L7.36569 10.5659C7.05327 10.8783 6.54673 10.8783 6.23431 10.5659Z"
+                  fill="black"
+                />
+                <rect x="6" y="9.2002" width="16" height="1.6" rx="0.8" fill="black" />
+              </svg>
+            </button>
+            <button class="slider__next">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="20" fill="none"><path
+                  fill="#000"
+                  d="M21.758 10.574a.8.8 0 0 0-1.131-1.131l-5.649 5.649a.8.8 0 0 0 1.131 1.131l5.65-5.649Z"
+                />
+                <path
+                  fill="#000"
+                  d="M21.766 10.566a.8.8 0 0 0 0-1.132l-5.657-5.656a.8.8 0 1 0-1.13 1.132l5.655 5.656a.8.8 0 0 0 1.132 0Z"
+                />
+                <rect width="16" height="1.6" fill="#000" rx=".8" transform="matrix(-1 0 0 1 22 9.2)" />
+              </svg>
+            </button>
+            <div class="slider__content"></div>
+          </div>        </main>
+        <!-- Logo-->
         <div class="logo">
           <svg xmlns="http://www.w3.org/2000/svg" width="33" height="24" fill="none">
             <path
