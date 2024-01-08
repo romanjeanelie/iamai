@@ -1,5 +1,5 @@
 import getImageOrientation from "../utils/getImageOrientation";
-
+import isMobile from "../utils/isMobile";
 export default class Slider {
   constructor({ emitter, pageEl }) {
     this.emitter = emitter;
@@ -75,7 +75,11 @@ export default class Slider {
   }
 
   openImageQuestions() {
-    this.emitter.emit("input:toWrite", { type: "imageQuestions", placeholder: "Ask a question about images" });
+    this.emitter.emit("input:toWrite", {
+      type: "imageQuestions",
+      placeholder: "Ask a question about images",
+      focus: !isMobile(),
+    });
 
     this.imgs.forEach((img, i) => {
       this.addImg({ img, type: "questions" });
@@ -88,7 +92,7 @@ export default class Slider {
   }
 
   positionImageQuestionsWrapper() {
-    const inputOffsetLeft = this.inputEl.getBoundingClientRect().left;
+    const inputOffsetLeft = this.inputEl.getBoundingClientRect().left || 16;
     this.sliderContentQuestionsWrapperEl.style.paddingLeft = inputOffsetLeft + "px";
   }
 
