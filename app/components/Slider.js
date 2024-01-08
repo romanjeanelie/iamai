@@ -34,6 +34,9 @@ export default class Slider {
   }
 
   checkButtons() {
+    this.nextBtn.style.visibility = this.imgs.length > 1 ? "visible" : "hidden";
+    this.prevBtn.style.visibility = this.imgs.length > 1 ? "visible" : "hidden";
+
     this.nextBtn.disabled = this.currentIndex === this.imgs.length - 1;
     this.prevBtn.disabled = this.currentIndex === 0;
   }
