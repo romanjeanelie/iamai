@@ -32,6 +32,7 @@ class User {
 }
 class App {
   constructor() {
+    this.app = document.querySelector("#app");
     this.pageBlue = document.querySelector(".page-blue");
     this.pageGrey = document.querySelector(".page-grey");
     this.navbarEl = document.querySelector(".nav");
@@ -113,7 +114,7 @@ class App {
   }
 
   initSlider() {
-    this.slider = new Slider({ emitter: this.emitter });
+    this.slider = new Slider({ emitter: this.emitter, pageEl: this.pageGrey });
   }
 
   resetScroll() {
@@ -122,7 +123,8 @@ class App {
 
   addListeners() {
     window.addEventListener("load", () => {
-      document.body.classList.remove("preload");
+      // Avoid flash blue page
+      this.app.classList.remove("preload");
     });
     document.fonts.ready.then(() => {
       this.initApp();

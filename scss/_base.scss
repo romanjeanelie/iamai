@@ -37,6 +37,14 @@ body {
   font-feature-settings: "liga" 0;
 }
 
+#app {
+  transition: visibility 0s, opacity 0.1s linear;
+  &.preload {
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+
 button {
   -webkit-tap-highlight-color: transparent;
 }
