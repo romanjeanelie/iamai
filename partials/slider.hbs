@@ -1,4 +1,16 @@
 <div class="slider">
+  <button class="slider__questions">
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M8 8.8C8 8.35817 8.35817 8 8.8 8H23.2C23.6418 8 24 8.35817 24 8.8C24 9.24183 23.6418 9.6 23.2 9.6H8.8C8.35817 9.6 8 9.24183 8 8.8Z"
+        fill="black"
+      />
+      <path
+        d="M15.2031 9.59961H16.8031V24.7996C16.8031 25.2414 16.445 25.5996 16.0031 25.5996C15.5613 25.5996 15.2031 25.2414 15.2031 24.7996V9.59961Z"
+        fill="black"
+      />
+    </svg>
+  </button>
   <button class="slider__close">
     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none"><rect
         width="1.6"
@@ -35,4 +47,25 @@
     </svg>
   </button>
   <div class="slider__content"></div>
+  <div class="slider__contentQuestionsWrapper">
+    <div class="slider__contentQuestions"></div>
+  </div>
+
+  {{! Icon }}
+  <svg class="icon-badge" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M0 12C0 5.37258 5.37258 0 12 0V0C18.6274 0 24 5.37258 24 12V12C24 18.6274 18.6274 24 12 24V24C5.37258 24 0 18.6274 0 12V12Z"
+      {{! fill="#0047FF" }}
+      fill-opacity="0.8"
+      class="background"
+    />
+    <path
+      d="M8.07031 12.8516L10.8987 15.68L16.5556 10.0231"
+      {{! stroke="white" }}
+      stroke-width="1.8"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="stroke"
+    />
+  </svg>
 </div>

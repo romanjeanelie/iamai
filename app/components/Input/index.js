@@ -23,6 +23,7 @@ const STATUS = {
   INITIAL: "INITIAL",
   RECORD_AUDIO: "RECORD_AUDIO",
   UPLOAD_IMAGE: "UPLOAD_IMAGE",
+  IMAGE_QUESTION: "IMAGE_QUESTION",
   WRITE: "WRITE",
 };
 
@@ -113,19 +114,30 @@ export default class Input {
 
     this.addListeners();
 
+    // Emitter
+    this.emitter.on("input:toWrite", this.toWrite.bind(this));
+    this.emitter.on("input:updateImagesQuestions", this.updateImagesQuestions.bind(this));
+
     // TEMP
     this.minTranscriptingTime = 1400; //ms
     this.textRecorded = "text recorded";
 
     if (this.isPageBlue) {
-      //   this.toPageGrey();
+      this.toPageGrey();
     }
   }
 
   // Write
-  toWrite({ delay = 0, animButtons = true, animLogos = true } = {}) {
+  toWrite({ delay = 0, animButtons = true, animLogos = true, type = null, placeholder = null } = {}) {
+    if (type === "imageQuestions") {
+      if (this.currentStatus !== STATUS.UPLOAD_IMAGE) {
+        this.anims.toWrite({ delay, animButtons, animLogos, placeholder });
+      }
+      this.currentStatus = STATUS.IMAGE_QUESTION;
+      return;
+    }
+    this.anims.toWrite({ delay, animButtons, animLogos, placeholder });
     this.currentStatus = STATUS.WRITE;
-    this.anims.toWrite({ delay, animButtons, animLogos });
     this.onClickOutside.animInitial = true;
   }
 
@@ -164,7 +176,6 @@ export default class Input {
     this.inputText.value += this.textRecorded;
     this.updateInputHeight();
 
-    // TODO Call this function when audio is transcripted
     if (this.isSmallRecording) {
       this.isSmallRecording = false;
       this.inputText.focus();
@@ -194,11 +205,19 @@ export default class Input {
     this.anims.fromRecordAudioToInitial();
   }
 
+  // Images Questions
+  updateImagesQuestions(imgs) {
+    this.currentImages = imgs;
+  }
+
   // Submit
   onSubmit(event) {
     event.preventDefault();
     if (this.isPageBlue) {
       this.toPageGrey({ duration: 1200 });
+    }
+    if (this.currentStatus === STATUS.IMAGE_QUESTION) {
+      this.emitter.emit("slider:close");
     }
     this.discussion.addUserElement({ text: this.inputText.value, imgs: this.currentImages });
     this.inputText.value = "";

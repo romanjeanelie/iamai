@@ -167,6 +167,12 @@
         font-size: 18px;
       }
     }
+
+    &.height-imageQuestions {
+      @include inputTextExpand {
+        max-height: calc(5 * 20px);
+      }
+    }
   }
 
   .input__controls {

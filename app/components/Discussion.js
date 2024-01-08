@@ -92,11 +92,11 @@ export default class Discussion {
     // Images
     // this.addImages({
     //   srcs: [
+    //     "https://picsum.photos/900/500",
     //     "https://picsum.photos/400/300",
+    //     "https://picsum.photos/400/700",
     //     "https://picsum.photos/200/300",
-    //     "https://picsum.photos/200/300",
-    //     "https://picsum.photos/200/300",
-    //     "https://picsum.photos/200/300",
+    //     "https://picsum.photos/1000/900",
     //   ],
     //   container: tempContainer,
     // });
@@ -174,10 +174,8 @@ export default class Discussion {
       }, 1000);
       return;
     }
-    if (imgs && imgs.length > 0)
-      this.getAiAnswer({ text, img: imgs[0] });
-    else
-      this.getAiAnswer({ text, img: "" });
+    if (imgs && imgs.length > 0) this.getAiAnswer({ text, img: imgs[0] });
+    else this.getAiAnswer({ text, img: "" });
   }
 
   async updateTopStatus({ status, container }) {
