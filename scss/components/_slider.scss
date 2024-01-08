@@ -163,8 +163,8 @@
     right: 40px;
 
     @include media("<tablet") {
-      // TEMP
-      display: none;
+      bottom: 44px;
+      right: 18px;
     }
   }
 

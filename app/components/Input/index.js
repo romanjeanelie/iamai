@@ -128,10 +128,10 @@ export default class Input {
   }
 
   // Write
-  toWrite({ delay = 0, animButtons = true, animLogos = true, type = null, placeholder = null } = {}) {
+  toWrite({ delay = 0, animButtons = true, animLogos = true, type = null, placeholder = null, focus = true } = {}) {
     if (type === "imageQuestions") {
       if (this.currentStatus !== STATUS.UPLOAD_IMAGE) {
-        this.anims.toWrite({ delay, animButtons, animLogos, placeholder });
+        this.anims.toWrite({ delay, animButtons, animLogos, placeholder, focus });
       }
       this.currentStatus = STATUS.IMAGE_QUESTION;
       return;

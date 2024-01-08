@@ -191,7 +191,7 @@ export default class InputAnimations {
   /**
    * Write
    */
-  toWrite({ delay = 0, animButtons = true, animLogos = true, placeholder = "" } = {}) {
+  toWrite({ delay = 0, animButtons = true, animLogos = true, placeholder = "", focus = true } = {}) {
     this.inputText.placeholder = placeholder;
     this.inputFrontEl.style.pointerEvents = "none";
     this.inputBackEl.style.pointerEvents = "auto";
@@ -221,6 +221,7 @@ export default class InputAnimations {
       this.inputText.disabled = false;
     }, 1);
 
+    if (!focus) return;
     if (isMobile() && !this.isPageBlue) {
       this.inputText.click();
     } else {
