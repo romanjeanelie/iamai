@@ -1,3 +1,4 @@
+import { getUser, redirectToLogin } from "../app/User.js";
 var btnsubmit,
   txtname,
   txtprompt,
@@ -21,6 +22,10 @@ let user;
 const URL = "https://ai.iamplus.services/chatbot/iamai-main/index.html?lang=ad&session_id=";
 
 window.onload = async function () {
+  // Use this instead
+  // user = getUser()
+  // if(!user) redirectToLogin()
+
   if (sessionStorage.getItem("googleToken")) {
     const responsePayload = decodeJwtResponse(sessionStorage.getItem("googleToken"));
     user = new User(responsePayload.sub, responsePayload.name, responsePayload.picture, responsePayload.email);

@@ -3,33 +3,9 @@ import Input from "./components/Input";
 import Navbar from "./components/Navbar";
 import Discussion from "./components/Discussion";
 import Slider from "./components/Slider";
-
+import { getUser, redirectToLogin } from "./User";
 import { createNanoEvents } from "nanoevents";
 
-function decodeJwtResponse(token) {
-  var base64Url = token.split(".")[1];
-  var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-  var jsonPayload = decodeURIComponent(
-    window
-      .atob(base64)
-      .split("")
-      .map(function (c) {
-        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-      })
-      .join("")
-  );
-
-  return JSON.parse(jsonPayload);
-}
-
-class User {
-  constructor(uuid, name, picture, email) {
-    this.uuid = uuid;
-    this.name = name;
-    this.picture = picture;
-    this.email = email;
-  }
-}
 class App {
   constructor() {
     this.app = document.querySelector("#app");
@@ -39,28 +15,14 @@ class App {
     this.cancelBtn = document.querySelector(".cancel-btn");
 
     this.emitter = createNanoEvents();
-    this.user = this.getUser();
+    this.user = getUser();
 
     this.addListeners();
     this.resetScroll();
 
     if (!this.user) {
-      this.redirectToLogin();
+      redirectToLogin();
     }
-  }
-
-  getUser() {
-    if (localStorage.getItem("googleToken")) {
-      const responsePayload = decodeJwtResponse(localStorage.getItem("googleToken"));
-      return new User(responsePayload.sub, responsePayload.name, responsePayload.picture, responsePayload.email);
-    } else {
-      return null;
-    }
-  }
-
-  redirectToLogin() {
-    console.log("notloggedin");
-    window.location.href = "./login/index.html";
   }
 
   // Anim

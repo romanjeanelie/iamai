@@ -13,11 +13,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <link rel="stylesheet" href="./assistant.css" />
-    <script src="./assistant.js"></script>
+    <link rel="stylesheet" href="/scss/index.scss" />
   </head>
 
   <body>
-    <div class="container">
+    <!-- Menu Navbar -->
+    {{> navBar theme="dark"}}
+
+    <div class="container page-assistant">
+      <!-- Logo-->
+      {{> assistant/logo}}
       <div id="divgoogle" class="divgoogle">
         <div
           id="g_id_onload"
@@ -139,5 +144,12 @@
         <div id="systemassistantlist"></div>
       </section>
     </div>
+    <!-- <script type="module" src="/app/index.js"></script> -->
+    <script type="module">
+      import Navbar from "/app/components/Navbar.js";
+      console.log("test");
+      new Navbar();
+    </script>
+    <!-- <script src="./assistant.js"></script> -->
   </body>
 </html>

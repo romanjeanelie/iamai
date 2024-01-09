@@ -1,34 +1,10 @@
 import Discussion from "./Discussion.js";
 import { connect, AckPolicy, JSONCodec } from "https://cdn.jsdelivr.net/npm/nats.ws@latest/esm/nats.js";
 // const uuid = "omega_" + crypto.randomUUID();
-
+import { getUser } from "../User.js";
 // const IS_DEV_MODE = import.meta.env.MODE === "development";
 const IS_DEV_MODE = false;
 
-function decodeJwtResponse(token) {
-  var base64Url = token.split(".")[1];
-  var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-  var jsonPayload = decodeURIComponent(
-    window
-      .atob(base64)
-      .split("")
-      .map(function (c) {
-        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-      })
-      .join("")
-  );
-
-  return JSON.parse(jsonPayload);
-}
-
-class User {
-  constructor(uuid, name, picture, email) {
-    this.uuid = uuid;
-    this.name = name;
-    this.picture = picture;
-    this.email = email;
-  }
-}
 class Chat {
   constructor(callbacks) {
     this.callbacks = callbacks;
@@ -50,18 +26,9 @@ class Chat {
     this.RAG_CHAT = "";
     this.MovieSearch = "";
     this.MovieSearchResults = "";
-    this.user = this.getUser();
     this.deploy_ID = "";
     this.image_urls = "";
-  }
-
-  getUser() {
-    if (localStorage.getItem("googleToken")) {
-      const responsePayload = decodeJwtResponse(localStorage.getItem("googleToken"));
-      return new User(responsePayload.sub, responsePayload.name, responsePayload.picture, responsePayload.email);
-    } else {
-      return null;
-    }
+    this.user = getUser();
   }
 
   callsubmit = async (text, img, container) => {
