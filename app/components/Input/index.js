@@ -116,7 +116,7 @@ export default class Input {
 
     // Emitter
     this.emitter.on("input:toWrite", this.toWrite.bind(this));
-    this.emitter.on("input:updateImagesQuestions", this.updateImagesQuestions.bind(this));
+    this.emitter.on("input:updateImages", this.updateImages.bind(this));
 
     // TEMP
     this.minTranscriptingTime = 1400; //ms
@@ -206,7 +206,7 @@ export default class Input {
   }
 
   // Images Questions
-  updateImagesQuestions(imgs) {
+  updateImages(imgs) {
     this.currentImages = imgs;
   }
 

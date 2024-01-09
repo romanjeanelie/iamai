@@ -112,7 +112,7 @@ export default class Slider {
   checkImagesSelected() {
     const imgsSelected = this.sliderContentQuestionsEl.querySelectorAll(".selected img");
     this.imgsSelected = [...imgsSelected];
-    this.emitter.emit("input:updateImagesQuestions", this.imgsSelected);
+    this.emitter.emit("input:updateImages", this.imgsSelected);
   }
 
   addImg({ img, type = null }) {
@@ -156,6 +156,7 @@ export default class Slider {
     this.navbarEl.classList.remove("hidden");
     this.sliderEl.classList.remove("show");
     this.resetImageQuestions();
+    this.emitter.emit("input:updateImages", []);
   }
 
   addListeners() {
