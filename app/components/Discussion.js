@@ -91,13 +91,7 @@ export default class Discussion {
 
     // Images
     // this.addImages({
-    //   srcs: [
-    //     "https://picsum.photos/900/500",
-    //     "https://picsum.photos/400/300",
-    //     "https://picsum.photos/400/700",
-    //     "https://picsum.photos/200/300",
-    //     "https://picsum.photos/1000/900",
-    //   ],
+    //   srcs: ["https://picsum.photos/300/500"],
     //   container: tempContainer,
     // });
   }
@@ -132,7 +126,7 @@ export default class Discussion {
     }
     this.inputText.focus();
   }
-  getAiAnswer({ text, img }) {
+  getAiAnswer({ text, imgs }) {
     const aiEl = document.createElement("div");
     aiEl.classList.add("discussion__ai");
     this.discussionContainer.appendChild(aiEl);
@@ -146,7 +140,7 @@ export default class Discussion {
     });
 
     this.typingText.blink();
-    this.Chat.callsubmit(text, img, aiEl);
+    this.Chat.callsubmit(text, imgs, aiEl);
   }
 
   addUserElement({ text, imgs, debug = false } = {}) {
@@ -174,8 +168,8 @@ export default class Discussion {
       }, 1000);
       return;
     }
-    if (imgs && imgs.length > 0) this.getAiAnswer({ text, img: imgs[0] });
-    else this.getAiAnswer({ text, img: "" });
+    if (imgs && imgs.length > 0) this.getAiAnswer({ text, imgs });
+    else this.getAiAnswer({ text });
   }
 
   async updateTopStatus({ status, container }) {
