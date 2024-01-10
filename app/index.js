@@ -15,14 +15,9 @@ class App {
     this.cancelBtn = document.querySelector(".cancel-btn");
 
     this.emitter = createNanoEvents();
-    this.user = getUser();
 
     this.addListeners();
     this.resetScroll();
-
-    if (!this.user) {
-      redirectToLogin();
-    }
   }
 
   // Anim
@@ -84,6 +79,14 @@ class App {
   }
 
   addListeners() {
+    getUser().then(user => {
+      this.user = user;
+      console.log("this.user", this.user);
+      if (!this.user) {
+        redirectToLogin();
+      }
+    });
+
     window.addEventListener("load", () => {
       // Avoid flash blue page
       this.app.classList.remove("preload");

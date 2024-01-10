@@ -1,3 +1,6 @@
+import { onAuthStateChanged } from 'firebase/auth';
+import auth from '../app/firebaseConfig';
+
 class User {
   constructor(uuid, name, picture, email) {
     this.uuid = uuid;
@@ -7,29 +10,32 @@ class User {
   }
 }
 
-function decodeJwtResponse(token) {
-  var base64Url = token.split(".")[1];
-  var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-  var jsonPayload = decodeURIComponent(
-    window
-      .atob(base64)
-      .split("")
-      .map(function (c) {
-        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-      })
-      .join("")
-  );
-
-  return JSON.parse(jsonPayload);
+function getCurrentUser(auth) {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(auth,
+      user => {
+        unsubscribe();
+        resolve(user);
+      },
+      reject
+    );
+  });
 }
 
-function getUser() {
-  if (localStorage.getItem("googleToken")) {
-    const responsePayload = decodeJwtResponse(localStorage.getItem("googleToken"));
-    return new User(responsePayload.sub, responsePayload.name, responsePayload.picture, responsePayload.email);
-  } else {
-    return null;
-  }
+async function getUser() {
+  return new Promise((resolve, reject) => {
+  getCurrentUser(auth).then(user => {
+    if (user) {
+      // User is signed in
+      const loggedinuser = new User(user.uid, user.displayName, user.photoURL, user.email);
+      console.log(" here logged in:", loggedinuser);
+      resolve(loggedinuser);
+    } else {
+      console.log("here not logged in");
+      resolve(null);
+    }
+  });
+});
 }
 
 function redirectToLogin() {
