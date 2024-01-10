@@ -63,6 +63,7 @@ export default class Slider {
 
   open({ imgs = [], currentIndex = 0, allPage = true } = {}) {
     this.sliderContentEl.innerHTML = "";
+    this.emitter.emit("input:updateImages", []);
 
     imgs.forEach((img, i) => {
       this.addImg({ img, container: this.sliderContentEl });
@@ -156,7 +157,6 @@ export default class Slider {
     this.navbarEl.classList.remove("hidden");
     this.sliderEl.classList.remove("show");
     this.resetImageQuestions();
-    this.emitter.emit("input:updateImages", []);
   }
 
   addListeners() {
