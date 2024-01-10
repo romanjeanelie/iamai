@@ -128,7 +128,7 @@ export default class Input {
   }
 
   // Write
-  toWrite({ delay = 0, animButtons = true, animLogos = true, type = null, placeholder = null, focus = true } = {}) {
+  toWrite({ delay = 0, animButtons = true, animLogos = true, type = null, placeholder = "", focus = true } = {}) {
     if (type === "imageQuestions") {
       if (this.currentStatus !== STATUS.UPLOAD_IMAGE) {
         this.anims.toWrite({ delay, animButtons, animLogos, placeholder, focus });
