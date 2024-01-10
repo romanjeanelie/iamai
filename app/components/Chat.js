@@ -44,9 +44,10 @@ class Chat {
     if (!IS_DEV_MODE) {
       if (this.awaiting && this.workflowID != "") {
         if (img) {
-          console.log("img:", img);
-          let imageURL = await this.uploadFiles(img.src);
-          this.submituserreply(input_text, this.workflowID, imageURL);
+          // console.log("img:", img);
+          // imgs.map((img) => img.src)
+          // let imageURL = await this.uploadFiles(img.src);
+          this.submituserreply(input_text, this.workflowID, img.map((imgs) => imgs.src));
         } else this.submituserreply(input_text, this.workflowID, img);
       } else {
         var xhr = new XMLHttpRequest();
@@ -648,7 +649,7 @@ class Chat {
         },
         user_data: {
           type: "image",
-          url: [img],
+          url: img,
         },
       });
     } else {
