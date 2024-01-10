@@ -1,68 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>IAMAI</title>
-    <link rel="stylesheet" href="/scss/index.scss" />
-  </head>
-  <body>
-    <div id="app" class="preload">
-      <!-- Menu Navbar -->
-      {{> navBar}}
-      <!-- Cancel  btn -->
-      {{> cancelBtn}}
 
-      <div class="page page-blue">
-        <main>
-          <div class="top">
-            <!-- Logo -->
-            {{> bluePage/logo}}
-          </div>
-          <div class="center">
-            <div class="input__wrapper">
-              <!-- Input -->
-              {{> input labelPage="blue"}}
-            </div>
-          </div>
-          <div class="bottom">
-            <!-- Categories list -->
-            {{> bluePage/categoriesList}}
-            <!-- Caroussel -->
-            {{> bluePage/caroussel}}
-          </div>
-        </main>
-        <!-- Image drop -->
-        {{> imageDrop}}
-        <!-- Info -->
-        {{> bluePage/infoText}}
-      </div>
-      <div class="page page-grey">
-        <!-- Overlay recording -->
-        {{> greyPage/overlayRecording}}
-        <main>
-          <!-- Discussion -->
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IAMAI</title>
+  <link rel="stylesheet" href="/scss/index.scss" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-53ZK5Q9K6T"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-          <div class="discussion__container"></div>
+    gtag('config', 'G-53ZK5Q9K6T');
+  </script>
+</head>
+
+<body>
+  <div id="app" class="preload">
+    <!-- Menu Navbar -->
+    {{> navBar}}
+    <!-- Cancel  btn -->
+    {{> cancelBtn}}
+
+    <div class="page page-blue">
+      <main>
+        <div class="top">
+          <!-- Logo -->
+          {{> bluePage/logo}}
+        </div>
+        <div class="center">
           <div class="input__wrapper">
             <!-- Input -->
-            {{> input labelPage="grey"}}
+            {{> input labelPage="blue"}}
           </div>
-          <!-- Phone -->
-          {{> phone}}
-          <!-- Image drop -->
-          {{> imageDrop}}
-          <!--Slider -->
-          {{> slider}}
-        </main>
-        <!-- Logo-->
-        {{> greyPage/logo}}
-      </div>
+        </div>
+        <div class="bottom">
+          <!-- Categories list -->
+          {{> bluePage/categoriesList}}
+          <!-- Caroussel -->
+          {{> bluePage/caroussel}}
+        </div>
+      </main>
+      <!-- Image drop -->
+      {{> imageDrop}}
+      <!-- Info -->
+      {{> bluePage/infoText}}
     </div>
-    <script src="/libAudioRecorder/WebAudioRecorder.min.js"></script>
-    <script type="module" src="/app/index.js"></script>
-    <!-- Audio detection -->
-    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@ricky0123/vad-web@0.0.7/dist/bundle.min.js"></script>
-  </body>
+    <div class="page page-grey">
+      <!-- Overlay recording -->
+      {{> greyPage/overlayRecording}}
+      <main>
+        <!-- Discussion -->
+
+        <div class="discussion__container"></div>
+        <div class="input__wrapper">
+          <!-- Input -->
+          {{> input labelPage="grey"}}
+        </div>
+        <!-- Phone -->
+        {{> phone}}
+        <!-- Image drop -->
+        {{> imageDrop}}
+        <!--Slider -->
+        {{> slider}}
+      </main>
+      <!-- Logo-->
+      {{> greyPage/logo}}
+    </div>
+  </div>
+  <script src="/libAudioRecorder/WebAudioRecorder.min.js"></script>
+  <script type="module" src="/app/index.js"></script>
+  <!-- Audio detection -->
+  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@ricky0123/vad-web@0.0.7/dist/bundle.min.js"></script>
+</body>
+
 </html>
