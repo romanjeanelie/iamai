@@ -1,53 +1,36 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&display=swap" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="google-signin-client_id"
-      content="76388500854-l7ksm3dpfrtr3vl8oc1674ttkvo5upl4.apps.googleusercontent.com"
-    />
-    <link rel="shortcut icon" type="image/icon" href="./images/favicon.ico" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <link rel="stylesheet" href="./assistant.css" />
-    <link rel="stylesheet" href="/scss/index.scss" />
-  </head>
 
-  <body>
-    <!-- Menu Navbar -->
-    {{> navBar theme="dark"}}
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="shortcut icon" type="image/icon" href="./images/favicon.ico" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <link rel="stylesheet" href="/scss/index.scss" />
+  <link rel="stylesheet" href="./assistant.css" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-53ZK5Q9K6T"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-53ZK5Q9K6T');
+  </script>
+</head>
 
-    <div class="container page-assistant">
-      <!-- Logo-->
-      {{> assistant/logo}}
-      <div id="divgoogle" class="divgoogle">
-        <div
-          id="g_id_onload"
-          data-client_id="76388500854-l7ksm3dpfrtr3vl8oc1674ttkvo5upl4.apps.googleusercontent.com"
-          data-context="signin"
-          data-ux_mode="popup"
-          data-callback="handleCredentialResponse"
-          data-auto_prompt="false"
-        ></div>
+<body class="assistantbody">
+  <!-- Menu Navbar -->
+  {{> navBar theme="dark"}}
 
-        <div
-          class="g_id_signin"
-          data-type="standard"
-          data-shape="pill"
-          data-theme="outline"
-          data-text="signin_with"
-          data-size="large"
-          data-logo_alignment="left"
-        ></div>
-      </div>
+  <div class="container page-assistant">
+    <!-- Logo-->
+    {{> assistant/logo}}
+    <div class="containerassistant">
       <section id="sectionassistant">
         <div class="assistantinput-header">
           <header>
             Add Assistant
-            <button class="button" onclick="closeassistant()"><img src="./images/close.svg" /></button>
+            <button class="button" id="btncloseassistant"><img src="../images/close.svg" /></button>
           </header>
         </div>
         <div class="assistant-input">
@@ -57,73 +40,54 @@
           <textarea id="txtprompt" placeholder=""></textarea>
           <label>User Prompt<br /></label>
           <textarea id="txtuserprompt" placeholder=""></textarea>
-          <span class="checkspan"
-            >Stream &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <span class="checkspan">Stream &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <label class="switch">
               <input type="checkbox" id="stream-toggle" />
-              <span class="slider"></span>
+              <span class="assistantslider"></span>
             </label>
           </span>
-          <span class="checkspan"
-            >Agent &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <span class="checkspan">Agent &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <label class="switch">
               <input type="checkbox" id="agent-toggle" />
-              <span class="slider"></span>
+              <span class="assistantslider"></span>
             </label>
           </span>
-          <span class="checkspan"
-            >Retrieval &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <span class="checkspan">Retrieval &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <label class="switch">
               <input type="checkbox" id="retrieval-toggle" />
-              <span class="slider"></span>
+              <span class="assistantslider"></span>
             </label>
           </span>
           <section id="sectionlinks">
-            <span class="checkspan"
-              >Web Search &nbsp;&nbsp;
+            <span class="checkspan">Web Search &nbsp;&nbsp;
               <label class="switch">
                 <input type="checkbox" id="web-search-toggle" />
-                <span class="slider"></span>
-              </label> </span
-            ><br />
-            <span class="checkspan"
-              >Rich Results &nbsp;&nbsp;
+                <span class="assistantslider"></span>
+              </label> </span><br />
+            <span class="checkspan">Rich Results &nbsp;&nbsp;
               <label class="switch">
                 <input type="checkbox" id="rich-results-toggle" />
-                <span class="slider"></span>
-              </label> </span
-            ><br />
+                <span class="assistantslider"></span>
+              </label> </span><br />
             <label>Links</label>
             <div id="input-form">
               <input type="text" class="link" name="inputField[]" placeholder="Enter link" />
             </div>
             <div class="divaddmore">
-              <button class="button addmore" onclick="addInputField()"><img src="./images/addmore.svg" /></button>
+              <button class="button addmore" id="btnaddInputField"><img src="../images/addmore.svg" /></button>
             </div>
 
             <label id="filesTo">Files<br /></label>
-            <input
-              type="file"
-              name="filesToUpload"
-              id="filesToUpload"
-              style="display: none"
-              onchange="displayFileName()"
-              multiple
-            />
+            <input type="file" name="filesToUpload" id="filesToUpload" style="display: none" multiple />
             <span id="fileName" style="display: none"></span>
-            <img
-              class="button"
-              src="./images/upload.svg"
-              alt="Upload"
-              id="uploadImage"
-              onclick="document.getElementById('filesToUpload').click();return false;"
-            />
+            <img class="button" src="../images/upload.svg" alt="Upload" id="uploadImage"
+              onclick="document.getElementById('filesToUpload').click();return false;" />
             <br />
             <label>Search Fields<br /></label>
             <input type="text" id="txtsearchfields" />
           </section>
           <div class="btnsave">
-            <button id="btnsubmit" class="button" type="button"><img src="./images/save.svg" /></button>
+            <button id="btnsubmit" class="button" type="button"><img src="../images/save.svg" /></button>
           </div>
         </div>
       </section>
@@ -132,7 +96,7 @@
         <div class="assistant-header">
           <header>
             Assistants
-            <button class="button" onclick="addassistant()"><img src="./images/addassistant.svg" /></button>
+            <button class="button" id="btnaddassistant"><img src="../images/addassistant.svg" /></button>
           </header>
         </div>
         <div id="assistantlist"></div>
@@ -144,12 +108,14 @@
         <div id="systemassistantlist"></div>
       </section>
     </div>
-    <!-- <script type="module" src="/app/index.js"></script> -->
-    <script type="module">
-      import Navbar from "/app/components/Navbar.js";
-      console.log("test");
-      new Navbar();
-    </script>
-    <!-- <script src="./assistant.js"></script> -->
-  </body>
+  </div>
+  <!-- <script type="module" src="/app/index.js"></script> -->
+  <script type="module">
+    import Navbar from "/app/components/Navbar.js";
+    console.log("test");
+    new Navbar();
+  </script>
+  <script type="module" src="./assistant.js"></script>
+</body>
+
 </html>
