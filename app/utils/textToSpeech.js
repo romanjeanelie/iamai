@@ -1,3 +1,5 @@
+const ELEVENLABS_URL = process.env.ELEVENLABS_URL || "https://api.elevenlabs.io/v1/text-to-speech/ZVKjrJiWeTKF1FZwjENi/stream?optimize_streaming_latency=4";
+const ELEVENLABS_TOKEN = process.env.ELEVENLABS_TOKEN || "bddfcabff8951ebb9e925d506452df93";
 function base64ToUint8Array(base64) {
   const binaryString = atob(base64);
   const len = binaryString.length;
@@ -95,10 +97,9 @@ function getAudio(blob) {
 //   });
 // }
 export default function textToSpeech(text, index) {
-  const url = "https://api.elevenlabs.io/v1/text-to-speech/ZVKjrJiWeTKF1FZwjENi/stream?optimize_streaming_latency=4";
   const headers = {
     accept: "audio/mpeg",
-    "xi-api-key": "bddfcabff8951ebb9e925d506452df93",
+    "xi-api-key": ELEVENLABS_TOKEN,
     "Content-Type": "application/json",
   };
   const body = JSON.stringify({
@@ -110,7 +111,7 @@ export default function textToSpeech(text, index) {
     },
   });
 
-  return fetch(url, {
+  return fetch(ELEVENLABS_URL, {
     method: "POST",
     headers: headers,
     body: body,

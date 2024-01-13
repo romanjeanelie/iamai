@@ -1,3 +1,4 @@
+const UPLOAD_URL = process.env.UPLOAD_URL || "https://ai.iamplus.services/files/uploads";
 const uploadFiles = (files) =>
   new Promise(function (resolve, reject) {
     var formData = new FormData();
@@ -9,7 +10,7 @@ const uploadFiles = (files) =>
     console.log("formData:", formData);
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "https://ai.iamplus.services/files/uploads", true);
+    xhr.open("POST", UPLOAD_URL, true);
 
     xhr.onload = function () {
       if (xhr.status === 200) {

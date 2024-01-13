@@ -40,7 +40,7 @@ class User {
           resolve(JSON.parse(this.responseText))
         }
       });
-      let url = "https://ai.iamplus.services/location/getaddress?latitude=" + location.lat + "&longitude=" + location.long;
+      let url = (process.env.LOCATION_URL || "https://ai.iamplus.services/location/")+"getaddress?latitude=" + location.lat + "&longitude=" + location.long;
       console.log("URL:" + url)
       xhr.open("GET", url);
       xhr.send();

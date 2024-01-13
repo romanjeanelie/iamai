@@ -12,6 +12,8 @@ import {
   signOut,
 } from 'firebase/auth';
 
+const PA_URL = process.env.PA_URL || "https://ai.iamplus.services/deploy_pa"
+
 function toggleSignIn() {
   // if (!auth.currentUser) {
   const provider = new GoogleAuthProvider();
@@ -79,7 +81,7 @@ const getsessionID = (user) => new Promise(function (resolve, reject) {
       resolve(JSON.parse(this.responseText));
     }
   });
-  xhr.open("POST", "https://ai.iamplus.services/deploy_pa/getstreamname?userid=" + user.uuid + "&assistantID=pa_prompt_2023");
+  xhr.open("POST", PA_URL+"/getstreamname?userid=" + user.uuid + "&assistantID=pa_prompt_2023");
   xhr.setRequestHeader("Content-Type", "application/json");
   xhr.send(JSON.stringify(user));
 });

@@ -1,4 +1,5 @@
 import { getUser, redirectToLogin } from "../app/User";
+import { uploadFiles } from "../app/utils/uploadFiles";
 
 var btnsubmit,
   txtname,
@@ -22,7 +23,12 @@ var btnsubmit,
   btncloseassistant,
   btnaddInputField;
 let loggedinuser;
-const URL = "https://ai.iamplus.services/chatbot/iamai-main/index.html?lang=ad&session_id=";
+const URL = process.env.URL || "https://ai.iamplus.services/chatbot/iamai-main/index.html?lang=ad&session_id=";
+const HOST = process.env.HOST || "https://ai.iamplus.services"
+const DB_HOST = process.env.DB_HOST || "https://ai.iamplus.services"
+const DB_TOKEN = process.env.DB_TOKEN || "dylFE2UGqVNqHZR0OtruRDJh2UKNxVbitJwQvp1x"
+const ELASTIC_URL = process.env.ELASTIC_URL || "https://ai.iamplus.services/elastic/api/text/bulk_index_urls"
+const ELASTIC_TOKEN = process.env.ELASTIC_TOKEN || "iIPyByKL-3X48AzXvme9onV9p94GwrmWTqV7P5jQ"
 
 window.onload = async function () {
   // Use this instead
@@ -135,33 +141,6 @@ function closeassistant() {
   sectionsystemassistant.style.display = "block";
 }
 
-const uplaodfiles = (files) =>
-  new Promise(function (resolve, reject) {
-    var formData = new FormData();
-
-    for (var i = 0; i < files.length; i++) {
-      var file = files[i];
-      formData.append("files", file, file.name);
-    }
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "https://ai.iamplus.services/files/upload", true);
-
-    xhr.onload = function () {
-      if (xhr.status === 200) {
-        // alert('Files uploaded successfully');
-        // console.log(this.responseText);
-        let data = JSON.parse(this.responseText);
-        resolve(data.urls);
-      } else {
-        // alert('An error occurred!');
-        reject("An error occurred!");
-      }
-    };
-
-    xhr.send(formData);
-  });
-
 async function saveassistant() {
   if (txtname.value.length > 0 && txtprompt.value.length > 0) {
     btnsubmit.style.display = "none";
@@ -173,7 +152,7 @@ async function saveassistant() {
     });
     if (urls.length > 0) urls = urls.slice(0, -1);
 
-    if (filesToUpload.files.length > 0) filesurls = await uplaodfiles(filesToUpload.files);
+    if (filesToUpload.files.length > 0) filesurls = await uploadFiles(filesToUpload.files);
 
     // console.log()
     // WARNING: For POST requests, body is set to null by browsers.
@@ -225,9 +204,9 @@ async function saveassistant() {
       }
     });
 
-    xhr.open("POST", "https://ai.iamplus.services/api/v1/db/data/v1/UserAssistant/Assistant");
+    xhr.open("POST", DB_HOST+"/api/v1/db/data/v1/UserAssistant/Assistant");
     xhr.setRequestHeader("accept", "application/json");
-    xhr.setRequestHeader("xc-token", "dylFE2UGqVNqHZR0OtruRDJh2UKNxVbitJwQvp1x");
+    xhr.setRequestHeader("xc-token", DB_TOKEN);
     xhr.setRequestHeader("Content-Type", "application/json");
 
     xhr.send(data);
@@ -274,9 +253,9 @@ async function duplicate(itemid) {
     }
   });
 
-  xhr.open("POST", "https://ai.iamplus.services/api/v1/db/data/v1/UserAssistant/Assistant");
+  xhr.open("POST", DB_HOST+"/api/v1/db/data/v1/UserAssistant/Assistant");
   xhr.setRequestHeader("accept", "application/json");
-  xhr.setRequestHeader("xc-token", "dylFE2UGqVNqHZR0OtruRDJh2UKNxVbitJwQvp1x");
+  xhr.setRequestHeader("xc-token", DB_TOKEN);
   xhr.setRequestHeader("Content-Type", "application/json");
 
   xhr.send(data);
@@ -627,12 +606,12 @@ function getassistant() {
 
   xhr.open(
     "GET",
-    "https://ai.iamplus.services/api/v1/db/data/v1/UserAssistant/Assistant?limit=25&shuffle=0&offset=0&where=(UUID%2Ceq%2C" +
+    DB_HOST+"/api/v1/db/data/v1/UserAssistant/Assistant?limit=25&shuffle=0&offset=0&where=(UUID%2Ceq%2C" +
     loggedinuser.uuid +
     ")"
   );
   xhr.setRequestHeader("accept", "application/json");
-  xhr.setRequestHeader("xc-token", "dylFE2UGqVNqHZR0OtruRDJh2UKNxVbitJwQvp1x");
+  xhr.setRequestHeader("xc-token", DB_TOKEN);
 
   xhr.send();
 }
@@ -870,10 +849,10 @@ function getsystemassistant() {
 
   xhr.open(
     "GET",
-    "https://ai.iamplus.services/api/v1/db/data/v1/UserAssistant/SystemAssistant?limit=250&shuffle=0&offset=0"
+    DB_HOST+"/api/v1/db/data/v1/UserAssistant/SystemAssistant?limit=250&shuffle=0&offset=0"
   );
   xhr.setRequestHeader("accept", "application/json");
-  xhr.setRequestHeader("xc-token", "dylFE2UGqVNqHZR0OtruRDJh2UKNxVbitJwQvp1x");
+  xhr.setRequestHeader("xc-token", DB_TOKEN);
 
   xhr.send();
 }
@@ -898,9 +877,9 @@ function updateassistant(itemid, Status, ChatbotURL, AgentSessionID, Streamid, D
     }
   });
 
-  xhr.open("PATCH", "https://ai.iamplus.services/api/v1/db/data/v1/UserAssistant/Assistant/" + itemid);
+  xhr.open("PATCH", DB_HOST+"/api/v1/db/data/v1/UserAssistant/Assistant/" + itemid);
   xhr.setRequestHeader("accept", "application/json");
-  xhr.setRequestHeader("xc-token", "dylFE2UGqVNqHZR0OtruRDJh2UKNxVbitJwQvp1x");
+  xhr.setRequestHeader("xc-token", DB_TOKEN);
   xhr.setRequestHeader("Content-Type", "application/json");
 
   xhr.send(data);
@@ -918,9 +897,9 @@ function deleteassistant(itemid) {
         // location.reload();
       }
     });
-    xhr.open("DELETE", "https://ai.iamplus.services/api/v1/db/data/v1/UserAssistant/Assistant/" + itemid);
+    xhr.open("DELETE", DB_HOST+"/api/v1/db/data/v1/UserAssistant/Assistant/" + itemid);
     xhr.setRequestHeader("accept", "*/*");
-    xhr.setRequestHeader("xc-token", "dylFE2UGqVNqHZR0OtruRDJh2UKNxVbitJwQvp1x");
+    xhr.setRequestHeader("xc-token", DB_TOKEN);
     xhr.send();
   }
 }
@@ -965,8 +944,8 @@ async function startindexing(itemid) {
     }
   });
 
-  xhr.open("POST", "https://ai.iamplus.services/elastic/api/text/bulk_index_urls");
-  xhr.setRequestHeader("xc-token", "iIPyByKL-3X48AzXvme9onV9p94GwrmWTqV7P5jQ");
+  xhr.open("POST", ELASTIC_URL);
+  xhr.setRequestHeader("xc-token", ELASTIC_TOKEN);
   xhr.setRequestHeader("Content-Type", "application/json");
 
   xhr.send(data);
@@ -988,7 +967,7 @@ async function updateindexstatus(itemid, session_id) {
     }
   });
 
-  xhr.open("GET", "https://ai.iamplus.services/elastic/api/text/bulk_index_urls?session_id=" + session_id);
+  xhr.open("GET", ELASTIC_URL+"?session_id=" + session_id);
   xhr.send();
 }
 
@@ -1047,7 +1026,7 @@ async function deploy(itemid) {
       }
     });
 
-    xhr.open("POST", "https://ai.iamplus.services/workflow/agent");
+    xhr.open("POST", HOST+"/workflow/agent");
     xhr.setRequestHeader("Content-Type", "application/json");
 
     xhr.send(data);
@@ -1095,7 +1074,7 @@ async function deploy(itemid) {
       }
     });
 
-    xhr.open("POST", "https://ai.iamplus.services/workflow/personal_assistant");
+    xhr.open("POST", HOST+"/workflow/personal_assistant");
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(data);
   }
@@ -1111,7 +1090,7 @@ async function deactivate(itemid) {
       updateassistant(itemid, "Ready To Deploy", "", assistant.AgentSessionID, "", assistant.data_store_name);
     }
   });
-  xhr.open("DELETE", "https://ai.iamplus.services/workflow/workflow?session_id=" + assistant.AgentSessionID);
+  xhr.open("DELETE", HOST+"/workflow/workflow?session_id=" + assistant.AgentSessionID);
   xhr.send();
 }
 
@@ -1130,9 +1109,9 @@ const getassistant_itemid = (itemid) =>
       }
     });
 
-    xhr.open("GET", "https://ai.iamplus.services/api/v1/db/data/v1/UserAssistant/Assistant/" + itemid);
+    xhr.open("GET", DB_HOST+"/api/v1/db/data/v1/UserAssistant/Assistant/" + itemid);
     xhr.setRequestHeader("accept", "application/json");
-    xhr.setRequestHeader("xc-token", "dylFE2UGqVNqHZR0OtruRDJh2UKNxVbitJwQvp1x");
+    xhr.setRequestHeader("xc-token", DB_TOKEN);
 
     xhr.send();
   });
@@ -1152,9 +1131,9 @@ const getsystemassistant_itemid = (itemid) =>
       }
     });
 
-    xhr.open("GET", "https://ai.iamplus.services/api/v1/db/data/v1/UserAssistant/SystemAssistant/" + itemid);
+    xhr.open("GET", DB_HOST+"/api/v1/db/data/v1/UserAssistant/SystemAssistant/" + itemid);
     xhr.setRequestHeader("accept", "application/json");
-    xhr.setRequestHeader("xc-token", "dylFE2UGqVNqHZR0OtruRDJh2UKNxVbitJwQvp1x");
+    xhr.setRequestHeader("xc-token", DB_TOKEN);
 
     xhr.send();
   });

@@ -4,6 +4,8 @@ import { connect, AckPolicy, JSONCodec } from "https://cdn.jsdelivr.net/npm/nats
 import { getUser } from "../User.js";
 // const IS_DEV_MODE = import.meta.env.MODE === "development";
 const IS_DEV_MODE = false;
+const HOST = process.env.HOST || "https://ai.iamplus.services"
+const NATS_URL = process.env.NATS_URL || "wss://ai.iamplus.services/tasks:8443"
 
 class Chat {
   constructor(callbacks) {
@@ -45,8 +47,6 @@ class Chat {
       if (this.awaiting && this.workflowID != "") {
         if (img) {
           // console.log("img:", img);
-          // imgs.map((img) => img.src)
-          // let imageURL = await this.uploadFiles(img.src);
           this.submituserreply(input_text, this.workflowID, img.map((imgs) => imgs.src));
         } else this.submituserreply(input_text, this.workflowID, img);
       } else {
@@ -69,7 +69,7 @@ class Chat {
           this.callbacks.enableInput();
         });
         if (this.sessionID && this.sessionID != "") {
-          xhr.open("POST", "https://ai.iamplus.services/workflow/conversation", true);
+          xhr.open("POST", HOST+"/workflow/conversation", true);
           xhr.setRequestHeader("Content-Type", "application/json");
           if (this.sessionID.startsWith("wf-external-conversation")) {
             xhr.send(
@@ -88,7 +88,7 @@ class Chat {
             );
           }
         } else {
-          xhr.open("POST", "https://ai.iamplus.services/workflow/tasks", true);
+          xhr.open("POST", HOST+"/workflow/tasks", true);
           xhr.setRequestHeader("Content-Type", "application/json");
           xhr.send(
             JSON.stringify({
@@ -107,7 +107,7 @@ class Chat {
   getstreamdata = async (stream_name) => {
     console.log(stream_name);
     let nc = await connect({
-      servers: ["wss://ai.iamplus.services/tasks:8443"],
+      servers: [NATS_URL],
       user: "acc",
       pass: "user@123",
     });
@@ -120,7 +120,7 @@ class Chat {
       setTimeout(async function () {
         console.log("Socket is closed. Reconnect will be attempted in 1 second.", e.reason);
         nc = await connect({
-          servers: ["wss://ai.iamplus.services/tasks:8443"],
+          servers: [NATS_URL],
           user: "acc",
           pass: "user@123",
         });
@@ -267,7 +267,7 @@ class Chat {
   getdevstream = (stream_name) =>
     new Promise(async (resolve, reject) => {
       let nc = await connect({
-        servers: ["wss://ai.iamplus.services/tasks:8443"],
+        servers: [NATS_URL],
         user: "acc",
         pass: "user@123",
       });
@@ -535,26 +535,6 @@ class Chat {
     );
   }
 
-  uploadFiles = (imageData) =>
-    new Promise(function (resolve, reject) {
-      var xhr = new XMLHttpRequest();
-      xhr.open("POST", "https://ai.iamplus.services/files/uploadimage", true);
-      xhr.setRequestHeader("Content-Type", "application/json");
-
-      xhr.onload = function () {
-        if (xhr.status === 200) {
-          // alert('Files uploaded successfully');
-          console.log(this.responseText);
-          resolve(this.responseText);
-        } else {
-          // alert('An error occurred!');
-          reject("An error occurred!");
-        }
-      };
-      console.log("imageData", imageData);
-      xhr.send(JSON.stringify({ image: imageData }));
-    });
-
   translate = (text, lang) =>
     new Promise(async (resolve, reject) => {
       var data = JSON.stringify([{ text: text }]);
@@ -673,7 +653,7 @@ class Chat {
       }
     });
 
-    xhr.open("POST", "https://ai.iamplus.services/workflow/message/" + suworkflowid);
+    xhr.open("POST", HOST+"/workflow/message/" + suworkflowid);
     xhr.setRequestHeader("Content-Type", "application/json");
 
     xhr.send(data);
@@ -841,7 +821,7 @@ class Chat {
         }
       });
 
-      xhr.open("POST", "https://ai.iamplus.services/workflow/message/" + this.workflowID);
+      xhr.open("POST", HOST+"/workflow/message/" + this.workflowID);
       xhr.setRequestHeader("Content-Type", "application/json");
 
       xhr.send(data);

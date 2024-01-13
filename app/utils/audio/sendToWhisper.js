@@ -1,3 +1,4 @@
+const WHISPER_URL = process.env.WHISPER_URL || "https://ai.iamplus.services/speech/asr?task=transcribe&encode=true&output=json&word_timestamps=false";
 const sendToWispher = (url) =>
   new Promise((resolve, reject) => {
     var xhr = new XMLHttpRequest();
@@ -7,7 +8,7 @@ const sendToWispher = (url) =>
     data.append("type", "audio/wav");
     xhr.open(
       "POST",
-      "https://ai.iamplus.services/speech/asr?task=transcribe&encode=true&output=json&word_timestamps=false",
+      WHISPER_URL,
       true
     );
     xhr.onreadystatechange = function () {
