@@ -1,11 +1,11 @@
 import Discussion from "./Discussion.js";
 import { connect, AckPolicy, JSONCodec } from "https://cdn.jsdelivr.net/npm/nats.ws@latest/esm/nats.js";
 // const uuid = "omega_" + crypto.randomUUID();
-import { getUser } from "../User.js";
+// import { getUser } from "../User.js";
 // const IS_DEV_MODE = import.meta.env.MODE === "development";
 const IS_DEV_MODE = false;
-const HOST = process.env.HOST || "https://ai.iamplus.services"
-const NATS_URL = process.env.NATS_URL || "wss://ai.iamplus.services/tasks:8443"
+const HOST = import.meta.env.HOST || "https://ai.iamplus.services"
+const NATS_URL = import.meta.env.NATS_URL || "wss://ai.iamplus.services/tasks:8443"
 
 class Chat {
   constructor(callbacks) {
@@ -30,7 +30,8 @@ class Chat {
     this.MovieSearchResults = "";
     this.deploy_ID = "";
     this.image_urls = "";
-    this.user = getUser();
+    this.user = this.callbacks.user;
+    console.log("chat user",this.user);
   }
 
   callsubmit = async (text, img, container) => {

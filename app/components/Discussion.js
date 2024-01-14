@@ -2,6 +2,7 @@ import TypingText from "../TypingText";
 import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scss";
 import typeText from "../utils/typeText";
 import Chat from "./Chat.js";
+import { getsessionID } from "../User";
 import EventEmitter from "../utils/EventEmitter.js";
 import isMobile from "../utils/isMobile.js";
 
@@ -43,10 +44,11 @@ function getTopStatus(text) {
   return defaultTopStatus;
 }
 export default class Discussion {
-  constructor({ toPageGrey, emitter }) {
+  constructor({ toPageGrey, emitter, user }) {
     this.emitter = emitter;
     this.toPageGrey = toPageGrey;
-
+    this.user = user;
+    console.log("Discussion user",this.user);
     this.pageEl = document.querySelector(".page-grey");
     this.inputContainer = this.pageEl.querySelector("div.input__container.grey");
     this.inputText = this.pageEl.querySelector(".input-text");
@@ -65,6 +67,7 @@ export default class Discussion {
       disableInput: this.disableInput.bind(this),
       enableInput: this.enableInput.bind(this),
       emitter: emitter,
+      user: this.user,
     });
 
     this.addListeners();
@@ -338,6 +341,12 @@ export default class Discussion {
       this.toPageGrey();
       this.Chat.sessionID = sessionID;
       this.Chat.deploy_ID = deploy_ID;
+      this.getAiAnswer({ text: "" });
+    }else{
+      this.toPageGrey();
+      let data = await getsessionID(this.user);
+      this.Chat.sessionID = data.SessionID;
+      this.Chat.deploy_ID = data.deploy_id;
       this.getAiAnswer({ text: "" });
     }
   }

@@ -1,5 +1,5 @@
 import { getUser, redirectToLogin } from "../app/User";
-import { uploadFiles } from "../app/utils/uploadFiles";
+import uploadFiles from "../app/utils/uploadFiles";
 
 var btnsubmit,
   txtname,
@@ -23,12 +23,12 @@ var btnsubmit,
   btncloseassistant,
   btnaddInputField;
 let loggedinuser;
-const URL = process.env.URL || "https://ai.iamplus.services/chatbot/iamai-main/index.html?lang=ad&session_id=";
-const HOST = process.env.HOST || "https://ai.iamplus.services"
-const DB_HOST = process.env.DB_HOST || "https://ai.iamplus.services"
-const DB_TOKEN = process.env.DB_TOKEN || "dylFE2UGqVNqHZR0OtruRDJh2UKNxVbitJwQvp1x"
-const ELASTIC_URL = process.env.ELASTIC_URL || "https://ai.iamplus.services/elastic/api/text/bulk_index_urls"
-const ELASTIC_TOKEN = process.env.ELASTIC_TOKEN || "iIPyByKL-3X48AzXvme9onV9p94GwrmWTqV7P5jQ"
+const URL = import.meta.env.URL || "https://ai.iamplus.services/chatbot/iamai-main/index.html?lang=ad&session_id=";
+const HOST = import.meta.env.HOST || "https://ai.iamplus.services"
+const DB_HOST = import.meta.env.DB_HOST || "https://ai.iamplus.services"
+const DB_TOKEN = import.meta.env.DB_TOKEN || "dylFE2UGqVNqHZR0OtruRDJh2UKNxVbitJwQvp1x"
+const ELASTIC_URL = import.meta.env.ELASTIC_URL || "https://ai.iamplus.services/elastic/api/text/bulk_index_urls"
+const ELASTIC_TOKEN = import.meta.env.ELASTIC_TOKEN || "iIPyByKL-3X48AzXvme9onV9p94GwrmWTqV7P5jQ"
 
 window.onload = async function () {
   // Use this instead

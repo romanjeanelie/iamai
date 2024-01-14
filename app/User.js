@@ -1,13 +1,16 @@
 import { onAuthStateChanged } from 'firebase/auth';
 import auth from '../app/firebaseConfig';
 
+const PA_URL = import.meta.env.PA_URL || "https://ai.iamplus.services/deploy_pa"
 class User {
   constructor(uuid, name, picture, email) {
     this.uuid = uuid;
     this.name = name;
     this.picture = picture;
     this.email = email;
+    console.time("getUserTimezone");
     this.timezone = this.getUserTimezone();
+    console.timeEnd("getUserTimezone");
     this.area_name = "";
     this.country_name = "";
     this.pincode = "";
@@ -16,7 +19,9 @@ class User {
     this.administrative_area_level_2 = "";
   }
   async setuseraddress() {
+    console.time("getaddressdetails");
     let address = await this.getaddressdetails()
+    console.timeEnd("getaddressdetails");
     this.area_name = address.area_name;
     this.country_name = address.country_name;
     this.pincode = address.pincode;
@@ -40,7 +45,7 @@ class User {
           resolve(JSON.parse(this.responseText))
         }
       });
-      let url = (process.env.LOCATION_URL || "https://ai.iamplus.services/location/")+"getaddress?latitude=" + location.lat + "&longitude=" + location.long;
+      let url = (import.meta.env.LOCATION_URL || "https://ai.iamplus.services/location/")+"getaddress?latitude=" + location.lat + "&longitude=" + location.long;
       console.log("URL:" + url)
       xhr.open("GET", url);
       xhr.send();
@@ -118,5 +123,20 @@ function redirectToLogin() {
   window.location.href = "./login/index.html";
 }
 
+const getsessionID = (user) => new Promise(function (resolve, reject) {
+  // WARNING: For GET requests, body is set to null by browsers.
+  var xhr = new XMLHttpRequest();
+  // xhr.withCredentials = true;
+  xhr.addEventListener("readystatechange", function () {
+    if (this.readyState === 4) {
+      console.log(this.responseText);
+      resolve(JSON.parse(this.responseText));
+    }
+  });
+  xhr.open("POST", PA_URL + "/getstreamname?userid=" + user.uuid + "&assistantID=pa_prompt_2023");
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.send(JSON.stringify(user));
+});
+
 export default User
-export { getUser, redirectToLogin };
+export { getUser, redirectToLogin, getsessionID };

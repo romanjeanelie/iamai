@@ -19,6 +19,8 @@ export default {
       input: {
         main: resolve(__dirname, "index.html"),
         login: resolve(__dirname, "login/index.html"),
+        login_google: resolve(__dirname, "login/login_google.html"),
+        assistant: resolve(__dirname, "assistant/assistant.html"),
       },
       output: {
         preserveModules: false,

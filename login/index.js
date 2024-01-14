@@ -3,6 +3,7 @@ let longitude;
 
 import auth from '../app/firebaseConfig';
 import User from '../app/User';
+import { getUser, getsessionID } from '../app/User';
 import {
   GoogleAuthProvider,
   connectAuthEmulator,
@@ -12,9 +13,10 @@ import {
   signOut,
 } from 'firebase/auth';
 
-const PA_URL = process.env.PA_URL || "https://ai.iamplus.services/deploy_pa"
+var signInButton;
 
 function toggleSignIn() {
+  signInButton.style.display = "none";
   // if (!auth.currentUser) {
   const provider = new GoogleAuthProvider();
   provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
@@ -63,31 +65,17 @@ onAuthStateChanged(auth, async function (user) {
   }
 });
 
-
-
 async function redirectToHome(user) {
   console.log("redirect to home");
   let data = await getsessionID(user);
   window.location.href = "../index.html?lang=ad&session_id=" + data.SessionID + "&deploy_id=" + data.deploy_id;
 }
 
-const getsessionID = (user) => new Promise(function (resolve, reject) {
-  // WARNING: For GET requests, body is set to null by browsers.
-  var xhr = new XMLHttpRequest();
-  // xhr.withCredentials = true;
-  xhr.addEventListener("readystatechange", function () {
-    if (this.readyState === 4) {
-      console.log(this.responseText);
-      resolve(JSON.parse(this.responseText));
-    }
-  });
-  xhr.open("POST", PA_URL+"/getstreamname?userid=" + user.uuid + "&assistantID=pa_prompt_2023");
-  xhr.setRequestHeader("Content-Type", "application/json");
-  xhr.send(JSON.stringify(user));
-});
-
-
 window.onload = async function () {
-  let signInButton = document.getElementById('divgoogle');
-  signInButton.addEventListener('click', toggleSignIn, false);
+  const loggedinuser = await getUser();
+  signInButton = document.getElementById('divgoogle');
+  if (loggedinuser) { redirectToHome(loggedinuser) } else {
+    signInButton.style.display = "block";
+    signInButton.addEventListener('click', toggleSignIn, false);
+  }
 };

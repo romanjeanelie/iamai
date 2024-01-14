@@ -13,7 +13,10 @@ class App {
     this.pageGrey = document.querySelector(".page-grey");
     this.navbarEl = document.querySelector(".nav");
     this.cancelBtn = document.querySelector(".cancel-btn");
-
+    this.user = getUser();
+    // getUser().then(user => {
+      // this.user = user;
+    // });
     this.emitter = createNanoEvents();
 
     this.addListeners();
@@ -53,9 +56,11 @@ class App {
   }
 
   initDiscussion() {
+    console.log("index user",this.user);
     this.discussion = new Discussion({
       emitter: this.emitter,
       toPageGrey: this.toPageGrey.bind(this),
+      user: this.user,
     });
   }
 
@@ -79,13 +84,17 @@ class App {
   }
 
   addListeners() {
-    getUser().then(user => {
-      this.user = user;
-      console.log("this.user", this.user);
-      if (!this.user) {
-        redirectToLogin();
-      }
+    // getUser().then(user => {
+      // this.user = user;
+      this.user.then((user) => {
+        console.log("this.user", this.user);
+        this.user = user;
+        if (!this.user) {
+          redirectToLogin();
+        }
     });
+
+    // });
 
     window.addEventListener("load", () => {
       // Avoid flash blue page

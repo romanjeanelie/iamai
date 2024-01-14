@@ -1,4 +1,4 @@
-const WHISPER_URL = process.env.WHISPER_URL || "https://ai.iamplus.services/speech/asr?task=transcribe&encode=true&output=json&word_timestamps=false";
+const WHISPER_URL = import.meta.env.WHISPER_URL || "https://ai.iamplus.services/speech/asr?task=transcribe&encode=true&output=json&word_timestamps=false";
 const sendToWispher = (url) =>
   new Promise((resolve, reject) => {
     var xhr = new XMLHttpRequest();
