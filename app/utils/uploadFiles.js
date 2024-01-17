@@ -1,4 +1,4 @@
-const UPLOAD_URL = import.meta.env.UPLOAD_URL || "https://ai.iamplus.services/files/uploads";
+const UPLOAD_URL = import.meta.env.VITE_API_UPLOAD_URL || "https://api.iamplus.chat/fileservices/uploads";
 const uploadFiles = (files) =>
   new Promise(function (resolve, reject) {
     var formData = new FormData();

@@ -23,12 +23,12 @@ var btnsubmit,
   btncloseassistant,
   btnaddInputField;
 let loggedinuser;
-const URL = import.meta.env.URL || "https://ai.iamplus.services/chatbot/iamai-main/index.html?lang=ad&session_id=";
-const HOST = import.meta.env.HOST || "https://ai.iamplus.services"
-const DB_HOST = import.meta.env.DB_HOST || "https://ai.iamplus.services"
-const DB_TOKEN = import.meta.env.DB_TOKEN || "dylFE2UGqVNqHZR0OtruRDJh2UKNxVbitJwQvp1x"
-const ELASTIC_URL = import.meta.env.ELASTIC_URL || "https://ai.iamplus.services/elastic/api/text/bulk_index_urls"
-const ELASTIC_TOKEN = import.meta.env.ELASTIC_TOKEN || "iIPyByKL-3X48AzXvme9onV9p94GwrmWTqV7P5jQ"
+const URL = import.meta.env.VITE_API_URL || "https://app.iamplus.chat/iamai-main/index.html?lang=ad&session_id=";
+const HOST = import.meta.env.VITE_API_HOST || "https://api.iamplus.chat"
+const DB_HOST = import.meta.env.VITE_API_DB_HOST || "https://nocodb.iamplus.chat"
+const DB_TOKEN = import.meta.env.VITE_API_DB_TOKEN || "juIbsot-ERPsSlO3TdkYHRJPznr1gqrLBIpMjWZU"
+const ELASTIC_URL = import.meta.env.VITE_API_ELASTIC_URL || "https://api.iamplus.chat/elastic/api/text/bulk_index_urls"
+const ELASTIC_TOKEN = import.meta.env.VITE_API_ELASTIC_TOKEN || "iIPyByKL-3X48AzXvme9onV9p94GwrmWTqV7P5jQ"
 
 window.onload = async function () {
   // Use this instead
@@ -161,30 +161,32 @@ async function saveassistant() {
       data = JSON.stringify({
         Title: txtname.value,
         Prompt: txtprompt.value,
-        Retrieval: chkretrieval.checked,
+        Retrieval: chkretrieval.checked.toString(),
         URL: urls,
         Files: filesurls,
         UUID: loggedinuser.uuid,
-        WebSearch: webtogglebutton.checked,
+        WebSearch: webtogglebutton.checked.toString(),
         store_search_fields: txtsearchfields.value,
-        rich_results: richresultstoggle.checked,
+        rich_results: richresultstoggle.checked.toString(),
         user_prompt: txtuserprompt.value,
-        generate_stream: chkstream.checked,
-        agent_enabled: chkagent.checked,
+        generate_stream: chkstream.checked.toString(),
+        agent_enabled: chkagent.checked.toString(),
+        Status: "Created",
       });
     } else {
       data = JSON.stringify({
         Title: txtname.value,
         Prompt: txtprompt.value,
-        Retrieval: chkretrieval.checked,
+        Retrieval: chkretrieval.checked.toString(),
         URL: urls,
         Files: filesurls,
         UUID: loggedinuser.uuid,
-        WebSearch: webtogglebutton.checked,
-        rich_results: richresultstoggle.checked,
+        WebSearch: webtogglebutton.checked.toString(),
+        rich_results: richresultstoggle.checked.toString(),
         user_prompt: txtuserprompt.value,
-        generate_stream: chkstream.checked,
-        agent_enabled: chkagent.checked,
+        generate_stream: chkstream.checked.toString(),
+        agent_enabled: chkagent.checked.toString(),
+        Status: "Created",
       });
     }
 
@@ -204,7 +206,7 @@ async function saveassistant() {
       }
     });
 
-    xhr.open("POST", DB_HOST+"/api/v1/db/data/v1/UserAssistant/Assistant");
+    xhr.open("POST", DB_HOST+"/api/v2/tables/m5aeqzjetzwiw9q/records");
     xhr.setRequestHeader("accept", "application/json");
     xhr.setRequestHeader("xc-token", DB_TOKEN);
     xhr.setRequestHeader("Content-Type", "application/json");
@@ -253,7 +255,7 @@ async function duplicate(itemid) {
     }
   });
 
-  xhr.open("POST", DB_HOST+"/api/v1/db/data/v1/UserAssistant/Assistant");
+  xhr.open("POST", DB_HOST+"/api/v2/tables/m5aeqzjetzwiw9q/records");
   xhr.setRequestHeader("accept", "application/json");
   xhr.setRequestHeader("xc-token", DB_TOKEN);
   xhr.setRequestHeader("Content-Type", "application/json");
@@ -606,7 +608,7 @@ function getassistant() {
 
   xhr.open(
     "GET",
-    DB_HOST+"/api/v1/db/data/v1/UserAssistant/Assistant?limit=25&shuffle=0&offset=0&where=(UUID%2Ceq%2C" +
+    DB_HOST+"/api/v2/tables/m5aeqzjetzwiw9q/records?limit=25&shuffle=0&offset=0&where=(UUID%2Ceq%2C" +
     loggedinuser.uuid +
     ")"
   );
@@ -849,7 +851,7 @@ function getsystemassistant() {
 
   xhr.open(
     "GET",
-    DB_HOST+"/api/v1/db/data/v1/UserAssistant/SystemAssistant?limit=250&shuffle=0&offset=0"
+    DB_HOST+"/api/v2/tables/mjf87ylyjqkbhjv/records?limit=250&shuffle=0&offset=0"
   );
   xhr.setRequestHeader("accept", "application/json");
   xhr.setRequestHeader("xc-token", DB_TOKEN);
@@ -859,6 +861,7 @@ function getsystemassistant() {
 
 function updateassistant(itemid, Status, ChatbotURL, AgentSessionID, Streamid, DataStoreName, deploy_id) {
   var data = JSON.stringify({
+    Id: itemid,
     Status: Status,
     ChatbotURL: ChatbotURL,
     AgentSessionID: AgentSessionID,
@@ -877,7 +880,7 @@ function updateassistant(itemid, Status, ChatbotURL, AgentSessionID, Streamid, D
     }
   });
 
-  xhr.open("PATCH", DB_HOST+"/api/v1/db/data/v1/UserAssistant/Assistant/" + itemid);
+  xhr.open("PATCH", DB_HOST+"/api/v2/tables/m5aeqzjetzwiw9q/records");
   xhr.setRequestHeader("accept", "application/json");
   xhr.setRequestHeader("xc-token", DB_TOKEN);
   xhr.setRequestHeader("Content-Type", "application/json");
@@ -888,6 +891,10 @@ function updateassistant(itemid, Status, ChatbotURL, AgentSessionID, Streamid, D
 function deleteassistant(itemid) {
   let text = "Please confirm to delete the prompt!";
   if (confirm(text) == true) {
+    var data = JSON.stringify({
+      "Id": itemid
+    });
+
     var xhr = new XMLHttpRequest();
     // xhr.withCredentials = true;
     xhr.addEventListener("readystatechange", function () {
@@ -897,10 +904,11 @@ function deleteassistant(itemid) {
         // location.reload();
       }
     });
-    xhr.open("DELETE", DB_HOST+"/api/v1/db/data/v1/UserAssistant/Assistant/" + itemid);
+    xhr.open("DELETE", DB_HOST+"/api/v2/tables/m5aeqzjetzwiw9q/records");
     xhr.setRequestHeader("accept", "*/*");
+    xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader("xc-token", DB_TOKEN);
-    xhr.send();
+    xhr.send(data);
   }
 }
 
@@ -1026,7 +1034,7 @@ async function deploy(itemid) {
       }
     });
 
-    xhr.open("POST", HOST+"/workflow/agent");
+    xhr.open("POST", HOST+"/workflows/agent");
     xhr.setRequestHeader("Content-Type", "application/json");
 
     xhr.send(data);
@@ -1074,7 +1082,7 @@ async function deploy(itemid) {
       }
     });
 
-    xhr.open("POST", HOST+"/workflow/personal_assistant");
+    xhr.open("POST", HOST+"/workflows/personal_assistant");
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(data);
   }
@@ -1090,7 +1098,7 @@ async function deactivate(itemid) {
       updateassistant(itemid, "Ready To Deploy", "", assistant.AgentSessionID, "", assistant.data_store_name);
     }
   });
-  xhr.open("DELETE", HOST+"/workflow/workflow?session_id=" + assistant.AgentSessionID);
+  xhr.open("DELETE", HOST+"/workflows/workflow?session_id=" + assistant.AgentSessionID);
   xhr.send();
 }
 
@@ -1109,7 +1117,7 @@ const getassistant_itemid = (itemid) =>
       }
     });
 
-    xhr.open("GET", DB_HOST+"/api/v1/db/data/v1/UserAssistant/Assistant/" + itemid);
+    xhr.open("GET", DB_HOST+"/api/v2/tables/m5aeqzjetzwiw9q/records/" + itemid);
     xhr.setRequestHeader("accept", "application/json");
     xhr.setRequestHeader("xc-token", DB_TOKEN);
 
@@ -1131,7 +1139,7 @@ const getsystemassistant_itemid = (itemid) =>
       }
     });
 
-    xhr.open("GET", DB_HOST+"/api/v1/db/data/v1/UserAssistant/SystemAssistant/" + itemid);
+    xhr.open("GET", DB_HOST+"/api/v2/tables/mjf87ylyjqkbhjv/records/" + itemid);
     xhr.setRequestHeader("accept", "application/json");
     xhr.setRequestHeader("xc-token", DB_TOKEN);
 
@@ -1190,6 +1198,7 @@ function resetData() {
   richresultstoggle.checked = false;
   chkagent.checked = false;
   chkstream.checked = false;
+  txtsearchfields.value = "";
 }
 
 // export { toggleCollapse, closeassistant, addassistant, deactivate, deploy, updateindexstatus, startindexing, deleteassistant, duplicate, addInputField };

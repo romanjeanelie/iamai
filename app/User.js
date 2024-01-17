@@ -1,7 +1,8 @@
 import { onAuthStateChanged } from 'firebase/auth';
 import auth from '../app/firebaseConfig';
 
-const PA_URL = import.meta.env.PA_URL || "https://ai.iamplus.services/deploy_pa"
+const PA_URL = import.meta.env.VITE_API_PA_URL || "https://api.iamplus.chat/deploy-pa"
+const LOCATION_URL = import.meta.env.VITE_API_LOCATION_URL || "https://api.iamplus.chat/location/"
 class User {
   constructor(uuid, name, picture, email) {
     this.uuid = uuid;
@@ -45,7 +46,7 @@ class User {
           resolve(JSON.parse(this.responseText))
         }
       });
-      let url = (import.meta.env.LOCATION_URL || "https://ai.iamplus.services/location/")+"getaddress?latitude=" + location.lat + "&longitude=" + location.long;
+      let url = LOCATION_URL+"getaddress?latitude=" + location.lat + "&longitude=" + location.long;
       console.log("URL:" + url)
       xhr.open("GET", url);
       xhr.send();

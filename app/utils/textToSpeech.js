@@ -1,5 +1,5 @@
-const ELEVENLABS_URL = import.meta.env.ELEVENLABS_URL || "https://api.elevenlabs.io/v1/text-to-speech/ZVKjrJiWeTKF1FZwjENi/stream?optimize_streaming_latency=4";
-const ELEVENLABS_TOKEN = import.meta.env.ELEVENLABS_TOKEN || "bddfcabff8951ebb9e925d506452df93";
+const ELEVENLABS_URL = import.meta.env.VITE_API_ELEVENLABS_URL || "https://api.elevenlabs.io/v1/text-to-speech/ZVKjrJiWeTKF1FZwjENi/stream?optimize_streaming_latency=4";
+const ELEVENLABS_TOKEN = import.meta.env.VITE_API_ELEVENLABS_TOKEN || "bddfcabff8951ebb9e925d506452df93";
 function base64ToUint8Array(base64) {
   const binaryString = atob(base64);
   const len = binaryString.length;

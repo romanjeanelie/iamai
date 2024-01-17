@@ -4,8 +4,10 @@ import { connect, AckPolicy, JSONCodec } from "https://cdn.jsdelivr.net/npm/nats
 // import { getUser } from "../User.js";
 // const IS_DEV_MODE = import.meta.env.MODE === "development";
 const IS_DEV_MODE = false;
-const HOST = import.meta.env.HOST || "https://ai.iamplus.services"
-const NATS_URL = import.meta.env.NATS_URL || "wss://ai.iamplus.services/tasks:8443"
+const HOST = import.meta.env.VITE_API_HOST || "https://api.iamplus.chat"
+const NATS_URL = import.meta.env.VITE_API_NATS_URL || "wss://nats.iamplus.chat"
+const NATS_USER = import.meta.env.VITE_API_NATS_USER || "iamplus-acc"
+const NATS_PASS = import.meta.env.VITE_API_NATS_PASS || "cis8Asto6HepremoGApI"
 
 class Chat {
   constructor(callbacks) {
@@ -70,7 +72,7 @@ class Chat {
           this.callbacks.enableInput();
         });
         if (this.sessionID && this.sessionID != "") {
-          xhr.open("POST", HOST+"/workflow/conversation", true);
+          xhr.open("POST", HOST+"/workflows/conversation", true);
           xhr.setRequestHeader("Content-Type", "application/json");
           if (this.sessionID.startsWith("wf-external-conversation")) {
             xhr.send(
@@ -89,7 +91,7 @@ class Chat {
             );
           }
         } else {
-          xhr.open("POST", HOST+"/workflow/tasks", true);
+          xhr.open("POST", HOST+"/workflows/tasks", true);
           xhr.setRequestHeader("Content-Type", "application/json");
           xhr.send(
             JSON.stringify({
@@ -109,8 +111,8 @@ class Chat {
     console.log(stream_name);
     let nc = await connect({
       servers: [NATS_URL],
-      user: "acc",
-      pass: "user@123",
+      user: NATS_USER,
+      pass: NATS_PASS,
     });
 
     const js = nc.jetstream();
@@ -122,8 +124,8 @@ class Chat {
         console.log("Socket is closed. Reconnect will be attempted in 1 second.", e.reason);
         nc = await connect({
           servers: [NATS_URL],
-          user: "acc",
-          pass: "user@123",
+          user: NATS_USER,
+          pass: NATS_PASS,
         });
       }, 1000);
     };
@@ -269,8 +271,8 @@ class Chat {
     new Promise(async (resolve, reject) => {
       let nc = await connect({
         servers: [NATS_URL],
-        user: "acc",
-        pass: "user@123",
+        user: NATS_USER,
+        pass: NATS_PASS,
       });
       // create the stream
       const jsm = await nc.jetstreamManager();
@@ -654,7 +656,7 @@ class Chat {
       }
     });
 
-    xhr.open("POST", HOST+"/workflow/message/" + suworkflowid);
+    xhr.open("POST", HOST+"/workflows/message/" + suworkflowid);
     xhr.setRequestHeader("Content-Type", "application/json");
 
     xhr.send(data);
@@ -822,7 +824,7 @@ class Chat {
         }
       });
 
-      xhr.open("POST", HOST+"/workflow/message/" + this.workflowID);
+      xhr.open("POST", HOST+"/workflows/message/" + this.workflowID);
       xhr.setRequestHeader("Content-Type", "application/json");
 
       xhr.send(data);
