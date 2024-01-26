@@ -13,7 +13,7 @@ class Chat {
   constructor(callbacks) {
     this.callbacks = callbacks;
     this.discussionContainer = this.callbacks.discussionContainer;
-    this.autodetect = null;
+    this.autodetect = false;
     this.targetlang = "en";
     this.sourcelang = "en";
     this.location = "US";
@@ -43,7 +43,7 @@ class Chat {
     if (this.sourcelang != this.targetlang) {
       var response = await this.googletranslate(input_text, this.targetlang, this.sourcelang);
       input_text = response.data.translations[0].translatedText;
-      if (response.data.translations[0].detectedSourceLanguage)
+      if (this.autodetect && response.data.translations[0].detectedSourceLanguage)
         this.sourcelang = response.data.translations[0].detectedSourceLanguage;
     }
     if (!IS_DEV_MODE) {
@@ -67,7 +67,15 @@ class Chat {
         xhr.addEventListener("error", async function (e) {
           console.log("error: " + e);
           var AIAnswer = "An error occurred while attempting to connect.";
-          await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
+          if (this.sourcelang != "en") {
+            var transresponse = await this.googletranslate(
+              AIAnswer,
+              this.sourcelang,
+              this.targetlang
+            );
+            AIAnswer = transresponse.data.translations[0].translatedText;
+          }
+          await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang});
 
           this.callbacks.enableInput();
         });
@@ -187,7 +195,7 @@ class Chat {
             );
             AIAnswer = transresponse.data.translations[0].translatedText;
           }
-          await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
+          await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang });
         }
         if (mdata.stream_status && mdata.stream_status == "ended") {
           this.callbacks.emitter.emit("endStream");
@@ -227,7 +235,7 @@ class Chat {
           );
           AIAnswer = transresponse.data.translations[0].translatedText;
         }
-        await this.callbacks.addAIText({ text: AIAnswer, container: this.container });
+        await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang });
         this.callbacks.emitter.emit("endStream");
 
         if (this.domain == "RAG_CHAT") {
@@ -259,7 +267,7 @@ class Chat {
           }
           AIAnswer += "\n\n";
 
-          await this.callbacks.addAIText({ text: AIAnswer, container: this.container, type: "status" });
+          await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang, type: "status" });
         }
       }
       m.ack();

@@ -190,7 +190,11 @@ export default class Input {
   async onCompleteRecording(blob) {
     if (this.isRecordCanceled) return;
 
-    this.textRecorded = await sendToWispher(blob);
+    if(this.discussion.Chat.autodetect)
+      this.textRecorded = await sendToWispher(blob);
+    else
+      this.textRecorded = await sendToWispher(blob, this.discussion.Chat.sourcelang);
+
     this.timeoutTranscripting = setTimeout(() => {
       this.onCompleteTranscripting();
     }, this.minTranscriptingTime);

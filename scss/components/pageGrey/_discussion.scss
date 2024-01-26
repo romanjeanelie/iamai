@@ -39,10 +39,11 @@
 
   .discussion__user,
   .discussion__ai {
+    font-family: Antwerp;
     position: relative;
     margin-bottom: 32px;
     font-size: 20px;
-    line-height: 24px;
+    line-height: 28px;
 
     p {
       overflow-wrap: break-word;
@@ -72,7 +73,7 @@
 
   .discussion__user {
     // color: rgba($colorBlue, 0.72);
-    color: $colorBlue;
+    color: rgba($colorBlack, 0.72);;
     text-align: right;
     margin-left: auto;
     padding-right: 16px;

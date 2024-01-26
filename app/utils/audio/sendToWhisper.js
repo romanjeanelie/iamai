@@ -1,14 +1,14 @@
-const WHISPER_URL = import.meta.env.VITE_API_WHISPER_URL || "https://api.iamplus.chat/speech/asr?task=transcribe&encode=true&output=json&word_timestamps=false";
-const sendToWispher = (url) =>
+const WHISPER_URL = import.meta.env.VITE_API_WHISPER_URL || "https://api.iamplus.chat/proxy-whisper-api-web/asr?task=transcribe&encode=true&output=json&word_timestamps=false&language=";
+const sendToWispher = (url, lang="") =>
   new Promise((resolve, reject) => {
     var xhr = new XMLHttpRequest();
-
+    
     var data = new FormData();
     data.append("audio_file", url, crypto.randomUUID() + ".wav");
     data.append("type", "audio/wav");
     xhr.open(
       "POST",
-      WHISPER_URL,
+      WHISPER_URL+lang,
       true
     );
     xhr.onreadystatechange = function () {

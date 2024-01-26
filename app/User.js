@@ -1,5 +1,6 @@
 import { onAuthStateChanged } from 'firebase/auth';
-import auth from '../app/firebaseConfig';
+import { app, auth } from '../app/firebaseConfig';
+import { getDatabase, ref, set, get, serverTimestamp } from 'firebase/database';
 
 const PA_URL = import.meta.env.VITE_API_PA_URL || "https://api.iamplus.chat/deploy-pa"
 const LOCATION_URL = import.meta.env.VITE_API_LOCATION_URL || "https://api.iamplus.chat/location/"
@@ -34,10 +35,12 @@ class User {
   getUserTimezone() {
     return Intl.DateTimeFormat().resolvedOptions().timeZone;
   }
-  
+
   getaddressdetails() {
     return new Promise(async (resolve, reject) => {
+      console.time("getUserLocation");
       let location = await this.getUserLocation();
+      console.timeEnd("getUserLocation");
       location = JSON.parse(location);
       var xhr = new XMLHttpRequest();
       xhr.addEventListener("readystatechange", function () {
@@ -46,16 +49,16 @@ class User {
           resolve(JSON.parse(this.responseText))
         }
       });
-      let url = LOCATION_URL+"getaddress?latitude=" + location.lat + "&longitude=" + location.long;
+      let url = LOCATION_URL + "getaddress?latitude=" + location.lat + "&longitude=" + location.long;
       console.log("URL:" + url)
       xhr.open("GET", url);
       xhr.send();
     });
   }
-  
+
   getUserLocation() {
     return new Promise((resolve, reject) => {
-      if (!navigator.geolocation) {
+      if (!navigator.geolocation || navigator.userAgent.includes("Chrome")) {
         console.log("Geolocation is not supported by your browser");
         resolve(this.getipadress());
         // reject(new Error("Geolocation is not supported by your browser"));
@@ -67,12 +70,14 @@ class User {
         },
           (error) => {
             console.log("Geolocation permission denied");
+            console.time("getipadress");
             resolve(this.getipadress());
+            console.timeEnd("getipadress");
           });
       }
     });
   }
-  
+
   getipadress = () => {
     return new Promise((resolve, reject) => {
       var request = new XMLHttpRequest();
@@ -104,19 +109,25 @@ function getCurrentUser(auth) {
 
 async function getUser() {
   return new Promise((resolve, reject) => {
-  getCurrentUser(auth).then(async user => {
-    if (user) {
-      // User is signed in
-      const loggedinuser = new User(user.uid, user.displayName, user.photoURL, user.email);
-      await loggedinuser.setuseraddress();
-      console.log(" here logged in:", loggedinuser);
-      resolve(loggedinuser);
-    } else {
-      console.log("here not logged in");
-      resolve(null);
-    }
+    getCurrentUser(auth).then(async user => {
+      if (user) {
+        // var userstatus = await getUserDataFireDB(user);
+        // if (userstatus && userstatus.status == "active") {
+          // User is signed in
+          const loggedinuser = new User(user.uid, user.displayName, user.photoURL, user.email);
+          await loggedinuser.setuseraddress();
+          console.log(" here logged in:", loggedinuser);
+          resolve(loggedinuser);
+        // } else {
+        //   console.log("here user not active");
+        //   resolve(null);
+        // }
+      } else {
+        console.log("here not logged in");
+        resolve(null);
+      }
+    });
   });
-});
 }
 
 function redirectToLogin() {
@@ -139,5 +150,38 @@ const getsessionID = (user) => new Promise(function (resolve, reject) {
   xhr.send(JSON.stringify(user));
 });
 
+async function saveUserDataFireDB(user) {
+  const database = getDatabase(app);
+  let data = {
+    username: user.uid,
+    email: user.email,
+    profile_picture: user.photoURL,
+    status: "waitlisted",
+    createdAt: serverTimestamp(),
+  }
+  const userPath = `users/${user.uid}/data`;
+  await set(ref(database, userPath), data);
+}
+
+function getUserDataFireDB(user) {
+  return new Promise(async (resolve, reject) => {
+    const database = getDatabase(app);
+    try {
+      const userPath = `users/${user.uid}/data`;
+      const snapshot = await get(ref(database, userPath));
+      if (snapshot.exists()) {
+        // console.log('Data from the Firebase Realtime Database:', snapshot.val());
+        resolve(snapshot.val());
+      } else {
+        // console.log('No data found in the Firebase Realtime Database for the user.');
+        resolve(null);
+      }
+    } catch (error) {
+      console.error('Error reading data: ', error);
+      throw error;
+    }
+  });
+}
+
 export default User
-export { getUser, redirectToLogin, getsessionID };
+export { getUser, redirectToLogin, getsessionID, saveUserDataFireDB, getUserDataFireDB };

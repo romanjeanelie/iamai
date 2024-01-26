@@ -1,9 +1,9 @@
 let latitude;
 let longitude;
 
-import auth from '../app/firebaseConfig';
+import { app, auth } from '../app/firebaseConfig';
 import User from '../app/User';
-import { getUser, getsessionID } from '../app/User';
+import { getUser, getsessionID, saveUserDataFireDB, getUserDataFireDB } from '../app/User';
 import {
   GoogleAuthProvider,
   connectAuthEmulator,
@@ -14,6 +14,7 @@ import {
 } from 'firebase/auth';
 
 var signInButton;
+const ptext = document.getElementById("ptext");
 
 function toggleSignIn() {
   signInButton.style.display = "none";
@@ -56,12 +57,21 @@ function toggleSignIn() {
 // Listening for auth state changes.
 onAuthStateChanged(auth, async function (user) {
   if (user) {
+    console.log("user",user)
     // User is signed in.
     const loggedinuser = new User(user.uid, user.displayName, user.photoURL, user.email);
-    await loggedinuser.setuseraddress();
-    console.log(user);
-    // divgoogle.style.display = "none";
-    redirectToHome(loggedinuser);
+    // var userstatus = await getUserDataFireDB(user);
+    // if (userstatus) {
+      // if (userstatus.status == "active") {
+        await loggedinuser.setuseraddress();
+        redirectToHome(loggedinuser);
+      // }else{
+        // ptext.innerText = "You are part of the waitlist, we will inform you once you account has been approved and activated."
+    //   }
+    // } else {
+    //   await saveUserDataFireDB(user);
+    //   ptext.innerText = "Thanks for joining the waitlist"
+    // }
   }
 });
 
@@ -72,10 +82,10 @@ async function redirectToHome(user) {
 }
 
 window.onload = async function () {
-  const loggedinuser = await getUser();
+  // const loggedinuser = await getUser();
   signInButton = document.getElementById('divgoogle');
-  if (loggedinuser) { redirectToHome(loggedinuser) } else {
+  // if (loggedinuser) { redirectToHome(loggedinuser) } else {
     signInButton.style.display = "block";
     signInButton.addEventListener('click', toggleSignIn, false);
-  }
+  // }
 };

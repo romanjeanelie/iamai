@@ -16,6 +16,11 @@ $paddingTopMobile: 28px;
   src: url("/fonts/CircularStd-Medium.woff2");
   font-weight: 600;
 }
+@font-face {
+  font-family: "Antwerp";
+  src: url("/fonts/Antwerp_Light.otf");
+  font-weight: 300;
+}
 
 // Reset all transitions
 .preload * {

@@ -4,7 +4,7 @@ FROM node:20.3.0-alpine3.17
 ENV VITE_API_LOCATION_URL=https://api.iamplus.chat/location/
 ENV VITE_API_HOST=https://api.iamplus.chat
 ENV VITE_API_UPLOAD_URL=https://api.iamplus.chat/fileservices/uploads
-ENV VITE_API_WHISPER_URL=https://api.iamplus.chat/speech/asr?task=transcribe&encode=true&output=json&word_timestamps=false
+ENV VITE_API_WHISPER_URL=https://api.iamplus.chat/proxy-whisper-api-web/asr?task=transcribe&encode=true&output=json&word_timestamps=false
 ENV VITE_API_NATS_URL=wss://nats.iamplus.chat
 ENV VITE_API_NATS_USER=iamplus-acc
 ENV VITE_API_NATS_PASS=cis8Asto6HepremoGApI

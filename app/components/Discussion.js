@@ -48,7 +48,7 @@ export default class Discussion {
     this.emitter = emitter;
     this.toPageGrey = toPageGrey;
     this.user = user;
-    console.log("Discussion user",this.user);
+    console.log("Discussion user", this.user);
     this.pageEl = document.querySelector(".page-grey");
     this.inputContainer = this.pageEl.querySelector("div.input__container.grey");
     this.inputText = this.pageEl.querySelector(".input-text");
@@ -167,6 +167,7 @@ export default class Discussion {
         this.addAIText({
           text: "Hello test Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo pariatur sapiente, aliquam velit consectetur soluta esse cupiditate alias illo deleniti earum vel! Consequuntur ipsam quisquam nemo voluptatem id molestiae, reprehenderit illum natus omnis nobis porro sit sint veniam earum sapiente dolorem eum non deserunt! Saepe nostrum reprehenderit modi voluptatem corporis culpa accusantium. Maxime fuga, aliquam laboriosam culpa ipsum, minus officiis quasi aperiam ratione, vel beatae. Repellat, iusto placeat? Architecto sequi nam ullam numquam odio. Soluta dolore quas vel quaerat doloribus, vitae explicabo assumenda sunt fugiat consequatur illo, ipsa nam quia sit! Praesentium aliquid animi ex libero necessitatibus modi voluptas! Consequatur?",
           container: userEl,
+          targetlang: "en",
         });
       }, 1000);
       return;
@@ -225,8 +226,8 @@ export default class Discussion {
     this.currentTopStatus = null;
   }
 
-  async addAIText({ text, container, type = null } = {}) {
-    this.emitter.emit("addAIText", text);
+  async addAIText({ text, container, targetlang, type = null } = {}) {
+    this.emitter.emit("addAIText", text, targetlang);
     this.typingText?.fadeOut();
     const textEl = document.createElement("span");
 
@@ -331,8 +332,10 @@ export default class Discussion {
     }
     if (urlParams.get("lang") && urlParams.get("lang") != "") {
       this.Chat.sourcelang = urlParams.get("lang");
-      if (this.Chat.sourcelang == "ad") this.Chat.sourcelang = "";
-      this.Chat.autodetect = true;
+      if (this.Chat.sourcelang == "ad") {
+        this.Chat.sourcelang = "";
+        this.Chat.autodetect = true;
+      }
     }
     if (q && q != "") {
       this.getAiAnswer({ text: "" });
@@ -342,7 +345,7 @@ export default class Discussion {
       this.Chat.sessionID = sessionID;
       this.Chat.deploy_ID = deploy_ID;
       this.getAiAnswer({ text: "" });
-    }else{
+    } else {
       this.toPageGrey();
       let data = await getsessionID(await this.user);
       this.Chat.sessionID = data.SessionID;

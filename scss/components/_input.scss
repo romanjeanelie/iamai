@@ -5,7 +5,6 @@
   margin-bottom: 28px;
   border-radius: $borderRadius;
   width: 100%;
-
   overflow: hidden;
 
   transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
@@ -16,6 +15,7 @@
       background: $backgroundColorGreyPage;
       box-shadow: unset;
       border: 4px solid #dee0e1;
+      font-family: Antwerp;
 
       path,
       circle {
@@ -36,6 +36,7 @@
       }
       .input__image {
         background-color: $backgroundColorGreyPage;
+        font-family: Antwerp;
       }
     }
 
@@ -156,7 +157,8 @@
     @include inputTextExpand {
       max-height: calc(15 * 20px);
       margin-bottom: 8px;
-      font: inherit;
+      font-family: Antwerp;
+      // font: inherit;
       font-size: 20px;
 
       @media (max-height: 780px) {

@@ -121,7 +121,7 @@ export default class Phone {
     if (!this.isActive) return;
     console.log("Talk to me");
     if (!this.unbindEvent) {
-      this.unbindEvent = this.emitter.on("addAIText", (html) => this.startAITalking(html));
+      this.unbindEvent = this.emitter.on("addAIText", (html, targetlang) => this.startAITalking(html, targetlang));
     }
     this.isStreamEnded = false;
     this.phoneAnimations.toTalkToMe();
@@ -157,7 +157,10 @@ export default class Phone {
 
     if (!audio) return;
     const blob = float32ArrayToMp3Blob(audio, 16000);
-    this.textRecorded = await sendToWispher(blob);
+    if (this.discussion.Chat.autodetect)
+      this.textRecorded = await sendToWispher(blob);
+    else
+      this.textRecorded = await sendToWispher(blob, this.discussion.Chat.sourcelang);
 
     this.discussion.addUserElement({ text: this.textRecorded });
   }
@@ -171,7 +174,7 @@ export default class Phone {
     this.onClickOutside.interrupt = true;
   }
 
-  async startAITalking(html) {
+  async startAITalking(html, targetlang) {
     if (!this.isActive) return;
     console.log("new AIAnswer");
     if (this.debug) {
@@ -181,7 +184,7 @@ export default class Phone {
     }
 
     this.currentIndexTextAI === null ? (this.currentIndexTextAI = 0) : this.currentIndexTextAI++;
-    const { audio, index } = await textToSpeech(htmlToText(html), this.currentIndexTextAI);
+    const { audio, index } = await textToSpeech(htmlToText(html), targetlang, this.currentIndexTextAI);
     this.audiosAI[index] = audio;
 
     if (this.currentIndexAudioAI === null) {
@@ -301,8 +304,11 @@ export default class Phone {
 
   async onCompleteRecording(blob) {
     if (this.isRecordCanceled) return;
+    if (this.discussion.Chat.autodetect)
+      this.textRecorded = await sendToWispher(blob);
+    else
+      this.textRecorded = await sendToWispher(blob, this.discussion.Chat.sourcelang);
 
-    this.textRecorded = await sendToWispher(blob);
     this.timeoutTranscripting = setTimeout(() => {
       this.onCompleteTranscripting();
     }, this.minTranscriptingTime);

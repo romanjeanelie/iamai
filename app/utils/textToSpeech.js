@@ -96,15 +96,20 @@ function getAudio(blob) {
 //     };
 //   });
 // }
-export default function textToSpeech(text, index) {
+export default function textToSpeech(text, targetlang, index) {
   const headers = {
     accept: "audio/mpeg",
     "xi-api-key": ELEVENLABS_TOKEN,
     "Content-Type": "application/json",
   };
+  var model_id = "eleven_turbo_v2";
+  if(targetlang != "en")
+  {
+    model_id = "eleven_multilingual_v2";
+  }
   const body = JSON.stringify({
     text: text + " ",
-    model_id: "eleven_turbo_v2",
+    model_id: model_id,
     voice_settings: {
       stability: 0.5,
       similarity_boost: 0.5,
