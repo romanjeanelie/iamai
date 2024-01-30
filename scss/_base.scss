@@ -8,13 +8,13 @@ $paddingTopMobile: 28px;
 @font-face {
   font-family: "Circular";
   src: url("/fonts/CircularStd-Book.woff2");
-  font-weight: 400;
+  font-weight: 450;
 }
 
 @font-face {
   font-family: "Circular";
   src: url("/fonts/CircularStd-Medium.woff2");
-  font-weight: 600;
+  font-weight: 500;
 }
 @font-face {
   font-family: "Antwerp";
@@ -327,7 +327,7 @@ button {
   line-height: 20px;
   /* 125% */
   letter-spacing: 0.6px;
-  padding: 16px;
+  padding: 16px 16px 4px 16px;
 }
 
 .product-description {
@@ -1046,4 +1046,83 @@ button {
   font-weight: 100;
   line-height: 16px;
   letter-spacing: 1.2px;
+}
+
+/* #######  SHOPPING  ##########*/
+
+.shopping-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+  padding: 20px;
+  width: 100%;
+  background: #ffffff;
+  text-align: center;
+  border-radius: 16px;
+  margin-left: 15px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+.shopping-card {
+  background: #ffffff;
+  max-width: 215px;
+  position: relative;
+  overflow: hidden;
+}
+
+.shopping-card:hover .shopping-overlay {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+.shopping-card a {
+  text-decoration: none !important;
+}
+
+.shopping-image {
+  width: auto;
+  height: auto;
+  max-width: 210px;
+  border-radius: 8px;
+  text-align: center;
+  display: inline;
+}
+
+.shopping-name {
+  color: var(--Text, rgba(0, 0, 0, 0.72));
+  text-align: center;
+  font-feature-settings: "liga" off;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 450;
+  line-height: 20px;
+  letter-spacing: 0.6px;
+  padding: 16px;
+}
+
+.shopping-description {
+  font-size: 0.9em;
+  color: #555;
+}
+
+.shopping-price {
+  color: var(--B48-W60, rgba(0, 0, 0, 0.48));
+  text-align: center;
+  font-feature-settings: "liga" off;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 450;
+  line-height: 20px;
+  letter-spacing: 0.6px;
+  padding-bottom: 12px;
+}
+
+.shopping-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0);
+  transition: background-color 0.5s ease;
+  height: 100%;
+  width: 100%;
 }

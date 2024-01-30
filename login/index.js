@@ -13,14 +13,27 @@ import {
   signOut,
 } from 'firebase/auth';
 
-var signInButton;
-const ptext = document.getElementById("ptext");
+var signInButton, animation;
+const divintrotext = document.getElementById("divintrotext");
+const divintrologo = document.getElementById("divintrologo");
+
+const divlogin = document.getElementById("divlogin");
+const divinfotext = document.getElementById("divinfotext");
+
+const divwaitlist = document.getElementById("divwaitlist");
+const divlottieanimation = document.getElementById("divlottieanimation");
+
+
 
 function toggleSignIn() {
   signInButton.style.display = "none";
+  divlottieanimation.style.display = "block";
+  animation.play();
   // if (!auth.currentUser) {
   const provider = new GoogleAuthProvider();
-  provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+  // provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+  provider.addScope('profile');
+  provider.addScope('email');
   signInWithPopup(auth, provider)
     .then(function (result) {
       if (!result) return;
@@ -45,7 +58,11 @@ function toggleSignIn() {
         // If you are using multiple auth providers on your app you should handle linking
         // the user's accounts here.
       } else {
-        console.error(error);
+        signInButton.style.display = "block";
+        divlottieanimation.style.display = "none";
+        animation.stop();
+        // divlogin.style.display = "flex";
+        // console.error(error);
       }
     });
   // } else {
@@ -57,21 +74,33 @@ function toggleSignIn() {
 // Listening for auth state changes.
 onAuthStateChanged(auth, async function (user) {
   if (user) {
-    console.log("user",user)
+    console.log("user", user)
     // User is signed in.
     const loggedinuser = new User(user.uid, user.displayName, user.photoURL, user.email);
     // var userstatus = await getUserDataFireDB(user);
     // if (userstatus) {
-      // if (userstatus.status == "active") {
-        await loggedinuser.setuseraddress();
+    //   if (userstatus.status == "active") {
+    //     await loggedinuser.setuseraddress();
         redirectToHome(loggedinuser);
-      // }else{
-        // ptext.innerText = "You are part of the waitlist, we will inform you once you account has been approved and activated."
+      // } else {
+      //   divwaitlist.style.display = "flex";
     //   }
     // } else {
     //   await saveUserDataFireDB(user);
-    //   ptext.innerText = "Thanks for joining the waitlist"
+    //   divwaitlist.style.display = "flex";
     // }
+  }else{
+    divwaitlist.style.display = "none";
+    divlogin.style.display = "none";
+    // animateString("hello, I am", divintrotext, "", function () {
+      divintrotext.style.display = "none";
+      // animateString("Asterizk ", divintrologo, "../images/asterizk.svg", function () {
+        divintrologo.style.display = "none";
+        divlogin.style.display = "flex";
+        const texts = ["Find a flight to Bali", "Get a taxi to office", "Book a Hotel", "Tell me joke", "What are the movies playing"];
+        startAnimations(texts, divinfotext);
+      // });
+    // });
   }
 });
 
@@ -85,7 +114,70 @@ window.onload = async function () {
   // const loggedinuser = await getUser();
   signInButton = document.getElementById('divgoogle');
   // if (loggedinuser) { redirectToHome(loggedinuser) } else {
-    signInButton.style.display = "block";
-    signInButton.addEventListener('click', toggleSignIn, false);
+  signInButton.addEventListener('click', toggleSignIn, false);
   // }
+  divlottieanimation.style.display = "none";
+  animation = lottie.loadAnimation({
+    container: divlottieanimation,
+    renderer: 'svg',
+    loop: true,
+    autoplay: false,
+    path: '../animations/spiral.json' // Replace with the actual path to your Lottie JSON file
+  });
 };
+
+function startAnimations(textArray, element) {
+  let index = 0;
+
+  function next() {
+    if (index < textArray.length) {
+      animateString(textArray[index++], element, "", next, 50, 1, 1600);
+    } else {
+      index = 0
+      animateString(textArray[index++], element, "", next, 50, 1, 1600);
+    }
+  }
+
+  next();
+}
+
+function animateString(str, element, imgSrc = "", callback, delay = 150, deletedelay = 50, fulltextdelay = 1000) {
+  if (!element) return; // Element not found
+
+  let i = 0;
+  let isAdding = true;
+
+  function createImageElement() {
+    const img = document.createElement('img');
+    img.src = imgSrc;
+    return img;
+  }
+
+  function updateText() {
+    if (isAdding) {
+      element.textContent += str[i++];
+      if (i === str.length) {
+        isAdding = false;
+        if (imgSrc && imgSrc.length > 0) {
+          setTimeout(delay);
+          const img = createImageElement();
+          img.alt = str[i];
+          element.appendChild(img);
+        }
+        // else {
+        setTimeout(updateText, fulltextdelay); 
+        // }
+      } else {
+        setTimeout(updateText, delay);
+      }
+    } else {
+      element.textContent = element.textContent.slice(0, -1);
+      if (element.textContent.length > 0) {
+        setTimeout(updateText, deletedelay);
+      } else if (callback) {
+        callback();
+      }
+    }
+  }
+  updateText();
+}

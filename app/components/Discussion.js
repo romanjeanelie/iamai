@@ -347,10 +347,13 @@ export default class Discussion {
       this.getAiAnswer({ text: "" });
     } else {
       this.toPageGrey();
-      let data = await getsessionID(await this.user);
-      this.Chat.sessionID = data.SessionID;
-      this.Chat.deploy_ID = data.deploy_id;
-      this.getAiAnswer({ text: "" });
+      var usr = await this.user;
+      if (usr) {
+        let data = await getsessionID(usr);
+        this.Chat.sessionID = data.SessionID;
+        this.Chat.deploy_ID = data.deploy_id;
+        this.getAiAnswer({ text: "" });
+      }
     }
   }
 

@@ -1,15 +1,186 @@
 .login-page {
   color: $colorMain;
-  background: $backgroundColorBluePage;
-  height: 100svh;
+  background: $backgroundColorGreyPage;
+  // height: 100svh;
+  height: 100%;
+  margin: 0;
+  justify-content: center;
+  /* Aligns horizontally */
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+.divgoogle {
+  border: 1px solid #DEDDDC;
+  border-radius: 60px;
+}
+
+.divlogin {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.divwaitlist{
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.divloginbtn {
+  // margin-bottom: 100px;
+}
+.divintroinfo{
+  position: relative;
+  display: flex;
+}
+.divintrotext {
+  color: $colorBlack;
+  text-align: center;
+  font-feature-settings: 'liga' off;
+  font-family: "Circular";
+  font-size: 200px;
+  font-style: normal;
+  font-weight: 450;
+  line-height: 220px;
+  /* 110% */
+  letter-spacing: 1px;
+  display: flex;
+  position: relative;
+
+  // margin-bottom: 100px;
+  @include media("<tablet") {
+    font-size: 40px;
+    line-height: 48px;
+    padding-bottom: 182px;
+  }
+}
+
+.divintrologo {
+  color: $colorBlack;
+  text-align: center;
+  font-feature-settings: 'liga' off;
+  font-family: "Circular";
+  font-size: 180px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 200px;
+  /* 111.111% */
+  letter-spacing: 0.4px;
+  display: flex;
+  position: relative;
+
+  img {
+    width: 198px;
+    height: 198px;
+    margin-left: 36px;
+  }
+
+  // margin-bottom: 100px;
+  @include media("<tablet") {
+    font-size: 36px;
+    line-height: 40px;
+    letter-spacing: 0.08px;
+    padding-bottom: 182px;
+
+    img {
+      width: 39.6px;
+      height: 39.6px;
+      margin-left: 7px;
+    }
+  }
+}
+
+.divtext {
+  color: $colorBlack;
+  text-align: center;
+  font-feature-settings: 'liga' off;
+  font-family: "Circular";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 450;
+  line-height: 32px;
+  letter-spacing: 0.6px;
+  margin-top: 76px;
+
+  @include media("<tablet") {
+    font-size: 16px;
+    line-height: 20px;
+    margin-top: 0px;
+  }
+}
+
+.divinfotext {
+  color: $colorBlack;
+  text-align: center;
+  font-feature-settings: 'liga' off;
+  font-family: "Circular";
+  font-size: 66px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 72px;
+  letter-spacing: 0.15px;
+  margin-bottom: 40px;
+
+  @include media("<tablet") {
+    font-size: 24px;
+    line-height: 28px;
+    letter-spacing: 0.15px;
+    margin-bottom: 32px;
+  }
+}
+
+.divlink {
+  color: rgba($colorBlack, 0.48);
+  text-align: center;
+  font-feature-settings: 'liga' off;
+  font-family: "Circular";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 450;
+  line-height: 20px;
+  letter-spacing: 0.6px;
+  margin-bottom: 72px;
+
+  @include media("<tablet") {
+    font-size: 12px;
+    line-height: 15px;
+    letter-spacing: 0.45px;
+    margin-bottom: 128px;
+  }
+
+}
+.divwaitlistlogo{
+  margin-bottom: 132px;
+  @include media("<tablet") {
+    margin-bottom: 80px;
+  }
+}
+.divwaitlisttext {
+  color: $colorBlack;
+  text-align: center;
+  font-feature-settings: 'liga' off;
+  font-family: "Circular";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 450;
+  line-height: 32px;
+  letter-spacing: 1px;
+  margin-bottom: 48px;
+
+  @include media("<tablet") {
+    font-size: 20px;
+    line-height: 28px;
+    letter-spacing: 1px;
+  }
+}
+
 .login__container {
-  margin-top: 96px;
-  max-width: 600px;
+  // margin-top: 96px;
+  // max-width: 950px;
 
   .logo__main {
     display: flex;
@@ -27,5 +198,6 @@
     line-height: 24px;
     text-align: center;
     max-width: 330px;
+    color: $colorBlack;
   }
 }

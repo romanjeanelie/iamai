@@ -26,6 +26,8 @@ class Chat {
     this.FlightSearchResults = "";
     this.TaxiSearch = "";
     this.TaxiSearchResults = "";
+    this.ProductSearch = "";
+    this.ProductSearchResults = "";
     this.container = null;
     this.RAG_CHAT = "";
     this.MovieSearch = "";
@@ -33,7 +35,7 @@ class Chat {
     this.deploy_ID = "";
     this.image_urls = "";
     this.user = this.callbacks.user;
-    console.log("chat user",this.user);
+    console.log("chat user", this.user);
   }
 
   callsubmit = async (text, img, container) => {
@@ -75,12 +77,12 @@ class Chat {
             );
             AIAnswer = transresponse.data.translations[0].translatedText;
           }
-          await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang});
+          await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang });
 
           this.callbacks.enableInput();
         });
         if (this.sessionID && this.sessionID != "") {
-          xhr.open("POST", HOST+"/workflows/conversation", true);
+          xhr.open("POST", HOST + "/workflows/conversation", true);
           xhr.setRequestHeader("Content-Type", "application/json");
           if (this.sessionID.startsWith("wf-external-conversation")) {
             xhr.send(
@@ -99,7 +101,7 @@ class Chat {
             );
           }
         } else {
-          xhr.open("POST", HOST+"/workflows/tasks", true);
+          xhr.open("POST", HOST + "/workflows/tasks", true);
           xhr.setRequestHeader("Content-Type", "application/json");
           xhr.send(
             JSON.stringify({
@@ -164,6 +166,9 @@ class Chat {
         } else if (this.domain == "FlightSearch") {
           this.FlightSearch = JSON.parse(mdata.ui_params.FlightSearch);
           this.FlightSearchResults = JSON.parse(mdata.ui_params.FlightSearchResults);
+        } else if (this.domain == "ProductSearch") {
+          this.ProductSearch = JSON.parse(mdata.ui_params.ProductSearch);
+          this.ProductSearchResults = JSON.parse(mdata.ui_params.ProductSearchResults);
         }
       } else if (mdata.message_type == "image") {
         this.image_urls = JSON.parse(mdata.ui_params.image_urls);
@@ -257,6 +262,9 @@ class Chat {
         } else if (this.domain == "FlightSearch") {
           this.getFlightUI();
           (this.FlightSearch = ""), (this.domain = ""), (this.FlightSearchResults = "");
+        } else if (this.domain == "ProductSearch") {
+          this.getProductUI();
+          (this.ProductSearch = ""), (this.domain = ""), (this.ProductSearchResults = "");
         }
       } else if (mdata.message_type == "status") {
         if (mtext != "") {
@@ -664,7 +672,7 @@ class Chat {
       }
     });
 
-    xhr.open("POST", HOST+"/workflows/message/" + suworkflowid);
+    xhr.open("POST", HOST + "/workflows/message/" + suworkflowid);
     xhr.setRequestHeader("Content-Type", "application/json");
 
     xhr.send(data);
@@ -832,7 +840,7 @@ class Chat {
         }
       });
 
-      xhr.open("POST", HOST+"/workflows/message/" + this.workflowID);
+      xhr.open("POST", HOST + "/workflows/message/" + this.workflowID);
       xhr.setRequestHeader("Content-Type", "application/json");
 
       xhr.send(data);
@@ -1195,6 +1203,51 @@ class Chat {
     const productdetails = document.createElement("div");
     productdetails.id = "product-details";
     productdiv.appendChild(productdetails);
+    this.container.appendChild(productdiv);
+  }
+
+  getProductUI() {
+    const productdiv = document.createElement("div");
+    const productcardcontainerdiv = document.createElement("div");
+    productcardcontainerdiv.className = "shopping-container";
+    productdiv.appendChild(productcardcontainerdiv);
+
+    this.ProductSearchResults.forEach((element) => {
+      const productcarddiv = document.createElement("div");
+      productcarddiv.className = "shopping-card";
+      // productcarddiv.setAttribute("data-info", "product-details");
+      // productcarddiv.setAttribute("data-details", JSON.stringify(element).replace(/'/g, "&#39;"));
+      // productcarddiv.addEventListener("click", (event) => this.showProductDetail(event));
+      productcardcontainerdiv.appendChild(productcarddiv);
+      const productcarddivA = document.createElement("a");
+      productcarddivA.setAttribute("href", element.link);
+      productcarddivA.setAttribute("target", "_blank");
+      productcarddiv.appendChild(productcarddivA);
+
+
+      const productimage = document.createElement("img");
+      productimage.className = "shopping-image";
+      productimage.setAttribute("src", element.imageUrl);
+      productimage.setAttribute("alt", element.title);
+      productcarddivA.appendChild(productimage);
+
+      const productname = document.createElement("h3");
+      productname.className = "shopping-name";
+      productname.innerHTML = element.title;
+      productcarddivA.appendChild(productname);
+
+      const productprice = document.createElement("p");
+      productprice.className = "shopping-price";
+      productprice.innerHTML = element.price;
+      productcarddivA.appendChild(productprice);
+
+      // const productoverlay = document.createElement("div");
+      // productoverlay.className = "product-overlay";
+      // productcarddiv.appendChild(productoverlay);
+    });
+    // const productdetails = document.createElement("div");
+    // productdetails.id = "product-details";
+    // productdiv.appendChild(productdetails);
     this.container.appendChild(productdiv);
   }
 
