@@ -5,6 +5,8 @@ import Discussion from "./components/Discussion";
 import Slider from "./components/Slider";
 import { getUser, redirectToLogin } from "./User";
 import { createNanoEvents } from "nanoevents";
+import { auth } from '../app/firebaseConfig';
+import { signOut } from "firebase/auth";
 
 class App {
   constructor() {
@@ -15,7 +17,7 @@ class App {
     this.cancelBtn = document.querySelector(".cancel-btn");
     this.user = getUser();
     // getUser().then(user => {
-      // this.user = user;
+    // this.user = user;
     // });
     this.emitter = createNanoEvents();
 
@@ -56,7 +58,7 @@ class App {
   }
 
   initDiscussion() {
-    console.log("index user",this.user);
+    console.log("index user", this.user);
     this.discussion = new Discussion({
       emitter: this.emitter,
       toPageGrey: this.toPageGrey.bind(this),
@@ -85,13 +87,13 @@ class App {
 
   addListeners() {
     // getUser().then(user => {
-      // this.user = user;
-      this.user.then((user) => {
-        console.log("this.user", this.user);
-        this.user = user;
-        if (!this.user) {
-          redirectToLogin();
-        }
+    // this.user = user;
+    this.user.then((user) => {
+      console.log("this.user", this.user);
+      this.user = user;
+      if (!this.user) {
+        redirectToLogin();
+      }
     });
 
     // });
@@ -99,6 +101,14 @@ class App {
     window.addEventListener("load", () => {
       // Avoid flash blue page
       this.app.classList.remove("preload");
+      document.getElementById('signOutButton').addEventListener('click', () => {
+        signOut(auth).then(() => {
+          console.log("User signed out.");
+          redirectToLogin();
+        }).catch((error) => {
+          console.error("Error signing out: ", error);
+        });
+      });
     });
     document.fonts.ready.then(() => {
       this.initApp();

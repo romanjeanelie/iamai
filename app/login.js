@@ -1,9 +1,9 @@
 let latitude;
 let longitude;
 
-import { app, auth } from '../app/firebaseConfig';
-import User from '../app/User';
-import { getUser, getsessionID, saveUserDataFireDB, getUserDataFireDB } from '../app/User';
+import { app, auth } from './firebaseConfig';
+import User from './User';
+import { getUser, getsessionID, saveUserDataFireDB, getUserDataFireDB } from './User';
 import {
   GoogleAuthProvider,
   connectAuthEmulator,
@@ -107,7 +107,7 @@ onAuthStateChanged(auth, async function (user) {
 async function redirectToHome(user) {
   console.log("redirect to home");
   let data = await getsessionID(user);
-  window.location.href = "../index.html?lang=ad&session_id=" + data.SessionID + "&deploy_id=" + data.deploy_id;
+  window.location.href = "./main.html?lang=ad&session_id=" + data.SessionID + "&deploy_id=" + data.deploy_id;
 }
 
 window.onload = async function () {

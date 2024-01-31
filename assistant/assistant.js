@@ -23,7 +23,7 @@ var btnsubmit,
   btncloseassistant,
   btnaddInputField;
 let loggedinuser;
-const URL = import.meta.env.VITE_API_URL || "https://app.iamplus.chat/index.html?lang=ad&session_id=";
+const URL = import.meta.env.VITE_API_URL || "https://app.iamplus.chat/main.html?lang=ad&session_id=";
 const HOST = import.meta.env.VITE_API_HOST || "https://api.iamplus.chat"
 const DB_HOST = import.meta.env.VITE_API_DB_HOST || "https://nocodb.iamplus.chat"
 const DB_TOKEN = import.meta.env.VITE_API_DB_TOKEN || "juIbsot-ERPsSlO3TdkYHRJPznr1gqrLBIpMjWZU"

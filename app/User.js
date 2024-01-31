@@ -132,7 +132,7 @@ async function getUser() {
 
 function redirectToLogin() {
   console.log("notloggedin");
-  window.location.href = "./login/index.html";
+  window.location.href = "./index.html";
 }
 
 const getsessionID = (user) => new Promise(function (resolve, reject) {

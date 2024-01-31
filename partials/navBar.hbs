@@ -7,8 +7,8 @@
   </button>
 
   <ul class="nav__list">
-    <li class="nav__plus">
-      <a href="/index.html">
+    {{!-- <li class="nav__plus">
+      <a href="/main.html">
         <button>
           <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none">
             <rect width="1.6" height="17.6" x="19.203" y="11.2" fill="#fff" rx=".8" />
@@ -26,37 +26,49 @@
             stroke="white" stroke-width="1.6" stroke-linecap="round" />
         </svg>
       </button>
-    </li>
+    </li> --}}
     <li class="nav__chat">
-      <a href="/index.html">
-      <button>
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M25.5779 14.4236C24.0441 12.8912 22.0275 12.125 20.0109 12.125C17.9942 12.125 15.9776 12.8912 14.4438 14.4236C11.6887 17.148 11.4047 21.4047 13.5065 24.4696L12.3988 27.5912L15.5231 26.4845C16.8581 27.4209 18.4203 27.875 19.9824 27.875C21.9991 27.875 24.0157 27.1088 25.5495 25.5764C28.6454 22.4831 28.6454 17.4885 25.5779 14.4236Z"
-            stroke="white" stroke-width="1.6" stroke-linejoin="round" />
-        </svg>
-      </button>
-      </a>
-    </li>
-    <li class="nav__trad">
-      <button>
-        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none">
-          <path stroke="#000" stroke-linecap="round" stroke-width="1.6"
-            d="M10.25 20.999h5.938M8 24.999l4.998-11.384M18.242 24.999l-4.997-11.384M30.758 24.992a16.467 16.467 0 0 1-7.047-6.864" />
-          <path stroke="#000" stroke-linecap="round" stroke-width="1.6"
-            d="M21.747 24.992a16.454 16.454 0 0 0 8.034-9.07M20.938 15.358h11.056M26.46 15.36V13" />
-        </svg>
-      </button>
-    </li>
-    <li class="nav__assistant">
-      <a href="/assistant/assistant.html">
+      <a href="/main.html">
         <button>
-          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none">
-            <path stroke="#000" stroke-linecap="round" stroke-width="1.6"
-              d="M14.25 20.999h5.938M12 24.999l4.997-11.384M22.242 24.999l-4.997-11.384M26 25v-7M26 15v-1" />
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M25.5779 14.4236C24.0441 12.8912 22.0275 12.125 20.0109 12.125C17.9942 12.125 15.9776 12.8912 14.4438 14.4236C11.6887 17.148 11.4047 21.4047 13.5065 24.4696L12.3988 27.5912L15.5231 26.4845C16.8581 27.4209 18.4203 27.875 19.9824 27.875C21.9991 27.875 24.0157 27.1088 25.5495 25.5764C28.6454 22.4831 28.6454 17.4885 25.5779 14.4236Z"
+              stroke="black" stroke-opacity="0.4" stroke-width="1.6" stroke-linejoin="round" />
           </svg>
         </button>
       </a>
+    </li>
+    {{!-- <li class="nav__trad">
+      <button>
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20.001" cy="14.75" r="3.7" stroke="black" stroke-opacity="0.4" stroke-width="1.6" />
+          <path
+            d="M28.4006 29.7516V29.7516C28.4006 25.1124 24.6398 21.3516 20.0006 21.3516V21.3516C15.3614 21.3516 11.6006 25.1124 11.6006 29.7516V29.7516"
+            stroke="black" stroke-opacity="0.4" stroke-width="1.6" stroke-linecap="round" />
+        </svg>
+      </button>
+    </li> --}}
+    <li class="nav__assistant">
+      <a href="/assistant/assistant.html">
+        <button>
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M11.6784 25.7311C11.2501 25.6226 11.0468 25.2068 11.2244 24.8022L16.2219 13.4177C16.3725 13.0746 16.7487 12.8499 17.1207 12.8556C17.4928 12.8499 17.8689 13.0746 18.0195 13.4177L23.0171 24.8022C23.1947 25.2068 22.9914 25.6226 22.5631 25.7311C22.1348 25.8395 21.6436 25.5994 21.466 25.1948L19.9752 21.7988H14.2663L12.7755 25.1948C12.5979 25.5994 12.1067 25.8395 11.6784 25.7311ZM19.2728 20.1988L17.1207 15.2963L14.9686 20.1988H19.2728ZM25.9999 25.8006C25.5581 25.8006 25.1999 25.4425 25.1999 25.0006L25.1999 18.0006C25.1999 17.5588 25.5581 17.2006 25.9999 17.2006C26.4418 17.2006 26.7999 17.5588 26.7999 18.0006V25.0006C26.7999 25.4424 26.4418 25.8006 25.9999 25.8006ZM25.1999 15.0006C25.1999 15.4425 25.5581 15.8006 25.9999 15.8006C26.4418 15.8006 26.7999 15.4425 26.7999 15.0006V14.0006C26.7999 13.5588 26.4418 13.2006 25.9999 13.2006C25.5581 13.2006 25.1999 13.5588 25.1999 14.0006V15.0006Z"
+              fill="black" fill-opacity="0.4" />
+          </svg>
+        </button>
+      </a>
+    </li>
+    <li class="nav__trad">
+      <button id="signOutButton">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M27.4346 20.5645C27.7471 20.2521 27.747 19.7455 27.4346 19.4331L24.0405 16.039C23.7281 15.7266 23.2216 15.7266 22.9091 16.039C22.5967 16.3514 22.5967 16.858 22.9091 17.1704L24.9368 19.198L16.4001 19.198C15.9583 19.198 15.6001 19.5562 15.6001 19.998C15.6001 20.4398 15.9583 20.798 16.4001 20.798L24.9384 20.798L22.9091 22.8272C22.5967 23.1396 22.5967 23.6462 22.9091 23.9586C23.2216 24.271 23.7281 24.271 24.0405 23.9586L27.4346 20.5645Z"
+            fill="black" fill-opacity="0.4" />
+          <path d="M18 13L13.6 13C12.7163 13 12 13.7163 12 14.6L12 25.4C12 26.2837 12.7163 27 13.6 27L18 27"
+            stroke="black" stroke-opacity="0.4" stroke-width="1.6" stroke-linecap="round" />
+        </svg>
+      </button>
     </li>
   </ul>
 </nav>

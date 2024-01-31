@@ -221,10 +221,10 @@ class Chat {
           text: "",
           label: "Please click here, to start a new session to chat or close the browser.",
           container: this.container,
-          url: "./login/index.html",
+          url: "./index.html",
         });
         // await this.callbacks.addAIText({ text: "Please click here, to start a new session to chat or close the browser.", type: 'link', container: this.container });
-        // textEl.innerHTML = 'Please click <a href="./login/index.html">here</a>, to start a new session to chat or close the browser.';
+        // textEl.innerHTML = 'Please click <a href="./index.html">here</a>, to start a new session to chat or close the browser.';
       } else if (mdata.awaiting) {
         console.log("awaiting:" + mdata.message_type);
         console.log("mtext:" + mtext);
@@ -1241,9 +1241,14 @@ class Chat {
       productprice.innerHTML = element.price;
       productcarddivA.appendChild(productprice);
 
-      // const productoverlay = document.createElement("div");
-      // productoverlay.className = "product-overlay";
-      // productcarddiv.appendChild(productoverlay);
+      const productsource = document.createElement("p");
+      productsource.className = "shopping-source";
+      productsource.innerHTML = element.source;
+      productcarddivA.appendChild(productsource);
+
+      const productoverlay = document.createElement("div");
+      productoverlay.className = "shopping-overlay";
+      productcarddivA.appendChild(productoverlay);
     });
     // const productdetails = document.createElement("div");
     // productdetails.id = "product-details";
