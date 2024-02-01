@@ -17,7 +17,8 @@ export default {
     minify: true,
     rollupOptions: {
       input: {
-        main: resolve(__dirname, "index.html"),
+        index: resolve(__dirname, "index.html"),
+        main: resolve(__dirname, "main.html"),
         // login: resolve(__dirname, "login/index.html"),
         login_google: resolve(__dirname, "login/login_google.html"),
         assistant: resolve(__dirname, "assistant/assistant.html"),

@@ -73,9 +73,9 @@ export default class Discussion {
     this.addListeners();
 
     // DEBUG
-    const tempContainer = document.createElement("div");
-    tempContainer.classList.add("discussion__ai");
-    this.discussionContainer.appendChild(tempContainer);
+    // const tempContainer = document.createElement("div");
+    // tempContainer.classList.add("discussion__ai");
+    // this.discussionContainer.appendChild(tempContainer);
     // Scroll to div
     // const moviesCards = document.querySelectorAll(".movies-card");
     // const movieDetails = document.querySelector("#movie-details");
