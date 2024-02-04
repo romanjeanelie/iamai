@@ -42,11 +42,16 @@ class Chat {
     this.container = container;
     var input_text = text;
     var original_text = input_text;
-    if (this.sourcelang != this.targetlang) {
+    if(this.autodetect)
+    {
+      var response = await this.googletranslate(input_text, this.targetlang, "");
+      input_text = response.data.translations[0].translatedText;
+      console.log("response.data.translations[0].detectedSourceLanguage",response.data.translations[0].detectedSourceLanguage)
+      if (response.data.translations[0].detectedSourceLanguage)
+        this.sourcelang = response.data.translations[0].detectedSourceLanguage;
+    }else if (this.sourcelang != this.targetlang) {
       var response = await this.googletranslate(input_text, this.targetlang, this.sourcelang);
       input_text = response.data.translations[0].translatedText;
-      if (this.autodetect && response.data.translations[0].detectedSourceLanguage)
-        this.sourcelang = response.data.translations[0].detectedSourceLanguage;
     }
     if (!IS_DEV_MODE) {
       if (this.awaiting && this.workflowID != "") {
