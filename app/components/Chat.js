@@ -36,6 +36,7 @@ class Chat {
     this.image_urls = "";
     this.user = this.callbacks.user;
     console.log("chat user", this.user);
+    this.callbacks.disableInput();
   }
 
   callsubmit = async (text, img, container) => {
@@ -210,7 +211,7 @@ class Chat {
         }
         if (mdata.stream_status && mdata.stream_status == "ended") {
           this.callbacks.emitter.emit("endStream");
-          this.callbacks.enableInput();
+          // this.callbacks.enableInput();
           // await this.callbacks.addAIText({ text: "\n\n", container: this.container });
         }
         // } else if (mdata.status == "Agent ended") {
@@ -227,7 +228,7 @@ class Chat {
           text: "",
           label: "Please click here, to start a new session to chat or close the browser.",
           container: this.container,
-          url: "./index.html",
+          url: "./main.html",
         });
         // await this.callbacks.addAIText({ text: "Please click here, to start a new session to chat or close the browser.", type: 'link', container: this.container });
         // textEl.innerHTML = 'Please click <a href="./index.html">here</a>, to start a new session to chat or close the browser.';
@@ -283,6 +284,9 @@ class Chat {
 
           await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang, type: "status" });
         }
+      } else if(mdata.status.toLowerCase() == "pa end")
+      {
+        this.callbacks.enableInput();
       }
       m.ack();
     }

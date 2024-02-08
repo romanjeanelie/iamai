@@ -122,7 +122,7 @@ window.onload = async function () {
     renderer: 'svg',
     loop: true,
     autoplay: false,
-    path: '../animations/spiral.json' // Replace with the actual path to your Lottie JSON file
+    path: '../animations/asterisk_loading.json' // Replace with the actual path to your Lottie JSON file
   });
 };
 
