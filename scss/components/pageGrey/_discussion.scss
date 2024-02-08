@@ -4,19 +4,14 @@
 }
 
 .discussion__container {
-  flex: 1;
   width: 100%;
   max-width: 870px;
-
-  overflow-y: auto;
+  color: black;
   scrollbar-width: none;
   /* for Firefox */
   -ms-overflow-style: none;
   /* for Internet Explorer and Edge */
-
-  overflow-x: hidden;
-  // padding: 0 120px;
-  padding-bottom: 120px;
+  padding-bottom: 124px;
   padding-top: 50px;
 
   @include media("<tablet") {
@@ -39,7 +34,7 @@
 
   .discussion__user,
   .discussion__ai {
-    font-family: Antwerp;
+    font-family: "Antwerp";
     position: relative;
     margin-bottom: 32px;
     font-size: 20px;

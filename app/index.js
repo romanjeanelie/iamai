@@ -8,6 +8,7 @@ import { createNanoEvents } from "nanoevents";
 import { auth } from '../app/firebaseConfig';
 import { signOut } from "firebase/auth";
 
+
 class App {
   constructor() {
     this.app = document.querySelector("#app");
@@ -91,9 +92,9 @@ class App {
     this.user.then((user) => {
       console.log("this.user", this.user);
       this.user = user;
-      if (!this.user) {
-        redirectToLogin();
-      }
+      // if (!this.user) {
+      //   redirectToLogin();
+      // }
     });
 
     // });

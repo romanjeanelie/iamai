@@ -29,22 +29,19 @@ $paddingTopMobile: 28px;
 }
 
 html {
-  overflow: hidden;
-  height: 100svh;
-  background: $backgroundColorGreyPage;
+  min-height: 100svh;
+  // background: $backgroundColorGreyPage;
 }
 
 body {
   color: $colorMain;
-  height: 100%;
-  overflow: hidden;
   font-family: Circular;
   font-weight: 400;
   font-feature-settings: "liga" 0;
 }
 
 #app {
-  transition: visibility 0s, opacity 0.1s linear;
+  // transition: visibility 0s, opacity 0.1s linear;
 
   &.preload {
     visibility: hidden;
@@ -59,25 +56,27 @@ button {
 .page {
   position: relative;
   width: 100vw;
-  min-height: 100svh;
   display: flex;
+  height: 100svh;
   justify-content: center;
   align-items: center;
+
 
   transition: transform $ease-in-out-cubic;
 
   main {
     z-index: 2;
   }
-
   .input__wrapper {
     display: flex;
     justify-content: center;
     max-width: 100vw;
+    background :$backgroundColorGreyPage;
   }
 }
 
 .page-blue {
+  display: none;
   background: $backgroundColorBluePage;
 
   main {
@@ -85,7 +84,6 @@ button {
     grid-template-rows: 1fr auto 1fr;
     width: 100%;
     max-width: 696px;
-    height: 100%;
 
     .top {
       align-self: self-end;
@@ -105,8 +103,9 @@ button {
 }
 
 .page-grey {
-  position: unset;
-  background-color: $backgroundColorGreyPage;
+
+  // background-color: $backgroundColorGreyPage;
+
 
   main {
     position: relative;
@@ -118,7 +117,7 @@ button {
     height: 100svh;
 
     .input__wrapper {
-      position: absolute;
+      position: fixed;
       z-index: 2;
       bottom: 0;
       left: 50%;
@@ -130,10 +129,6 @@ button {
         width: 100%;
       }
     }
-  }
-
-  &.show {
-    transform: translateY(-100%);
   }
 }
 
