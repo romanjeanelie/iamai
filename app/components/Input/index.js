@@ -99,6 +99,10 @@ export default class Input {
         onImageUploaded: (img) => {
           this.currentImages.push(img);
         },
+        onImageCancel: () => {
+          this.currentImages = [];
+          this.goToInitial({ disableInput: false });
+        }
       },
       this.pageEl,
       this.emitter

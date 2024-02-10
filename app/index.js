@@ -92,9 +92,9 @@ class App {
     this.user.then((user) => {
       console.log("this.user", this.user);
       this.user = user;
-      // if (!this.user) {
-      //   redirectToLogin();
-      // }
+      if (!this.user) {
+        redirectToLogin();
+      }
     });
 
     // });

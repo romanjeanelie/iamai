@@ -24,28 +24,6 @@
     <!-- Cancel  btn -->
     {{> cancelBtn}}
 
-    <div class="page page-grey">
-      <!-- Overlay recording -->
-      {{> greyPage/overlayRecording}}
-      <main>
-        <!-- Discussion -->
-
-        <div class="discussion__container"></div>
-        <div class="input__wrapper">
-          <!-- Input -->
-          {{> input labelPage="grey"}}
-        </div>
-        <!-- Phone -->
-        {{> phone}}
-        <!-- Image drop -->
-        {{> imageDrop}}
-        <!--Slider -->
-        {{> slider}}
-      </main>
-      <!-- Logo-->
-      {{> greyPage/logo}}
-    </div>
-
     <div class="page page-blue">
       <main>
         <div class="top">
@@ -70,6 +48,28 @@
       {{> imageDrop}}
       <!-- Info -->
       {{> bluePage/infoText}}
+    </div>
+
+    <div class="page page-grey hidden">
+      <!-- Overlay recording -->
+      {{> greyPage/overlayRecording}}
+      <main>
+        <!-- Discussion -->
+
+        <div class="discussion__container"></div>
+        <div class="input__wrapper">
+          <!-- Input -->
+          {{> input labelPage="grey"}}
+        </div>
+        <!-- Phone -->
+        {{> phone}}
+        <!-- Image drop -->
+        {{> imageDrop}}
+        <!--Slider -->
+        {{> slider}}
+      </main>
+      <!-- Logo-->
+      {{> greyPage/logo}}
     </div>
   </div>
   <script src="/libAudioRecorder/WebAudioRecorder.min.js"></script>

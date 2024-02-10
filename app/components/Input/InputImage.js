@@ -17,7 +17,6 @@ export default class InputImage {
 
     //TEMP
     this.analizingImageMinTime = 1000; //ms
-
     this.isEnabled = false;
     this.imgs = [];
     this.addListeners();
@@ -28,6 +27,7 @@ export default class InputImage {
   }
 
   disable() {
+    this.callbacks.onImageCancel();
     this.inputFileUploadEl.value = "";
     this.imageDroppedContainer.innerHTML = "";
     this.imageDroppedContainer.classList.remove("visible");

@@ -41,7 +41,8 @@ body {
 }
 
 #app {
-  // transition: visibility 0s, opacity 0.1s linear;
+  min-height: 100svh;
+  transition: visibility 0s, opacity 0.1s linear;
 
   &.preload {
     visibility: hidden;
@@ -102,18 +103,17 @@ button {
 }
 
 .page-grey {
-
-  // background-color: $backgroundColorGreyPage;
-
-
+  background-color: $backgroundColorGreyPage;
+  height:100%;
+  
   main {
+    min-height: 100svh;
     position: relative;
     height: 100%;
     display: flex;
     align-items: center;
     flex-direction: column;
     width: 100%;
-    height: 100svh;
 
     .input__wrapper {
       position: fixed;
