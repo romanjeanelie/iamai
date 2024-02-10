@@ -232,7 +232,7 @@ class Chat {
         });
         // await this.callbacks.addAIText({ text: "Please click here, to start a new session to chat or close the browser.", type: 'link', container: this.container });
         // textEl.innerHTML = 'Please click <a href="./index.html">here</a>, to start a new session to chat or close the browser.';
-      } else if (mdata.awaiting) {
+      } else if (mdata.awaiting && !mdata.message_type == "image") {
         console.log("awaiting:" + mdata.message_type);
         console.log("mtext:" + mtext);
         this.workflowID = mdata.session_id;
