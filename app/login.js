@@ -81,7 +81,7 @@ onAuthStateChanged(auth, async function (user) {
     // if (userstatus) {
     //   if (userstatus.status == "active") {
     //     await loggedinuser.setuseraddress();
-        redirectToHome(loggedinuser);
+        // redirectToHome(loggedinuser);
       // } else {
       //   divwaitlist.style.display = "flex";
     //   }

@@ -60,6 +60,7 @@ class App {
 
   initDiscussion() {
     console.log("index user", this.user);
+    console.log(" ==== is it from here ? =====")
     this.discussion = new Discussion({
       emitter: this.emitter,
       toPageGrey: this.toPageGrey.bind(this),
@@ -92,9 +93,9 @@ class App {
     this.user.then((user) => {
       console.log("this.user", this.user);
       this.user = user;
-      if (!this.user) {
-        redirectToLogin();
-      }
+      // if (!this.user) {
+      //   redirectToLogin();
+      // }
     });
 
     // });

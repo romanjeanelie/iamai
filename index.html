@@ -19,35 +19,62 @@
 </head>
 
 <body class="preload">
-  <div id="app" class="login-page">
-    <div class="login__container">
-      <!-- {{> bluePage/logo}} -->
-      <div id="divintroinfo" class="divintroinfo">
-        <div id="divintrotext" class="divintrotext"></div>
-        <div id="divintrologo" class="divintrologo"></div>
+  <div id="app">
+    <div class="login-page">
+      <div class="login__container">
+        <!-- {{> bluePage/logo}} -->
+        <div id="divintroinfo" class="divintroinfo">
+          <div id="divintrotext" class="divintrotext"></div>
+          <div id="divintrologo" class="divintrologo"></div>
+        </div>
       </div>
-    </div>
-    <div id="divlogin" class="divlogin">
-      <div id="divtext" class="divtext">I can help you</div>
-      <div id="divinfotext" class="divinfotext"></div>
-      <div id="divlink" class="divlink"><a href="#" target="_blank">find out more</a></div>
-      <div id="divlottieanimation" style="width: 40px; height: 40px;"></div>
-      <div id="divloginbtn" class="divloginbtn">
-        <button id="divgoogle" class="divgoogle">
-          <img src="../images/googlesignin.svg">
-        </button>
+      <div id="divlogin" class="divlogin">
+        <div id="divtext" class="divtext">I can help you</div>
+        <div id="divinfotext" class="divinfotext"></div>
+        <div id="divlink" class="divlink"><a href="#" target="_blank">find out more</a></div>
+        <div id="divlottieanimation" style="width: 40px; height: 40px;"></div>
+        <div id="divloginbtn" class="divloginbtn">
+          <button id="divgoogle" class="divgoogle">
+            <img src="../images/googlesignin.svg">
+          </button>
+        </div>
       </div>
+      <div id="divwaitlist" class="divwaitlist">
+        <div id="divwaitlistlogo" class="divwaitlistlogo"><img src="../images/logo_asterizk.svg"></div>
+        <div id="divwaitlisttext" class="divwaitlisttext">Thank you for your interest,<br>
+          we’ll email you once<br>
+          approved </div>
+        <div id="divlink" class="divlink"><a href="#" target="_blank">find out more</a></div>
+      </div>
+
+
     </div>
-    <div id="divwaitlist" class="divwaitlist">
-      <div id="divwaitlistlogo" class="divwaitlistlogo"><img src="../images/logo_asterizk.svg"></div>
-      <div id="divwaitlisttext" class="divwaitlisttext">Thank you for your interest,<br>
-        we’ll email you once<br>
-        approved </div>
-      <div id="divlink" class="divlink"><a href="#" target="_blank">find out more</a></div>
+    <div class="page page-grey hidden">
+      <!-- Overlay recording -->
+      {{> greyPage/overlayRecording}}
+      <main>
+        <!-- Discussion -->
+
+        <div class="discussion__container"></div>
+        <div class="input__wrapper">
+          <!-- Input -->
+          {{> input labelPage="grey"}}
+        </div>
+        <!-- Phone -->
+        {{> phone}}
+        <!-- Image drop -->
+        {{> imageDrop}}
+        <!--Slider -->
+        {{> slider}}
+      </main>
+      <!-- Logo-->
+      {{> greyPage/logo}}
     </div>
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script type="module" src="/app/login.js"></script>
+  <script type="module" src="/app/index.js"></script>
+
 </body>
 
 </html>
