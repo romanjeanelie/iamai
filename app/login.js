@@ -81,13 +81,13 @@ onAuthStateChanged(auth, async function (user) {
     // if (userstatus) {
     //   if (userstatus.status == "active") {
     //     await loggedinuser.setuseraddress();
-        // redirectToHome(loggedinuser);
+        redirectToHome(loggedinuser);
       // } else {
       //   divwaitlist.style.display = "flex";
     //   }
     // } else {
     //   await saveUserDataFireDB(user);
-    //   divwaitlist.style.display = "flex";
+      // divwaitlist.style.display = "flex";
     // }
   }else{
     divwaitlist.style.display = "none";

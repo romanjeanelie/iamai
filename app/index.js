@@ -12,6 +12,7 @@ import { signOut } from "firebase/auth";
 class App {
   constructor() {
     this.app = document.querySelector("#app");
+    this.loginPage = document.querySelector(".login-page");
     this.pageBlue = document.querySelector(".page-blue");
     this.pageGrey = document.querySelector(".page-grey");
     this.navbarEl = document.querySelector(".nav");
@@ -28,7 +29,7 @@ class App {
 
   // Anim
   toPageGrey({ duration = 0 } = {}) {
-    this.pageBlue.style.transitionDuration = duration + "ms";
+    this.loginPage.style.transitionDuration = duration + "ms";
     this.pageGrey.style.transitionDuration = duration + "ms";
     this.pageBlue.classList.add("hidden");
     this.pageGrey.classList.add("show");
@@ -40,6 +41,7 @@ class App {
       this.inputGreyPage.isActive = true;
     });
   }
+
 
   initApp() {
     this.initNavbar();
@@ -60,7 +62,6 @@ class App {
 
   initDiscussion() {
     console.log("index user", this.user);
-    console.log(" ==== is it from here ? =====")
     this.discussion = new Discussion({
       emitter: this.emitter,
       toPageGrey: this.toPageGrey.bind(this),
