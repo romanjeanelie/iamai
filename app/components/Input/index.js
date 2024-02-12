@@ -99,6 +99,10 @@ export default class Input {
         onImageUploaded: (img) => {
           this.currentImages.push(img);
         },
+        onImageCancel: () => {
+          this.currentImages = [];
+          this.goToInitial({ disableInput: false });
+        }
       },
       this.pageEl,
       this.emitter
@@ -120,7 +124,8 @@ export default class Input {
     this.addListeners();
 
     // Emitter
-    this.emitter.on("input:toWrite", this.toWrite.bind(this));
+    this.emitter.on("input:toWrite",()=> {
+      this.toWrite.bind(this)});
     this.emitter.on("input:updateImages", this.updateImages.bind(this));
 
     // TEMP

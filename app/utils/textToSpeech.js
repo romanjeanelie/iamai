@@ -96,7 +96,7 @@ function getAudio(blob) {
 //     };
 //   });
 // }
-export default function textToSpeech(text, targetlang, index) {
+export default function textToSpeech(text, targetlang, index, attempt = 0) {
   const headers = {
     accept: "audio/mpeg",
     "xi-api-key": ELEVENLABS_TOKEN,
@@ -123,5 +123,13 @@ export default function textToSpeech(text, targetlang, index) {
   })
     .then((response) => response.blob())
     .then((audioBlob) => ({ audio: getAudio(audioBlob), index }))
-    .catch((error) => console.error("Error:", error));
-}
+    .catch((error) => {
+      console.error(`Error on attempt ${attempt}:`, error);
+      if (attempt < 2) {
+        // If this was the first or second attempt, try again
+        return textToSpeech(text, targetlang, index, attempt + 1);
+      } else {
+        // If this was the third attempt, throw the error
+        throw error;
+      }
+    });}

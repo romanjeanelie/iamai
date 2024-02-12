@@ -152,7 +152,7 @@ class Chat {
     };
     for await (const m of iter) {
       var mdata = m.json();
-      console.log(mdata);
+      // console.log(mdata);
       console.timeEnd("RequestStart");
       var mtext = mdata.data;
 
@@ -567,7 +567,7 @@ class Chat {
   translate = (text, lang) =>
     new Promise(async (resolve, reject) => {
       var data = JSON.stringify([{ text: text }]);
-      console.log("text:" + text);
+      // console.log("text:" + text);
       var xhr = new XMLHttpRequest();
       xhr.addEventListener("readystatechange", function () {
         if (this.readyState === 4) {

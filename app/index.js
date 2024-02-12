@@ -3,41 +3,37 @@ import Input from "./components/Input";
 import Navbar from "./components/Navbar";
 import Discussion from "./components/Discussion";
 import Slider from "./components/Slider";
-import { getUser, redirectToLogin } from "./User";
+import { getUser, getsessionID, redirectToLogin } from "./User";
 import { createNanoEvents } from "nanoevents";
 import { auth } from '../app/firebaseConfig';
-import { signOut } from "firebase/auth";
+import { signOut, onAuthStateChanged } from "firebase/auth";
+
+
 
 class App {
   constructor() {
     this.app = document.querySelector("#app");
+    this.loginPage = document.querySelector(".login-page");
     this.pageBlue = document.querySelector(".page-blue");
     this.pageGrey = document.querySelector(".page-grey");
     this.navbarEl = document.querySelector(".nav");
     this.cancelBtn = document.querySelector(".cancel-btn");
     this.user = getUser();
+    this.session = null;
     // getUser().then(user => {
     // this.user = user;
     // });
     this.emitter = createNanoEvents();
-
     this.addListeners();
     this.resetScroll();
   }
 
   // Anim
   toPageGrey({ duration = 0 } = {}) {
-    this.pageBlue.style.transitionDuration = duration + "ms";
+    this.loginPage.style.transitionDuration = duration + "ms";
     this.pageGrey.style.transitionDuration = duration + "ms";
-    this.pageBlue.classList.add("hidden");
+    this.loginPage.classList.add("hidden");
     this.pageGrey.classList.add("show");
-    this.navbarEl.classList.add("dark");
-    this.cancelBtn.classList.add("dark");
-
-    setTimeout(() => {
-      this.inputBluePage.isActive = false;
-      this.inputGreyPage.isActive = true;
-    });
   }
 
   initApp() {
@@ -58,11 +54,11 @@ class App {
   }
 
   initDiscussion() {
-    console.log("index user", this.user);
     this.discussion = new Discussion({
       emitter: this.emitter,
       toPageGrey: this.toPageGrey.bind(this),
       user: this.user,
+      session : this.session
     });
   }
 
@@ -73,7 +69,7 @@ class App {
       emitter: this.emitter,
     };
 
-    this.inputBluePage = new Input({ pageEl: this.pageBlue, isActive: true, ...props });
+    // this.inputBluePage = new Input({ pageEl: this.pageBlue, isActive: true, ...props });
     this.inputGreyPage = new Input({ pageEl: this.pageGrey, isActive: false, ...props });
   }
 
@@ -86,21 +82,16 @@ class App {
   }
 
   addListeners() {
-    // getUser().then(user => {
-    // this.user = user;
-    this.user.then((user) => {
-      console.log("this.user", this.user);
-      this.user = user;
-      if (!this.user) {
-        redirectToLogin();
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        this.toPageGrey({duration:1200})
+        this.session = await getsessionID(user)
+        this.initApp();
       }
     });
-
-    // });
-
+    
     window.addEventListener("load", () => {
       // Avoid flash blue page
-      this.app.classList.remove("preload");
       document.getElementById('signOutButton').addEventListener('click', () => {
         signOut(auth).then(() => {
           console.log("User signed out.");
@@ -111,7 +102,7 @@ class App {
       });
     });
     document.fonts.ready.then(() => {
-      this.initApp();
+      this.app.classList.remove("preload");
     });
   }
 }

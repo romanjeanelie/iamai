@@ -116,7 +116,6 @@ async function getUser() {
           // User is signed in
           const loggedinuser = new User(user.uid, user.displayName, user.photoURL, user.email);
           await loggedinuser.setuseraddress();
-          console.log(" here logged in:", loggedinuser);
           resolve(loggedinuser);
         // } else {
         //   console.log("here user not active");
@@ -131,7 +130,6 @@ async function getUser() {
 }
 
 function redirectToLogin() {
-  console.log("notloggedin");
   window.location.href = "./index.html";
 }
 

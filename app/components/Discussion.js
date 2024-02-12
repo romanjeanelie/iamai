@@ -1,5 +1,6 @@
 import TypingText from "../TypingText";
 import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scss";
+
 import typeText from "../utils/typeText";
 import Chat from "./Chat.js";
 import { getsessionID } from "../User";
@@ -44,11 +45,11 @@ function getTopStatus(text) {
   return defaultTopStatus;
 }
 export default class Discussion {
-  constructor({ toPageGrey, emitter, user }) {
+  constructor({ toPageGrey, emitter, user, session }) {
     this.emitter = emitter;
     this.toPageGrey = toPageGrey;
+    this.session = session;
     this.user = user;
-    console.log("Discussion user", this.user);
     this.pageEl = document.querySelector(".page-grey");
     this.inputContainer = this.pageEl.querySelector("div.input__container.grey");
     this.inputText = this.pageEl.querySelector(".input-text");
@@ -115,6 +116,7 @@ export default class Discussion {
   //   }
 
   disableInput() {
+    console.log("disable input")
     this.inputText.disabled = true;
     const childNodes = this.inputContainer.getElementsByTagName("*");
     for (var node of childNodes) {
@@ -122,6 +124,7 @@ export default class Discussion {
     }
   }
   enableInput() {
+    console.log("enable input")
     this.inputText.disabled = false;
     const childNodes = this.inputContainer.getElementsByTagName("*");
     for (var node of childNodes) {
@@ -312,8 +315,6 @@ export default class Discussion {
   }
 
   scrollToBottom() {
-    // Go to bottom of the page
-
     this.discussionContainer.scrollTo({
       top: this.discussionContainer.scrollHeight,
       behavior: "smooth",
@@ -324,9 +325,17 @@ export default class Discussion {
     var queryString = window.location.search;
     var urlParams = new URLSearchParams(queryString);
     var q = urlParams.get("q");
-    const sessionID = urlParams.get("session_id");
-    const deploy_ID = urlParams.get("deploy_id");
+    let sessionID = urlParams.get("session_id");
+    let deploy_ID = urlParams.get("deploy_id");
+    this.Chat.autodetect = true;
 
+    if (!sessionID){
+       sessionID = this.session.SessionID;
+    }
+    if (!deploy_ID){
+       deploy_ID = this.session.deploy_id;
+    }
+    
     if (urlParams.get("location") && urlParams.get("location") != "") {
       this.Chat.location = urlParams.get("location");
     }
@@ -340,13 +349,14 @@ export default class Discussion {
     if (q && q != "") {
       this.getAiAnswer({ text: "" });
     }
+
     if (sessionID && sessionID != "") {
       this.toPageGrey();
       this.Chat.sessionID = sessionID;
       this.Chat.deploy_ID = deploy_ID;
       this.getAiAnswer({ text: "" });
     } else {
-      this.toPageGrey();
+      // this.toPageGrey();
       var usr = await this.user;
       if (usr) {
         let data = await getsessionID(usr);
