@@ -256,7 +256,6 @@ export default class Phone {
     }
 
     if (!this.myvad) {
-      console.log("initializing vad")
       this.myvad = await vad.MicVAD.new({
         onFrameProcessed: (frame) => {
           if (!this.micAccessConfirmed) {
