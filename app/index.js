@@ -31,10 +31,10 @@ class App {
   toPageGrey({ duration = 0 } = {}) {
     this.loginPage.style.transitionDuration = duration + "ms";
     this.pageGrey.style.transitionDuration = duration + "ms";
-    this.pageBlue.classList.add("hidden");
+    this.loginPage.classList.add("hidden");
     this.pageGrey.classList.add("show");
-    this.navbarEl.classList.add("dark");
-    this.cancelBtn.classList.add("dark");
+    // this.navbarEl.classList.add("dark");
+    // this.cancelBtn.classList.add("dark");
 
     setTimeout(() => {
       this.inputBluePage.isActive = false;

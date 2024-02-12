@@ -77,11 +77,19 @@ onAuthStateChanged(auth, async function (user) {
     console.log("user", user)
     // User is signed in.
     const loggedinuser = new User(user.uid, user.displayName, user.photoURL, user.email);
+
+    const loginPage = document.querySelector(".login-page");
+    const pageGrey = document.querySelector(".page-grey");
+
+    setTimeout(()=> {
+      loginPage.classList.add("hidden");
+      pageGrey.classList.add("show");
+    }, 1000)
     // var userstatus = await getUserDataFireDB(user);
     // if (userstatus) {
     //   if (userstatus.status == "active") {
     //     await loggedinuser.setuseraddress();
-        redirectToHome(loggedinuser);
+        // redirectToHome(loggedinuser);
       // } else {
       //   divwaitlist.style.display = "flex";
     //   }

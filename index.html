@@ -18,8 +18,13 @@
   </script>
 </head>
 
-<body class="preload">
+<body class="">
   <div id="app">
+    <!-- Menu Navbar -->
+    {{> navBar}}
+    <!-- Cancel  btn -->
+    {{> cancelBtn}}
+
     <div class="login-page">
       <div class="login__container">
         <!-- {{> bluePage/logo}} -->
@@ -46,6 +51,28 @@
           approved </div>
         <div id="divlink" class="divlink"><a href="#" target="_blank">find out more</a></div>
       </div>
+    </div>
+
+    <div class="page page-grey hidden">
+      <!-- Overlay recording -->
+      {{> greyPage/overlayRecording}}
+      <main>
+        <!-- Discussion -->
+
+        <div class="discussion__container"></div>
+        <div class="input__wrapper">
+          <!-- Input -->
+          {{> input labelPage="grey"}}
+        </div>
+        <!-- Phone -->
+        {{> phone}}
+        <!-- Image drop -->
+        {{> imageDrop}}
+        <!--Slider -->
+        {{> slider}}
+      </main>
+      <!-- Logo-->
+      {{> greyPage/logo}}
     </div>
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
