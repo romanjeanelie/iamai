@@ -130,7 +130,6 @@ async function getUser() {
 }
 
 function redirectToLogin() {
-  console.log("notloggedin");
   window.location.href = "./index.html";
 }
 

@@ -13,7 +13,7 @@
   align-items: center;
   transform: translateY(0);
 
-  transition : all 900ms ease-out;
+  transition : transform 800ms ease-in-out;
 
   &.hidden {
     transform: translateY(-100%)

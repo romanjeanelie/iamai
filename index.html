@@ -53,6 +53,32 @@
       </div>
     </div>
 
+    <div class="page page-blue">
+      <main>
+        <div class="top">
+          <!-- Logo -->
+          {{> bluePage/logo}}
+        </div>
+        <div class="center">
+          <div class="input__wrapper">
+            <!-- Input -->
+
+            {{> input labelPage="blue"}}
+          </div>
+        </div>
+        <div class="bottom">
+          <!-- Categories list -->
+          {{> bluePage/categoriesList}}
+          <!-- Caroussel -->
+          {{> bluePage/caroussel}}
+        </div>
+      </main>
+      <!-- Image drop -->
+      {{> imageDrop}}
+      <!-- Info -->
+      {{> bluePage/infoText}}
+    </div>
+
     <div class="page page-grey hidden">
       <!-- Overlay recording -->
       {{> greyPage/overlayRecording}}
@@ -75,10 +101,12 @@
       {{> greyPage/logo}}
     </div>
   </div>
+  <script src="/libAudioRecorder/WebAudioRecorder.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script type="module" src="/app/login.js"></script>
   <script type="module" src="/app/index.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@ricky0123/vad-web@0.0.7/dist/bundle.min.js"></script>
 </body>
 
 </html>

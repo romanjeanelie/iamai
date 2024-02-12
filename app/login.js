@@ -24,7 +24,6 @@ const divwaitlist = document.getElementById("divwaitlist");
 const divlottieanimation = document.getElementById("divlottieanimation");
 
 
-
 function toggleSignIn() {
   signInButton.style.display = "none";
   divlottieanimation.style.display = "block";
@@ -74,17 +73,9 @@ function toggleSignIn() {
 // Listening for auth state changes.
 onAuthStateChanged(auth, async function (user) {
   if (user) {
-    console.log("user", user)
     // User is signed in.
     const loggedinuser = new User(user.uid, user.displayName, user.photoURL, user.email);
 
-    const loginPage = document.querySelector(".login-page");
-    const pageGrey = document.querySelector(".page-grey");
-
-    setTimeout(()=> {
-      loginPage.classList.add("hidden");
-      pageGrey.classList.add("show");
-    }, 1000)
     // var userstatus = await getUserDataFireDB(user);
     // if (userstatus) {
     //   if (userstatus.status == "active") {
@@ -113,7 +104,6 @@ onAuthStateChanged(auth, async function (user) {
 });
 
 async function redirectToHome(user) {
-  console.log("redirect to home");
   let data = await getsessionID(user);
   window.location.href = "./main.html?lang=ad&session_id=" + data.SessionID + "&deploy_id=" + data.deploy_id;
 }

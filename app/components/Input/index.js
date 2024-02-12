@@ -124,7 +124,8 @@ export default class Input {
     this.addListeners();
 
     // Emitter
-    this.emitter.on("input:toWrite", this.toWrite.bind(this));
+    this.emitter.on("input:toWrite",()=> {
+      this.toWrite.bind(this)});
     this.emitter.on("input:updateImages", this.updateImages.bind(this));
 
     // TEMP
