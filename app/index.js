@@ -7,7 +7,7 @@ import { getUser, getsessionID, redirectToLogin } from "./User";
 import { createNanoEvents } from "nanoevents";
 import { auth } from '../app/firebaseConfig';
 import { signOut, onAuthStateChanged } from "firebase/auth";
-import store from "./store";
+
 
 
 class App {
@@ -92,7 +92,6 @@ class App {
     
     window.addEventListener("load", () => {
       // Avoid flash blue page
-      this.app.classList.remove("preload");
       document.getElementById('signOutButton').addEventListener('click', () => {
         signOut(auth).then(() => {
           console.log("User signed out.");
@@ -102,9 +101,9 @@ class App {
         });
       });
     });
-    // document.fonts.ready.then(() => {
-    //   this.initApp();
-    // });
+    document.fonts.ready.then(() => {
+      this.app.classList.remove("preload");
+    });
   }
 }
 

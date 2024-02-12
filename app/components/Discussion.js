@@ -4,7 +4,6 @@ import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scs
 import typeText from "../utils/typeText";
 import Chat from "./Chat.js";
 import { getsessionID } from "../User";
-import store from "../store.js";
 import EventEmitter from "../utils/EventEmitter.js";
 import isMobile from "../utils/isMobile.js";
 
@@ -323,22 +322,34 @@ export default class Discussion {
   }
 
   async onLoad() {
-    const sessionID = this.session.SessionID;
-    const deploy_ID = this.session.deploy_id;
+    var queryString = window.location.search;
+    var urlParams = new URLSearchParams(queryString);
+    var q = urlParams.get("q");
+    let sessionID = urlParams.get("session_id");
+    let deploy_ID = urlParams.get("deploy_id");
+    this.Chat.autodetect = true;
+
+    if (!sessionID){
+       sessionID = this.session.SessionID;
+    }
+    if (!deploy_ID){
+       deploy_ID = this.session.deploy_id;
+    }
     
-    // if (urlParams.get("location") && urlParams.get("location") != "") {
-    //   this.Chat.location = urlParams.get("location");
-    // }
-    // if (urlParams.get("lang") && urlParams.get("lang") != "") {
-    //   this.Chat.sourcelang = urlParams.get("lang");
-    //   if (this.Chat.sourcelang == "ad") {
-    //     this.Chat.sourcelang = "";
-    //     this.Chat.autodetect = true;
-    //   }
-    // }
-    // if (q && q != "") {
-    //   this.getAiAnswer({ text: "" });
-    // }
+    if (urlParams.get("location") && urlParams.get("location") != "") {
+      this.Chat.location = urlParams.get("location");
+    }
+    if (urlParams.get("lang") && urlParams.get("lang") != "") {
+      this.Chat.sourcelang = urlParams.get("lang");
+      if (this.Chat.sourcelang == "ad") {
+        this.Chat.sourcelang = "";
+        this.Chat.autodetect = true;
+      }
+    }
+    if (q && q != "") {
+      this.getAiAnswer({ text: "" });
+    }
+
     if (sessionID && sessionID != "") {
       this.toPageGrey();
       this.Chat.sessionID = sessionID;
