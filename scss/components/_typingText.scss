@@ -56,6 +56,8 @@ $radiusDotTyping: 22px;
 .typing__skeleton{
   background-color: $colorGrey;
   height: 12px;
+  transform: scaleX(0);
+  transform-origin: left;
   animation: pulse 1.5s ease-in infinite;
 }
 

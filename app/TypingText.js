@@ -7,7 +7,6 @@ export default class TypingText {
     this.container = container;
     this.backgroundColor = backgroundColor;
     this.marginLeft = marginLeft;
-
     this.init();
   }
 
@@ -19,7 +18,6 @@ export default class TypingText {
     imgEl.src = asterizk;
     this.logo.appendChild(imgEl);
     
-    // skeleton of the typing text
     this.skeletonContainer = document.createElement("div");
     this.skeletonContainer.classList.add("typing__skeleton-container");
     this.skeletons = [];
@@ -58,18 +56,26 @@ export default class TypingText {
   fadeIn() {
     this.typingContainer.style.visibility = "visible";
     this.typingContainer.style.opacity = 1;
+
+    this.skeletons.forEach((skeleton,idx )=> {
+      anim(skeleton, [
+        { transform:"scaleX(0)" },
+        { transform: "scaleX(1)" },
+      ], {
+        duration: 500,
+        delay: 50 * idx,
+        fill: "forwards",
+        ease: "ease-out",
+      })
+    })
   }
 
   fadeOut() {
-    // if (this.blinkCursor) this.blinkCursor.cancel();
     this.logo.classList.add("hidden");
-
   }
 
   writing() {
     return new Promise((resolve) => {
-      // if (this.blinkCursor) this.blinkCursor.cancel();
-
       this.animShowtyping = anim(
         this.typingContainer,
         [
