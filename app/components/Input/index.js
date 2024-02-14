@@ -175,7 +175,7 @@ export default class Input {
       marginLeft: 16,
     });
     this.typingText.writing({
-      onComplete: this.typingText.blink,
+      onComplete: this.typingText.fadeIn,
     });
   }
 

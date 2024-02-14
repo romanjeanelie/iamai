@@ -144,7 +144,7 @@ export default class Discussion {
       marginLeft: 16,
     });
 
-    this.typingText.blink();
+    this.typingText.fadeIn();
     this.Chat.callsubmit(text, imgs, aiEl);
   }
 
@@ -185,15 +185,15 @@ export default class Discussion {
         container: this.topStatus,
         backgroundColor: backgroundColorGreyPage,
       });
-      this.typingStatus.blink();
+      this.typingStatus.fadeIn();
       this.typingStatus.writing();
-      this.typingStatus.blink();
+      this.typingStatus.fadeIn();
     } else {
       await this.typingStatus.reverse();
-      this.typingStatus.blink();
+      this.typingStatus.fadeIn();
       this.typingStatus.updateText(status);
       await this.typingStatus.writing();
-      this.typingStatus.blink();
+      this.typingStatus.fadeIn();
     }
   }
 

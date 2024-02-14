@@ -14,7 +14,7 @@ export default function typeText(container, text) {
           container.innerHTML += text.charAt(typeIndex);
         }
         typeIndex++;
-        setTimeout(type, 10); // Adjust speed as needed
+        setTimeout(type, 500); // Adjust speed as needed
       } else {
         typeIndex = 0;
         resolve();

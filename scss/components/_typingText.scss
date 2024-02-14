@@ -10,7 +10,7 @@ $radiusDotTyping: 22px;
   display: flex;
   align-items: center;
   visibility: hidden;
-  overflow: hidden;
+  // overflow: hidden;
   pointer-events: none;
 }
 
@@ -25,16 +25,15 @@ $radiusDotTyping: 22px;
   transform: translateX(0%);
 }
 
-.typing__cursor {
+.typing__logo {
   position: absolute;
-  left: 0;
+  left: 0;  
   top: 50%;
   transform: translateY(-50%);
   width: $radiusDotTyping;
   height: $radiusDotTyping;
-  background: $colorBlack;
   border-radius: 50%;
-
+  animation: rotate 2s linear infinite;
   transition: opacity 0.3s ease-in-out;
 
   &.hidden {
@@ -43,8 +42,54 @@ $radiusDotTyping: 22px;
   }
 }
 
+.typing__skeleton-container {
+  position: absolute;
+  top: calc(50% + 20px);
+  width: 100%;
+  display: flex; 
+  flex-direction: column;
+  gap: 16px;
+}
+
+
+
+.typing__skeleton{
+  background-color: $colorGrey;
+  height: 12px;
+  animation: pulse 1.5s ease-in infinite;
+}
+
+.typing__skeleton-0{
+  width: 75%;
+}
+
+.typing__skeleton-1{
+  width: 80%;
+}
+
+.typing__skeleton-2{
+  width: 78%;
+}
+
+
+
 .typing__text {
   //   margin-left: 16px;
   position: relative;
   color: $colorBlack;
+}
+
+@keyframes pulse {
+  0% { background-color: $colorGrey; }
+  50% { background-color: #dddcdc; }
+  100% { background-color: $colorGrey; }
+}
+
+@keyframes rotate {
+  from {
+    transform: translateY(-50%) rotate(0deg);
+  }
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
 }

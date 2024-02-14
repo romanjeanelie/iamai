@@ -1,4 +1,5 @@
 import anim from "./utils/anim";
+import asterizk from "../public/images/asterizk.svg"
 
 export default class TypingText {
   constructor({ text, container, backgroundColor, marginLeft }) {
@@ -13,21 +14,37 @@ export default class TypingText {
   init() {
     this.typingContainer = document.createElement("div");
     this.maskEl = document.createElement("div");
-    this.cursorEl = document.createElement("span");
+    this.logo = document.createElement("div");
+    const imgEl = document.createElement('img');
+    imgEl.src = asterizk;
+    this.logo.appendChild(imgEl);
+    
+    // skeleton of the typing text
+    this.skeletonContainer = document.createElement("div");
+    this.skeletonContainer.classList.add("typing__skeleton-container");
+    this.skeletons = [];
+    for (let i = 0; i < 3; i++) {
+      let skeleton = document.createElement("div");
+      skeleton.classList.add("typing__skeleton");
+      skeleton.classList.add(`typing__skeleton-${i}`)
+      this.skeletons.push(skeleton);
+    }   
+    
     this.textEl = document.createElement("p");
     this.typingContainer.classList.add("typing__container");
     this.maskEl.classList.add("typing__mask");
-    this.cursorEl.classList.add("typing__cursor");
+    this.logo.classList.add("typing__logo");
     this.textEl.classList.add("typing__text");
 
     this.textEl.textContent = this.text;
     this.maskEl.style.backgroundColor = this.backgroundColor;
     this.typingContainer.style.left = `${this.marginLeft}px`;
 
-    this.maskEl.appendChild(this.cursorEl);
+    this.maskEl.appendChild(this.logo);
     this.textEl.appendChild(this.maskEl);
     this.typingContainer.appendChild(this.textEl);
-
+    this.typingContainer.appendChild(this.skeletonContainer);
+    this.skeletons.forEach(skeleton => this.skeletonContainer.appendChild(skeleton));
     this.container.appendChild(this.typingContainer);
 
     this.translateCursor = null;
@@ -38,26 +55,20 @@ export default class TypingText {
     this.textEl.appendChild(this.maskEl);
   }
 
-  blink() {
+  fadeIn() {
     this.typingContainer.style.visibility = "visible";
     this.typingContainer.style.opacity = 1;
-
-    this.blinkCursor = anim(this.cursorEl, [{ opacity: 1 }, { opacity: 0 }, { opacity: 1 }], {
-      //   delay:
-      duration: 500,
-      iterations: Infinity,
-      ease: "ease-in-out",
-    });
   }
 
   fadeOut() {
-    if (this.blinkCursor) this.blinkCursor.cancel();
-    this.cursorEl.classList.add("hidden");
+    // if (this.blinkCursor) this.blinkCursor.cancel();
+    this.logo.classList.add("hidden");
+
   }
 
   writing() {
     return new Promise((resolve) => {
-      if (this.blinkCursor) this.blinkCursor.cancel();
+      // if (this.blinkCursor) this.blinkCursor.cancel();
 
       this.animShowtyping = anim(
         this.typingContainer,
