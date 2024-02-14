@@ -21,7 +21,7 @@ export default class TypingText {
     this.skeletonContainer = document.createElement("div");
     this.skeletonContainer.classList.add("typing__skeleton-container");
     this.skeletons = [];
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 4; i++) {
       let skeleton = document.createElement("div");
       skeleton.classList.add("typing__skeleton");
       skeleton.classList.add(`typing__skeleton-${i}`)
@@ -72,6 +72,7 @@ export default class TypingText {
 
   fadeOut() {
     this.logo.classList.add("hidden");
+    this.skeletonContainer.classList.add("hidden");
   }
 
   writing() {

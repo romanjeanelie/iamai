@@ -38,7 +38,6 @@ $radiusDotTyping: 22px;
 
   &.hidden {
     opacity: 0;
-    visibility: hidden;
   }
 }
 
@@ -49,6 +48,11 @@ $radiusDotTyping: 22px;
   display: flex; 
   flex-direction: column;
   gap: 16px;
+  transition: opacity 0.3s ease-in-out;
+
+  &.hidden {
+    opacity: 0;
+  }
 }
 
 
@@ -71,6 +75,10 @@ $radiusDotTyping: 22px;
 
 .typing__skeleton-2{
   width: 78%;
+}
+
+.typing__skeleton-3{
+  width: 76%;
 }
 
 
