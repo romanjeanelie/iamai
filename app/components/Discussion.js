@@ -2,10 +2,9 @@ import TypingText from "../TypingText";
 import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scss";
 
 import typeText from "../utils/typeText";
+import typeByWord from "../utils/typeByWord.js";
 import Chat from "./Chat.js";
 import { getsessionID } from "../User";
-import EventEmitter from "../utils/EventEmitter.js";
-import isMobile from "../utils/isMobile.js";
 
 function loadImage(src) {
   return new Promise((resolve, reject) => {
@@ -244,7 +243,7 @@ export default class Discussion {
     container.appendChild(textEl);
     text = text.replace(/<br\/?>\s*/g, "\n");
     this.scrollToBottom();
-    return await typeText(textEl, text);
+    return await typeByWord(textEl, text);
   }
 
   addURL({ text, label, url, container }) {

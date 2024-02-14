@@ -1,6 +1,4 @@
 let typeIndex = 0;
-import isMobile from "./isMobile";
-
 export default function typeText(container, text) {
   return new Promise((resolve) => {
     // if (isMobile()) {
