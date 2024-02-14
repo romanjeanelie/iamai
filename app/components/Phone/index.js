@@ -193,7 +193,7 @@ export default class Phone {
 
       this.currentIndexAudioAI = 0;
       this.currentAudioAIPlaying = new AudioPlayer({
-        audioUrl: this.audiosAI[this.currentIndexAudioAI].src,
+        audioUrl: this.audiosAI[this.currentIndexAudioAI]?.src,
         audioContext: this.audioContext,
         onPlay: this.onPlay.bind(this),
         onEnded: this.checkIfNextAudio.bind(this),
@@ -208,7 +208,7 @@ export default class Phone {
       console.log("Stil one sound");
       // this.audiosAI[this.currentIndexAudioAI].play();
       this.currentAudioAIPlaying = new AudioPlayer({
-        audioUrl: this.audiosAI[this.currentIndexAudioAI].src,
+        audioUrl: this.audiosAI[this.currentIndexAudioAI]?.src,
         audioContext: this.audioContext,
         onPlay: this.onPlay.bind(this),
         onEnded: this.checkIfNextAudio.bind(this),
