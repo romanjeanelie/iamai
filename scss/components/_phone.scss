@@ -93,10 +93,6 @@ $colorTalkAI: black;
     button {
       transition: background 300ms ease-in-out, opacity 300ms ease-in-out;
       border-radius: 50%;
-
-      visibility: hidden;
-      opacity: 0;
-
       path {
         transition: stroke 300ms ease-in-out;
       }
@@ -187,7 +183,7 @@ $colorTalkAI: black;
         background: $colorTalkAI;
       }
       .phone-bar__pause {
-        width: 70%;
+        width: 50%;
         gap: 8px;
         justify-content: center;
 
