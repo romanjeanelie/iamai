@@ -32,6 +32,7 @@ class Chat {
     this.RAG_CHAT = "";
     this.MovieSearch = "";
     this.MovieSearchResults = "";
+    this.Sources = "";
     this.deploy_ID = "";
     this.image_urls = "";
     this.user = this.callbacks.user;
@@ -152,7 +153,7 @@ class Chat {
     };
     for await (const m of iter) {
       var mdata = m.json();
-      // console.log(mdata);
+      console.log(mdata);
       console.timeEnd("RequestStart");
       var mtext = mdata.data;
 
@@ -182,6 +183,10 @@ class Chat {
         console.log("this.image_urls:" + this.image_urls);
         // CALL THIS TO ADD IMAGES
         this.callbacks.addImages({ srcs: this.image_urls, container: this.container });
+      }else if(mdata.message_type == "Sources")
+      {
+        this.Sources = JSON.parse(mdata.ui_params.Sources);
+        // Add Call to add sources
       }
 
       //check if awaiting
@@ -232,7 +237,7 @@ class Chat {
         });
         // await this.callbacks.addAIText({ text: "Please click here, to start a new session to chat or close the browser.", type: 'link', container: this.container });
         // textEl.innerHTML = 'Please click <a href="./index.html">here</a>, to start a new session to chat or close the browser.';
-      } else if (mdata.awaiting && !mdata.message_type == "image") {
+      } else if (mdata.awaiting && !mdata.message_type == "image" && !mdata.message_type == "Sources") {
         console.log("awaiting:" + mdata.message_type);
         console.log("mtext:" + mtext);
         this.workflowID = mdata.session_id;

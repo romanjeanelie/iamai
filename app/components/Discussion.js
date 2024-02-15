@@ -44,10 +44,9 @@ function getTopStatus(text) {
   return defaultTopStatus;
 }
 export default class Discussion {
-  constructor({ toPageGrey, emitter, user, session }) {
+  constructor({ toPageGrey, emitter, user }) {
     this.emitter = emitter;
     this.toPageGrey = toPageGrey;
-    this.session = session;
     this.user = user;
     this.pageEl = document.querySelector(".page-grey");
     this.inputContainer = this.pageEl.querySelector("div.input__container.grey");
@@ -328,12 +327,12 @@ export default class Discussion {
     let deploy_ID = urlParams.get("deploy_id");
     this.Chat.autodetect = true;
 
-    if (!sessionID){
-       sessionID = this.session.SessionID;
-    }
-    if (!deploy_ID){
-       deploy_ID = this.session.deploy_id;
-    }
+    // if (!sessionID){
+    //   this.Chat.sessionID = sessionID
+    // }
+    // if (!deploy_ID){
+    //   this.Chat.deploy_ID = deploy_ID
+    // }
     
     if (urlParams.get("location") && urlParams.get("location") != "") {
       this.Chat.location = urlParams.get("location");
@@ -370,7 +369,6 @@ export default class Discussion {
     window.addEventListener("load", this.onLoad());
     // window.addEventListener("load", this.onLoad.bind(this));
     const resizeObserver = new ResizeObserver(this.scrollToBottom.bind(this));
-
     resizeObserver.observe(this.discussionContainer);
   }
 }

@@ -18,8 +18,7 @@ class App {
     this.pageGrey = document.querySelector(".page-grey");
     this.navbarEl = document.querySelector(".nav");
     this.cancelBtn = document.querySelector(".cancel-btn");
-    this.user = getUser();
-    this.session = null;
+    this.user = null;
     // getUser().then(user => {
     // this.user = user;
     // });
@@ -57,8 +56,7 @@ class App {
     this.discussion = new Discussion({
       emitter: this.emitter,
       toPageGrey: this.toPageGrey.bind(this),
-      user: this.user,
-      session : this.session
+      user: this.user
     });
   }
 
@@ -85,7 +83,8 @@ class App {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         this.toPageGrey({duration:1200})
-        this.session = await getsessionID(user)
+        this.user = getUser()
+        console.log("user",user)
         this.initApp();
       }
     });

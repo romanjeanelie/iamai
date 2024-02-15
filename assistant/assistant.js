@@ -34,7 +34,7 @@ window.onload = async function () {
   // Use this instead
   loggedinuser = await getUser();
   if (!loggedinuser)
-    redirectToLogin();
+    window.location.href = "../index.html";
   else {
     getassistant();
     getsystemassistant();
