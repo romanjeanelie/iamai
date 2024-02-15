@@ -56,12 +56,14 @@ class Chat {
       input_text = response.data.translations[0].translatedText;
     }
     if (!IS_DEV_MODE) {
-      if (this.awaiting && this.workflowID != "") {
+      // if (this.awaiting && this.workflowID != "") {
+      if (this.workflowID != "") {
         if (img) {
           // console.log("img:", img);
           this.submituserreply(input_text, this.workflowID, img.map((imgs) => imgs.src));
         } else this.submituserreply(input_text, this.workflowID, img);
       } else {
+        this.workflowID = this.sessionID;
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = async () => {
           if (xhr.readyState == 4) {
