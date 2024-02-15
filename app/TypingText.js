@@ -21,6 +21,7 @@ export default class TypingText {
     this.skeletonContainer = document.createElement("div");
     this.skeletonContainer.classList.add("typing__skeleton-container");
     this.skeletons = [];
+
     for (let i = 0; i < 4; i++) {
       let skeleton = document.createElement("div");
       skeleton.classList.add("typing__skeleton");
@@ -56,8 +57,10 @@ export default class TypingText {
   fadeIn() {
     this.typingContainer.style.visibility = "visible";
     this.typingContainer.style.opacity = 1;
+  }
 
-    this.skeletons.forEach((skeleton,idx )=> {
+  displayTextSkeleton() {
+    this.skeletons.forEach((skeleton,idx)=> {
       anim(skeleton, [
         { transform:"scaleX(0)" },
         { transform: "scaleX(1)" },
@@ -70,9 +73,14 @@ export default class TypingText {
     })
   }
 
+  displayImageSkeleton() {
+    this.skeletonContainer.classList.add("image__skeleton")
+  }
+
   fadeOut() {
     this.logo.classList.add("hidden");
     this.skeletonContainer.classList.add("hidden");
+    this.skeletonContainer.classList.remove("image__skeleton");
   }
 
   writing() {

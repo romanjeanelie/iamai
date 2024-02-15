@@ -74,7 +74,7 @@ function toggleSignIn() {
 onAuthStateChanged(auth, async function (user) {
   if (user) {
     // User is signed in.
-    const loggedinuser = new User(user.uid, user.displayName, user.photoURL, user.email);
+    // const loggedinuser = new User(user.uid, user.displayName, user.photoURL, user.email);
 
     // var userstatus = await getUserDataFireDB(user);
     // if (userstatus) {
