@@ -141,6 +141,10 @@
       }
     }
 
+    .top-status.image-skeleton:after{
+      display: none;
+    }
+
     .AIstatus {
       display: block;
       margin-top: 24px;

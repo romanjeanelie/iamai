@@ -74,7 +74,8 @@ export default class TypingText {
   }
 
   displayImageSkeleton() {
-    this.skeletonContainer.classList.add("image__skeleton")
+    this.logo.style.display = "none";
+    this.skeletonContainer.classList.add("skeleton__image")
   }
 
   fadeOut() {

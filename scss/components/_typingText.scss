@@ -62,7 +62,7 @@ $radiusDotTyping: 22px;
 
 
 .typing__skeleton{
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: rgba(0, 0, 0, 0.4);
   height: 12px;
   transform: scaleX(0);
   transform-origin: left;
@@ -85,9 +85,16 @@ $radiusDotTyping: 22px;
   width: 66%;
 }
 
-.typing__skeleton-container.skeleton__image .typing__skeleton{
-  height: 100px;
-  width: 100px;
+.typing__skeleton-container.skeleton__image{ 
+  flex-direction: row;
+  top: 24px;
+  gap: 10px;
+  .typing__skeleton{
+    height: 98px;
+    width: 72px;
+    border-radius: 4px;
+    transform: scaleX(1)
+  }
 }
 
 
@@ -99,9 +106,9 @@ $radiusDotTyping: 22px;
 }
 
 @keyframes pulse {
-  0% { background-color: rgba(0, 0, 0, 0.1);}
-  50% {  background-color: rgba(255, 255, 255, 0.09); }
-  100% {  background-color: rgba(0, 0, 0, 0.1); }
+  0% { background-color: rgba(0, 0, 0, 0.6);}
+  50% {  background-color: rgba(0, 0, 0, 0.5); }
+  100% {  background-color: rgba(0, 0, 0, 0.6); }
 }
 
 @keyframes rotate {

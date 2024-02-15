@@ -191,15 +191,8 @@ export default class Discussion {
     else this.getAiAnswer({ text });
   }
 
-
-
-  // ------- HERE IS WHAT INTEREST TO MAKE THE ANIMATION CHANGE IN FUCTION THE STATUS -------
   async updateTopStatus({ status, topStatus, container }) {
-    const isImageSearch = detectImageSearch(status);
-    console.log("Is image search : ",isImageSearch);
-
-    if (!this.typingStatus) {
-      console.log("NO PREVIOUS TYPING STATUS")
+    if (!this.typingStatus) {      
       this.typingStatus = new TypingText({
         text: topStatus,
         container: this.topStatus,
@@ -207,7 +200,6 @@ export default class Discussion {
       });
       this.typingStatus.fadeIn();
       this.typingStatus.writing();
-      // this.typingStatus.fadeIn();
     } else {
       await this.typingStatus.reverse();
       this.typingStatus.fadeIn();
@@ -219,15 +211,34 @@ export default class Discussion {
 
   async addStatus({ text, textEl, container }) {
     const newStatus = getTopStatus(text);
-
+    const isImageSearch = detectImageSearch(text);
+    
     if (!this.lastStatus) {
       // Init status
       this.topStatus = document.createElement("div");
       this.topStatus.className = "top-status";
+
+      if (isImageSearch){
+        this.topStatus.style.marginTop= "0px"
+        this.topStatus.style.height= "0px"
+        this.topStatus.classList.add("image-skeleton")
+        this.typingStatus = new TypingText({
+          text: "",
+          container: this.topStatus,
+          backgroundColor: backgroundColorGreyPage,
+        })
+
+        this.typingStatus.fadeIn();
+        this.typingStatus.displayImageSkeleton();
+        container.appendChild(this.topStatus);
+        return null;
+      }
+      this.topStatus.className = "top-status";
+
       container.appendChild(this.topStatus);
     } else {
       // Update status
-      // container.removeChild(this.lastStatus);
+      container.removeChild(this.lastStatus);
     }
 
     if (newStatus && (newStatus !== this.currentTopStatus || !this.currentTopStatus)) {
@@ -249,11 +260,14 @@ export default class Discussion {
   }
 
   async addAIText({ text, container, targetlang, type = null } = {}) {
+    const isImageSearch = detectImageSearch(text);
+    // if (isImageSearch) return;
+
     this.typingText?.fadeOut();
     this.emitter.emit("addAIText", text, targetlang);
     const textEl = document.createElement("span");
 
-    if (type === "status") {
+   if (type === "status") {
       textEl.className = "AIstatus";
       this.addStatus({ text, textEl, container });
     } else if (this.lastStatus) {
@@ -263,6 +277,9 @@ export default class Discussion {
     container.appendChild(textEl);
     text = text.replace(/<br\/?>\s*/g, "\n");
     this.scrollToBottom();
+
+    if (isImageSearch) return
+
     return new Promise(resolve => {
       // Delay the start of the typing after the skeletons fade out
       setTimeout(async () => {
@@ -282,7 +299,6 @@ export default class Discussion {
       const textEL = document.createElement("span");
       textEL.classList.add("text-beforeLink");
       textEL.textContent = text;
-
       container.appendChild(textEL);
     }
     container.appendChild(linkEl);
@@ -295,7 +311,9 @@ export default class Discussion {
 
   async addImages({ container, srcs = [] } = {}) {
     if (srcs.length === 0) return;
-
+    const skeletonContainer = container.querySelector(".image-skeleton .typing__skeleton-container");
+    skeletonContainer.classList.add("hidden"); 
+    
     const imagesContainer = document.createElement("div");
     imagesContainer.className = "images__container";
 
