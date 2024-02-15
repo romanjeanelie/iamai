@@ -5,6 +5,7 @@ import typeText from "../utils/typeText";
 import typeByWord from "../utils/typeByWord.js";
 import Chat from "./Chat.js";
 import { getsessionID } from "../User";
+import { set } from "firebase/database";
 
 function loadImage(src) {
   return new Promise((resolve, reject) => {
@@ -35,6 +36,7 @@ async function loadImages(srcs) {
 
 const topStatusText = ["finding", "checking", "searching", "analyzing", "scanning", "finalizing", "processing"];
 const defaultTopStatus = "searching";
+
 function getTopStatus(text) {
   for (let status of topStatusText) {
     if (text.toLowerCase().includes(status)) {
@@ -43,6 +45,17 @@ function getTopStatus(text) {
   }
   return defaultTopStatus;
 }
+
+const wordPool = ["images", "photos", "pictures"]; 
+function detectImageSearch(text){
+  return wordPool.some(word => {
+    if (text.toLowerCase().includes(word)) {
+      return true
+    }
+    return false
+  })
+}
+
 export default class Discussion {
   constructor({ toPageGrey, emitter, user, session }) {
     this.emitter = emitter;
@@ -145,6 +158,7 @@ export default class Discussion {
     });
 
     this.typingText.fadeIn();
+    this.typingText.displayTextSkeleton();
     this.Chat.callsubmit(text, imgs, aiEl);
   }
 
@@ -178,20 +192,27 @@ export default class Discussion {
     else this.getAiAnswer({ text });
   }
 
-  async updateTopStatus({ status, container }) {
+
+
+  // ------- HERE IS WHAT INTEREST TO MAKE THE ANIMATION CHANGE IN FUCTION THE STATUS -------
+  async updateTopStatus({ status, topStatus, container }) {
+    const isImageSearch = detectImageSearch(status);
+    console.log("Is image search : ",isImageSearch);
+
     if (!this.typingStatus) {
+      console.log("NO PREVIOUS TYPING STATUS")
       this.typingStatus = new TypingText({
-        text: status,
+        text: topStatus,
         container: this.topStatus,
         backgroundColor: backgroundColorGreyPage,
       });
       this.typingStatus.fadeIn();
       this.typingStatus.writing();
-      this.typingStatus.fadeIn();
+      // this.typingStatus.fadeIn();
     } else {
       await this.typingStatus.reverse();
       this.typingStatus.fadeIn();
-      this.typingStatus.updateText(status);
+      this.typingStatus.updateText(topStatus);
       await this.typingStatus.writing();
       this.typingStatus.fadeIn();
     }
@@ -207,11 +228,11 @@ export default class Discussion {
       container.appendChild(this.topStatus);
     } else {
       // Update status
-      container.removeChild(this.lastStatus);
+      // container.removeChild(this.lastStatus);
     }
 
     if (newStatus && (newStatus !== this.currentTopStatus || !this.currentTopStatus)) {
-      this.updateTopStatus({ status: newStatus, container: this.topStatus });
+      this.updateTopStatus({ status : text, topStatus: newStatus, container: this.topStatus });
       this.currentTopStatus = newStatus;
     }
 
@@ -229,8 +250,8 @@ export default class Discussion {
   }
 
   async addAIText({ text, container, targetlang, type = null } = {}) {
-    this.emitter.emit("addAIText", text, targetlang);
     this.typingText?.fadeOut();
+    this.emitter.emit("addAIText", text, targetlang);
     const textEl = document.createElement("span");
 
     if (type === "status") {
@@ -243,7 +264,12 @@ export default class Discussion {
     container.appendChild(textEl);
     text = text.replace(/<br\/?>\s*/g, "\n");
     this.scrollToBottom();
-    return await typeByWord(textEl, text);
+    return new Promise(resolve => {
+      // Delay the start of the typing after the skeletons fade out
+      setTimeout(async () => {
+        resolve(await typeByWord(textEl, text));
+      }, 300);
+    });  
   }
 
   addURL({ text, label, url, container }) {

@@ -152,7 +152,7 @@ class Chat {
     };
     for await (const m of iter) {
       var mdata = m.json();
-      // console.log(mdata);
+      console.log(mdata);
       console.timeEnd("RequestStart");
       var mtext = mdata.data;
 
