@@ -261,7 +261,6 @@ export default class Discussion {
 
   async addAIText({ text, container, targetlang, type = null } = {}) {
     const isImageSearch = detectImageSearch(text);
-    // if (isImageSearch) return;
 
     this.typingText?.fadeOut();
     this.emitter.emit("addAIText", text, targetlang);
@@ -279,7 +278,6 @@ export default class Discussion {
     this.scrollToBottom();
 
     if (isImageSearch) return
-
     return new Promise(resolve => {
       // Delay the start of the typing after the skeletons fade out
       setTimeout(async () => {
@@ -311,6 +309,8 @@ export default class Discussion {
 
   async addImages({ container, srcs = [] } = {}) {
     if (srcs.length === 0) return;
+
+    // right before adding the images we remove the skeletons
     const skeletonContainer = container.querySelector(".image-skeleton .typing__skeleton-container");
     skeletonContainer.classList.add("hidden"); 
     

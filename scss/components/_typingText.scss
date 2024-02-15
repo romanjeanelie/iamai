@@ -59,14 +59,19 @@ $radiusDotTyping: 22px;
   }
 }
 
-
-
 .typing__skeleton{
-  background-color: rgba(0, 0, 0, 0.4);
+  // background-color: red;
+  background: linear-gradient(
+    -90deg,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.04) 50%, 
+    rgba(0, 0, 0, 0.1) 100%
+  );
+  background-size: 400% 400%;
   height: 12px;
   transform: scaleX(0);
   transform-origin: left;
-  animation: pulse 1.5s ease-in infinite;
+  animation: pulse 2s ease-in infinite;
 }
 
 .typing__skeleton-0{
@@ -89,11 +94,13 @@ $radiusDotTyping: 22px;
   flex-direction: row;
   top: 24px;
   gap: 10px;
+
   .typing__skeleton{
     height: 98px;
-    width: 72px;
+    width: 64px;
     border-radius: 4px;
-    transform: scaleX(1)
+    transform: scaleX(1) scaleY(0);
+    transform-origin: top;
   }
 }
 
@@ -106,9 +113,12 @@ $radiusDotTyping: 22px;
 }
 
 @keyframes pulse {
-  0% { background-color: rgba(0, 0, 0, 0.6);}
-  50% {  background-color: rgba(0, 0, 0, 0.5); }
-  100% {  background-color: rgba(0, 0, 0, 0.6); }
+  from {
+    background-position: 0% 0%
+  }
+  to {
+    background-position: -135% 0%
+  }
 }
 
 @keyframes rotate {
