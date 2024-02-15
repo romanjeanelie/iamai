@@ -109,6 +109,7 @@
     }
 
     .top-status {
+      font-family: "Circular";
       margin-top: 16px;
       color: $colorBlack;
       font-size: 16px;
@@ -122,36 +123,26 @@
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      //   border: 1px solid red;
-
       letter-spacing: 0.6px;
-
-      &:after {
-        content: "";
-        z-index: 1;
-        display: block;
-        height: 1px;
-        width: 100%;
-        margin-left: 110px;
-        background: #0000001f;
-      }
-
-      .typing__container {
-        // border: 1px solid red;
-      }
     }
 
-    .top-status.image-skeleton:after{
-      display: none;
+    .progress-bar{
+      background-color: $colorPink;
+      height: 2px;
+      width: calc(100% + 112px);
+      margin: 16px 0;
+      transform-origin: left;
+      transform: scaleX(0);
     }
 
     .AIstatus {
       display: block;
+      font-family: "Circular";
       margin-top: 24px;
       margin-bottom: 8px;
-      font-size: 20px;
+      font-size: 14px;
       font-weight: 450;
-      line-height: 24px;
+      line-height: 20px;
       letter-spacing: 0.6px;
       text-align: left;
     }

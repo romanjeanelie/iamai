@@ -6,6 +6,7 @@ import typeByWord from "../utils/typeByWord.js";
 import Chat from "./Chat.js";
 import { getsessionID } from "../User";
 import { set } from "firebase/database";
+import anim from "../utils/anim.js";
 
 function loadImage(src) {
   return new Promise((resolve, reject) => {
@@ -67,6 +68,8 @@ export default class Discussion {
     this.discussionContainer = document.querySelector(".discussion__container");
 
     this.addUserElement = this.addUserElement.bind(this);
+    this.currentProgress = 0;
+    this.nextProgress = 20;
 
     this.currentTopStatus = null;
     this.lastStatus = null;
@@ -191,22 +194,18 @@ export default class Discussion {
     else this.getAiAnswer({ text });
   }
 
-  async updateTopStatus({ status, topStatus, container }) {
-    if (!this.typingStatus) {      
-      this.typingStatus = new TypingText({
-        text: topStatus,
-        container: this.topStatus,
-        backgroundColor: backgroundColorGreyPage,
-      });
-      this.typingStatus.fadeIn();
-      this.typingStatus.writing();
-    } else {
-      await this.typingStatus.reverse();
-      this.typingStatus.fadeIn();
-      this.typingStatus.updateText(topStatus);
-      await this.typingStatus.writing();
-      this.typingStatus.fadeIn();
-    }
+
+
+  animateProgressBar(currProgress, nextProgress) {
+    console.log(currProgress,nextProgress)
+    anim(this.progressBar, [
+      { transform: `scaleX(${currProgress/100})` },
+      { transform: `scaleX(${nextProgress/100})` },
+    ], {
+      duration: 500,
+      fill: "forwards",
+      ease: "ease-out",
+    })
   }
 
   async addStatus({ text, textEl, container }) {
@@ -217,6 +216,8 @@ export default class Discussion {
       // Init status
       this.topStatus = document.createElement("div");
       this.topStatus.className = "top-status";
+      this.progressBar = document.createElement("div");
+      this.progressBar.className = "progress-bar";
 
       if (isImageSearch){
         this.topStatus.style.marginTop= "0px"
@@ -233,9 +234,8 @@ export default class Discussion {
         container.appendChild(this.topStatus);
         return null;
       }
-      this.topStatus.className = "top-status";
-
       container.appendChild(this.topStatus);
+      container.appendChild(this.progressBar);
     } else {
       // Update status
       container.removeChild(this.lastStatus);
@@ -250,6 +250,30 @@ export default class Discussion {
     this.lastStatus = textEl;
   }
 
+  async updateTopStatus({ status, topStatus, container }) {
+    if (!this.typingStatus) {      
+      this.typingStatus = new TypingText({
+        text: topStatus,
+        container: this.topStatus,
+        backgroundColor: backgroundColorGreyPage,
+      });
+      this.typingStatus.fadeIn();
+      this.typingStatus.writing();
+    } else {
+      await this.typingStatus.reverse();
+      this.typingStatus.fadeIn();
+      this.typingStatus.updateText(topStatus);
+      await this.typingStatus.writing();
+      this.typingStatus.fadeIn();
+    }
+    
+    // Animate progress bar width
+    this.animateProgressBar(this.currentProgress, this.nextProgress);
+    // Update progress
+    this.currentProgress = this.nextProgress;
+    this.nextProgress += 20;
+  }
+
   removeStatus({ container }) {
     if (!this.lastStatus) return;
     container.removeChild(this.topStatus);
@@ -261,7 +285,6 @@ export default class Discussion {
 
   async addAIText({ text, container, targetlang, type = null } = {}) {
     const isImageSearch = detectImageSearch(text);
-
     this.typingText?.fadeOut();
     this.emitter.emit("addAIText", text, targetlang);
     const textEl = document.createElement("span");
