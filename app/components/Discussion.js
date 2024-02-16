@@ -1,12 +1,10 @@
-import TypingText from "../TypingText";
 import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scss";
+import TypingText from "../TypingText";
 
-import typeText from "../utils/typeText";
+import { getsessionID } from "../User";
+import { asyncAnim } from "../utils/anim.js";
 import typeByWord from "../utils/typeByWord.js";
 import Chat from "./Chat.js";
-import { getsessionID } from "../User";
-import { set } from "firebase/database";
-import anim, { asyncAnim } from "../utils/anim.js";
 
 function loadImage(src) {
   return new Promise((resolve, reject) => {
@@ -87,8 +85,6 @@ export default class Discussion {
     });
 
     this.addListeners();
-    // this.animateProgressBar = this.animateProgressBar.bind(this);
-    // this.finalizingProgressBar = this.finalizingProgressBar.bind(this);
 
     // DEBUG
     // const tempContainer = document.createElement("div");
@@ -140,6 +136,7 @@ export default class Discussion {
       node.disabled = true;
     }
   }
+
   enableInput() {
     console.log("enable input")
     this.inputText.disabled = false;
@@ -149,6 +146,7 @@ export default class Discussion {
     }
     this.inputText.focus();
   }
+
   getAiAnswer({ text, imgs }) {
     const aiEl = document.createElement("div");
     aiEl.classList.add("discussion__ai");
@@ -165,6 +163,12 @@ export default class Discussion {
     this.typingText.fadeIn();
     this.typingText.displayTextSkeleton();
     this.Chat.callsubmit(text, imgs, aiEl);
+  }
+
+  resetStatuses() {
+    this.typingStatus = null;
+    this.lastStatus = null;
+    this.currentTopStatus = null;
   }
 
   addUserElement({ text, imgs, debug = false } = {}) {
@@ -197,8 +201,6 @@ export default class Discussion {
     else this.getAiAnswer({ text });
   }
 
-
-
   async animateProgressBar(currProgress, nextProgress, duration = 500) {
     await asyncAnim(this.progressBar, [
       { transform: `scaleX(${currProgress/100})` },
@@ -210,12 +212,13 @@ export default class Discussion {
     })
   }
 
-  async endStatusAnimation(container){
+  async endStatusAnimation(){
     await this.animateProgressBar(this.currentProgress, 100, 200);
+
+    console.log()
     this.statusContainer.classList.add("hidden");
     this.lastStatus.classList.add("hidden");
-    container.removeChild(this.statusContainer);
-    container.removeChild(this.lastStatus);
+    
     this.currentProgress = 0;
     this.nextProgress = 0;
     this.centralFinished = false;
@@ -289,15 +292,14 @@ export default class Discussion {
     this.nextProgress += this.currentProgress <= 60 ? 20 : portionOfRemainProgress;
 
     this.animateProgressBar(this.currentProgress, this.nextProgress);
-  
   }
 
   async removeStatus({ container }) {
-    if (!this.lastStatus || this.centralFinished ) return;
-    
-    this.typingStatus = null;
-    this.lastStatus = null;
-    this.currentTopStatus = null;
+    if (!this.lastStatus) return;
+  
+    container.removeChild(this.statusContainer);
+    container.removeChild(this.lastStatus);
+    this.resetStatuses();
   }
 
   async addAIText({ text, container, targetlang, type = null } = {}) {    
