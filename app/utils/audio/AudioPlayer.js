@@ -16,7 +16,7 @@ export default class AudioPlayer {
   async playAudio() {
     let response = await fetch(this.audioUrl);
     let arrayBuffer = await response.arrayBuffer();
-    let audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
+    let audioBuffer = await this.audioContext?.decodeAudioData(arrayBuffer);
 
     this.currentAudioPlaying = this.audioContext.createBufferSource();
     this.currentAudioPlaying.buffer = audioBuffer;

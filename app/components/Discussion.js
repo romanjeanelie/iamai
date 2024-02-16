@@ -283,14 +283,10 @@ export default class Discussion {
       this.typingStatus.fadeIn();
     }
 
- 
     this.currentProgress = this.nextProgress;
-
     const remainingProgress = 100 - this.currentProgress;
     const portionOfRemainProgress = Math.ceil(remainingProgress / 5);
     this.nextProgress += this.currentProgress <= 60 ? 20 : portionOfRemainProgress;
-
-    // other closing words : ["closing"]
 
     // Animate progress bar width
     if (status.toLowerCase().includes("ending") || status.toLowerCase().includes("closing") || topStatus === "finalizing")  {

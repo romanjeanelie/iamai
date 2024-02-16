@@ -1,5 +1,4 @@
 import anim from "./utils/anim";
-import asterizk from "../public/images/asterizk.svg"
 
 export default class TypingText {
   constructor({ text, container, backgroundColor, marginLeft }) {
@@ -15,7 +14,7 @@ export default class TypingText {
     this.maskEl = document.createElement("div");
     this.logo = document.createElement("div");
     const imgEl = document.createElement('img');
-    imgEl.src = asterizk;
+    imgEl.setAttribute("src", "../public/images/asterizk_pink.svg" );
     this.logo.appendChild(imgEl);
     
     this.skeletonContainer = document.createElement("div");
