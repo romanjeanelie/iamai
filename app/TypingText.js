@@ -80,7 +80,7 @@ export default class TypingText {
         { transform:"scaleY(0)" },
         { transform: "scaleY(1)" },
       ], {
-        duration: 500,
+        duration: 250,
         delay: 10 * idx,
         fill: "forwards",
         ease: "ease-out",

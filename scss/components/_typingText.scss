@@ -97,10 +97,14 @@ $radiusDotTyping: 22px;
 
   .typing__skeleton{
     height: 98px;
-    width: 64px;
+    width: 80px;
     border-radius: 4px;
     transform: scaleX(1) scaleY(0);
     transform-origin: top;
+  }
+
+  .typing__skeleton:nth-child(2n){
+    width: 144px;
   }
 }
 
