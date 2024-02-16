@@ -69,7 +69,7 @@ export default class Discussion {
 
     this.addUserElement = this.addUserElement.bind(this);
     this.currentProgress = 0;
-    this.nextProgress = 20;
+    this.nextProgress = 0;
 
     this.currentTopStatus = null;
     this.lastStatus = null;
@@ -197,7 +197,6 @@ export default class Discussion {
 
 
   animateProgressBar(currProgress, nextProgress) {
-    console.log(currProgress,nextProgress)
     anim(this.progressBar, [
       { transform: `scaleX(${currProgress/100})` },
       { transform: `scaleX(${nextProgress/100})` },
@@ -206,6 +205,23 @@ export default class Discussion {
       fill: "forwards",
       ease: "ease-out",
     })
+  }
+
+  finalizingProgressBar(container){
+    this.animateProgressBar(this.currentProgress, 100);
+    setTimeout(()=> {
+      this.progressBar.style.transformOrigin = "right";
+      anim(this.progressBar, [
+        { transform: "scaleX(1)" },
+        { transform: "scaleX(0)" },
+      ], {
+        duration: 500,
+        fill: "forwards",
+        ease: "ease-out",
+      })
+    }, 500)
+    this.currentProgress = 0;
+    this.nextProgress = 0;
   }
 
   async addStatus({ text, textEl, container }) {
@@ -266,12 +282,22 @@ export default class Discussion {
       await this.typingStatus.writing();
       this.typingStatus.fadeIn();
     }
-    
-    // Animate progress bar width
-    this.animateProgressBar(this.currentProgress, this.nextProgress);
-    // Update progress
+
+ 
     this.currentProgress = this.nextProgress;
-    this.nextProgress += 20;
+
+    const remainingProgress = 100 - this.currentProgress;
+    const portionOfRemainProgress = Math.ceil(remainingProgress / 5);
+    this.nextProgress += this.currentProgress <= 60 ? 20 : portionOfRemainProgress;
+
+    // other closing words : ["closing"]
+
+    // Animate progress bar width
+    if (status.toLowerCase().includes("ending") || status.toLowerCase().includes("closing") || topStatus === "finalizing")  {
+      this.finalizingProgressBar(container);
+    } else {
+      this.animateProgressBar(this.currentProgress, this.nextProgress);
+    }
   }
 
   removeStatus({ container }) {
