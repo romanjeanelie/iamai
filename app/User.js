@@ -151,13 +151,14 @@ const getsessionID = (user) => new Promise(function (resolve, reject) {
 async function saveUserDataFireDB(user) {
   const database = getDatabase(app);
   let data = {
-    username: user.uid,
+    username: user.uuid,
+    name: user.name,
     email: user.email,
-    profile_picture: user.photoURL,
+    profile_picture: user.picture,
     status: "waitlisted",
     createdAt: serverTimestamp(),
   }
-  const userPath = `users/${user.uid}/data`;
+  const userPath = `users/${user.uuid}/data`;
   await set(ref(database, userPath), data);
 }
 
@@ -165,7 +166,7 @@ function getUserDataFireDB(user) {
   return new Promise(async (resolve, reject) => {
     const database = getDatabase(app);
     try {
-      const userPath = `users/${user.uid}/data`;
+      const userPath = `users/${user.uuid}/data`;
       const snapshot = await get(ref(database, userPath));
       if (snapshot.exists()) {
         // console.log('Data from the Firebase Realtime Database:', snapshot.val());
