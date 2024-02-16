@@ -17,6 +17,7 @@ class Chat {
     this.targetlang = "en";
     this.sourcelang = "en";
     this.location = "US";
+    this.status = "";
     this.sessionID = "";
     this.workflowID = "";
     this.awaiting = false;
@@ -155,7 +156,7 @@ class Chat {
     };
     for await (const m of iter) {
       var mdata = m.json();
-      console.log(mdata);
+      this.status = mdata.status;
       console.timeEnd("RequestStart");
       var mtext = mdata.data;
 
@@ -229,6 +230,8 @@ class Chat {
 
         // this is for external conversation
       } else if (mdata.status.toLowerCase() == "agent ended" && mdata.message_type == "system") {
+        console.log(mdata)
+
         this.sessionID = "";
         this.deploy_ID = "";
         this.callbacks.addURL({
@@ -267,6 +270,7 @@ class Chat {
         }
         this.callbacks.enableInput();
       } else if (mdata.status == "central finished") {
+        this.callbacks.emitter.emit("centralFinished")
         if (this.domain == "MovieSearch") {
           this.getMovies();
           (this.domain = ""), (this.MovieSearchResults = ""), (this.MovieSearch = "");

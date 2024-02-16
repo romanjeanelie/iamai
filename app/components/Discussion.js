@@ -86,6 +86,8 @@ export default class Discussion {
     });
 
     this.addListeners();
+    // this.animateProgressBar = this.animateProgressBar.bind(this);
+    // this.finalizingProgressBar = this.finalizingProgressBar.bind(this);
 
     // DEBUG
     // const tempContainer = document.createElement("div");
@@ -266,7 +268,9 @@ export default class Discussion {
     this.lastStatus = textEl;
   }
 
-  async updateTopStatus({ status, topStatus, container }) {
+  async updateTopStatus({ status, topStatus, container}) {
+    console.log("from updateTopStatus : ",this.Chat.status)
+
     if (!this.typingStatus) {      
       this.typingStatus = new TypingText({
         text: topStatus,
@@ -288,12 +292,8 @@ export default class Discussion {
     const portionOfRemainProgress = Math.ceil(remainingProgress / 5);
     this.nextProgress += this.currentProgress <= 60 ? 20 : portionOfRemainProgress;
 
-    // Animate progress bar width
-    if (status.toLowerCase().includes("ending") || status.toLowerCase().includes("closing") || topStatus === "finalizing")  {
-      this.finalizingProgressBar(container);
-    } else {
-      this.animateProgressBar(this.currentProgress, this.nextProgress);
-    }
+    this.animateProgressBar(this.currentProgress, this.nextProgress);
+  
   }
 
   removeStatus({ container }) {
@@ -305,7 +305,7 @@ export default class Discussion {
     this.currentTopStatus = null;
   }
 
-  async addAIText({ text, container, targetlang, type = null } = {}) {
+  async addAIText({ text, container, targetlang, type = null } = {}) {    
     const isImageSearch = detectImageSearch(text);
     this.typingText?.fadeOut();
     this.emitter.emit("addAIText", text, targetlang);
@@ -456,6 +456,8 @@ export default class Discussion {
 
   addListeners() {
     window.addEventListener("load", this.onLoad());
+
+    this.emitter.on("centralFinished", () => this.finalizingProgressBar())
     // window.addEventListener("load", this.onLoad.bind(this));
     const resizeObserver = new ResizeObserver(this.scrollToBottom.bind(this));
     resizeObserver.observe(this.discussionContainer);
