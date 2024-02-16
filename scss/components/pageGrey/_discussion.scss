@@ -108,6 +108,14 @@
       display: inline-block;
     }
 
+    .status-container{
+      transition: opacity 0.3s ease-out;
+
+      &.hidden {
+        opacity: 0;
+      }
+    }
+
     .top-status {
       font-family: "Circular";
       margin-top: 16px;
@@ -129,7 +137,7 @@
     .progress-bar{
       background-color: $colorPink;
       height: 2px;
-      width: calc(100% + 112px);
+      width: 100%;
       margin: 16px 0;
       transform-origin: left;
       transform: scaleX(0);
@@ -146,6 +154,11 @@
       line-height: 20px;
       letter-spacing: 0.6px;
       text-align: left;
+      transition: opacity 0.3 ease-out;
+
+      &.hidden {
+        opacity: 0;
+      }
     }
 
     @include media("<tablet") {

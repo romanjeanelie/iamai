@@ -1,4 +1,4 @@
-import anim from "./utils/anim";
+import anim, { asyncAnim } from "./utils/anim";
 
 export default class TypingText {
   constructor({ text, container, backgroundColor, marginLeft }) {
@@ -94,53 +94,41 @@ export default class TypingText {
     this.skeletonContainer.classList.remove("image__skeleton");
   }
 
-  writing() {
-    return new Promise((resolve) => {
-      this.animShowtyping = anim(
-        this.typingContainer,
-        [
-          { opacity: 0, visibility: "visible" },
-          { opacity: 1, visibility: "visible" },
-        ],
-        {
-          duration: 700,
-          fill: "forwards",
-          ease: "ease-in-out",
-        }
-      );
-
-      this.translateCursor = anim(this.maskEl, [{ transform: "translateX(0%)" }, { transform: "translateX(105%)" }], {
-        delay: this.animShowtyping.effect.getComputedTiming().duration,
-        duration: 200,
+  async writing() {
+    await asyncAnim(
+      this.typingContainer,
+      [
+        { opacity: 0, visibility: "visible" },
+        { opacity: 1, visibility: "visible" },
+      ],
+      {
+        duration: 700,
         fill: "forwards",
         ease: "ease-in-out",
-      });
+      }
+    );
 
-      this.translateCursor.onfinish = () => {
-        resolve();
-      };
+    this.translateCursor = anim(this.maskEl, [{ transform: "translateX(0%)" }, { transform: "translateX(105%)" }], {
+      duration: 200,
+      fill: "forwards",
+      ease: "ease-in-out",
     });
   }
 
   reverse() {
-    return new Promise((resolve) => {
-      this.translateCursor.reverse();
-
-      anim(
-        this.typingContainer,
-        [
-          { opacity: 1, visibility: "visible" },
-          { opacity: 0, visibility: "hidden" },
-        ],
-        {
-          delay: 200,
-          duration: 1,
-          fill: "forwards",
-          ease: "ease-in-out",
-        }
-      ).onfinish = () => {
-        resolve();
-      };
-    });
+    this.translateCursor.reverse();
+    anim(
+      this.typingContainer,
+      [
+        { opacity: 1, visibility: "visible" },
+        { opacity: 0, visibility: "hidden" },
+      ],
+      {
+        delay: 210,
+        duration: 1,
+        fill: "forwards",
+        ease: "ease-in-out",
+      }
+    )
   }
 }

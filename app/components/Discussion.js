@@ -6,7 +6,7 @@ import typeByWord from "../utils/typeByWord.js";
 import Chat from "./Chat.js";
 import { getsessionID } from "../User";
 import { set } from "firebase/database";
-import anim from "../utils/anim.js";
+import anim, { asyncAnim } from "../utils/anim.js";
 
 function loadImage(src) {
   return new Promise((resolve, reject) => {
@@ -73,6 +73,7 @@ export default class Discussion {
 
     this.currentTopStatus = null;
     this.lastStatus = null;
+    this.centralFinished = false;
 
     this.Chat = new Chat({
       discussionContainer: this.discussionContainer,
@@ -198,32 +199,26 @@ export default class Discussion {
 
 
 
-  animateProgressBar(currProgress, nextProgress) {
-    anim(this.progressBar, [
+  async animateProgressBar(currProgress, nextProgress, duration = 500) {
+    await asyncAnim(this.progressBar, [
       { transform: `scaleX(${currProgress/100})` },
       { transform: `scaleX(${nextProgress/100})` },
     ], {
-      duration: 500,
+      duration: duration,
       fill: "forwards",
       ease: "ease-out",
     })
   }
 
-  finalizingProgressBar(container){
-    this.animateProgressBar(this.currentProgress, 100);
-    setTimeout(()=> {
-      this.progressBar.style.transformOrigin = "right";
-      anim(this.progressBar, [
-        { transform: "scaleX(1)" },
-        { transform: "scaleX(0)" },
-      ], {
-        duration: 500,
-        fill: "forwards",
-        ease: "ease-out",
-      })
-    }, 500)
+  async endStatusAnimation(container){
+    await this.animateProgressBar(this.currentProgress, 100, 200);
+    this.statusContainer.classList.add("hidden");
+    this.lastStatus.classList.add("hidden");
+    container.removeChild(this.statusContainer);
+    container.removeChild(this.lastStatus);
     this.currentProgress = 0;
     this.nextProgress = 0;
+    this.centralFinished = false;
   }
 
   async addStatus({ text, textEl, container }) {
@@ -232,6 +227,8 @@ export default class Discussion {
     
     if (!this.lastStatus) {
       // Init status
+      this.statusContainer = document.createElement("div");
+      this.statusContainer.className = "status-container";
       this.topStatus = document.createElement("div");
       this.topStatus.className = "top-status";
       this.progressBar = document.createElement("div");
@@ -252,8 +249,9 @@ export default class Discussion {
         container.appendChild(this.topStatus);
         return null;
       }
-      container.appendChild(this.topStatus);
-      container.appendChild(this.progressBar);
+      container.appendChild(this.statusContainer);
+      this.statusContainer.appendChild(this.topStatus);
+      this.statusContainer.appendChild(this.progressBar);
     } else {
       // Update status
       container.removeChild(this.lastStatus);
@@ -264,13 +262,11 @@ export default class Discussion {
       this.currentTopStatus = newStatus;
     }
 
-    container.appendChild(textEl);
+    this.statusContainer.appendChild(textEl);
     this.lastStatus = textEl;
   }
 
   async updateTopStatus({ status, topStatus, container}) {
-    console.log("from updateTopStatus : ",this.Chat.status)
-
     if (!this.typingStatus) {      
       this.typingStatus = new TypingText({
         text: topStatus,
@@ -296,10 +292,9 @@ export default class Discussion {
   
   }
 
-  removeStatus({ container }) {
-    if (!this.lastStatus) return;
-    container.removeChild(this.topStatus);
-    container.removeChild(this.lastStatus);
+  async removeStatus({ container }) {
+    if (!this.lastStatus || this.centralFinished ) return;
+    
     this.typingStatus = null;
     this.lastStatus = null;
     this.currentTopStatus = null;
@@ -457,7 +452,10 @@ export default class Discussion {
   addListeners() {
     window.addEventListener("load", this.onLoad());
 
-    this.emitter.on("centralFinished", () => this.finalizingProgressBar())
+    this.emitter.on("centralFinished", () => {
+      this.centralFinished = true
+      this.endStatusAnimation()
+    })
     // window.addEventListener("load", this.onLoad.bind(this));
     const resizeObserver = new ResizeObserver(this.scrollToBottom.bind(this));
     resizeObserver.observe(this.discussionContainer);

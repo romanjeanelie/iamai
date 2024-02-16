@@ -230,7 +230,7 @@ class Chat {
 
         // this is for external conversation
       } else if (mdata.status.toLowerCase() == "agent ended" && mdata.message_type == "system") {
-        console.log(mdata)
+        // console.log(mdata)
 
         this.sessionID = "";
         this.deploy_ID = "";
