@@ -124,7 +124,7 @@ class Chat {
       }
     } else {
       await this.getdevstream("DEV_STREAM");
-      this.getstreamdata("DEV_STREAM");
+      // this.getstreamdata("DEV_STREAM");
     }
   };
   getstreamdata = async (stream_name) => {
@@ -238,7 +238,7 @@ class Chat {
           text: "",
           label: "Please click here, to start a new session to chat or close the browser.",
           container: this.container,
-          url: "./main.html",
+          url: "./index.html",
         });
         // await this.callbacks.addAIText({ text: "Please click here, to start a new session to chat or close the browser.", type: 'link', container: this.container });
         // textEl.innerHTML = 'Please click <a href="./index.html">here</a>, to start a new session to chat or close the browser.';

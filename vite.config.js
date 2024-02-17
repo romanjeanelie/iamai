@@ -18,7 +18,6 @@ export default {
     rollupOptions: {
       input: {
         index: resolve(__dirname, "index.html"),
-        main: resolve(__dirname, "main.html"),
         call: resolve(__dirname, "call/index.html"),
         // login: resolve(__dirname, "login/index.html"),
         login_google: resolve(__dirname, "login/login_google.html"),
