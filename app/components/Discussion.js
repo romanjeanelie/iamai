@@ -240,6 +240,17 @@ export default class Discussion {
       this.progressBar.className = "progress-bar";
 
       if (isImageSearch){
+        this.imageTabs = document.createElement("ul");
+        this.imageTabs.classList.add("images-tab");
+        container.appendChild(this.imageTabs);
+
+        const tabs = ["Images", "Sources"];        
+        tabs.forEach(tab => {
+          const li = document.createElement("li");
+          li.textContent = tab;
+          this.imageTabs.appendChild(li);
+        })
+
         this.topStatus.style.marginTop= "0px"
         this.topStatus.style.height= "0px"
         this.topStatus.classList.add("image-skeleton")

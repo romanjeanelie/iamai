@@ -72,9 +72,11 @@ export default class TypingText {
     })
   }
 
+
   displayImageSkeleton() {
     this.logo.style.display = "none";
-    this.skeletonContainer.classList.add("skeleton__image")
+    this.skeletonContainer.classList.add("skeleton__image");
+
     this.skeletons.forEach((skeleton,idx)=> {
       anim(skeleton, [
         { transform:"scaleY(0)" },
@@ -91,7 +93,7 @@ export default class TypingText {
   fadeOut() {
     this.logo.classList.add("hidden");
     this.skeletonContainer.classList.add("hidden");
-    this.skeletonContainer.classList.remove("image__skeleton");
+    this.skeletonContainer.classList.remove("skeleton__image");
   }
 
   writing() {
