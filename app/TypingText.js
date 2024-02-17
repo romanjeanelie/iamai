@@ -14,7 +14,6 @@ export default class TypingText {
     this.maskEl = document.createElement("div");
     this.logo = document.createElement("div");
     const imgEl = document.createElement('img');
-
     imgEl.setAttribute("src", "./images/asterizk_pink.svg" );
     this.logo.appendChild(imgEl);
     
