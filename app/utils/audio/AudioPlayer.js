@@ -14,27 +14,33 @@ export default class AudioPlayer {
   }
 
   async playAudio() {
-    let response = await fetch(this.audioUrl);
-    let arrayBuffer = await response.arrayBuffer();
-    let audioBuffer = await this.audioContext?.decodeAudioData(arrayBuffer);
-
-    this.currentAudioPlaying = this.audioContext.createBufferSource();
-    this.currentAudioPlaying.buffer = audioBuffer;
-    this.currentAudioPlaying.connect(this.audioContext.destination);
-    this.currentAudioPlaying.loop = this.loop;
-    this.startTime = this.audioContext.currentTime;
-    this.currentAudioPlaying.start(0, this.startOffset % audioBuffer.duration);
-
-    if (typeof this.onPlay === "function") {
-      this.onPlay();
-    }
-
-    this.currentAudioPlaying.onended = () => {
-      if (typeof this.onEnded === "function") {
-        if (this.isPaused) return;
-        this.onEnded();
+    try {
+      let response = await fetch(this.audioUrl);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      
+      let arrayBuffer = await response.arrayBuffer();
+      let audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
+  
+      this.currentAudioPlaying = this.audioContext.createBufferSource();
+      this.currentAudioPlaying.buffer = audioBuffer;
+      this.currentAudioPlaying.connect(this.audioContext.destination);
+      this.currentAudioPlaying.loop = this.loop;
+      this.startTime = this.audioContext.currentTime;
+      this.currentAudioPlaying.start(0, this.startOffset % audioBuffer.duration);
+  
+      if (typeof this.onPlay === "function") {
+        this.onPlay();
       }
-    };
+  
+      this.currentAudioPlaying.onended = () => {
+        if (typeof this.onEnded === "function") {
+          if (this.isPaused) return;
+          this.onEnded();
+        }
+      };
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   pauseAudio() {

@@ -122,14 +122,27 @@ export default function textToSpeech(text, targetlang, index, attempt = 0) {
     body: body,
   })
     .then((response) => response.blob())
-    .then((audioBlob) => ({ audio: getAudio(audioBlob), index }))
+    .then((audioBlob) => {
+      console.log("from text to speech  : " , audioBlob, index);
+      return ({ audio: getAudio(audioBlob), index })
+    })
     .catch((error) => {
       console.error(`Error on attempt ${attempt}:`, error);
       if (attempt < 2) {
         // If this was the first or second attempt, try again
-        return textToSpeech(text, targetlang, index, attempt + 1);
+        return new Promise((resolve, reject) => {
+          // Wait for 1 second before retrying
+          console.error
+          setTimeout(() => {
+            textToSpeech(text, targetlang, index, attempt + 1)
+              .then(resolve) // If the retry is successful, resolve this promise
+              .catch(reject); // If the retry fails, reject this promise
+          }, 1000);
+        });
       } else {
         // If this was the third attempt, throw the error
         throw error;
       }
-    });}
+    });
+  }
+

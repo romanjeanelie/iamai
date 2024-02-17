@@ -185,6 +185,8 @@ export default class Phone {
 
     this.currentIndexTextAI === null ? (this.currentIndexTextAI = 0) : this.currentIndexTextAI++;
     const { audio, index } = await textToSpeech(htmlToText(html), targetlang, this.currentIndexTextAI);
+    console.log("audio from startAITalking", audio, index);
+
     this.audiosAI[index] = audio;
 
     if (this.currentIndexAudioAI === null) {
@@ -192,6 +194,7 @@ export default class Phone {
       this.audioProcessing?.stopAudio();
 
       this.currentIndexAudioAI = 0;
+      // bug here 
       this.currentAudioAIPlaying = new AudioPlayer({
         audioUrl: this.audiosAI[this.currentIndexAudioAI]?.src,
         audioContext: this.audioContext,
