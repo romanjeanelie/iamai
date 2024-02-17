@@ -234,6 +234,8 @@ export default class Discussion {
       this.statusContainer.className = "status-container";
       this.topStatus = document.createElement("div");
       this.topStatus.className = "top-status";
+      this.progressBarContainer = document.createElement("div");
+      this.progressBarContainer.className = "progress-bar-container";
       this.progressBar = document.createElement("div");
       this.progressBar.className = "progress-bar";
 
@@ -254,7 +256,8 @@ export default class Discussion {
       }
       container.appendChild(this.statusContainer);
       this.statusContainer.appendChild(this.topStatus);
-      this.statusContainer.appendChild(this.progressBar);
+      this.statusContainer.appendChild(this.progressBarContainer);
+      this.progressBarContainer.appendChild(this.progressBar);
     } else {
       // Update status
       container.removeChild(this.lastStatus);
