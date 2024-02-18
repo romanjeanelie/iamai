@@ -1,37 +1,11 @@
 import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scss";
 import TypingText from "../TypingText";
+import Chat from "./Chat.js";
+import Images from "./Images.js"
 
 import { getsessionID } from "../User";
 import { asyncAnim } from "../utils/anim.js";
 import typeByWord from "../utils/typeByWord.js";
-import Chat from "./Chat.js";
-
-function loadImage(src) {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve();
-    img.onerror = (error) => reject(error);
-    img.src = src;
-  });
-}
-
-async function loadImages(srcs) {
-  const successfulSrcs = [];
-  const errors = [];
-
-  await Promise.all(
-    srcs.map((src) =>
-      loadImage(src)
-        .then(() => successfulSrcs.push(src))
-        .catch((error) => {
-          errors.push({ src, error });
-          console.log("Error loading image:", error);
-        })
-    )
-  );
-
-  return successfulSrcs;
-}
 
 const topStatusText = ["finding", "checking", "searching", "analyzing", "scanning", "finalizing", "processing"];
 const defaultTopStatus = "searching";
@@ -214,8 +188,6 @@ export default class Discussion {
 
   async endStatusAnimation(){
     await this.animateProgressBar(this.currentProgress, 100, 200);
-
-    console.log()
     this.statusContainer.classList.add("hidden");
     this.lastStatus.classList.add("hidden");
     
@@ -240,16 +212,14 @@ export default class Discussion {
       this.progressBar.className = "progress-bar";
 
       if (isImageSearch){
-        this.imageTabs = document.createElement("ul");
-        this.imageTabs.classList.add("images-tab");
-        container.appendChild(this.imageTabs);
-
-        const tabs = ["Images", "Sources"];        
-        tabs.forEach(tab => {
-          const li = document.createElement("li");
-          li.textContent = tab;
-          this.imageTabs.appendChild(li);
-        })
+        this.images = new Images({
+          container: container,
+          removeStatus: this.removeStatus,
+          scrollToBottom: this.scrollToBottom,
+          openSlider: this.openSlider,
+        });
+         
+        this.images.initTabs();
 
         this.topStatus.style.marginTop= "0px"
         this.topStatus.style.height= "0px"
@@ -310,7 +280,8 @@ export default class Discussion {
 
   async removeStatus({ container }) {
     if (!this.lastStatus) return;
-  
+    console.log("CONTAINER FROM REMOVE STATUS : ", container)
+    console.log("LAST STATUS FROM REMOVE STATUS : " ,this.lastStatus)
     container.removeChild(this.statusContainer);
     container.removeChild(this.lastStatus);
     this.resetStatuses();
@@ -370,22 +341,8 @@ export default class Discussion {
     const skeletonContainer = container.querySelector(".image-skeleton .typing__skeleton-container");
     skeletonContainer.classList.add("hidden"); 
     
-    const imagesContainer = document.createElement("div");
-    imagesContainer.className = "images__container";
-
-    const successfulSrcs = await loadImages(srcs);
-
-    const imgs = successfulSrcs.map((src) => {
-      const img = document.createElement("img");
-      img.src = src;
-      imagesContainer.appendChild(img);
-      return img;
-    });
-
-    this.attachClickEvent(imgs);
-    this.removeStatus({ container });
-    container.appendChild(imagesContainer);
-    this.scrollToBottom();
+    this.images.initSources(this.Chat.Sources);
+    this.images.initImages(srcs, this.removeStatus, this.scrollToBottom);
   }
 
   attachClickEvent(imgs) {
@@ -396,25 +353,11 @@ export default class Discussion {
     });
   }
 
-  loadImage(url) {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
 
-      img.onload = () => {
-        resolve(true); // Image loaded successfully
-      };
-
-      img.onerror = () => {
-        reject(false); // Error loading image
-      };
-
-      img.src = url;
-    });
-  }
 
   scrollToBottom() {
-    this.discussionContainer.scrollTo({
-      top: this.discussionContainer.scrollHeight,
+    window.scrollTo({
+      top: document.body.scrollHeight,
       behavior: "smooth",
     });
   }

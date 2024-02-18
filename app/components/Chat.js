@@ -157,7 +157,7 @@ class Chat {
     for await (const m of iter) {
       var mdata = m.json();
       this.status = mdata.status;
-      console.timeEnd("RequestStart");
+      // console.timeEnd("RequestStart");
       var mtext = mdata.data;
 
       //get UI and RAG params
@@ -205,6 +205,8 @@ class Chat {
 
       //generate data
       if (mdata.streaming && mdata.streaming == true) {
+        // console.log(mdata)
+
         if (mtext.trim().length > 0) {
           var AIAnswer = await this.toTitleCase2(mtext);
           if (this.sourcelang != "en") {
@@ -230,8 +232,6 @@ class Chat {
 
         // this is for external conversation
       } else if (mdata.status.toLowerCase() == "agent ended" && mdata.message_type == "system") {
-        // console.log(mdata)
-
         this.sessionID = "";
         this.deploy_ID = "";
         this.callbacks.addURL({
