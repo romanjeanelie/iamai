@@ -253,7 +253,7 @@ export default class Discussion {
     this.lastStatus = textEl;
   }
 
-  async updateTopStatus({ status, topStatus, container}) {
+  async updateTopStatus({ topStatus }) {
     if (!this.typingStatus) {      
       this.typingStatus = new TypingText({
         text: topStatus,

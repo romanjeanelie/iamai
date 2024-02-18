@@ -45,6 +45,7 @@
 
     .images__sources{
       display: flex;
+      margin-top: 12px;
       flex-wrap: wrap;
       gap:12px;
 
@@ -115,11 +116,14 @@
       line-height: 20px;
       letter-spacing: 0.6px;
       color: $colorBlackForGreyPage;
+      
+      &:hover {
+        color: $colorBlack;
+      }
     }
 
     li.active{
       color: $colorBlack;
-      font-weight: 600;
     }
   }
 

@@ -12,6 +12,14 @@ export default class Images {
     this.removeStatus = removeStatus;
     this.scrollToBottom = scrollToBottom;
     this.openSlider = openSlider;
+
+    this.tabs = ["Images", "Sources"];        
+    this.selectedTab = "Images";
+
+    this.imagesContainer = null;
+    this.imageTabs = null;
+    this.sources = null;
+
   }
 
   initTabs(){
@@ -20,17 +28,39 @@ export default class Images {
 
     this.container.appendChild(this.imageTabs);
 
-    const tabs = ["Images", "Sources"];        
-    tabs.forEach(tab => {
+    this.tabs.forEach(tab => {
       const li = document.createElement("li");
+      if (tab === this.selectedTab) li.classList.add("active");
       li.textContent = tab;
+
       this.imageTabs.appendChild(li);
+      this.handleTabClick(li);
     })
   } 
 
+  handleTabClick(tab) {
+    tab.addEventListener("click", () => {
+      // Remove 'active' class from all tabs
+      this.imageTabs.querySelectorAll('li').forEach(li => li.classList.remove('active'));
+
+      // Add 'active' class to the clicked tab
+      tab.classList.add('active');
+
+      this.selectedTab = tab.textContent;
+
+      if (this.selectedTab === "Sources") {
+        this.sources.classList.remove("none");
+        this.imagesContainer.classList.add("none");
+      } else if (this.selectedTab === "Images") {
+        this.sources.classList.add("none");
+        this.imagesContainer.classList.remove("none");
+      }
+    });
+  }
+
   initSources(sourcesData){
-    const sources = document.createElement("div");
-    sources.className = "images__sources none";
+    this.sources = document.createElement("div");
+    this.sources.className = "images__sources none";
 
     for (let source of sourcesData) {
       const sourceEl = document.createElement("a");
@@ -47,34 +77,34 @@ export default class Images {
       const sourceText = document.createElement("span");
       sourceText.textContent = domain;
       sourceEl.appendChild(sourceText);
-      sources.appendChild(sourceEl);
+      this.sources.appendChild(sourceEl);
     }
     
-    this.container.appendChild(sources);
+    this.container.appendChild(this.sources);
   }
 
   async initImages(srcs){
-    const imagesContainer = document.createElement("div");
-    imagesContainer.className = "images__container";
+    this.imagesContainer = document.createElement("div");
+    this.imagesContainer.className = "images__container";
 
     const successfulSrcs = await this.loadImages(srcs);
 
     const imgs = successfulSrcs.map((src) => {
       const img = document.createElement("img");
       img.src = src;
-      imagesContainer.appendChild(img);
+      this.imagesContainer.appendChild(img);
       return img;
     });
 
-    this.attachClickEvent(imgs);
+    this.handleImgClick(imgs);
     this.removeStatus({ container: this.container });
     const aiStatus = this.container.querySelector(".AIstatus");
     if (aiStatus) aiStatus.remove();
-    this.container.appendChild(imagesContainer);
+    this.container.appendChild(this.imagesContainer);
     this.scrollToBottom();
   }
 
-  attachClickEvent(imgs) {
+  handleImgClick(imgs) {
     imgs.forEach((img, i) => {
       img.addEventListener("click", () => {
         this.openSlider(imgs, i);
