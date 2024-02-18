@@ -1,7 +1,7 @@
 import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scss";
 import TypingText from "../TypingText";
 import Chat from "./Chat.js";
-import Images from "./Images.js"
+import DiscussionImages from "./DiscussionImages.js"
 
 import { getsessionID } from "../User";
 import { asyncAnim } from "../utils/anim.js";
@@ -212,7 +212,7 @@ export default class Discussion {
       this.progressBar.className = "progress-bar";
 
       if (isImageSearch){
-        this.images = new Images({
+        this.images = new DiscussionImages({
           container: container,
           removeStatus: this.removeStatus,
           scrollToBottom: this.scrollToBottom,

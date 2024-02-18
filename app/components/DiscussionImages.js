@@ -6,7 +6,7 @@ function getDomainAndFavicon(url) {
 }
 
 
-export default class Images {
+export default class DiscussionImages {
   constructor({container, removeStatus, scrollToBottom, openSlider}){
     this.container = container;
     this.removeStatus = removeStatus;
