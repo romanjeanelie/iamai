@@ -289,6 +289,7 @@ export default class Discussion {
     const isImageSearch = detectImageSearch(text);
     this.typingText?.fadeOut();
     this.emitter.emit("addAIText", text, targetlang);
+
     const textEl = document.createElement("span");
 
    if (type === "status") {
@@ -298,9 +299,8 @@ export default class Discussion {
       this.removeStatus({ container });
     }
 
-    textEl.className = "AItext";
-    
     container.appendChild(textEl);
+
     text = text.replace(/<br\/?>\s*/g, "\n");
     this.scrollToBottom();
 
