@@ -229,9 +229,24 @@
       }
     }
 
+    .AItext{
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out 0.5s forwards;
+    }
+
+
     @include media("<tablet") {
       //   padding-left: 24px;
       margin-right: unset;
     }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }

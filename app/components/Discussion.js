@@ -280,8 +280,6 @@ export default class Discussion {
 
   async removeStatus({ container }) {
     if (!this.lastStatus) return;
-    console.log("CONTAINER FROM REMOVE STATUS : ", container)
-    console.log("LAST STATUS FROM REMOVE STATUS : " ,this.lastStatus)
     container.removeChild(this.statusContainer);
     container.removeChild(this.lastStatus);
     this.resetStatuses();
@@ -300,6 +298,8 @@ export default class Discussion {
       this.removeStatus({ container });
     }
 
+    textEl.className = "AItext";
+    
     container.appendChild(textEl);
     text = text.replace(/<br\/?>\s*/g, "\n");
     this.scrollToBottom();
