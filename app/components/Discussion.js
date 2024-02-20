@@ -199,7 +199,6 @@ export default class Discussion {
   async addStatus({ text, textEl, container }) {
     const topStatus = getTopStatus(text);
     const isImageSearch = detectImageSearch(text);
-    console.log("----------------- add status -----------------")
     
     if (!this.lastStatus) {
       // Init status
@@ -257,10 +256,7 @@ export default class Discussion {
   }
 
   async updateTopStatus({ topStatus }) {
-    console.log("--------- update top status ---------")
-
     if (!this.typingStatus) {
-      console.log("if !this.typingStatus inside updateTopStatus : ", topStatus)
       this.typingStatus = new TypingText({
         text: topStatus,
         container: this.topStatus,
