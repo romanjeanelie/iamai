@@ -197,8 +197,9 @@ export default class Discussion {
   }
 
   async addStatus({ text, textEl, container }) {
-    const newStatus = getTopStatus(text);
+    const topStatus = getTopStatus(text);
     const isImageSearch = detectImageSearch(text);
+    console.log("----------------- add status -----------------")
     
     if (!this.lastStatus) {
       // Init status
@@ -235,6 +236,7 @@ export default class Discussion {
         container.appendChild(this.topStatus);
         return null;
       }
+
       container.appendChild(this.statusContainer);
       this.statusContainer.appendChild(this.topStatus);
       this.statusContainer.appendChild(this.progressBarContainer);
@@ -244,9 +246,9 @@ export default class Discussion {
       container.removeChild(this.lastStatus);
     }
 
-    if (newStatus && (newStatus !== this.currentTopStatus || !this.currentTopStatus)) {
-      this.updateTopStatus({ status : text, topStatus: newStatus, container: this.topStatus });
-      this.currentTopStatus = newStatus;
+    if (topStatus && (topStatus !== this.currentTopStatus || !this.currentTopStatus)) {
+      this.updateTopStatus({ status : text, topStatus, container: this.topStatus });
+      this.currentTopStatus = topStatus;
     }
 
     this.statusContainer.appendChild(textEl);
@@ -254,7 +256,10 @@ export default class Discussion {
   }
 
   async updateTopStatus({ topStatus }) {
-    if (!this.typingStatus) {      
+    console.log("--------- update top status ---------")
+
+    if (!this.typingStatus) {
+      console.log("if !this.typingStatus inside updateTopStatus : ", topStatus)
       this.typingStatus = new TypingText({
         text: topStatus,
         container: this.topStatus,
@@ -343,6 +348,7 @@ export default class Discussion {
     
     this.images.initSources(this.Chat.Sources);
     this.images.initImages(srcs, this.removeStatus, this.scrollToBottom);
+    this.typingStatus = null;
   }
 
   attachClickEvent(imgs) {
