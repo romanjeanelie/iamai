@@ -243,6 +243,8 @@ export default class Discussion {
       // Update status
       container.removeChild(this.lastStatus);
     }
+    this.lastStatus = textEl;
+
 
     if (newStatus && (newStatus !== this.currentTopStatus || !this.currentTopStatus)) {
       this.updateTopStatus({ status : text, topStatus: newStatus, container: this.topStatus });
@@ -250,7 +252,6 @@ export default class Discussion {
     }
 
     this.statusContainer.appendChild(textEl);
-    this.lastStatus = textEl;
   }
 
   async updateTopStatus({ topStatus }) {

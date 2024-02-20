@@ -100,6 +100,7 @@ export default class Phone {
       audioUrl: "/sounds/connected.mp3",
       audioContext: this.audioContext,
     });
+    this.audioConnected.playAudio();
     setTimeout(() => {
       this.isConnected = true;
       this.toTalkToMe();
@@ -154,6 +155,7 @@ export default class Phone {
       audioContext: this.audioContext,
       loop: true,
     });
+    this.audioProcessing.playAudio();
 
     if (!audio) return;
     const blob = float32ArrayToMp3Blob(audio, 16000);
@@ -189,18 +191,23 @@ export default class Phone {
 
     this.audiosAI[index] = audio;
 
+    console.log("THIS.CURRENTINDEXAUDIOAI + AUDIOai", this.currentIndexAudioAI, this.audiosAI.length);
+
     if (this.currentIndexAudioAI === null) {
-      console.log("first sound");
       this.audioProcessing?.stopAudio();
 
       this.currentIndexAudioAI = 0;
-      // bug here 
       this.currentAudioAIPlaying = new AudioPlayer({
         audioUrl: this.audiosAI[this.currentIndexAudioAI]?.src,
         audioContext: this.audioContext,
         onPlay: this.onPlay.bind(this),
         onEnded: this.checkIfNextAudio.bind(this),
       });
+      try {
+        this.currentAudioAIPlaying.playAudio();
+      } catch (err) {
+        console.error("from startAITalking", err);
+      }
     }
   }
 
@@ -216,6 +223,7 @@ export default class Phone {
         onPlay: this.onPlay.bind(this),
         onEnded: this.checkIfNextAudio.bind(this),
       });
+      this.currentAudioAIPlaying.playAudio();
     } else {
       this.clearAIAudios();
       this.isAITalking = false;
@@ -224,6 +232,7 @@ export default class Phone {
         // if (this.debug) return;
         this.toTalkToMe();
       } else {
+        console.log("FEELING WHEN ERROR, STOPS HERE")
         this.toProcessing();
       }
     }
