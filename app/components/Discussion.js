@@ -19,16 +19,6 @@ function getTopStatus(text) {
   return defaultTopStatus;
 }
 
-const wordPool = ["images", "photos", "pictures"]; 
-function detectImageSearch(text){
-  return wordPool.some(word => {
-    if (text.toLowerCase().includes(word)) {
-      return true
-    }
-    return false
-  })
-}
-
 export default class Discussion {
   constructor({ toPageGrey, emitter, user }) {
     this.emitter = emitter;
@@ -112,7 +102,6 @@ export default class Discussion {
   }
 
   enableInput() {
-    console.log("enable input")
     this.inputText.disabled = false;
     const childNodes = this.inputContainer.getElementsByTagName("*");
     for (var node of childNodes) {
@@ -198,7 +187,7 @@ export default class Discussion {
 
   async addStatus({ text, textEl, container }) {
     const topStatus = getTopStatus(text);
-    const isImageSearch = detectImageSearch(text);
+    const isImageSearch = this.Chat.task_name === "Image Status Push";
     
     if (!this.lastStatus) {
       // Init status
@@ -288,7 +277,8 @@ export default class Discussion {
   }
 
   async addAIText({ text, container, targetlang, type = null } = {}) {    
-    const isImageSearch = detectImageSearch(text);
+    const isImageSearch = this.Chat.task_name === "Image Status Push";
+
     this.typingText?.fadeOut();
     this.emitter.emit("addAIText", text, targetlang);
 
@@ -307,12 +297,8 @@ export default class Discussion {
     this.scrollToBottom();
 
     if (isImageSearch) return
-    return new Promise(resolve => {
-      // Delay the start of the typing after the skeletons fade out
-      setTimeout(async () => {
-        resolve(await typeByWord(textEl, text));
-      }, 300);
-    });  
+
+    return typeByWord(textEl, text);  
   }
 
   addURL({ text, label, url, container }) {

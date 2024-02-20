@@ -36,6 +36,7 @@ class Chat {
     this.Sources = "";
     this.deploy_ID = "";
     this.image_urls = "";
+    this.task_name = "";
     this.user = this.callbacks.user;
     console.log("chat user", this.user);
     this.callbacks.disableInput();
@@ -159,6 +160,7 @@ class Chat {
       var mdata = m.json();
       console.log(mdata)
       this.status = mdata.status;
+      this.task_name = mdata.task_name
       // console.timeEnd("RequestStart");
       var mtext = mdata.data;
       // m.ack();
@@ -207,7 +209,7 @@ class Chat {
 
       //generate data
       if (mdata.streaming && mdata.streaming == true) {
-        // console.log(mdata)
+        console.log(mdata)
 
         if (mtext.trim().length > 0) {
           var AIAnswer = await this.toTitleCase2(mtext);
