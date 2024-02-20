@@ -6,9 +6,16 @@ export default function typeByWord(container, text){
 
     function type() {
       if (wordIndex < words.length) { // If there are still words left to type
-        container.innerHTML += words[wordIndex] + ' '; // Add the current word to the HTML
+        // Create a new span element for the word
+        const wordSpan = document.createElement("span");
+        wordSpan.className = "AIword";
+        wordSpan.textContent = words[wordIndex] + ' ';
+    
+        // Append the span to the container
+        container.appendChild(wordSpan);
+    
         wordIndex++; // Move to the next word
-        setTimeout(type, 10); // Call this function again after a delay to simulate typing speed
+        setTimeout(type, 100); // Call this function again after a delay to simulate typing speed
       } else {
         wordIndex = 0; // Reset the index for the next call
         resolve(); // Resolve the Promise

@@ -9,17 +9,17 @@ export default class AudioPlayer {
     this.startTime = 0;
     this.startOffset = 0;
     this.isPaused = false;
-
-    this.playAudio();
   }
 
   async playAudio() {
     try {
-      let response = await fetch(this.audioUrl);
+      let response = await fetch(this.audioUrl).catch(err => console.error("from playAudio :", err));
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       
       let arrayBuffer = await response.arrayBuffer();
       let audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
+
+      console.log("AUDIO BUFFER : ",audioBuffer)
   
       this.currentAudioPlaying = this.audioContext.createBufferSource();
       this.currentAudioPlaying.buffer = audioBuffer;

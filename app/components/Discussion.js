@@ -245,6 +245,8 @@ export default class Discussion {
       // Update status
       container.removeChild(this.lastStatus);
     }
+    this.lastStatus = textEl;
+
 
     if (topStatus && (topStatus !== this.currentTopStatus || !this.currentTopStatus)) {
       this.updateTopStatus({ status : text, topStatus, container: this.topStatus });
@@ -252,7 +254,6 @@ export default class Discussion {
     }
 
     this.statusContainer.appendChild(textEl);
-    this.lastStatus = textEl;
   }
 
   async updateTopStatus({ topStatus }) {
@@ -285,8 +286,6 @@ export default class Discussion {
 
   async removeStatus({ container }) {
     if (!this.lastStatus) return;
-    console.log("CONTAINER FROM REMOVE STATUS : ", container)
-    console.log("LAST STATUS FROM REMOVE STATUS : " ,this.lastStatus)
     container.removeChild(this.statusContainer);
     container.removeChild(this.lastStatus);
     this.resetStatuses();
@@ -296,6 +295,7 @@ export default class Discussion {
     const isImageSearch = detectImageSearch(text);
     this.typingText?.fadeOut();
     this.emitter.emit("addAIText", text, targetlang);
+
     const textEl = document.createElement("span");
 
    if (type === "status") {
@@ -306,6 +306,7 @@ export default class Discussion {
     }
 
     container.appendChild(textEl);
+
     text = text.replace(/<br\/?>\s*/g, "\n");
     this.scrollToBottom();
 
