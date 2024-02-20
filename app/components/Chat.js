@@ -45,14 +45,13 @@ class Chat {
     this.container = container;
     var input_text = text;
     var original_text = input_text;
-    if(this.autodetect)
-    {
+    if (this.autodetect) {
       var response = await this.googletranslate(input_text, this.targetlang, "");
       input_text = response.data.translations[0].translatedText;
-      console.log("response.data.translations[0].detectedSourceLanguage",response.data.translations[0].detectedSourceLanguage)
+      console.log("response.data.translations[0].detectedSourceLanguage", response.data.translations[0].detectedSourceLanguage)
       if (response.data.translations[0].detectedSourceLanguage)
         this.sourcelang = response.data.translations[0].detectedSourceLanguage;
-    }else if (this.sourcelang != this.targetlang) {
+    } else if (this.sourcelang != this.targetlang) {
       var response = await this.googletranslate(input_text, this.targetlang, this.sourcelang);
       input_text = response.data.translations[0].translatedText;
     }
@@ -87,7 +86,9 @@ class Chat {
             );
             AIAnswer = transresponse.data.translations[0].translatedText;
           }
+          console.log("before add error")
           await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang });
+          console.log("after add")
 
           this.callbacks.enableInput();
         });
@@ -156,9 +157,11 @@ class Chat {
     };
     for await (const m of iter) {
       var mdata = m.json();
+      console.log(mdata)
       this.status = mdata.status;
       // console.timeEnd("RequestStart");
       var mtext = mdata.data;
+      // m.ack();
 
       //get UI and RAG params
       // if (mdata.message_type == "ui" || mdata.message_type == "conversation_question") {
@@ -186,8 +189,7 @@ class Chat {
         console.log("this.image_urls:" + this.image_urls);
         // CALL THIS TO ADD IMAGES
         this.callbacks.addImages({ srcs: this.image_urls, container: this.container });
-      }else if(mdata.message_type == "Sources")
-      {
+      } else if (mdata.message_type == "Sources") {
         this.Sources = JSON.parse(mdata.ui_params.Sources);
         // Add Call to add sources
       }
@@ -217,7 +219,9 @@ class Chat {
             );
             AIAnswer = transresponse.data.translations[0].translatedText;
           }
+          console.log("before add");
           await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang });
+          console.log("after add");
         }
         if (mdata.stream_status && mdata.stream_status == "ended") {
           this.callbacks.emitter.emit("endStream");
@@ -257,7 +261,9 @@ class Chat {
           );
           AIAnswer = transresponse.data.translations[0].translatedText;
         }
+        console.log("before add")
         await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang });
+        console.log("after add")
         this.callbacks.emitter.emit("endStream");
 
         if (this.domain == "RAG_CHAT") {
@@ -292,14 +298,28 @@ class Chat {
             AIAnswer = transresponse.data.translations[0].translatedText;
           }
           AIAnswer += "\n\n";
-
+          console.log("before add")
           await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang, type: "status" });
+          console.log("after add")
         }
-      } else if(mdata.status.toLowerCase() == "pa end")
-      {
+      } else if (mdata.status.toLowerCase() == "pa end") {
         this.callbacks.enableInput();
-      }
+      } else if (mtext.trim().length > 0) { //ADDED THIS FOR conversation_question and other cases.
+        var AIAnswer = await this.toTitleCase2(mtext);
+        if (this.sourcelang != "en") {
+          var transresponse = await this.googletranslate(
+            await this.toTitleCase2(mtext),
+            this.sourcelang,
+            this.targetlang
+          );
+          AIAnswer = transresponse.data.translations[0].translatedText;
+        }
+        console.log("before add")
+        await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang });
+        console.log("after add")
+      } 
       m.ack();
+      console.log("m.ack()");
     }
     nc.drain();
   };
