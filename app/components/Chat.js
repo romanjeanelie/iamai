@@ -154,13 +154,13 @@ class Chat {
     };
     for await (const m of iter) {
       var mdata = m.json();
-      console.log(m.seq);
-      console.log(m.redelivered);
+      // console.log(m.seq);
+      // console.log(m.redelivered);
       if (steamseq.includes(m.seq) && m.redelivered) {
         console.log("prevent duplicate");
         m.ack();
       } else {
-        console.log(mdata);
+        // console.log(mdata);
         steamseq.push(m.seq);
         this.status = mdata.status;
         this.task_name = mdata.task_name;
@@ -191,11 +191,10 @@ class Chat {
           }
         } else if (mdata.message_type == "image") {
           this.image_urls = JSON.parse(mdata.ui_params.image_urls);
-          console.log("this.image_urls:" + this.image_urls);
-          // CALL THIS TO ADD IMAGES
           this.callbacks.addImages({ srcs: this.image_urls, container: this.container });
         } else if (mdata.message_type == "Sources") {
           this.Sources = JSON.parse(mdata.ui_params.Sources);
+          console.log("Sources:" + this.Sources);
           // Add Call to add sources
         }
 

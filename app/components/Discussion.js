@@ -6,6 +6,7 @@ import DiscussionImages from "./DiscussionImages.js"
 import { getsessionID } from "../User";
 import { asyncAnim } from "../utils/anim.js";
 import typeByWord from "../utils/typeByWord.js";
+import typeText from "../utils/typeText.js";
 
 const topStatusText = ["finding", "checking", "searching", "analyzing", "scanning", "finalizing", "processing"];
 const defaultTopStatus = "searching";
@@ -208,8 +209,7 @@ export default class Discussion {
           scrollToBottom: this.scrollToBottom,
         });
          
-        this.images.initTabs();
-
+        
         this.topStatus.style.marginTop= "0px"
         this.topStatus.style.height= "0px"
         this.topStatus.classList.add("image-skeleton")
@@ -218,7 +218,8 @@ export default class Discussion {
           container: this.topStatus,
           backgroundColor: backgroundColorGreyPage,
         })
-
+        
+        this.images.initTabs(this.Chat.Sources);
         this.typingStatus.fadeIn();
         this.typingStatus.displayImageSkeleton();
         container.appendChild(this.topStatus);
@@ -284,7 +285,7 @@ export default class Discussion {
 
     const textEl = document.createElement("span");
 
-   if (type === "status") {
+    if (type === "status") {
       textEl.className = "AIstatus";
       this.addStatus({ text, textEl, container });
     } else if (this.lastStatus) {
@@ -293,12 +294,9 @@ export default class Discussion {
 
     container.appendChild(textEl);
 
-    text = text.replace(/<br\/?>\s*/g, "\n");
-
+    // text = text.replace(/<br\/?>\s*/g, "\n");
     if (type !== "status") this.scrollToBottom();
-
     if (isImageSearch) return
-
     return typeByWord(textEl, text);  
   }
 

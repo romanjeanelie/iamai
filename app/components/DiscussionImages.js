@@ -22,7 +22,8 @@ export default class DiscussionImages {
 
   }
 
-  initTabs(){
+  initTabs(sources){
+    if (!sources.length) return;
     this.imageTabs = document.createElement("ul");
     this.imageTabs.classList.add("images-tab");
 
