@@ -203,9 +203,9 @@ export default class Discussion {
       if (isImageSearch){
         this.images = new DiscussionImages({
           container: container,
+          emitter : this.emitter,
           removeStatus: this.removeStatus,
           scrollToBottom: this.scrollToBottom,
-          openSlider: this.openSlider,
         });
          
         this.images.initTabs();
@@ -294,7 +294,8 @@ export default class Discussion {
     container.appendChild(textEl);
 
     text = text.replace(/<br\/?>\s*/g, "\n");
-    this.scrollToBottom();
+
+    if (type !== "status") this.scrollToBottom();
 
     if (isImageSearch) return
 
@@ -318,31 +319,12 @@ export default class Discussion {
     this.scrollToBottom();
   }
 
-  openSlider(imgs, currentIndex) {
-    this.emitter.emit("slider:open", { imgs, currentIndex });
-  }
-
   async addImages({ container, srcs = [] } = {}) {
     if (srcs.length === 0) return;
-
-    // right before adding the images we remove the skeletons
-    const skeletonContainer = container.querySelector(".image-skeleton .typing__skeleton-container");
-    skeletonContainer.classList.add("hidden"); 
-    
     this.images.initSources(this.Chat.Sources);
     this.images.initImages(srcs, this.removeStatus, this.scrollToBottom);
     this.typingStatus = null;
   }
-
-  attachClickEvent(imgs) {
-    imgs.forEach((img, i) => {
-      img.addEventListener("click", () => {
-        this.openSlider(imgs, i);
-      });
-    });
-  }
-
-
 
   scrollToBottom() {
     window.scrollTo({

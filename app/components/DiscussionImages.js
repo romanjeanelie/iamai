@@ -7,11 +7,11 @@ function getDomainAndFavicon(url) {
 
 
 export default class DiscussionImages {
-  constructor({container, removeStatus, scrollToBottom, openSlider}){
+  constructor({container, removeStatus, scrollToBottom, emitter}){
     this.container = container;
+    this.emitter = emitter;
     this.removeStatus = removeStatus;
     this.scrollToBottom = scrollToBottom;
-    this.openSlider = openSlider;
 
     this.tabs = ["Images", "Sources"];        
     this.selectedTab = "Images";
@@ -79,7 +79,7 @@ export default class DiscussionImages {
       sourceEl.appendChild(sourceText);
       this.sources.appendChild(sourceEl);
     }
-    
+
     this.container.appendChild(this.sources);
   }
 
@@ -88,6 +88,10 @@ export default class DiscussionImages {
     this.imagesContainer.className = "images__container";
 
     const successfulSrcs = await this.loadImages(srcs);
+
+    // right before adding the images we remove the skeletons
+    const skeletonContainer = this.container.querySelector(".image-skeleton .typing__skeleton-container");
+    skeletonContainer.classList.add("hidden"); 
 
     const imgs = successfulSrcs.map((src) => {
       const img = document.createElement("img");
@@ -110,6 +114,11 @@ export default class DiscussionImages {
         this.openSlider(imgs, i);
       });
     });
+  }
+
+  openSlider(imgs, currentIndex) {
+    console.log("---- in open slider ----");
+    this.emitter.emit("slider:open", { imgs, currentIndex });
   }
 
   loadImage(src) {
@@ -137,6 +146,5 @@ export default class DiscussionImages {
     );
 
     return successfulSrcs;
-}
-  
+  }  
 }
