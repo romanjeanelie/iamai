@@ -9,9 +9,7 @@ export default function typeByWord(container, text){
     function type() {
       let wordSpan;
       if (wordIndex < words.length) { // If there are still words left to type
-        console.log(words[wordIndex])
         if (words[wordIndex] === "<br>") {
-          console.log("NEW LINE")
           wordSpan = document.createElement("br");
         } else {
           // console.log(words[wordIndex])

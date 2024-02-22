@@ -6,49 +6,62 @@ function getDomainAndFavicon(url) {
 }
 
 
-export default class DiscussionImages {
+export default class DiscussionTabs {
   constructor({container, removeStatus, scrollToBottom, emitter}){
     this.container = container;
     this.emitter = emitter;
     this.removeStatus = removeStatus;
     this.scrollToBottom = scrollToBottom;
-
-    this.tabs = ["Images", "Sources"];        
+      
     this.selectedTab = "Images";
 
-    this.imagesContainer = null;
-    this.imageTabs = null;
+    this.tabs = null;
     this.sources = null;
-
+    this.imagesContainer = null;
   }
 
-  initTabs(sources){
-    if (!sources.length) return;
-    this.imageTabs = document.createElement("ul");
-    this.imageTabs.classList.add("images-tab");
+  updateTabs(addedTab) {
+    if (this.tabs){
+      this.addTab(addedTab)
+    } else {
+      this.initTabs(addedTab)
+    }
+  }
 
-    this.container.appendChild(this.imageTabs);
-
-    this.tabs.forEach(tab => {
-      const li = document.createElement("li");
-      if (tab === this.selectedTab) li.classList.add("active");
-      li.textContent = tab;
-
-      this.imageTabs.appendChild(li);
-      this.handleTabClick(li);
-    })
+  initTabs(firstTab){
+    console.log("from init : ", this.container)
+    this.tabs = document.createElement("ul");
+    this.tabs.classList.add("discussion__tab");
+  
+    this.container.appendChild(this.tabs);
+    this.addTab(firstTab)
   } 
+
+  addTab(tabName) {
+    console.log("from add", this.tabs)
+    const li = document.createElement("li");
+    if (tabName === "Images") {
+      li.style.order = 0;
+    } else {
+      li.style.order = 1;
+    }
+    if (tabName === this.selectedTab) li.classList.add("active");
+    li.textContent = tabName;
+  
+    this.tabs.appendChild(li);
+    this.handleTabClick(li);
+  }
 
   handleTabClick(tab) {
     tab.addEventListener("click", () => {
       // Remove 'active' class from all tabs
-      this.imageTabs.querySelectorAll('li').forEach(li => li.classList.remove('active'));
-
+      this.tabs.querySelectorAll('li').forEach(li => li.classList.remove('active'));
+  
       // Add 'active' class to the clicked tab
       tab.classList.add('active');
-
+  
       this.selectedTab = tab.textContent;
-
+  
       if (this.selectedTab === "Sources") {
         this.sources.classList.remove("none");
         this.imagesContainer.classList.add("none");

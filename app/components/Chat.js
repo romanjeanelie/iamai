@@ -191,10 +191,10 @@ class Chat {
           }
         } else if (mdata.message_type == "image") {
           this.image_urls = JSON.parse(mdata.ui_params.image_urls);
-          this.callbacks.addImages({ srcs: this.image_urls, container: this.container });
+          this.callbacks.addImages({ imgSrcs: this.image_urls });
         } else if (mdata.message_type == "Sources") {
           this.Sources = JSON.parse(mdata.ui_params.Sources);
-          console.log("Sources:" + this.Sources);
+          this.callbacks.addSources(this.Sources)
           // Add Call to add sources
         }
 

@@ -1,7 +1,7 @@
 import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scss";
 import TypingText from "../TypingText";
 import Chat from "./Chat.js";
-import DiscussionImages from "./DiscussionImages.js"
+import DiscussionTabs from "./DiscussionTabs.js"
 
 import { getsessionID } from "../User";
 import { asyncAnim } from "../utils/anim.js";
@@ -42,6 +42,7 @@ export default class Discussion {
       discussionContainer: this.discussionContainer,
       addAIText: this.addAIText.bind(this),
       addImages: this.addImages.bind(this),
+      addSources: this.addSources.bind(this),
       addURL: this.addURL.bind(this),
       disableInput: this.disableInput.bind(this),
       enableInput: this.enableInput.bind(this),
@@ -201,15 +202,7 @@ export default class Discussion {
       this.progressBar = document.createElement("div");
       this.progressBar.className = "progress-bar";
 
-      if (isImageSearch){
-        this.images = new DiscussionImages({
-          container: container,
-          emitter : this.emitter,
-          removeStatus: this.removeStatus,
-          scrollToBottom: this.scrollToBottom,
-        });
-         
-        
+      if (isImageSearch){         
         this.topStatus.style.marginTop= "0px"
         this.topStatus.style.height= "0px"
         this.topStatus.classList.add("image-skeleton")
@@ -219,7 +212,6 @@ export default class Discussion {
           backgroundColor: backgroundColorGreyPage,
         })
         
-        this.images.initTabs(this.Chat.Sources);
         this.typingStatus.fadeIn();
         this.typingStatus.displayImageSkeleton();
         container.appendChild(this.topStatus);
@@ -280,6 +272,15 @@ export default class Discussion {
   async addAIText({ text, container, targetlang, type = null } = {}) {    
     const isImageSearch = this.Chat.task_name === "Image Status Push";
 
+    if (!this.tabs){
+      this.tabs = new DiscussionTabs({
+        container: container,
+        emitter : this.emitter,
+        removeStatus: this.removeStatus,
+        scrollToBottom: this.scrollToBottom,
+      });
+    }
+
     this.typingText?.fadeOut();
     this.emitter.emit("addAIText", text, targetlang);
 
@@ -317,11 +318,16 @@ export default class Discussion {
     this.scrollToBottom();
   }
 
-  async addImages({ container, srcs = [] } = {}) {
-    if (srcs.length === 0) return;
-    this.images.initSources(this.Chat.Sources);
-    this.images.initImages(srcs, this.removeStatus, this.scrollToBottom);
+  addImages({ imgSrcs = [] } = {}) {
+    this.tabs?.updateTabs("Images");
+    this.tabs?.initImages(imgSrcs);
     this.typingStatus = null;
+  }
+
+  addSources(sourcesData) {
+    console.log("----- addSources ------")
+    this.tabs?.updateTabs("Sources")
+    this.tabs?.initSources(sourcesData);
   }
 
   scrollToBottom() {
@@ -383,6 +389,10 @@ export default class Discussion {
     this.emitter.on("centralFinished", () => {
       this.centralFinished = true
       this.endStatusAnimation()
+    })
+
+    this.emitter.on("endStream" , () => {
+      this.tabs = null;
     })
     // window.addEventListener("load", this.onLoad.bind(this));
     const resizeObserver = new ResizeObserver(this.scrollToBottom.bind(this));
