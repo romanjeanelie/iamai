@@ -154,6 +154,7 @@ class Chat {
     };
     for await (const m of iter) {
       var mdata = m.json();
+      console.log(mdata);
       // console.log(m.seq);
       // console.log(m.redelivered);
       if (steamseq.includes(m.seq) && m.redelivered) {

@@ -27,6 +27,8 @@ const URL = import.meta.env.VITE_API_URL || "https://app.iamplus.chat/index.html
 const HOST = import.meta.env.VITE_API_HOST || "https://api.iamplus.chat"
 const DB_HOST = import.meta.env.VITE_API_DB_HOST || "https://nocodb.iamplus.chat"
 const DB_TOKEN = import.meta.env.VITE_API_DB_TOKEN || "juIbsot-ERPsSlO3TdkYHRJPznr1gqrLBIpMjWZU"
+const DB_TABLE_ASSISTANT_ID = meta.env.VITE_API_DB_TABLE_ASSISTANT_ID || "m5aeqzjetzwiw9q"
+const DB_TABLE_SYSTEMASSISTANT_ID = meta.env.VITE_API_DB_TABLE_SYSTEMASSISTANT_ID || "mjf87ylyjqkbhjv"
 const ELASTIC_URL = import.meta.env.VITE_API_ELASTIC_URL || "https://api.iamplus.chat/elastic/text/bulk_index_urls"
 const ELASTIC_TOKEN = import.meta.env.VITE_API_ELASTIC_TOKEN || "iIPyByKL-3X48AzXvme9onV9p94GwrmWTqV7P5jQ"
 
@@ -206,7 +208,7 @@ async function saveassistant() {
       }
     });
 
-    xhr.open("POST", DB_HOST+"/api/v2/tables/m5aeqzjetzwiw9q/records");
+    xhr.open("POST", DB_HOST+"/api/v2/tables/"+DB_TABLE_ASSISTANT_ID+"/records");
     xhr.setRequestHeader("accept", "application/json");
     xhr.setRequestHeader("xc-token", DB_TOKEN);
     xhr.setRequestHeader("Content-Type", "application/json");
@@ -255,7 +257,7 @@ async function duplicate(itemid) {
     }
   });
 
-  xhr.open("POST", DB_HOST+"/api/v2/tables/m5aeqzjetzwiw9q/records");
+  xhr.open("POST", DB_HOST+"/api/v2/tables/"+DB_TABLE_ASSISTANT_ID+"/records");
   xhr.setRequestHeader("accept", "application/json");
   xhr.setRequestHeader("xc-token", DB_TOKEN);
   xhr.setRequestHeader("Content-Type", "application/json");
@@ -608,7 +610,7 @@ function getassistant() {
 
   xhr.open(
     "GET",
-    DB_HOST+"/api/v2/tables/m5aeqzjetzwiw9q/records?limit=25&shuffle=0&offset=0&where=(UUID%2Ceq%2C" +
+    DB_HOST+"/api/v2/tables/"+DB_TABLE_ASSISTANT_ID+"/records?limit=25&shuffle=0&offset=0&where=(UUID%2Ceq%2C" +
     loggedinuser.uuid +
     ")"
   );
@@ -851,7 +853,7 @@ function getsystemassistant() {
 
   xhr.open(
     "GET",
-    DB_HOST+"/api/v2/tables/mjf87ylyjqkbhjv/records?limit=250&shuffle=0&offset=0"
+    DB_HOST+"/api/v2/tables/"+DB_TABLE_SYSTEMASSISTANT_ID+"/records?limit=250&shuffle=0&offset=0"
   );
   xhr.setRequestHeader("accept", "application/json");
   xhr.setRequestHeader("xc-token", DB_TOKEN);
@@ -880,7 +882,7 @@ function updateassistant(itemid, Status, ChatbotURL, AgentSessionID, Streamid, D
     }
   });
 
-  xhr.open("PATCH", DB_HOST+"/api/v2/tables/m5aeqzjetzwiw9q/records");
+  xhr.open("PATCH", DB_HOST+"/api/v2/tables/"+DB_TABLE_ASSISTANT_ID+"/records");
   xhr.setRequestHeader("accept", "application/json");
   xhr.setRequestHeader("xc-token", DB_TOKEN);
   xhr.setRequestHeader("Content-Type", "application/json");
@@ -904,7 +906,7 @@ function deleteassistant(itemid) {
         // location.reload();
       }
     });
-    xhr.open("DELETE", DB_HOST+"/api/v2/tables/m5aeqzjetzwiw9q/records");
+    xhr.open("DELETE", DB_HOST+"/api/v2/tables/"+DB_TABLE_ASSISTANT_ID+"/records");
     xhr.setRequestHeader("accept", "*/*");
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader("xc-token", DB_TOKEN);
@@ -1117,7 +1119,7 @@ const getassistant_itemid = (itemid) =>
       }
     });
 
-    xhr.open("GET", DB_HOST+"/api/v2/tables/m5aeqzjetzwiw9q/records/" + itemid);
+    xhr.open("GET", DB_HOST+"/api/v2/tables/"+DB_TABLE_ASSISTANT_ID+"/records/" + itemid);
     xhr.setRequestHeader("accept", "application/json");
     xhr.setRequestHeader("xc-token", DB_TOKEN);
 
@@ -1139,7 +1141,7 @@ const getsystemassistant_itemid = (itemid) =>
       }
     });
 
-    xhr.open("GET", DB_HOST+"/api/v2/tables/mjf87ylyjqkbhjv/records/" + itemid);
+    xhr.open("GET", DB_HOST+"/api/v2/tables/"+DB_TABLE_SYSTEMASSISTANT_ID+"/records/" + itemid);
     xhr.setRequestHeader("accept", "application/json");
     xhr.setRequestHeader("xc-token", DB_TOKEN);
 
