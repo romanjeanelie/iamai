@@ -78,7 +78,6 @@
     }
 
     .images__container {
-      margin-top: 12px;
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
@@ -103,7 +102,7 @@
     }
   }
 
-  .discussion__tab{ 
+  .discussion__tabs-header{ 
     margin-top: 16px;
     display: flex;
     gap: 24px;
@@ -125,6 +124,10 @@
     li.active{
       color: $colorBlack;
     }
+  }
+
+  .discussion__tabs-content{
+    margin-top: 12px;
   }
 
   .discussion__user {
@@ -215,8 +218,6 @@
     .AIstatus {
       display: block;
       font-family: "Circular";
-      margin-top: 24px;
-      margin-bottom: 8px;
       font-size: 14px;
       font-weight: 450;
       line-height: 20px;

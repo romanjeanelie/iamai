@@ -160,7 +160,7 @@ class Chat {
         console.log("prevent duplicate");
         m.ack();
       } else {
-        // console.log(mdata);
+        console.log(mdata);
         steamseq.push(m.seq);
         this.status = mdata.status;
         this.task_name = mdata.task_name;
@@ -301,6 +301,7 @@ class Chat {
           }
         } else if (mdata.status.toLowerCase() == "pa end") {
           this.callbacks.enableInput();
+          this.callbacks.emitter.emit("paEnd");
         } else if (mtext.trim().length > 0) { //ADDED THIS FOR conversation_question and other cases.
           var AIAnswer = await this.toTitleCase2(mtext);
           if (this.sourcelang != "en") {
