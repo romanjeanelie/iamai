@@ -91,7 +91,7 @@ $radiusDotTyping: 22px;
 
 .typing__skeleton-container.skeleton__image{ 
   flex-direction: row;
-  top: 12px;
+  top: 48px;
   left:0;
   gap: 10px;
 
@@ -108,10 +108,7 @@ $radiusDotTyping: 22px;
   }
 }
 
-
-
 .typing__text {
-  //   margin-left: 16px;
   position: relative;
   color: $colorBlack;
 }

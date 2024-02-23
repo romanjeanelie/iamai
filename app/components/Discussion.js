@@ -37,6 +37,7 @@ export default class Discussion {
     this.currentTopStatus = null;
     this.lastStatus = null;
     this.centralFinished = false;
+    this.tabs = null;
 
     this.Chat = new Chat({
       discussionContainer: this.discussionContainer,
@@ -202,15 +203,18 @@ export default class Discussion {
       this.progressBar = document.createElement("div");
       this.progressBar.className = "progress-bar";
 
-      if (isImageSearch){         
-        this.topStatus.style.marginTop= "0px"
-        this.topStatus.style.height= "0px"
-        this.topStatus.classList.add("image-skeleton")
+      if (isImageSearch){    
+        this.topStatus.style.marginTop= "0px";
+        this.topStatus.style.height= "0px";
+        this.topStatus.classList.add("image-skeleton");
+
+        this.tabs?.addTab("Images")
+
         this.typingStatus = new TypingText({
           text: "",
           container: this.topStatus,
           backgroundColor: backgroundColorGreyPage,
-        })
+        });
         
         this.typingStatus.fadeIn();
         this.typingStatus.displayImageSkeleton();
@@ -234,7 +238,7 @@ export default class Discussion {
       this.currentTopStatus = topStatus;
     }
 
-    this.statusContainer.appendChild(textEl);
+    !isImageSearch && this.statusContainer.appendChild(textEl);
   }
 
   async updateTopStatus({ topStatus }) {
@@ -271,6 +275,13 @@ export default class Discussion {
 
   async addAIText({ text, container, targetlang, type = null } = {}) {    
     const isImageSearch = this.Chat.task_name === "Image Status Push";
+    let textContainer = container.querySelector(".text__container");
+
+    if (!textContainer){
+      textContainer = document.createElement("div");
+      textContainer.className = "text__container";
+      container.appendChild(textContainer);
+    }
 
     if (!this.tabs){
       this.tabs = new DiscussionTabs({
@@ -288,12 +299,12 @@ export default class Discussion {
 
     if (type === "status") {
       textEl.className = "AIstatus";
-      this.addStatus({ text, textEl, container });
+      this.addStatus({ text, textEl, container : textContainer });
     } else if (this.lastStatus) {
-      this.removeStatus({ container });
+      this.removeStatus({ container: textContainer });
     }
 
-    container.appendChild(textEl);
+    textContainer.appendChild(textEl);
 
     // text = text.replace(/<br\/?>\s*/g, "\n");
     if (type !== "status") this.scrollToBottom();
@@ -319,14 +330,13 @@ export default class Discussion {
   }
 
   addImages({ imgSrcs = [] } = {}) {
-    this.tabs?.updateTabs("Images");
+    // this.tabs?.addTab("Images");
     this.tabs?.initImages(imgSrcs);
     this.typingStatus = null;
   }
 
   addSources(sourcesData) {
-    console.log("----- addSources ------")
-    this.tabs?.updateTabs("Sources")
+    this.tabs?.addTab("Sources")
     this.tabs?.initSources(sourcesData);
   }
 
@@ -391,7 +401,9 @@ export default class Discussion {
       this.endStatusAnimation()
     })
 
-    this.emitter.on("endStream" , () => {
+    this.emitter.on("paEnd" , () => {
+      console.log("----- paEnd -----", this.tabs)
+      this.tabs?.displayDefaultTab();
       this.tabs = null;
     })
     // window.addEventListener("load", this.onLoad.bind(this));

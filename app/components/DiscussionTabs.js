@@ -5,7 +5,6 @@ function getDomainAndFavicon(url) {
   return { domain, favicon };
 }
 
-
 export default class DiscussionTabs {
   constructor({container, removeStatus, scrollToBottom, emitter}){
     this.container = container;
@@ -13,64 +12,92 @@ export default class DiscussionTabs {
     this.removeStatus = removeStatus;
     this.scrollToBottom = scrollToBottom;
       
-    this.selectedTab = "Images";
+    this.selectedTab = "";
+    this.tabsHeaderContainer = null;
+    this.tabsContentContainer = null;
 
-    this.tabs = null;
+    this.tabs = [];
     this.sources = null;
     this.imagesContainer = null;
+
+    this.init();
   }
 
-  updateTabs(addedTab) {
-    if (this.tabs){
-      this.addTab(addedTab)
-    } else {
-      this.initTabs(addedTab)
-    }
-  }
+  init(){
+    if (this.tabsHeaderContainer || this.tabsContentContainer) return;
+    this.tabsHeaderContainer = document.createElement("ul");
+    this.tabsHeaderContainer.className = "discussion__tabs-header";
+    this.tabsContentContainer = document.createElement("div");
+    this.tabsContentContainer.className = "discussion__tabs-content";
 
-  initTabs(firstTab){
-    console.log("from init : ", this.container)
-    this.tabs = document.createElement("ul");
-    this.tabs.classList.add("discussion__tab");
-  
-    this.container.appendChild(this.tabs);
-    this.addTab(firstTab)
-  } 
+    this.container.appendChild(this.tabsHeaderContainer);
+    this.container.appendChild(this.tabsContentContainer);
+  }
 
   addTab(tabName) {
-    console.log("from add", this.tabs)
     const li = document.createElement("li");
+    li.className = tabName;
     if (tabName === "Images") {
       li.style.order = 0;
     } else {
       li.style.order = 1;
     }
-    if (tabName === this.selectedTab) li.classList.add("active");
-    li.textContent = tabName;
   
-    this.tabs.appendChild(li);
+    li.textContent = tabName;
+
+    this.tabs.push(tabName);
+
+    this.tabsHeaderContainer.appendChild(li);
     this.handleTabClick(li);
   }
 
   handleTabClick(tab) {
     tab.addEventListener("click", () => {
-      // Remove 'active' class from all tabs
-      this.tabs.querySelectorAll('li').forEach(li => li.classList.remove('active'));
-  
-      // Add 'active' class to the clicked tab
-      tab.classList.add('active');
-  
-      this.selectedTab = tab.textContent;
-  
-      if (this.selectedTab === "Sources") {
-        this.sources.classList.remove("none");
-        this.imagesContainer.classList.add("none");
-      } else if (this.selectedTab === "Images") {
-        this.sources.classList.add("none");
-        this.imagesContainer.classList.remove("none");
-      }
+      this.updateTabUi(tab)
     });
   }
+
+  updateTabUi(tab) {
+    if (!tab) return;
+
+    if (this.selectedTab === tab.textContent) {
+      // If the clicked tab is already the selected tab, remove 'active'
+      tab.classList.remove('active');
+      this.selectedTab = ""; // Reset selectedTab
+    } else {
+      // If the clicked tab is not the selected tab, make it active
+      this.tabsHeaderContainer.querySelectorAll('li').forEach(li => li.classList.remove('active'));
+      tab.classList.add('active');
+      this.selectedTab = tab.textContent;
+    }
+
+    // displaying, or not, the section based on the selected tab
+    if (this.selectedTab === "Sources") {
+      this.sources?.classList.remove("none");
+      this.imagesContainer?.classList.add("none");
+    } else if (this.selectedTab === "Images") {
+      this.sources?.classList.add("none");
+      this.imagesContainer?.classList.remove("none");
+    } else if (this.selectedTab ==="") {
+      !this.sources?.classList.contains("none") && this.sources?.classList.add("none");
+      !this.imagesContainer?.classList.contains("none") && this.imagesContainer?.classList.add("none");
+    }
+  }
+
+  displayDefaultTab(){
+    // by default if there are images, we display the images tab
+    const hasImages = this.tabs.some(tab => tab === "Images");
+    if (hasImages) {
+      const defaultTab = this.tabsHeaderContainer.querySelector(".Images");
+      console.log(defaultTab);
+      this.updateTabUi(defaultTab);
+    } else {
+      // if there are no images, we display the first tab available
+      const defaultTab = this.tabsHeaderContainer.querySelector(`.${this.tabs[0]}`)
+      this.updateTabUi(defaultTab);
+    }
+  }
+  
 
   initSources(sourcesData){
     this.sources = document.createElement("div");
@@ -94,7 +121,7 @@ export default class DiscussionTabs {
       this.sources.appendChild(sourceEl);
     }
 
-    this.container.appendChild(this.sources);
+    this.tabsContentContainer.appendChild(this.sources);
   }
 
   async initImages(srcs){
@@ -105,7 +132,7 @@ export default class DiscussionTabs {
 
     // right before adding the images we remove the skeletons
     const skeletonContainer = this.container.querySelector(".image-skeleton .typing__skeleton-container");
-    skeletonContainer.classList.add("hidden"); 
+    skeletonContainer?.classList.add("hidden"); 
 
     const imgs = successfulSrcs.map((src) => {
       const img = document.createElement("img");
@@ -118,7 +145,7 @@ export default class DiscussionTabs {
     this.removeStatus({ container: this.container });
     const aiStatus = this.container.querySelector(".AIstatus");
     if (aiStatus) aiStatus.remove();
-    this.container.appendChild(this.imagesContainer);
+    this.tabsContentContainer.appendChild(this.imagesContainer);
     this.scrollToBottom();
   }
 

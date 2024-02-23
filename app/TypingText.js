@@ -75,6 +75,7 @@ export default class TypingText {
 
   displayImageSkeleton() {
     this.logo.style.display = "none";
+    this.textEl.style.display = "none";
     this.skeletonContainer.classList.add("skeleton__image");
 
     this.skeletons.forEach((skeleton,idx)=> {
