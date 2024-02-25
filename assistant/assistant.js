@@ -27,8 +27,8 @@ const URL = import.meta.env.VITE_API_URL || "https://app.iamplus.chat/index.html
 const HOST = import.meta.env.VITE_API_HOST || "https://api.iamplus.chat"
 const DB_HOST = import.meta.env.VITE_API_DB_HOST || "https://nocodb.iamplus.chat"
 const DB_TOKEN = import.meta.env.VITE_API_DB_TOKEN || "juIbsot-ERPsSlO3TdkYHRJPznr1gqrLBIpMjWZU"
-const DB_TABLE_ASSISTANT_ID = meta.env.VITE_API_DB_TABLE_ASSISTANT_ID || "m5aeqzjetzwiw9q"
-const DB_TABLE_SYSTEMASSISTANT_ID = meta.env.VITE_API_DB_TABLE_SYSTEMASSISTANT_ID || "mjf87ylyjqkbhjv"
+const DB_TABLE_ASSISTANT_ID = import.meta.env.VITE_API_DB_TABLE_ASSISTANT_ID || "m5aeqzjetzwiw9q"
+const DB_TABLE_SYSTEMASSISTANT_ID = import.meta.env.VITE_API_DB_TABLE_SYSTEMASSISTANT_ID || "mjf87ylyjqkbhjv"
 const ELASTIC_URL = import.meta.env.VITE_API_ELASTIC_URL || "https://api.iamplus.chat/elastic/text/bulk_index_urls"
 const ELASTIC_TOKEN = import.meta.env.VITE_API_ELASTIC_TOKEN || "iIPyByKL-3X48AzXvme9onV9p94GwrmWTqV7P5jQ"
 
