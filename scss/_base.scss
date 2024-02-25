@@ -136,11 +136,11 @@ button {
   position: relative;
   width: 100vw;
   height: 100svh;
-  padding: 124px 168px 0px;
+  padding: 124px 0px;
   color: $colorBlack;
 
   @include media("<tablet") {
-    padding: 120px 32px 0px;
+    padding: 120px 0px;
   }
 }
 
