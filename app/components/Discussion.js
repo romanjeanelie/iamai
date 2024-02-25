@@ -330,7 +330,6 @@ export default class Discussion {
   }
 
   addImages({ imgSrcs = [] } = {}) {
-    // this.tabs?.addTab("Images");
     this.tabs?.initImages(imgSrcs);
     this.typingStatus = null;
   }
