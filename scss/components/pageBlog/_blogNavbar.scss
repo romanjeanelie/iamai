@@ -1,0 +1,24 @@
+.blogNav__container{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 48px;
+  display: flex;
+  justify-content: end;
+
+  @include media("<tablet") {
+    padding: 120px 24px 0px;
+  }
+}
+
+.blogNav__logo{
+  padding: 12px;
+
+  img{
+    width: 24px;
+  }
+}
+
+
+
