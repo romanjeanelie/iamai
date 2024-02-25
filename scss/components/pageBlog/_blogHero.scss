@@ -66,27 +66,10 @@
   line-height: 36px;
 
   @include media("<tablet") {
-
     font-size: 20px;
     font-weight: 450;
     line-height: 28px;
     letter-spacing: 0px;
     text-align: center;    
-  }
-}
-
-.blogHero__cta{
-  color: $colorMain;
-  width: fit-content;
-  padding: 16px 32px;
-  background: rgba(0, 0, 0, 0.72);
-  border-radius: 800px;
-  font-size: 14px;
-  font-weight: 450;
-  line-height: 20px;
-  letter-spacing: 0.6px;
-
-  &:hover{
-    background: rgba(0, 0, 0, 1);
   }
 }

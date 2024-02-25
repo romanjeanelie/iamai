@@ -24,6 +24,7 @@
 }
 
 .page-blog {
+  @import "./pageBlog/blogCommon";
   @import "./pageBlog/blogNavbar";
   @import "./pageBlog/blogHero";
   @import "./pageBlog/blogSlider";
