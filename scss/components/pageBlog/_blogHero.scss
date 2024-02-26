@@ -20,8 +20,8 @@
 
   @include media("<tablet") {
     margin-top: 22px;
-    width: 311px;
-    height: 311px;
+    width: min(311px , 10svh);
+    height: min(311px , 10svh);
   }
 }
 

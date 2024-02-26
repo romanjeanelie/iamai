@@ -1,6 +1,7 @@
 // TO DO : 
 // [X] add fade in/out for description;
 // [] make the mobile version;
+// [] generate the data from the initSlider function (looping through the slidesData);
 // [] fix the glitch when you scroll too fast;
 
 
@@ -102,16 +103,21 @@ export default class BlogSlider{
   
     // Find the slide whose center is closest to the viewport center
     for (const slide of this.slides) {
+      // Add the width of the current slide to the total width
       totalWidth += slide.offsetWidth;
+      // Calculate the center of the next slide by adding half of its width to the total width
       const nextSlideCenter = totalWidth + (this.slides[index + 1]?.offsetWidth || 0) / 2;
+      // If the center of the next slide is beyond the viewport center, break the loop
       if (nextSlideCenter > viewportCenter) {
         break;
       }
+      // Increment the index to move to the next slide
       index++;
     }
   
     // Update currentSlide if it has changed
     if (index !== this.currentSlide) {
+      console.log(index)
       this.currentSlide = index;
       this.updateUI();
     }
