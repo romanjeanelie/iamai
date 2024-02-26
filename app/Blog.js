@@ -40,7 +40,26 @@ const slidersData = [{
 
 class Blog {
   constructor() {
+    // States
+    this.animation = null;
+
+    // DOM Elements
+    this.blogLottieAnimation = document.querySelector('.blogHero__lottieAnimation');
+
+    this.initLottieAnim();
     this.initSliders();
+  }
+
+  initLottieAnim(){
+    this.animation = lottie.loadAnimation({
+      container: this.blogLottieAnimation,
+      renderer: 'svg',
+      loop: true,
+      autoplay: false,
+      path: '../animations/asterism_to_asterisk_black.json'
+    });
+
+    this.animation.play();
   }
 
   initSliders() {
