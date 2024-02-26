@@ -27,6 +27,14 @@ $sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
   // Hide scrollbar
   -ms-overflow-style: none;
   scrollbar-width: none;
+  cursor: grab;
+
+  &.active{
+    scroll-snap-type: none;
+    cursor: grabbing;
+    cursor: -webkit-grabbing;
+    user-select: none;
+  }
 }
 
 .blogSlider__slide{

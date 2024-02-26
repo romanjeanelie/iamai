@@ -1,9 +1,5 @@
 import BlogSlider from "./components/BlogSlider";
 
-// TODO : 
-// [X] do the text section;
-// [X] add video to the homepage;
-
 const slidersData = [{
   id:1,
   video: '/public/placeholder/placeholder.mp4',

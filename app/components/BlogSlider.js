@@ -13,7 +13,12 @@ export default class BlogSlider{
     this.slidesData = sliderData;
     this.container = container;
 
-    // States 
+    // States for grab events 
+    this.isDown = false;
+    this.startX;
+    this.scrollLeft;
+
+    // Global States
     this.currentSlide = 0;
     this.isProgrammaticScroll = false;
     this.totalSlides = this.slidesData.length;
@@ -39,8 +44,6 @@ export default class BlogSlider{
   }
 
   initSlider(){
-    console.log(this.slidesData)
-
     this.paginationTotal.textContent = this.totalSlides;
     this.paginationCurrent.textContent = this.currentSlide + 1;
 
@@ -161,10 +164,35 @@ export default class BlogSlider{
     this.fullScreenBtn.classList.toggle('hidden');
   }
 
+  startDrag(e) {
+    this.isDown = true;
+    this.slider.classList.add('active');
+    this.startX = e.pageX - this.slider.offsetLeft;
+    this.scrollLeft = this.slider.scrollLeft;
+  }
+
+  stopDrag() {
+    this.isDown = false;
+    this.slider.classList.remove('active');
+  }
+
+  drag(e) {
+    if(!this.isDown) return;
+    e.preventDefault();
+    const x = e.pageX - this.slider.offsetLeft;
+    const walk = (x - this.startX) * 3; //scroll-fast
+    this.slider.scrollLeft = this.scrollLeft - walk;
+  }
+
   addListeners(){
     this.prevBtn.addEventListener('click', () => this.handleGoToSlide(-1));
     this.nextBtn.addEventListener('click', () => this.handleGoToSlide(1));
     this.slider.addEventListener('scroll' , () => this.handleScroll())
+
+    this.slider.addEventListener('mousedown', (e) => this.startDrag(e));
+    this.slider.addEventListener('mouseleave', () => this.stopDrag());
+    this.slider.addEventListener('mouseup', () => this.stopDrag());
+    this.slider.addEventListener('mousemove', (e) => this.drag(e));
 
     this.infoBtn.addEventListener('click', () => this.toggleInfo());
     this.closeBtn.addEventListener('click', () => this.toggleInfo());
