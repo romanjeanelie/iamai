@@ -26,6 +26,11 @@ export default class BlogSlider{
     this.slides = this.container.querySelectorAll('.blogSlider__slide');
     this.slideDescription = this.container.querySelector('.blogSlider__slide-description');
 
+    // mobile dom elements
+    this.slideMobileDescription = this.container.querySelector('.blogSlider__mobile-description');
+    this.infoBtn = this.container.querySelector('.blogSlider__infoBtn');
+    this.closeBtn = this.container.querySelector('.blogSlider__closeBtn');
+
     // functions
     this.initSlider();
     this.addListeners();
@@ -122,11 +127,17 @@ export default class BlogSlider{
       this.updateUI();
     }
   }
-  
+
+  toggleInfo(){
+    this.slideMobileDescription.classList.toggle('hidden');
+  }
 
   addListeners(){
     this.prevBtn.addEventListener('click', () => this.handleGoToSlide(-1));
     this.nextBtn.addEventListener('click', () => this.handleGoToSlide(1));
     this.slider.addEventListener('scroll' , () => this.handleScroll())
+
+    this.infoBtn.addEventListener('click', () => this.toggleInfo());
+    this.closeBtn.addEventListener('click', () => this.toggleInfo());
   }
 }

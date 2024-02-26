@@ -5,6 +5,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 24px 72px;
+  margin-bottom: 120px;
 
   @include media("<tablet") {
     height: calc(100svh - 120px);
@@ -20,8 +21,13 @@
 
   @include media("<tablet") {
     margin-top: 22px;
-    width: min(311px , 10svh);
-    height: min(311px , 10svh);
+    width: 311px;
+    height: 311px;
+  }
+
+  @media screen and (max-height: 720px) {
+    width: 30svh;
+    height: 30svh;
   }
 }
 
@@ -35,9 +41,21 @@
 
 .blogHero__headline{
   text-align: center;
-  font-size: 28px;
+  font-size: 28px; 
   font-weight: 450;
   line-height: 36px;
+
+  @include media("<large"){
+    font-size: 24px;
+    line-height: 120%;
+
+  }
+
+  @include media("<desktop"){
+    font-size: 22px;
+    line-height: 120%;
+
+  }
 
   @include media("<tablet") {
     font-size: 20px;
