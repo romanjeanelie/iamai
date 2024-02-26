@@ -42,7 +42,7 @@ $sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
   flex: 0 0 auto;
   height: $sliderHeight;
   width: calc($sliderHeight * 16 / 9);
-  background-color: lightsalmon;
+  background-color: rgba(248, 246, 242, 1);
   overflow: hidden;
   display: flex;
   border-radius: 16px;
