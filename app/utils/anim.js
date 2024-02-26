@@ -7,11 +7,10 @@ export default function anim(elements, keyframes, options) {
 }
 
 export function asyncAnimate(element, keyframes, options) {
-  return new Promise((resolve) => {
-      const animation = element.animate(keyframes, options);
-      animation.onfinish = () => {
-          resolve();
-      };
+  return new Promise((resolve, reject) => {
+    const animation = element.animate(keyframes, options);
+    animation.onfinish = resolve;
+    animation.onerror = reject;
   });
 }
 

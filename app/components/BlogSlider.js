@@ -1,6 +1,8 @@
 // TO DO : 
-// [] add fade in/out for description
-// 
+// [X] add fade in/out for description;
+// [] make the mobile version;
+// [] fix the glitch when you scroll too fast;
+
 
 import { asyncAnim } from "../utils/anim";
 
@@ -10,8 +12,8 @@ export default class BlogSlider{
     this.container = container;
 
     // States 
-    this.prevSlide = 0;
     this.currentSlide = 0;
+    this.isProgrammaticScroll = false;
     this.totalSlides = this.slidesData.length;
 
     // DOM elements
@@ -34,21 +36,19 @@ export default class BlogSlider{
     this.updateUI();
   }
 
-  goToPrevSlide(){
-    if (this.currentSlide === 0) return;
-    this.prevSlide = this.currentSlide;
-    this.currentSlide--;
-    this.goTo({ index: this.currentSlide });
+  // delta = -1 for previous slide, 1 for next slide
+  async handleGoToSlide(delta) {
+    const nextSlide = this.currentSlide + delta;
+    if (nextSlide < 0 || nextSlide >= this.totalSlides) return;
+    this.isProgrammaticScroll = true;
+    this.currentSlide = nextSlide;
+    this.goTo(this.currentSlide);
+    await this.updateUI();
+    this.isProgrammaticScroll = false;
+    this.isUpdating = false;
   }
 
-  goToNextSlide(){
-    if (this.currentSlide === this.totalSlides - 1) return;
-    this.prevSlide = this.currentSlide;
-    this.currentSlide++;
-    this.goTo({ index: this.currentSlide });
-  }
-
-  goTo({ index } = {}) {
+  goTo(index) {
     const slide = this.slides[index];
     if (slide) {
       const slideRect = slide.getBoundingClientRect();
@@ -92,11 +92,10 @@ export default class BlogSlider{
       { opacity: [0, 1] }, 
       { duration: 300, easing: 'ease-in-out', fill: 'forwards' }
     );
-
-
   }
 
   handleScroll(){
+    if (this.isProgrammaticScroll) return;
     let index = 0;
     let totalWidth = 0;
     const viewportCenter = this.slider.scrollLeft + this.slider.offsetWidth / 2;
@@ -113,7 +112,6 @@ export default class BlogSlider{
   
     // Update currentSlide if it has changed
     if (index !== this.currentSlide) {
-      this.prevSlide = this.currentSlide;
       this.currentSlide = index;
       this.updateUI();
     }
@@ -121,8 +119,8 @@ export default class BlogSlider{
   
 
   addListeners(){
-    this.prevBtn.addEventListener('click', () => this.goToPrevSlide());
-    this.nextBtn.addEventListener('click', () => this.goToNextSlide());
+    this.prevBtn.addEventListener('click', () => this.handleGoToSlide(-1));
+    this.nextBtn.addEventListener('click', () => this.handleGoToSlide(1));
     this.slider.addEventListener('scroll' , () => this.handleScroll())
   }
 }
