@@ -1,3 +1,9 @@
+// TO DO : 
+// [] add fade in/out for description
+// 
+
+import { asyncAnim } from "../utils/anim";
+
 export default class BlogSlider{
   constructor({sliderData, container}){
     this.slidesData = sliderData;
@@ -56,7 +62,8 @@ export default class BlogSlider{
     }
   }
 
-  updateUI(){
+  async updateUI(){
+    // Disable buttons if we are at the first or last slide
     if (this.currentSlide === 0){
       this.prevBtn.disabled = true;
     } else if (this.currentSlide === this.totalSlides - 1){
@@ -67,12 +74,26 @@ export default class BlogSlider{
     }
 
     this.paginationCurrent.textContent = this.currentSlide + 1;
-    this.slideDescription.textContent = this.slidesData[this.currentSlide].description; 
+    // Add active class to the current slide (all the other slides are opaque)
     this.slides.forEach((slide) => {
       slide === this.slides[this.currentSlide] 
       ? slide.classList.add('active') 
       : slide.classList.remove('active');
     })
+
+    await asyncAnim(
+      this.slideDescription, 
+      { opacity: [1, 0] }, 
+      { duration: 300, easing: 'ease-in-out', fill: 'forwards' }
+    );
+    this.slideDescription.textContent = this.slidesData[this.currentSlide].description; 
+    await asyncAnim(
+      this.slideDescription, 
+      { opacity: [0, 1] }, 
+      { duration: 300, easing: 'ease-in-out', fill: 'forwards' }
+    );
+
+
   }
 
   handleScroll(){
