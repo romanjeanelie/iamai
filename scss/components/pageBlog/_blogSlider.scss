@@ -4,7 +4,6 @@ $sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
 .blogSlider__container{
   position: relative;
   width: 100vw;
-  margin-bottom: 40px;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -113,7 +112,7 @@ $sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
   gap: 20px;
   padding: 16px 24px 60px;
   z-index: 10;  
-  transition: opacity 0.3s ease-out;
+  transition: opacity 0.2s $ease-in;
 
   &.hidden{
     opacity: 0;
@@ -247,8 +246,13 @@ $sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
 
   .blogSlider__navigation{
     gap: 16px;
+
+    .blogSlider__button svg path{
+      stroke: $colorMain;
+    }
   }
 
+  
   .blogSlider__infoBtn{
     display: block;
   }

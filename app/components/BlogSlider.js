@@ -1,8 +1,8 @@
 // TO DO : 
 // [X] add fade in/out for description;
 // [X] make the mobile version;
-// [] generate the data from the initSlider function (looping through the slidesData);
-// [] pl  ay the video only when it's current slider;
+// [X] generate the data from the initSlider function (looping through the slidesData);
+// [X] play the video only when it's current slider;
 // [] fix the glitch when you scroll too fast;
 
 
@@ -39,6 +39,8 @@ export default class BlogSlider{
   }
 
   initSlider(){
+    console.log(this.slidesData)
+
     this.paginationTotal.textContent = this.totalSlides;
     this.paginationCurrent.textContent = this.currentSlide + 1;
 
@@ -145,7 +147,6 @@ export default class BlogSlider{
   
     // Update currentSlide if it has changed
     if (index !== this.currentSlide) {
-      console.log(index)
       this.currentSlide = index;
       this.updateUI();
     }
@@ -167,6 +168,6 @@ export default class BlogSlider{
 
     this.infoBtn.addEventListener('click', () => this.toggleInfo());
     this.closeBtn.addEventListener('click', () => this.toggleInfo());
-    this.fullScreenBtn.addEventListener('click', () => this.toggleFullScreen());
+    this.fullScreenBtn?.addEventListener('click', () => this.toggleFullScreen());
   }
 }

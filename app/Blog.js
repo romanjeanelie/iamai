@@ -1,5 +1,8 @@
 import BlogSlider from "./components/BlogSlider";
 
+// TODO : 
+// [X] do the text section;
+// [X] add video to the homepage;
 
 const slidersData = [{
   id:1,
@@ -68,7 +71,7 @@ class Blog {
 
   initSliders() {
     const sliders = document.querySelectorAll('.blogSlider__container');
-    sliders.forEach(slider => {
+    sliders.forEach((slider, idx) => {
       new BlogSlider({sliderData: slidersData, container: slider})
     });
   }

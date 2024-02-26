@@ -1,11 +1,14 @@
+
+
 .blogHero__container{
-  height: calc(100svh - 124px);
+  position: relative;
+  height: calc(85svh - 124px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 0 24px 72px;
-  margin-bottom: 120px;
+  padding: 0 24px 37px;
+  margin-bottom: 72px;
 
   @include media("<tablet") {
     height: calc(100svh - 120px);
@@ -13,11 +16,40 @@
   }
 }
 
+.blogHero__videoBg{
+  position: absolute;
+  top: -124px;
+  left: 0;
+  width: 100%;
+  height: calc(100% + 124px);
+  object-fit: cover;
+  opacity: 0.6;
+  z-index: -1;
+
+  video{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @include media("<tablet") {
+    top: -120px;
+    height: calc(100% + 120px);
+  }
+}
+
+.blogHero__content{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 740px;
+  gap: 56px;
+}
+
 .blogHero__lottieAnimation{
-  margin-top: 28px;
   position: relative;
-  width: 400px;
-  height: 400px;
+  width: min(400px , 35vh);
+  height: min(400px , 35vh);
 
   @include media("<tablet") {
     margin-top: 22px;
@@ -31,15 +63,8 @@
   }
 }
 
-.blogHero__content{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 740px;
-  gap: 32px;
-}
-
 .blogHero__headline{
+  order:1;
   text-align: center;
   font-size: 28px; 
   font-weight: 450;
