@@ -1,7 +1,8 @@
 // TO DO : 
 // [X] add fade in/out for description;
-// [] make the mobile version;
+// [X] make the mobile version;
 // [] generate the data from the initSlider function (looping through the slidesData);
+// [] pl  ay the video only when it's current slider;
 // [] fix the glitch when you scroll too fast;
 
 
@@ -23,13 +24,14 @@ export default class BlogSlider{
     this.paginationTotal = this.container.querySelector('.blogSlider__pagination-total');
     this.paginationCurrent = this.container.querySelector('.blogSlider__pagination-current');
     this.slider = this.container.querySelector('.blogSlider__slides-container');
-    this.slides = this.container.querySelectorAll('.blogSlider__slide');
+    this.slides = [];
     this.slideDescription = this.container.querySelector('.blogSlider__slide-description');
 
     // mobile dom elements
     this.slideMobileDescription = this.container.querySelector('.blogSlider__mobile-description');
     this.infoBtn = this.container.querySelector('.blogSlider__infoBtn');
     this.closeBtn = this.container.querySelector('.blogSlider__closeBtn');
+    this.fullScreenBtn = this.container.querySelector('.blogSlider__mobileCTA');
 
     // functions
     this.initSlider();
@@ -39,6 +41,22 @@ export default class BlogSlider{
   initSlider(){
     this.paginationTotal.textContent = this.totalSlides;
     this.paginationCurrent.textContent = this.currentSlide + 1;
+
+    this.slidesData.forEach((slide) => {
+      const slideEl = document.createElement('div');
+      slideEl.classList.add('blogSlider__slide');
+      const video = document.createElement('video');
+      video.classList.add('blogSlider__video');
+      slide.mobileFormat && slideEl.classList.add('mobile');
+      video.src = slide.video;
+      video.loop = true;
+      video.muted = true;
+
+      slideEl.appendChild(video);
+      this.slides.push(slideEl);
+      this.slider.appendChild(slideEl);
+    })
+
     this.updateUI();
   }
 
@@ -82,9 +100,13 @@ export default class BlogSlider{
     this.paginationCurrent.textContent = this.currentSlide + 1;
     // Add active class to the current slide (all the other slides are opaque)
     this.slides.forEach((slide) => {
-      slide === this.slides[this.currentSlide] 
-      ? slide.classList.add('active') 
-      : slide.classList.remove('active');
+      if (slide === this.slides[this.currentSlide]){
+        slide.classList.add('active') 
+        slide.querySelector('video').play();
+      } else {
+        slide.classList.remove('active');
+        slide.querySelector('video').pause();
+      }
     })
 
     await asyncAnim(
@@ -93,6 +115,7 @@ export default class BlogSlider{
       { duration: 300, easing: 'ease-in-out', fill: 'forwards' }
     );
     this.slideDescription.textContent = this.slidesData[this.currentSlide].description; 
+    this.slideMobileDescription.querySelector('p').textContent = this.slidesData[this.currentSlide].description;
     await asyncAnim(
       this.slideDescription, 
       { opacity: [0, 1] }, 
@@ -132,6 +155,11 @@ export default class BlogSlider{
     this.slideMobileDescription.classList.toggle('hidden');
   }
 
+  toggleFullScreen(){
+    this.container.classList.toggle('fullscreen');
+    this.fullScreenBtn.classList.toggle('hidden');
+  }
+
   addListeners(){
     this.prevBtn.addEventListener('click', () => this.handleGoToSlide(-1));
     this.nextBtn.addEventListener('click', () => this.handleGoToSlide(1));
@@ -139,5 +167,6 @@ export default class BlogSlider{
 
     this.infoBtn.addEventListener('click', () => this.toggleInfo());
     this.closeBtn.addEventListener('click', () => this.toggleInfo());
+    this.fullScreenBtn.addEventListener('click', () => this.toggleFullScreen());
   }
 }

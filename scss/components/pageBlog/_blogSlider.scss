@@ -8,6 +8,13 @@ $sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
   display: flex;
   flex-direction: column;
   gap: 24px;
+
+  &.fullscreen{
+    height: 100svh;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
 }
 
 .blogSlider__slides-container{
@@ -28,8 +35,8 @@ $sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
   flex: 0 0 auto;
   height: $sliderHeight;
   width: calc($sliderHeight * 16 / 9);
-  padding: 0 24px;
   background-color: lightsalmon;
+  overflow: hidden;
   display: flex;
   border-radius: 16px;
   flex-direction: column;
@@ -38,6 +45,12 @@ $sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
   justify-content: center;
   opacity: 0.5;
   transition: opacity 0.3s ease;
+
+  video{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
   &.active {
     opacity: 1;
@@ -116,6 +129,10 @@ $sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
   svg rect{
     fill: $colorMain;
   }
+  
+  svg path{
+    stroke: $colorMain;
+  }
 
   p{
     font-size: 18px;
@@ -139,6 +156,15 @@ $sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
   &:active{
     background: rgba(0, 0, 0, 0.8);
   }
+}
+
+.blogSlider__mobileCTA{
+  display: none;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max-content;
+  transform: translate(-50%, -50%);
 }
 
 @include media(">maximum") {
@@ -202,9 +228,14 @@ $sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
     height: 100%;
     width: 100vw;
     border-radius: 0;
+
+    &.mobile{
+      width: 100%
+    }
   }
 
   .blogSlider__footer{
+    color: $colorMain;
     min-height: 0;
     position: absolute;
     bottom: 0;
@@ -219,6 +250,10 @@ $sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
   }
 
   .blogSlider__infoBtn{
+    display: block;
+  }
+
+  .blogSlider__mobileCTA{
     display: block;
   }
 
