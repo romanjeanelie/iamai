@@ -2,6 +2,7 @@
 
 .blogHero__container{
   position: relative;
+  height: calc(85vh - 124px); // Fallback for browsers not supporting svh
   height: calc(85svh - 124px);
   display: flex;
   flex-direction: column;
@@ -11,6 +12,7 @@
   margin-bottom: 72px;
 
   @include media("<tablet") {
+    height: calc(100vh - 124px); // Fallback for browsers not supportingsdvh
     height: calc(100svh - 120px);
     padding: 0 24px 92px;
   }
@@ -58,6 +60,8 @@
   }
 
   @media screen and (max-height: 720px) {
+    height: 30vh; // Fallback for browsers not supporting svh
+    width: 30vh; // fallback for browsers not supporting svh
     width: 30svh;
     height: 30svh;
   }

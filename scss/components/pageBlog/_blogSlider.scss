@@ -1,3 +1,4 @@
+$sliderHeight: 70vh; // fallback if svh is not supported by the browser
 $sliderHeight: 70svh;
 $sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
 
@@ -10,6 +11,7 @@ $sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
 
   &.fullscreen{
     z-index: 5;
+    height: 100vh; // fallback if svh is not supported by the browser
     height: 100svh;
     position: fixed;
     top: 0;
@@ -246,6 +248,7 @@ $sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
 
 @media screen and (max-width: 560px){
   .blogSlider__container{
+    height: 100vh; // fallback if svh is not supported by the browser
     height: 100svh;
   }
 
