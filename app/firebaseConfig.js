@@ -9,14 +9,14 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCHatgNhCWjEcQyoAHGaXvJRPA--EKDrTw",
-  authDomain: "project-chat-410811.firebaseapp.com",
-  databaseURL: 'https://project-chat-410811-default-rtdb.europe-west1.firebasedatabase.app',
-  projectId: "project-chat-410811",
-  storageBucket: "project-chat-410811.appspot.com",
-  messagingSenderId: "719221376180",
-  appId: "1:719221376180:web:a42fce030a2f1a8ae103e1",
-  measurementId: "G-53ZK5Q9K6T"
+  apiKey: import.meta.env.VITE_API_APIKEY,
+  authDomain: import.meta.env.VITE_API_AUTHDOMAIN,
+  databaseURL: import.meta.env.VITE_API_DATABASEURL,
+  projectId: import.meta.env.VITE_API_PROJECTID,
+  storageBucket: import.meta.env.VITE_API_STORAGEBUCKET,
+  messagingSenderId: import.meta.env.VITE_API_MESSAGINGSENDERID,
+  appId: import.meta.env.VITE_API_APPID,
+  measurementId: import.meta.env.VITE_API_MEASUREMENTID
 };
 
 // Initialize Firebase
