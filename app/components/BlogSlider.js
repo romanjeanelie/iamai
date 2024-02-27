@@ -86,11 +86,13 @@ export default class BlogSlider{
     const slide = this.slides[index];
     if (slide) {
       const slideRect = slide.getBoundingClientRect();
-      const scrollLeft = slideRect.left + this.slider.scrollLeft - this.slider.getBoundingClientRect().left;
-      const centeredLeft = scrollLeft - this.slider.offsetWidth / 2 + slideRect.width / 2;
-
+      const scrollPos = this.isFullscreen 
+        ? slideRect.top + this.slider.scrollTop - this.slider.getBoundingClientRect().top
+        : slideRect.left + this.slider.scrollLeft - this.slider.getBoundingClientRect().left;
+      const centeredPos = scrollPos - this.slider[this.isFullscreen ? 'offsetHeight' : 'offsetWidth'] / 2 + slideRect[this.isFullscreen ? 'height' : 'width'] / 2;
+  
       this.slider.scrollTo({
-        left: centeredLeft,
+        [this.isFullscreen ? 'top' : 'left']: centeredPos,
         behavior: 'smooth'
       });
     }
@@ -136,15 +138,18 @@ export default class BlogSlider{
   handleScroll(){
     if (this.isProgrammaticScroll) return;
     let index = 0;
-    let totalWidth = 0;
-    const viewportCenter = this.slider.scrollLeft + this.slider.offsetWidth / 2;
+    let totalHeight = 0;
+  
+    const viewportCenter = this.isFullscreen 
+      ? this.slider.scrollTop + this.slider.offsetHeight / 2
+      : this.slider.scrollLeft + this.slider.offsetWidth / 2;
   
     // Find the slide whose center is closest to the viewport center
     for (const slide of this.slides) {
-      // Add the width of the current slide to the total width
-      totalWidth += slide.offsetWidth;
-      // Calculate the center of the next slide by adding half of its width to the total width
-      const nextSlideCenter = totalWidth + (this.slides[index + 1]?.offsetWidth || 0) / 2;
+      // Add the height or width of the current slide to the total height or width
+      totalHeight += this.isFullscreen ? slide.offsetHeight : slide.offsetWidth;
+      // Calculate the center of the next slide by adding half of its height or width to the total height or width
+      const nextSlideCenter = totalHeight + (this.slides[index + 1]?.[this.isFullscreen ? 'offsetHeight' : 'offsetWidth'] || 0) / 2;
       // If the center of the next slide is beyond the viewport center, break the loop
       if (nextSlideCenter > viewportCenter) {
         break;
@@ -164,13 +169,18 @@ export default class BlogSlider{
     this.slideMobileDescription.classList.toggle('hidden');
   }
 
+  // FULL SCREEN 
   toggleFullScreen(){
+    this.isFullscreen = !this.isFullscreen;
     this.navBar.classList.toggle('hidden');
     this.container.classList.toggle('fullscreen');
     this.openFullscreenBtn.classList.toggle('hidden');
     this.exitFullscreenBtn.classList.toggle('hidden');
   }
 
+
+
+  // GRAB FUNCTIONS
   startDrag(e) {
     this.isDown = true;
     this.slider.classList.add('active');
@@ -195,6 +205,11 @@ export default class BlogSlider{
     this.prevBtn.addEventListener('click', () => this.handleGoToSlide(-1));
     this.nextBtn.addEventListener('click', () => this.handleGoToSlide(1));
     this.slider.addEventListener('scroll' , () => this.handleScroll())
+    window.addEventListener('resize', (e) => {
+      if (window.innerWidth > 560){
+        this.isFullscreen && this.toggleFullScreen();
+      }
+    })
 
     this.slider.addEventListener('mousedown', (e) => this.startDrag(e));
     this.slider.addEventListener('mouseleave', () => this.stopDrag());
