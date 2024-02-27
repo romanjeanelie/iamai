@@ -54,6 +54,11 @@ $sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
   opacity: 0.5;
   transition: opacity 0.3s ease;
 
+  &.mobile{
+    flex: 0 0 auto;
+    width: calc($sliderHeight * 9 / 16);
+  }
+
   video{
     width: 100%;
     height: 100%;
@@ -64,10 +69,7 @@ $sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
     opacity: 1;
   }
 
-  &.mobile{
-    flex: 0 0 auto;
-    width: calc($sliderHeight * 9 / 16);
-  }
+
 }
 
 .blogSlider__footer{
@@ -171,7 +173,7 @@ $sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
   position: absolute;
   right: 32px;
   top: 60px;
-  padding: 12px;
+  padding: 6px;
   transition: opacity 0.3s $ease-in;
 
   &.hidden{
@@ -223,16 +225,16 @@ $sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
 }
 
 @include media("<desktop") {
-
-
- 
-
   .blogSlider__navigation{
     gap: 12px;
   }
 }
 
 @include media("<tablet") {
+  .blogSlider__slide.mobile{
+    width: calc($sliderHeight * 6 / 16);
+  }
+
   .blogSlider__slide-description{
     width: 70%;
   }
@@ -301,6 +303,11 @@ $sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
 
   .blogSlider__exitFullscreen{
     display: block;
+    border-radius: 800px;
+
+    &:active{
+      background: rgba(0, 0, 0, 0.4);
+    }
   }
 
   .blogSlider__mobile-description{
