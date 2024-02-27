@@ -22,21 +22,26 @@ export default class BlogSlider{
     this.currentSlide = 0;
     this.isProgrammaticScroll = false;
     this.totalSlides = this.slidesData.length;
+    this.isFullscreen = false;
 
     // DOM elements
+    this.navBar = document.querySelector('.blogNav__container');
     this.prevBtn = this.container.querySelector('.blogSlider__button.prev');
     this.nextBtn = this.container.querySelector('.blogSlider__button.next');
     this.paginationTotal = this.container.querySelector('.blogSlider__pagination-total');
     this.paginationCurrent = this.container.querySelector('.blogSlider__pagination-current');
+
     this.slider = this.container.querySelector('.blogSlider__slides-container');
     this.slides = [];
     this.slideDescription = this.container.querySelector('.blogSlider__slide-description');
+    this.slideNavigation = this.container.querySelector('.blogSlider__navigation'); 
 
     // mobile dom elements
     this.slideMobileDescription = this.container.querySelector('.blogSlider__mobile-description');
     this.infoBtn = this.container.querySelector('.blogSlider__infoBtn');
     this.closeBtn = this.container.querySelector('.blogSlider__closeBtn');
-    this.fullScreenBtn = this.container.querySelector('.blogSlider__mobileCTA');
+    this.openFullscreenBtn = this.container.querySelector('.blogSlider__mobileCTA');
+    this.exitFullscreenBtn = this.container.querySelector('.blogSlider__exitFullscreen');
 
     // functions
     this.initSlider();
@@ -160,8 +165,10 @@ export default class BlogSlider{
   }
 
   toggleFullScreen(){
+    this.navBar.classList.toggle('hidden');
     this.container.classList.toggle('fullscreen');
-    this.fullScreenBtn.classList.toggle('hidden');
+    this.openFullscreenBtn.classList.toggle('hidden');
+    this.exitFullscreenBtn.classList.toggle('hidden');
   }
 
   startDrag(e) {
@@ -196,6 +203,7 @@ export default class BlogSlider{
 
     this.infoBtn.addEventListener('click', () => this.toggleInfo());
     this.closeBtn.addEventListener('click', () => this.toggleInfo());
-    this.fullScreenBtn?.addEventListener('click', () => this.toggleFullScreen());
+    this.openFullscreenBtn?.addEventListener('click', () => this.toggleFullScreen());
+    this.exitFullscreenBtn?.addEventListener('click', () => this.toggleFullScreen());
   }
 }
