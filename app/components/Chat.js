@@ -31,6 +31,7 @@ class Chat {
     this.ProductSearch = "";
     this.ProductSearchResults = "";
     this.container = null;
+    this.textContainer = null;
     this.RAG_CHAT = "";
     this.MovieSearch = "";
     this.MovieSearchResults = "";
@@ -715,6 +716,16 @@ class Chat {
     xhr.send(data);
   }
 
+  updateTextContainer(){
+    this.textContainer = this.container.querySelector(".text__container")
+
+    if (!this.textContainer){
+      this.textContainer = document.createElement("div");
+      this.textContainer.className = "text__container";
+      this.container.appendChild(this.textContainer);
+    }
+  }
+
   getMovies() {
     const moviesdiv = document.createElement("div");
     const moviescardcontainerdiv = document.createElement("div");
@@ -741,7 +752,9 @@ class Chat {
     const moviedetailsdiv = document.createElement("div");
     moviedetailsdiv.setAttribute("id", "movie-details");
     moviesdiv.appendChild(moviedetailsdiv);
-    this.container.appendChild(moviesdiv);
+
+    this.updateTextContainer()
+    this.textContainer.appendChild(moviesdiv);
   }
 
   showMovieDetail(event) {
@@ -984,7 +997,9 @@ class Chat {
         rideslistitemdiv.appendChild(rideslistitemcontentdiv);
         // rideslistitemheaderdiv.appendChild(rideslistitemheaderinfodiv);
         taxidiv.appendChild(rideslistitemdiv);
-        this.container.appendChild(taxidiv);
+        
+        this.updateTextContainer()
+        this.textContainer.appendChild(taxidiv);
       }
     }
   }
@@ -1185,7 +1200,9 @@ class Chat {
         });
       }
     }
-    this.container.appendChild(FlightContainerdiv);
+
+    this.updateTextContainer();
+    this.textContainer.append(FlightContainerdiv)
   }
 
   toggleflights(event) {
@@ -1240,7 +1257,9 @@ class Chat {
     const productdetails = document.createElement("div");
     productdetails.id = "product-details";
     productdiv.appendChild(productdetails);
-    this.container.appendChild(productdiv);
+
+    this.updateTextContainer()
+    this.textContainer.appendChild(productdiv);
   }
 
   getProductUI() {
@@ -1290,7 +1309,9 @@ class Chat {
     // const productdetails = document.createElement("div");
     // productdetails.id = "product-details";
     // productdiv.appendChild(productdetails);
-    this.container.appendChild(productdiv);
+
+    this.updateTextContainer()
+    this.textContainer.appendChild(productdiv);
   }
 
   showProductDetail(event) {
