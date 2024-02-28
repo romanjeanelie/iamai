@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&display=swap">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/icon" href="./images/favicon.ico">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="call.css">
+    <script type="module" src="call.js"></script>
+</head>
+
+<body>
+    <div
+        style="position: absolute;left: 50%;top: 50%;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);">
+        <br>
+        <br>
+        <label for="Use Cases">Solution:</label><br>
+        <select name="ddsol" id="ddsol" style="width: 250px;">
+            <option value="plivo" selected="true">Plivo</option>
+        </select>
+        <br>
+        <br>
+        <label for="Use Cases">Use Case:</label><br>
+        <select name="ddus" id="ddus" style="width: 250px;">
+        </select>
+        <br>
+        <br>
+        <label for="Language">Language:</label><br>
+        <select name="ddlang" id="ddlang" style="width: 250px;">
+            <option value="en" selected="true">English</option>
+            <option value="ta">Tamil</option>
+            <option value="hi">Hindi</option>
+            <option value="bn">Bengali</option>
+        </select>
+        <br>
+        <br>
+        <label for="Phone Number">Phone Number:</label><br>
+        <input id="textph" placeholder="Phone Number" value="" style="width: 250px;"></input>
+        <br>
+        <br>
+        <button id="btnsubmit" class="btnsubmit" type="button">Make the Call</button>
+    </div>
+</body>
+
+</html>
