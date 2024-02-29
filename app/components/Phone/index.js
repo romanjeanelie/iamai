@@ -187,12 +187,9 @@ export default class Phone {
 
     this.currentIndexTextAI === null ? (this.currentIndexTextAI = 0) : this.currentIndexTextAI++;
     const { audio, index } = await textToSpeech(htmlToText(html), targetlang, this.currentIndexTextAI);
-    console.log("audio from startAITalking", audio, index);
 
-    this.audiosAI[index] = audio;
-
-    console.log("THIS.CURRENTINDEXAUDIOAI + AUDIOai", this.currentIndexAudioAI, this.audiosAI.length);
-
+    if (audio) this.audiosAI[index] = audio;
+    
     if (this.currentIndexAudioAI === null) {
       this.audioProcessing?.stopAudio();
 
@@ -232,7 +229,6 @@ export default class Phone {
         // if (this.debug) return;
         this.toTalkToMe();
       } else {
-        console.log("FEELING WHEN ERROR, STOPS HERE")
         this.toProcessing();
       }
     }
@@ -254,6 +250,7 @@ export default class Phone {
   }
 
   interrupt() {
+    console.log("interrupt");
     this.stopAITalking();
     this.toTalkToMe();
   }

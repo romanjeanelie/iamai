@@ -162,7 +162,7 @@ class Chat {
         console.log("prevent duplicate");
         m.ack();
       } else {
-        console.log(mdata);
+        // console.log(mdata);
         steamseq.push(m.seq);
         this.status = mdata.status;
         this.task_name = mdata.task_name;

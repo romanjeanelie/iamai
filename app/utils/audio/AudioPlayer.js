@@ -14,12 +14,13 @@ export default class AudioPlayer {
   async playAudio() {
     try {
       let response = await fetch(this.audioUrl).catch(err => console.error("from playAudio :", err));
+      if (response.url.includes("undefined")){
+        throw new Error("URL is undefined");
+      }
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      
       let arrayBuffer = await response.arrayBuffer();
       let audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
 
-      console.log("AUDIO BUFFER : ",audioBuffer)
   
       this.currentAudioPlaying = this.audioContext.createBufferSource();
       this.currentAudioPlaying.buffer = audioBuffer;
@@ -39,7 +40,11 @@ export default class AudioPlayer {
         }
       };
     } catch (err) {
-      console.error(err);
+      console.error("error from play audio : ", err);
+      if (typeof this.onEnded === "function") {
+        if (this.isPaused) return;
+        this.onEnded();
+      }
     }
   }
 
