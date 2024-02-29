@@ -9,6 +9,35 @@ const NATS_URL = import.meta.env.VITE_API_NATS_URL || "wss://nats.iamplus.chat"
 const NATS_USER = import.meta.env.VITE_API_NATS_USER || "iamplus-acc"
 const NATS_PASS = import.meta.env.VITE_API_NATS_PASS || "cis8Asto6HepremoGApI"
 let steamseq = [];
+const ANSWER = "answer",
+  FOLLOWUP = "question",
+  SOURCES = "sources",
+  IMAGES = "images",
+  STATUS = "status",
+  CONTROL = "control",
+  UI = "ui",
+  PA_NEW_CONVERSATION_STARTED = "new_conversation_started",
+  PA_RESPONSE_STARTED = "response_started",
+  PA_RESPONSE_ENDED = "response_ended",
+  STREAM_STARTED = "stream_started",
+  STREAMING = "streaming",
+  STREAM_ENDED = "stream_ended",
+  AGENT_STARTED = "agent_started",
+  AGENT_ENDED = "agent_ended",
+  PA_STARTED = "pa_started",
+  PA_ENDED = "pa_ended",
+  UNDEFINED = "undefined",
+  PA_DEPLOYMENT_STARTED = "pa_deploy_started",
+  IMAGE_GEN_STARTED = "image_generation_in_progress",
+  MOVIESEARCH = "MovieSearch",
+  TAXISEARCH = "TaxiSearch",
+  RAGCHAT = "RAG_CHAT",
+  FLIGHTSEARCH = "FlightSearch",
+  PRODUCTSEARCH = "ProductSearch"
+
+
+
+
 
 class Chat {
   constructor(callbacks) {
@@ -156,64 +185,52 @@ class Chat {
     for await (const m of iter) {
       var mdata = m.json();
       console.log(mdata);
-      // console.log(m.seq);
-      // console.log(m.redelivered);
       if (steamseq.includes(m.seq) && m.redelivered) {
         console.log("prevent duplicate");
         m.ack();
       } else {
-        console.log(mdata);
         steamseq.push(m.seq);
         this.status = mdata.status;
         this.task_name = mdata.task_name;
-        // console.timeEnd("RequestStart");
-        var mtext = mdata.data;
-        // m.ack();
+        var mtext = mdata.response_json;
 
         //get UI and RAG params
-        // if (mdata.message_type == "ui" || mdata.message_type == "conversation_question") {
-        if (mdata.message_type == "ui") {
+        if (mdata.type == UI) {
           this.domain = mdata.ui_params.domain;
           console.log("domain:" + this.domain);
-          if (this.domain == "MovieSearch") {
+          if (this.domain == MOVIESEARCH) {
             this.MovieSearch = JSON.parse(mdata.ui_params.MovieSearch);
             this.MovieSearchResults = JSON.parse(mdata.ui_params.MovieSearchResults);
-          } else if (this.domain == "TaxiSearch") {
+          } else if (this.domain == this.TaxiSearch) {
             this.TaxiSearch = JSON.parse(mdata.ui_params.TaxiSearch);
             this.TaxiSearchResults = JSON.parse(mdata.ui_params.TaxiSearchResults);
-          } else if (this.domain == "RAG_CHAT") {
+          } else if (this.domain == RAGCHAT) {
             this.RAG_CHAT = JSON.parse(mdata.ui_params.RAG_CHAT);
             // console.log("domain RAG_CHAT:" + this.RAG_CHAT);
-          } else if (this.domain == "FlightSearch") {
+          } else if (this.domain == FLIGHTSEARCH) {
             this.FlightSearch = JSON.parse(mdata.ui_params.FlightSearch);
             this.FlightSearchResults = JSON.parse(mdata.ui_params.FlightSearchResults);
-          } else if (this.domain == "ProductSearch") {
+          } else if (this.domain == PRODUCTSEARCH) {
             this.ProductSearch = JSON.parse(mdata.ui_params.ProductSearch);
             this.ProductSearchResults = JSON.parse(mdata.ui_params.ProductSearchResults);
           }
-        } else if (mdata.message_type == "image") {
-          this.image_urls = JSON.parse(mdata.ui_params.image_urls);
+        } else if (mdata.type == IMAGES) {
+          this.image_urls = JSON.parse(mdata.response_json.images);
+          console.log(this.image_urls)
           this.callbacks.addImages({ imgSrcs: this.image_urls });
-        } else if (mdata.message_type == "Sources") {
-          this.Sources = JSON.parse(mdata.ui_params.Sources);
+        } else if (mdata.type == SOURCES) {
+          this.Sources = JSON.parse(mdata.response_json.sources);
           this.callbacks.addSources(this.Sources)
           // Add Call to add sources
         }
 
-        //check if awaiting
-        if (mdata.awaiting) {
-          this.workflowID = mdata.session_id;
-          this.awaiting = true;
-        }
-
-        //check if agent is awaiting
-        if (mdata.awaiting && mdata.message_type == "user_question") {
-          this.agentawaiting = true;
-        }
-
         //generate data
-        if (mdata.streaming && mdata.streaming == true) {
-
+        if (mdata.status && mdata.status == STREAM_STARTED) {
+          this.callbacks.emitter.emit("startStream");
+        }else if (mdata.status && mdata.status == STREAM_ENDED) {
+          this.callbacks.emitter.emit("endStream");
+        }else if (mdata.status && mdata.status == STREAMING) {
+          var mtext = mdata.response_json.text;
           if (mtext.trim().length > 0) {
             var AIAnswer = await this.toTitleCase2(mtext);
             if (this.sourcelang != "en") {
@@ -226,30 +243,20 @@ class Chat {
             }
             await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang });
           }
-          if (mdata.stream_status && mdata.stream_status == "ended") {
-            this.callbacks.emitter.emit("endStream");
-            // this.callbacks.enableInput();
-            // await this.callbacks.addAIText({ text: "\n\n", container: this.container });
-          }
-          // } else if (mdata.status == "Agent ended") {
-          //   this.workflowID = "";
-          //   this.awaiting = false;
-          //   this.callbacks.enableInput();
-          //   return;
-
           // this is for external conversation
-        } else if (mdata.status.toLowerCase() == "agent ended" && mdata.message_type == "system") {
-          this.sessionID = "";
-          this.deploy_ID = "";
-          this.callbacks.addURL({
-            text: "",
-            label: "Please click here, to start a new session to chat or close the browser.",
-            container: this.container,
-            url: "./index.html",
-          });
+        // } else if (mdata.status.toLowerCase() == "agent ended" && mdata.message_type == "system") {
+        //   this.sessionID = "";
+        //   this.deploy_ID = "";
+        //   this.callbacks.addURL({
+        //     text: "",
+        //     label: "Please click here, to start a new session to chat or close the browser.",
+        //     container: this.container,
+        //     url: "./index.html",
+        //   });
           // await this.callbacks.addAIText({ text: "Please click here, to start a new session to chat or close the browser.", type: 'link', container: this.container });
           // textEl.innerHTML = 'Please click <a href="./index.html">here</a>, to start a new session to chat or close the browser.';
-        } else if (mdata.awaiting && !mdata.message_type == "image" && !mdata.message_type == "Sources") {
+        } else if (mdata.awaiting) {
+          var mtext = JSON.parse(mdata.response_json).text;
           console.log("awaiting:" + mdata.message_type);
           console.log("mtext:" + mtext);
           this.workflowID = mdata.session_id;
@@ -276,8 +283,33 @@ class Chat {
             (this.domain = ""), (this.MovieSearchResults = ""), (this.MovieSearch = "");
           }
           this.callbacks.enableInput();
-        } else if (mdata.status == "central finished") {
-          this.callbacks.emitter.emit("centralFinished")
+        // } else if (mdata.status == "central finished") {
+        //   this.callbacks.emitter.emit("centralFinished")
+        //   if (this.domain == "MovieSearch") {
+        //     this.getMovies();
+        //     (this.domain = ""), (this.MovieSearchResults = ""), (this.MovieSearch = "");
+        //   } else if (this.domain == "TaxiSearch") {
+        //     this.getTaxiUI();
+        //     (this.TaxiSearchResults = ""), (this.TaxiSearch = ""), (this.domain = "");
+        //   } else if (this.domain == "FlightSearch") {
+        //     this.getFlightUI();
+        //     (this.FlightSearch = ""), (this.domain = ""), (this.FlightSearchResults = "");
+        //   } else if (this.domain == "ProductSearch") {
+        //     this.getProductUI();
+        //     (this.ProductSearch = ""), (this.domain = ""), (this.ProductSearchResults = "");
+        //   }
+        } else if (mdata.type == STATUS) {
+          var mtext = mdata.response_json.text;
+          if (mtext != "") {
+            var AIAnswer = await this.toTitleCase2(mtext);
+            if (this.sourcelang != "en") {
+              var transresponse = await this.googletranslate(AIAnswer, this.sourcelang, this.targetlang);
+              AIAnswer = transresponse.data.translations[0].translatedText;
+            }
+            AIAnswer += "\n\n";
+            await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang, type: "status" });
+          }
+        } else if (mdata.status.toLowerCase() == PA_RESPONSE_ENDED) {
           if (this.domain == "MovieSearch") {
             this.getMovies();
             (this.domain = ""), (this.MovieSearchResults = ""), (this.MovieSearch = "");
@@ -291,33 +323,24 @@ class Chat {
             this.getProductUI();
             (this.ProductSearch = ""), (this.domain = ""), (this.ProductSearchResults = "");
           }
-        } else if (mdata.message_type == "status") {
-          if (mtext != "") {
-            var AIAnswer = await this.toTitleCase2(mtext);
-            if (this.sourcelang != "en") {
-              var transresponse = await this.googletranslate(AIAnswer, this.sourcelang, this.targetlang);
-              AIAnswer = transresponse.data.translations[0].translatedText;
-            }
-            AIAnswer += "\n\n";
-            await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang, type: "status" });
-          }
-        } else if (mdata.status.toLowerCase() == "pa end") {
           this.callbacks.enableInput();
           this.callbacks.emitter.emit("paEnd");
-        } else if (mtext.trim().length > 0) { //ADDED THIS FOR conversation_question and other cases.
-          var AIAnswer = await this.toTitleCase2(mtext);
-          if (this.sourcelang != "en") {
-            var transresponse = await this.googletranslate(
-              await this.toTitleCase2(mtext),
-              this.sourcelang,
-              this.targetlang
-            );
-            AIAnswer = transresponse.data.translations[0].translatedText;
-          }
-          console.log("before add")
-          await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang });
-          console.log("after add")
+          this.callbacks.emitter.emit("PA_RESPONSE_ENDED")
         }
+        // } else if (mtext.trim().length > 0) { //ADDED THIS FOR conversation_question and other cases.
+        //   var AIAnswer = await this.toTitleCase2(mtext);
+        //   if (this.sourcelang != "en") {
+        //     var transresponse = await this.googletranslate(
+        //       await this.toTitleCase2(mtext),
+        //       this.sourcelang,
+        //       this.targetlang
+        //     );
+        //     AIAnswer = transresponse.data.translations[0].translatedText;
+        //   }
+        //   console.log("before add")
+        //   await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang });
+        //   console.log("after add")
+        // }
         m.ack();
       }
     }
@@ -676,7 +699,7 @@ class Chat {
     var data = "";
     if (img && img.length > 0) {
       data = JSON.stringify({
-        message_type: "user_reply",
+        message_type: "user_message",
         user: "User",
         message: {
           type: "text",
@@ -690,7 +713,7 @@ class Chat {
       });
     } else {
       data = JSON.stringify({
-        message_type: "user_reply",
+        message_type: "user_message",
         user: "User",
         message: {
           type: "text",
@@ -716,10 +739,10 @@ class Chat {
     xhr.send(data);
   }
 
-  updateTextContainer(){
+  updateTextContainer() {
     this.textContainer = this.container.querySelector(".text__container")
 
-    if (!this.textContainer){
+    if (!this.textContainer) {
       this.textContainer = document.createElement("div");
       this.textContainer.className = "text__container";
       this.container.appendChild(this.textContainer);
@@ -872,7 +895,7 @@ class Chat {
           movie_time: Time,
         });
       var data = JSON.stringify({
-        message_type: "user_reply",
+        message_type: "user_message",
         user: "User",
         message: {
           type: "text",
@@ -997,7 +1020,7 @@ class Chat {
         rideslistitemdiv.appendChild(rideslistitemcontentdiv);
         // rideslistitemheaderdiv.appendChild(rideslistitemheaderinfodiv);
         taxidiv.appendChild(rideslistitemdiv);
-        
+
         this.updateTextContainer()
         this.textContainer.appendChild(taxidiv);
       }
