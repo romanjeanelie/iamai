@@ -122,7 +122,9 @@ export default class Phone {
     if (!this.isActive) return;
     console.log("Talk to me");
     if (!this.unbindEvent) {
-      this.unbindEvent = this.emitter.on("addAIText", (html, targetlang) => this.startAITalking(html, targetlang));
+      this.unbindEvent = this.emitter.on("addAIText", async (html, targetlang) => {
+        await this.startAITalking(html, targetlang)
+      });
     }
     this.isStreamEnded = false;
     this.phoneAnimations.toTalkToMe();
@@ -185,16 +187,23 @@ export default class Phone {
       return;
     }
 
-    this.currentIndexTextAI === null ? (this.currentIndexTextAI = 0) : this.currentIndexTextAI++;
+    if (this.currentIndexTextAI === null) {
+      this.currentIndexTextAI = 0;
+    } else {
+      this.currentIndexTextAI++;
+    }
+    console.log(this.currentIndexTextAI, "textIndex from startAITalking ----------")
     const { audio, index } = await textToSpeech(htmlToText(html), targetlang, this.currentIndexTextAI);
+    console.log(index, "index out of textToSpeech ----------")
 
     if (audio) this.audiosAI[index] = audio;
+
+    console.log("---------- array of audios : ", this.audiosAI)
     
     if (this.currentIndexAudioAI === null) {
-      this.audioProcessing?.stopAudio();
-
+      await this.audioProcessing?.stopAudio();
       this.currentIndexAudioAI = 0;
-      this.currentAudioAIPlaying = new AudioPlayer({
+      this.currentAudioAIPlaying =  new AudioPlayer({
         audioUrl: this.audiosAI[this.currentIndexAudioAI]?.src,
         audioContext: this.audioContext,
         onPlay: this.onPlay.bind(this),

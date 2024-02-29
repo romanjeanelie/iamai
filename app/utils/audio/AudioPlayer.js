@@ -9,6 +9,8 @@ export default class AudioPlayer {
     this.startTime = 0;
     this.startOffset = 0;
     this.isPaused = false;
+
+    console.log("------- audioUrl from AudioPlayer :", this.audioUrl)
   }
 
   async playAudio() {
@@ -64,9 +66,9 @@ export default class AudioPlayer {
     this.playAudio();
   }
 
-  stopAudio() {
+  async stopAudio() {
     if (!this.currentAudioPlaying) return;
-    this.currentAudioPlaying.stop();
+    await this.currentAudioPlaying.stop();
     this.currentAudioPlaying = null;
   }
 }

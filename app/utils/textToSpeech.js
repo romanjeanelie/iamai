@@ -13,8 +13,9 @@ function base64ToUint8Array(base64) {
 function getAudio(blob) {
   console.log(blob)
   const audioURL = URL.createObjectURL(blob);
-  console.log("from getAudio : ", audioURL);
+  console.log("---------- from getAudio : ", audioURL);
   const audio = new Audio(audioURL);
+  console.log("---------- from getAudio AUDIO: ", audio)
   return audio;
 }
 
@@ -98,7 +99,7 @@ function getAudio(blob) {
 //     };
 //   });
 // }
-export default async function textToSpeech(text, targetlang, index, attempt = 0) {
+export default async function textToSpeech(text, targetlang, index) {
   const headers = {
     accept: "audio/mpeg",
     "xi-api-key": ELEVENLABS_TOKEN,
@@ -125,22 +126,11 @@ export default async function textToSpeech(text, targetlang, index, attempt = 0)
   })
     .then((response) => response.blob())
     .then((audioBlob) => {
-      console.log("from text to speech  : " , audioBlob, index);
       return ({ audio: getAudio(audioBlob), index })
     })
     .catch((error) => {
-      if (attempt < 2) {
-        console.log("---- new attempt ----")
-        // If this was the first or second attempt, try again
-        return new Promise((resolve, reject) => {
-          textToSpeech(text, targetlang, index, attempt + 1)
-            .then(resolve) // If the retry is successful, resolve this promise
-            .catch(reject); // If the retry fails, reject this promise
-        });
-      } else {
-        // If this was the third attempt, throw the error
-        throw error;
-      }
+      // If this was the third attempt, throw the error
+      throw error;
     });
   }
 

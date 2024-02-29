@@ -401,7 +401,6 @@ export default class Discussion {
     })
 
     this.emitter.on("paEnd" , () => {
-      console.log("----- paEnd -----", this.tabs)
       this.tabs?.displayDefaultTab();
       this.tabs = null;
     })
