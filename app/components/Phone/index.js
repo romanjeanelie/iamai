@@ -142,6 +142,8 @@ export default class Phone {
   }
 
   async toProcessing(audio) {
+    if (this.isProcessing) return;
+    this.isProcessing = true;
     this.phoneAnimations.newInfoText("processing");
     this.phoneAnimations.toProcessing();
     console.log("processing");
@@ -151,7 +153,7 @@ export default class Phone {
       return;
     }
     this.myvad.pause();
-
+    
     this.audioProcessing = new AudioPlayer({
       audioUrl: "/sounds/processing.mp3",
       audioContext: this.audioContext,
@@ -180,41 +182,53 @@ export default class Phone {
 
   async startAITalking(html, targetlang) {
     if (!this.isActive) return;
-      console.log("new AIAnswer");
-      if (this.debug) {
-        this.isAITalking = false;
-        this.onPlay();
-        return;
+    console.log("new AIAnswer");
+    if (this.debug) {
+      this.isAITalking = false;
+      this.onPlay();
+      return;
+    }
+
+    if (this.currentIndexTextAI === null) {
+      this.currentIndexTextAI = 0;
+    } else {
+      this.currentIndexTextAI++;
+    }
+
+    const { audio, index } = await textToSpeech(htmlToText(html), targetlang, this.currentIndexTextAI);
+
+    // if we don't set the empty audios as null, they wont appear in our later checks even if they're null
+    for (let i = 0; i < index; i++) {
+      if (!this.audiosAI[i]) {
+        this.audiosAI[i] = null;
       }
-  
-      if (this.currentIndexTextAI === null) {
-        this.currentIndexTextAI = 0;
-      } else {
-        this.currentIndexTextAI++;
-      }
-      console.log(this.currentIndexTextAI, "textIndex from startAITalking ----------")
-      const { audio, index } = await textToSpeech(htmlToText(html), targetlang, this.currentIndexTextAI);
-      console.log(index, "index out of textToSpeech ----------")
-  
-      if (audio) this.audiosAI[index] = audio;
-  
-      console.log("---------- array of audios : ", this.audiosAI)
+    }
+    this.audiosAI[index] = audio;
+
+    const minAudio = 6;
+
+    // Here starts the ai talking, we only start it when all the first audios are ready (if not it may skip some audios)
+    // Check if the current audio index is null and all audios up to minAudio are not null
+    if ((this.currentIndexAudioAI === null) && this.audiosAI.slice(0, minAudio).every(audio => audio !== null)) {
+      // If the condition is true, stops audio processing
+      await this.audioProcessing?.stopAudio();
+      this.isProcessing = false;
+      this.currentIndexAudioAI = 0;
       
-      if (this.currentIndexAudioAI === null) {
-        await this.audioProcessing?.stopAudio();
-        this.currentIndexAudioAI = 0;
-        this.currentAudioAIPlaying =  new AudioPlayer({
-          audioUrl: this.audiosAI[this.currentIndexAudioAI]?.src,
-          audioContext: this.audioContext,
-          onPlay: this.onPlay.bind(this),
-          onEnded: this.checkIfNextAudio.bind(this),
-        });
-        try {
-          this.currentAudioAIPlaying.playAudio();
-        } catch (err) {
-          console.error("from startAITalking", err);
-        }
+      // Create a new AudioPlayer instance with the first audio in the audiosAI array
+      this.currentAudioAIPlaying =  new AudioPlayer({
+        audioUrl: this.audiosAI[this.currentIndexAudioAI]?.src,
+        audioContext: this.audioContext,
+        onPlay: this.onPlay.bind(this),
+        onEnded: this.checkIfNextAudio.bind(this), 
+      });
+      
+      try {
+        this.currentAudioAIPlaying.playAudio();
+      } catch (err) {
+        console.error("from startAITalking", err);
       }
+    }
   }
 
   async checkIfNextAudio() {
