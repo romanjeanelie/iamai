@@ -142,7 +142,7 @@ export default class Discussion {
       const userEl = document.createElement("div");
       userEl.classList.add("discussion__user");
       this.discussionContainer.appendChild(userEl);
-      this.addImages({ container: userEl, srcs: imgs.map((img) => img.src) });
+      // this.addImages({ container: userEl, srcs: imgs.map((img) => img.src) });
     }
 
     const userEl = document.createElement("div");
@@ -168,6 +168,10 @@ export default class Discussion {
   }
 
   async animateProgressBar(currProgress, nextProgress, duration = 500) {
+    if (!this.progressBar) return;
+    this.statusContainer?.classList.remove("hidden");
+
+
     await asyncAnim(this.progressBar, [
       { transform: `scaleX(${currProgress/100})` },
       { transform: `scaleX(${nextProgress/100})` },
@@ -180,9 +184,7 @@ export default class Discussion {
 
   async endStatusAnimation(){
     await this.animateProgressBar(this.currentProgress, 100, 200);
-    this.statusContainer.classList.add("hidden");
-    this.lastStatus.classList.add("hidden");
-    
+    this.statusContainer?.classList.add("hidden");
     this.currentProgress = 0;
     this.nextProgress = 0;
     this.centralFinished = false;
@@ -190,7 +192,6 @@ export default class Discussion {
 
   async addStatus({ text, textEl, container }) {
     const topStatus = getTopStatus(text);
-    const isImageSearch = this.Chat.task_name === "Image Status Push";
     
     if (!this.lastStatus) {
       // Init status
@@ -203,32 +204,13 @@ export default class Discussion {
       this.progressBar = document.createElement("div");
       this.progressBar.className = "progress-bar";
 
-      if (isImageSearch){    
-        this.topStatus.style.marginTop= "0px";
-        this.topStatus.style.height= "0px";
-        this.topStatus.classList.add("image-skeleton");
-
-        this.tabs?.addTab("Images")
-
-        this.typingStatus = new TypingText({
-          text: "",
-          container: this.topStatus,
-          backgroundColor: backgroundColorGreyPage,
-        });
-        
-        this.typingStatus.fadeIn();
-        this.typingStatus.displayImageSkeleton();
-        container.appendChild(this.topStatus);
-        return null;
-      }
-
       container.appendChild(this.statusContainer);
       this.statusContainer.appendChild(this.topStatus);
       this.statusContainer.appendChild(this.progressBarContainer);
       this.progressBarContainer.appendChild(this.progressBar);
     } else {
       // Update status
-      container.removeChild(this.lastStatus);
+      this.statusContainer.removeChild(this.lastStatus);
     }
     this.lastStatus = textEl;
 
@@ -238,7 +220,7 @@ export default class Discussion {
       this.currentTopStatus = topStatus;
     }
 
-    !isImageSearch && this.statusContainer.appendChild(textEl);
+    this.statusContainer.appendChild(textEl);
   }
 
   async updateTopStatus({ topStatus }) {
@@ -268,13 +250,11 @@ export default class Discussion {
 
   async removeStatus({ container }) {
     if (!this.lastStatus) return;
-    container.removeChild(this.statusContainer);
-    container.removeChild(this.lastStatus);
+    this.statusContainer.style.display = "none";
     this.resetStatuses();
   }
 
-  async addAIText({ text, container, targetlang, type = null } = {}) {    
-    const isImageSearch = this.Chat.task_name === "Image Status Push";
+  async addAIText({ text, container, targetlang, type = null,  } = {}) {    
     let textContainer = container.querySelector(".text__container");
 
     if (!textContainer){
@@ -300,15 +280,16 @@ export default class Discussion {
     if (type === "status") {
       textEl.className = "AIstatus";
       this.addStatus({ text, textEl, container : textContainer });
+      this.statusContainer.appendChild(textEl);
+      return typeByWord(textEl, text);  
     } else if (this.lastStatus) {
       this.removeStatus({ container: textContainer });
     }
-
     textContainer.appendChild(textEl);
 
     // text = text.replace(/<br\/?>\s*/g, "\n");
     if (type !== "status") this.scrollToBottom();
-    if (isImageSearch) return
+    if (type === "images") return
     return typeByWord(textEl, text);  
   }
 
@@ -329,9 +310,11 @@ export default class Discussion {
     this.scrollToBottom();
   }
 
-  addImages({ imgSrcs = [] } = {}) {
+  addImages({ imgSrcs = [], container } = {}) {
+    this.tabs?.addTab("Images")    
     this.tabs?.initImages(imgSrcs);
     this.typingStatus = null;
+    // container?.appendChild(this.topStatus);
   }
 
   addSources(sourcesData) {
@@ -400,10 +383,11 @@ export default class Discussion {
       this.endStatusAnimation()
     })
 
-    this.emitter.on("paEnd" , () => {
-      console.log("----- paEnd -----", this.tabs)
+    this.emitter.on("paEnd" , async () => {
       this.tabs?.displayDefaultTab();
       this.tabs = null;
+      await this.endStatusAnimation();
+      this.removeStatus({ container: this.discussionContainer });
     })
     // window.addEventListener("load", this.onLoad.bind(this));
     const resizeObserver = new ResizeObserver(this.scrollToBottom.bind(this));

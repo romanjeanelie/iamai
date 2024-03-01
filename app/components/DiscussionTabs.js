@@ -17,6 +17,7 @@ export default class DiscussionTabs {
     this.tabsContentContainer = null;
 
     this.tabs = [];
+    this.imagesSkeletons = [];
     this.sources = null;
     this.imagesContainer = null;
 
@@ -48,6 +49,9 @@ export default class DiscussionTabs {
     this.tabs.push(tabName);
 
     this.tabsHeaderContainer.appendChild(li);
+    if (tabName === "Images"){
+      this.createImageSkeletons(li);
+    }
     this.handleTabClick(li);
   }
 
@@ -89,7 +93,6 @@ export default class DiscussionTabs {
     const hasImages = this.tabs.some(tab => tab === "Images");
     if (hasImages) {
       const defaultTab = this.tabsHeaderContainer.querySelector(".Images");
-      console.log(defaultTab);
       this.updateTabUi(defaultTab);
     } else {
       // if there are no images, we display the first tab available
@@ -122,6 +125,21 @@ export default class DiscussionTabs {
     }
 
     this.tabsContentContainer.appendChild(this.sources);
+
+  }
+
+  createImageSkeletons(container) {
+    this.skeletonContainer = document.createElement("div");
+    this.skeletonContainer.className = "typing__skeleton-container skeleton__image";
+
+    for (let i = 0; i < 4; i++) {
+      let skeleton = document.createElement("div");
+      skeleton.classList.add("typing__skeleton");
+      this.imagesSkeletons.push(skeleton);
+    }
+
+    this.imagesSkeletons.forEach(skeleton => this.skeletonContainer.appendChild(skeleton));
+    container.appendChild(this.skeletonContainer);
   }
 
   async initImages(srcs){
@@ -129,22 +147,26 @@ export default class DiscussionTabs {
     this.imagesContainer.className = "images__container";
 
     const successfulSrcs = await this.loadImages(srcs);
-
-    // right before adding the images we remove the skeletons
-    const skeletonContainer = this.container.querySelector(".image-skeleton .typing__skeleton-container");
-    skeletonContainer?.classList.add("hidden"); 
+    // remove the skeletons 
+    // this.skeletonContainer.classList.add("hidden");
 
     const imgs = successfulSrcs.map((src) => {
       const img = document.createElement("img");
       img.src = src;
+      img.onLoad = () => {
+        // right before adding the images we remove the skeletons
+        const skeletonContainer = this.container.querySelector(".image-skeleton .typing__skeleton-container");
+        console.log(skeletonContainer);
+        skeletonContainer?.classList.add("hidden"); 
+      }
       this.imagesContainer.appendChild(img);
       return img;
     });
 
     this.handleImgClick(imgs);
-    this.removeStatus({ container: this.container });
+    // // this.removeStatus({ container: this.container });
     const aiStatus = this.container.querySelector(".AIstatus");
-    if (aiStatus) aiStatus.remove();
+    // if (aiStatus) this.container.remove(aiStatus);
     this.tabsContentContainer.appendChild(this.imagesContainer);
     this.scrollToBottom();
   }

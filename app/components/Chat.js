@@ -210,13 +210,14 @@ class Chat {
             this.ProductSearchResults = JSON.parse(mdata.response_json.ProductSearchResults);
           }
         } else if (mdata.type == IMAGES) {
+          // this.image_urls = JSON.parse(mdata.ui_params.image_urls); // old version
           this.image_urls = JSON.parse(mdata.response_json.images);
-          console.log(this.image_urls)
-          this.callbacks.addImages({ imgSrcs: this.image_urls });
+          this.image_urls && this.callbacks.addImages({ imgSrcs: this.image_urls, container: this.container });
         } else if (mdata.type == SOURCES) {
           this.Sources = JSON.parse(mdata.response_json.sources);
-          this.callbacks.addSources(this.Sources)
           // Add Call to add sources
+          console.log("----- sources in CHAT -----")
+          this.callbacks.addSources(this.Sources)
         }
 
         //generate data

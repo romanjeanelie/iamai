@@ -6,6 +6,7 @@ export default function anim(elements, keyframes, options) {
   }
 }
 
+// to be used inside asyncAnim to be able to await the end of the animation
 export function asyncAnimate(element, keyframes, options) {
   return new Promise((resolve, reject) => {
     const animation = element.animate(keyframes, options);
