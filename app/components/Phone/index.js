@@ -180,41 +180,41 @@ export default class Phone {
 
   async startAITalking(html, targetlang) {
     if (!this.isActive) return;
-    console.log("new AIAnswer");
-    if (this.debug) {
-      this.isAITalking = false;
-      this.onPlay();
-      return;
-    }
-
-    if (this.currentIndexTextAI === null) {
-      this.currentIndexTextAI = 0;
-    } else {
-      this.currentIndexTextAI++;
-    }
-    console.log(this.currentIndexTextAI, "textIndex from startAITalking ----------")
-    const { audio, index } = await textToSpeech(htmlToText(html), targetlang, this.currentIndexTextAI);
-    console.log(index, "index out of textToSpeech ----------")
-
-    if (audio) this.audiosAI[index] = audio;
-
-    console.log("---------- array of audios : ", this.audiosAI)
-    
-    if (this.currentIndexAudioAI === null) {
-      await this.audioProcessing?.stopAudio();
-      this.currentIndexAudioAI = 0;
-      this.currentAudioAIPlaying =  new AudioPlayer({
-        audioUrl: this.audiosAI[this.currentIndexAudioAI]?.src,
-        audioContext: this.audioContext,
-        onPlay: this.onPlay.bind(this),
-        onEnded: this.checkIfNextAudio.bind(this),
-      });
-      try {
-        this.currentAudioAIPlaying.playAudio();
-      } catch (err) {
-        console.error("from startAITalking", err);
+      console.log("new AIAnswer");
+      if (this.debug) {
+        this.isAITalking = false;
+        this.onPlay();
+        return;
       }
-    }
+  
+      if (this.currentIndexTextAI === null) {
+        this.currentIndexTextAI = 0;
+      } else {
+        this.currentIndexTextAI++;
+      }
+      console.log(this.currentIndexTextAI, "textIndex from startAITalking ----------")
+      const { audio, index } = await textToSpeech(htmlToText(html), targetlang, this.currentIndexTextAI);
+      console.log(index, "index out of textToSpeech ----------")
+  
+      if (audio) this.audiosAI[index] = audio;
+  
+      console.log("---------- array of audios : ", this.audiosAI)
+      
+      if (this.currentIndexAudioAI === null) {
+        await this.audioProcessing?.stopAudio();
+        this.currentIndexAudioAI = 0;
+        this.currentAudioAIPlaying =  new AudioPlayer({
+          audioUrl: this.audiosAI[this.currentIndexAudioAI]?.src,
+          audioContext: this.audioContext,
+          onPlay: this.onPlay.bind(this),
+          onEnded: this.checkIfNextAudio.bind(this),
+        });
+        try {
+          this.currentAudioAIPlaying.playAudio();
+        } catch (err) {
+          console.error("from startAITalking", err);
+        }
+      }
   }
 
   async checkIfNextAudio() {
