@@ -1,3 +1,5 @@
+import anim from "../utils/anim";
+
 function getDomainAndFavicon(url) {
   const urlObj = new URL(url);
   const domain = urlObj.hostname;
@@ -100,8 +102,12 @@ export default class DiscussionTabs {
       this.updateTabUi(defaultTab);
     }
   }
-  
 
+  showTabs(){
+    this.tabsHeaderContainer.classList.remove("hidden");
+    this.tabsContentContainer.classList.remove("hidden");
+  }
+  
   initSources(sourcesData){
     this.sources = document.createElement("div");
     this.sources.className = "images__sources none";
@@ -125,21 +131,6 @@ export default class DiscussionTabs {
     }
 
     this.tabsContentContainer.appendChild(this.sources);
-
-  }
-
-  createImageSkeletons(container) {
-    this.skeletonContainer = document.createElement("div");
-    this.skeletonContainer.className = "typing__skeleton-container skeleton__image";
-
-    for (let i = 0; i < 4; i++) {
-      let skeleton = document.createElement("div");
-      skeleton.classList.add("typing__skeleton");
-      this.imagesSkeletons.push(skeleton);
-    }
-
-    this.imagesSkeletons.forEach(skeleton => this.skeletonContainer.appendChild(skeleton));
-    this.tabsHeaderContainer.appendChild(this.skeletonContainer);
   }
 
   async initImages(srcs){
@@ -147,18 +138,12 @@ export default class DiscussionTabs {
     this.imagesContainer.className = "images__container";
 
     const successfulSrcs = await this.loadImages(srcs);
-    // remove the skeletons 
-    // this.skeletonContainer.classList.add("hidden");
+
+    this.imagesSkeletons.forEach(skeleton => this.skeletonContainer.removeChild(skeleton));
 
     const imgs = successfulSrcs.map((src) => {
       const img = document.createElement("img");
       img.src = src;
-      img.onLoad = () => {
-        // right before adding the images we remove the skeletons
-        const skeletonContainer = this.container.querySelector(".image-skeleton .typing__skeleton-container");
-        console.log(skeletonContainer);
-        skeletonContainer?.classList.add("hidden"); 
-      }
       this.imagesContainer.appendChild(img);
       return img;
     });
@@ -210,8 +195,29 @@ export default class DiscussionTabs {
     return successfulSrcs;
   }  
 
-  showTabs(){
-    this.tabsHeaderContainer.classList.remove("hidden");
-    this.tabsContentContainer.classList.remove("hidden");
+  createImageSkeletons() {
+    this.skeletonContainer = document.createElement("div");
+    this.skeletonContainer.className = "typing__skeleton-container skeleton__image";
+
+    for (let i = 0; i < 4; i++) {
+      let skeleton = document.createElement("div");
+      skeleton.classList.add("typing__skeleton");
+      this.imagesSkeletons.push(skeleton);
+    }
+
+    this.imagesSkeletons.forEach(skeleton => this.skeletonContainer.appendChild(skeleton));
+    this.tabsHeaderContainer.appendChild(this.skeletonContainer);
+
+    this.imagesSkeletons.forEach((skeleton,idx)=> {
+      anim(skeleton, [
+        { transform:"scaleY(0)" },
+        { transform: "scaleY(1)" },
+      ], {
+        duration: 500,
+        delay: 50 * idx,
+        fill: "forwards",
+        ease: "ease-out",
+      })
+    })
   }
 }
