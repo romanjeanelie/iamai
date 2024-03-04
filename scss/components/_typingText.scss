@@ -50,10 +50,6 @@ $radiusDotTyping: 22px;
   gap: 16px;
   transition: opacity 0.3s ease-in-out;
 
-  &.image {
-    flex-direction: row;
-  }
-
   &.hidden {
     opacity: 0;
   }
@@ -92,7 +88,7 @@ $radiusDotTyping: 22px;
 
 .typing__skeleton-container.skeleton__image{ 
   flex-direction: row;
-  top: 48px;
+  top: calc(100% + 12px);
   left:0;
   gap: 10px;
 

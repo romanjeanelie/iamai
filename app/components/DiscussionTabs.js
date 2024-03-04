@@ -27,9 +27,9 @@ export default class DiscussionTabs {
   init(){
     if (this.tabsHeaderContainer || this.tabsContentContainer) return;
     this.tabsHeaderContainer = document.createElement("ul");
-    this.tabsHeaderContainer.className = "discussion__tabs-header";
+    this.tabsHeaderContainer.className = "discussion__tabs-header hidden";
     this.tabsContentContainer = document.createElement("div");
-    this.tabsContentContainer.className = "discussion__tabs-content";
+    this.tabsContentContainer.className = "discussion__tabs-content hidden";
 
     this.container.appendChild(this.tabsHeaderContainer);
     this.container.appendChild(this.tabsContentContainer);
@@ -139,7 +139,7 @@ export default class DiscussionTabs {
     }
 
     this.imagesSkeletons.forEach(skeleton => this.skeletonContainer.appendChild(skeleton));
-    container.appendChild(this.skeletonContainer);
+    this.tabsHeaderContainer.appendChild(this.skeletonContainer);
   }
 
   async initImages(srcs){
@@ -165,7 +165,6 @@ export default class DiscussionTabs {
 
     this.handleImgClick(imgs);
     // // this.removeStatus({ container: this.container });
-    const aiStatus = this.container.querySelector(".AIstatus");
     // if (aiStatus) this.container.remove(aiStatus);
     this.tabsContentContainer.appendChild(this.imagesContainer);
     this.scrollToBottom();
@@ -210,4 +209,9 @@ export default class DiscussionTabs {
 
     return successfulSrcs;
   }  
+
+  showTabs(){
+    this.tabsHeaderContainer.classList.remove("hidden");
+    this.tabsContentContainer.classList.remove("hidden");
+  }
 }

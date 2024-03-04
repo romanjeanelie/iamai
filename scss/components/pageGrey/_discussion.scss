@@ -103,10 +103,12 @@
   }
 
   .discussion__tabs-header{ 
+    position: relative;
     margin-top: 16px;
     display: flex;
     gap: 24px;
     cursor: pointer;
+    transition: opacity 0.3s ease-out;
 
     li {
       font-family: "Circular";
@@ -124,10 +126,20 @@
     li.active{
       color: $colorBlack;
     }
+
+    &.hidden{
+      opacity: 0;
+    }
   }
 
   .discussion__tabs-content{
+    position: relative;
     margin-top: 12px;
+    transition: opacity 0.3s ease-out;
+
+    &.hidden{
+      opacity: 0;
+    }
   }
 
   .discussion__user {

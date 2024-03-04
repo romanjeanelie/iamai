@@ -6,7 +6,6 @@ import DiscussionTabs from "./DiscussionTabs.js"
 import { getsessionID } from "../User";
 import { asyncAnim } from "../utils/anim.js";
 import typeByWord from "../utils/typeByWord.js";
-import typeText from "../utils/typeText.js";
 
 const topStatusText = ["finding", "checking", "searching", "analyzing", "scanning", "finalizing", "processing"];
 const defaultTopStatus = "searching";
@@ -384,10 +383,11 @@ export default class Discussion {
     })
 
     this.emitter.on("paEnd" , async () => {
-      this.tabs?.displayDefaultTab();
-      this.tabs = null;
       await this.endStatusAnimation();
       this.removeStatus({ container: this.discussionContainer });
+      this.tabs?.displayDefaultTab();
+      this.tabs?.showTabs();
+      this.tabs = null;
     })
     // window.addEventListener("load", this.onLoad.bind(this));
     const resizeObserver = new ResizeObserver(this.scrollToBottom.bind(this));
