@@ -113,6 +113,7 @@ export default class DiscussionTabs {
     this.sources.className = "images__sources none";
 
     for (let source of sourcesData) {
+      if (!source) continue;
       const sourceEl = document.createElement("a");
       sourceEl.classList.add("source");
       sourceEl.href = source;
