@@ -42,8 +42,14 @@ class App {
     // this.user = user;
     // });
     this.emitter = createNanoEvents();
+
+    this.debug = import.meta.env.VITE_DEBUG === "true";
+
     this.addListeners();
     this.resetScroll();
+    if (this.debug) {
+      this.toPageGrey({ duration: 0 });
+    }
   }
 
   // Anim
