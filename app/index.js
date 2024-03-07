@@ -3,10 +3,10 @@ import Input from "./components/Input";
 import Navbar from "./components/Navbar";
 import Discussion from "./components/Discussion";
 import Slider from "./components/Slider";
-import User from './User';
+import User from "./User";
 import { getUser, getsessionID, saveUserDataFireDB, getUserDataFireDB, redirectToLogin } from "./User";
 import { createNanoEvents } from "nanoevents";
-import { app, auth } from './firebaseConfig';
+import { app, auth } from "./firebaseConfig";
 import {
   GoogleAuthProvider,
   connectAuthEmulator,
@@ -14,7 +14,7 @@ import {
   onAuthStateChanged,
   signInWithPopup,
   signOut,
-} from 'firebase/auth';
+} from "firebase/auth";
 
 var animation;
 const divintrotext = document.getElementById("divintrotext");
@@ -26,9 +26,8 @@ const divinfotext = document.getElementById("divinfotext");
 const divwaitlist = document.getElementById("divwaitlist");
 const divlottieanimation = document.getElementById("divlottieanimation");
 
-const linksignout = document.getElementById('linksignout');
-const signInButton = document.getElementById('divgoogle');
-
+const linksignout = document.getElementById("linksignout");
+const signInButton = document.getElementById("divgoogle");
 
 class App {
   constructor() {
@@ -76,7 +75,7 @@ class App {
     this.discussion = new Discussion({
       emitter: this.emitter,
       toPageGrey: this.toPageGrey.bind(this),
-      user: this.user
+      user: this.user,
     });
   }
 
@@ -99,7 +98,16 @@ class App {
     window.scrollTo(0, 0);
   }
 
-  animateString = (index, textArray, element, imgSrc = "", callback, delay = 150, deletedelay = 50, fulltextdelay = 1000) => {
+  animateString = (
+    index,
+    textArray,
+    element,
+    imgSrc = "",
+    callback,
+    delay = 150,
+    deletedelay = 50,
+    fulltextdelay = 1000
+  ) => {
     if (!element) return; // Element not found
 
     let str = textArray[index++];
@@ -107,7 +115,7 @@ class App {
     let isAdding = true;
 
     function createImageElement() {
-      const img = document.createElement('img');
+      const img = document.createElement("img");
       img.src = imgSrc;
       return img;
     }
@@ -139,7 +147,7 @@ class App {
       }
     }
     updateText();
-  }
+  };
 
   startAnimations(textArray, element) {
     let index = 0;
@@ -150,18 +158,18 @@ class App {
     if (index < textArray.length) {
       this.animateString(index, textArray, element, imgSrc, this.next, 50, 1, 1600);
     } else {
-      index = 0
+      index = 0;
       this.animateString(index, textArray, element, imgSrc, this.next, 50, 1, 1600);
     }
-  }
+  };
 
   toggleSignIn() {
     signInButton.style.display = "none";
     divlottieanimation.style.display = "block";
     animation.play();
     const provider = new GoogleAuthProvider();
-    provider.addScope('profile');
-    provider.addScope('email');
+    provider.addScope("profile");
+    provider.addScope("email");
     signInWithPopup(auth, provider)
       .then(function (result) {
         if (!result) return;
@@ -174,10 +182,8 @@ class App {
         const errorMessage = error.message;
         const email = error.email;
         const credential = error.credential;
-        if (errorCode === 'auth/account-exists-with-different-credential') {
-          alert(
-            'You have already signed up with a different auth provider for that email.',
-          );
+        if (errorCode === "auth/account-exists-with-different-credential") {
+          alert("You have already signed up with a different auth provider for that email.");
         } else {
           signInButton.style.display = "block";
           divlottieanimation.style.display = "none";
@@ -187,21 +193,23 @@ class App {
   }
 
   signoutgoogle() {
-    signOut(auth).then(() => {
-      console.log("User signed out.");
-      redirectToLogin();
-    }).catch((error) => {
-      console.error("Error signing out: ", error);
-    });
+    signOut(auth)
+      .then(() => {
+        console.log("User signed out.");
+        redirectToLogin();
+      })
+      .catch((error) => {
+        console.error("Error signing out: ", error);
+      });
   }
   async checkuserwaitlist(user) {
     var userstatus = await getUserDataFireDB(user);
     if (userstatus) {
       if (userstatus.status == "active") {
         await user.setuseraddress();
-        this.toPageGrey({ duration: 1200 })
+        this.toPageGrey({ duration: 1200 });
         this.user = user;
-        console.log("user", user)
+        console.log("user", user);
         this.initApp();
       } else {
         divlogin.style.display = "none";
@@ -218,34 +226,33 @@ class App {
       if (user) {
         const loggedinuser = new User(user.uid, user.displayName, user.photoURL, user.email);
         this.checkuserwaitlist(loggedinuser);
-      }else{
+      } else {
         signInButton.style.display = "flex";
       }
     });
 
     window.addEventListener("load", () => {
       let user = getUser();
-      signInButton.addEventListener('click', this.toggleSignIn, false);
+      signInButton.addEventListener("click", this.toggleSignIn, false);
       signInButton.style.display = "none";
 
       divlottieanimation.style.display = "none";
       animation = lottie.loadAnimation({
         container: divlottieanimation,
-        renderer: 'svg',
+        renderer: "svg",
         loop: true,
         autoplay: false,
-        path: '../animations/asterisk_loading.json'
+        path: "../animations/asterisk_loading.json",
       });
 
       // Avoid flash blue page
-      document.getElementById('signOutButton').addEventListener('click', () => {
+      document.getElementById("signOutButton").addEventListener("click", () => {
         this.signoutgoogle();
       });
-      linksignout.addEventListener('click', (e) => {
+      linksignout.addEventListener("click", (e) => {
         // e.preventDefault();
         this.signoutgoogle();
       });
-
 
       //load and play the animations
       divwaitlist.style.display = "none";
@@ -255,14 +262,20 @@ class App {
       // animateString("Asterizk ", divintrologo, "../images/asterizk.svg", function () {
       divintrologo.style.display = "none";
       divlogin.style.display = "flex";
-      const texts = ["Find a flight to Bali", "Get a taxi to office", "Book a Hotel", "Tell me joke", "What are the movies playing"];
+      const texts = [
+        "Find a flight to Bali",
+        "Get a taxi to office",
+        "Book a Hotel",
+        "Tell me joke",
+        "What are the movies playing",
+      ];
       this.startAnimations(texts, divinfotext);
-    // });
-    // });
-  });
+      // });
+      // });
+    });
     document.fonts.ready.then(() => {
-  this.app.classList.remove("preload");
-});
+      this.app.classList.remove("preload");
+    });
   }
 }
 
