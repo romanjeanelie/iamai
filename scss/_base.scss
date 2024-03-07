@@ -41,7 +41,7 @@ body {
 }
 
 #app {
-  position:relative;
+  position: relative;
   min-height: 100svh;
   transition: visibility 0s, opacity 0.1s linear;
 
@@ -62,7 +62,6 @@ button {
   height: 100svh;
   justify-content: center;
   align-items: center;
-
 
   transition: transform $ease-in-out-cubic;
 
@@ -95,7 +94,8 @@ button {
       width: 100%;
     }
 
-    .bottom {}
+    .bottom {
+    }
   }
 
   &.hidden {
@@ -105,8 +105,8 @@ button {
 
 .page-grey {
   background-color: $backgroundColorGreyPage;
-  height:100%;
-  
+  height: 100%;
+
   main {
     min-height: 100svh;
     position: relative;
@@ -132,7 +132,7 @@ button {
   }
 }
 
-.page-blog{
+.page-blog {
   position: relative;
   width: 100vw;
   height: 100svh;
@@ -142,6 +142,11 @@ button {
   @include media("<tablet") {
     padding: 120px 0px;
   }
+}
+
+// Debug
+.dg.ac {
+  z-index: 100 !important;
 }
 
 /* #######  Movies  ##########*/
@@ -722,7 +727,7 @@ button {
   cursor: pointer;
 }
 
-.rides-timepicker-wrapper .time:hover>.arrow {
+.rides-timepicker-wrapper .time:hover > .arrow {
   opacity: 1;
 }
 
@@ -1126,7 +1131,7 @@ button {
 
 .shopping-price {
   color: var(--Text, #000);
-  font-feature-settings: 'liga' off;
+  font-feature-settings: "liga" off;
   font-size: 14px;
   font-style: normal;
   font-weight: 450;
@@ -1138,7 +1143,7 @@ button {
 .shopping-source {
   color: var(--B48-W60, rgba(0, 0, 0, 0.48));
   text-align: center;
-  font-feature-settings: 'liga' off;
+  font-feature-settings: "liga" off;
   font-size: 12px;
   font-style: normal;
   font-weight: 450;

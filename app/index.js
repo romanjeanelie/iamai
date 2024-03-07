@@ -3,6 +3,7 @@ import Input from "./components/Input";
 import Navbar from "./components/Navbar";
 import Discussion from "./components/Discussion";
 import Slider from "./components/Slider";
+import TaskManager from "./components/TaskManager";
 import User from "./User";
 import { getUser, getsessionID, saveUserDataFireDB, getUserDataFireDB, redirectToLogin } from "./User";
 import { createNanoEvents } from "nanoevents";
@@ -15,6 +16,7 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
+import * as dat from "dat.gui";
 
 var animation;
 const divintrotext = document.getElementById("divintrotext");
@@ -48,7 +50,9 @@ class App {
     this.addListeners();
     this.resetScroll();
     if (this.debug) {
+      this.gui = new dat.GUI();
       this.toPageGrey({ duration: 0 });
+      this.initApp();
     }
   }
 
@@ -65,6 +69,7 @@ class App {
     this.initCaroussel();
     this.initDiscussion();
     this.initInput();
+    this.initTaskManager();
     this.initSlider();
   }
 
@@ -94,6 +99,9 @@ class App {
 
     // this.inputBluePage = new Input({ pageEl: this.pageBlue, isActive: true, ...props });
     this.inputGreyPage = new Input({ pageEl: this.pageGrey, isActive: false, ...props });
+  }
+  initTaskManager() {
+    this.taskManager = new TaskManager({ emitter: this.emitter, pageEl: this.pageGrey, gui: this.gui });
   }
 
   initSlider() {
@@ -216,6 +224,7 @@ class App {
         this.toPageGrey({ duration: 1200 });
         this.user = user;
         console.log("user", user);
+        if (this.debug) return;
         this.initApp();
       } else {
         divlogin.style.display = "none";
