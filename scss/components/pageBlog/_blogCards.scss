@@ -37,7 +37,7 @@
 
   .blogCards__card-header{
     font-size: 24px;
-    font-weight: 500;
+    font-weight: 450;
     line-height: 28px;
     letter-spacing: 0.5px;
   }
@@ -54,9 +54,9 @@
   position: relative;
 
   .blogCards__card-image{
-    width: min(40% ,100px);
-    aspect-ratio: 1 / 1;
-
+    width: min(7vw, 92px);
+    height: min(7vw, 92px);
+    background-color: $colorMain;
     border-radius: 16px;
     overflow: hidden;
     margin-bottom: 16px;
@@ -109,6 +109,11 @@
 
   .blogCards__card{
     grid-column: span 2;
+  }
+
+  .blogCards__card-images .blogCards__card-image{
+    width: 92px;
+    height: 92px;
   }
 }
 
