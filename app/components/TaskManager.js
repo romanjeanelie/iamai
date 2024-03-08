@@ -30,34 +30,34 @@ export default class TaskManager {
 
     // ALEX -> Comment/uncomment to have tasks at start for integration
     this.tasks = [
-      {
-        name: "Task 1",
-        key: 1,
-        status: {
-          type: STATUSES.IN_PROGRESS,
-          title: "searching",
-          description:
-            "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
-        },
-      },
-      {
-        name: "Task 2",
-        key: 2,
-        status: {
-          type: STATUSES.INPUT_REQUIRED,
-          title: "question",
-          description: "Flight for 18th Mar are all fully booked. Is there any other dates you would like to try for?",
-        },
-      },
-      {
-        name: "Task 3",
-        key: 3,
-        status: {
-          type: STATUSES.COMPLETED,
-          title: "",
-          description: "",
-        },
-      },
+      //   {
+      //     name: "Task 1",
+      //     key: 1,
+      //     status: {
+      //       type: STATUSES.IN_PROGRESS,
+      //       title: "searching",
+      //       description:
+      //         "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+      //     },
+      //   },
+      //   {
+      //     name: "Task 2",
+      //     key: 2,
+      //     status: {
+      //       type: STATUSES.INPUT_REQUIRED,
+      //       title: "question",
+      //       description: "Flight for 18th Mar are all fully booked. Is there any other dates you would like to try for?",
+      //     },
+      //   },
+      //   {
+      //     name: "Task 3",
+      //     key: 3,
+      //     status: {
+      //       type: STATUSES.COMPLETED,
+      //       title: "",
+      //       description: "",
+      //     },
+      //   },
     ];
 
     // Debug
@@ -66,28 +66,28 @@ export default class TaskManager {
     this.gui = gui;
 
     if (this.debug) {
-      const debugTask = {
+      this.debugTask = {
         name: `Task ${this.tasks.length + 1}`,
         key: this.tasks.length + 1,
       };
 
-      const taskNameController = this.gui.add(debugTask, "name").onChange((value) => {
-        debugTask.name = value;
+      this.taskNameController = this.gui.add(this.debugTask, "name").onChange((value) => {
+        this.debugTask.name = value;
       });
 
       this.gui.add(
         {
           addTask: (e) => {
             const task = {
-              ...debugTask,
+              ...this.debugTask,
               status: { type: STATUSES.IN_PROGRESS, ...defaultValues[STATUSES.IN_PROGRESS] },
             };
             this.addDebugTask(task);
             this.createTask(task);
 
-            debugTask.name = `Task ${this.tasks.length + 1}`;
-            debugTask.key = this.tasks.length + 1;
-            taskNameController.setValue(debugTask.name);
+            this.debugTask.name = `Task ${this.tasks.length + 1}`;
+            this.debugTask.key = this.tasks.length + 1;
+            this.taskNameController.setValue(this.debugTask.name);
           },
         },
         "addTask"
@@ -100,36 +100,52 @@ export default class TaskManager {
   }
 
   addDebugTask(task) {
-    const copyTask = { ...task };
-    const folder = this.gui.addFolder(copyTask.name);
+    const folder = this.gui.addFolder(task.name);
     folder.open();
-    folder.add(copyTask.status, "type", STATUSES).onChange((value) => {
-      copyTask.status = { type: value, ...defaultValues[value] };
-      titleController.setValue(copyTask.status.title);
-      descriptionController.setValue(copyTask.status.description);
-      this.onStatusUpdate(copyTask.key, copyTask.status);
+    folder.add(task.status, "type", STATUSES).onChange((value) => {
+      task.status = { type: value, ...defaultValues[value] };
+      titleController.setValue(task.status.title);
+      descriptionController.setValue(task.status.description);
+      this.onStatusUpdate(task.key, task.status);
     });
 
-    const titleController = folder.add(copyTask.status, "title").onChange((value) => {
-      copyTask.status.title = value;
+    const titleController = folder.add(task.status, "title").onChange((value) => {
+      task.status.title = value;
     });
 
-    const descriptionController = folder.add(copyTask.status, "description").onChange((value) => {
-      copyTask.status.description = value;
+    const descriptionController = folder.add(task.status, "description").onChange((value) => {
+      task.status.description = value;
     });
     folder.add(
       {
         updateStatus: () => {
-          this.onStatusUpdate(copyTask.key, copyTask.status);
+          this.onStatusUpdate(task.key, task.status);
         },
       },
       "updateStatus"
+    );
+    folder.add(
+      {
+        deleteTask: () => {
+          this.removeTask(task.key);
+          this.debugTask.name = `Task ${this.tasks.length + 1}`;
+          this.debugTask.key = this.tasks.length + 1;
+          this.taskNameController.setValue(this.debugTask.name);
+          this.gui.removeFolder(folder);
+        },
+      },
+      "deleteTask"
     );
   }
 
   createTask(task) {
     this.tasks.push(task);
     console.log("Task created", task);
+  }
+
+  removeTask(taskKey) {
+    this.tasks = this.tasks.filter((task) => task.key !== taskKey);
+    console.log("Task removed", taskKey);
   }
 
   onStatusUpdate(taskKey, status) {
