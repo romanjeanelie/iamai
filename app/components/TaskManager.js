@@ -28,18 +28,47 @@ export default class TaskManager {
     this.pageEl = pageEl;
     this.container = this.pageEl.querySelector(".task-manager__container");
 
-    // Debug btns
-    this.debugContainer = this.pageEl.querySelector(".task-manager__debug");
+    // ALEX -> Comment/uncomment to have tasks at start for integration
+    this.tasks = [
+      {
+        name: "Task 1",
+        key: 1,
+        status: {
+          type: STATUSES.IN_PROGRESS,
+          title: "searching",
+          description:
+            "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+        },
+      },
+      {
+        name: "Task 2",
+        key: 2,
+        status: {
+          type: STATUSES.INPUT_REQUIRED,
+          title: "question",
+          description: "Flight for 18th Mar are all fully booked. Is there any other dates you would like to try for?",
+        },
+      },
+      {
+        name: "Task 3",
+        key: 3,
+        status: {
+          type: STATUSES.COMPLETED,
+          title: "",
+          description: "",
+        },
+      },
+    ];
 
+    // Debug
+    this.debugContainer = this.pageEl.querySelector(".task-manager__debug");
     this.debug = import.meta.env.VITE_DEBUG === "true";
     this.gui = gui;
 
     if (this.debug) {
-      this.debugTasks = [];
-
       const debugTask = {
-        name: `Task 1`,
-        key: 1,
+        name: `Task ${this.tasks.length + 1}`,
+        key: this.tasks.length + 1,
       };
 
       const taskNameController = this.gui.add(debugTask, "name").onChange((value) => {
@@ -51,23 +80,22 @@ export default class TaskManager {
           addTask: (e) => {
             const task = {
               ...debugTask,
-              status: { type: null, title: "", description: "" },
+              status: { type: STATUSES.IN_PROGRESS, ...defaultValues[STATUSES.IN_PROGRESS] },
             };
             this.addDebugTask(task);
             this.createTask(task);
-            this.debugTasks.push(task);
 
-            debugTask.name = `Task ${this.debugTasks.length + 1}`;
-            debugTask.key = this.debugTasks.length + 1;
+            debugTask.name = `Task ${this.tasks.length + 1}`;
+            debugTask.key = this.tasks.length + 1;
             taskNameController.setValue(debugTask.name);
           },
         },
         "addTask"
       );
 
-      //   this.debugTasks.forEach((task) => {
-      //     this.addDebugTask(task);
-      //   });
+      this.tasks.forEach((task) => {
+        this.addDebugTask(task);
+      });
     }
   }
 
@@ -100,10 +128,11 @@ export default class TaskManager {
   }
 
   createTask(task) {
-    console.log("task created", task);
+    this.tasks.push(task);
+    console.log("Task created", task);
   }
 
   onStatusUpdate(taskKey, status) {
-    console.log("task - ", taskKey, "status updated", status);
+    console.log("Task", taskKey, "/ Status:", status.label);
   }
 }
