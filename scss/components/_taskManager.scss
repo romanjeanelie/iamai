@@ -1,5 +1,146 @@
 .task-manager__debug {
 }
 
-.task-manager__container {
+.task-manager__button{
+  position: fixed;
+  bottom: 120px;
+  right: 40px;
+  background-color: salmon;
+  width : 40px;
+  height: 40px;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.3s $ease-out;
+
+  &.hidden{
+    opacity:0;
+  }
 }
+
+.task-manager__container {
+  position: fixed;
+  bottom: 120px;
+  right: 40px;
+  width: 678px;
+  height: 439px;
+  border-radius: 16px;
+  z-index: 5;
+  overflow-y: scroll;
+  background-color: $backgroundTaskManager;
+  color: $colorBlack;
+  // background-color: red;
+
+  .task-manager__header{
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .icon{
+      padding: 8px;
+      border-radius: 4px;
+
+      img{
+        width: 100%;
+      }
+
+      &:hover{
+        background-color: rgba(0,0,0,0.1);
+      }
+    }
+  }
+}
+
+.task-manager__content{
+  padding: 20px 24px;
+
+  h2{
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 28px;
+    letter-spacing: 0.6000000238418579px;
+    margin-bottom: 8px;
+  }
+
+  h3{
+    font-size: 14px;
+    font-weight: 450;
+    line-height: 18px;
+    letter-spacing: 0.6000000238418579px;    
+    color: rgba(0, 0, 0, 0.6);
+    margin-bottom: 24px;
+  }
+
+  .task-manager__accordion-container{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+
+  .task-manager__accordion{
+    border-radius: 16px;      
+    background-color: rgba(0, 0, 0, 0.04);
+    
+    .task-manager__accordion-header{
+      padding: 14px 16px;
+      border-radius: 16px;
+      display: flex;
+      overflow: hidden;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+
+      &:hover{
+        background-color: rgba(0,0,0,0.1);
+      }
+
+      div{
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .task-manager__status-pill{
+        padding: 5px 30px;
+        background-color: salmon;
+        border-radius: 32px;
+        color: $colorMain;
+      }
+
+      .task-manager__accordion-chevron{
+        width: 20px;
+        margin: 0 10px;
+
+        img{
+          width: 100%;
+        }
+      }
+    }
+
+    .task-manager__accordion-panel{
+      padding: 0 16px;
+      overflow: hidden;
+      font-size: 16px;
+      font-weight: 450;
+      max-height: 0;
+      line-height: 18px;
+      letter-spacing: 0.6px;
+      transition: all 0.3s ease-in-out;
+
+      .task-manager__status-container{
+        margin: 10px 0 16px;
+      }
+
+      .task-manager__status-title{
+        font-size: 14px;
+        margin-bottom: 8px;
+      }
+    }
+  }
+}
+
+
+

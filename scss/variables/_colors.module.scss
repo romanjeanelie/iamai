@@ -1,5 +1,6 @@
 $backgroundColorBluePage: #648ff2;
 $backgroundColorGreyPage:#F8F6F2;// #eaeced;
+$backgroundTaskManager: #eeece8;
 $colorMain: #fff;
 // $colorBlue: #4d79ec;
 $colorPink: #ff00ff;
@@ -7,6 +8,8 @@ $colorBlue: #0047ff;
 $colorBlack: rgba(0, 0, 0, 1);//rgba(0, 0, 0, 0.72);
 $colorBlackForGreyPage: rgba(0, 0, 0, 0.4);
 $colorGrey: #c2c2c2;
+
+;
 
 :export {
   colorMain: $colorMain;
