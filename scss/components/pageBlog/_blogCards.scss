@@ -112,7 +112,12 @@
   }
 }
 
-@include media("<phone"){
+// the tablet breakpoint set in include-media was too big for this component
+@media screen and (max-width: 640px){
+  .blogCards__cards{
+    max-width: 300px;
+  }
+
   .blogCards__card{
     grid-column: span 4;
   }
