@@ -41,6 +41,11 @@ const slidersData = [{
 }
 ];
 
+// TO DO : 
+// [] handle the marquee;
+// [] handle the videos (use mobile version when needed)
+// [] 
+
 class Blog {
   constructor() {
     // States
