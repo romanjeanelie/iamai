@@ -1,3 +1,12 @@
+import gsap from "gsap";
+import Flip from "gsap/Flip";
+
+const STATES = {
+  CLOSED: "closed",
+  MINIMIZED: "minimized",
+  FULLSCREEN: "fullscreen",
+}
+
 const STATUSES = {
   IN_PROGRESS: "inProgress",
   INPUT_REQUIRED: "inputRequired",
@@ -28,17 +37,22 @@ const defaultValues = {
   },
 };
 
+gsap.registerPlugin(Flip);
+
 // TO DO 
 // [X] make the button appear when a task is created 
 // [X] update the button with the state
 // [X] show number of tasks on the button
 // [X] Do the basic layout for the minimized state
-// [] make the accordion for the task list
-// [] refactor the accordion logic and put it inside its own class
-// [] update the active tasks in the accordion
-// [] make the accordion dynamic
+// [X] make the accordion for the task list
+// [X] update the active tasks in the accordion
+// [] intro animation for taskManager
 // [] Do the basic layout for the fullscreen state
+// [] handle transition between minimized and fullscreen state
 // [] handle transition between fullscreen and minimized state
+// [] refactor the accordion logic and put it inside its own class
+// [] make the accordion dynamic
+// [] when adding a new panel to the accordion, update the click event listener
 // [] handle the accordion panel in function of the type of the status (input required, in progress, completed)
 
 export default class TaskManager {
@@ -47,9 +61,17 @@ export default class TaskManager {
     this.pageEl = pageEl;
     this.container = this.pageEl.querySelector(".task-manager__container");
     this.button = this.pageEl.querySelector(".task-manager__button");
+    this.closeButton = this.pageEl.querySelector(".task-manager__closing-icon");
+    this.fullscreenButton = this.pageEl.querySelector(".task-manager__fullscreen-icon");
+  
     this.accordionContainer = this.pageEl.querySelector(".task-manager__accordion-container");
 
+    // States
+    this.taskManagerState = STATES.CLOSED;
+
+    this.init()
     this.initializeAccordion();
+    this.addListeners();
 
     // ALEX -> Comment/uncomment to have tasks at start for integration
     this.tasks = [
@@ -161,6 +183,40 @@ export default class TaskManager {
     );
   }
 
+  init(){
+
+  }
+
+  // ---------- Handling the task-manager states ----------
+  changeState(newState) {
+    this.taskManagerState = newState;
+    const initialState = Flip.getState(this.container);
+  
+    // Remove all state classes
+    this.container.classList.remove("closed", "minimized", "fullscreen");
+  
+    // Add the new state class
+    this.container.classList.add(newState);
+  
+    Flip.from(initialState, {
+      duration: 0.5,
+      ease: "power2.inOut",
+      absolute: true,
+    });
+  }
+  
+  closeTaskManager() {
+    this.changeState(STATES.CLOSED);
+  }
+  
+  toMinimized() {
+    this.changeState(STATES.MINIMIZED);
+  }
+  
+  toFullscreen() {
+    this.changeState(STATES.FULLSCREEN);
+  }
+
   // ---------- Handling the task-manager button ----------
   getButtonColor(){
     // order of priority for the color of the button
@@ -201,21 +257,16 @@ export default class TaskManager {
   initializeAccordion() {
     this.accordionHeaders = Array.from(this.pageEl.querySelectorAll('.task-manager__accordion-header'));
     this.accordionPanels = Array.from(this.pageEl.querySelectorAll('.task-manager__accordion-panel'));
-  
     this.accordionHeaders.forEach((header, index) => {
-      header.addEventListener('click', () => this.handleAccordion(index));
+      header.addEventListener('click', () => this.togglePanel(index));
     });
   }  
 
-
-
-  handleAccordion(index) {
+  togglePanel(index) {
     // Check if the clicked panel is already open
     const isPanelOpen = this.accordionPanels[index].style.maxHeight !== "0px";
-    
     // Close all panels
     this.accordionPanels.forEach(panel => panel.style.maxHeight = "0px");
-    
     // If the clicked panel was not already open, open it
     if (!isPanelOpen) {
       this.accordionPanels[index].style.maxHeight = this.accordionPanels[index].scrollHeight + "px";
@@ -237,5 +288,17 @@ export default class TaskManager {
   onStatusUpdate(taskKey, status) {
     this.handleButton();
     console.log("Task", taskKey, "/ Status:", status.label);
+  }
+
+  addListeners(){
+    this.button.addEventListener('click', () => this.toMinimized());
+    this.closeButton.addEventListener('click', () => this.closeTaskManager());
+    this.fullscreenButton.addEventListener('click', () => {
+      if (this.taskManagerState === STATES.MINIMIZED){
+        this.toFullscreen()
+      } else {
+        this.toMinimized()
+      }
+    });
   }
 }

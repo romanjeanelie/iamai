@@ -16,6 +16,7 @@
 
   &.hidden{
     opacity:0;
+    pointer-events: none;
   }
 }
 
@@ -23,14 +24,27 @@
   position: fixed;
   bottom: 120px;
   right: 40px;
-  width: 678px;
-  height: 439px;
   border-radius: 16px;
   z-index: 5;
   overflow-y: scroll;
   background-color: $backgroundTaskManager;
   color: $colorBlack;
-  // background-color: red;
+  transition: opacity 0.3s $ease-out;
+
+  &.hidden{
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &.closed{
+    width: 0;
+    height: 0;
+  }
+
+  &.minimized{
+    width: 678px;
+    height: 439px;
+  }
 
   .task-manager__header{
     padding: 8px;
@@ -60,7 +74,7 @@
     font-size: 24px;
     font-weight: 500;
     line-height: 28px;
-    letter-spacing: 0.6000000238418579px;
+    letter-spacing: 0.6px;
     margin-bottom: 8px;
   }
 
@@ -138,6 +152,31 @@
         font-size: 14px;
         margin-bottom: 8px;
       }
+    }
+  }
+}
+
+// ------ fullscreen version ------
+.task-manager__container.fullscreen{
+  border-radius: 0;
+  bottom: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh; // fallback for browsers that don't support vh units
+  height: 100svh;
+
+  .task-manager__header{
+    padding: 48px 48px 24px;
+  }
+
+  .task-manager__content{
+    max-width: 872px;
+    margin: 0 auto;
+
+    h2{
+      font-size: 40px;
+      line-height: 48px;
+      font-weight: 500;
     }
   }
 }
