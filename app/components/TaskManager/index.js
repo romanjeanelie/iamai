@@ -46,14 +46,18 @@ gsap.registerPlugin(Flip);
 // [X] Do the basic layout for the minimized state
 // [X] make the accordion for the task list
 // [X] update the active tasks in the accordion
-// [] intro animation for taskManager
-// [] Do the basic layout for the fullscreen state
-// [] handle transition between minimized and fullscreen state
-// [] handle transition between fullscreen and minimized state
-// [] refactor the accordion logic and put it inside its own class
+// [X] intro animation for taskManager
+// [X] Do the basic layout for the fullscreen state
+// [X] handle transition between minimized and fullscreen state
+// [X] handle transition between fullscreen and minimized state
+// [X] finish integration of fullscreen state
+// [X] retourne the chevron when panel is opened
+// [] change the color  of the status-pill in the accordion in function of the status
 // [] make the accordion dynamic
 // [] when adding a new panel to the accordion, update the click event listener
 // [] handle the accordion panel in function of the type of the status (input required, in progress, completed)
+// [] for the input required change the status after input has been entered
+// [] refactor the accordion logic and put it inside its own class
 
 export default class TaskManager {
   constructor({ pageEl, gui, emitter }) {
@@ -63,6 +67,7 @@ export default class TaskManager {
     this.button = this.pageEl.querySelector(".task-manager__button");
     this.closeButton = this.pageEl.querySelector(".task-manager__closing-icon");
     this.fullscreenButton = this.pageEl.querySelector(".task-manager__fullscreen-icon");
+    this.closeFullscreenButton = this.pageEl.querySelector(".task-manager__closeFullscreen-icon");
   
     this.accordionContainer = this.pageEl.querySelector(".task-manager__accordion-container");
 
@@ -191,10 +196,9 @@ export default class TaskManager {
   changeState(newState) {
     this.taskManagerState = newState;
     const initialState = Flip.getState(this.container);
-  
+
     // Remove all state classes
     this.container.classList.remove("closed", "minimized", "fullscreen");
-  
     // Add the new state class
     this.container.classList.add(newState);
   
@@ -202,7 +206,7 @@ export default class TaskManager {
       duration: 0.5,
       ease: "power2.inOut",
       absolute: true,
-    });
+    })
   }
   
   closeTaskManager() {
@@ -210,10 +214,14 @@ export default class TaskManager {
   }
   
   toMinimized() {
+    this.closeFullscreenButton.classList.add("hidden")
+    this.fullscreenButton.classList.remove("hidden")
     this.changeState(STATES.MINIMIZED);
   }
   
   toFullscreen() {
+    this.closeFullscreenButton.classList.remove("hidden")
+    this.fullscreenButton.classList.add("hidden")
     this.changeState(STATES.FULLSCREEN);
   }
 
@@ -265,11 +273,15 @@ export default class TaskManager {
   togglePanel(index) {
     // Check if the clicked panel is already open
     const isPanelOpen = this.accordionPanels[index].style.maxHeight !== "0px";
+
     // Close all panels
     this.accordionPanels.forEach(panel => panel.style.maxHeight = "0px");
+    this.accordionHeaders.forEach(header => header.classList.remove("active"));
     // If the clicked panel was not already open, open it
     if (!isPanelOpen) {
+      this.accordionHeaders[index].classList.add("active");
       this.accordionPanels[index].style.maxHeight = this.accordionPanels[index].scrollHeight + "px";
+    } else {
     }
   }
 
@@ -293,12 +305,7 @@ export default class TaskManager {
   addListeners(){
     this.button.addEventListener('click', () => this.toMinimized());
     this.closeButton.addEventListener('click', () => this.closeTaskManager());
-    this.fullscreenButton.addEventListener('click', () => {
-      if (this.taskManagerState === STATES.MINIMIZED){
-        this.toFullscreen()
-      } else {
-        this.toMinimized()
-      }
-    });
+    this.fullscreenButton.addEventListener('click', () => this.toFullscreen());
+    this.closeFullscreenButton.addEventListener('click', () => this.toMinimized());
   }
 }
