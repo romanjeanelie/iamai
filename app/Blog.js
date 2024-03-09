@@ -48,21 +48,23 @@ class Blog {
 
     // DOM Elements
     this.blogLottieAnimation = document.querySelector('.blogHero__lottieAnimation');
+    this.blogMarquees = document.querySelectorAll('.blogMarquee__app-marquee');
 
     this.initLottieAnim();
     this.initSliders();
+    this.initMarquees();
   }
 
   initLottieAnim(){
-    this.animation = lottie.loadAnimation({
-      container: this.blogLottieAnimation,
-      renderer: 'svg',
-      loop: true,
-      autoplay: false,
-      path: '../animations/asterism_to_asterisk_black.json'
-    });
+    // this.animation = lottie.loadAnimation({
+    //   container: this.blogLottieAnimation,
+    //   renderer: 'svg',
+    //   loop: true,
+    //   autoplay: false,
+    //   path: '../animations/asterism_to_asterisk_black.json'
+    // });
 
-    this.animation.play();
+    // this.animation.play();
   }
 
   initSliders() {
@@ -70,6 +72,10 @@ class Blog {
     sliders.forEach((slider, idx) => {
       new BlogSlider({sliderData: slidersData, container: slider})
     });
+  }
+
+  initMarquees(){
+    console.log(this.blogMarquees)
   }
 }
 

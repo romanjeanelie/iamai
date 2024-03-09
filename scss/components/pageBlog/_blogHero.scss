@@ -9,7 +9,6 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 24px 37px;
-  margin-bottom: 72px;
 
   @include media("<tablet") {
     height: calc(100vh - 124px); // Fallback for browsers not supportingsdvh
