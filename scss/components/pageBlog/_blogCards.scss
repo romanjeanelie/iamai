@@ -1,22 +1,8 @@
-.blogCards__container{
-  margin: 120px auto;
-  max-width: 1296px;
-
-  @include media("<maximum") {
-    max-width: none;
-    margin: 120px clamp(24px ,4vw ,108px);
-  }
-}
-
 .blogCards__highlight{
   color: rgba(0, 0, 0, 0.4);
 }
 
 .blogCards__text{
-  font-size: clamp(28px, 5vw ,60px);
-  font-weight: 600;
-  line-height: 124%;
-  letter-spacing: 0.5px;
   margin-bottom: clamp(60px, 10vw, 132px);
 }
 
@@ -54,8 +40,8 @@
   position: relative;
 
   .blogCards__card-image{
-    width: min(7vw, 92px);
-    height: min(7vw, 92px);
+    width: min(7vw, 76px);
+    height: min(7vw, 76px);
     background-color: $colorMain;
     border-radius: 16px;
     overflow: hidden;
