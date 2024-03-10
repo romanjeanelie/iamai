@@ -45,6 +45,7 @@ export default class BlogSlider{
 
     // functions
     this.initSlider();
+    this.adjustMobilePadding();
     this.addListeners();
   }
 
@@ -70,9 +71,7 @@ export default class BlogSlider{
 
       mediaEl.className = "blogSlider__mediaEl";
       slide.mobileFormat && slideEl.classList.add('mobile');
-
-
-
+    
       slideEl.appendChild(mediaEl);
       this.slides.push(slideEl);
       this.slider.appendChild(slideEl);
@@ -171,7 +170,7 @@ export default class BlogSlider{
     }
   
     // Update currentSlide if it has changed
-    if (index !== this.currentSlide) {
+    if (index !== this.currentSlide && index < this.slides.length) {
       this.currentSlide = index;
       this.updateUI();
     }
@@ -189,8 +188,6 @@ export default class BlogSlider{
     this.openFullscreenBtn.classList.toggle('hidden');
     this.exitFullscreenBtn.classList.toggle('hidden');
   }
-
-
 
   // GRAB FUNCTIONS
   startDrag(e) {
@@ -213,11 +210,35 @@ export default class BlogSlider{
     this.slider.scrollLeft = this.scrollLeft - walk;
   }
 
+  adjustMobilePadding(){
+    if (window.innerWidth < 560){
+      this.slider.style.paddingLeft = '0px';
+      this.slider.style.paddingRight = '0px';
+      return;
+    }
+    // Adjust padding for the first slide
+    if (this.slidesData[0].mobileFormat) {
+      const firstSlide = this.slides[0];
+      const firstSlideWidth = firstSlide.offsetWidth;
+      const padding = (window.innerWidth - firstSlideWidth) / 2;
+      this.slider.style.paddingLeft = `${padding}px`;
+    }
+
+    // Adjust padding for the last slide
+    if (this.slidesData[this.totalSlides - 1].mobileFormat) {
+      const lastSlide = this.slides[this.totalSlides - 1];
+      const lastSlideWidth = lastSlide.offsetWidth;
+      const padding = (window.innerWidth - lastSlideWidth) / 2;
+      this.slider.style.paddingRight = `${padding}px`;
+    }
+  }
+
   addListeners(){
     this.prevBtn.addEventListener('click', () => this.handleGoToSlide(-1));
     this.nextBtn.addEventListener('click', () => this.handleGoToSlide(1));
     this.slider.addEventListener('scroll' , () => this.handleScroll())
     window.addEventListener('resize', (e) => {
+      this.adjustMobilePadding();
       if (window.innerWidth > 560){
         this.isFullscreen && this.toggleFullScreen();
       }

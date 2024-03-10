@@ -40,6 +40,11 @@ $sliderMaxWidth: 972px;
   }
 }
 
+.blogSlider__container.noscroll .blogSlider__slides-container{
+  overflow-x: hidden;
+  cursor: default;
+}
+
 .blogSlider__slide{
   scroll-snap-align: center;
   flex: 0 0 auto;
@@ -76,7 +81,8 @@ $sliderMaxWidth: 972px;
 .blogSlider__footer{
   display: flex;
   margin: 0 auto;
-  max-width: $sliderMaxWidth;
+  width: 100%;
+  max-width: 972px;
   min-height: 10%;
   align-items: start;
   justify-content: space-between; 
@@ -250,6 +256,10 @@ $sliderMaxWidth: 972px;
     flex-direction: column;
     overflow-y: scroll;
     scroll-snap-type: y mandatory;
+  }
+
+  .blogSlider__container.fullscreen{
+    margin:0;
   }
 
   .blogSlider__slide{

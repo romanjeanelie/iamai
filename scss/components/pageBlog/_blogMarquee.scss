@@ -1,3 +1,6 @@
+$marquee-animation-duration: 15s;
+$marquee-gap: 24px;
+
 .blogMarquee__container{
 
   .blogMarquee__header{
@@ -25,8 +28,18 @@
     padding: 6px 0;
     position: relative;
     display: flex;
-    gap: 24px;
+    gap: $marquee-gap;
+  }
+
+  .marquee__content{
+    display: flex;
+    gap: $marquee-gap;
     align-items: center;
+    animation: marquee $marquee-animation-duration linear infinite;
+  }
+
+  .marquee__content.reverse{
+    animation: reverse-marquee $marquee-animation-duration linear infinite;
   }
 
   .blogMarquee__app-marquee:last-of-type{
@@ -38,19 +51,41 @@
   }
 
   .blogMarquee__app-logo{
-    flex:none;
-    width: min(7vw, 120px);
-    height: min(7vw, 120px);
+    flex: none;
+    width: min(10vw, 120px);
+    height: min(10vw, 120px);
     background-color: $colorMain;
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 
       2.500000238418579px 5.000000476837158px 5.000000476837158px 0px rgba(0, 0, 0, 0.25);
+
+    @include media("<tablet"){
+      border-radius: 4px;
+    }
   }
 
   .blogMarquee__footer{
     font-size: 28px;
     font-weight: 500;
     line-height: 32px;
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform:  translateX(calc(-100% - $marquee-gap))
+  }
+}
+
+@keyframes reverse-marquee {
+  0% {
+    transform:  translateX(calc(-100% - $marquee-gap))
+  }
+  100% {
+    transform: translateX(0)
   }
 }
