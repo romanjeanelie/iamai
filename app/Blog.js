@@ -1,4 +1,6 @@
 import BlogSlider from "./components/BlogSlider";
+import gsap, { Power3 } from "gsap"
+import ScrollTrigger from "gsap/ScrollTrigger"
 
 const slider1Data = [
   {
@@ -57,6 +59,8 @@ const slider2Data = [
 // [] handle the videos (use mobile version when needed)
 // [] 
 
+gsap.registerPlugin(ScrollTrigger)
+
 class Blog {
   constructor() {
     // States
@@ -68,7 +72,7 @@ class Blog {
 
     this.initLottieAnim();
     this.initSliders();
-    this.initMarquees();
+    this.initScrollAnim();
   }
 
   initLottieAnim(){
@@ -91,8 +95,25 @@ class Blog {
     });
   }
 
-  initMarquees(){
-    console.log(this.blogMarquees)
+  initScrollAnim(){
+    const blackBlockFooter = document.querySelector(".blog__blackBlock-footer");
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: blackBlockFooter,
+        start: "top 75%",
+      }
+    })
+
+    tl.fromTo(blackBlockFooter,{
+      y: 25, 
+      opacity:0 
+    }, {
+      y: 0, 
+      opacity:1,
+      ease: Power3.easeOut,
+      duration: 2
+    })
   }
 }
 
