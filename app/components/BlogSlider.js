@@ -55,14 +55,25 @@ export default class BlogSlider{
     this.slidesData.forEach((slide) => {
       const slideEl = document.createElement('div');
       slideEl.classList.add('blogSlider__slide');
-      const video = document.createElement('video');
-      video.classList.add('blogSlider__video');
-      slide.mobileFormat && slideEl.classList.add('mobile');
-      video.src = slide.video;
-      video.loop = true;
-      video.muted = true;
 
-      slideEl.appendChild(video);
+      let mediaEl; 
+      if (slide.video){     
+        mediaEl = document.createElement('video');
+        
+        mediaEl.src = slide.video;
+        mediaEl.loop = true;
+        mediaEl.muted = true;
+      } else if (slide.image) {
+        mediaEl = document.createElement('img');
+        mediaEl.src = slide.image;
+      }
+
+      mediaEl.className = "blogSlider__mediaEl";
+      slide.mobileFormat && slideEl.classList.add('mobile');
+
+
+
+      slideEl.appendChild(mediaEl);
       this.slides.push(slideEl);
       this.slider.appendChild(slideEl);
     })
@@ -112,12 +123,13 @@ export default class BlogSlider{
     this.paginationCurrent.textContent = this.currentSlide + 1;
     // Add active class to the current slide (all the other slides are opaque)
     this.slides.forEach((slide) => {
+      const video = slide.querySelector('video');
       if (slide === this.slides[this.currentSlide]){
         slide.classList.add('active') 
-        slide.querySelector('video').play();
+        video?.play();
       } else {
         slide.classList.remove('active');
-        slide.querySelector('video').pause();
+        video?.pause();
       }
     })
 

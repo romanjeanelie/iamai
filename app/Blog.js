@@ -2,7 +2,7 @@ import BlogSlider from "./components/BlogSlider";
 
 const slidersData = [{
   id:1,
-  video: '/placeholder/placeholder.mp4',
+  image: '/placeholder/placeholder.jpg',
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.",
 }, 
 {
@@ -42,6 +42,7 @@ const slidersData = [{
 ];
 
 // TO DO : 
+// [X] adjust the size of the slider to the new design
 // [] handle the marquee;
 // [] handle the videos (use mobile version when needed)
 // [] 

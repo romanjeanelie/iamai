@@ -1,6 +1,6 @@
 $sliderHeight: 70vh; // fallback if svh is not supported by the browser
 $sliderHeight: 70svh;
-$sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
+$sliderMaxWidth: 972px;
 
 .blogSlider__container{
   position: relative;
@@ -21,7 +21,7 @@ $sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
 
 .blogSlider__slides-container{
   width: 100%;
-  padding: 0 $sliderPaddingX;
+  padding: 0 calc((100vw - $sliderMaxWidth) / 2);
   display: flex;
   gap:12px;
   overflow-x: scroll;
@@ -45,6 +45,7 @@ $sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
   flex: 0 0 auto;
   height: $sliderHeight;
   width: calc($sliderHeight * 16 / 9);
+  max-width: $sliderMaxWidth;
   background-color: rgba(248, 246, 242, 1);
   overflow: hidden;
   display: flex;
@@ -61,7 +62,7 @@ $sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
     width: calc($sliderHeight * 9 / 16);
   }
 
-  video{
+  .blogSlider__mediaEl{
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -70,13 +71,12 @@ $sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
   &.active {
     opacity: 1;
   }
-
-
 }
 
 .blogSlider__footer{
   display: flex;
-  padding: 0 max($sliderPaddingX, 24px);
+  margin: 0 auto;
+  max-width: $sliderMaxWidth;
   min-height: 10%;
   align-items: start;
   justify-content: space-between; 
@@ -89,6 +89,7 @@ $sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
   line-height: 24px;
   letter-spacing: 0.5px;
   text-align: left;
+  padding-left:4px,
 }
 
 .blogSlider__navigation{
@@ -200,33 +201,19 @@ $sliderPaddingX: calc((100vw - $sliderHeight * 16 / 9) / 2);
 
 }
 
-@include media(">maximum") {
-  .blogSlider__slides-container{
-    padding: 0 calc((100vw - 1176px) / 2) 0px;
-  }
-
-  .blogSlider__footer{
-    padding: 0 calc((100vw - 1176px) / 2);
-  }
-}
-
 @include media("<large") {
-  .blogSlider__slides-container{
-    padding: 0 24px;
-  }
-
   .blogSlider__slide{
     width: calc(100vw - 48px);
     height: calc(100vw * 9 / 16);
     border-radius: 16px;
   }
-
-  .blogSlider__footer{
-    padding: 0 28px;
-  }
 }
 
 @include media("<desktop") {
+  .blogSlider__slides-container, .blogSlider__footer{
+    padding: 0 24px;
+  }
+
   .blogSlider__navigation{
     gap: 12px;
   }
