@@ -225,11 +225,16 @@ export default class BlogSlider{
   }
 
   adjustMobilePadding(){
-    if (window.innerWidth < 560){
-      this.slider.style.paddingLeft = '0px';
-      this.slider.style.paddingRight = '0px';
-      return;
-    }
+    if (window.innerWidth < 560) {
+      if (this.slidesData[0].mobileFormat) {
+        this.slider.style.paddingLeft = "0px";
+      }
+
+      if (this.slidesData[this.totalSlides - 1].mobileFormat) {
+        this.slider.style.paddingRight = "0px";
+      }
+    };
+
     // Adjust padding for the first slide
     if (this.slidesData[0].mobileFormat) {
       const firstSlide = this.slides[0];
