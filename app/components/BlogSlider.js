@@ -10,6 +10,7 @@ import { asyncAnim } from "../utils/anim";
 
 export default class BlogSlider{
   constructor({sliderData, container}){
+    console.log(container)
     this.slidesData = sliderData;
     this.container = container;
 
@@ -50,8 +51,8 @@ export default class BlogSlider{
   }
 
   initSlider(){
-    this.paginationTotal.textContent = this.totalSlides;
-    this.paginationCurrent.textContent = this.currentSlide + 1;
+    this.paginationTotal && (this.paginationTotal.textContent = this.totalSlides);
+    this.paginationCurrent && (this.paginationCurrent.textContent = this.currentSlide + 1);
 
     this.slidesData.forEach((slide) => {
       const slideEl = document.createElement('div');
@@ -60,13 +61,15 @@ export default class BlogSlider{
       let mediaEl; 
       if (slide.video){     
         mediaEl = document.createElement('video');
+        mediaEl.autoplay = true;
+        mediaEl.controls = false;
+        mediaEl.playsinline = true;
+        mediaEl.muted = true;
         if (slide.videoMobile && window.innerWidth < 560){
           mediaEl.src = slide.videoMobile;
         } else {
           mediaEl.src = slide.video;
         }
-        mediaEl.loop = true;
-        mediaEl.muted = true;
       } else if (slide.image) {
         mediaEl = document.createElement('img');
         mediaEl.src = slide.image;
@@ -243,8 +246,8 @@ export default class BlogSlider{
   }
 
   addListeners(){
-    this.prevBtn.addEventListener('click', () => this.handleGoToSlide(-1));
-    this.nextBtn.addEventListener('click', () => this.handleGoToSlide(1));
+    this.prevBtn?.addEventListener('click', () => this.handleGoToSlide(-1));
+    this.nextBtn?.addEventListener('click', () => this.handleGoToSlide(1));
     this.slider.addEventListener('scroll' , () => this.handleScroll())
     window.addEventListener('resize', (e) => {
       this.adjustMobilePadding();
@@ -259,8 +262,8 @@ export default class BlogSlider{
     this.slider.addEventListener('mouseup', () => this.stopDrag());
     this.slider.addEventListener('mousemove', (e) => this.drag(e));
 
-    this.infoBtn.addEventListener('click', () => this.toggleInfo());
-    this.closeBtn.addEventListener('click', () => this.toggleInfo());
+    this.infoBtn?.addEventListener('click', () => this.toggleInfo());
+    this.closeBtn?.addEventListener('click', () => this.toggleInfo());
     this.openFullscreenBtn?.addEventListener('click', () => this.toggleFullScreen());
     this.exitFullscreenBtn?.addEventListener('click', () => this.toggleFullScreen());
   }

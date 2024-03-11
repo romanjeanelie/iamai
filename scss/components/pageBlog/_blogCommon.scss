@@ -58,7 +58,7 @@ img{
   display: none;
 }
 
-@include media("<phone"){
+@include media("<tablet"){
   .desktop-break{
     display: none;
   }
@@ -72,7 +72,7 @@ img{
   display: none;
 }
 
-@include media("<phone"){
+@include media("<tablet"){
   .desktop-video{
     display: none;
   }
