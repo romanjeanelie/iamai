@@ -225,21 +225,11 @@ export default class BlogSlider{
   }
 
   adjustMobilePadding(){
-    if (window.innerWidth < 560) {
-      if (this.slidesData[0].mobileFormat) {
-        this.slider.style.paddingLeft = "0px";
-      }
-
-      if (this.slidesData[this.totalSlides - 1].mobileFormat) {
-        this.slider.style.paddingRight = "0px";
-      }
-    };
-
     // Adjust padding for the first slide
     if (this.slidesData[0].mobileFormat) {
       const firstSlide = this.slides[0];
       const firstSlideWidth = firstSlide.offsetWidth;
-      const padding = (window.innerWidth - firstSlideWidth) / 2;
+      const padding = window.innerWidth < 560 ? 0 : (window.innerWidth - firstSlideWidth) / 2;
       this.slider.style.paddingLeft = `${padding}px`;
     }
 
@@ -247,7 +237,7 @@ export default class BlogSlider{
     if (this.slidesData[this.totalSlides - 1].mobileFormat) {
       const lastSlide = this.slides[this.totalSlides - 1];
       const lastSlideWidth = lastSlide.offsetWidth;
-      const padding = (window.innerWidth - lastSlideWidth) / 2;
+      const padding = window.innerWidth < 560 ? 0 : (window.innerWidth - lastSlideWidth) / 2;
       this.slider.style.paddingRight = `${padding}px`;
     }
   }
