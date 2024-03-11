@@ -117,3 +117,9 @@ section{
     background: rgba(0, 0, 0, 1);
   }
 }
+
+@include media("<tablet"){
+  video{
+    pointer-events: none;
+  }
+}
