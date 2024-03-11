@@ -6,6 +6,7 @@ const slider1Data = [
   {
     id:1,
     video: '/videos/blog/Desktop_Zoom_In_ChatGPT.mp4',
+    videoMobile: '/videos/blog/Mobile_Zoom_In_ChatGPT.mp4',
     description: "ChatGPT in action.",
   }, 
   {
@@ -27,7 +28,7 @@ const slider1Data = [
 const slider2Data = [
   {
     id:1,
-    image: '/placeholder/placeholder.jpg',
+    video: '/placeholder/placeholder.mp4',
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.",
   }, 
   {
@@ -52,6 +53,13 @@ const slider2Data = [
 ];
 
 const data = [
+  {
+    h1: "Talk. Not Search.",
+    h4: "CO*",
+    h4Span: "/’co-star:/",
+    p: "Makes information effortless with conversation. Get insightful answers, quick updates and news, all while CO* assists with your daily tasks – your trusted assistant.",
+    sliderData: slider2Data
+  },
   {
     h1: "Effortlessly Multilingual.",
     p: "Jump from English to French to German, and back again – even toss in some Mandarin or Hindi – CO* effortlessly keeps up within a single, flowing conversation.",
@@ -101,11 +109,10 @@ const data = [
 
 // TO DO : 
 // [X] adjust the size of the slider to the new design
-// [] add correct videos to the slider
+// [X] add correct videos to the slider
 // [X] handle the marquee;
 // [] add correct logos for the marquee;
-// [] handle the videos (use mobile version when needed)
-// [] 
+// [X] handle the videos (use mobile version when needed)
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -128,20 +135,22 @@ class Blog {
   initSliders() {
     const slidersData = [slider1Data, slider2Data];
     const sliders = document.querySelectorAll('.blogSlider__container');
-    sliders.forEach((slider, idx) => {
+    sliders.forEach((slider) => {
       new BlogSlider({sliderData: slidersData[0], container: slider})
     });
 
     if (!this.slidersSection) return
 
     data.forEach((data, idx) => {
-      const isEven = idx % 2 === 0;
+      const isOdd = idx % 2 !== 0;
+
       const html = `
       <div class="blogSlider__section">
       <div class="blog__container">
         <div class="blogSlider__header">
-          <h1 class="${isEven && 'centered'}" >${data.h1}</h2>
-          <p class="${isEven && 'centered'}" >${data.p}</p>
+          <h1 class="${isOdd && 'centered'}" >${data.h1}</h1>
+          ${data.h4 ? `<h4>${data.h4} <span> ${data.h4Span} </span></h4>` : ''}
+          <p class="${isOdd && 'centered'}" >${data.p}</p>
         </div>
       </div>
   
@@ -195,7 +204,6 @@ class Blog {
           </svg>
         </button>
         <p>     
-          {{!-- here is the description for mobile - added by js on BlogSlider --}}
         </p>
       </div>
     </div>
@@ -208,8 +216,6 @@ class Blog {
     newSliders.forEach((slide, idx) => {
       new BlogSlider({sliderData: data[idx].sliderData, container: slide})
     })
-
-
   }
 
   initScrollAnim(){
@@ -217,8 +223,8 @@ class Blog {
 
     const tl = gsap.timeline({
       scrollTrigger: {
-        trigger: blackBlockFooter,
-        start: "top 50%",
+        trigger: ".blog__blackBlock-content",
+        start: "top top",
         toggleActions: "play none play reverse",
 
       }

@@ -68,6 +68,20 @@ img{
   }
 }
 
+.mobile-video{
+  display: none;
+}
+
+@include media("<phone"){
+  .deskto-video{
+    display: none;
+  }
+
+  .mobile-video{
+    display: block;
+  }
+}
+
 section{
   margin-top: 250px;
 

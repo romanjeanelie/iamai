@@ -3,7 +3,7 @@
 // [X] make the mobile version;
 // [X] generate the data from the initSlider function (looping through the slidesData);
 // [X] play the video only when it's current slider;
-// [] fix the glitch when you scroll too fast;
+// [X] fix the glitch when you scroll too fast;
 
 
 import { asyncAnim } from "../utils/anim";
@@ -60,8 +60,11 @@ export default class BlogSlider{
       let mediaEl; 
       if (slide.video){     
         mediaEl = document.createElement('video');
-        
-        mediaEl.src = slide.video;
+        if (slide.videoMobile && window.innerWidth < 560){
+          mediaEl.src = slide.videoMobile;
+        } else {
+          mediaEl.src = slide.video;
+        }
         mediaEl.loop = true;
         mediaEl.muted = true;
       } else if (slide.image) {
@@ -210,6 +213,17 @@ export default class BlogSlider{
     this.slider.scrollLeft = this.scrollLeft - walk;
   }
 
+  handleMoibileSrc(){
+    if (window.innerWidth < 560){
+      this.slides.forEach((slide, idx) => {
+        const video = slide.querySelector('video');
+        if (this.slidesData[idx].videoMobile){
+          video.src = this.slidesData[idx].videoMobile;
+        }
+      })
+    }
+  }
+
   adjustMobilePadding(){
     if (window.innerWidth < 560){
       this.slider.style.paddingLeft = '0px';
@@ -239,6 +253,7 @@ export default class BlogSlider{
     this.slider.addEventListener('scroll' , () => this.handleScroll())
     window.addEventListener('resize', (e) => {
       this.adjustMobilePadding();
+      this.handleMoibileSrc();
       if (window.innerWidth > 560){
         this.isFullscreen && this.toggleFullScreen();
       }
