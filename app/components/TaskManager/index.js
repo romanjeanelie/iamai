@@ -275,7 +275,7 @@ export default class TaskManager {
   }
 
   // ---------- Update the tasks UI  ----------
-  addTask(data){
+  addTaskUI(data){
    // Create elements
     const li = document.createElement("li");
     li.classList.add("task-manager__accordion");
@@ -290,6 +290,7 @@ export default class TaskManager {
 
     const statusPill = document.createElement("p");
     statusPill.classList.add("task-manager__status-pill");
+    statusPill.style.backgroundColor = STATUS_COLORS[data.status.type];
     statusPill.textContent = data.status.label;
 
     const chevronButton = document.createElement("button");
@@ -336,10 +337,19 @@ export default class TaskManager {
     headerDiv.addEventListener('click', () => this.togglePanel(data.key));
   }
 
+  updateTaskUI(index, status){
+    const header = this.accordionHeaders[index - 1];
+    const statusPill = header.querySelector(".task-manager__status-pill");
+    statusPill.innerText = status.label
+    statusPill.style.backgroundColor = STATUS_COLORS[status.type];
+
+    
+  }
+
   // ---------- Handling the tasks ----------
   createTask(task) {
     this.tasks.push(task);
-    this.addTask(task)
+    this.addTaskUI(task)
     this.handleButton();
   }
 
@@ -350,6 +360,7 @@ export default class TaskManager {
 
   onStatusUpdate(taskKey, status) {
     this.handleButton();
+    this.updateTaskUI(taskKey, status);
     console.log("Task", taskKey, "/ Status:", status.label);
   }
 
