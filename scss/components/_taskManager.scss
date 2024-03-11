@@ -184,6 +184,13 @@
         margin-bottom: 8px;
       }
     }
+
+    .task-manager__accordion-panel-divider{
+      height: 2px; 
+      width: 100%;
+      background-color: #00000014;
+      margin: 8px 0;
+    }
   }
 }
 

@@ -257,27 +257,43 @@ export default class TaskManager {
   }
 
   // ---------- Handling the accordion ----------
-  togglePanel(index) {
+  togglePanel(key) {
     // Check if the clicked panel is already open
-    const isPanelOpen = this.currentTask === index
+    const isPanelOpen = this.currentTask === key
 
     // Close all panels
     this.accordionPanels.forEach(panel => panel.style.maxHeight = "0px");
     this.accordionHeaders.forEach(header => header.classList.remove("active"));
     // If the clicked panel was not already open, open it
     if (!isPanelOpen) {
-      this.accordionHeaders[index - 1].classList.add("active");
-      this.accordionPanels[index - 1].style.maxHeight = this.accordionPanels[index - 1].scrollHeight + "px";
-      this.currentTask = index
+      const currentTask = this.accordionContainer.querySelector(`[task-key="${key}"]`);
+      currentTask.querySelector('.task-manager__accordion-header').classList.add("active");
+      const panel = currentTask.querySelector('.task-manager__accordion-panel') 
+      panel.style.maxHeight = panel.scrollHeight + "px";
+      this.currentTask = key
     } else {
       this.currentTask = null
     }
+  }
+
+  goToPanel(key){
+    // Close all panels
+    this.accordionPanels.forEach(panel => panel.style.maxHeight = "0px");
+    this.accordionHeaders.forEach(header => header.classList.remove("active"));
+
+    // Open the panel or update its max height
+    const currentTask = this.accordionContainer.querySelector(`[task-key="${key}"]`);
+    currentTask.querySelector('.task-manager__accordion-header').classList.add("active");
+    const panel = currentTask.querySelector('.task-manager__accordion-panel') 
+    panel.style.maxHeight = panel.scrollHeight + "px";
+    this.currentTask = key
   }
 
   // ---------- Update the tasks UI  ----------
   addTaskUI(data){
    // Create elements
     const li = document.createElement("li");
+    li.setAttribute("task-key", data.key)
     li.classList.add("task-manager__accordion");
 
     const headerDiv = document.createElement("div");
@@ -337,13 +353,35 @@ export default class TaskManager {
     headerDiv.addEventListener('click', () => this.togglePanel(data.key));
   }
 
-  updateTaskUI(index, status){
-    const header = this.accordionHeaders[index - 1];
+  updateTaskUI(key, status){
+    const task = this.accordionContainer.querySelector(`[task-key="${key}"]`);
+    const header = task.querySelector(".task-manager__accordion-header");
     const statusPill = header.querySelector(".task-manager__status-pill");
     statusPill.innerText = status.label
     statusPill.style.backgroundColor = STATUS_COLORS[status.type];
 
+    const panel = task.querySelector(".task-manager__accordion-panel");
+
+    const divider = document.createElement("div");
+    divider.classList.add("task-manager__accordion-panel-divider");
     
+    const statusContainerDiv = document.createElement("div");
+    statusContainerDiv.classList.add("task-manager__status-container");
+
+    const statusTitleP = document.createElement("p");
+    statusTitleP.classList.add("task-manager__status-title");
+    statusTitleP.textContent = status.title;
+
+    const statusDescriptionP = document.createElement("p");
+    statusDescriptionP.classList.add("task-manager__status-description");
+    statusDescriptionP.textContent = status.description;
+
+    statusContainerDiv.appendChild(statusTitleP);
+    statusContainerDiv.appendChild(statusDescriptionP);
+
+    panel.appendChild(divider)
+    panel.appendChild(statusContainerDiv)
+    this.goToPanel(key)
   }
 
   // ---------- Handling the tasks ----------
@@ -359,9 +397,9 @@ export default class TaskManager {
   }
 
   onStatusUpdate(taskKey, status) {
+    console.log(taskKey)
     this.handleButton();
     this.updateTaskUI(taskKey, status);
-    console.log("Task", taskKey, "/ Status:", status.label);
   }
 
   addListeners(){
