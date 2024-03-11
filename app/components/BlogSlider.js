@@ -63,8 +63,9 @@ export default class BlogSlider{
         mediaEl = document.createElement('video');
         mediaEl.autoplay = true;
         mediaEl.controls = false;
-        mediaEl.playsinline = true;
+        mediaEl.playsInline = true;
         mediaEl.loop = true;
+        mediaEl.setAttribute('webkit-playsinline', '');
         mediaEl.muted = true;
         if (slide.videoMobile && window.innerWidth < 560){
           mediaEl.src = slide.videoMobile;
