@@ -100,4 +100,15 @@
       color: $colorBlack;
     }
   }
+
+  @include media ("<phone"){
+
+    h2{
+      grid-column: span 5;
+    }
+
+    ul{
+      grid-column: span 5;
+    }
+  }
 }

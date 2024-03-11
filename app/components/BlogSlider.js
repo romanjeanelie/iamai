@@ -64,12 +64,15 @@ export default class BlogSlider{
         mediaEl.autoplay = true;
         mediaEl.controls = false;
         mediaEl.playsinline = true;
+        mediaEl.loop = true;
         mediaEl.muted = true;
         if (slide.videoMobile && window.innerWidth < 560){
           mediaEl.src = slide.videoMobile;
         } else {
           mediaEl.src = slide.video;
         }
+        mediaEl.load();
+        
       } else if (slide.image) {
         mediaEl = document.createElement('img');
         mediaEl.src = slide.image;
