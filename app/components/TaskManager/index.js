@@ -52,11 +52,12 @@ gsap.registerPlugin(Flip);
 // [X] handle transition between fullscreen and minimized state
 // [X] finish integration of fullscreen state
 // [X] retourne the chevron when panel is opened
-// [] make the accordion dynamic
-// [] change the color  of the status-pill in the accordion in function of the status
-// [] when adding a new panel to the accordion, update the click event listener
+// [X] make the accordion dynamic
+// [X] change the color  of the status-pill in the accordion in function of the status
+// [X] when adding a new panel to the accordion, update the click event listener
 // [] handle the accordion panel in function of the type of the status (input required, in progress, completed)
 // [] for the input required change the status after input has been entered
+// [] when new task or updated task, scroll to the task
 // [] refactor the accordion logic and put it inside its own class
 
 export default class TaskManager {
@@ -353,18 +354,7 @@ export default class TaskManager {
     headerDiv.addEventListener('click', () => this.togglePanel(data.key));
   }
 
-  updateTaskUI(key, status){
-    const task = this.accordionContainer.querySelector(`[task-key="${key}"]`);
-    const header = task.querySelector(".task-manager__accordion-header");
-    const statusPill = header.querySelector(".task-manager__status-pill");
-    statusPill.innerText = status.label
-    statusPill.style.backgroundColor = STATUS_COLORS[status.type];
-
-    const panel = task.querySelector(".task-manager__accordion-panel");
-
-    const divider = document.createElement("div");
-    divider.classList.add("task-manager__accordion-panel-divider");
-    
+  addPanel(panel, status){
     const statusContainerDiv = document.createElement("div");
     statusContainerDiv.classList.add("task-manager__status-container");
 
@@ -379,8 +369,46 @@ export default class TaskManager {
     statusContainerDiv.appendChild(statusTitleP);
     statusContainerDiv.appendChild(statusDescriptionP);
 
-    panel.appendChild(divider)
+    this.addInput(statusContainerDiv, status)
+
     panel.appendChild(statusContainerDiv)
+  }
+
+  addInput(statusContainer){
+    const statusInputContainer = document.createElement("form");
+    statusInputContainer.classList.add("task-manager__input-container");
+
+    const statusInput = document.createElement("input");
+    statusInput.type = "text";
+    statusInput.classList.add("task-manager__input");
+
+    const button = document.createElement("button");
+    button.type = "submit";
+
+    const buttonIcon = document.createElement("img");
+    buttonIcon.src = "/icons/arrow-up.svg";
+    buttonIcon.alt = "arrow up icon";
+    button.appendChild(buttonIcon);
+
+    statusInputContainer.appendChild(statusInput);
+    statusInputContainer.appendChild(button);
+    statusContainer.appendChild(statusInputContainer);
+  }
+
+  updateTaskUI(key, status){
+    const task = this.accordionContainer.querySelector(`[task-key="${key}"]`);
+    const header = task.querySelector(".task-manager__accordion-header");
+    const statusPill = header.querySelector(".task-manager__status-pill");
+    statusPill.innerText = status.label
+    statusPill.style.backgroundColor = STATUS_COLORS[status.type];
+
+    const panel = task.querySelector(".task-manager__accordion-panel");
+  
+    const divider = document.createElement("div");
+    divider.classList.add("task-manager__accordion-panel-divider");
+    
+    panel.appendChild(divider)
+    this.addPanel(panel, status)
     this.goToPanel(key)
   }
 
