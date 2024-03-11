@@ -13,6 +13,27 @@
         display: none;
       }
     }
+
+    .anim-gradient{
+      color: white;
+      background: -webkit-linear-gradient(
+        45deg, #FF66FF 0%, #FF66FF 50%, #FA00FF 51%, #FF66FF 100%
+        );
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradient 3s linear infinite;
+    }
+
+    @keyframes gradient {
+      0% {
+        background-position-x: 200%;
+      }
+     
+      100% {
+        background-position-x: 0%;
+      }
+    }
   }
 }
 
