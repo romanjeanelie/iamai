@@ -52,8 +52,8 @@ gsap.registerPlugin(Flip);
 // [X] handle transition between fullscreen and minimized state
 // [X] finish integration of fullscreen state
 // [X] retourne the chevron when panel is opened
-// [] change the color  of the status-pill in the accordion in function of the status
 // [] make the accordion dynamic
+// [] change the color  of the status-pill in the accordion in function of the status
 // [] when adding a new panel to the accordion, update the click event listener
 // [] handle the accordion panel in function of the type of the status (input required, in progress, completed)
 // [] for the input required change the status after input has been entered
@@ -73,9 +73,8 @@ export default class TaskManager {
 
     // States
     this.taskManagerState = STATES.CLOSED;
+    this.currentTask = null;
 
-    this.init()
-    this.initializeAccordion();
     this.addListeners();
 
     // ALEX -> Comment/uncomment to have tasks at start for integration
@@ -188,10 +187,6 @@ export default class TaskManager {
     );
   }
 
-  init(){
-
-  }
-
   // ---------- Handling the task-manager states ----------
   changeState(newState) {
     this.taskManagerState = newState;
@@ -262,39 +257,95 @@ export default class TaskManager {
   }
 
   // ---------- Handling the accordion ----------
-  initializeAccordion() {
-    this.accordionHeaders = Array.from(this.pageEl.querySelectorAll('.task-manager__accordion-header'));
-    this.accordionPanels = Array.from(this.pageEl.querySelectorAll('.task-manager__accordion-panel'));
-    this.accordionHeaders.forEach((header, index) => {
-      header.addEventListener('click', () => this.togglePanel(index));
-    });
-  }  
-
   togglePanel(index) {
     // Check if the clicked panel is already open
-    const isPanelOpen = this.accordionPanels[index].style.maxHeight !== "0px";
+    const isPanelOpen = this.currentTask === index
 
     // Close all panels
     this.accordionPanels.forEach(panel => panel.style.maxHeight = "0px");
     this.accordionHeaders.forEach(header => header.classList.remove("active"));
     // If the clicked panel was not already open, open it
     if (!isPanelOpen) {
-      this.accordionHeaders[index].classList.add("active");
-      this.accordionPanels[index].style.maxHeight = this.accordionPanels[index].scrollHeight + "px";
+      this.accordionHeaders[index - 1].classList.add("active");
+      this.accordionPanels[index - 1].style.maxHeight = this.accordionPanels[index - 1].scrollHeight + "px";
+      this.currentTask = index
     } else {
+      this.currentTask = null
     }
+  }
+
+  // ---------- Update the tasks UI  ----------
+  addTask(data){
+   // Create elements
+    const li = document.createElement("li");
+    li.classList.add("task-manager__accordion");
+
+    const headerDiv = document.createElement("div");
+    headerDiv.classList.add("task-manager__accordion-header");
+
+    const headerTitle = document.createElement("h4");
+    headerTitle.textContent = data.name;
+
+    const statusDiv = document.createElement("div");
+
+    const statusPill = document.createElement("p");
+    statusPill.classList.add("task-manager__status-pill");
+    statusPill.textContent = data.status.label;
+
+    const chevronButton = document.createElement("button");
+    chevronButton.classList.add("task-manager__accordion-chevron");
+
+    const chevronIcon = document.createElement("img");
+    chevronIcon.src = "/images/down.svg";
+    chevronIcon.alt = "chevron down icon";
+
+    const panelDiv = document.createElement("div");
+    panelDiv.classList.add("task-manager__accordion-panel");
+
+    const statusContainerDiv = document.createElement("div");
+    statusContainerDiv.classList.add("task-manager__status-container");
+
+    const statusTitleP = document.createElement("p");
+    statusTitleP.classList.add("task-manager__status-title");
+    statusTitleP.textContent = data.status.title;
+
+    const statusDescriptionP = document.createElement("p");
+    statusDescriptionP.classList.add("task-manager__status-description");
+    statusDescriptionP.textContent = data.status.description;
+
+    // Append elements
+    headerDiv.appendChild(headerTitle);
+    statusDiv.appendChild(statusPill);
+    chevronButton.appendChild(chevronIcon);
+    statusDiv.appendChild(chevronButton);
+    headerDiv.appendChild(statusDiv);
+
+    statusContainerDiv.appendChild(statusTitleP);
+    statusContainerDiv.appendChild(statusDescriptionP);
+    panelDiv.appendChild(statusContainerDiv);
+
+    li.appendChild(headerDiv);
+    li.appendChild(panelDiv);
+
+    this.accordionContainer.appendChild(li);
+
+    // I set the accordionHeaders and Panels up to date
+    this.accordionHeaders = Array.from(this.pageEl.querySelectorAll('.task-manager__accordion-header'));
+    this.accordionPanels = Array.from(this.pageEl.querySelectorAll('.task-manager__accordion-panel'));
+
+    headerDiv.addEventListener('click', () => this.togglePanel(data.key));
   }
 
   // ---------- Handling the tasks ----------
   createTask(task) {
     this.tasks.push(task);
+    this.addTask(task)
     this.handleButton();
   }
 
   removeTask(taskKey) {
     this.tasks = this.tasks.filter((task) => task.key !== taskKey);
     this.handleButton();
-
   }
 
   onStatusUpdate(taskKey, status) {
