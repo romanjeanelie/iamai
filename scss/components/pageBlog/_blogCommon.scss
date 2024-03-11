@@ -54,6 +54,20 @@ img{
   width: 100%;
 }
 
+.mobile-break{
+  display: none;
+}
+
+@include media("<phone"){
+  .desktop-break{
+    display: none;
+  }
+
+  .mobile-break{
+    display: inline;
+  }
+}
+
 section{
   margin-top: 250px;
 
