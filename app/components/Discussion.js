@@ -1,7 +1,8 @@
 import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scss";
 import TypingText from "../TypingText";
 import Chat from "./Chat.js";
-import DiscussionTabs from "./DiscussionTabs.js"
+import DiscussionTabs from "./DiscussionTabs.js";
+import { TASK_STATUSES } from "./TaskManager/index.js";
 
 import { getsessionID } from "../User";
 import { asyncAnim } from "../utils/anim.js";
@@ -52,6 +53,7 @@ export default class Discussion {
 
     this.addListeners();
 
+    this.debug = import.meta.env.VITE_DEBUG === "true";
     // DEBUG
     // const tempContainer = document.createElement("div");
     // tempContainer.classList.add("discussion__ai");
@@ -95,7 +97,6 @@ export default class Discussion {
   //   }
 
   disableInput() {
-    console.log("disable input")
     this.inputText.disabled = true;
     const childNodes = this.inputContainer.getElementsByTagName("*");
     for (var node of childNodes) {
@@ -113,21 +114,21 @@ export default class Discussion {
   }
 
   getAiAnswer({ text, imgs }) {
-    const aiEl = document.createElement("div");
-    aiEl.classList.add("discussion__ai");
-    this.discussionContainer.appendChild(aiEl);
+    this.AIContainer = document.createElement("div");
+    this.AIContainer.classList.add("discussion__ai");
+    this.discussionContainer.appendChild(this.AIContainer);
     this.scrollToBottom();
 
     this.typingText = new TypingText({
       text: "",
-      container: aiEl,
+      container: this.AIContainer,
       backgroundColor: backgroundColorGreyPage,
       marginLeft: 16,
     });
 
     this.typingText.fadeIn();
     this.typingText.displayTextSkeleton();
-    this.Chat.callsubmit(text, imgs, aiEl);
+    this.Chat.callsubmit(text, imgs, this.AIContainer);
   }
 
   resetStatuses() {
@@ -138,17 +139,17 @@ export default class Discussion {
 
   addUserElement({ text, imgs, debug = false } = {}) {
     if (imgs && imgs.length > 0) {
-      const userEl = document.createElement("div");
-      userEl.classList.add("discussion__user");
-      this.discussionContainer.appendChild(userEl);
-      // this.addImages({ container: userEl, srcs: imgs.map((img) => img.src) });
+      const userContainer = document.createElement("div");
+      userContainer.classList.add("discussion__user");
+      this.discussionContainer.appendChild(userContainer);
+      this.addImages({ container: userContainer, srcs: imgs.map((img) => img.src) });
     }
 
-    const userEl = document.createElement("div");
-    userEl.classList.add("discussion__user");
-    userEl.innerHTML = text.replace(/\n/g, "<br>");
+    this.userContainer = document.createElement("div");
+    this.userContainer.classList.add("discussion__user");
+    this.userContainer.innerHTML = text.replace(/\n/g, "<br>");
 
-    this.discussionContainer.appendChild(userEl);
+    this.discussionContainer.appendChild(this.userContainer);
 
     this.scrollToBottom();
     this.disableInput();
@@ -156,7 +157,7 @@ export default class Discussion {
       setTimeout(() => {
         this.addAIText({
           text: "Hello test Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo pariatur sapiente, aliquam velit consectetur soluta esse cupiditate alias illo deleniti earum vel! Consequuntur ipsam quisquam nemo voluptatem id molestiae, reprehenderit illum natus omnis nobis porro sit sint veniam earum sapiente dolorem eum non deserunt! Saepe nostrum reprehenderit modi voluptatem corporis culpa accusantium. Maxime fuga, aliquam laboriosam culpa ipsum, minus officiis quasi aperiam ratione, vel beatae. Repellat, iusto placeat? Architecto sequi nam ullam numquam odio. Soluta dolore quas vel quaerat doloribus, vitae explicabo assumenda sunt fugiat consequatur illo, ipsa nam quia sit! Praesentium aliquid animi ex libero necessitatibus modi voluptas! Consequatur?",
-          container: userEl,
+          container: this.userContainer,
           targetlang: "en",
         });
       }, 1000);
@@ -170,18 +171,18 @@ export default class Discussion {
     if (!this.progressBar) return;
     this.statusContainer?.classList.remove("hidden");
 
-
-    await asyncAnim(this.progressBar, [
-      { transform: `scaleX(${currProgress/100})` },
-      { transform: `scaleX(${nextProgress/100})` },
-    ], {
-      duration: duration,
-      fill: "forwards",
-      ease: "ease-out",
-    })
+    await asyncAnim(
+      this.progressBar,
+      [{ transform: `scaleX(${currProgress / 100})` }, { transform: `scaleX(${nextProgress / 100})` }],
+      {
+        duration: duration,
+        fill: "forwards",
+        ease: "ease-out",
+      }
+    );
   }
 
-  async endStatusAnimation(){
+  async endStatusAnimation() {
     await this.animateProgressBar(this.currentProgress, 100, 200);
     this.statusContainer?.classList.add("hidden");
     this.currentProgress = 0;
@@ -191,7 +192,7 @@ export default class Discussion {
 
   async addStatus({ text, textEl, container }) {
     const topStatus = getTopStatus(text);
-    
+
     if (!this.lastStatus) {
       // Init status
       this.statusContainer = document.createElement("div");
@@ -213,9 +214,8 @@ export default class Discussion {
     }
     this.lastStatus = textEl;
 
-
     if (topStatus && (topStatus !== this.currentTopStatus || !this.currentTopStatus)) {
-      this.updateTopStatus({ status : text, topStatus, container: this.topStatus });
+      this.updateTopStatus({ status: text, topStatus, container: this.topStatus });
       this.currentTopStatus = topStatus;
     }
 
@@ -253,19 +253,19 @@ export default class Discussion {
     this.resetStatuses();
   }
 
-  async addAIText({ text, container, targetlang, type = null,  } = {}) {    
+  async addAIText({ text, container, targetlang, type = null } = {}) {
     let textContainer = container.querySelector(".text__container");
 
-    if (!textContainer){
+    if (!textContainer) {
       textContainer = document.createElement("div");
       textContainer.className = "text__container";
       container.appendChild(textContainer);
     }
 
-    if (!this.tabs){
+    if (!this.tabs) {
       this.tabs = new DiscussionTabs({
         container: container,
-        emitter : this.emitter,
+        emitter: this.emitter,
         removeStatus: this.removeStatus,
         scrollToBottom: this.scrollToBottom,
       });
@@ -276,20 +276,20 @@ export default class Discussion {
 
     const textEl = document.createElement("span");
 
-    if (type === "status") {
-      textEl.className = "AIstatus";
-      this.addStatus({ text, textEl, container : textContainer });
-      this.statusContainer.appendChild(textEl);
-      return typeByWord(textEl, text);  
-    } else if (this.lastStatus) {
-      this.removeStatus({ container: textContainer });
-    }
+    // if (type === "status") {
+    //   textEl.className = "AIstatus";
+    //   this.addStatus({ text, textEl, container : textContainer });
+    //   this.statusContainer.appendChild(textEl);
+    //   return typeByWord(textEl, text);
+    // } else if (this.lastStatus) {
+    //   this.removeStatus({ container: textContainer });
+    // }
     textContainer.appendChild(textEl);
 
     // text = text.replace(/<br\/?>\s*/g, "\n");
     if (type !== "status") this.scrollToBottom();
-    if (type === "images") return
-    return typeByWord(textEl, text);  
+    if (type === "images") return;
+    return typeByWord(textEl, text);
   }
 
   addURL({ text, label, url, container }) {
@@ -310,14 +310,14 @@ export default class Discussion {
   }
 
   addImages({ imgSrcs = [], container } = {}) {
-    this.tabs?.addTab("Images")    
+    this.tabs?.addTab("Images");
     this.tabs?.initImages(imgSrcs);
     this.typingStatus = null;
     // container?.appendChild(this.topStatus);
   }
 
   addSources(sourcesData) {
-    this.tabs?.addTab("Sources")
+    this.tabs?.addTab("Sources");
     this.tabs?.initSources(sourcesData);
   }
 
@@ -342,7 +342,7 @@ export default class Discussion {
     // if (!deploy_ID){
     //   this.Chat.deploy_ID = deploy_ID
     // }
-    
+
     if (urlParams.get("location") && urlParams.get("location") != "") {
       this.Chat.location = urlParams.get("location");
     }
@@ -374,21 +374,61 @@ export default class Discussion {
     }
   }
 
+  async onCreatedTask(task, textAI) {
+    if (this.debug) {
+      this.userContainer = document.createElement("div");
+      this.userContainer.classList.add("discussion__user");
+      this.userContainer.innerHTML = "bonjour";
+      this.discussionContainer.appendChild(this.userContainer);
+
+      this.AIContainer = document.createElement("div");
+      this.AIContainer.classList.add("discussion__ai");
+      this.discussionContainer.appendChild(this.AIContainer);
+    }
+
+    await this.addAIText({ text: textAI, container: this.AIContainer });
+    this.userContainer.classList.add("discussion__user--task-created");
+    this.AIContainer.classList.add("discussion__ai--task-created");
+    this.userContainer.setAttribute("taskKey", task.key);
+    this.AIContainer.setAttribute("taskKey", task.key);
+  }
+
+  onStatusUpdate(taskKey, status) {
+    if (status.type === TASK_STATUSES.COMPLETED) {
+      const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskKey="${taskKey}"]`);
+      const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskKey="${taskKey}"]`);
+      userContainer.classList.remove("discussion__user--task-created");
+      AIContainer.classList.remove("discussion__ai--task-created");
+    }
+  }
+
+  onRemoveTask(taskKey) {
+    const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskKey="${taskKey}"]`);
+    const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskKey="${taskKey}"]`);
+    userContainer.classList.remove("discussion__user--task-created");
+    AIContainer.classList.remove("discussion__ai--task-created");
+  }
+
   addListeners() {
     window.addEventListener("load", this.onLoad());
 
     this.emitter.on("centralFinished", () => {
-      this.centralFinished = true
-      this.endStatusAnimation()
-    })
+      this.centralFinished = true;
+      this.endStatusAnimation();
+    });
 
-    this.emitter.on("paEnd" , async () => {
+    this.emitter.on("paEnd", async () => {
       await this.endStatusAnimation();
       this.removeStatus({ container: this.discussionContainer });
       this.tabs?.displayDefaultTab();
       this.tabs?.showTabs();
       this.tabs = null;
-    })
+    });
+
+    this.emitter.on("taskManager:createTask", (task, textAI) => this.onCreatedTask(task, textAI));
+    this.emitter.on("taskManager:updateStatus", (taskKey, status) => this.onStatusUpdate(taskKey, status));
+    this.emitter.on("taskManager:deleteTask", (taskKey) => this.onRemoveTask(taskKey));
+
     // window.addEventListener("load", this.onLoad.bind(this));
     const resizeObserver = new ResizeObserver(this.scrollToBottom.bind(this));
     resizeObserver.observe(this.discussionContainer);

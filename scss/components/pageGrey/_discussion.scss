@@ -1,3 +1,28 @@
+@mixin underline-task($position: top) {
+  &::before {
+    content: "";
+    position: absolute;
+    @if $position == top {
+      top: 0;
+    } @else {
+      bottom: 0;
+    }
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: red;
+    transform-origin: left;
+    transform: scaleX(0);
+    transition: transform 0.5s ease-out;
+  }
+
+  &--task-created {
+    &:before {
+      transform: scaleX(1);
+    }
+  }
+}
+
 .discussion__container::-webkit-scrollbar {
   display: none;
   /* for Chrome, Safari, and Opera */
@@ -19,7 +44,7 @@
     padding-bottom: 80px;
     padding-top: 76px;
 
-    //   // Mask top for mobile
+    // Mask top for mobile
     &:before {
       content: "";
       position: absolute;
@@ -43,11 +68,11 @@
       overflow-wrap: break-word;
     }
 
-    .images__sources{
+    .images__sources {
       display: flex;
       margin-top: 12px;
       flex-wrap: wrap;
-      gap:12px;
+      gap: 12px;
 
       a {
         background-color: rgba(0, 0, 0, 0.04);
@@ -66,7 +91,7 @@
         }
       }
 
-      a img{
+      a img {
         width: 20px;
         height: 20px;
         border-radius: 100%;
@@ -102,7 +127,7 @@
     }
   }
 
-  .discussion__tabs-header{ 
+  .discussion__tabs-header {
     position: relative;
     margin-top: 16px;
     display: flex;
@@ -117,38 +142,39 @@
       line-height: 20px;
       letter-spacing: 0.6px;
       color: $colorBlackForGreyPage;
-      
+
       &:hover {
         color: $colorBlack;
       }
     }
 
-    li.active{
+    li.active {
       color: $colorBlack;
     }
 
-    &.hidden{
+    &.hidden {
       opacity: 0;
     }
   }
 
-  .discussion__tabs-content{
+  .discussion__tabs-content {
     position: relative;
     margin-top: 12px;
     transition: opacity 0.3s ease-out;
 
-    &.hidden{
+    &.hidden {
       opacity: 0;
     }
   }
 
   .discussion__user {
     // color: rgba($colorBlue, 0.72);
-    color: rgba($colorBlack, 0.72);;
+    color: rgba($colorBlack, 0.72);
     text-align: right;
     margin-left: auto;
     padding-right: 16px;
-    margin-left: 112px;
+    padding-top: 8px;
+    padding-left: 112px;
 
     .images__container {
       justify-content: flex-end;
@@ -164,6 +190,8 @@
       //   border-radius: 20px;
     }
 
+    @include underline-task(top);
+
     @include media("<tablet") {
       //   padding-right: 24px;
     }
@@ -174,7 +202,8 @@
     // For cursor
     min-height: 24px;
     padding-left: 16px;
-    margin-right: 112px;
+    padding-right: 112px;
+    padding-bottom: 8px;
 
     .text-beforeLink {
       margin-right: 4px;
@@ -185,7 +214,7 @@
       display: inline-block;
     }
 
-    .status-container{
+    .status-container {
       transition: opacity 0.3s ease-out;
 
       &.hidden {
@@ -211,14 +240,14 @@
       letter-spacing: 0.6px;
     }
 
-    .progress-bar-container{
+    .progress-bar-container {
       background-color: rgba(255, 0, 255, 0.08);
       height: 2px;
       width: calc(100% + 112px);
       margin: 16px 0;
     }
 
-    .progress-bar{
+    .progress-bar {
       background-color: $colorPink;
       height: 2px;
       width: 100%;
@@ -242,11 +271,12 @@
       }
     }
 
-    .AIword{
-      opacity:0;
+    .AIword {
+      opacity: 0;
       animation: fadeIn 0.2s $ease-in forwards;
     }
 
+    @include underline-task(bottom);
 
     @include media("<tablet") {
       //   padding-left: 24px;
