@@ -1,4 +1,6 @@
 export default function generateSlider(data, isOdd, container) {
+  if (data.h1 === "The Multitasking Assistant.<br/> Always by Your Side.") isOdd = false;
+
   const html = `
     <div class="blogSlider__section">
       <div class="blog__container">
