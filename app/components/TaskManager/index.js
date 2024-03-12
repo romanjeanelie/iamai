@@ -64,7 +64,7 @@ gsap.registerPlugin(Flip);
 // [X] position the task manager above the nav
 // [X] when click on pastille -> scroll to the panel
 // [X] check the closeFullscreen icon when resize out of mobile -> potential bug
-// [] remove notif pill after 5 seconds
+// [X] remove notif pill after 5 seconds
 // [] remove taskUI on delete task
 // [] on complete remove all the panels and only keep the header + change the onClick event if status === completed
 // [] if task updated and prev update was input, remove input before going to next update ?
@@ -84,6 +84,7 @@ export default class TaskManager {
     // States
     this.taskManagerState = STATES.CLOSED;
     this.notificationTimeoutId = null;
+    this.notificationDuration = 5000;
     this.currentTask = null;
 
     // Init functions
@@ -304,7 +305,7 @@ export default class TaskManager {
             this.notificationTimeoutId = setTimeout(() => {
               this.closeNotificationPill();
               this.notificationTimeoutId = null;
-            }, 5000);
+            }, this.notificationDuration);
           },
         });
       },
@@ -526,6 +527,23 @@ export default class TaskManager {
     panel.appendChild(statusContainerDiv);
   }
 
+  updateTaskUI(key, status) {
+    const task = this.accordionContainer.querySelector(`[task-key="${key}"]`);
+    const header = task.querySelector(".task-manager__accordion-header");
+    const statusPill = header.querySelector(".task-manager__status-pill");
+    statusPill.innerText = status.label;
+    statusPill.style.backgroundColor = STATUS_COLORS[status.type];
+
+    const panel = task.querySelector(".task-manager__accordion-panel");
+
+    this.addPanel(key, panel, status);
+  }
+
+  removeTaskUI(key) {
+    const task = this.accordionContainer.querySelector(`[task-key="${key}"]`);
+    task.remove();
+  }
+
   // ---------- Handling the input ----------
   addInput(key, statusContainer) {
     const statusInputContainer = document.createElement("form");
@@ -569,18 +587,6 @@ export default class TaskManager {
     container.style.display = "none";
   }
 
-  updateTaskUI(key, status) {
-    const task = this.accordionContainer.querySelector(`[task-key="${key}"]`);
-    const header = task.querySelector(".task-manager__accordion-header");
-    const statusPill = header.querySelector(".task-manager__status-pill");
-    statusPill.innerText = status.label;
-    statusPill.style.backgroundColor = STATUS_COLORS[status.type];
-
-    const panel = task.querySelector(".task-manager__accordion-panel");
-
-    this.addPanel(key, panel, status);
-  }
-
   // ---------- Handling the tasks ----------
   createTask(task) {
     this.tasks.push(task);
@@ -590,7 +596,11 @@ export default class TaskManager {
 
   removeTask(taskKey) {
     this.tasks = this.tasks.filter((task) => task.key !== taskKey);
+    this.removeTaskUI(taskKey);
     this.handleButton();
+    if (this.tasks.length === 0) {
+      this.closeTaskManager();
+    }
   }
 
   onStatusUpdate(taskKey, status) {
