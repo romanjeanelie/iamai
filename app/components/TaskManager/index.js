@@ -59,13 +59,14 @@ gsap.registerPlugin(Flip);
 // [X] for the input required change the status after input has been entered
 // [X] handle the notification pastille when input required or completed
 // [X] do the animation of the notification pastille
-// [] do repsonsive version
+// [X] do repsonsive version
 // [] when click on pastille -> scroll to the panel
 // [] when new task or updated task, scroll to the task
 // [] do the animation of when a task is added
 // [] if task updated and prev update was input, remove input before going to next update ? 
 // [] position the task manager above the nav
 // [] empêcher opening pastille if task manager already open ? 
+// [] ask about the mobile version of the input ?
 
 export default class TaskManager {
   constructor({ pageEl, gui, emitter }) {
