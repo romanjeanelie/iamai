@@ -65,6 +65,7 @@ gsap.registerPlugin(Flip);
 // [] do the animation of when a task is added
 // [] if task updated and prev update was input, remove input before going to next update ? 
 // [] position the task manager above the nav
+// [] empêcher opening pastille if task manager already open ? 
 
 export default class TaskManager {
   constructor({ pageEl, gui, emitter }) {
@@ -216,7 +217,9 @@ export default class TaskManager {
   toMinimized() {
     this.closeFullscreenButton.classList.add("hidden")
     this.fullscreenButton.classList.remove("hidden")
-    this.changeState(STATES.MINIMIZED);
+    const isMobile = window.innerWidth < 820;
+    // if on mobile, we go straight to fullscreen
+    this.changeState(isMobile ? STATES.FULLSCREEN : STATES.MINIMIZED);
   }
   
   toFullscreen() {
@@ -563,5 +566,10 @@ export default class TaskManager {
     this.closeButton.addEventListener('click', () => this.closeTaskManager());
     this.fullscreenButton.addEventListener('click', () => this.toFullscreen());
     this.closeFullscreenButton.addEventListener('click', () => this.toMinimized());
+    window.addEventListener("resize", () => {
+      if (this.taskManagerState === STATES.MINIMIZED && window.innerWidth < 820){
+        this.changeState(STATES.FULLSCREEN)
+      }
+    })
   }
 }

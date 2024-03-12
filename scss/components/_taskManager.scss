@@ -18,6 +18,10 @@
     opacity:0;
     pointer-events: none;
   }
+
+  @include media ("<phone"){
+    bottom: 110px;
+  }
 }
 
 .task-manager__container {
@@ -52,8 +56,16 @@
     justify-content: space-between;
     align-items: center;
 
+    h2{
+      display: none;
+    }
+
     .relative{
       position: relative;
+
+      @include media("<tablet") {
+        display: none;
+      }
     }
 
     .icon{
@@ -83,7 +95,7 @@
       position: absolute;
       top: 0;
       left: 0;
-      cursor: pointer;     
+      cursor: pointer; 
     }
   }
 }
@@ -96,22 +108,13 @@
     font-weight: 500;
     line-height: 28px;
     letter-spacing: 0.6px;
-    margin-bottom: 8px;
-  }
-
-  h3{
-    font-size: 14px;
-    font-weight: 450;
-    line-height: 18px;
-    letter-spacing: 0.6000000238418579px;    
-    color: rgba(0, 0, 0, 0.6);
-    margin-bottom: 24px;
+    margin-bottom: 40px;
   }
 
   .task-manager__accordion-container{
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 24px;
   }
 
   .task-manager__accordion{
@@ -123,10 +126,17 @@
       font-weight: 500;
       border-radius: 16px;
       display: flex;
+      gap: 8px;
       overflow: hidden;
       justify-content: space-between;
       align-items: center;
       cursor: pointer;
+
+      h4{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
 
       &.active{
         background-color: rgba(0,0,0,0.1);
@@ -141,14 +151,15 @@
       }
 
       div{
+        flex: none;
         display: flex;
         align-items: center;
         gap: 16px;
       }
 
       .task-manager__status-pill{
+        font-size: 14px;
         padding: 5px 30px;
-        background-color: salmon;
         border-radius: 32px;
         color: $colorMain;
       }
@@ -216,8 +227,6 @@
         color: $colorBlack;
       }
 
-
-
       .task-manager__status-title{
         font-size: 14px;
         margin-bottom: 8px;
@@ -244,6 +253,7 @@
 
   .task-manager__header{
     padding: 48px 48px 24px;
+
   }
 
   .task-manager__content{
@@ -254,6 +264,51 @@
       font-size: 40px;
       line-height: 48px;
       font-weight: 500;
+      margin-bottom: 60px;
+    }
+  }
+
+  @include media("<tablet"){
+    .task-manager__header{
+      h2{
+        display: block;
+        font-size: 24px;
+        font-weight: 500;
+        line-height: 28px;
+        letter-spacing: 0.6px;
+        padding-left: 16px;
+      }
+    }
+
+    .task-manager__content{
+      h2{
+        display: none;
+      }
+    }
+  }
+
+  @include media("<phone"){
+    .task-manager__header{
+      padding: 44px 16px 40px;
+    }
+
+    .task-manager__content .task-manager__accordion-header{
+      font-size: 14px;
+
+      div{
+        gap: 8px
+      }
+
+      .task-manager__status-pill{
+        font-size: 12px;
+        padding: 4px 12px;
+        border-radius: 32px;
+        color: $colorMain;
+      }
+    }
+
+    .task-manager__content .task-manager__accordion-panel-divider{
+      display: none;
     }
   }
 }
