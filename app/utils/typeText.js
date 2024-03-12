@@ -8,7 +8,7 @@ export default function typeText(container, text) {
     //   return;
     // }
     function type() {
-      console.log(typeIndex, text.length, text.charAt(typeIndex))
+      console.log(typeIndex, text.length, text.charAt(typeIndex));
       if (typeIndex < text.length) {
         if (text.charAt(typeIndex) === "\n") {
           container.innerHTML += "<br>";

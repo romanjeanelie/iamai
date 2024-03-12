@@ -27,7 +27,7 @@ $radiusDotTyping: 22px;
 
 .typing__logo {
   position: absolute;
-  left: 0;  
+  left: 0;
   top: 50%;
   transform: translateY(-50%);
   width: $radiusDotTyping;
@@ -45,7 +45,7 @@ $radiusDotTyping: 22px;
   position: absolute;
   top: calc(50% + 20px);
   width: 100%;
-  display: flex; 
+  display: flex;
   flex-direction: column;
   gap: 16px;
   transition: opacity 0.3s ease-in-out;
@@ -55,13 +55,8 @@ $radiusDotTyping: 22px;
   }
 }
 
-.typing__skeleton{
-  background: linear-gradient(
-    -90deg,
-    rgba(0, 0, 0, 0.1) 0%,
-    rgba(0, 0, 0, 0.04) 50%, 
-    rgba(0, 0, 0, 0.1) 100%
-  );
+.typing__skeleton {
+  background: linear-gradient(-90deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.04) 50%, rgba(0, 0, 0, 0.1) 100%);
   background-size: 400% 400%;
   border-radius: 2px;
   height: 12px;
@@ -70,29 +65,29 @@ $radiusDotTyping: 22px;
   animation: pulse 2s ease-in infinite;
 }
 
-.typing__skeleton-0{
+.typing__skeleton-0 {
   width: 85%;
 }
 
-.typing__skeleton-1{
+.typing__skeleton-1 {
   width: 90%;
 }
 
-.typing__skeleton-2{
+.typing__skeleton-2 {
   width: 88%;
 }
 
-.typing__skeleton-3{
+.typing__skeleton-3 {
   width: 66%;
 }
 
-.typing__skeleton-container.skeleton__image{ 
+.typing__skeleton-container.skeleton__image {
   flex-direction: row;
   top: calc(100% + 12px);
-  left:0;
+  left: 0;
   gap: 10px;
 
-  .typing__skeleton{
+  .typing__skeleton {
     height: 98px;
     width: 80px;
     border-radius: 4px;
@@ -100,7 +95,7 @@ $radiusDotTyping: 22px;
     transform-origin: top;
   }
 
-  .typing__skeleton:nth-child(2n){
+  .typing__skeleton:nth-child(2n) {
     width: 144px;
   }
 }
@@ -112,10 +107,10 @@ $radiusDotTyping: 22px;
 
 @keyframes pulse {
   from {
-    background-position: 0% 0%
+    background-position: 0% 0%;
   }
   to {
-    background-position: -135% 0%
+    background-position: -135% 0%;
   }
 }
 

@@ -1,17 +1,15 @@
-const WHISPER_URL = import.meta.env.VITE_API_WHISPER_URL || "https://api.iamplus.chat/proxy-whisper-api-web/asr?task=transcribe&encode=true&output=json&word_timestamps=false&language=";
-const sendToWispher = (url, lang="", attempt = 0) =>
+const WHISPER_URL =
+  import.meta.env.VITE_API_WHISPER_URL ||
+  "https://api.iamplus.chat/proxy-whisper-api-web/asr?task=transcribe&encode=true&output=json&word_timestamps=false&language=";
+const sendToWispher = (url, lang = "", attempt = 0) =>
   new Promise((resolve, reject) => {
     var xhr = new XMLHttpRequest();
-    
+
     var data = new FormData();
     data.append("audio_file", url, crypto.randomUUID() + ".wav");
     data.append("type", "audio/wav");
-    xhr.open(
-      "POST",
-      WHISPER_URL+lang,
-      true
-    );
-    console.log("sending to whisper")
+    xhr.open("POST", WHISPER_URL + lang, true);
+    console.log("sending to whisper");
     xhr.onreadystatechange = function () {
       if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
         var response = JSON.parse(this.responseText);

@@ -1,12 +1,12 @@
 .task-manager__debug {
 }
 
-.task-manager__button{
+.task-manager__button {
   position: fixed;
   bottom: 120px;
   right: 40px;
   background-color: salmon;
-  width : 40px;
+  width: 40px;
   height: 40px;
   border-radius: 100%;
   display: flex;
@@ -14,12 +14,12 @@
   align-items: center;
   transition: opacity 0.3s $ease-out;
 
-  &.hidden{
-    opacity:0;
+  &.hidden {
+    opacity: 0;
     pointer-events: none;
   }
 
-  @include media ("<phone"){
+  @include media("<phone") {
     bottom: 110px;
   }
 }
@@ -35,32 +35,32 @@
   color: $colorBlack;
   transition: opacity 0.3s $ease-out;
 
-  &.hidden{
+  &.hidden {
     opacity: 0;
     pointer-events: none;
   }
 
-  &.closed{
+  &.closed {
     width: 0;
     height: 0;
   }
 
-  &.minimized{
+  &.minimized {
     width: 678px;
     height: 439px;
   }
 
-  .task-manager__header{
+  .task-manager__header {
     padding: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    h2{
+    h2 {
       display: none;
     }
 
-    .relative{
+    .relative {
       position: relative;
 
       @include media("<tablet") {
@@ -68,42 +68,42 @@
       }
     }
 
-    .icon{
+    .icon {
       padding: 8px;
       border-radius: 4px;
       transition: opacity 0.3s $ease-out;
 
-      img{
+      img {
         width: 100%;
       }
 
-      &:hover{
-        background-color: rgba(0,0,0,0.1);
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
       }
 
-      &.hidden{
+      &.hidden {
         opacity: 0;
         pointer-events: none;
       }
     }
 
-    .task-manager__closing-icon{
+    .task-manager__closing-icon {
       padding: 13px;
     }
 
-    .task-manager__closeFullscreen-icon{
+    .task-manager__closeFullscreen-icon {
       position: absolute;
       top: 0;
       left: 0;
-      cursor: pointer; 
+      cursor: pointer;
     }
   }
 }
 
-.task-manager__content{
+.task-manager__content {
   padding: 20px 24px;
 
-  h2{
+  h2 {
     font-size: 24px;
     font-weight: 500;
     line-height: 28px;
@@ -111,17 +111,17 @@
     margin-bottom: 40px;
   }
 
-  .task-manager__accordion-container{
+  .task-manager__accordion-container {
     display: flex;
     flex-direction: column;
     gap: 24px;
   }
 
-  .task-manager__accordion{
-    border-radius: 16px;      
+  .task-manager__accordion {
+    border-radius: 16px;
     background-color: rgba(0, 0, 0, 0.04);
-    
-    .task-manager__accordion-header{
+
+    .task-manager__accordion-header {
       padding: 14px 16px;
       font-weight: 500;
       border-radius: 16px;
@@ -132,50 +132,50 @@
       align-items: center;
       cursor: pointer;
 
-      h4{
+      h4 {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
       }
 
-      &.active{
-        background-color: rgba(0,0,0,0.1);
+      &.active {
+        background-color: rgba(0, 0, 0, 0.1);
 
-        .task-manager__accordion-chevron{
+        .task-manager__accordion-chevron {
           transform: rotate(180deg);
         }
       }
 
-      &:hover{
-        background-color: rgba(0,0,0,0.1);
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
       }
 
-      div{
+      div {
         flex: none;
         display: flex;
         align-items: center;
         gap: 16px;
       }
 
-      .task-manager__status-pill{
+      .task-manager__status-pill {
         font-size: 14px;
         padding: 5px 30px;
         border-radius: 32px;
         color: $colorMain;
       }
 
-      .task-manager__accordion-chevron{
+      .task-manager__accordion-chevron {
         width: 20px;
         margin: 0 10px;
         transition: transform 0.3s $ease-out;
 
-        img{
+        img {
           width: 100%;
         }
       }
     }
 
-    .task-manager__accordion-panel{
+    .task-manager__accordion-panel {
       padding: 0 16px;
       overflow: hidden;
       font-size: 16px;
@@ -185,15 +185,15 @@
       letter-spacing: 0.6px;
       transition: all 0.3s ease-in-out;
 
-      .task-manager__status-container{
+      .task-manager__status-container {
         margin: 10px 0 16px;
 
-        &:last-of-type{
+        &:last-of-type {
           color: $colorPink;
         }
       }
 
-      .task-manager__input-container{
+      .task-manager__input-container {
         display: flex;
         margin-top: 40px;
         border-radius: 24px;
@@ -202,24 +202,23 @@
         background-color: white;
         gap: 8px;
 
-        button{
+        button {
           height: 26px;
           width: 26px;
           border-radius: 100%;
           display: flex;
           justify-content: center;
           align-items: center;
-          background-color: #0000003D;
+          background-color: #0000003d;
 
-          img{
+          img {
             width: 11.23px;
           }
 
-          &:hover{
+          &:hover {
             background-color: $colorBlackForGreyPage;
           }
         }
-        
       }
 
       .task-manager__input {
@@ -227,14 +226,14 @@
         color: $colorBlack;
       }
 
-      .task-manager__status-title{
+      .task-manager__status-title {
         font-size: 14px;
         margin-bottom: 8px;
       }
     }
 
-    .task-manager__accordion-panel-divider{
-      height: 2px; 
+    .task-manager__accordion-panel-divider {
+      height: 2px;
       width: 100%;
       background-color: #00000014;
       margin: 8px 0;
@@ -243,7 +242,7 @@
 }
 
 // ------ fullscreen version ------
-.task-manager__container.fullscreen{
+.task-manager__container.fullscreen {
   border-radius: 0;
   bottom: 0;
   right: 0;
@@ -251,16 +250,15 @@
   height: 100vh; // fallback for browsers that don't support vh units
   height: 100svh;
 
-  .task-manager__header{
+  .task-manager__header {
     padding: 48px 48px 24px;
-
   }
 
-  .task-manager__content{
+  .task-manager__content {
     max-width: 872px;
     margin: 0 auto;
 
-    h2{
+    h2 {
       font-size: 40px;
       line-height: 48px;
       font-weight: 500;
@@ -268,9 +266,9 @@
     }
   }
 
-  @include media("<tablet"){
-    .task-manager__header{
-      h2{
+  @include media("<tablet") {
+    .task-manager__header {
+      h2 {
         display: block;
         font-size: 24px;
         font-weight: 500;
@@ -280,26 +278,26 @@
       }
     }
 
-    .task-manager__content{
-      h2{
+    .task-manager__content {
+      h2 {
         display: none;
       }
     }
   }
 
-  @include media("<phone"){
-    .task-manager__header{
+  @include media("<phone") {
+    .task-manager__header {
       padding: 44px 16px 40px;
     }
 
-    .task-manager__content .task-manager__accordion-header{
+    .task-manager__content .task-manager__accordion-header {
       font-size: 14px;
 
-      div{
-        gap: 8px
+      div {
+        gap: 8px;
       }
 
-      .task-manager__status-pill{
+      .task-manager__status-pill {
         font-size: 12px;
         padding: 4px 12px;
         border-radius: 32px;
@@ -307,16 +305,16 @@
       }
     }
 
-    .task-manager__content .task-manager__accordion-panel-divider{
+    .task-manager__content .task-manager__accordion-panel-divider {
       display: none;
     }
   }
 }
 
 .task-manager__notification-container {
-  position: fixed; 
+  position: fixed;
   top: 80px;
-  left: calc((100vw - $discussionMaxWidth) / 2 );
+  left: calc((100vw - $discussionMaxWidth) / 2);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -329,7 +327,7 @@
   cursor: pointer;
   z-index: 3;
 
-  &.hidden{
+  &.hidden {
     opacity: 0;
     // pointer-events: none;
   }
@@ -342,8 +340,8 @@
     top: 60px;
   }
 
-  .task-manager__notification-closeBtn{
-    background-color:rgba(255, 255, 255, 0.33);
+  .task-manager__notification-closeBtn {
+    background-color: rgba(255, 255, 255, 0.33);
     width: 24px;
     height: 24px;
     border-radius: 24px;
@@ -351,18 +349,18 @@
     justify-content: center;
     align-items: center;
 
-    svg{
+    svg {
       opacity: 0;
       width: 9px;
       height: 9px;
     }
 
-    &:hover{
+    &:hover {
       background-color: rgba(255, 255, 255, 0.4);
     }
   }
 
-  .task-manager__notification-label{
+  .task-manager__notification-label {
     position: absolute;
     height: 100%;
     display: flex;
@@ -377,19 +375,16 @@
   }
 }
 
-.task-manager__notification-container.expanded{
+.task-manager__notification-container.expanded {
   width: auto;
   padding: 0 8px 0 16px;
 
-  .task-manager__notification-closeBtn svg{
+  .task-manager__notification-closeBtn svg {
     opacity: 1;
   }
 
-  .task-manager__notification-label{
+  .task-manager__notification-label {
     position: static;
     background-color: transparent;
   }
 }
-
-
-

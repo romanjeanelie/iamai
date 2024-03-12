@@ -1,29 +1,20 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IAMAI Blog</title>
+    <link rel="stylesheet" href="../scss/index.scss" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.4/lottie.min.js"></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IAMAI Blog</title>
-  <link rel="stylesheet" href="../scss/index.scss" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.4/lottie.min.js"></script>
-</head>
+  <body class="page-blog">
+    {{> blogPage/blogNavbar}} {{> blogPage/blogHero}}
+    <div class="blog__container">
+      {{> blogPage/blogIntro}} {{> blogPage/blogMarquee}} {{> blogPage/blogCards}} {{> blogPage/blogContent}}
+    </div>
+    {{> blogPage/blogSlider}} {{> blogPage/blogMainSection}} {{> blogPage/blogSliders}}
+  </body>
 
-<body class="page-blog">
-  {{> blogPage/blogNavbar}}
-  {{> blogPage/blogHero}}
-  <div class="blog__container">
-    {{> blogPage/blogIntro}}
-    {{> blogPage/blogMarquee}}
-    {{> blogPage/blogCards}}
-    {{> blogPage/blogContent}}
-  </div>
-  {{> blogPage/blogSlider}}
-  {{> blogPage/blogMainSection}}
-  {{> blogPage/blogSliders}}
-</body>
-
-
-<script type="module" src="../app/Blog.js"></script>
-
+  <script type="module" src="../app/Blog.js"></script>
 </html>

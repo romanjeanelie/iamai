@@ -13,10 +13,10 @@ export default class TypingText {
     this.typingContainer = document.createElement("div");
     this.maskEl = document.createElement("div");
     this.logo = document.createElement("div");
-    const imgEl = document.createElement('img');
-    imgEl.setAttribute("src", "./images/asterizk_pink.svg" );
+    const imgEl = document.createElement("img");
+    imgEl.setAttribute("src", "./images/asterizk_pink.svg");
     this.logo.appendChild(imgEl);
-    
+
     this.skeletonContainer = document.createElement("div");
     this.skeletonContainer.classList.add("typing__skeleton-container");
     this.skeletons = [];
@@ -24,10 +24,10 @@ export default class TypingText {
     for (let i = 0; i < 4; i++) {
       let skeleton = document.createElement("div");
       skeleton.classList.add("typing__skeleton");
-      skeleton.classList.add(`typing__skeleton-${i}`)
+      skeleton.classList.add(`typing__skeleton-${i}`);
       this.skeletons.push(skeleton);
-    }   
-    
+    }
+
     this.textEl = document.createElement("p");
     this.typingContainer.classList.add("typing__container");
     this.maskEl.classList.add("typing__mask");
@@ -42,7 +42,7 @@ export default class TypingText {
     this.textEl.appendChild(this.maskEl);
     this.typingContainer.appendChild(this.textEl);
     this.typingContainer.appendChild(this.skeletonContainer);
-    this.skeletons.forEach(skeleton => this.skeletonContainer.appendChild(skeleton));
+    this.skeletons.forEach((skeleton) => this.skeletonContainer.appendChild(skeleton));
     this.container.appendChild(this.typingContainer);
 
     this.translateCursor = null;
@@ -59,17 +59,14 @@ export default class TypingText {
   }
 
   displayTextSkeleton() {
-    this.skeletons.forEach((skeleton,idx)=> {
-      anim(skeleton, [
-        { transform:"scaleX(0)" },
-        { transform: "scaleX(1)" },
-      ], {
+    this.skeletons.forEach((skeleton, idx) => {
+      anim(skeleton, [{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], {
         duration: 500,
         delay: 50 * idx,
         fill: "forwards",
         ease: "ease-out",
-      })
-    })
+      });
+    });
   }
 
   fadeOut() {

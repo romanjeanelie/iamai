@@ -1,18 +1,18 @@
-.blogCards__highlight{
+.blogCards__highlight {
   color: rgba(0, 0, 0, 0.4);
 }
 
-.blogCards__text{
+.blogCards__text {
   margin-bottom: 40px;
 }
 
-.blogCards__cards{
+.blogCards__cards {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
 }
 
-.blogCards__card{
+.blogCards__card {
   padding: 12px 12px 20px;
   display: flex;
   flex-direction: column;
@@ -21,7 +21,7 @@
   height: 230px;
   background-color: rgba(248, 246, 242, 1);
 
-  .blogCards__card-header h3{
+  .blogCards__card-header h3 {
     margin-bottom: 4px;
     font-size: 18px;
     font-weight: 500;
@@ -30,24 +30,22 @@
   }
 }
 
-.blogCards__card-images{
+.blogCards__card-images {
   display: flex;
   padding: 0 14px;
   justify-content: space-between;
   position: relative;
 
-  .blogCards__card-image{
+  .blogCards__card-image {
     max-width: 76px;
     max-height: 76px;
     background-color: $colorMain;
     border-radius: 16px;
     overflow: hidden;
     margin-bottom: 16px;
-    box-shadow: 
-      2.500000238418579px 5.000000476837158px 5.000000476837158px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 2.500000238418579px 5.000000476837158px 5.000000476837158px 0px rgba(0, 0, 0, 0.25);
 
-
-    img{
+    img {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -55,58 +53,54 @@
   }
 }
 
-.blogCards__card-images.twisted{
+.blogCards__card-images.twisted {
   justify-content: center;
   padding: 0;
 
-  .blogCards__card-image:first-of-type{
-    transform: rotate(-12deg) 
-      translateX(10px)
-    ;
+  .blogCards__card-image:first-of-type {
+    transform: rotate(-12deg) translateX(10px);
     z-index: 2;
   }
 
-  .blogCards__card-image:nth-of-type(2){
+  .blogCards__card-image:nth-of-type(2) {
     transform: translateY(-10px);
-    z-index: 1
+    z-index: 1;
   }
 
-  .blogCards__card-image:last-of-type{
-    transform: rotate(12deg) 
-      translateX(-10px)
-    ;
+  .blogCards__card-image:last-of-type {
+    transform: rotate(12deg) translateX(-10px);
   }
 }
 
-@include media("<large"){
-  .blogCards__cards{
+@include media("<large") {
+  .blogCards__cards {
     gap: 24px;
   }
 }
 
-@include media("<desktop"){
-  .blogCards__cards{
+@include media("<desktop") {
+  .blogCards__cards {
     max-width: calc(300px * 2 + 40px);
     margin: 0 auto;
   }
 
-  .blogCards__card{
+  .blogCards__card {
     grid-column: span 2;
   }
 
-  .blogCards__card-images .blogCards__card-image{
+  .blogCards__card-images .blogCards__card-image {
     width: 92px;
     height: 92px;
   }
 }
 
 // the tablet breakpoint set in include-media was too big for this component
-@media screen and (max-width: 640px){
-  .blogCards__cards{
+@media screen and (max-width: 640px) {
+  .blogCards__cards {
     max-width: 300px;
   }
 
-  .blogCards__card{
+  .blogCards__card {
     grid-column: span 4;
   }
 }

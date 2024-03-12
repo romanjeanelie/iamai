@@ -1,8 +1,8 @@
-.blogText__container{
+.blogText__container {
   width: 740px;
   // margin: 320px auto;
 
-  p{
+  p {
     font-size: 28px;
     font-weight: 450;
     line-height: 36px;
@@ -10,22 +10,22 @@
     text-align: center;
   }
 
-  @include media("<desktop"){
+  @include media("<desktop") {
     width: 100%;
     margin: 240px auto;
     padding: 0 13vw;
 
-    p{
+    p {
       font-size: 24px;
       line-height: 120%;
     }
   }
 
-  @include media("<tablet"){
+  @include media("<tablet") {
     padding: 0 24px;
     margin: 200px auto;
 
-    p{
+    p {
       font-size: 20px;
       line-height: 28px;
     }

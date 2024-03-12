@@ -1,23 +1,20 @@
-.blog__pinkTitle-container{
-  h1{
+.blog__pinkTitle-container {
+  h1 {
     color: rgba(255, 0, 255, 0.6);
-    
 
-    span{
+    span {
       color: $colorPink;
     }
 
-    @include media("<tablet"){
-      .desktop-break{
+    @include media("<tablet") {
+      .desktop-break {
         display: none;
       }
     }
 
-    .anim-gradient{
-      color: #FF66FF;
-      background: -webkit-linear-gradient(
-        45deg, #FF66FF 0%, #FF66FF 50%, #FA00FF 51%, #FF66FF 100%
-        );
+    .anim-gradient {
+      color: #ff66ff;
+      background: -webkit-linear-gradient(45deg, #ff66ff 0%, #ff66ff 50%, #fa00ff 51%, #ff66ff 100%);
       background-size: 200% 200%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -28,7 +25,7 @@
       0% {
         background-position-x: 200%;
       }
-     
+
       100% {
         background-position-x: 0%;
       }
@@ -36,82 +33,82 @@
   }
 }
 
-.blog__blackBlock-container{
+.blog__blackBlock-container {
   margin-top: 250px;
   background-color: $colorBlack;
   height: 200svh;
 
-  @include media("<tablet"){
+  @include media("<tablet") {
     margin-top: 180px;
-    height:100svh;
+    height: 100svh;
   }
 
-  .blog__blackBlock-content{
+  .blog__blackBlock-content {
     color: $colorMain;
     max-width: 972px;
     margin: 0 auto;
     padding-top: clamp(80px, 15%, 200px);
 
-    @include media ("<tablet"){
+    @include media("<tablet") {
       margin: 24px;
     }
 
-    .blog__blackBlock-introducing{
+    .blog__blackBlock-introducing {
       color: $colorMain;
       font-size: clamp(32px, 7vw, 60px);
       font-weight: 600;
       letter-spacing: 0.5px;
       margin-bottom: 250px;
 
-      @include media("<desktop"){
+      @include media("<desktop") {
         margin-bottom: 200px;
       }
 
-      @include media("<tablet"){
+      @include media("<tablet") {
         margin-bottom: 120px;
       }
     }
-    
-    .blog__blackBlock-co{
+
+    .blog__blackBlock-co {
       display: flex;
       justify-content: center;
       align-items: flex-start;
       margin-bottom: 180px;
 
-      @include media("<tablet"){
+      @include media("<tablet") {
         justify-content: start;
         margin-bottom: 80px;
       }
 
-      .letter{
-        width: clamp(108px,15vw,230px)
+      .letter {
+        width: clamp(108px, 15vw, 230px);
       }
 
-      .letter:last-of-type{
-        margin-left: clamp(16px, 2vw,36px);
+      .letter:last-of-type {
+        margin-left: clamp(16px, 2vw, 36px);
       }
 
-      .asterizk{
-        width: clamp(73px, 10vw ,156px);
+      .asterizk {
+        width: clamp(73px, 10vw, 156px);
         margin-left: clamp(20px, 2vw, 40px);
       }
     }
 
-    .blog__blackBlock-footer{
+    .blog__blackBlock-footer {
       display: flex;
       justify-content: end;
       padding-right: 86px;
 
-      p{
+      p {
         font-size: 28px;
         line-height: 32px;
         color: $colorMain;
       }
 
-      @include media("<tablet"){
+      @include media("<tablet") {
         padding-right: 24px;
 
-        p{
+        p {
           font-size: 20px;
           line-height: 24px;
         }

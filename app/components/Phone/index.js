@@ -159,10 +159,8 @@ export default class Phone {
 
     if (!audio) return;
     const blob = float32ArrayToMp3Blob(audio, 16000);
-    if (this.discussion.Chat.autodetect)
-      this.textRecorded = await sendToWispher(blob);
-    else
-      this.textRecorded = await sendToWispher(blob, this.discussion.Chat.sourcelang);
+    if (this.discussion.Chat.autodetect) this.textRecorded = await sendToWispher(blob);
+    else this.textRecorded = await sendToWispher(blob, this.discussion.Chat.sourcelang);
 
     this.discussion.addUserElement({ text: this.textRecorded });
   }
@@ -229,7 +227,7 @@ export default class Phone {
         // if (this.debug) return;
         this.toTalkToMe();
       } else {
-        console.log("FEELING WHEN ERROR, STOPS HERE")
+        console.log("FEELING WHEN ERROR, STOPS HERE");
         this.toProcessing();
       }
     }
@@ -313,10 +311,8 @@ export default class Phone {
 
   async onCompleteRecording(blob) {
     if (this.isRecordCanceled) return;
-    if (this.discussion.Chat.autodetect)
-      this.textRecorded = await sendToWispher(blob);
-    else
-      this.textRecorded = await sendToWispher(blob, this.discussion.Chat.sourcelang);
+    if (this.discussion.Chat.autodetect) this.textRecorded = await sendToWispher(blob);
+    else this.textRecorded = await sendToWispher(blob, this.discussion.Chat.sourcelang);
 
     this.timeoutTranscripting = setTimeout(() => {
       this.onCompleteTranscripting();

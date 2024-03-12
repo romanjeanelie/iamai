@@ -24,19 +24,18 @@ var btnsubmit,
   btnaddInputField;
 let loggedinuser;
 const URL = import.meta.env.VITE_API_URL || "https://app.iamplus.chat/index.html?lang=ad&session_id=";
-const HOST = import.meta.env.VITE_API_HOST || "https://api.iamplus.chat"
-const DB_HOST = import.meta.env.VITE_API_DB_HOST || "https://nocodb.iamplus.chat"
-const DB_TOKEN = import.meta.env.VITE_API_DB_TOKEN || "juIbsot-ERPsSlO3TdkYHRJPznr1gqrLBIpMjWZU"
-const DB_TABLE_ASSISTANT_ID = import.meta.env.VITE_API_DB_TABLE_ASSISTANT_ID || "m5aeqzjetzwiw9q"
-const DB_TABLE_SYSTEMASSISTANT_ID = import.meta.env.VITE_API_DB_TABLE_SYSTEMASSISTANT_ID || "mjf87ylyjqkbhjv"
-const ELASTIC_URL = import.meta.env.VITE_API_ELASTIC_URL || "https://api.iamplus.chat/elastic/text/bulk_index_urls"
-const ELASTIC_TOKEN = import.meta.env.VITE_API_ELASTIC_TOKEN || "iIPyByKL-3X48AzXvme9onV9p94GwrmWTqV7P5jQ"
+const HOST = import.meta.env.VITE_API_HOST || "https://api.iamplus.chat";
+const DB_HOST = import.meta.env.VITE_API_DB_HOST || "https://nocodb.iamplus.chat";
+const DB_TOKEN = import.meta.env.VITE_API_DB_TOKEN || "juIbsot-ERPsSlO3TdkYHRJPznr1gqrLBIpMjWZU";
+const DB_TABLE_ASSISTANT_ID = import.meta.env.VITE_API_DB_TABLE_ASSISTANT_ID || "m5aeqzjetzwiw9q";
+const DB_TABLE_SYSTEMASSISTANT_ID = import.meta.env.VITE_API_DB_TABLE_SYSTEMASSISTANT_ID || "mjf87ylyjqkbhjv";
+const ELASTIC_URL = import.meta.env.VITE_API_ELASTIC_URL || "https://api.iamplus.chat/elastic/text/bulk_index_urls";
+const ELASTIC_TOKEN = import.meta.env.VITE_API_ELASTIC_TOKEN || "iIPyByKL-3X48AzXvme9onV9p94GwrmWTqV7P5jQ";
 
 window.onload = async function () {
   // Use this instead
   loggedinuser = await getUser();
-  if (!loggedinuser)
-    window.location.href = "../index.html";
+  if (!loggedinuser) window.location.href = "../index.html";
   else {
     getassistant();
     getsystemassistant();
@@ -84,7 +83,7 @@ async function load() {
     saveassistant();
   });
   filesToUpload.addEventListener("change", function () {
-    displayFileName()
+    displayFileName();
   });
   chkretrieval.addEventListener("change", function () {
     if (this.checked) {
@@ -208,7 +207,7 @@ async function saveassistant() {
       }
     });
 
-    xhr.open("POST", DB_HOST+"/api/v2/tables/"+DB_TABLE_ASSISTANT_ID+"/records");
+    xhr.open("POST", DB_HOST + "/api/v2/tables/" + DB_TABLE_ASSISTANT_ID + "/records");
     xhr.setRequestHeader("accept", "application/json");
     xhr.setRequestHeader("xc-token", DB_TOKEN);
     xhr.setRequestHeader("Content-Type", "application/json");
@@ -257,7 +256,7 @@ async function duplicate(itemid) {
     }
   });
 
-  xhr.open("POST", DB_HOST+"/api/v2/tables/"+DB_TABLE_ASSISTANT_ID+"/records");
+  xhr.open("POST", DB_HOST + "/api/v2/tables/" + DB_TABLE_ASSISTANT_ID + "/records");
   xhr.setRequestHeader("accept", "application/json");
   xhr.setRequestHeader("xc-token", DB_TOKEN);
   xhr.setRequestHeader("Content-Type", "application/json");
@@ -326,7 +325,9 @@ function getassistant() {
           const assistantcarddivheaderdivbuttonimg = document.createElement("img");
           assistantcarddivheaderdivbuttonimg.setAttribute("src", "../images/indexing.svg");
           assistantcarddivheaderdivbutton.appendChild(assistantcarddivheaderdivbuttonimg);
-          assistantcarddivheaderdivbutton.addEventListener("click", (event) => updateindexstatus(item.Id, item.AgentSessionID));
+          assistantcarddivheaderdivbutton.addEventListener("click", (event) =>
+            updateindexstatus(item.Id, item.AgentSessionID)
+          );
           assistantcarddivheaderdiv.appendChild(assistantcarddivheaderdivbutton);
           // str =
           //   str +
@@ -360,7 +361,7 @@ function getassistant() {
         // str +
         // '&nbsp;&nbsp;&nbsp;<button class="button" onclick="toggleCollapse(this)"><img src="../images/down.svg"></button>';
         // str = str + "</div></header>";
-        const assistantcarddivheaderdivspace = document.createTextNode('\u00A0\u00A0\u00A0');
+        const assistantcarddivheaderdivspace = document.createTextNode("\u00A0\u00A0\u00A0");
         assistantcarddivheaderdiv.appendChild(assistantcarddivheaderdivspace);
         const assistantcarddivheaderdivtogglebutton = document.createElement("button");
         const assistantcarddivheaderdivtogglebuttonimg = document.createElement("img");
@@ -370,7 +371,6 @@ function getassistant() {
         assistantcarddivheaderdiv.appendChild(assistantcarddivheaderdivtogglebutton);
         assistantcarddivheader.appendChild(assistantcarddivheaderdiv);
         assistantcarddiv.appendChild(assistantcarddivheader);
-
 
         const assistantcarddivsection = document.createElement("section");
         // str = str + "<section>";
@@ -495,7 +495,6 @@ function getassistant() {
         // }
         // str = str + "</span></p>";
 
-
         const assistantcarddivsectionpFiles = document.createElement("p");
         const assistantcarddivsectionpFilesspan = document.createElement("span");
         assistantcarddivsectionpFilesspan.className = "ptitle";
@@ -564,7 +563,6 @@ function getassistant() {
 
         const assistantcarddivfooter = document.createElement("footer");
 
-
         // str = str + "<footer>";
         if (item.Status == "Deployed") {
           const assistantcarddivfooterbutton = document.createElement("button");
@@ -604,15 +602,16 @@ function getassistant() {
       //         sectionassistant.style.display = "block";
       //     }
     }
-
-
   });
 
   xhr.open(
     "GET",
-    DB_HOST+"/api/v2/tables/"+DB_TABLE_ASSISTANT_ID+"/records?limit=25&shuffle=0&offset=0&where=(UUID%2Ceq%2C" +
-    loggedinuser.uuid +
-    ")"
+    DB_HOST +
+      "/api/v2/tables/" +
+      DB_TABLE_ASSISTANT_ID +
+      "/records?limit=25&shuffle=0&offset=0&where=(UUID%2Ceq%2C" +
+      loggedinuser.uuid +
+      ")"
   );
   xhr.setRequestHeader("accept", "application/json");
   xhr.setRequestHeader("xc-token", DB_TOKEN);
@@ -631,7 +630,7 @@ function getsystemassistant() {
       // console.log(this.responseText);
       let data = JSON.parse(this.responseText);
       let prompts = data.list;
-      systemassistantlist.innerHTML="";
+      systemassistantlist.innerHTML = "";
       prompts.forEach(function (item) {
         // console.log(item);
 
@@ -659,7 +658,7 @@ function getsystemassistant() {
         //   '<button class="button" onclick="duplicate(\'' +
         //   item.Id +
         //   '\')"><img src="../images/duplicate.svg"></button>';
-        const assistantcarddivheaderdivspace = document.createTextNode('\u00A0\u00A0\u00A0');
+        const assistantcarddivheaderdivspace = document.createTextNode("\u00A0\u00A0\u00A0");
         assistantcarddivheaderdiv.appendChild(assistantcarddivheaderdivspace);
         const assistantcarddivheaderdivtogglebutton = document.createElement("button");
         const assistantcarddivheaderdivtogglebuttonimg = document.createElement("img");
@@ -706,7 +705,7 @@ function getsystemassistant() {
         assistantcarddivsection.appendChild(assistantcarddivsectionpRetrieval);
         // str =
         //   str + '<p><span class="ptitle">Retrieval:</span><br><span class="pbody">' + item.Retrieval + "</span></p>";
-        
+
         const assistantcarddivsectionpSearch = document.createElement("p");
         const assistantcarddivsectionpSearchspan = document.createElement("span");
         assistantcarddivsectionpSearchspan.className = "ptitle";
@@ -721,7 +720,6 @@ function getsystemassistant() {
         assistantcarddivsection.appendChild(assistantcarddivsectionpSearch);
         // str =
         //   str + '<p><span class="ptitle">Web Search:</span><br><span class="pbody">' + item.WebSearch + "</span></p>";
-        
 
         const assistantcarddivsectionpRich = document.createElement("p");
         const assistantcarddivsectionpRichspan = document.createElement("span");
@@ -740,8 +738,8 @@ function getsystemassistant() {
         //   '<p><span class="ptitle">Rich Results:</span><br><span class="pbody">' +
         //   item.rich_results +
         //   "</span></p>";
-        
-          const assistantcarddivsectionpURLS = document.createElement("p");
+
+        const assistantcarddivsectionpURLS = document.createElement("p");
         const assistantcarddivsectionpURLSspan = document.createElement("span");
         assistantcarddivsectionpURLSspan.className = "ptitle";
         assistantcarddivsectionpURLSspan.innerText = "Urls:";
@@ -772,7 +770,6 @@ function getsystemassistant() {
         //   });
         // }
         // str = str + "</span></p>";
-
 
         const assistantcarddivsectionpFiles = document.createElement("p");
         const assistantcarddivsectionpFilesspan = document.createElement("span");
@@ -838,7 +835,6 @@ function getsystemassistant() {
         //   item.store_search_fields +
         //   "</span></p>";
 
-
         // str = str + "</section><footer>";
         // str = str + "</footer></div>";
         const assistantcarddivfooter = document.createElement("footer");
@@ -851,10 +847,7 @@ function getsystemassistant() {
     }
   });
 
-  xhr.open(
-    "GET",
-    DB_HOST+"/api/v2/tables/"+DB_TABLE_SYSTEMASSISTANT_ID+"/records?limit=250&shuffle=0&offset=0"
-  );
+  xhr.open("GET", DB_HOST + "/api/v2/tables/" + DB_TABLE_SYSTEMASSISTANT_ID + "/records?limit=250&shuffle=0&offset=0");
   xhr.setRequestHeader("accept", "application/json");
   xhr.setRequestHeader("xc-token", DB_TOKEN);
 
@@ -882,7 +875,7 @@ function updateassistant(itemid, Status, ChatbotURL, AgentSessionID, Streamid, D
     }
   });
 
-  xhr.open("PATCH", DB_HOST+"/api/v2/tables/"+DB_TABLE_ASSISTANT_ID+"/records");
+  xhr.open("PATCH", DB_HOST + "/api/v2/tables/" + DB_TABLE_ASSISTANT_ID + "/records");
   xhr.setRequestHeader("accept", "application/json");
   xhr.setRequestHeader("xc-token", DB_TOKEN);
   xhr.setRequestHeader("Content-Type", "application/json");
@@ -894,7 +887,7 @@ function deleteassistant(itemid) {
   let text = "Please confirm to delete the prompt!";
   if (confirm(text) == true) {
     var data = JSON.stringify({
-      "Id": itemid
+      Id: itemid,
     });
 
     var xhr = new XMLHttpRequest();
@@ -906,7 +899,7 @@ function deleteassistant(itemid) {
         // location.reload();
       }
     });
-    xhr.open("DELETE", DB_HOST+"/api/v2/tables/"+DB_TABLE_ASSISTANT_ID+"/records");
+    xhr.open("DELETE", DB_HOST + "/api/v2/tables/" + DB_TABLE_ASSISTANT_ID + "/records");
     xhr.setRequestHeader("accept", "*/*");
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader("xc-token", DB_TOKEN);
@@ -977,7 +970,7 @@ async function updateindexstatus(itemid, session_id) {
     }
   });
 
-  xhr.open("GET", ELASTIC_URL+"?session_id=" + session_id);
+  xhr.open("GET", ELASTIC_URL + "?session_id=" + session_id);
   xhr.send();
 }
 
@@ -1012,8 +1005,12 @@ async function deploy(itemid) {
         country_name: loggedinuser.country_name ? loggedinuser.country_name : "",
         pincode: loggedinuser.pincode ? loggedinuser.pincode : "",
         iso_2d_country_code: loggedinuser.iso_2d_country_code ? loggedinuser.iso_2d_country_code : "",
-        administrative_area_level_2: loggedinuser.administrative_area_level_2 ? loggedinuser.administrative_area_level_2 : "",
-        administrative_area_level_1: loggedinuser.administrative_area_level_1 ? loggedinuser.administrative_area_level_1 : "",
+        administrative_area_level_2: loggedinuser.administrative_area_level_2
+          ? loggedinuser.administrative_area_level_2
+          : "",
+        administrative_area_level_1: loggedinuser.administrative_area_level_1
+          ? loggedinuser.administrative_area_level_1
+          : "",
       },
     });
 
@@ -1036,7 +1033,7 @@ async function deploy(itemid) {
       }
     });
 
-    xhr.open("POST", HOST+"/workflows/agent");
+    xhr.open("POST", HOST + "/workflows/agent");
     xhr.setRequestHeader("Content-Type", "application/json");
 
     xhr.send(data);
@@ -1061,8 +1058,12 @@ async function deploy(itemid) {
         country_name: loggedinuser.country_name ? loggedinuser.country_name : "",
         pincode: loggedinuser.pincode ? loggedinuser.pincode : "",
         iso_2d_country_code: loggedinuser.iso_2d_country_code ? loggedinuser.iso_2d_country_code : "",
-        administrative_area_level_2: loggedinuser.administrative_area_level_2 ? loggedinuser.administrative_area_level_2 : "",
-        administrative_area_level_1: loggedinuser.administrative_area_level_1 ? loggedinuser.administrative_area_level_1 : "",
+        administrative_area_level_2: loggedinuser.administrative_area_level_2
+          ? loggedinuser.administrative_area_level_2
+          : "",
+        administrative_area_level_1: loggedinuser.administrative_area_level_1
+          ? loggedinuser.administrative_area_level_1
+          : "",
       },
     });
     var xhr = new XMLHttpRequest();
@@ -1084,7 +1085,7 @@ async function deploy(itemid) {
       }
     });
 
-    xhr.open("POST", HOST+"/workflows/personal_assistant");
+    xhr.open("POST", HOST + "/workflows/personal_assistant");
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(data);
   }
@@ -1100,7 +1101,7 @@ async function deactivate(itemid) {
       updateassistant(itemid, "Ready To Deploy", "", assistant.AgentSessionID, "", assistant.data_store_name);
     }
   });
-  xhr.open("DELETE", HOST+"/workflows/workflow?session_id=" + assistant.AgentSessionID);
+  xhr.open("DELETE", HOST + "/workflows/workflow?session_id=" + assistant.AgentSessionID);
   xhr.send();
 }
 
@@ -1119,7 +1120,7 @@ const getassistant_itemid = (itemid) =>
       }
     });
 
-    xhr.open("GET", DB_HOST+"/api/v2/tables/"+DB_TABLE_ASSISTANT_ID+"/records/" + itemid);
+    xhr.open("GET", DB_HOST + "/api/v2/tables/" + DB_TABLE_ASSISTANT_ID + "/records/" + itemid);
     xhr.setRequestHeader("accept", "application/json");
     xhr.setRequestHeader("xc-token", DB_TOKEN);
 
@@ -1141,7 +1142,7 @@ const getsystemassistant_itemid = (itemid) =>
       }
     });
 
-    xhr.open("GET", DB_HOST+"/api/v2/tables/"+DB_TABLE_SYSTEMASSISTANT_ID+"/records/" + itemid);
+    xhr.open("GET", DB_HOST + "/api/v2/tables/" + DB_TABLE_SYSTEMASSISTANT_ID + "/records/" + itemid);
     xhr.setRequestHeader("accept", "application/json");
     xhr.setRequestHeader("xc-token", DB_TOKEN);
 

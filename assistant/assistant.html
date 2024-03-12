@@ -1,121 +1,133 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" type="image/icon" href="./images/favicon.ico" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="/scss/index.scss" />
+    <link rel="stylesheet" href="./assistant.css" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-53ZK5Q9K6T"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-53ZK5Q9K6T");
+    </script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="shortcut icon" type="image/icon" href="./images/favicon.ico" />
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <link rel="stylesheet" href="/scss/index.scss" />
-  <link rel="stylesheet" href="./assistant.css" />
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-53ZK5Q9K6T"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-53ZK5Q9K6T');
-  </script>
-</head>
+  <body class="assistantbody">
+    <!-- Menu Navbar -->
+    {{> navBar}}
 
-<body class="assistantbody">
-  <!-- Menu Navbar -->
-  {{> navBar}}
-
-  <div class="container page-assistant">
-    <!-- Logo-->
-    {{> assistant/logo}}
-    <div class="containerassistant">
-      <section id="sectionassistant">
-        <div class="assistantinput-header">
-          <header>
-            Add Assistant
-            <button class="button" id="btncloseassistant"><img src="../images/close.svg" /></button>
-          </header>
-        </div>
-        <div class="assistant-input">
-          <label>Name<br /></label>
-          <input type="text" id="txtname" />
-          <label>System Prompt<br /></label>
-          <textarea id="txtprompt" placeholder=""></textarea>
-          <label>User Prompt<br /></label>
-          <textarea id="txtuserprompt" placeholder=""></textarea>
-          <span class="checkspan">Stream &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <label class="switch">
-              <input type="checkbox" id="stream-toggle" />
-              <span class="assistantslider"></span>
-            </label>
-          </span>
-          <span class="checkspan">Agent &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <label class="switch">
-              <input type="checkbox" id="agent-toggle" />
-              <span class="assistantslider"></span>
-            </label>
-          </span>
-          <span class="checkspan">Retrieval &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <label class="switch">
-              <input type="checkbox" id="retrieval-toggle" />
-              <span class="assistantslider"></span>
-            </label>
-          </span>
-          <section id="sectionlinks">
-            <span class="checkspan">Web Search &nbsp;&nbsp;
-              <label class="switch">
-                <input type="checkbox" id="web-search-toggle" />
-                <span class="assistantslider"></span>
-              </label> </span><br />
-            <span class="checkspan">Rich Results &nbsp;&nbsp;
-              <label class="switch">
-                <input type="checkbox" id="rich-results-toggle" />
-                <span class="assistantslider"></span>
-              </label> </span><br />
-            <label>Links</label>
-            <div id="input-form">
-              <input type="text" class="link" name="inputField[]" placeholder="Enter link" />
-            </div>
-            <div class="divaddmore">
-              <button class="button addmore" id="btnaddInputField"><img src="../images/addmore.svg" /></button>
-            </div>
-
-            <label id="filesTo">Files<br /></label>
-            <input type="file" name="filesToUpload" id="filesToUpload" style="display: none" multiple />
-            <span id="fileName" style="display: none"></span>
-            <img class="button" src="../images/upload.svg" alt="Upload" id="uploadImage"
-              onclick="document.getElementById('filesToUpload').click();return false;" />
-            <br />
-            <label>Search Fields<br /></label>
-            <input type="text" id="txtsearchfields" />
-          </section>
-          <div class="btnsave">
-            <button id="btnsubmit" class="button" type="button"><img src="../images/save.svg" /></button>
+    <div class="container page-assistant">
+      <!-- Logo-->
+      {{> assistant/logo}}
+      <div class="containerassistant">
+        <section id="sectionassistant">
+          <div class="assistantinput-header">
+            <header>
+              Add Assistant
+              <button class="button" id="btncloseassistant"><img src="../images/close.svg" /></button>
+            </header>
           </div>
-        </div>
-      </section>
+          <div class="assistant-input">
+            <label>Name<br /></label>
+            <input type="text" id="txtname" />
+            <label>System Prompt<br /></label>
+            <textarea id="txtprompt" placeholder=""></textarea>
+            <label>User Prompt<br /></label>
+            <textarea id="txtuserprompt" placeholder=""></textarea>
+            <span class="checkspan"
+              >Stream &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <label class="switch">
+                <input type="checkbox" id="stream-toggle" />
+                <span class="assistantslider"></span>
+              </label>
+            </span>
+            <span class="checkspan"
+              >Agent &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <label class="switch">
+                <input type="checkbox" id="agent-toggle" />
+                <span class="assistantslider"></span>
+              </label>
+            </span>
+            <span class="checkspan"
+              >Retrieval &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <label class="switch">
+                <input type="checkbox" id="retrieval-toggle" />
+                <span class="assistantslider"></span>
+              </label>
+            </span>
+            <section id="sectionlinks">
+              <span class="checkspan"
+                >Web Search &nbsp;&nbsp;
+                <label class="switch">
+                  <input type="checkbox" id="web-search-toggle" />
+                  <span class="assistantslider"></span>
+                </label> </span
+              ><br />
+              <span class="checkspan"
+                >Rich Results &nbsp;&nbsp;
+                <label class="switch">
+                  <input type="checkbox" id="rich-results-toggle" />
+                  <span class="assistantslider"></span>
+                </label> </span
+              ><br />
+              <label>Links</label>
+              <div id="input-form">
+                <input type="text" class="link" name="inputField[]" placeholder="Enter link" />
+              </div>
+              <div class="divaddmore">
+                <button class="button addmore" id="btnaddInputField"><img src="../images/addmore.svg" /></button>
+              </div>
 
-      <section id="sectionassistantstatus">
-        <div class="assistant-header">
-          <header>
-            Assistants
-            <button class="button" id="btnaddassistant"><img src="../images/addassistant.svg" /></button>
-          </header>
-        </div>
-        <div id="assistantlist"></div>
-      </section>
-      <section id="sectionsystemassistant">
-        <div class="assistant-header">
-          <header>System Assistants</header>
-        </div>
-        <div id="systemassistantlist"></div>
-      </section>
+              <label id="filesTo">Files<br /></label>
+              <input type="file" name="filesToUpload" id="filesToUpload" style="display: none" multiple />
+              <span id="fileName" style="display: none"></span>
+              <img
+                class="button"
+                src="../images/upload.svg"
+                alt="Upload"
+                id="uploadImage"
+                onclick="document.getElementById('filesToUpload').click();return false;"
+              />
+              <br />
+              <label>Search Fields<br /></label>
+              <input type="text" id="txtsearchfields" />
+            </section>
+            <div class="btnsave">
+              <button id="btnsubmit" class="button" type="button"><img src="../images/save.svg" /></button>
+            </div>
+          </div>
+        </section>
+
+        <section id="sectionassistantstatus">
+          <div class="assistant-header">
+            <header>
+              Assistants
+              <button class="button" id="btnaddassistant"><img src="../images/addassistant.svg" /></button>
+            </header>
+          </div>
+          <div id="assistantlist"></div>
+        </section>
+        <section id="sectionsystemassistant">
+          <div class="assistant-header">
+            <header>System Assistants</header>
+          </div>
+          <div id="systemassistantlist"></div>
+        </section>
+      </div>
     </div>
-  </div>
-  <!-- <script type="module" src="/app/index.js"></script> -->
-  <script type="module">
-    import Navbar from "/app/components/Navbar.js";
-    console.log("test");
-    new Navbar();
-  </script>
-  <script type="module" src="./assistant.js"></script>
-</body>
-
+    <!-- <script type="module" src="/app/index.js"></script> -->
+    <script type="module">
+      import Navbar from "/app/components/Navbar.js";
+      console.log("test");
+      new Navbar();
+    </script>
+    <script type="module" src="./assistant.js"></script>
+  </body>
 </html>

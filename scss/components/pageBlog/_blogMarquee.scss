@@ -1,80 +1,79 @@
 $marquee-animation-duration: 15s;
 $marquee-gap: 24px;
 
-.blogMarquee__container{
-
-  .blogMarquee__header{
-    p{
+.blogMarquee__container {
+  .blogMarquee__header {
+    p {
       margin-bottom: 24px;
       font-size: 20px;
 
-      @include media("<tablet"){
+      @include media("<tablet") {
         margin-bottom: 16px;
         font-size: 16px;
       }
     }
   }
 
-  .blogMarquee__app-marquees{
+  .blogMarquee__app-marquees {
     margin: 80px 0 60px;
     overflow-x: hidden;
 
-    @include media("<tablet"){
+    @include media("<tablet") {
       margin: 24px 0 40px;
     }
   }
 
-  .blogMarquee__app-marquee{
+  .blogMarquee__app-marquee {
     padding: 6px 0;
     position: relative;
     display: flex;
     gap: $marquee-gap;
   }
 
-  .marquee__content{
+  .marquee__content {
     display: flex;
     gap: $marquee-gap;
     align-items: center;
     animation: marquee $marquee-animation-duration linear infinite;
   }
 
-  .marquee__content.reverse{
+  .marquee__content.reverse {
     animation: reverse-marquee $marquee-animation-duration linear infinite;
   }
 
-  .blogMarquee__app-marquee:last-of-type{
+  .blogMarquee__app-marquee:last-of-type {
     margin-top: 40px;
 
-    @include media("<tablet"){
+    @include media("<tablet") {
       margin-top: 24px;
     }
   }
 
-  .blogMarquee__app-logo{
+  .blogMarquee__app-logo {
     flex: none;
     width: min(10vw, 120px);
     height: min(10vw, 120px);
     background-color: $colorMain;
     border-radius: 24px;
     overflow: hidden;
-    box-shadow: 
-      2.500000238418579px 5.000000476837158px 5.000000476837158px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 2.500000238418579px 5.000000476837158px 5.000000476837158px 0px rgba(0, 0, 0, 0.25);
 
-      &.teams-logo, &.outlook-logo{
-        padding: min(1vw, 8px);
-      }
+    &.teams-logo,
+    &.outlook-logo {
+      padding: min(1vw, 8px);
+    }
 
-    @include media("<tablet"){
+    @include media("<tablet") {
       border-radius: clamp(4px, 2vw, 24px);
     }
   }
 
-  .blogMarquee__footer{
+  .blogMarquee__footer {
     font-size: 28px;
     font-weight: 500;
     line-height: 32px;
 
-    span{
+    span {
       color: $colorBlack;
     }
   }
@@ -85,15 +84,15 @@ $marquee-gap: 24px;
     transform: translateX(0);
   }
   100% {
-    transform:  translateX(calc(-100% - $marquee-gap))
+    transform: translateX(calc(-100% - $marquee-gap));
   }
 }
 
 @keyframes reverse-marquee {
   0% {
-    transform:  translateX(calc(-100% - $marquee-gap))
+    transform: translateX(calc(-100% - $marquee-gap));
   }
   100% {
-    transform: translateX(0)
+    transform: translateX(0);
   }
 }

@@ -1,15 +1,19 @@
 ## How to use
+
 1. Clone the repo
-``` bash
+
+```bash
 git clone https://your-repo-url.git
 ```
 
 2. Install dependencies
-``` bash
+
+```bash
 npm install
 ```
 
 3. Start the dev server
-``` bash
+
+```bash
 npm run dev
 ```

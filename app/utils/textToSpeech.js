@@ -1,4 +1,6 @@
-const ELEVENLABS_URL = import.meta.env.VITE_API_ELEVENLABS_URL || "https://api.elevenlabs.io/v1/text-to-speech/ZVKjrJiWeTKF1FZwjENi/stream?optimize_streaming_latency=4";
+const ELEVENLABS_URL =
+  import.meta.env.VITE_API_ELEVENLABS_URL ||
+  "https://api.elevenlabs.io/v1/text-to-speech/ZVKjrJiWeTKF1FZwjENi/stream?optimize_streaming_latency=4";
 const ELEVENLABS_TOKEN = import.meta.env.VITE_API_ELEVENLABS_TOKEN || "bddfcabff8951ebb9e925d506452df93";
 function base64ToUint8Array(base64) {
   const binaryString = atob(base64);
@@ -103,8 +105,7 @@ export default function textToSpeech(text, targetlang, index, attempt = 0) {
     "Content-Type": "application/json",
   };
   var model_id = "eleven_turbo_v2";
-  if(targetlang != "en")
-  {
+  if (targetlang != "en") {
     model_id = "eleven_multilingual_v2";
   }
   const body = JSON.stringify({
@@ -123,8 +124,8 @@ export default function textToSpeech(text, targetlang, index, attempt = 0) {
   })
     .then((response) => response.blob())
     .then((audioBlob) => {
-      console.log("from text to speech  : " , audioBlob, index);
-      return ({ audio: getAudio(audioBlob), index })
+      console.log("from text to speech  : ", audioBlob, index);
+      return { audio: getAudio(audioBlob), index };
     })
     .catch((error) => {
       console.error(`Error on attempt ${attempt}:`, error);
@@ -132,7 +133,7 @@ export default function textToSpeech(text, targetlang, index, attempt = 0) {
         // If this was the first or second attempt, try again
         return new Promise((resolve, reject) => {
           // Wait for 1 second before retrying
-          console.error
+          console.error;
           setTimeout(() => {
             textToSpeech(text, targetlang, index, attempt + 1)
               .then(resolve) // If the retry is successful, resolve this promise
@@ -144,5 +145,4 @@ export default function textToSpeech(text, targetlang, index, attempt = 0) {
         throw error;
       }
     });
-  }
-
+}

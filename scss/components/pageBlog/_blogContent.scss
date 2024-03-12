@@ -1,94 +1,90 @@
-
-.blogContent__container h2{
+.blogContent__container h2 {
   margin-bottom: 80px;
 
-  @include media("<phone"){
+  @include media("<phone") {
     margin-bottom: 40px;
   }
-  span{
+  span {
     color: $colorBlue;
-  } 
+  }
 }
 
-.blogContent__videos-grid{
+.blogContent__videos-grid {
   display: grid;
   gap: 32px;
   grid-template-columns: repeat(2, 1fr);
 
-  @include media ("<phone"){
+  @include media("<phone") {
     gap: 0;
   }
 }
 
-.blogContent__video-container{
-
-  @include media ("<phone"){
+.blogContent__video-container {
+  @include media("<phone") {
     grid-column: span 2;
 
-    &:first-of-type{
+    &:first-of-type {
       margin-bottom: 40px;
     }
   }
 
-  .blogContent__video{
+  .blogContent__video {
     border-radius: 21.76px;
     overflow: hidden;
     box-shadow: 2px 0px 12px 2px #00000014;
 
-    video{
+    video {
       object-fit: cover;
       transform: scale(1.1);
     }
   }
 
-
-
-  .blogContent__video-description{
+  .blogContent__video-description {
     margin-top: 24px;
     font-size: 24px;
     font-weight: 500;
     line-height: 28px;
 
-    span{
+    span {
       color: $colorBlack;
     }
 
-    .mobile-break{
+    .mobile-break {
       display: none;
     }
 
-    @include media("<phone"){
+    @include media("<phone") {
       font-size: 20px;
       line-height: 24px;
 
-      .desktop-break{
+      .desktop-break {
         display: none;
       }
 
-      .mobile-break{
+      .mobile-break {
         display: inline;
       }
     }
   }
 }
 
-.blogContent__text-grid{
+.blogContent__text-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 20px;
 
-  h2{
+  h2 {
     grid-column: span 2;
   }
 
-  ul{
+  ul {
     grid-column: span 3;
     display: flex;
     flex-direction: column;
-    gap: 32px
+    gap: 32px;
   }
 
-  li{
+  li {
     font-size: 22px;
     font-weight: 500;
     line-height: 24px;
@@ -96,22 +92,21 @@
     text-align: left;
     color: $colorBlackForGreyPage;
 
-    &:nth-of-type(2){
+    &:nth-of-type(2) {
       color: $colorBlack;
     }
 
-    span{
+    span {
       color: $colorBlack;
     }
   }
 
-  @include media ("<phone"){
-
-    h2{
+  @include media("<phone") {
+    h2 {
       grid-column: span 5;
     }
 
-    ul{
+    ul {
       grid-column: span 5;
     }
   }

@@ -8,12 +8,12 @@ function getDomainAndFavicon(url) {
 }
 
 export default class DiscussionTabs {
-  constructor({container, removeStatus, scrollToBottom, emitter}){
+  constructor({ container, removeStatus, scrollToBottom, emitter }) {
     this.container = container;
     this.emitter = emitter;
     this.removeStatus = removeStatus;
     this.scrollToBottom = scrollToBottom;
-      
+
     this.selectedTab = "";
     this.tabsHeaderContainer = null;
     this.tabsContentContainer = null;
@@ -26,7 +26,7 @@ export default class DiscussionTabs {
     this.init();
   }
 
-  init(){
+  init() {
     if (this.tabsHeaderContainer || this.tabsContentContainer) return;
     this.tabsHeaderContainer = document.createElement("ul");
     this.tabsHeaderContainer.className = "discussion__tabs-header hidden";
@@ -45,13 +45,13 @@ export default class DiscussionTabs {
     } else {
       li.style.order = 1;
     }
-  
+
     li.textContent = tabName;
 
     this.tabs.push(tabName);
 
     this.tabsHeaderContainer.appendChild(li);
-    if (tabName === "Images"){
+    if (tabName === "Images") {
       this.createImageSkeletons(li);
     }
     this.handleTabClick(li);
@@ -59,7 +59,7 @@ export default class DiscussionTabs {
 
   handleTabClick(tab) {
     tab.addEventListener("click", () => {
-      this.updateTabUi(tab)
+      this.updateTabUi(tab);
     });
   }
 
@@ -68,12 +68,12 @@ export default class DiscussionTabs {
 
     if (this.selectedTab === tab.textContent) {
       // If the clicked tab is already the selected tab, remove 'active'
-      tab.classList.remove('active');
+      tab.classList.remove("active");
       this.selectedTab = ""; // Reset selectedTab
     } else {
       // If the clicked tab is not the selected tab, make it active
-      this.tabsHeaderContainer.querySelectorAll('li').forEach(li => li.classList.remove('active'));
-      tab.classList.add('active');
+      this.tabsHeaderContainer.querySelectorAll("li").forEach((li) => li.classList.remove("active"));
+      tab.classList.add("active");
       this.selectedTab = tab.textContent;
     }
 
@@ -84,31 +84,31 @@ export default class DiscussionTabs {
     } else if (this.selectedTab === "Images") {
       this.sources?.classList.add("none");
       this.imagesContainer?.classList.remove("none");
-    } else if (this.selectedTab ==="") {
+    } else if (this.selectedTab === "") {
       !this.sources?.classList.contains("none") && this.sources?.classList.add("none");
       !this.imagesContainer?.classList.contains("none") && this.imagesContainer?.classList.add("none");
     }
   }
 
-  displayDefaultTab(){
+  displayDefaultTab() {
     // by default if there are images, we display the images tab
-    const hasImages = this.tabs.some(tab => tab === "Images");
+    const hasImages = this.tabs.some((tab) => tab === "Images");
     if (hasImages) {
       const defaultTab = this.tabsHeaderContainer.querySelector(".Images");
       this.updateTabUi(defaultTab);
     } else {
       // if there are no images, we display the first tab available
-      const defaultTab = this.tabsHeaderContainer.querySelector(`.${this.tabs[0]}`)
+      const defaultTab = this.tabsHeaderContainer.querySelector(`.${this.tabs[0]}`);
       this.updateTabUi(defaultTab);
     }
   }
 
-  showTabs(){
+  showTabs() {
     this.tabsHeaderContainer.classList.remove("hidden");
     this.tabsContentContainer.classList.remove("hidden");
   }
-  
-  initSources(sourcesData){
+
+  initSources(sourcesData) {
     this.sources = document.createElement("div");
     this.sources.className = "images__sources none";
 
@@ -120,7 +120,7 @@ export default class DiscussionTabs {
       sourceEl.target = "_blank";
 
       const { domain, favicon } = getDomainAndFavicon(source);
-      
+
       const faviconEl = document.createElement("img");
       faviconEl.src = favicon;
       sourceEl.appendChild(faviconEl);
@@ -134,13 +134,13 @@ export default class DiscussionTabs {
     this.tabsContentContainer.appendChild(this.sources);
   }
 
-  async initImages(srcs){
+  async initImages(srcs) {
     this.imagesContainer = document.createElement("div");
     this.imagesContainer.className = "images__container";
 
     const successfulSrcs = await this.loadImages(srcs);
 
-    this.imagesSkeletons.forEach(skeleton => this.skeletonContainer.removeChild(skeleton));
+    this.imagesSkeletons.forEach((skeleton) => this.skeletonContainer.removeChild(skeleton));
 
     const imgs = successfulSrcs.map((src) => {
       const img = document.createElement("img");
@@ -194,7 +194,7 @@ export default class DiscussionTabs {
     );
 
     return successfulSrcs;
-  }  
+  }
 
   createImageSkeletons() {
     this.skeletonContainer = document.createElement("div");
@@ -206,19 +206,16 @@ export default class DiscussionTabs {
       this.imagesSkeletons.push(skeleton);
     }
 
-    this.imagesSkeletons.forEach(skeleton => this.skeletonContainer.appendChild(skeleton));
+    this.imagesSkeletons.forEach((skeleton) => this.skeletonContainer.appendChild(skeleton));
     this.tabsHeaderContainer.appendChild(this.skeletonContainer);
 
-    this.imagesSkeletons.forEach((skeleton,idx)=> {
-      anim(skeleton, [
-        { transform:"scaleY(0)" },
-        { transform: "scaleY(1)" },
-      ], {
+    this.imagesSkeletons.forEach((skeleton, idx) => {
+      anim(skeleton, [{ transform: "scaleY(0)" }, { transform: "scaleY(1)" }], {
         duration: 500,
         delay: 50 * idx,
         fill: "forwards",
         ease: "ease-out",
-      })
-    })
+      });
+    });
   }
 }

@@ -21,7 +21,9 @@
       border-top-color: $backgroundColorBluePage;
       opacity: 0.6;
 
-      transition: opacity 0.3s ease-in-out, border-color 0.3s ease-in-out;
+      transition:
+        opacity 0.3s ease-in-out,
+        border-color 0.3s ease-in-out;
       &.active,
       &:hover {
         border-top-color: $colorMain;

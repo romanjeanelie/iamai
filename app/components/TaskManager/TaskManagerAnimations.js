@@ -1,3 +1,1 @@
-export default class TaskManagerAnimations {
-  
-}
+export default class TaskManagerAnimations {}

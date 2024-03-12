@@ -1,5 +1,5 @@
 .login-page {
-  position:fixed;
+  position: fixed;
   color: $colorMain;
   z-index: 5;
   background: $backgroundColorGreyPage;
@@ -13,19 +13,19 @@
   flex-direction: column;
   align-items: center;
   transform: translateY(0);
-  transition : transform 800ms ease-in-out;
+  transition: transform 800ms ease-in-out;
 
   &.hidden {
-    transform: translateY(-100%)
-  } 
+    transform: translateY(-100%);
+  }
 
-  &.none{ 
-    display: none
+  &.none {
+    display: none;
   }
 }
 
 .divgoogle {
-  border: 1px solid #DEDDDC;
+  border: 1px solid #dedddc;
   border-radius: 60px;
 }
 
@@ -36,7 +36,7 @@
   flex-direction: column;
 }
 
-.divwaitlist{
+.divwaitlist {
   display: none;
   justify-content: center;
   align-items: center;
@@ -46,14 +46,14 @@
 .divloginbtn {
   // margin-bottom: 100px;
 }
-.divintroinfo{
+.divintroinfo {
   position: relative;
   display: flex;
 }
 .divintrotext {
   color: $colorBlack;
   text-align: center;
-  font-feature-settings: 'liga' off;
+  font-feature-settings: "liga" off;
   font-family: "Circular";
   font-size: 200px;
   font-style: normal;
@@ -75,7 +75,7 @@
 .divintrologo {
   color: $colorBlack;
   text-align: center;
-  font-feature-settings: 'liga' off;
+  font-feature-settings: "liga" off;
   font-family: "Circular";
   font-size: 180px;
   font-style: normal;
@@ -110,7 +110,7 @@
 .divtext {
   color: $colorBlack;
   text-align: center;
-  font-feature-settings: 'liga' off;
+  font-feature-settings: "liga" off;
   font-family: "Circular";
   font-size: 24px;
   font-style: normal;
@@ -129,7 +129,7 @@
 .divinfotext {
   color: $colorBlack;
   text-align: center;
-  font-feature-settings: 'liga' off;
+  font-feature-settings: "liga" off;
   font-family: "Circular";
   font-size: 66px;
   font-style: normal;
@@ -149,7 +149,7 @@
 .divlink {
   color: rgba($colorBlack, 0.48);
   text-align: center;
-  font-feature-settings: 'liga' off;
+  font-feature-settings: "liga" off;
   font-family: "Circular";
   font-size: 16px;
   font-style: normal;
@@ -164,9 +164,8 @@
     letter-spacing: 0.45px;
     margin-bottom: 128px;
   }
-
 }
-.divwaitlistlogo{
+.divwaitlistlogo {
   margin-bottom: 132px;
   @include media("<tablet") {
     margin-bottom: 80px;
@@ -175,7 +174,7 @@
 .divwaitlisttext {
   color: $colorBlack;
   text-align: center;
-  font-feature-settings: 'liga' off;
+  font-feature-settings: "liga" off;
   font-family: "Circular";
   font-size: 24px;
   font-style: normal;

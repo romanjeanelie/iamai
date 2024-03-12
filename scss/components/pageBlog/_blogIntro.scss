@@ -1,14 +1,14 @@
-.blogIntro__container{
-  h1{
+.blogIntro__container {
+  h1 {
     margin-bottom: 60px;
     font-size: clamp(36px, 7vw, 60px);
   }
 
-  span{
+  span {
     color: $colorBlack;
   }
 
-  p{
+  p {
     font-size: 24px;
     font-weight: 600;
     line-height: 28px;
@@ -16,28 +16,28 @@
     text-align: left;
     color: $colorBlackForGreyPage;
 
-    .mobile-break{
-      display:none
+    .mobile-break {
+      display: none;
     }
 
-    @include media("<tablet"){
+    @include media("<tablet") {
       font-size: 22px;
 
-      .desktop-break{
+      .desktop-break {
         display: none;
       }
 
-      .mobile-break{
+      .mobile-break {
         display: inline;
       }
     }
   }
 
-  h3{
+  h3 {
     margin-top: 80px;
     color: $colorBlackForGreyPage;
 
-    @include media("<tablet"){
+    @include media("<tablet") {
       margin-top: 60px;
       font-size: 22px;
       font-weight: 600;

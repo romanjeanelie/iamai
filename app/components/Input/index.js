@@ -15,13 +15,19 @@ import sendToWispher from "../../utils/audio/sendToWhisper";
 import { colorMain } from "../../../scss/variables/_colors.module.scss";
 
 function isLetterKey(event) {
-  
-  console.log("event.key", event.key)
-  console.log("event.key.length",event.key.length)
+  console.log("event.key", event.key);
+  console.log("event.key.length", event.key.length);
   const keyCode = event.keyCode;
-  // return (keyCode >= 65 && keyCode <= 90); // Key codes for A-Z  
-  if (event.key.length === 1 && event.key.match(/[a-z]/i) && !event.ctrlKey && !event.altKey && !event.metaKey && !event.shiftKey)
-    return event.key
+  // return (keyCode >= 65 && keyCode <= 90); // Key codes for A-Z
+  if (
+    event.key.length === 1 &&
+    event.key.match(/[a-z]/i) &&
+    !event.ctrlKey &&
+    !event.altKey &&
+    !event.metaKey &&
+    !event.shiftKey
+  )
+    return event.key;
 }
 
 const STATUS = {
@@ -102,7 +108,7 @@ export default class Input {
         onImageCancel: () => {
           this.currentImages = [];
           this.goToInitial({ disableInput: false });
-        }
+        },
       },
       this.pageEl,
       this.emitter
@@ -124,8 +130,9 @@ export default class Input {
     this.addListeners();
 
     // Emitter
-    this.emitter.on("input:toWrite",()=> {
-      this.toWrite.bind(this)});
+    this.emitter.on("input:toWrite", () => {
+      this.toWrite.bind(this);
+    });
     this.emitter.on("input:updateImages", this.updateImages.bind(this));
 
     // TEMP
@@ -200,10 +207,8 @@ export default class Input {
   async onCompleteRecording(blob) {
     if (this.isRecordCanceled) return;
 
-    if (this.discussion.Chat.autodetect)
-      this.textRecorded = await sendToWispher(blob);
-    else
-      this.textRecorded = await sendToWispher(blob, this.discussion.Chat.sourcelang);
+    if (this.discussion.Chat.autodetect) this.textRecorded = await sendToWispher(blob);
+    else this.textRecorded = await sendToWispher(blob, this.discussion.Chat.sourcelang);
 
     this.timeoutTranscripting = setTimeout(() => {
       this.onCompleteTranscripting();

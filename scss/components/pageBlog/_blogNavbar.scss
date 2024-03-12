@@ -1,4 +1,4 @@
-.blogNav__container{
+.blogNav__container {
   position: fixed;
   top: 0;
   left: 0;
@@ -13,20 +13,16 @@
     padding: 48px 24px 0px;
   }
 
-
-  &.hidden{
+  &.hidden {
     opacity: 0;
     pointer-events: none;
   }
 }
 
-.blogNav__logo{
+.blogNav__logo {
   padding: 12px;
 
-  img{
+  img {
     width: 24px;
   }
 }
-
-
-

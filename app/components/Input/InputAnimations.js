@@ -46,7 +46,7 @@ export default class InputAnimations {
     this.logoEl = document.querySelector(".logo__main");
     this.logoMobileEl = document.querySelector(".logo__mobile");
     this.categoriesListEl = document.querySelector(".categories__list--container");
-    console.log(this.categoriesListEl, this.carousselEl)
+    console.log(this.categoriesListEl, this.carousselEl);
     this.carousselEl = document.querySelector(".caroussel__container");
     this.navbarEl = document.querySelector(".nav");
   }

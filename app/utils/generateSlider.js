@@ -5,9 +5,9 @@ export default function generateSlider(data, isOdd, container) {
     <div class="blogSlider__section">
       <div class="blog__container">
         <div class="blogSlider__header">
-          <h1 class="${isOdd && 'centered'}" >${data.h1}</h1>
-          ${data.h4 ? `<h4>${data.h4} <span> ${data.h4Span} </span></h4>` : ''}
-          <p class="${isOdd && 'centered'}" >${data.p}</p>
+          <h1 class="${isOdd && "centered"}" >${data.h1}</h1>
+          ${data.h4 ? `<h4>${data.h4} <span> ${data.h4Span} </span></h4>` : ""}
+          <p class="${isOdd && "centered"}" >${data.p}</p>
         </div>
       </div>
 
@@ -64,7 +64,7 @@ export default function generateSlider(data, isOdd, container) {
         </p>
       </div>
     </div>
-  `
+  `;
 
   container.innerHTML += html;
 }

@@ -1,6 +1,4 @@
-
-
-.blogHero__container{
+.blogHero__container {
   position: relative;
   height: calc(85vh - 124px); // Fallback for browsers not supporting svh
   height: calc(85svh - 124px);
@@ -17,7 +15,7 @@
   }
 }
 
-.blogHero__videoBg{
+.blogHero__videoBg {
   position: absolute;
   top: -124px;
   left: 0;
@@ -27,13 +25,13 @@
   opacity: 0.9;
   z-index: -1;
 
-  video{
+  video {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  &.mobile-video{
+  &.mobile-video {
     display: none;
   }
 
@@ -43,17 +41,17 @@
   }
 
   @include media("<phone") {
-    &.desktop-video{
+    &.desktop-video {
       display: none;
     }
 
-    &.mobile-video{
+    &.mobile-video {
       display: block;
     }
   }
 }
 
-.blogHero__content{
+.blogHero__content {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -61,10 +59,10 @@
   gap: 24px;
 }
 
-.blogHero__lottieAnimation{
+.blogHero__lottieAnimation {
   position: relative;
-  width: min(400px , 35vh);
-  height: min(400px , 35vh);
+  width: min(400px, 35vh);
+  height: min(400px, 35vh);
 
   @include media("<tablet") {
     margin-top: 22px;
@@ -80,15 +78,15 @@
   }
 }
 
-.blogHero__headline{
-  order:1;
+.blogHero__headline {
+  order: 1;
   text-align: center;
-  font-size: 28px; 
+  font-size: 28px;
   font-weight: 450;
   line-height: 36px;
   color: $colorMain;
 
-  @include media("<desktop"){
+  @include media("<desktop") {
     font-size: 24px;
     line-height: 120%;
   }
@@ -96,6 +94,6 @@
   @include media("<tablet") {
     font-size: 20px;
     font-weight: 450;
-    line-height: 28px;   
+    line-height: 28px;
   }
 }

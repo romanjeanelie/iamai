@@ -1,5 +1,5 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from 'firebase/app';
+import { initializeApp } from "firebase/app";
 // Optionally import the services that you want to use
 import { getAuth } from "firebase/auth";
 // import { getDatabase } from "firebase/database";
@@ -16,7 +16,7 @@ const firebaseConfig = {
   storageBucket: import.meta.env.VITE_API_STORAGEBUCKET,
   messagingSenderId: import.meta.env.VITE_API_MESSAGINGSENDERID,
   appId: import.meta.env.VITE_API_APPID,
-  measurementId: import.meta.env.VITE_API_MEASUREMENTID
+  measurementId: import.meta.env.VITE_API_MEASUREMENTID,
 };
 
 // Initialize Firebase
@@ -34,4 +34,4 @@ const auth = getAuth(app);
 //     console.error('Error adding document: ', error);
 //   }
 // }
-export { app, auth};
+export { app, auth };

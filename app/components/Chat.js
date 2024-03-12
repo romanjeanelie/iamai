@@ -4,10 +4,10 @@ import { connect, AckPolicy, JSONCodec } from "https://cdn.jsdelivr.net/npm/nats
 // import { getUser } from "../User.js";
 // const IS_DEV_MODE = import.meta.env.MODE === "development";
 const IS_DEV_MODE = false;
-const HOST = import.meta.env.VITE_API_HOST || "https://api.iamplus.chat"
-const NATS_URL = import.meta.env.VITE_API_NATS_URL || "wss://nats.iamplus.chat"
-const NATS_USER = import.meta.env.VITE_API_NATS_USER || "iamplus-acc"
-const NATS_PASS = import.meta.env.VITE_API_NATS_PASS || "cis8Asto6HepremoGApI"
+const HOST = import.meta.env.VITE_API_HOST || "https://api.iamplus.chat";
+const NATS_URL = import.meta.env.VITE_API_NATS_URL || "wss://nats.iamplus.chat";
+const NATS_USER = import.meta.env.VITE_API_NATS_USER || "iamplus-acc";
+const NATS_PASS = import.meta.env.VITE_API_NATS_PASS || "cis8Asto6HepremoGApI";
 let steamseq = [];
 const ANSWER = "answer",
   FOLLOWUP = "question",
@@ -33,11 +33,7 @@ const ANSWER = "answer",
   TAXISEARCH = "TaxiSearch",
   RAGCHAT = "RAG_CHAT",
   FLIGHTSEARCH = "FlightSearch",
-  PRODUCTSEARCH = "ProductSearch"
-
-
-
-
+  PRODUCTSEARCH = "ProductSearch";
 
 class Chat {
   constructor(callbacks) {
@@ -79,7 +75,10 @@ class Chat {
     if (this.autodetect) {
       var response = await this.googletranslate(input_text, this.targetlang, "");
       input_text = response.data.translations[0].translatedText;
-      console.log("response.data.translations[0].detectedSourceLanguage", response.data.translations[0].detectedSourceLanguage)
+      console.log(
+        "response.data.translations[0].detectedSourceLanguage",
+        response.data.translations[0].detectedSourceLanguage
+      );
       if (response.data.translations[0].detectedSourceLanguage)
         this.sourcelang = response.data.translations[0].detectedSourceLanguage;
     } else if (this.sourcelang != this.targetlang) {
@@ -90,7 +89,11 @@ class Chat {
     if (this.workflowID != "") {
       if (img) {
         // console.log("img:", img);
-        this.submituserreply(input_text, this.workflowID, img.map((imgs) => imgs.src));
+        this.submituserreply(
+          input_text,
+          this.workflowID,
+          img.map((imgs) => imgs.src)
+        );
       } else this.submituserreply(input_text, this.workflowID, img);
     } else {
       this.workflowID = this.sessionID;
@@ -109,11 +112,7 @@ class Chat {
         console.log("error: " + e);
         var AIAnswer = "An error occurred while attempting to connect.";
         if (this.sourcelang != "en") {
-          var transresponse = await this.googletranslate(
-            AIAnswer,
-            this.sourcelang,
-            this.targetlang
-          );
+          var transresponse = await this.googletranslate(AIAnswer, this.sourcelang, this.targetlang);
           AIAnswer = transresponse.data.translations[0].translatedText;
         }
         await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang });
@@ -216,8 +215,8 @@ class Chat {
         } else if (mdata.type == SOURCES) {
           this.Sources = JSON.parse(mdata.response_json.sources);
           // Add Call to add sources
-          console.log("----- sources in CHAT -----")
-          this.callbacks.addSources(this.Sources)
+          console.log("----- sources in CHAT -----");
+          this.callbacks.addSources(this.Sources);
         }
 
         //generate data
@@ -275,7 +274,7 @@ class Chat {
             console.log("here RAG_CHAT:" + this.RAG_CHAT);
             this.getGucciUI();
             (this.domain = ""), (this.RAG_CHAT = "");
-          } else if (this.domain ==MOVIESEARCH) {
+          } else if (this.domain == MOVIESEARCH) {
             this.getMovies();
             (this.domain = ""), (this.MovieSearchResults = ""), (this.MovieSearch = "");
           }
@@ -304,10 +303,15 @@ class Chat {
               AIAnswer = transresponse.data.translations[0].translatedText;
             }
             AIAnswer += "\n\n";
-            await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang, type: "status" });
+            await this.callbacks.addAIText({
+              text: AIAnswer,
+              container: this.container,
+              targetlang: this.sourcelang,
+              type: "status",
+            });
           }
         } else if (mdata.status && mdata.status == AGENT_ENDED) {
-          this.callbacks.emitter.emit(AGENT_ENDED)
+          this.callbacks.emitter.emit(AGENT_ENDED);
           if (this.domain == MOVIESEARCH) {
             this.getMovies();
             (this.domain = ""), (this.MovieSearchResults = ""), (this.MovieSearch = "");
@@ -322,10 +326,9 @@ class Chat {
             (this.ProductSearch = ""), (this.domain = ""), (this.ProductSearchResults = "");
           }
         } else if (mdata.status.toLowerCase() == PA_RESPONSE_ENDED) {
-
           this.callbacks.enableInput();
           this.callbacks.emitter.emit("paEnd");
-          this.callbacks.emitter.emit(PA_RESPONSE_ENDED)
+          this.callbacks.emitter.emit(PA_RESPONSE_ENDED);
         }
         // } else if (mtext.trim().length > 0) { //ADDED THIS FOR conversation_question and other cases.
         //   var AIAnswer = await this.toTitleCase2(mtext);
@@ -476,7 +479,7 @@ class Chat {
   }
 
   updateTextContainer() {
-    this.textContainer = this.container.querySelector(".text__container")
+    this.textContainer = this.container.querySelector(".text__container");
 
     if (!this.textContainer) {
       this.textContainer = document.createElement("div");
@@ -512,7 +515,7 @@ class Chat {
     moviedetailsdiv.setAttribute("id", "movie-details");
     moviesdiv.appendChild(moviedetailsdiv);
 
-    this.updateTextContainer()
+    this.updateTextContainer();
     this.textContainer.appendChild(moviesdiv);
   }
 
@@ -757,7 +760,7 @@ class Chat {
         // rideslistitemheaderdiv.appendChild(rideslistitemheaderinfodiv);
         taxidiv.appendChild(rideslistitemdiv);
 
-        this.updateTextContainer()
+        this.updateTextContainer();
         this.textContainer.appendChild(taxidiv);
       }
     }
@@ -961,7 +964,7 @@ class Chat {
     }
 
     this.updateTextContainer();
-    this.textContainer.append(FlightContainerdiv)
+    this.textContainer.append(FlightContainerdiv);
   }
 
   toggleflights(event) {
@@ -1017,7 +1020,7 @@ class Chat {
     productdetails.id = "product-details";
     productdiv.appendChild(productdetails);
 
-    this.updateTextContainer()
+    this.updateTextContainer();
     this.textContainer.appendChild(productdiv);
   }
 
@@ -1038,7 +1041,6 @@ class Chat {
       productcarddivA.setAttribute("href", element.link);
       productcarddivA.setAttribute("target", "_blank");
       productcarddiv.appendChild(productcarddivA);
-
 
       const productimage = document.createElement("img");
       productimage.className = "shopping-image";
@@ -1069,7 +1071,7 @@ class Chat {
     // productdetails.id = "product-details";
     // productdiv.appendChild(productdetails);
 
-    this.updateTextContainer()
+    this.updateTextContainer();
     this.textContainer.appendChild(productdiv);
   }
 
