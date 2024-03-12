@@ -152,10 +152,9 @@ class Blog {
 
     const tl = gsap.timeline({
       scrollTrigger: {
-        trigger: ".blog__blackBlock-content",
+        trigger: window.innerWidth < 560 ? "blog__blackBlock-container" :".blog__blackBlock-introducing",
         start: "top top",
         toggleActions: "play none play reverse",
-
       }
     })
 

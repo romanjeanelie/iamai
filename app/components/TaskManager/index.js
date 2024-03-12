@@ -55,10 +55,13 @@ gsap.registerPlugin(Flip);
 // [X] make the accordion dynamic
 // [X] change the color  of the status-pill in the accordion in function of the status
 // [X] when adding a new panel to the accordion, update the click event listener
-// [] handle the accordion panel in function of the type of the status (input required, in progress, completed)
-// [] for the input required change the status after input has been entered
+// [X] handle the accordion panel in function of the type of the status (input required, in progress, completed)
+// [X] for the input required change the status after input has been entered
 // [] when new task or updated task, scroll to the task
-// [] refactor the accordion logic and put it inside its own class
+// [] handle the notification pastille when input required or completed
+// [] do the animation of the notification pastille
+// [] do the animation of when a task is added
+// [] if task updated and prev update was input, remove input before going to next update ? 
 
 export default class TaskManager {
   constructor({ pageEl, gui, emitter }) {
@@ -69,13 +72,11 @@ export default class TaskManager {
     this.closeButton = this.pageEl.querySelector(".task-manager__closing-icon");
     this.fullscreenButton = this.pageEl.querySelector(".task-manager__fullscreen-icon");
     this.closeFullscreenButton = this.pageEl.querySelector(".task-manager__closeFullscreen-icon");
-  
     this.accordionContainer = this.pageEl.querySelector(".task-manager__accordion-container");
 
     // States
     this.taskManagerState = STATES.CLOSED;
     this.currentTask = null;
-
     this.addListeners();
 
     // ALEX -> Comment/uncomment to have tasks at start for integration
@@ -221,6 +222,97 @@ export default class TaskManager {
     this.changeState(STATES.FULLSCREEN);
   }
 
+  // ---------- Handling the notification pill ----------
+  initNotificationPill(taskKey, status){
+    if (this.notificationContainer) this.disposeNotificationPill();
+
+    this.notificationContainer = document.createElement("div");
+    this.notificationContainer.classList.add("task-manager__notification-container" , "hidden");
+    
+    this.notificationContainer.style.backgroundColor = STATUS_COLORS[status.type]; 
+
+    const notificationLabel = document.createElement("p");
+    notificationLabel.classList.add("task-manager__notification-label");
+    notificationLabel.textContent = status.label;
+
+    const notificationCloseBtn = document.createElement("button");
+    notificationCloseBtn.classList.add("task-manager__notification-closeBtn");
+    notificationCloseBtn.innerHTML = `
+      <svg width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0.800781" y="1.47949" width="0.96" height="10.56" rx="0.48" transform="rotate(-45 0.800781 1.47949)" fill="white"/>
+        <rect x="0.799805" y="8.26758" width="10.56" height="0.96" rx="0.48" transform="rotate(-45 0.799805 8.26758)" fill="white"/>
+      </svg>
+    `
+
+    this.notificationContainer.appendChild(notificationLabel);
+    this.notificationContainer.appendChild(notificationCloseBtn);
+    this.pageEl.appendChild(this.notificationContainer);
+
+    this.notificationContainer.addEventListener('click', () => {
+      this.expandNotificationPill();
+      console.log(taskKey)
+    });
+    notificationCloseBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.closeNotificationPill();
+    })
+
+    this.expandNotificationPill();
+  }
+
+  expandNotificationPill(){
+    const label = this.notificationContainer.querySelector(".task-manager__notification-label");
+    const closeBtn = this.notificationContainer.querySelector(".task-manager__notification-closeBtn");
+    const svg = closeBtn.querySelector("svg");
+
+    gsap.to(this.notificationContainer,{
+      opacity: 1,
+      onComplete: () => {
+        const initialState = Flip.getState([this.notificationContainer, label, closeBtn, svg] );
+        this.notificationContainer.classList.add("expanded");
+        Flip.from(initialState, {
+          duration: 0.5,
+          ease: "power2.inOut",
+          absolute: true,
+          onComplete: () => this.notificationContainer.classList.remove("hidden")
+        })
+      }
+    })
+  }
+
+  closeNotificationPill(){
+    const label = this.notificationContainer.querySelector(".task-manager__notification-label");
+    const closeBtn = this.notificationContainer.querySelector(".task-manager__notification-closeBtn");
+    const svg = closeBtn.querySelector("svg");
+
+    const initialState = Flip.getState([this.notificationContainer, label, closeBtn, svg] );
+    this.notificationContainer.classList.remove("expanded");
+    Flip.from(initialState, {
+      duration: 0.5,
+      ease: "power2.inOut",
+      absolute: true,
+      onComplete: () => {
+        gsap.to(this.notificationContainer,{
+          opacity: 0,
+          onComplete: () => this.disposeNotificationPill()
+        })
+      }
+    })
+  }
+
+  disposeNotificationPill(){
+    this.notificationContainer.remove();
+    this.notificationContainer = null;
+  }
+
+  handleNotificationPill(taskKey, status){
+    if (status.type === STATUSES.INPUT_REQUIRED || status.type === STATUSES.COMPLETED){
+      this.initNotificationPill(taskKey, status);
+    } else {
+      this.notificationContainer.classList.add("hidden");
+    }
+  }
+
   // ---------- Handling the task-manager button ----------
   getButtonColor(){
     // order of priority for the color of the button
@@ -354,7 +446,17 @@ export default class TaskManager {
     headerDiv.addEventListener('click', () => this.togglePanel(data.key));
   }
 
-  addPanel(panel, status){
+  addPanel(key, panel, status){
+    if (status.type === STATUSES.COMPLETED) {
+      // we add an empty panel when complete to override the pink color of the last panel set in CSS.
+      const statusContainerDiv = document.createElement("div");
+      panel.appendChild(statusContainerDiv); 
+      return; 
+    }; 
+    
+    const divider = document.createElement("div");
+    divider.classList.add("task-manager__accordion-panel-divider");
+    
     const statusContainerDiv = document.createElement("div");
     statusContainerDiv.classList.add("task-manager__status-container");
 
@@ -369,12 +471,15 @@ export default class TaskManager {
     statusContainerDiv.appendChild(statusTitleP);
     statusContainerDiv.appendChild(statusDescriptionP);
 
-    this.addInput(statusContainerDiv, status)
+    if (status.type === STATUSES.INPUT_REQUIRED){
+      this.addInput(key, statusContainerDiv)
+    }
 
+    panel.appendChild(divider)
     panel.appendChild(statusContainerDiv)
   }
 
-  addInput(statusContainer){
+  addInput(key, statusContainer){
     const statusInputContainer = document.createElement("form");
     statusInputContainer.classList.add("task-manager__input-container");
 
@@ -390,9 +495,30 @@ export default class TaskManager {
     buttonIcon.alt = "arrow up icon";
     button.appendChild(buttonIcon);
 
+    statusInputContainer.addEventListener('submit', (e) => this.handleSubmit(e, key, statusInputContainer));
+
     statusInputContainer.appendChild(statusInput);
     statusInputContainer.appendChild(button);
     statusContainer.appendChild(statusInputContainer);
+  }
+
+  handleSubmit(e, key, container){
+    e.preventDefault();
+    const input = e.target.querySelector("input");
+    const value = input.value;
+    console.log(value) // here is the value from input 
+
+    this.closeInput(container);
+
+    this.onStatusUpdate(key,{
+      type: STATUSES.IN_PROGRESS,
+      title: "answer : ",
+      description: "Processing the answer...",
+    })
+  }
+
+  closeInput(container){
+    container.style.display = "none";
   }
 
   updateTaskUI(key, status){
@@ -403,12 +529,8 @@ export default class TaskManager {
     statusPill.style.backgroundColor = STATUS_COLORS[status.type];
 
     const panel = task.querySelector(".task-manager__accordion-panel");
-  
-    const divider = document.createElement("div");
-    divider.classList.add("task-manager__accordion-panel-divider");
-    
-    panel.appendChild(divider)
-    this.addPanel(panel, status)
+
+    this.addPanel(key, panel, status)
     this.goToPanel(key)
   }
 
@@ -425,9 +547,9 @@ export default class TaskManager {
   }
 
   onStatusUpdate(taskKey, status) {
-    console.log(taskKey)
     this.handleButton();
     this.updateTaskUI(taskKey, status);
+    this.handleNotificationPill(taskKey, status);
   }
 
   addListeners(){

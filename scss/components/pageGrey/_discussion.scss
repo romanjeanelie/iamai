@@ -5,7 +5,7 @@
 
 .discussion__container {
   width: 100%;
-  max-width: 870px;
+  max-width: $discussionMaxWidth;
   scrollbar-width: none;
   /* for Firefox */
   -ms-overflow-style: none;

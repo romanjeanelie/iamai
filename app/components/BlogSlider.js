@@ -10,7 +10,6 @@ import { asyncAnim } from "../utils/anim";
 
 export default class BlogSlider{
   constructor({sliderData, container}){
-    console.log(container)
     this.slidesData = sliderData;
     this.container = container;
 
@@ -235,16 +234,14 @@ export default class BlogSlider{
     // Adjust padding for the first slide
     if (this.slidesData[0].mobileFormat) {
       const firstSlide = this.slides[0];
-      const firstSlideWidth = firstSlide.offsetWidth;
-      const padding = window.innerWidth < 560 ? 0 : (window.innerWidth - firstSlideWidth) / 2;
+      const padding = window.innerWidth < 560 ? 0 : (window.innerWidth - firstSlide.offsetWidth) / 2;
       this.slider.style.paddingLeft = `${padding}px`;
     }
 
     // Adjust padding for the last slide
     if (this.slidesData[this.totalSlides - 1].mobileFormat) {
       const lastSlide = this.slides[this.totalSlides - 1];
-      const lastSlideWidth = lastSlide.offsetWidth;
-      const padding = window.innerWidth < 560 ? 0 : (window.innerWidth - lastSlideWidth) / 2;
+      const padding = window.innerWidth < 560 ? 0 : (window.innerWidth - lastSlide.offsetWidth) / 2;
       this.slider.style.paddingRight = `${padding}px`;
     }
   }

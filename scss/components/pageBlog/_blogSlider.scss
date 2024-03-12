@@ -27,10 +27,17 @@ $sliderMaxWidth: 972px;
   overflow-x: scroll;
   scroll-snap-type: x mandatory;
   align-items: center;
+  cursor: grab;
   // Hide scrollbar
   -ms-overflow-style: none;
   scrollbar-width: none;
-  cursor: grab;
+
+  &::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 0;
+    height: 0;
+    display: none;
+  }
 
   &.active{
     scroll-snap-type: none;
