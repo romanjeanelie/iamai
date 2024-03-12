@@ -105,9 +105,11 @@ button {
 
 .page-grey {
   background-color: $backgroundColorGreyPage;
+  height: 100vh; // in case svh is not supported by browser
   height: 100svh;
 
   main {
+    min-height: 100vh; // in case svh is not supported by browser
     min-height: 100svh;
     position: relative;
     height: 100%;
