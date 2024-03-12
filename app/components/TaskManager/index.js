@@ -593,7 +593,7 @@ export default class TaskManager {
     this.closeFullscreenButton.addEventListener("click", () => this.toMinimized());
     window.addEventListener("resize", () => {
       if (this.taskManagerState === STATES.MINIMIZED && window.innerWidth < 820) {
-        this.changeState(STATES.FULLSCREEN);
+        this.toFullscreen();
       }
     });
   }
