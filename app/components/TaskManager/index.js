@@ -63,7 +63,7 @@ gsap.registerPlugin(Flip);
 // [X] do repsonsive version
 // [X] position the task manager above the nav
 // [X] when click on pastille -> scroll to the panel
-// [] check the closeFullscreen icon when resize out of mobile -> potential bug
+// [X] check the closeFullscreen icon when resize out of mobile -> potential bug
 // [] remove notif pill after 5 seconds
 // [] remove taskUI on delete task
 // [] on complete remove all the panels and only keep the header + change the onClick event if status === completed
@@ -83,7 +83,10 @@ export default class TaskManager {
 
     // States
     this.taskManagerState = STATES.CLOSED;
+    this.notificationTimeoutId = null;
     this.currentTask = null;
+
+    // Init functions
     this.addListeners();
 
     // ALEX -> Comment/uncomment to have tasks at start for integration
@@ -296,7 +299,13 @@ export default class TaskManager {
           duration: 0.5,
           ease: "power2.inOut",
           absolute: true,
-          onComplete: () => this.notificationContainer.classList.remove("hidden"),
+          onComplete: () => {
+            this.notificationContainer.classList.remove("hidden");
+            this.notificationTimeoutId = setTimeout(() => {
+              this.closeNotificationPill();
+              this.notificationTimeoutId = null;
+            }, 5000);
+          },
         });
       },
     });
@@ -336,6 +345,10 @@ export default class TaskManager {
   }
 
   handleClickOnNotificationPill(taskKey) {
+    if (this.notificationTimeoutId) {
+      clearTimeout(this.notificationTimeoutId);
+      this.notificationTimeoutId = null;
+    }
     this.closeNotificationPill();
     // open the task manager and go to the right panel
     this.toMinimized();
