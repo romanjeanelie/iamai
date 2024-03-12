@@ -62,7 +62,7 @@ gsap.registerPlugin(Flip);
 // [X] do repsonsive version
 // [] when click on pastille -> scroll to the panel
 // [] when new task or updated task, scroll to the task
-// [] do the animation of when a task is added
+// [] remove taskUI on delete task
 // [] if task updated and prev update was input, remove input before going to next update ? 
 // [] position the task manager above the nav
 // [] empêcher opening pastille if task manager already open ? 
@@ -489,6 +489,7 @@ export default class TaskManager {
     panel.appendChild(statusContainerDiv)
   }
 
+  // ---------- Handling the input ----------
   addInput(key, statusContainer){
     const statusInputContainer = document.createElement("form");
     statusInputContainer.classList.add("task-manager__input-container");
@@ -505,14 +506,15 @@ export default class TaskManager {
     buttonIcon.alt = "arrow up icon";
     button.appendChild(buttonIcon);
 
-    statusInputContainer.addEventListener('submit', (e) => this.handleSubmit(e, key, statusInputContainer));
+    statusInputContainer.addEventListener('submit', (e) => this.handleInputSubmit(e, key, statusInputContainer));
 
     statusInputContainer.appendChild(statusInput);
     statusInputContainer.appendChild(button);
     statusContainer.appendChild(statusInputContainer);
   }
 
-  handleSubmit(e, key, container){
+
+  handleInputSubmit(e, key, container){
     e.preventDefault();
     const input = e.target.querySelector("input");
     const value = input.value;
@@ -523,7 +525,7 @@ export default class TaskManager {
     this.onStatusUpdate(key,{
       type: STATUSES.IN_PROGRESS,
       title: "answer : ",
-      description: "Processing the answer...",
+      description: value,
     })
   }
 

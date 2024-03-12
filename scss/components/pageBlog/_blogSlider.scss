@@ -45,6 +45,15 @@ $sliderMaxWidth: 972px;
     cursor: -webkit-grabbing;
     user-select: none;
   }
+
+  // &:before{
+  //   content: "";
+  //   position:relative;
+  //   display: block;
+  //   width: 500px;
+  //   height: 100%;
+  //   background: green;
+  // }
 }
 
 .blogSlider__container.noscroll .blogSlider__slides-container{
