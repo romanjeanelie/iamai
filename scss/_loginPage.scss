@@ -3,6 +3,7 @@
   color: $colorMain;
   z-index: 5;
   background: $backgroundColorGreyPage;
+  height: 100vh;
   height: 100svh;
   width: 100vw;
   margin: 0;
@@ -12,7 +13,6 @@
   flex-direction: column;
   align-items: center;
   transform: translateY(0);
-
   transition : transform 800ms ease-in-out;
 
   &.hidden {
