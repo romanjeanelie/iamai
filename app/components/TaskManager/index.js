@@ -65,9 +65,8 @@ gsap.registerPlugin(Flip);
 // [X] when click on pastille -> scroll to the panel
 // [X] check the closeFullscreen icon when resize out of mobile -> potential bug
 // [X] remove notif pill after 5 seconds
-// [] remove taskUI on delete task
+// [X] remove taskUI on delete task
 // [] on complete remove all the panels and only keep the header + change the onClick event if status === completed
-// [] if task updated and prev update was input, remove input before going to next update ?
 // [] empêcher opening pastille if task manager already open ?
 // [] ask about the mobile version of the input ?
 
@@ -85,6 +84,7 @@ export default class TaskManager {
     this.taskManagerState = STATES.CLOSED;
     this.notificationTimeoutId = null;
     this.notificationDuration = 5000;
+    this.isInputFullscreen = false;
     this.currentTask = null;
 
     // Init functions
@@ -277,7 +277,7 @@ export default class TaskManager {
     this.notificationContainer.appendChild(notificationCloseBtn);
     document.body.appendChild(this.notificationContainer);
 
-    this.notificationContainer.addEventListener("click", () => this.handleClickOnNotificationPill(taskKey));
+    this.notificationContainer.addEventListener("click", () => this.handleClickOnNotificationPill(taskKey, status));
     notificationCloseBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       this.closeNotificationPill();
@@ -341,19 +341,24 @@ export default class TaskManager {
     if (status.type === TASK_STATUSES.INPUT_REQUIRED || status.type === TASK_STATUSES.COMPLETED) {
       this.initNotificationPill(taskKey, status);
     } else {
-      this.notificationContainer.classList.add("hidden");
+      this.notificationContainer?.classList.add("hidden");
     }
   }
 
-  handleClickOnNotificationPill(taskKey) {
+  handleClickOnNotificationPill(taskKey, status) {
     if (this.notificationTimeoutId) {
       clearTimeout(this.notificationTimeoutId);
       this.notificationTimeoutId = null;
     }
     this.closeNotificationPill();
-    // open the task manager and go to the right panel
-    this.toMinimized();
-    this.goToPanel(taskKey);
+
+    if (status.type !== TASK_STATUSES.COMPLETED) {
+      // open the task manager and go to the right panel
+      this.toMinimized();
+      this.goToPanel(taskKey);
+    } else {
+      this.viewResults(taskKey);
+    }
   }
 
   // ---------- Handling the task-manager button ----------
@@ -495,13 +500,6 @@ export default class TaskManager {
   }
 
   addPanel(key, panel, status) {
-    if (status.type === TASK_STATUSES.COMPLETED) {
-      // we add an empty panel when complete to override the pink color of the last panel set in CSS.
-      const statusContainerDiv = document.createElement("div");
-      panel.appendChild(statusContainerDiv);
-      return;
-    }
-
     const divider = document.createElement("div");
     divider.classList.add("task-manager__accordion-panel-divider");
 
@@ -525,6 +523,7 @@ export default class TaskManager {
 
     panel.appendChild(divider);
     panel.appendChild(statusContainerDiv);
+    this.goToPanel(key);
   }
 
   updateTaskUI(key, status) {
@@ -536,12 +535,26 @@ export default class TaskManager {
 
     const panel = task.querySelector(".task-manager__accordion-panel");
 
-    this.addPanel(key, panel, status);
+    if (status.type !== TASK_STATUSES.COMPLETED) {
+      this.addPanel(key, panel, status);
+    } else {
+      this.removePanel(key);
+    }
   }
 
   removeTaskUI(key) {
     const task = this.accordionContainer.querySelector(`[task-key="${key}"]`);
     task.remove();
+  }
+
+  removePanel(key) {
+    const task = this.accordionContainer.querySelector(`[task-key="${key}"]`);
+    const header = task.querySelector(".task-manager__accordion-header");
+    const panel = task.querySelector(".task-manager__accordion-panel");
+    panel.remove();
+
+    header.removeEventListener("click", () => this.togglePanel(key));
+    header.addEventListener("click", () => this.viewResults(key));
   }
 
   // ---------- Handling the input ----------
@@ -561,6 +574,7 @@ export default class TaskManager {
     buttonIcon.alt = "arrow up icon";
     button.appendChild(buttonIcon);
 
+    statusInputContainer.addEventListener("click", (e) => this.handleMobileInput(statusContainer));
     statusInputContainer.addEventListener("submit", (e) => this.handleInputSubmit(e, key, statusInputContainer));
 
     statusInputContainer.appendChild(statusInput);
@@ -584,6 +598,7 @@ export default class TaskManager {
   }
 
   closeInput(container) {
+    this.closeTaskManager();
     container.style.display = "none";
   }
 
@@ -607,6 +622,14 @@ export default class TaskManager {
     this.handleButton();
     this.updateTaskUI(taskKey, status);
     this.handleNotificationPill(taskKey, status);
+  }
+
+  // Roman : function triggered when click on completed task or the notification pill for completed task
+  viewResults(key) {
+    this.removeTask(key);
+    this.closeTaskManager();
+    this.closeNotificationPill();
+    console.log("view results", key);
   }
 
   addListeners() {

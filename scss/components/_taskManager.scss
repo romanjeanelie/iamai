@@ -248,7 +248,7 @@ $zIndex: 10;
 .task-manager__container.fullscreen {
   border-radius: 0;
   bottom: 0;
-  right: 0;
+  left: 0;
   width: 100vw;
   height: 100vh; // fallback for browsers that don't support vh units
   height: 100svh;
