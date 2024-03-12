@@ -1,7 +1,10 @@
+$zIndex: 10;
+
 .task-manager__debug {
 }
 
 .task-manager__button {
+  z-index: $zIndex;
   position: fixed;
   bottom: 120px;
   right: 40px;
@@ -29,7 +32,7 @@
   bottom: 120px;
   right: 40px;
   border-radius: 16px;
-  z-index: 5;
+  z-index: $zIndex;
   overflow-y: scroll;
   background-color: $backgroundTaskManager;
   color: $colorBlack;
@@ -325,7 +328,7 @@
   overflow: hidden;
   background-color: rgb(224, 149, 2);
   cursor: pointer;
-  z-index: 3;
+  z-index: $zIndex;
 
   &.hidden {
     opacity: 0;

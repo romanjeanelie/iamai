@@ -1,5 +1,6 @@
 import gsap from "gsap";
 import Flip from "gsap/Flip";
+import scrollToDiv from "../../utils/scrollToDiv";
 
 const STATES = {
   CLOSED: "closed",
@@ -60,24 +61,25 @@ gsap.registerPlugin(Flip);
 // [X] handle the notification pastille when input required or completed
 // [X] do the animation of the notification pastille
 // [X] do repsonsive version
-// [] when click on pastille -> scroll to the panel
-// [] when new task or updated task, scroll to the task
+// [X] position the task manager above the nav
+// [X] when click on pastille -> scroll to the panel
+// [] check the closeFullscreen icon when resize out of mobile -> potential bug
+// [] remove notif pill after 5 seconds
 // [] remove taskUI on delete task
+// [] on complete remove all the panels and only keep the header + change the onClick event if status === completed
 // [] if task updated and prev update was input, remove input before going to next update ?
-// [] position the task manager above the nav
 // [] empêcher opening pastille if task manager already open ?
 // [] ask about the mobile version of the input ?
 
 export default class TaskManager {
-  constructor({ pageEl, gui, emitter }) {
+  constructor({ gui, emitter }) {
     // DOM Elements
-    this.pageEl = pageEl;
-    this.container = this.pageEl.querySelector(".task-manager__container");
-    this.button = this.pageEl.querySelector(".task-manager__button");
-    this.closeButton = this.pageEl.querySelector(".task-manager__closing-icon");
-    this.fullscreenButton = this.pageEl.querySelector(".task-manager__fullscreen-icon");
-    this.closeFullscreenButton = this.pageEl.querySelector(".task-manager__closeFullscreen-icon");
-    this.accordionContainer = this.pageEl.querySelector(".task-manager__accordion-container");
+    this.container = document.querySelector(".task-manager__container");
+    this.button = document.querySelector(".task-manager__button");
+    this.closeButton = document.querySelector(".task-manager__closing-icon");
+    this.fullscreenButton = document.querySelector(".task-manager__fullscreen-icon");
+    this.closeFullscreenButton = document.querySelector(".task-manager__closeFullscreen-icon");
+    this.accordionContainer = document.querySelector(".task-manager__accordion-container");
 
     // States
     this.taskManagerState = STATES.CLOSED;
@@ -127,6 +129,7 @@ export default class TaskManager {
     this.emitter.on("taskManager:deleteTask", (taskKey) => this.removeTask(taskKey));
 
     if (this.debug) {
+      console.log("Debug mode enabled");
       this.debugTask = {
         name: `Task ${this.tasks.length + 1}`,
         key: this.tasks.length + 1,
@@ -268,18 +271,12 @@ export default class TaskManager {
 
     this.notificationContainer.appendChild(notificationLabel);
     this.notificationContainer.appendChild(notificationCloseBtn);
-    this.pageEl.appendChild(this.notificationContainer);
+    document.body.appendChild(this.notificationContainer);
 
-    this.notificationContainer.addEventListener("click", () => {
-      this.closeNotificationPill();
-      // open the task manager and go to the right panel
-      this.toMinimized();
-      this.goToPanel(taskKey);
-    });
+    this.notificationContainer.addEventListener("click", () => this.handleClickOnNotificationPill(taskKey));
     notificationCloseBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       this.closeNotificationPill();
-      this.toMinimized();
     });
 
     this.expandNotificationPill();
@@ -336,6 +333,13 @@ export default class TaskManager {
     } else {
       this.notificationContainer.classList.add("hidden");
     }
+  }
+
+  handleClickOnNotificationPill(taskKey) {
+    this.closeNotificationPill();
+    // open the task manager and go to the right panel
+    this.toMinimized();
+    this.goToPanel(taskKey);
   }
 
   // ---------- Handling the task-manager button ----------
@@ -405,6 +409,11 @@ export default class TaskManager {
     const panel = currentTask.querySelector(".task-manager__accordion-panel");
     panel.style.maxHeight = panel.scrollHeight + "px";
     this.currentTask = key;
+
+    // Scroll to the last status from the panel
+    const statuses = Array.from(panel.querySelectorAll(".task-manager__status-container"));
+    const lastStatus = statuses[statuses.length - 1];
+    scrollToDiv(this.container, lastStatus);
   }
 
   // ---------- Update the tasks UI  ----------
@@ -465,8 +474,8 @@ export default class TaskManager {
     this.accordionContainer.appendChild(li);
 
     // I set the accordionHeaders and Panels up to date
-    this.accordionHeaders = Array.from(this.pageEl.querySelectorAll(".task-manager__accordion-header"));
-    this.accordionPanels = Array.from(this.pageEl.querySelectorAll(".task-manager__accordion-panel"));
+    this.accordionHeaders = Array.from(document.querySelectorAll(".task-manager__accordion-header"));
+    this.accordionPanels = Array.from(document.querySelectorAll(".task-manager__accordion-panel"));
 
     headerDiv.addEventListener("click", () => this.togglePanel(data.key));
   }
@@ -557,7 +566,6 @@ export default class TaskManager {
     const panel = task.querySelector(".task-manager__accordion-panel");
 
     this.addPanel(key, panel, status);
-    this.goToPanel(key);
   }
 
   // ---------- Handling the tasks ----------
