@@ -33,9 +33,23 @@
     object-fit: cover;
   }
 
+  &.mobile-video{
+    display: none;
+  }
+
   @include media("<tablet") {
     top: -120px;
     height: calc(100% + 120px);
+  }
+
+  @include media("<phone") {
+    &.desktop-video{
+      display: none;
+    }
+
+    &.mobile-video{
+      display: block;
+    }
   }
 }
 
