@@ -5,32 +5,32 @@ const STATES = {
   CLOSED: "closed",
   MINIMIZED: "minimized",
   FULLSCREEN: "fullscreen",
-}
+};
 
-const STATUSES = {
+export const TASK_STATUSES = {
   IN_PROGRESS: "inProgress",
   INPUT_REQUIRED: "inputRequired",
   COMPLETED: "completed",
 };
 
 const STATUS_COLORS = {
-  [STATUSES.IN_PROGRESS]: "rgba(0, 0, 0, 0.72)",
-  [STATUSES.INPUT_REQUIRED]: "rgba(224, 149, 2, 1)",
-  [STATUSES.COMPLETED]: "rgba(0, 128, 83, 1)",
+  [TASK_STATUSES.IN_PROGRESS]: "rgba(0, 0, 0, 0.72)",
+  [TASK_STATUSES.INPUT_REQUIRED]: "rgba(224, 149, 2, 1)",
+  [TASK_STATUSES.COMPLETED]: "rgba(0, 128, 83, 1)",
 };
 
 const defaultValues = {
-  [STATUSES.IN_PROGRESS]: {
+  [TASK_STATUSES.IN_PROGRESS]: {
     label: "In Progress",
     title: "searching",
     description: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
   },
-  [STATUSES.INPUT_REQUIRED]: {
+  [TASK_STATUSES.INPUT_REQUIRED]: {
     label: "Input required",
     title: "question",
     description: "Flight for 18th Mar are all fully booked. Is there any other dates you would like to try for?",
   },
-  [STATUSES.COMPLETED]: {
+  [TASK_STATUSES.COMPLETED]: {
     label: "View results",
     title: "",
     description: "",
@@ -39,8 +39,8 @@ const defaultValues = {
 
 gsap.registerPlugin(Flip);
 
-// TO DO 
-// [X] make the button appear when a task is created 
+// TO DO
+// [X] make the button appear when a task is created
 // [X] update the button with the state
 // [X] show number of tasks on the button
 // [X] Do the basic layout for the minimized state
@@ -63,9 +63,9 @@ gsap.registerPlugin(Flip);
 // [] when click on pastille -> scroll to the panel
 // [] when new task or updated task, scroll to the task
 // [] remove taskUI on delete task
-// [] if task updated and prev update was input, remove input before going to next update ? 
+// [] if task updated and prev update was input, remove input before going to next update ?
 // [] position the task manager above the nav
-// [] empêcher opening pastille if task manager already open ? 
+// [] empêcher opening pastille if task manager already open ?
 // [] ask about the mobile version of the input ?
 
 export default class TaskManager {
@@ -86,40 +86,45 @@ export default class TaskManager {
 
     // ALEX -> Comment/uncomment to have tasks at start for integration
     this.tasks = [
-        // {
-        //   name: "Task 1",
-        //   key: 1,
-        //   status: {
-        //     type: STATUSES.IN_PROGRESS,
-        //     title: "searching",
-        //     description:
-        //       "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
-        //   },
-        // },
-        // {
-        //   name: "Task 2",
-        //   key: 2,
-        //   status: {
-        //     type: STATUSES.INPUT_REQUIRED,
-        //     title: "question",
-        //     description: "Flight for 18th Mar are all fully booked. Is there any other dates you would like to try for?",
-        //   },
-        // },
-        // {
-        //   name: "Task 3",
-        //   key: 3,
-        //   status: {
-        //     type: STATUSES.COMPLETED,
-        //     title: "",
-        //     description: "",
-        //   },
-        // },
+      // {
+      //   name: "Task 1",
+      //   key: 1,
+      //   status: {
+      //     type: TASK_STATUSES.IN_PROGRESS,
+      //     title: "searching",
+      //     description:
+      //       "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+      //   },
+      // },
+      // {
+      //   name: "Task 2",
+      //   key: 2,
+      //   status: {
+      //     type: TASK_STATUSES.INPUT_REQUIRED,
+      //     title: "question",
+      //     description: "Flight for 18th Mar are all fully booked. Is there any other dates you would like to try for?",
+      //   },
+      // },
+      // {
+      //   name: "Task 3",
+      //   key: 3,
+      //   status: {
+      //     type: TASK_STATUSES.COMPLETED,
+      //     title: "",
+      //     description: "",
+      //   },
+      // },
     ];
 
     // Debug
-    this.debugContainer = this.pageEl.querySelector(".task-manager__debug");
     this.debug = import.meta.env.VITE_DEBUG === "true";
     this.gui = gui;
+
+    // Emitter
+    this.emitter = emitter;
+    this.emitter.on("taskManager:createTask", (task, textAI) => this.createTask(task));
+    this.emitter.on("taskManager:updateStatus", (taskKey, status) => this.onStatusUpdate(taskKey, status));
+    this.emitter.on("taskManager:deleteTask", (taskKey) => this.removeTask(taskKey));
 
     if (this.debug) {
       this.debugTask = {
@@ -136,10 +141,13 @@ export default class TaskManager {
           addTask: (e) => {
             const task = {
               ...this.debugTask,
-              status: { type: STATUSES.IN_PROGRESS, ...defaultValues[STATUSES.IN_PROGRESS] },
+              status: { type: TASK_STATUSES.IN_PROGRESS, ...defaultValues[TASK_STATUSES.IN_PROGRESS] },
             };
+            const textAI =
+              "Certainly! I'm currently searching for the best flight options to Bali for you. Please give me a moment to find the most suitable flights. In the meantime, feel free to ask any other questions or make additional requests. I'll get back to you with the flight details as soon as possible";
+
             this.addDebugTask(task);
-            this.createTask(task);
+            this.emitter.emit("taskManager:createTask", task, textAI);
 
             this.debugTask.name = `Task ${this.tasks.length + 1}`;
             this.debugTask.key = this.tasks.length + 1;
@@ -158,24 +166,31 @@ export default class TaskManager {
   addDebugTask(task) {
     const folder = this.gui.addFolder(task.name);
     folder.open();
-    folder.add(task.status, "type", STATUSES).onChange((value) => {
+    folder.add(task.status, "type", TASK_STATUSES).onChange((value) => {
       task.status = { type: value, ...defaultValues[value] };
       titleController.setValue(task.status.title);
       descriptionController.setValue(task.status.description);
-      this.onStatusUpdate(task.key, task.status);
+      this.emitter.emit("taskManager:updateStatus", task.key, task.status);
     });
 
-    const titleController = folder.add(task.status, "title").onChange((value) => {
-      task.status.title = value;
-    });
+    const titleController = folder
+      .add(task.status, "title")
+      .onChange((value) => {
+        task.status.title = value;
+      })
+      .name("status title");
 
-    const descriptionController = folder.add(task.status, "description").onChange((value) => {
-      task.status.description = value;
-    });
+    const descriptionController = folder
+      .add(task.status, "description")
+      .onChange((value) => {
+        task.status.description = value;
+      })
+      .name("status desc");
+
     folder.add(
       {
         updateStatus: () => {
-          this.onStatusUpdate(task.key, task.status);
+          this.emitter.emit("taskManager:updateStatus", task.key, task.status);
         },
       },
       "updateStatus"
@@ -183,7 +198,7 @@ export default class TaskManager {
     folder.add(
       {
         deleteTask: () => {
-          this.removeTask(task.key);
+          this.emitter.emit("taskManager:deleteTask", task.key);
           this.debugTask.name = `Task ${this.tasks.length + 1}`;
           this.debugTask.key = this.tasks.length + 1;
           this.taskNameController.setValue(this.debugTask.name);
@@ -203,40 +218,40 @@ export default class TaskManager {
     this.container.classList.remove("closed", "minimized", "fullscreen");
     // Add the new state class
     this.container.classList.add(newState);
-  
+
     Flip.from(initialState, {
       duration: 0.5,
       ease: "power2.inOut",
       absolute: true,
-    })
+    });
   }
-  
+
   closeTaskManager() {
     this.changeState(STATES.CLOSED);
   }
-  
+
   toMinimized() {
-    this.closeFullscreenButton.classList.add("hidden")
-    this.fullscreenButton.classList.remove("hidden")
+    this.closeFullscreenButton.classList.add("hidden");
+    this.fullscreenButton.classList.remove("hidden");
     const isMobile = window.innerWidth < 820;
     // if on mobile, we go straight to fullscreen
     this.changeState(isMobile ? STATES.FULLSCREEN : STATES.MINIMIZED);
   }
-  
+
   toFullscreen() {
-    this.closeFullscreenButton.classList.remove("hidden")
-    this.fullscreenButton.classList.add("hidden")
+    this.closeFullscreenButton.classList.remove("hidden");
+    this.fullscreenButton.classList.add("hidden");
     this.changeState(STATES.FULLSCREEN);
   }
 
   // ---------- Handling the notification pill ----------
-  initNotificationPill(taskKey, status){
+  initNotificationPill(taskKey, status) {
     if (this.notificationContainer) this.disposeNotificationPill();
 
     this.notificationContainer = document.createElement("div");
-    this.notificationContainer.classList.add("task-manager__notification-container" , "hidden");
-    
-    this.notificationContainer.style.backgroundColor = STATUS_COLORS[status.type]; 
+    this.notificationContainer.classList.add("task-manager__notification-container", "hidden");
+
+    this.notificationContainer.style.backgroundColor = STATUS_COLORS[status.type];
 
     const notificationLabel = document.createElement("p");
     notificationLabel.classList.add("task-manager__notification-label");
@@ -249,74 +264,74 @@ export default class TaskManager {
         <rect x="0.800781" y="1.47949" width="0.96" height="10.56" rx="0.48" transform="rotate(-45 0.800781 1.47949)" fill="white"/>
         <rect x="0.799805" y="8.26758" width="10.56" height="0.96" rx="0.48" transform="rotate(-45 0.799805 8.26758)" fill="white"/>
       </svg>
-    `
+    `;
 
     this.notificationContainer.appendChild(notificationLabel);
     this.notificationContainer.appendChild(notificationCloseBtn);
     this.pageEl.appendChild(this.notificationContainer);
 
-    this.notificationContainer.addEventListener('click', () => {
+    this.notificationContainer.addEventListener("click", () => {
       this.closeNotificationPill();
       // open the task manager and go to the right panel
       this.toMinimized();
       this.goToPanel(taskKey);
     });
-    notificationCloseBtn.addEventListener('click', (e) => {
+    notificationCloseBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       this.closeNotificationPill();
       this.toMinimized();
-    })
+    });
 
     this.expandNotificationPill();
   }
 
-  expandNotificationPill(){
+  expandNotificationPill() {
     const label = this.notificationContainer.querySelector(".task-manager__notification-label");
     const closeBtn = this.notificationContainer.querySelector(".task-manager__notification-closeBtn");
     const svg = closeBtn.querySelector("svg");
 
-    gsap.to(this.notificationContainer,{
+    gsap.to(this.notificationContainer, {
       opacity: 1,
       onComplete: () => {
-        const initialState = Flip.getState([this.notificationContainer, label, closeBtn, svg] );
+        const initialState = Flip.getState([this.notificationContainer, label, closeBtn, svg]);
         this.notificationContainer.classList.add("expanded");
         Flip.from(initialState, {
           duration: 0.5,
           ease: "power2.inOut",
           absolute: true,
-          onComplete: () => this.notificationContainer.classList.remove("hidden")
-        })
-      }
-    })
+          onComplete: () => this.notificationContainer.classList.remove("hidden"),
+        });
+      },
+    });
   }
 
-  closeNotificationPill(){
+  closeNotificationPill() {
     const label = this.notificationContainer.querySelector(".task-manager__notification-label");
     const closeBtn = this.notificationContainer.querySelector(".task-manager__notification-closeBtn");
     const svg = closeBtn.querySelector("svg");
 
-    const initialState = Flip.getState([this.notificationContainer, label, closeBtn, svg] );
+    const initialState = Flip.getState([this.notificationContainer, label, closeBtn, svg]);
     this.notificationContainer.classList.remove("expanded");
     Flip.from(initialState, {
       duration: 0.5,
       ease: "power2.inOut",
       absolute: true,
       onComplete: () => {
-        gsap.to(this.notificationContainer,{
+        gsap.to(this.notificationContainer, {
           opacity: 0,
-          onComplete: () => this.disposeNotificationPill()
-        })
-      }
-    })
+          onComplete: () => this.disposeNotificationPill(),
+        });
+      },
+    });
   }
 
-  disposeNotificationPill(){
+  disposeNotificationPill() {
     this.notificationContainer.remove();
     this.notificationContainer = null;
   }
 
-  handleNotificationPill(taskKey, status){
-    if (status.type === STATUSES.INPUT_REQUIRED || status.type === STATUSES.COMPLETED){
+  handleNotificationPill(taskKey, status) {
+    if (status.type === TASK_STATUSES.INPUT_REQUIRED || status.type === TASK_STATUSES.COMPLETED) {
       this.initNotificationPill(taskKey, status);
     } else {
       this.notificationContainer.classList.add("hidden");
@@ -324,35 +339,35 @@ export default class TaskManager {
   }
 
   // ---------- Handling the task-manager button ----------
-  getButtonColor(){
+  getButtonColor() {
     // order of priority for the color of the button
-    const order = [STATUSES.COMPLETED, STATUSES.INPUT_REQUIRED, STATUSES.IN_PROGRESS];
-    for (const status of order){
+    const order = [TASK_STATUSES.COMPLETED, TASK_STATUSES.INPUT_REQUIRED, TASK_STATUSES.IN_PROGRESS];
+    for (const status of order) {
       // the first status found in the tasks array will be the color of the button
-      if (this.tasks.some((task) => task.status.type === status)){
+      if (this.tasks.some((task) => task.status.type === status)) {
         return STATUS_COLORS[status];
       }
     }
   }
 
-  initializeButton(){
+  initializeButton() {
     this.button.classList.remove("hidden");
     this.updateButton();
   }
 
-  updateButton(){
+  updateButton() {
     this.button.innerHTML = this.tasks.length;
     this.button.style.backgroundColor = this.getButtonColor();
   }
 
-  removeButton(){
+  removeButton() {
     this.button.classList.add("hidden");
   }
 
-  handleButton (){
-    if (this.tasks.length === 0){
+  handleButton() {
+    if (this.tasks.length === 0) {
       this.removeButton();
-    } else if (this.tasks.length === 1){
+    } else if (this.tasks.length === 1) {
       this.initializeButton();
     } else {
       this.updateButton();
@@ -362,41 +377,41 @@ export default class TaskManager {
   // ---------- Handling the accordion ----------
   togglePanel(key) {
     // Check if the clicked panel is already open
-    const isPanelOpen = this.currentTask === key
+    const isPanelOpen = this.currentTask === key;
 
     // Close all panels
-    this.accordionPanels.forEach(panel => panel.style.maxHeight = "0px");
-    this.accordionHeaders.forEach(header => header.classList.remove("active"));
+    this.accordionPanels.forEach((panel) => (panel.style.maxHeight = "0px"));
+    this.accordionHeaders.forEach((header) => header.classList.remove("active"));
     // If the clicked panel was not already open, open it
     if (!isPanelOpen) {
       const currentTask = this.accordionContainer.querySelector(`[task-key="${key}"]`);
-      currentTask.querySelector('.task-manager__accordion-header').classList.add("active");
-      const panel = currentTask.querySelector('.task-manager__accordion-panel') 
+      currentTask.querySelector(".task-manager__accordion-header").classList.add("active");
+      const panel = currentTask.querySelector(".task-manager__accordion-panel");
       panel.style.maxHeight = panel.scrollHeight + "px";
-      this.currentTask = key
+      this.currentTask = key;
     } else {
-      this.currentTask = null
+      this.currentTask = null;
     }
   }
 
-  goToPanel(key){
+  goToPanel(key) {
     // Close all panels
-    this.accordionPanels.forEach(panel => panel.style.maxHeight = "0px");
-    this.accordionHeaders.forEach(header => header.classList.remove("active"));
+    this.accordionPanels.forEach((panel) => (panel.style.maxHeight = "0px"));
+    this.accordionHeaders.forEach((header) => header.classList.remove("active"));
 
     // Open the panel or update its max height
     const currentTask = this.accordionContainer.querySelector(`[task-key="${key}"]`);
-    currentTask.querySelector('.task-manager__accordion-header').classList.add("active");
-    const panel = currentTask.querySelector('.task-manager__accordion-panel') 
+    currentTask.querySelector(".task-manager__accordion-header").classList.add("active");
+    const panel = currentTask.querySelector(".task-manager__accordion-panel");
     panel.style.maxHeight = panel.scrollHeight + "px";
-    this.currentTask = key
+    this.currentTask = key;
   }
 
   // ---------- Update the tasks UI  ----------
-  addTaskUI(data){
-   // Create elements
+  addTaskUI(data) {
+    // Create elements
     const li = document.createElement("li");
-    li.setAttribute("task-key", data.key)
+    li.setAttribute("task-key", data.key);
     li.classList.add("task-manager__accordion");
 
     const headerDiv = document.createElement("div");
@@ -450,23 +465,23 @@ export default class TaskManager {
     this.accordionContainer.appendChild(li);
 
     // I set the accordionHeaders and Panels up to date
-    this.accordionHeaders = Array.from(this.pageEl.querySelectorAll('.task-manager__accordion-header'));
-    this.accordionPanels = Array.from(this.pageEl.querySelectorAll('.task-manager__accordion-panel'));
+    this.accordionHeaders = Array.from(this.pageEl.querySelectorAll(".task-manager__accordion-header"));
+    this.accordionPanels = Array.from(this.pageEl.querySelectorAll(".task-manager__accordion-panel"));
 
-    headerDiv.addEventListener('click', () => this.togglePanel(data.key));
+    headerDiv.addEventListener("click", () => this.togglePanel(data.key));
   }
 
-  addPanel(key, panel, status){
-    if (status.type === STATUSES.COMPLETED) {
+  addPanel(key, panel, status) {
+    if (status.type === TASK_STATUSES.COMPLETED) {
       // we add an empty panel when complete to override the pink color of the last panel set in CSS.
       const statusContainerDiv = document.createElement("div");
-      panel.appendChild(statusContainerDiv); 
-      return; 
-    }; 
-    
+      panel.appendChild(statusContainerDiv);
+      return;
+    }
+
     const divider = document.createElement("div");
     divider.classList.add("task-manager__accordion-panel-divider");
-    
+
     const statusContainerDiv = document.createElement("div");
     statusContainerDiv.classList.add("task-manager__status-container");
 
@@ -481,16 +496,16 @@ export default class TaskManager {
     statusContainerDiv.appendChild(statusTitleP);
     statusContainerDiv.appendChild(statusDescriptionP);
 
-    if (status.type === STATUSES.INPUT_REQUIRED){
-      this.addInput(key, statusContainerDiv)
+    if (status.type === TASK_STATUSES.INPUT_REQUIRED) {
+      this.addInput(key, statusContainerDiv);
     }
 
-    panel.appendChild(divider)
-    panel.appendChild(statusContainerDiv)
+    panel.appendChild(divider);
+    panel.appendChild(statusContainerDiv);
   }
 
   // ---------- Handling the input ----------
-  addInput(key, statusContainer){
+  addInput(key, statusContainer) {
     const statusInputContainer = document.createElement("form");
     statusInputContainer.classList.add("task-manager__input-container");
 
@@ -506,50 +521,49 @@ export default class TaskManager {
     buttonIcon.alt = "arrow up icon";
     button.appendChild(buttonIcon);
 
-    statusInputContainer.addEventListener('submit', (e) => this.handleInputSubmit(e, key, statusInputContainer));
+    statusInputContainer.addEventListener("submit", (e) => this.handleInputSubmit(e, key, statusInputContainer));
 
     statusInputContainer.appendChild(statusInput);
     statusInputContainer.appendChild(button);
     statusContainer.appendChild(statusInputContainer);
   }
 
-
-  handleInputSubmit(e, key, container){
+  handleInputSubmit(e, key, container) {
     e.preventDefault();
     const input = e.target.querySelector("input");
     const value = input.value;
-    console.log(value) // here is the value from input 
+    console.log(value); // here is the value from input
 
     this.closeInput(container);
 
-    this.onStatusUpdate(key,{
-      type: STATUSES.IN_PROGRESS,
+    this.onStatusUpdate(key, {
+      type: TASK_STATUSES.IN_PROGRESS,
       title: "answer : ",
       description: value,
-    })
+    });
   }
 
-  closeInput(container){
+  closeInput(container) {
     container.style.display = "none";
   }
 
-  updateTaskUI(key, status){
+  updateTaskUI(key, status) {
     const task = this.accordionContainer.querySelector(`[task-key="${key}"]`);
     const header = task.querySelector(".task-manager__accordion-header");
     const statusPill = header.querySelector(".task-manager__status-pill");
-    statusPill.innerText = status.label
+    statusPill.innerText = status.label;
     statusPill.style.backgroundColor = STATUS_COLORS[status.type];
 
     const panel = task.querySelector(".task-manager__accordion-panel");
 
-    this.addPanel(key, panel, status)
-    this.goToPanel(key)
+    this.addPanel(key, panel, status);
+    this.goToPanel(key);
   }
 
   // ---------- Handling the tasks ----------
   createTask(task) {
     this.tasks.push(task);
-    this.addTaskUI(task)
+    this.addTaskUI(task);
     this.handleButton();
   }
 
@@ -564,15 +578,15 @@ export default class TaskManager {
     this.handleNotificationPill(taskKey, status);
   }
 
-  addListeners(){
-    this.button.addEventListener('click', () => this.toMinimized());
-    this.closeButton.addEventListener('click', () => this.closeTaskManager());
-    this.fullscreenButton.addEventListener('click', () => this.toFullscreen());
-    this.closeFullscreenButton.addEventListener('click', () => this.toMinimized());
+  addListeners() {
+    this.button.addEventListener("click", () => this.toMinimized());
+    this.closeButton.addEventListener("click", () => this.closeTaskManager());
+    this.fullscreenButton.addEventListener("click", () => this.toFullscreen());
+    this.closeFullscreenButton.addEventListener("click", () => this.toMinimized());
     window.addEventListener("resize", () => {
-      if (this.taskManagerState === STATES.MINIMIZED && window.innerWidth < 820){
-        this.changeState(STATES.FULLSCREEN)
+      if (this.taskManagerState === STATES.MINIMIZED && window.innerWidth < 820) {
+        this.changeState(STATES.FULLSCREEN);
       }
-    })
+    });
   }
 }
