@@ -57,11 +57,14 @@ gsap.registerPlugin(Flip);
 // [X] when adding a new panel to the accordion, update the click event listener
 // [X] handle the accordion panel in function of the type of the status (input required, in progress, completed)
 // [X] for the input required change the status after input has been entered
+// [X] handle the notification pastille when input required or completed
+// [X] do the animation of the notification pastille
+// [] do repsonsive version
+// [] when click on pastille -> scroll to the panel
 // [] when new task or updated task, scroll to the task
-// [] handle the notification pastille when input required or completed
-// [] do the animation of the notification pastille
 // [] do the animation of when a task is added
 // [] if task updated and prev update was input, remove input before going to next update ? 
+// [] position the task manager above the nav
 
 export default class TaskManager {
   constructor({ pageEl, gui, emitter }) {
@@ -249,12 +252,15 @@ export default class TaskManager {
     this.pageEl.appendChild(this.notificationContainer);
 
     this.notificationContainer.addEventListener('click', () => {
-      this.expandNotificationPill();
-      console.log(taskKey)
+      this.closeNotificationPill();
+      // open the task manager and go to the right panel
+      this.toMinimized();
+      this.goToPanel(taskKey);
     });
     notificationCloseBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       this.closeNotificationPill();
+      this.toMinimized();
     })
 
     this.expandNotificationPill();
