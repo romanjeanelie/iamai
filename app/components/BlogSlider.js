@@ -52,6 +52,10 @@ export default class BlogSlider {
     this.paginationTotal && (this.paginationTotal.textContent = this.totalSlides);
     this.paginationCurrent && (this.paginationCurrent.textContent = this.currentSlide + 1);
 
+    this.gutterLeft = document.createElement("div");
+    this.gutterLeft.classList.add("blogSlider__gutter-left", "blogSlider__gutter");
+    this.slider.appendChild(this.gutterLeft);
+
     this.slidesData.forEach((slide) => {
       const slideEl = document.createElement("div");
       slideEl.classList.add("blogSlider__slide");
@@ -84,38 +88,11 @@ export default class BlogSlider {
       this.slider.appendChild(slideEl);
     });
 
+    this.gutterRight = document.createElement("div");
+    this.gutterRight.classList.add("blogSlider__gutter-right", "blogSlider__gutter");
+    this.slider.appendChild(this.gutterRight);
+
     this.updateUI();
-  }
-
-  // delta = -1 for previous slide, 1 for next slide
-  async handleGoToSlide(delta) {
-    const nextSlide = this.currentSlide + delta;
-    if (nextSlide < 0 || nextSlide >= this.totalSlides) return;
-    this.isProgrammaticScroll = true;
-    this.currentSlide = nextSlide;
-    this.goTo(this.currentSlide);
-    await this.updateUI();
-    this.isProgrammaticScroll = false;
-    this.isUpdating = false;
-  }
-
-  goTo(index) {
-    const slide = this.slides[index];
-    if (slide) {
-      const slideRect = slide.getBoundingClientRect();
-      const scrollPos = this.isFullscreen
-        ? slideRect.top + this.slider.scrollTop - this.slider.getBoundingClientRect().top
-        : slideRect.left + this.slider.scrollLeft - this.slider.getBoundingClientRect().left;
-      const centeredPos =
-        scrollPos -
-        this.slider[this.isFullscreen ? "offsetHeight" : "offsetWidth"] / 2 +
-        slideRect[this.isFullscreen ? "height" : "width"] / 2;
-
-      this.slider.scrollTo({
-        [this.isFullscreen ? "top" : "left"]: centeredPos,
-        behavior: "smooth",
-      });
-    }
   }
 
   async updateUI() {
@@ -156,37 +133,6 @@ export default class BlogSlider {
     );
   }
 
-  handleScroll() {
-    if (this.isProgrammaticScroll) return;
-    let index = 0;
-    let totalHeight = 0;
-
-    const viewportCenter = this.isFullscreen
-      ? this.slider.scrollTop + this.slider.offsetHeight / 2
-      : this.slider.scrollLeft + this.slider.offsetWidth / 2;
-
-    // Find the slide whose center is closest to the viewport center
-    for (const slide of this.slides) {
-      // Add the height or width of the current slide to the total height or width
-      totalHeight += this.isFullscreen ? slide.offsetHeight : slide.offsetWidth;
-      // Calculate the center of the next slide by adding half of its height or width to the total height or width
-      const nextSlideCenter =
-        totalHeight + (this.slides[index + 1]?.[this.isFullscreen ? "offsetHeight" : "offsetWidth"] || 0) / 2;
-      // If the center of the next slide is beyond the viewport center, break the loop
-      if (nextSlideCenter > viewportCenter) {
-        break;
-      }
-      // Increment the index to move to the next slide
-      index++;
-    }
-
-    // Update currentSlide if it has changed
-    if (index !== this.currentSlide && index < this.slides.length) {
-      this.currentSlide = index;
-      this.updateUI();
-    }
-  }
-
   toggleInfo() {
     this.slideMobileDescription.classList.toggle("hidden");
   }
@@ -198,6 +144,76 @@ export default class BlogSlider {
     this.container.classList.toggle("fullscreen");
     this.openFullscreenBtn.classList.toggle("hidden");
     this.exitFullscreenBtn.classList.toggle("hidden");
+  }
+
+  // ---- NAVIGATION -------
+  // delta = -1 for previous slide, 1 for next slide
+  async handleGoToSlide(delta) {
+    const nextSlide = this.currentSlide + delta;
+    if (nextSlide < 0 || nextSlide >= this.totalSlides) return;
+    this.isProgrammaticScroll = true;
+    this.currentSlide = nextSlide;
+    this.goTo(this.currentSlide);
+    await this.updateUI();
+    this.isProgrammaticScroll = false;
+    this.isUpdating = false;
+  }
+
+  goTo(index) {
+    const slide = this.slides[index];
+    if (slide) {
+      const slideRect = slide.getBoundingClientRect();
+      const scrollPos = this.isFullscreen
+        ? slideRect.top + this.slider.scrollTop - this.slider.getBoundingClientRect().top
+        : slideRect.left + this.slider.scrollLeft - this.slider.getBoundingClientRect().left;
+      const centeredPos =
+        scrollPos -
+        this.slider[this.isFullscreen ? "offsetHeight" : "offsetWidth"] / 2 +
+        slideRect[this.isFullscreen ? "height" : "width"] / 2;
+
+      this.slider.scrollTo({
+        [this.isFullscreen ? "top" : "left"]: centeredPos,
+        behavior: "smooth",
+      });
+    }
+  }
+
+  handleScroll() {
+    if (this.isProgrammaticScroll) return;
+    const sliderRect = this.slider.getBoundingClientRect();
+
+    // Calculate the center of the viewport based on the slider's dimensions and position
+    const viewportCenter = this.isFullscreen
+      ? sliderRect.top + sliderRect.height / 2 // Vertical center for fullscreen mode
+      : sliderRect.left + sliderRect.width / 2; // Horizontal center for non-fullscreen mode
+
+    let closestDistance = Infinity;
+    let closestIndex = 0;
+
+    for (let i = 0; i < this.slides.length; i++) {
+      // Get the dimensions and position of the current slide relative to the viewport
+      const slideRect = this.slides[i].getBoundingClientRect();
+
+      // Calculate the center of the current slide
+      const slideCenter = this.isFullscreen
+        ? slideRect.top + slideRect.height / 2 // Vertical center for fullscreen mode
+        : slideRect.left + slideRect.width / 2; // Horizontal center for non-fullscreen mode
+
+      // Calculate the distance between the center of the current slide and the viewport center
+      const distance = Math.abs(slideCenter - viewportCenter);
+
+      // Update the closest slide if the current slide is closer to the viewport center
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestIndex = i;
+      }
+    }
+
+    // Update the current slide if it has changed and is within the bounds of the slide array
+    if (closestIndex !== this.currentSlide && closestIndex < this.slides.length) {
+      this.currentSlide = closestIndex;
+      this.updateUI();
+    }
   }
 
   // GRAB FUNCTIONS
@@ -237,14 +253,13 @@ export default class BlogSlider {
     if (this.slidesData[0].mobileFormat) {
       const firstSlide = this.slides[0];
       const padding = window.innerWidth < 560 ? 0 : (window.innerWidth - firstSlide.offsetWidth) / 2;
-      this.slider.style.paddingLeft = `${padding}px`;
+      this.gutterLeft.style.width = `${padding}px`;
     }
-
     // Adjust padding for the last slide
     if (this.slidesData[this.totalSlides - 1].mobileFormat) {
       const lastSlide = this.slides[this.totalSlides - 1];
       const padding = window.innerWidth < 560 ? 0 : (window.innerWidth - lastSlide.offsetWidth) / 2;
-      this.slider.style.paddingRight = `${padding}px`;
+      this.gutterRight.style.paddingRight = `${padding}px`;
     }
   }
 
