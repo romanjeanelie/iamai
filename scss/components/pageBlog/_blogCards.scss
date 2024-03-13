@@ -33,7 +33,7 @@
 .blogCards__card-images {
   display: flex;
   padding: 0 14px;
-  justify-content: space-between;
+  justify-content: center;
   position: relative;
 
   .blogCards__card-image {
@@ -53,8 +53,11 @@
   }
 }
 
+.blogCards__card:first-of-type .blogCards__card-images {
+  gap: 30px;
+}
+
 .blogCards__card-images.twisted {
-  justify-content: center;
   padding: 0;
 
   .blogCards__card-image:first-of-type {

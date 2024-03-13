@@ -120,6 +120,13 @@ $sliderMaxWidth: 972px;
   gap: 32px;
 }
 
+.blogSlider__pagination {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  color: rgba(0, 0, 0, 0.72);
+}
+
 .blogSlider__button {
   padding: 20px 24px;
   border-radius: 800px;
@@ -256,7 +263,7 @@ $sliderMaxWidth: 972px;
   }
 }
 
-@media screen and (max-width: 560px) {
+@media screen and (max-width: 640px) {
   .blogSlider__container {
     height: 100vh; // fallback if svh is not supported by the browser
     height: 100svh;

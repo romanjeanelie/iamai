@@ -51,8 +51,8 @@ $marquee-gap: 24px;
 
   .blogMarquee__app-logo {
     flex: none;
-    width: min(10vw, 120px);
-    height: min(10vw, 120px);
+    width: min(15vw, 120px);
+    height: min(15vw, 120px);
     background-color: $colorMain;
     border-radius: 24px;
     overflow: hidden;
@@ -66,12 +66,23 @@ $marquee-gap: 24px;
     @include media("<tablet") {
       border-radius: clamp(4px, 2vw, 24px);
     }
+
+    @include media("<phone") {
+      width: 20vw;
+      height: 20vw;
+    }
   }
 
   .blogMarquee__footer {
     font-size: 28px;
     font-weight: 500;
     line-height: 32px;
+
+    @include media("<phone") {
+      font-size: 20px;
+      line-height: 24px;
+      letter-spacing: 0.5px;
+    }
 
     span {
       color: $colorBlack;

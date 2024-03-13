@@ -43,6 +43,7 @@
     margin-top: 24px;
     font-size: 24px;
     font-weight: 500;
+    padding-right: 8px;
     line-height: 28px;
 
     span {
@@ -68,46 +69,16 @@
   }
 }
 
-.blogContent__text-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 20px;
-
+.blogContent__notChatGpt {
   h2 {
-    grid-column: span 2;
+    margin-bottom: 16px;
   }
 
-  ul {
-    grid-column: span 3;
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-  }
-
-  li {
+  p {
+    max-width: 740px;
     font-size: 22px;
     font-weight: 500;
     line-height: 24px;
     letter-spacing: 0.5px;
-    text-align: left;
-    color: $blogMainColor;
-
-    &:nth-of-type(2) {
-      color: $colorBlack;
-    }
-
-    span {
-      color: $colorBlack;
-    }
-  }
-
-  @include media("<phone") {
-    h2 {
-      grid-column: span 5;
-    }
-
-    ul {
-      grid-column: span 5;
-    }
   }
 }

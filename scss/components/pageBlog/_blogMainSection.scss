@@ -1,6 +1,6 @@
 .blog__pinkTitle-container {
   h1 {
-    color: rgba(255, 0, 255, 0.6);
+    color: rgba(255, 0, 255, 0.62);
 
     span {
       color: $colorPink;
@@ -14,7 +14,7 @@
 
     .anim-gradient {
       color: #ff66ff;
-      background: -webkit-linear-gradient(45deg, #ff66ff 0%, #ff66ff 50%, #fa00ff 51%, #ff66ff 100%);
+      background: -webkit-linear-gradient(1deg, #ff66ff 0%, #ff66ff 50%, #fa00ff 51%, #ff66ff 100%);
       background-size: 200% 200%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -55,9 +55,9 @@
 
     .blog__blackBlock-introducing {
       color: $colorMain;
-      font-size: clamp(32px, 7vw, 60px);
+      font-size: clamp(32px, 7vw, 54px);
       font-weight: 600;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
       margin-bottom: 250px;
 
       @include media("<desktop") {
@@ -100,7 +100,7 @@
       padding-right: 86px;
 
       p {
-        font-size: 28px;
+        font-size: 25px;
         line-height: 32px;
         color: $colorMain;
       }

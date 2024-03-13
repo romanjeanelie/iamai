@@ -58,12 +58,22 @@ img {
   display: none;
 }
 
+.sm-mobile-break {
+  display: none;
+}
+
 @include media("<tablet") {
   .desktop-break {
     display: none;
   }
 
   .mobile-break {
+    display: inline;
+  }
+}
+
+@include media("<minimum") {
+  .sm-mobile-break {
     display: inline;
   }
 }
