@@ -14,7 +14,7 @@
     line-height: 28px;
     letter-spacing: 0.5px;
     text-align: left;
-    color: $colorBlackForGreyPage;
+    color: $blogMainColor;
 
     .mobile-break {
       display: none;
@@ -35,7 +35,7 @@
 
   h3 {
     margin-top: 80px;
-    color: $colorBlackForGreyPage;
+    color: $blogMainColor;
 
     @include media("<tablet") {
       margin-top: 60px;
