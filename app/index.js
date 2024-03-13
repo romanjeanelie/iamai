@@ -49,9 +49,9 @@ class App {
 
     this.addListeners();
     this.resetScroll();
-    this.gui = new dat.GUI();
 
     if (this.debug) {
+      this.gui = new dat.GUI();
       this.toPageGrey({ duration: 0 });
       this.initApp();
     }
