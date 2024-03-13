@@ -142,7 +142,19 @@ export default class Discussion {
       const userContainer = document.createElement("div");
       userContainer.classList.add("discussion__user");
       this.discussionContainer.appendChild(userContainer);
-      this.addImages({ container: userContainer, srcs: imgs.map((img) => img.src) });
+
+      if (!this.tabs) {
+        this.tabs = new DiscussionTabs({
+          container: userContainer,
+          emitter: this.emitter,
+          removeStatus: this.removeStatus,
+          scrollToBottom: this.scrollToBottom,
+        });
+      } else {
+        this.tabs.container = userContainer;
+      }
+
+      this.addImages({ container: userContainer, imgSrcs: imgs.map((img) => img.src) });
     }
 
     this.userContainer = document.createElement("div");
@@ -313,6 +325,7 @@ export default class Discussion {
     this.tabs?.addTab("Images");
     this.tabs?.initImages(imgSrcs);
     this.typingStatus = null;
+    this.tabs?.showTabs();
     // container?.appendChild(this.topStatus);
   }
 
