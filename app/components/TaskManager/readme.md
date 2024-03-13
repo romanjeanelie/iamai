@@ -22,7 +22,7 @@ await this.createTask(task, textAI)
 - Update a task status :
 
 ```jsx
-this.emitter.emit("taskManager:updateStatus", task.key, 
+this.callbacks.emitter.emit("taskManager:updateStatus", task.key, 
 					status: {
 						type, TASK_STATUSES.INPUT_REQUIRED,
 						title: "question", 
@@ -35,7 +35,7 @@ this.emitter.emit("taskManager:updateStatus", task.key,
 ```jsx
 const taskAnswer: "You have a flight tomorrow at 2pm booked."
 
-this.emitter.emit("taskManager:updateStatus", task.key, 
+this.callbacks.emitter.emit("taskManager:updateStatus", task.key, 
 					status: {
 						type, TASK_STATUSES.COMPLETED,
 						title: "results :", 
