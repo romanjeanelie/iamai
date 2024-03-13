@@ -422,6 +422,15 @@ export default class Discussion {
     AIContainer.classList.remove("discussion__ai--task-created");
   }
 
+  async viewTaskResults(taskKey, result) {
+    console.log("viewTaskResults", taskKey, result);
+    this.AIContainer = document.createElement("div");
+    this.AIContainer.classList.add("discussion__ai");
+    this.discussionContainer.appendChild(this.AIContainer);
+
+    await this.addAIText({ text: result, container: this.AIContainer });
+  }
+
   addListeners() {
     window.addEventListener("load", this.onLoad());
 
@@ -441,6 +450,7 @@ export default class Discussion {
     this.emitter.on("taskManager:createTask", (task, textAI) => this.onCreatedTask(task, textAI));
     this.emitter.on("taskManager:updateStatus", (taskKey, status) => this.onStatusUpdate(taskKey, status));
     this.emitter.on("taskManager:deleteTask", (taskKey) => this.onRemoveTask(taskKey));
+    this.emitter.on("taskManager:viewResults", (taskKey, result) => this.viewTaskResults(taskKey, result));
 
     // window.addEventListener("load", this.onLoad.bind(this));
     const resizeObserver = new ResizeObserver(this.scrollToBottom.bind(this));

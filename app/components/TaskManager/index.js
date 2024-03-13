@@ -33,8 +33,8 @@ const defaultValues = {
   },
   [TASK_STATUSES.COMPLETED]: {
     label: "View results",
-    title: "",
-    description: "",
+    title: "results",
+    description: "Here's your flights to Bali!",
   },
 };
 
@@ -626,10 +626,12 @@ export default class TaskManager {
 
   // Roman : function triggered when click on completed task or the notification pill for completed task
   viewResults(key) {
+    const task = this.tasks.find((task) => task.key === key);
+    this.emitter.emit("taskManager:viewResults", key, task.status.description);
+
     this.removeTask(key);
     this.closeTaskManager();
     this.closeNotificationPill();
-    console.log("view results", key);
   }
 
   addListeners() {
