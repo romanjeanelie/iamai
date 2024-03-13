@@ -304,7 +304,7 @@ class Chat {
         } else if (mdata.status.toLowerCase() == "pa end") {
           this.callbacks.enableInput();
           this.callbacks.emitter.emit("paEnd");
-        } else if (mtext.trim().length > 0) { //ADDED THIS FOR conversation_question and other cases.
+        } else if ( mdata.message_type != "system" && mtext.trim().length > 0) { //ADDED THIS FOR conversation_question and other cases.
           var AIAnswer = await this.toTitleCase2(mtext);
           if (this.sourcelang != "en") {
             var transresponse = await this.googletranslate(
