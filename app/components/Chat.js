@@ -353,12 +353,11 @@ class Chat {
             status: {
               type: TASK_STATUSES.IN_PROGRESS,
               title: mdata.response_json.text.split(" ")[0],
-              description: mdata.response_json.text
-            }
-          }
-          this.callbacks.emitter.emit("taskManager:updateStatus", task)
+              description: mdata.response_json.text,
+            },
+          };
+          this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status);
         } else if (mdata.status && mdata.status == AGENT_ANSWERED) {
-
         }
         // } else if (mtext.trim().length > 0) { //ADDED THIS FOR conversation_question and other cases.
         //   var AIAnswer = await this.toTitleCase2(mtext);
