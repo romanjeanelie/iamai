@@ -334,3 +334,54 @@ $sliderMaxWidth: 972px;
     display: none;
   }
 }
+
+// Dealing with the first slider that has a slightly different ui on mobile than the others
+.blogSlider__container:first-of-type {
+  .blogSlider__static-description {
+    display: none;
+  }
+
+  @include media("<phone") {
+    height: auto;
+
+    .blogSlider__slides-container {
+      height: auto;
+      flex-direction: column;
+
+      padding: 0 24px;
+    }
+
+    .blogSlider__slides-container {
+      overflow-y: visible;
+      overflow-x: hidden;
+      scroll-snap-type: none;
+      cursor: default;
+    }
+
+    .blogSlider__slide {
+      width: 100%;
+    }
+
+    .blogSlider__static-description {
+      display: block;
+      width: 100%;
+      margin: 8px 0 24px;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 16px;
+      letter-spacing: 0.5px;
+    }
+
+    .blogSlider__gutter {
+      display: none;
+    }
+
+    .blogSlider__static-description:last-of-type {
+      margin: 8px 0 0;
+    }
+
+    .blogSlider__footer {
+      display: none;
+    }
+  }
+}

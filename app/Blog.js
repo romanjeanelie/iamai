@@ -1,7 +1,7 @@
 import BlogSlider from "./components/BlogSlider";
 import gsap, { Power3 } from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import generateSlider from "./utils/generateSlider";
+import { generateSliderHeader } from "./utils/generateSlider";
 
 const slider1Data = [
   {
@@ -46,14 +46,6 @@ const slider2Data = [
       "https://dl.dropbox.com/s/gftbpl8lczyg9dvoirjjs/kreyda_alpha_0911-hevc-safari.mp4?rlkey=8v48lqnlbtbe3neg86p02c4p5&dl=0",
     description:
       "Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
-  },
-  {
-    id: 4,
-    video:
-      "https://dl.dropbox.com/s/gftbpl8lczyg9dvoirjjs/kreyda_alpha_0911-hevc-safari.mp4?rlkey=8v48lqnlbtbe3neg86p02c4p5&dl=0",
-    description:
-      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    mobileFormat: true,
   },
 ];
 
@@ -138,12 +130,12 @@ class Blog {
 
   initSliders() {
     const firstSlider = document.querySelector(".blogSlider__container");
-    new BlogSlider({ sliderData: slider1Data, container: firstSlider });
+    new BlogSlider({ sliderData: slider1Data, container: firstSlider, differentMobileVersion: true });
 
     if (!this.slidersSection) return;
     data.forEach((data, idx) => {
       const isOdd = idx % 2 !== 0;
-      generateSlider(data, isOdd, this.slidersSection);
+      generateSliderHeader(data, isOdd, this.slidersSection);
     });
 
     const newSliders = this.slidersSection.querySelectorAll(".blogSlider__container.sliderSection");
@@ -179,8 +171,8 @@ class Blog {
   }
 
   playStaticVideosWhenOnScreen() {
+    // I only target static videos because the sliders are already handled by the BlogSlider class
     const videos = document.querySelectorAll(".static-video");
-    console.log(videos);
     // Create a callback function to be called when the observed video enters or exits the viewport
     const videoObserverCallback = (entries) => {
       entries.forEach((entry) => {

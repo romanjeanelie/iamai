@@ -6,11 +6,16 @@
 // [X] fix the glitch when you scroll too fast;
 
 import { asyncAnim } from "../utils/anim";
+import { generateSlider } from "../utils/generateSlider";
 
 export default class BlogSlider {
-  constructor({ sliderData, container }) {
+  constructor({ sliderData, container, differentMobileVersion }) {
     this.slidesData = sliderData;
     this.container = container;
+    this.differentMobileVersion = differentMobileVersion;
+
+    // create the html structure
+    generateSlider(this.container);
 
     // States for grab events
     this.isDown = false;
@@ -62,6 +67,14 @@ export default class BlogSlider {
       const slideEl = document.createElement("div");
       slideEl.classList.add("blogSlider__slide");
 
+      let staticDescription;
+
+      if (this.differentMobileVersion) {
+        staticDescription = document.createElement("p");
+        staticDescription.classList.add("blogSlider__static-description");
+        staticDescription.textContent = slide.description;
+      }
+
       let mediaEl;
       if (slide.video) {
         mediaEl = document.createElement("video");
@@ -86,6 +99,7 @@ export default class BlogSlider {
       slideEl.appendChild(mediaEl);
       this.slides.push(slideEl);
       this.slider.appendChild(slideEl);
+      if (staticDescription) this.slider.appendChild(staticDescription);
     });
 
     this.gutterRight = document.createElement("div");
