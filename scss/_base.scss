@@ -30,7 +30,6 @@ $paddingTopMobile: 28px;
 
 html {
   min-height: 100svh;
-  background: $backgroundColorGreyPage;
 }
 
 body {
@@ -59,7 +58,7 @@ button {
   position: relative;
   width: 100vw;
   display: flex;
-  height: 100svh;
+  min-height: 100svh;
   justify-content: center;
   align-items: center;
 
@@ -105,14 +104,13 @@ button {
 
 .page-grey {
   background-color: $backgroundColorGreyPage;
-  height: 100vh; // in case svh is not supported by browser
-  height: 100svh;
+  min-height: 100vh; // in case svh is not supported by browser
+  min-height: 100svh;
 
   main {
     min-height: 100vh; // in case svh is not supported by browser
     min-height: 100svh;
     position: relative;
-    height: 100%;
     display: flex;
     align-items: center;
     flex-direction: column;

@@ -1,7 +1,8 @@
-import BlogSlider from "./components/BlogSlider";
+import BlogSlider from "../components/BlogSlider";
 import gsap, { Power3 } from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import { generateSliderHeader } from "./utils/generateSlider";
+import { generateSliderHeader } from "../utils/generateSlider";
+import { blackBlockAnimation, cascadingFadeInText } from "./BlogAnimations";
 
 const slider1Data = [
   {
@@ -108,21 +109,10 @@ const data = [
 // [X] adjust the size of the slider to the new design
 // [X] add correct videos to the slider
 // [X] handle the marquee;
-// [] add correct logos for the marquee;
+// [X] add correct logos for the marquee;
 // [X] handle the videos (use mobile version when needed)
 
 gsap.registerPlugin(ScrollTrigger);
-
-function cascadingFadeInText(elements) {
-  const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: Array.isArray(elements) ? elements[0] : elements,
-      start: "top 90%",
-    },
-  });
-
-  tl.fromTo(elements, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, stagger: 0.2, ease: Power3.easeIn });
-}
 
 class Blog {
   constructor() {
@@ -157,27 +147,10 @@ class Blog {
 
   initScrollAnim() {
     // ---- first anim done - need to be refactored ----
-    const blackBlockFooter = document.querySelector(".blog__blackBlock-footer");
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: blackBlockFooter,
-        start: "80% bottom",
-        toggleActions: "play none play reverse",
-      },
-    });
-    tl.fromTo(
-      blackBlockFooter,
-      {
-        y: 25,
-        opacity: 0,
-      },
-      {
-        y: 0,
-        opacity: 1,
-        ease: Power3.easeIn,
-        duration: 1.5,
-      }
-    );
+    const bbIntroducing = document.querySelector(".blog__blackBlock-introducing");
+    const bbLogo = document.querySelector(".blog__blackBlock-co");
+    const bbFooter = document.querySelector(".blog__blackBlock-footer");
+    blackBlockAnimation(bbIntroducing, bbLogo, bbFooter);
 
     // ---- set the anims B : Cascading (staggered) Fade in text ----
     cascadingFadeInText([".blogIntro__container p", ".blogIntro__container h3"]);

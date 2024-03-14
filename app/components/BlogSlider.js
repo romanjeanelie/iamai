@@ -5,6 +5,7 @@
 // [X] play the video only when it's current slider;
 // [X] fix the glitch when you scroll too fast;
 
+import { cascadingFadeInText } from "../Blog/BlogAnimations";
 import { asyncAnim } from "../utils/anim";
 import { generateSlider } from "../utils/generateSlider";
 
@@ -50,6 +51,7 @@ export default class BlogSlider {
 
     // functions
     this.initSlider();
+    this.initSliderAnim();
     this.adjustMobilePadding();
     this.addListeners();
     this.observeSliderInView();
@@ -107,6 +109,11 @@ export default class BlogSlider {
     this.slider.appendChild(this.gutterRight);
 
     this.updateUI();
+  }
+
+  initSliderAnim() {
+    const footer = this.container.querySelector(".blogSlider__footer");
+    cascadingFadeInText(this.slider, footer);
   }
 
   async updateUI() {
