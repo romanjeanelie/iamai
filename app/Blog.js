@@ -113,6 +113,17 @@ const data = [
 
 gsap.registerPlugin(ScrollTrigger);
 
+function cascadingFadeInText(elements) {
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: Array.isArray(elements) ? elements[0] : elements,
+      start: "top 90%",
+    },
+  });
+
+  tl.fromTo(elements, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, stagger: 0.2, ease: Power3.easeIn });
+}
+
 class Blog {
   constructor() {
     // States
@@ -145,8 +156,8 @@ class Blog {
   }
 
   initScrollAnim() {
+    // ---- first anim done - need to be refactored ----
     const blackBlockFooter = document.querySelector(".blog__blackBlock-footer");
-
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: blackBlockFooter,
@@ -154,7 +165,6 @@ class Blog {
         toggleActions: "play none play reverse",
       },
     });
-
     tl.fromTo(
       blackBlockFooter,
       {
@@ -168,6 +178,19 @@ class Blog {
         duration: 1.5,
       }
     );
+
+    // ---- set the anims B : Cascading (staggered) Fade in text ----
+    cascadingFadeInText([".blogIntro__container p", ".blogIntro__container h3"]);
+    cascadingFadeInText([".blogMarquee__app-marquees", ".blogMarquee__footer"]);
+    cascadingFadeInText(".blogCards__text");
+    cascadingFadeInText([".blogContent__video", ".blogContent__video-description"]);
+    cascadingFadeInText([".blogContent__notChatGpt *"]);
+
+    const sliderSections = document.querySelectorAll(".blogSlider__section");
+    sliderSections.forEach((section) => {
+      const paragraph = section.querySelector("p");
+      cascadingFadeInText(paragraph);
+    });
   }
 
   playStaticVideosWhenOnScreen() {

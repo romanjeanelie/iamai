@@ -271,7 +271,7 @@ export default class BlogSlider {
       if (this.slidesData[idx].videoMobile && window.innerWidth < 560) {
         video.src = this.slidesData[idx].videoMobile;
       } else {
-        video.src = this.slidesData[idx].video;
+        video && (video.src = this.slidesData[idx].video);
       }
     });
   }
