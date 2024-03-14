@@ -2,7 +2,7 @@ import BlogSlider from "../components/BlogSlider";
 import gsap, { Power3 } from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { generateSliderHeader } from "../utils/generateSlider";
-import { blackBlockAnimation, cascadingFadeInText } from "./BlogAnimations";
+import { blackBlockAnimation, cascadingFadeInText, staircaseAnimation } from "./BlogAnimations";
 
 const slider1Data = [
   {
@@ -146,13 +146,7 @@ class Blog {
   }
 
   initScrollAnim() {
-    // ---- first anim done - need to be refactored ----
-    const bbIntroducing = document.querySelector(".blog__blackBlock-introducing");
-    const bbLogo = document.querySelector(".blog__blackBlock-co");
-    const bbFooter = document.querySelector(".blog__blackBlock-footer");
-    blackBlockAnimation(bbIntroducing, bbLogo, bbFooter);
-
-    // ---- set the anims B : Cascading (staggered) Fade in text ----
+    // ---- anim B : Cascading (staggered) Fade in text ----
     cascadingFadeInText([".blogIntro__container p", ".blogIntro__container h3"]);
     cascadingFadeInText([".blogMarquee__app-marquees", ".blogMarquee__footer"]);
     cascadingFadeInText(".blogCards__text");
@@ -164,6 +158,16 @@ class Blog {
       const paragraph = section.querySelector("p");
       cascadingFadeInText(paragraph);
     });
+
+    // ---- anim D - Black block Animation ----
+    const bbIntroducing = document.querySelector(".blog__blackBlock-introducing");
+    const bbLogo = document.querySelector(".blog__blackBlock-co");
+    const bbFooter = document.querySelector(".blog__blackBlock-footer");
+    blackBlockAnimation(bbIntroducing, bbLogo, bbFooter);
+
+    // ---- anim E - Staircase Animation ----
+    const blogCards = document.querySelectorAll(".blogCards__card");
+    staircaseAnimation(blogCards);
   }
 
   playStaticVideosWhenOnScreen() {

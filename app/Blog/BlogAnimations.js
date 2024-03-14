@@ -13,7 +13,7 @@ export function cascadingFadeInText(elements) {
 
 export function blackBlockAnimation(introduction, logo, footer) {
   const tl = gsap.timeline({
-    scrollTrigger: { trigger: introduction, markers: true, start: "top 55%" },
+    scrollTrigger: { trigger: introduction, start: "top 55%" },
     defaults: { duration: 1, ease: Power3.easeOut },
   });
 
@@ -45,6 +45,32 @@ export function blackBlockAnimation(introduction, logo, footer) {
       ease: Power3.easeOut,
       duration: 1,
       scrollTrigger: { trigger: footer, start: "top 75%" },
+    }
+  );
+}
+
+export function staircaseAnimation(elements) {
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: elements[0],
+      start: "top 90%",
+      markers: true,
+      toggleActions: "play none play reverse",
+    },
+  });
+
+  tl.fromTo(
+    elements,
+    {
+      y: "50vh",
+      opacity: 0,
+    },
+    {
+      y: 0,
+      opacity: 1,
+      duration: 1,
+      stagger: 0.2,
+      ease: Power3.easeOut,
     }
   );
 }
