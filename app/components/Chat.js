@@ -35,6 +35,7 @@ const ANSWER = "answer",
   RAGCHAT = "RAG_CHAT",
   FLIGHTSEARCH = "FlightSearch",
   PRODUCTSEARCH = "ProductSearch";
+let micro_thread_id = "";
 
 class Chat {
   constructor(callbacks) {
@@ -330,6 +331,21 @@ class Chat {
           this.callbacks.enableInput();
           this.callbacks.emitter.emit("paEnd");
           this.callbacks.emitter.emit(PA_RESPONSE_ENDED);
+        } else if (mdata.status && mdata.status == AGENT_STARTED) {
+          // micro_thread_id =  mdata.micro_thread_id;
+          const task = {
+            key:  mdata.micro_thread_id ,
+            name:  mdata.task_name,
+            status: {
+              type: TASK_STATUSES.IN_PROGRESS,
+              title: "Planning",
+              description: "Planning your tasks."
+            }
+          }
+          const textAI = mdata.response_json.text;
+
+          // await this.createTask(task, textAI)
+          this.callbacks.emitter.emit("taskManager:createTask", task, textAI);
         }
         // } else if (mtext.trim().length > 0) { //ADDED THIS FOR conversation_question and other cases.
         //   var AIAnswer = await this.toTitleCase2(mtext);
