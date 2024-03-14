@@ -157,7 +157,7 @@ class Blog {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: blackBlockFooter,
-        markers: true,
+        markers: false,
         start: "80% bottom",
         toggleActions: "play none play reverse",
       },

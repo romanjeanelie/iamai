@@ -23,9 +23,14 @@
 
   h1 {
     margin-bottom: 40px;
+    line-height: calc(100% + 6px);
 
     &.centered {
       text-align: center;
+
+      @include media("<phone") {
+        text-align: left;
+      }
     }
   }
 
@@ -45,6 +50,7 @@
       margin-bottom: 12px;
 
       span {
+        margin-left: 8px;
         font-size: 10px;
       }
     }
@@ -57,6 +63,16 @@
 
     &.centered {
       text-align: center;
+
+      @include media("<phone") {
+        text-align: left;
+      }
+    }
+
+    @include media("<phone") {
+      font-size: 18px;
+      line-height: 24px;
+      letter-spacing: 0.5px;
     }
   }
 }
@@ -83,9 +99,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; // in case the browser doesn't support svh
-  height: 100svh;
-  padding: 0 24px;
+  min-height: 100vh; // in case the browser doesn't support svh
+  min-height: 100svh;
+  padding: 24px;
 
   h1 {
     max-width: 996px;
@@ -93,5 +109,22 @@
     background: -webkit-linear-gradient(45deg, #fa00ff, #fed7ff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  .blog__footer-mobile {
+    display: none;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  @include media("<tablet") {
+    .blog__footer-desktop {
+      display: none;
+    }
+    .blog__footer-mobile {
+      display: flex;
+      line-height: calc(100% - 1.8px);
+      letter-spacing: -1.3px;
+    }
   }
 }
