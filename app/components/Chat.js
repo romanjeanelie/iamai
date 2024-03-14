@@ -298,22 +298,22 @@ class Chat {
           //     this.getProductUI();
           //     (this.ProductSearch = ""), (this.domain = ""), (this.ProductSearchResults = "");
           //   }
-        // } else if (mdata.type == STATUS) {
-        //   var mtext = mdata.response_json.text;
-        //   if (mtext != "") {
-        //     var AIAnswer = await this.toTitleCase2(mtext);
-        //     if (this.sourcelang != "en") {
-        //       var transresponse = await this.googletranslate(AIAnswer, this.sourcelang, this.targetlang);
-        //       AIAnswer = transresponse.data.translations[0].translatedText;
-        //     }
-        //     AIAnswer += "\n\n";
-        //     await this.callbacks.addAIText({
-        //       text: AIAnswer,
-        //       container: this.container,
-        //       targetlang: this.sourcelang,
-        //       type: "status",
-        //     });
-        //   }
+          // } else if (mdata.type == STATUS) {
+          //   var mtext = mdata.response_json.text;
+          //   if (mtext != "") {
+          //     var AIAnswer = await this.toTitleCase2(mtext);
+          //     if (this.sourcelang != "en") {
+          //       var transresponse = await this.googletranslate(AIAnswer, this.sourcelang, this.targetlang);
+          //       AIAnswer = transresponse.data.translations[0].translatedText;
+          //     }
+          //     AIAnswer += "\n\n";
+          //     await this.callbacks.addAIText({
+          //       text: AIAnswer,
+          //       container: this.container,
+          //       targetlang: this.sourcelang,
+          //       type: "status",
+          //     });
+          //   }
         } else if (mdata.status && mdata.status == AGENT_ENDED) {
           this.callbacks.emitter.emit(AGENT_ENDED);
           if (this.domain == MOVIESEARCH) {
@@ -341,9 +341,9 @@ class Chat {
             status: {
               type: TASK_STATUSES.IN_PROGRESS,
               title: "Planning",
-              description: "Planning your tasks."
-            }
-          }
+              description: "Planning your tasks.",
+            },
+          };
           const textAI = mdata.response_json.text;
           // await this.createTask(task, textAI)
           this.callbacks.emitter.emit("taskManager:createTask", task, textAI);
