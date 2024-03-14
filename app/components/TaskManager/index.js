@@ -129,7 +129,9 @@ export default class TaskManager {
     // Emitter
     this.emitter = emitter;
     this.emitter.on("taskManager:createTask", (task, textAI) => this.createTask(task));
-    this.emitter.on("taskManager:updateStatus", (taskKey, status) => this.onStatusUpdate(taskKey, status));
+    this.emitter.on("taskManager:updateStatus", (taskKey, status, container) =>
+      this.onStatusUpdate(taskKey, status, container)
+    );
     this.emitter.on("taskManager:deleteTask", (taskKey) => this.removeTask(taskKey));
 
     if (this.debug) {
@@ -174,10 +176,16 @@ export default class TaskManager {
     const folder = this.gui.addFolder(task.name);
     folder.open();
     folder.add(task.status, "type", TASK_STATUSES).onChange((value) => {
-      task.status = { type: value, ...defaultValues[value] };
+      const status = { type: value, ...defaultValues[value] };
       titleController.setValue(task.status.title);
       descriptionController.setValue(task.status.description);
-      this.emitter.emit("taskManager:updateStatus", task.key, task.status);
+      if (value === TASK_STATUSES.COMPLETED) {
+        const container = document.createElement("div");
+        container.innerHTML = "Here's your flights to Bamako!";
+        this.emitter.emit("taskManager:updateStatus", task.key, status, container);
+      } else {
+        this.emitter.emit("taskManager:updateStatus", task.key, status);
+      }
     });
 
     const titleController = folder
@@ -618,7 +626,10 @@ export default class TaskManager {
     }
   }
 
-  onStatusUpdate(taskKey, status) {
+  onStatusUpdate(taskKey, status, container) {
+    const task = this.tasks.find((task) => task.key === taskKey);
+    task.status = status;
+    task.resultsContainer = container;
     this.handleButton();
     this.updateTaskUI(taskKey, status);
     this.handleNotificationPill(taskKey, status);
@@ -627,7 +638,7 @@ export default class TaskManager {
   // Roman : function triggered when click on completed task or the notification pill for completed task
   viewResults(key) {
     const task = this.tasks.find((task) => task.key === key);
-    this.emitter.emit("taskManager:viewResults", key, task.status.description);
+    this.emitter.emit("taskManager:viewResults", key, task.resultsContainer);
 
     this.removeTask(key);
     this.closeTaskManager();
