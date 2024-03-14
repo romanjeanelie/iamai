@@ -61,7 +61,6 @@
       color: $colorMain;
       font-size: clamp(32px, 7vw, 54px);
       font-weight: 600;
-      letter-spacing: 0.3px;
       margin-bottom: 250px;
 
       @include media("<desktop") {
