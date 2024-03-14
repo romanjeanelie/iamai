@@ -28,14 +28,14 @@ const slider2Data = [
   {
     id: 1,
     video:
-      "https://player.vimeo.com/progressive_redirect/playback/725598812/rendition/720p/file.mp4?loc=external&oauth2_token_id=1269526533&signature=d88c6df5e7d4b6210c78486ddc486703c3ae677c385a243e6bf2560376fd6e1b",
+      "https://dl.dropbox.com/s/gftbpl8lczyg9dvoirjjs/kreyda_alpha_0911-hevc-safari.mp4?rlkey=8v48lqnlbtbe3neg86p02c4p5&dl=0",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.",
   },
   {
     id: 2,
     video:
-      "https://player.vimeo.com/progressive_redirect/playback/725598812/rendition/720p/file.mp4?loc=external&oauth2_token_id=1269526533&signature=d88c6df5e7d4b6210c78486ddc486703c3ae677c385a243e6bf2560376fd6e1b",
+      "https://dl.dropbox.com/s/gftbpl8lczyg9dvoirjjs/kreyda_alpha_0911-hevc-safari.mp4?rlkey=8v48lqnlbtbe3neg86p02c4p5&dl=0",
     description:
       "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.",
     mobileFormat: true,
@@ -43,14 +43,14 @@ const slider2Data = [
   {
     id: 3,
     video:
-      "https://player.vimeo.com/progressive_redirect/playback/725598812/rendition/720p/file.mp4?loc=external&oauth2_token_id=1269526533&signature=d88c6df5e7d4b6210c78486ddc486703c3ae677c385a243e6bf2560376fd6e1b",
+      "https://dl.dropbox.com/s/gftbpl8lczyg9dvoirjjs/kreyda_alpha_0911-hevc-safari.mp4?rlkey=8v48lqnlbtbe3neg86p02c4p5&dl=0",
     description:
       "Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
   },
   {
     id: 4,
     video:
-      "https://player.vimeo.com/progressive_redirect/playback/725598812/rendition/720p/file.mp4?loc=external&oauth2_token_id=1269526533&signature=d88c6df5e7d4b6210c78486ddc486703c3ae677c385a243e6bf2560376fd6e1b",
+      "https://dl.dropbox.com/s/gftbpl8lczyg9dvoirjjs/kreyda_alpha_0911-hevc-safari.mp4?rlkey=8v48lqnlbtbe3neg86p02c4p5&dl=0",
     description:
       "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     mobileFormat: true,
@@ -133,6 +133,7 @@ class Blog {
 
     this.initSliders();
     this.initScrollAnim();
+    this.playStaticVideosWhenOnScreen();
   }
 
   initSliders() {
@@ -157,7 +158,6 @@ class Blog {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: blackBlockFooter,
-        markers: false,
         start: "80% bottom",
         toggleActions: "play none play reverse",
       },
@@ -176,6 +176,32 @@ class Blog {
         duration: 1.5,
       }
     );
+  }
+
+  playStaticVideosWhenOnScreen() {
+    const videos = document.querySelectorAll(".static-video");
+    console.log(videos);
+    // Create a callback function to be called when the observed video enters or exits the viewport
+    const videoObserverCallback = (entries) => {
+      entries.forEach((entry) => {
+        // If the observed video is intersecting with the viewport
+        if (entry.isIntersecting) {
+          // Start playing the video
+          entry.target.play();
+        } else {
+          // Pause the video if it's not intersecting with the viewport
+          entry.target.pause();
+        }
+      });
+    };
+
+    // Create an Intersection Observer instance with the callback function
+    const videoObserver = new IntersectionObserver(videoObserverCallback);
+
+    // Observe each video element
+    videos.forEach((video) => {
+      videoObserver.observe(video);
+    });
   }
 }
 

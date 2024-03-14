@@ -18,6 +18,7 @@ export default class BlogSlider {
     this.scrollLeft;
 
     // Global States
+    this.isInView = false;
     this.currentSlide = 0;
     this.isProgrammaticScroll = false;
     this.totalSlides = this.slidesData.length;
@@ -46,6 +47,7 @@ export default class BlogSlider {
     this.initSlider();
     this.adjustMobilePadding();
     this.addListeners();
+    this.observeSliderInView();
   }
 
   initSlider() {
@@ -63,7 +65,6 @@ export default class BlogSlider {
       let mediaEl;
       if (slide.video) {
         mediaEl = document.createElement("video");
-        mediaEl.autoplay = true;
         mediaEl.controls = false;
         mediaEl.playsInline = true;
         mediaEl.loop = true;
@@ -74,7 +75,6 @@ export default class BlogSlider {
         } else {
           mediaEl.src = slide.video;
         }
-        mediaEl.load();
       } else if (slide.image) {
         mediaEl = document.createElement("img");
         mediaEl.src = slide.image;
@@ -110,7 +110,7 @@ export default class BlogSlider {
     // Add active class to the current slide (all the other slides are opaque)
     this.slides.forEach((slide) => {
       const video = slide.querySelector("video");
-      if (slide === this.slides[this.currentSlide]) {
+      if (slide === this.slides[this.currentSlide] && this.isInView) {
         slide.classList.add("active");
         video?.play();
       } else {
@@ -137,13 +137,27 @@ export default class BlogSlider {
     this.slideMobileDescription.classList.toggle("hidden");
   }
 
-  // FULL SCREEN
   toggleFullScreen() {
     this.isFullscreen = !this.isFullscreen;
     this.navBar.classList.toggle("hidden");
     this.container.classList.toggle("fullscreen");
     this.openFullscreenBtn.classList.toggle("hidden");
     this.exitFullscreenBtn.classList.toggle("hidden");
+  }
+
+  observeSliderInView() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          this.isInView = true;
+          this.updateUI();
+        } else {
+          this.isInView = false;
+          this.updateUI();
+        }
+      });
+    });
+    observer.observe(this.container);
   }
 
   // ---- NAVIGATION -------
