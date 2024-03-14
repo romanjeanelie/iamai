@@ -34,7 +34,9 @@ const ANSWER = "answer",
   TAXISEARCH = "TaxiSearch",
   RAGCHAT = "RAG_CHAT",
   FLIGHTSEARCH = "FlightSearch",
-  PRODUCTSEARCH = "ProductSearch";
+  PRODUCTSEARCH = "ProductSearch",
+  AGENT_PROGRESSING = "agent_progressing",
+  AGENT_ANSWERED = "agent_answered";
 let micro_thread_id = "";
 
 class Chat {
@@ -296,22 +298,22 @@ class Chat {
           //     this.getProductUI();
           //     (this.ProductSearch = ""), (this.domain = ""), (this.ProductSearchResults = "");
           //   }
-        } else if (mdata.type == STATUS) {
-          var mtext = mdata.response_json.text;
-          if (mtext != "") {
-            var AIAnswer = await this.toTitleCase2(mtext);
-            if (this.sourcelang != "en") {
-              var transresponse = await this.googletranslate(AIAnswer, this.sourcelang, this.targetlang);
-              AIAnswer = transresponse.data.translations[0].translatedText;
-            }
-            AIAnswer += "\n\n";
-            await this.callbacks.addAIText({
-              text: AIAnswer,
-              container: this.container,
-              targetlang: this.sourcelang,
-              type: "status",
-            });
-          }
+        // } else if (mdata.type == STATUS) {
+        //   var mtext = mdata.response_json.text;
+        //   if (mtext != "") {
+        //     var AIAnswer = await this.toTitleCase2(mtext);
+        //     if (this.sourcelang != "en") {
+        //       var transresponse = await this.googletranslate(AIAnswer, this.sourcelang, this.targetlang);
+        //       AIAnswer = transresponse.data.translations[0].translatedText;
+        //     }
+        //     AIAnswer += "\n\n";
+        //     await this.callbacks.addAIText({
+        //       text: AIAnswer,
+        //       container: this.container,
+        //       targetlang: this.sourcelang,
+        //       type: "status",
+        //     });
+        //   }
         } else if (mdata.status && mdata.status == AGENT_ENDED) {
           this.callbacks.emitter.emit(AGENT_ENDED);
           if (this.domain == MOVIESEARCH) {
@@ -334,8 +336,8 @@ class Chat {
         } else if (mdata.status && mdata.status == AGENT_STARTED) {
           // micro_thread_id =  mdata.micro_thread_id;
           const task = {
-            key:  mdata.micro_thread_id ,
-            name:  mdata.task_name,
+            key: mdata.micro_thread_id,
+            name: mdata.task_name,
             status: {
               type: TASK_STATUSES.IN_PROGRESS,
               title: "Planning",
@@ -343,9 +345,20 @@ class Chat {
             }
           }
           const textAI = mdata.response_json.text;
-
           // await this.createTask(task, textAI)
           this.callbacks.emitter.emit("taskManager:createTask", task, textAI);
+        } else if (mdata.status && mdata.status == AGENT_PROGRESSING) {
+          const task = {
+            key: mdata.micro_thread_id,
+            status: {
+              type: TASK_STATUSES.IN_PROGRESS,
+              title: mdata.response_json.text.split(" ")[0],
+              description: mdata.response_json.text
+            }
+          }
+          this.callbacks.emitter.emit("taskManager:updateStatus", task)
+        } else if (mdata.status && mdata.status == AGENT_ANSWERED) {
+
         }
         // } else if (mtext.trim().length > 0) { //ADDED THIS FOR conversation_question and other cases.
         //   var AIAnswer = await this.toTitleCase2(mtext);
