@@ -265,15 +265,15 @@ export default class BlogSlider {
     this.slider.scrollLeft = this.scrollLeft - walk;
   }
 
-  handleMoibileSrc() {
-    if (window.innerWidth < 560) {
-      this.slides.forEach((slide, idx) => {
-        const video = slide.querySelector("video");
-        if (this.slidesData[idx].videoMobile) {
-          video.src = this.slidesData[idx].videoMobile;
-        }
-      });
-    }
+  handleVideoSrcOnResize() {
+    this.slides.forEach((slide, idx) => {
+      const video = slide.querySelector("video");
+      if (this.slidesData[idx].videoMobile && window.innerWidth < 560) {
+        video.src = this.slidesData[idx].videoMobile;
+      } else {
+        video.src = this.slidesData[idx].video;
+      }
+    });
   }
 
   adjustMobilePadding() {
@@ -297,7 +297,7 @@ export default class BlogSlider {
     this.slider.addEventListener("scroll", () => this.handleScroll());
     window.addEventListener("resize", (e) => {
       this.adjustMobilePadding();
-      this.handleMoibileSrc();
+      this.handleVideoSrcOnResize();
       if (window.innerWidth > 560) {
         this.isFullscreen && this.toggleFullScreen();
       }
