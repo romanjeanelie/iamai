@@ -138,28 +138,24 @@ export default class Discussion {
   }
 
   addUserElement({ text, imgs, debug = false } = {}) {
-    if (imgs && imgs.length > 0) {
-      const userContainer = document.createElement("div");
-      userContainer.classList.add("discussion__user");
-      this.discussionContainer.appendChild(userContainer);
-
-      if (!this.tabs) {
-        this.tabs = new DiscussionTabs({
-          container: userContainer,
-          emitter: this.emitter,
-          removeStatus: this.removeStatus,
-          scrollToBottom: this.scrollToBottom,
-        });
-      } else {
-        this.tabs.container = userContainer;
-      }
-
-      this.addImages({ container: userContainer, imgSrcs: imgs.map((img) => img.src) });
-    }
-
+    // set up
     this.userContainer = document.createElement("div");
     this.userContainer.classList.add("discussion__user");
-    this.userContainer.innerHTML = text.replace(/\n/g, "<br>");
+
+    // image section
+    if (imgs && imgs.length > 0) {
+      const imgsContainer = document.createElement("div");
+      imgsContainer.classList.add("images__container");
+      imgs.forEach((img) => {
+        imgsContainer.appendChild(img);
+      });
+      this.userContainer.append(imgsContainer);
+    }
+
+    // text section
+    const textContainer = document.createElement("div");
+    textContainer.innerHTML = text.replace(/\n/g, "<br>");
+    this.userContainer.append(textContainer);
 
     this.discussionContainer.appendChild(this.userContainer);
 
