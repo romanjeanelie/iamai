@@ -537,7 +537,7 @@ export default class TaskManager {
     const task = this.accordionContainer.querySelector(`[task-key="${key}"]`);
     const header = task.querySelector(".task-manager__accordion-header");
     const statusPill = header.querySelector(".task-manager__status-pill");
-    statusPill.innerText = status.label || status.type;
+    statusPill.innerText = status.type;
     statusPill.style.backgroundColor = STATUS_COLORS[status.type];
 
     const panel = task.querySelector(".task-manager__accordion-panel");
