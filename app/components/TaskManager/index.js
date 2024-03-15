@@ -9,9 +9,9 @@ const STATES = {
 };
 
 export const TASK_STATUSES = {
-  IN_PROGRESS: "inProgress",
-  INPUT_REQUIRED: "inputRequired",
-  COMPLETED: "completed",
+  IN_PROGRESS: "In Progress",
+  INPUT_REQUIRED: "Input required",
+  COMPLETED: "View results",
 };
 
 const STATUS_COLORS = {
@@ -22,17 +22,16 @@ const STATUS_COLORS = {
 
 const defaultValues = {
   [TASK_STATUSES.IN_PROGRESS]: {
-    label: "In Progress",
+    label: "searching moving",
     title: "searching",
     description: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
   },
   [TASK_STATUSES.INPUT_REQUIRED]: {
-    label: "Input required",
+    label: "Name your city",
     title: "question",
     description: "Flight for 18th Mar are all fully booked. Is there any other dates you would like to try for?",
   },
   [TASK_STATUSES.COMPLETED]: {
-    label: "View results",
     title: "results",
     description: "Here's your flights to Bali!",
   },
@@ -270,7 +269,7 @@ export default class TaskManager {
 
     const notificationLabel = document.createElement("p");
     notificationLabel.classList.add("task-manager__notification-label");
-    notificationLabel.textContent = status.label;
+    notificationLabel.textContent = status.label || status.type;
 
     const notificationCloseBtn = document.createElement("button");
     notificationCloseBtn.classList.add("task-manager__notification-closeBtn");
@@ -461,7 +460,7 @@ export default class TaskManager {
     const statusPill = document.createElement("p");
     statusPill.classList.add("task-manager__status-pill");
     statusPill.style.backgroundColor = STATUS_COLORS[data.status.type];
-    statusPill.textContent = data.status.label;
+    statusPill.textContent = data.status.label || data.status.type;
 
     const chevronButton = document.createElement("button");
     chevronButton.classList.add("task-manager__accordion-chevron");
@@ -538,7 +537,7 @@ export default class TaskManager {
     const task = this.accordionContainer.querySelector(`[task-key="${key}"]`);
     const header = task.querySelector(".task-manager__accordion-header");
     const statusPill = header.querySelector(".task-manager__status-pill");
-    statusPill.innerText = status.label;
+    statusPill.innerText = status.type;
     statusPill.style.backgroundColor = STATUS_COLORS[status.type];
 
     const panel = task.querySelector(".task-manager__accordion-panel");
@@ -638,7 +637,7 @@ export default class TaskManager {
   // Roman : function triggered when click on completed task or the notification pill for completed task
   viewResults(key) {
     const task = this.tasks.find((task) => task.key === key);
-    this.emitter.emit("taskManager:viewResults", key, task.resultsContainer);
+    this.emitter.emit("taskManager:viewResults", task, task.resultsContainer);
 
     this.removeTask(key);
     this.closeTaskManager();

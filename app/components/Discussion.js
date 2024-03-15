@@ -407,33 +407,42 @@ export default class Discussion {
   }
 
   onStatusUpdate(taskKey, status) {
-    if (status.type === TASK_STATUSES.COMPLETED) {
-      const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskKey="${taskKey}"]`);
-      const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskKey="${taskKey}"]`);
-      userContainer.classList.remove("discussion__user--task-created");
-      AIContainer.classList.remove("discussion__ai--task-created");
-    }
+    // if (status.type === TASK_STATUSES.COMPLETED) {
+    //   const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskKey="${taskKey}"]`);
+    //   const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskKey="${taskKey}"]`);
+    //   userContainer.classList.remove("discussion__user--task-created");
+    //   AIContainer.classList.remove("discussion__ai--task-created");
+    // }
   }
 
   onRemoveTask(taskKey) {
-    const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskKey="${taskKey}"]`);
-    const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskKey="${taskKey}"]`);
-    userContainer.classList.remove("discussion__user--task-created");
-    AIContainer.classList.remove("discussion__ai--task-created");
+    // Remove lines
+    // const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskKey="${taskKey}"]`);
+    // const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskKey="${taskKey}"]`);
+    // userContainer.classList.remove("discussion__user--task-created");
+    // AIContainer.classList.remove("discussion__ai--task-created");
   }
 
-  async viewTaskResults(taskKey, resultsContainer) {
-    const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskKey="${taskKey}"]`);
-    const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskKey="${taskKey}"]`);
+  async viewTaskResults(task, resultsContainer) {
+    const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskKey="${task.key}"]`);
+    const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskKey="${task.key}"]`);
     this.discussionContainer.removeChild(userContainer);
     this.discussionContainer.removeChild(AIContainer);
 
+    // Reput user question
+    this.userContainer = document.createElement("div");
+    this.userContainer.classList.add("discussion__user");
+    this.userContainer.innerHTML = task.name;
+
+    // Add AI results
     this.AIContainer = document.createElement("div");
     this.AIContainer.classList.add("discussion__ai");
     this.AIContainer.appendChild(resultsContainer);
+
+    this.discussionContainer.appendChild(this.userContainer);
     this.discussionContainer.appendChild(this.AIContainer);
 
-    await this.addAIText({ text: result, container: this.AIContainer });
+    // await this.addAIText({ text: result, container: this.AIContainer });
   }
 
   addListeners() {
@@ -455,8 +464,8 @@ export default class Discussion {
     this.emitter.on("taskManager:createTask", (task, textAI) => this.onCreatedTask(task, textAI));
     this.emitter.on("taskManager:updateStatus", (taskKey, status) => this.onStatusUpdate(taskKey, status));
     this.emitter.on("taskManager:deleteTask", (taskKey) => this.onRemoveTask(taskKey));
-    this.emitter.on("taskManager:viewResults", (taskKey, resultsContainer) =>
-      this.viewTaskResults(taskKey, resultsContainer)
+    this.emitter.on("taskManager:viewResults", (task, resultsContainer) =>
+      this.viewTaskResults(task, resultsContainer)
     );
 
     // window.addEventListener("load", this.onLoad.bind(this));
