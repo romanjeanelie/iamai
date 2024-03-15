@@ -2,7 +2,13 @@ import BlogSlider from "../components/BlogSlider";
 import gsap, { Power3 } from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { generateSliderHeader } from "../utils/generateSlider";
-import { blackBlockAnimation, cascadingFadeInText, slidesUp, staircaseAnimation } from "./BlogAnimations";
+import {
+  blackBlockAnimation,
+  cascadingFadeInText,
+  gradientAnimation,
+  slidesUp,
+  staircaseAnimation,
+} from "./BlogAnimations";
 
 const slider1Data = [
   {
@@ -160,19 +166,7 @@ class Blog {
     });
 
     // // ---- anim C - Gradient text animation ----
-    const gradientText = document.querySelector(".blog__footer .gradient-wrapper");
-    gsap.to(gradientText, {
-      scrollTrigger: {
-        trigger: gradientText,
-        start: "top 75%",
-        end: "bottom 75%",
-        markers: true,
-        // scrub: 0.9,
-      },
-      backgroundPosition: "100% 100%",
-      duration: 1.5,
-      ease: Power3.easeOut,
-    });
+    gradientAnimation();
 
     // ---- anim D - Black block Animation ----
     const bbIntroducing = document.querySelector(".blog__blackBlock-introducing");

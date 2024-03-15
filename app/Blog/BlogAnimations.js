@@ -13,6 +13,20 @@ export function cascadingFadeInText(elements) {
 }
 
 // ---- anim C - Gradient text animation ----
+export function gradientAnimation() {
+  const gradientText = document.querySelector(".blog__footer .gradient-wrapper");
+  gsap.to(gradientText, {
+    scrollTrigger: {
+      trigger: gradientText,
+      start: "top 75%",
+      end: "bottom 75%",
+      // scrub: 0.9,
+    },
+    backgroundPosition: "100% 100%",
+    duration: 1.5,
+    ease: Power3.easeOut,
+  });
+}
 
 // ---- anim D - Black block Animation ----
 export function blackBlockAnimation(introduction, logo, footer) {
