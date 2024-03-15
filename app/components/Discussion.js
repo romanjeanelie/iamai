@@ -407,12 +407,12 @@ export default class Discussion {
   }
 
   onStatusUpdate(taskKey, status) {
-    if (status.type === TASK_STATUSES.COMPLETED) {
-      const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskKey="${taskKey}"]`);
-      const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskKey="${taskKey}"]`);
-      userContainer.classList.remove("discussion__user--task-created");
-      AIContainer.classList.remove("discussion__ai--task-created");
-    }
+    // if (status.type === TASK_STATUSES.COMPLETED) {
+    //   const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskKey="${taskKey}"]`);
+    //   const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskKey="${taskKey}"]`);
+    //   userContainer.classList.remove("discussion__user--task-created");
+    //   AIContainer.classList.remove("discussion__ai--task-created");
+    // }
   }
 
   onRemoveTask(taskKey) {
