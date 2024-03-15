@@ -65,7 +65,7 @@ export default class BlogSlider {
     this.gutterLeft.classList.add("blogSlider__gutter-left", "blogSlider__gutter");
     this.slider.appendChild(this.gutterLeft);
 
-    this.slidesData.forEach((slide) => {
+    this.slidesData.forEach((slide, idx) => {
       const slideEl = document.createElement("div");
       slideEl.classList.add("blogSlider__slide");
 
@@ -75,6 +75,10 @@ export default class BlogSlider {
         staticDescription = document.createElement("p");
         staticDescription.classList.add("blogSlider__static-description");
         staticDescription.textContent = slide.description;
+      }
+
+      if (this.differentMobileVersion && idx == 0) {
+        slideEl.classList.add("first-slide");
       }
 
       let mediaEl;

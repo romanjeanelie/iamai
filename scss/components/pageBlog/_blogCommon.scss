@@ -97,14 +97,14 @@ img {
 section {
   margin-top: 150px;
 
-  &:first-of-type {
+  &.first-section {
     margin-top: 250px;
   }
 
   @include media("<tablet") {
     margin-top: 100px;
 
-    &:first-of-type {
+    &.first-section {
       margin-top: 150px;
     }
   }

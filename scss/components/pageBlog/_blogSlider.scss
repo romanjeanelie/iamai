@@ -342,7 +342,12 @@ $sliderMaxWidth: 972px;
   }
 
   .blogSlider__slide {
+    display: flex;
     opacity: 1;
+  }
+
+  .blogSlider__slide.first-slide {
+    margin-right: calc(((100vw - $sliderMaxWidth) / 4));
   }
 
   @include media("<phone") {
