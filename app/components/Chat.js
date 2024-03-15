@@ -370,6 +370,7 @@ class Chat {
               type: TASK_STATUSES.COMPLETED,
               title: "Completed",
               description: mdata.response_json.text,
+              label: mdata.task_name + " is completed"
             },
           };
 
