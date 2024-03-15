@@ -371,6 +371,7 @@ $zIndex: 10;
   .task-manager__notification-label {
     position: absolute;
     height: 100%;
+    white-space: nowrap;
     display: flex;
     align-items: center;
     top: 0px;
