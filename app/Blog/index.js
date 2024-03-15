@@ -2,7 +2,7 @@ import BlogSlider from "../components/BlogSlider";
 import gsap, { Power3 } from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { generateSliderHeader } from "../utils/generateSlider";
-import { blackBlockAnimation, cascadingFadeInText, staircaseAnimation } from "./BlogAnimations";
+import { blackBlockAnimation, cascadingFadeInText, slidesUp, staircaseAnimation } from "./BlogAnimations";
 
 const slider1Data = [
   {
@@ -125,7 +125,7 @@ class Blog {
     this.slidersSection = document.querySelector(".blogSliders__container");
 
     this.initSliders();
-    this.initScrollAnim();
+    this.initScrollAnims();
     this.playStaticVideosWhenOnScreen();
   }
 
@@ -145,7 +145,7 @@ class Blog {
     });
   }
 
-  initScrollAnim() {
+  initScrollAnims() {
     // ---- anim B : Cascading (staggered) Fade in text ----
     cascadingFadeInText([".blogIntro__container p", ".blogIntro__container h3"]);
     cascadingFadeInText([".blogMarquee__app-marquees", ".blogMarquee__footer"]);
@@ -159,11 +159,35 @@ class Blog {
       cascadingFadeInText(paragraph);
     });
 
+    // // ---- anim C - Gradient text animation ----
+    const gradientText = document.querySelector(".blog__footer .gradient-wrapper");
+    gsap.to(gradientText, {
+      scrollTrigger: {
+        trigger: gradientText,
+        start: "top 75%",
+        end: "bottom 75%",
+        markers: true,
+        // scrub: 0.9,
+      },
+      backgroundPosition: "100% 100%",
+      duration: 1.5,
+      ease: Power3.easeOut,
+    });
+
     // ---- anim D - Black block Animation ----
     const bbIntroducing = document.querySelector(".blog__blackBlock-introducing");
     const bbLogo = document.querySelector(".blog__blackBlock-co");
     const bbFooter = document.querySelector(".blog__blackBlock-footer");
     blackBlockAnimation(bbIntroducing, bbLogo, bbFooter);
+
+    // ---- anim D : slides Up animations ----
+    const pinkTitle = document.querySelector(".blog__pinkTitle-container h1");
+    cascadingFadeInText(pinkTitle);
+
+    const footerTitle = document.querySelectorAll(".blogSliders__footer h1");
+    footerTitle.forEach((title) => {
+      slidesUp(title);
+    });
 
     // ---- anim E - Staircase Animation ----
     const blogCards = document.querySelectorAll(".blogCards__card");

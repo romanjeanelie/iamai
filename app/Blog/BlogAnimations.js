@@ -1,5 +1,6 @@
 import gsap, { Power3 } from "gsap";
 
+// ---- anim B : Cascading (staggered) Fade in text ----
 export function cascadingFadeInText(elements) {
   const tl = gsap.timeline({
     scrollTrigger: {
@@ -11,6 +12,9 @@ export function cascadingFadeInText(elements) {
   tl.fromTo(elements, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: Power3.easeOut });
 }
 
+// ---- anim C - Gradient text animation ----
+
+// ---- anim D - Black block Animation ----
 export function blackBlockAnimation(introduction, logo, footer) {
   const tl = gsap.timeline({
     scrollTrigger: { trigger: introduction, start: "top 55%" },
@@ -49,13 +53,27 @@ export function blackBlockAnimation(introduction, logo, footer) {
   );
 }
 
+// ---- anim D : Footer animation ----
+export function slidesUp(elements) {
+  gsap.fromTo(
+    elements,
+    { yPercent: 100, opacity: 0.5 },
+    {
+      yPercent: 0,
+      opacity: 1,
+      ease: Power3.easeOut,
+      duration: 1,
+      scrollTrigger: { trigger: elements, start: "top bottom" },
+    }
+  );
+}
+
+// ---- anim E - Staircase Animation ----
 export function staircaseAnimation(elements) {
   const tl = gsap.timeline({
     scrollTrigger: {
       trigger: elements[0],
-      start: "top 90%",
-      markers: true,
-      toggleActions: "play none play reverse",
+      start: "top bottom",
     },
   });
 
