@@ -1,15 +1,18 @@
 import gsap, { Power3 } from "gsap";
 
+const toggleActions = "play none play reverse";
+
 // ---- anim B : Cascading (staggered) Fade in text ----
 export function cascadingFadeInText(elements) {
   const tl = gsap.timeline({
     scrollTrigger: {
       trigger: Array.isArray(elements) ? elements[0] : elements,
       start: "top 75%",
+      toggleActions,
     },
   });
 
-  tl.fromTo(elements, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: Power3.easeOut });
+  tl.fromTo(elements, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, stagger: 0.2, ease: Power3.easeOut });
 }
 
 // ---- anim C - Gradient text animation ----
@@ -19,8 +22,8 @@ export function gradientAnimation() {
     scrollTrigger: {
       trigger: gradientText,
       start: "top 75%",
-      end: "bottom 75%",
-      // scrub: 0.9,
+      end: "bottom top",
+      toggleActions,
     },
     backgroundPosition: "100% 100%",
     duration: 1.5,
@@ -31,8 +34,8 @@ export function gradientAnimation() {
 // ---- anim D - Black block Animation ----
 export function blackBlockAnimation(introduction, logo, footer) {
   const tl = gsap.timeline({
-    scrollTrigger: { trigger: introduction, start: "top 55%" },
-    defaults: { duration: 1, ease: Power3.easeOut },
+    scrollTrigger: { trigger: introduction, start: "top 55%", toggleActions },
+    defaults: { duration: 0.7, ease: Power3.easeOut },
   });
 
   tl.fromTo(
@@ -62,7 +65,7 @@ export function blackBlockAnimation(introduction, logo, footer) {
       opacity: 1,
       ease: Power3.easeOut,
       duration: 1,
-      scrollTrigger: { trigger: footer, start: "top 75%" },
+      scrollTrigger: { trigger: footer, toggleActions, start: "top 75%" },
     }
   );
 }
@@ -76,8 +79,8 @@ export function slidesUp(elements) {
       yPercent: 0,
       opacity: 1,
       ease: Power3.easeOut,
-      duration: 1,
-      scrollTrigger: { trigger: elements, start: "top bottom" },
+      duration: 0.7,
+      scrollTrigger: { trigger: elements, toggleActions, start: "top bottom" },
     }
   );
 }
@@ -88,6 +91,7 @@ export function staircaseAnimation(elements) {
     scrollTrigger: {
       trigger: elements[0],
       start: "top bottom",
+      toggleActions,
     },
   });
 

@@ -130,7 +130,7 @@ class Blog {
     this.blogMarquees = document.querySelectorAll(".blogMarquee__app-marquee");
     this.slidersSection = document.querySelector(".blogSliders__container");
 
-    this.initSliders();
+    // this.initSliders();
     this.initScrollAnims();
     this.playStaticVideosWhenOnScreen();
   }
@@ -154,7 +154,7 @@ class Blog {
   initScrollAnims() {
     // ---- anim B : Cascading (staggered) Fade in text ----
     cascadingFadeInText([".blogIntro__container p", ".blogIntro__container h3"]);
-    cascadingFadeInText([".blogMarquee__app-marquees", ".blogMarquee__footer"]);
+    cascadingFadeInText([".blogMarquee__header", ".blogMarquee__app-marquees", ".blogMarquee__footer"]);
     cascadingFadeInText(".blogCards__text");
     cascadingFadeInText([".blogContent__video", ".blogContent__video-description"]);
     cascadingFadeInText([".blogContent__notChatGpt *"]);

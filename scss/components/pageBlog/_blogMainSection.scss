@@ -48,6 +48,7 @@
   }
 
   .blog__blackBlock-content {
+    font-family: "SFPro";
     color: $colorMain;
     max-width: 972px;
     margin: 0 auto;
@@ -70,7 +71,7 @@
       @include media("<tablet") {
         margin-bottom: 120px;
         font-weight: 500;
-        letter-spacing: 0.1px;
+        letter-spacing: 0.5px;
       }
     }
 
@@ -100,20 +101,20 @@
     }
 
     .blog__blackBlock-footer {
-      padding-right: 86px;
+      padding-right: 160px;
 
       p {
+        text-align: right;
         font-size: 25px;
         font-weight: 500;
         line-height: 32px;
         color: $colorMain;
-        letter-spacing: 0.1px;
+        letter-spacing: 0.5px;
       }
 
       @include media("<tablet") {
-        padding-right: 24px;
-
         p {
+          text-align: left;
           font-size: 20px;
           line-height: 24px;
         }
