@@ -4,7 +4,7 @@ $zIndex: 10;
 }
 
 .task-manager__button {
-  z-index: $zIndex;
+  z-index: 9;
   position: fixed;
   bottom: 120px;
   right: 40px;
@@ -54,8 +54,13 @@ $zIndex: 10;
   }
 
   .task-manager__header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
     padding: 8px;
     display: flex;
+    background-color: $backgroundTaskManager;
     justify-content: space-between;
     align-items: center;
 
