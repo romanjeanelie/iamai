@@ -9,6 +9,7 @@ const task = {	key: {uuid},
 				name: {name-of-the-task}, 
 				status: {
 					type, TASK_STATUSES.IN_PROGRESS,
+					label:"searching",
 					title: "searching", 
 					description: "searching for flight tickets"
 				}
@@ -25,6 +26,7 @@ await this.createTask(task, textAI)
 this.callbacks.emitter.emit("taskManager:updateStatus", task.key, 
 					status: {
 						type, TASK_STATUSES.INPUT_REQUIRED,
+						label:"Enter the city name",
 						title: "question", 
 						description: "what time do you want to leave ?"
 				});

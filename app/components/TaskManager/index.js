@@ -22,10 +22,12 @@ const STATUS_COLORS = {
 
 const defaultValues = {
   [TASK_STATUSES.IN_PROGRESS]: {
+    label: "searching moving",
     title: "searching",
     description: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
   },
   [TASK_STATUSES.INPUT_REQUIRED]: {
+    label: "Name your city",
     title: "question",
     description: "Flight for 18th Mar are all fully booked. Is there any other dates you would like to try for?",
   },
@@ -267,7 +269,7 @@ export default class TaskManager {
 
     const notificationLabel = document.createElement("p");
     notificationLabel.classList.add("task-manager__notification-label");
-    notificationLabel.textContent = status.type;
+    notificationLabel.textContent = status.label || status.type;
 
     const notificationCloseBtn = document.createElement("button");
     notificationCloseBtn.classList.add("task-manager__notification-closeBtn");
@@ -458,7 +460,7 @@ export default class TaskManager {
     const statusPill = document.createElement("p");
     statusPill.classList.add("task-manager__status-pill");
     statusPill.style.backgroundColor = STATUS_COLORS[data.status.type];
-    statusPill.textContent = data.status.type;
+    statusPill.textContent = data.status.label || data.status.type;
 
     const chevronButton = document.createElement("button");
     chevronButton.classList.add("task-manager__accordion-chevron");
@@ -535,8 +537,7 @@ export default class TaskManager {
     const task = this.accordionContainer.querySelector(`[task-key="${key}"]`);
     const header = task.querySelector(".task-manager__accordion-header");
     const statusPill = header.querySelector(".task-manager__status-pill");
-    console.log(status);
-    statusPill.innerText = status.type;
+    statusPill.innerText = status.label || status.type;
     statusPill.style.backgroundColor = STATUS_COLORS[status.type];
 
     const panel = task.querySelector(".task-manager__accordion-panel");
