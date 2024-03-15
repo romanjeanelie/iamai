@@ -213,7 +213,6 @@ class Chat {
 
         //generate data
         if (mdata.streaming && mdata.streaming == true) {
-
           if (mtext.trim().length > 0) {
             var AIAnswer = await this.toTitleCase2(mtext);
             if (this.sourcelang != "en") {
@@ -249,7 +248,7 @@ class Chat {
           });
           // await this.callbacks.addAIText({ text: "Please click here, to start a new session to chat or close the browser.", type: 'link', container: this.container });
           // textEl.innerHTML = 'Please click <a href="./index.html">here</a>, to start a new session to chat or close the browser.';
-        } else if (mdata.awaiting && !mdata.message_type == "image" && !mdata.message_type == "Sources") {
+        } else if (mdata.awaiting && mdata.message_type != "image" && mdata.message_type != "Sources") {
           console.log("awaiting:" + mdata.message_type);
           console.log("mtext:" + mtext);
           this.workflowID = mdata.session_id;
@@ -314,9 +313,7 @@ class Chat {
             );
             AIAnswer = transresponse.data.translations[0].translatedText;
           }
-          console.log("before add")
           await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang });
-          console.log("after add")
         }
         m.ack();
       }
