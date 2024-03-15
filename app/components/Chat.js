@@ -9,6 +9,7 @@ const HOST = import.meta.env.VITE_API_HOST || "https://api.iamplus.chat";
 const NATS_URL = import.meta.env.VITE_API_NATS_URL || "wss://nats.iamplus.chat";
 const NATS_USER = import.meta.env.VITE_API_NATS_USER || "iamplus-acc";
 const NATS_PASS = import.meta.env.VITE_API_NATS_PASS || "cis8Asto6HepremoGApI";
+let ui_paramsmap = new Map();
 let steamseq = [];
 const ANSWER = "answer",
   FOLLOWUP = "question",
@@ -194,24 +195,25 @@ class Chat {
 
         //get UI and RAG params
         if (mdata.type == UI) {
-          this.domain = mdata.response_json.domain;
+          // this.domain = mdata.response_json.domain;
           console.log("domain:" + this.domain);
-          if (this.domain == MOVIESEARCH) {
-            this.MovieSearch = JSON.parse(mdata.response_json.MovieSearch);
-            this.MovieSearchResults = JSON.parse(mdata.response_json.MovieSearchResults);
-          } else if (this.domain == TAXISEARCH) {
-            this.TaxiSearch = JSON.parse(mdata.response_json.TaxiSearch);
-            this.TaxiSearchResults = JSON.parse(mdata.response_json.TaxiSearchResults);
-          } else if (this.domain == RAGCHAT) {
-            this.RAG_CHAT = JSON.parse(mdata.response_json.RAG_CHAT);
-            // console.log("domain RAG_CHAT:" + this.RAG_CHAT);
-          } else if (this.domain == FLIGHTSEARCH) {
-            this.FlightSearch = JSON.parse(mdata.response_json.FlightSearch);
-            this.FlightSearchResults = JSON.parse(mdata.response_json.FlightSearchResults);
-          } else if (this.domain == PRODUCTSEARCH) {
-            this.ProductSearch = JSON.parse(mdata.response_json.ProductSearch);
-            this.ProductSearchResults = JSON.parse(mdata.response_json.ProductSearchResults);
-          }
+          ui_paramsmap.set(mdata.micro_thread_id, mdata.response_json);
+          // if (this.domain == MOVIESEARCH) {
+          //   this.MovieSearch = JSON.parse(mdata.response_json.MovieSearch);
+          //   this.MovieSearchResults = JSON.parse(mdata.response_json.MovieSearchResults);
+          // } else if (this.domain == TAXISEARCH) {
+          //   this.TaxiSearch = JSON.parse(mdata.response_json.TaxiSearch);
+          //   this.TaxiSearchResults = JSON.parse(mdata.response_json.TaxiSearchResults);
+          // } else if (this.domain == RAGCHAT) {
+          //   this.RAG_CHAT = JSON.parse(mdata.response_json.RAG_CHAT);
+          //   // console.log("domain RAG_CHAT:" + this.RAG_CHAT);
+          // } else if (this.domain == FLIGHTSEARCH) {
+          //   this.FlightSearch = JSON.parse(mdata.response_json.FlightSearch);
+          //   this.FlightSearchResults = JSON.parse(mdata.response_json.FlightSearchResults);
+          // } else if (this.domain == PRODUCTSEARCH) {
+          //   this.ProductSearch = JSON.parse(mdata.response_json.ProductSearch);
+          //   this.ProductSearchResults = JSON.parse(mdata.response_json.ProductSearchResults);
+          // }
         } else if (mdata.type == IMAGES) {
           // this.image_urls = JSON.parse(mdata.ui_params.image_urls); // old version
           this.image_urls = JSON.parse(mdata.response_json.images);
@@ -283,6 +285,7 @@ class Chat {
             (this.domain = ""), (this.MovieSearchResults = ""), (this.MovieSearch = "");
           }
           this.callbacks.enableInput();
+
           // } else if (mdata.status == "central finished") {
           //   this.callbacks.emitter.emit("centralFinished")
           //   if (this.domain == "MovieSearch") {
@@ -315,20 +318,7 @@ class Chat {
           //     });
           //   }
         } else if (mdata.status && mdata.status == AGENT_ENDED) {
-          this.callbacks.emitter.emit(AGENT_ENDED);
-          if (this.domain == MOVIESEARCH) {
-            this.getMovies();
-            (this.domain = ""), (this.MovieSearchResults = ""), (this.MovieSearch = "");
-          } else if (this.domain == TAXISEARCH) {
-            this.getTaxiUI();
-            (this.TaxiSearchResults = ""), (this.TaxiSearch = ""), (this.domain = "");
-          } else if (this.domain == FLIGHTSEARCH) {
-            this.getFlightUI();
-            (this.FlightSearch = ""), (this.domain = ""), (this.FlightSearchResults = "");
-          } else if (this.domain == PRODUCTSEARCH) {
-            this.getProductUI();
-            (this.ProductSearch = ""), (this.domain = ""), (this.ProductSearchResults = "");
-          }
+          // micro_thread_id =  mdata.micro_thread_id;
         } else if (mdata.status.toLowerCase() == PA_RESPONSE_ENDED) {
           this.callbacks.enableInput();
           this.callbacks.emitter.emit("paEnd");
@@ -358,6 +348,39 @@ class Chat {
           };
           this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status);
         } else if (mdata.status && mdata.status == AGENT_ANSWERED) {
+          this.callbacks.emitter.emit(AGENT_ENDED);
+          let container;
+          let data = ui_paramsmap.get(mdata.micro_thread_id);
+          if (data) {
+            let domain = data.domain;
+
+            if (domain == MOVIESEARCH) {
+              container = this.getMovies(JSON.parse(data.MovieSearchResults));
+            } else if (domain == TAXISEARCH) {
+              container = this.getTaxiUI(JSON.parse(data.TaxiSearchResults));
+            } else if (domain == FLIGHTSEARCH) {
+              container = this.getFlightUI(JSON.parse(data.FlightSearch), JSON.parse(data.FlightSearchResults));
+            } else if (domain == PRODUCTSEARCH) {
+              container = this.getProductUI(JSON.parse(data.ProductSearchResults));
+            }
+          }
+          const task = {
+            key: mdata.micro_thread_id,
+            status: {
+              type: TASK_STATUSES.COMPLETED,
+              title: "Completed",
+              description: mdata.response_json.text,
+            },
+          };
+
+          // const divqns = adduserqns(mdata.task_name);
+          const divqns = this.adduserqns("What are the movies available in Singapore tomorrow");
+          const divans = this.adduserans(mdata.response_json.text, container);
+          // divasync.appendChild(divqns);
+          // <div class="discussion__user">What are the movies available in Singapore tomorrow</div>
+          // <div class="discussion__ai"><div class="text__container"><div></div><span><span class="AIword"></span></span></div></div>
+          this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, divans);
+          ui_paramsmap.delete(mdata.micro_thread_id);
         }
         // } else if (mtext.trim().length > 0) { //ADDED THIS FOR conversation_question and other cases.
         //   var AIAnswer = await this.toTitleCase2(mtext);
@@ -378,6 +401,30 @@ class Chat {
     }
     nc.drain();
   };
+
+  adduserqns(userQns) {
+    const divdiscussionuser = document.createElement("div");
+    divdiscussionuser.className = "discussion__user";
+    divdiscussionuser.innerHTML = userQns;
+    return divdiscussionuser;
+  }
+  adduserans(userAns, container) {
+
+    const divtextcontainer = document.createElement("div");
+    divtextcontainer.className = "text__container";
+    const divans = document.createElement("div");
+    if (container) {
+      divans.appendChild(container);
+      divtextcontainer.appendChild(divans);
+    }
+    const divspan = document.createElement("span");
+    const spanAIword = document.createElement("span");
+    spanAIword.className = "AIword";
+    spanAIword.innerText = userAns;
+    divspan.appendChild(spanAIword);
+    divtextcontainer.appendChild(divspan);
+    return divtextcontainer;
+  }
 
   delay(milliseconds) {
     return new Promise((resolve) => {
@@ -517,12 +564,12 @@ class Chat {
     }
   }
 
-  getMovies() {
+  getMovies(MovieSearchResults) {
     const moviesdiv = document.createElement("div");
     const moviescardcontainerdiv = document.createElement("div");
     moviescardcontainerdiv.className = "moviescard-container";
 
-    this.MovieSearchResults.forEach((element) => {
+    MovieSearchResults.forEach((element) => {
       const moviescarddiv = document.createElement("div");
       moviescarddiv.className = "movies-card";
       moviescarddiv.setAttribute("data-info", "movies-details");
@@ -544,8 +591,9 @@ class Chat {
     moviedetailsdiv.setAttribute("id", "movie-details");
     moviesdiv.appendChild(moviedetailsdiv);
 
-    this.updateTextContainer();
-    this.textContainer.appendChild(moviesdiv);
+    return moviesdiv;
+    // this.updateTextContainer();
+    // this.textContainer.appendChild(moviesdiv);
   }
 
   showMovieDetail(event) {
@@ -700,11 +748,11 @@ class Chat {
     }
   }
 
-  getTaxiUI() {
+  getTaxiUI(TaxiSearchResults) {
     const taxidiv = document.createElement("div");
     taxidiv.className = "rides-list-wrapper";
 
-    let data = this.TaxiSearchResults;
+    let data = TaxiSearchResults;
     for (let taxii = 0; taxii < data.services.length; taxii++) {
       let service = data.services[taxii];
       if (service) {
@@ -789,18 +837,19 @@ class Chat {
         // rideslistitemheaderdiv.appendChild(rideslistitemheaderinfodiv);
         taxidiv.appendChild(rideslistitemdiv);
 
-        this.updateTextContainer();
-        this.textContainer.appendChild(taxidiv);
+        // this.updateTextContainer();
+        // this.textContainer.appendChild(taxidiv);
+        return taxidiv;
       }
     }
   }
 
-  getFlightUI() {
+  getFlightUI(FlightSearch, FlightSearchResults) {
     const FlightContainerdiv = document.createElement("div");
     FlightContainerdiv.className = "FlightContainer Flight-Container";
     FlightContainerdiv.setAttribute("name", "flightResult");
 
-    if (this.FlightSearch.departure_end_date.length > 0 && this.FlightSearch.return_end_date.length > 0) {
+    if (FlightSearch.departure_end_date.length > 0 && FlightSearch.return_end_date.length > 0) {
       const flighttogglebuttoncontainerdiv = document.createElement("div");
       flighttogglebuttoncontainerdiv.className = "flight-toggle-button-container";
       FlightContainerdiv.appendChild(flighttogglebuttoncontainerdiv);
@@ -819,7 +868,7 @@ class Chat {
       flighttogglebutton2.innerHTML = "Return";
       flighttogglebuttoncontainerdiv.appendChild(flighttogglebutton2);
     }
-    let FlightSearchResultsArr = this.FlightSearchResults.Outbound;
+    let FlightSearchResultsArr = FlightSearchResults.Outbound;
     for (let flightsi = 0; flightsi < 2; flightsi++) {
       if (flightsi == 1) FlightSearchResultsArr = this.FlightSearchResults.Return;
       if (FlightSearchResultsArr.length > 0) {
@@ -992,8 +1041,9 @@ class Chat {
       }
     }
 
-    this.updateTextContainer();
-    this.textContainer.append(FlightContainerdiv);
+    // this.updateTextContainer();
+    // this.textContainer.append(FlightContainerdiv);
+    return FlightContainerdiv;
   }
 
   toggleflights(event) {
@@ -1053,13 +1103,13 @@ class Chat {
     this.textContainer.appendChild(productdiv);
   }
 
-  getProductUI() {
+  getProductUI(ProductSearchResults) {
     const productdiv = document.createElement("div");
     const productcardcontainerdiv = document.createElement("div");
     productcardcontainerdiv.className = "shopping-container";
     productdiv.appendChild(productcardcontainerdiv);
 
-    this.ProductSearchResults.forEach((element) => {
+    ProductSearchResults.forEach((element) => {
       const productcarddiv = document.createElement("div");
       productcarddiv.className = "shopping-card";
       // productcarddiv.setAttribute("data-info", "product-details");
@@ -1100,8 +1150,9 @@ class Chat {
     // productdetails.id = "product-details";
     // productdiv.appendChild(productdetails);
 
-    this.updateTextContainer();
-    this.textContainer.appendChild(productdiv);
+    // this.updateTextContainer();
+    // this.textContainer.appendChild(productdiv);
+    return productdiv;
   }
 
   showProductDetail(event) {
