@@ -130,7 +130,7 @@ class Blog {
     this.blogMarquees = document.querySelectorAll(".blogMarquee__app-marquee");
     this.slidersSection = document.querySelector(".blogSliders__container");
 
-    // this.initSliders();
+    this.initSliders();
     this.initScrollAnims();
     this.playStaticVideosWhenOnScreen();
   }

@@ -341,6 +341,10 @@ $sliderMaxWidth: 972px;
     display: none;
   }
 
+  .blogSlider__slide {
+    opacity: 1;
+  }
+
   @include media("<phone") {
     height: auto;
 
