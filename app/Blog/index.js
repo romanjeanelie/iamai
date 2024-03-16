@@ -156,7 +156,22 @@ class Blog {
     cascadingFadeInText([".blogIntro__container p", ".blogIntro__container h3"]);
     cascadingFadeInText([".blogMarquee__header", ".blogMarquee__app-marquees", ".blogMarquee__footer"]);
     cascadingFadeInText(".blogCards__text");
-    cascadingFadeInText([".blogContent__video", ".blogContent__video-description"]);
+
+    if (window.innerWidth < 640) {
+      const blogVideos = document.querySelectorAll(".blogContent__video");
+      blogVideos.forEach((video) => {
+        cascadingFadeInText(video);
+      });
+      const blogVideoDescription = document.querySelectorAll(".blogContent__video-description");
+      blogVideoDescription.forEach((description) => {
+        const descriptions = description.querySelectorAll("p");
+        cascadingFadeInText(descriptions);
+      });
+    } else {
+      cascadingFadeInText(".blogContent__video");
+      cascadingFadeInText(".blogContent__video-description");
+    }
+
     cascadingFadeInText([".blogContent__notChatGpt *"]);
 
     const sliderSections = document.querySelectorAll(".blogSlider__section");

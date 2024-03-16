@@ -356,11 +356,7 @@ $sliderMaxWidth: 972px;
     .blogSlider__slides-container {
       height: auto;
       flex-direction: column;
-
       padding: 0 24px;
-    }
-
-    .blogSlider__slides-container {
       overflow-y: visible;
       overflow-x: hidden;
       scroll-snap-type: none;
@@ -369,6 +365,10 @@ $sliderMaxWidth: 972px;
 
     .blogSlider__slide {
       width: 100%;
+    }
+
+    .blogSlider__slide.first-slide {
+      margin-right: 0;
     }
 
     .blogSlider__static-description {

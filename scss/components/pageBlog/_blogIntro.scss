@@ -46,4 +46,12 @@
       letter-spacing: 0.5px;
     }
   }
+
+  @include media("<tablet") {
+    .mobile-paragraph {
+      display: flex;
+      flex-direction: column;
+      gap: 60px;
+    }
+  }
 }

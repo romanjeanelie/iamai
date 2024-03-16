@@ -69,7 +69,15 @@ img {
     display: none;
   }
 
+  .desktop-paragraph {
+    display: none;
+  }
+
   .mobile-break {
+    display: inline;
+  }
+
+  .mobile-paragraph {
     display: inline;
   }
 }
@@ -102,10 +110,10 @@ section {
   }
 
   @include media("<tablet") {
-    margin-top: 100px;
+    margin-top: 80px;
 
     &.first-section {
-      margin-top: 150px;
+      margin-top: 60px;
     }
   }
 }

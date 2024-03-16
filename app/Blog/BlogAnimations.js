@@ -99,12 +99,10 @@ export function staircaseAnimation(elements) {
     elements,
     {
       y: "50vh",
-      opacity: 0,
     },
     {
       y: 0,
-      opacity: 1,
-      duration: 1,
+      duration: 0.5,
       stagger: 0.2,
       ease: Power3.easeOut,
     }

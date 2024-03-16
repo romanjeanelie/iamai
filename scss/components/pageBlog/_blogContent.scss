@@ -47,10 +47,15 @@
     line-height: 28px;
 
     span {
+      display: inline;
       color: $colorBlack;
     }
 
     .mobile-break {
+      display: none;
+    }
+
+    &.mobile-paragraph {
       display: none;
     }
 
@@ -65,12 +70,26 @@
       .mobile-break {
         display: inline;
       }
+
+      &.desktop-paragraph {
+        display: none;
+      }
+
+      &.mobile-paragraph {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
     }
   }
 }
 
 .blogContent__notChatGpt {
   margin-bottom: 60px;
+
+  @include media("<phone") {
+    margin-bottom: 40px;
+  }
 
   h2 {
     margin-bottom: 16px;
