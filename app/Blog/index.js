@@ -65,12 +65,12 @@ const data = [
     sliderData: slider2Data,
   },
   {
-    h1: "Effortlessly Multilingual.",
+    h1: "Effortlessly <br class='mobile-break'/> Multilingual.",
     p: "Jump from English to French to German, and back again – even toss in some Mandarin or Hindi – CO* effortlessly keeps up within a single, flowing conversation.",
     sliderData: slider2Data,
   },
   {
-    h1: "CO* can see, speak and hear.",
+    h1: "CO* can see, <br class='mobile-break'/> speak and hear.",
     p: "CO* goes beyond text. It sees (images), hears (your voice), and speaks (respond naturally), providing a truly personalized and intuitive experience.",
     sliderData: slider2Data,
   },
@@ -85,12 +85,12 @@ const data = [
     sliderData: slider2Data,
   },
   {
-    h1: "Entertainment. Your Way.",
+    h1: "Entertainment. <br class='mobile-break'/> Your Way.",
     p: "CO* learns your tastes to deliver movie suggestions, reviews, and showtimes that fit your schedule. It can even book tickets for you.",
     sliderData: slider2Data,
   },
   {
-    h1: "Powerhouse for Planning.<br/> Research and Execution.",
+    h1: "Powerhouse for Planning.<br/> <br class='mobile-break'/> Research and  <br class='mobile-break'/> Execution.",
     p: "It gathers information, synthesizes insights, and provides actionable summaries for efficient decision-making.",
     sliderData: slider2Data,
   },
@@ -105,7 +105,7 @@ const data = [
     sliderData: slider2Data,
   },
   {
-    h1: "The Multitasking Assistant.<br/> Always by Your Side.",
+    h1: "The Multitasking Assistant.<br class='desktop-break'/> Always by Your Side.",
     p: "CO * is your tireless multitasker. It juggles tasks simultaneously, ensuring smooth and efficient completion.",
     sliderData: slider2Data,
   },
