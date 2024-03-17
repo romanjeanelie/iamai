@@ -71,17 +71,57 @@ export function blackBlockAnimation(introduction, logo, footer) {
 }
 
 // ---- anim D : Footer animation ----
-export function slidesUp(elements) {
+export function slidesUp(container) {
+  const h1 = container.querySelector("h1");
+
   gsap.fromTo(
-    elements,
-    { yPercent: 100, opacity: 0.5 },
+    h1,
+    { y: "20vh", opacity: 0 },
     {
-      yPercent: 0,
+      y: 0,
       opacity: 1,
       ease: Power3.easeOut,
       duration: 0.7,
-      scrollTrigger: { trigger: elements, toggleActions, start: "top bottom" },
+      scrollTrigger: {
+        trigger: container,
+        toggleActions,
+        start: "top center",
+      },
     }
+  );
+}
+
+export function footerAnimation(container) {
+  const h1 = container.querySelector("h1");
+  const cta = container.querySelector("a");
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: container,
+      start: "top center",
+      toggleActions,
+    },
+  });
+
+  tl.fromTo(
+    h1,
+    { y: "20vh", opacity: 0 },
+    {
+      y: 0,
+      opacity: 1,
+      ease: Power3.easeOut,
+      duration: 0.7,
+    }
+  );
+
+  tl.fromTo(
+    cta,
+    { opacity: 0 },
+    {
+      opacity: 1,
+      ease: Power3.easeOut,
+      duration: 0.7,
+    },
+    "-=0.2"
   );
 }
 

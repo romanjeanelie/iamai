@@ -135,14 +135,9 @@ button {
 .page-blog {
   position: relative;
   min-height: 100svh;
-  padding: 124px 0px 0px;
   overflow-x: hidden;
   color: $colorBlack;
   background-color: $colorMain;
-
-  @include media("<tablet") {
-    padding: 120px 0px 0px;
-  }
 }
 
 // Debug
