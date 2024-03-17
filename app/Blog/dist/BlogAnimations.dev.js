@@ -118,7 +118,7 @@ function slidesUp(container) {
     scrollTrigger: {
       trigger: container,
       toggleActions: toggleActions,
-      start: "top center"
+      start: "top 25%"
     }
   });
 }
@@ -130,7 +130,7 @@ function footerAnimation(container) {
   var tl = _gsap["default"].timeline({
     scrollTrigger: {
       trigger: container,
-      start: "top center",
+      start: "top 25%",
       toggleActions: toggleActions
     }
   });

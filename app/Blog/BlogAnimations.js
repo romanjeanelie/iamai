@@ -85,7 +85,7 @@ export function slidesUp(container) {
       scrollTrigger: {
         trigger: container,
         toggleActions,
-        start: "top center",
+        start: "top 25%",
       },
     }
   );
@@ -97,7 +97,7 @@ export function footerAnimation(container) {
   const tl = gsap.timeline({
     scrollTrigger: {
       trigger: container,
-      start: "top center",
+      start: "top 25%",
       toggleActions,
     },
   });
