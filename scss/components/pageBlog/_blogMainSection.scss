@@ -1,10 +1,10 @@
 .blog__pinkTitle-container {
   h1 {
     font-size: (32px, 8vw, 60px);
-    color: rgba(255, 0, 255, 0.62);
+    color: $colorLightOrange;
 
     span {
-      color: $colorPink;
+      color: $colorOrange;
     }
 
     @include media("<tablet") {
@@ -15,8 +15,14 @@
     }
 
     .anim-gradient {
-      color: #ff66ff;
-      background: -webkit-linear-gradient(1deg, #ff66ff 0%, #ff66ff 50%, #fa00ff 51%, #ff66ff 100%);
+      color: $colorLightOrange;
+      background: -webkit-linear-gradient(
+        1deg,
+        $colorLightOrange 0%,
+        $colorLightOrange 50%,
+        $colorOrange 51%,
+        $colorLightOrange 100%
+      );
       background-size: 200% 200%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -99,6 +105,15 @@
       .asterizk {
         width: clamp(73px, 10vw, 156px);
         margin-left: clamp(20px, 2vw, 40px);
+
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+
+        svg path {
+          fill: $colorOrange;
+        }
       }
     }
 
