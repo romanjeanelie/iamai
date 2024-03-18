@@ -32,7 +32,7 @@
   }
 
   @include media("<tablet") {
-    top: -100px;
+    top: -84px;
     height: 100vh; // Fallback for browsers not supporting svh
     height: 100svh;
   }

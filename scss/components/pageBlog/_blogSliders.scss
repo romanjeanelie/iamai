@@ -25,6 +25,15 @@
     margin-bottom: 40px;
     line-height: calc(100% + 6px);
 
+    & span {
+      display: inline;
+
+      @include media("<phone") {
+        display: block;
+        margin-bottom: 16px;
+      }
+    }
+
     &.centered {
       text-align: center;
 

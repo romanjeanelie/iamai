@@ -88,22 +88,26 @@
   }
 
   .blogCards__card {
+    padding: 16px 16px 40px;
+    height: 300px;
     grid-column: span 2;
   }
 
   .blogCards__card-images .blogCards__card-image {
-    width: 92px;
-    height: 92px;
+    flex: none;
+    max-width: 100px;
+    max-height: 100px;
   }
 }
 
 // the tablet breakpoint set in include-media was too big for this component
 @media screen and (max-width: 640px) {
   .blogCards__cards {
-    max-width: 300px;
+    max-width: 327px;
   }
 
   .blogCards__card {
+    max-height: 327px;
     grid-column: span 4;
   }
 }

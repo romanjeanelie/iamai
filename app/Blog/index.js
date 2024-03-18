@@ -65,48 +65,48 @@ const data = [
     p: "Makes information effortless with conversation. Get insightful answers, quick updates and news, all while CO* assists with your daily tasks – your trusted assistant.",
     sliderData: slider2Data,
   },
-  // {
-  //   h1: "Effortlessly <br class='mobile-break'/> Multilingual.",
-  //   p: "Jump from English to French to German, and back again – even toss in some Mandarin or Hindi – CO* effortlessly keeps up within a single, flowing conversation.",
-  //   sliderData: slider2Data,
-  // },
-  // {
-  //   h1: "CO* can see, <br class='mobile-break'/> speak and hear.",
-  //   p: "CO* goes beyond text. It sees (images), hears (your voice), and speaks (respond naturally), providing a truly personalized and intuitive experience.",
-  //   sliderData: slider2Data,
-  // },
-  // {
-  //   h1: "CO* get things done.<br/> Like a real assistant.",
-  //   p: "Everyday Efficiency. CO*  takes the hassle out of your life and functions like a proactive assistant who coordinates seamlessly on your behalf.",
-  //   sliderData: slider2Data,
-  // },
-  // {
-  //   h1: "Travel Whiz.",
-  //   p: "CO* transforms the hassle of trip planning into a breeze, acting like a dedicated travel agent who understands your needs.",
-  //   sliderData: slider2Data,
-  // },
-  // {
-  //   h1: "Entertainment. <br class='mobile-break'/> Your Way.",
-  //   p: "CO* learns your tastes to deliver movie suggestions, reviews, and showtimes that fit your schedule. It can even book tickets for you.",
-  //   sliderData: slider2Data,
-  // },
-  // {
-  //   h1: "Powerhouse for Planning.<br/> <br class='mobile-break'/> Research and  <br class='mobile-break'/> Execution.",
-  //   p: "It gathers information, synthesizes insights, and provides actionable summaries for efficient decision-making.",
-  //   sliderData: slider2Data,
-  // },
-  // {
-  //   h1: "E-commerce Reinvented.",
-  //   p: "Ultimate Price Sleuth. Forget scrolling through endless online stores. CO* is your tireless shopping assistant",
-  //   sliderData: slider2Data,
-  // },
-  // {
-  //   h1: "Culinary Companion.",
-  //   p: "CO* transforms your kitchen experience. It scans your fridge, offers recipe suggestions based on what you have identifies missing ingredients and suggests the best places to buy them.",
-  //   sliderData: slider2Data,
-  // },
   {
-    h1: "The Multitasking Assistant.<br class='desktop-break'/> Always by Your Side.",
+    h1: "Effortlessly <br class='mobile-break'/> Multilingual.",
+    p: "Jump from English to French to German, and back again – even toss in some Mandarin or Hindi – CO* effortlessly keeps up within a single, flowing conversation.",
+    sliderData: slider2Data,
+  },
+  {
+    h1: "CO* can see, <br class='mobile-break'/> speak and hear.",
+    p: "CO* goes beyond text. It sees (images), hears (your voice), and speaks (respond naturally), providing a truly personalized and intuitive experience.",
+    sliderData: slider2Data,
+  },
+  {
+    h1: "CO* get things done.<br/> Like a real assistant.",
+    p: "Everyday Efficiency. CO*  takes the hassle out of your life and functions like a proactive assistant who coordinates seamlessly on your behalf.",
+    sliderData: slider2Data,
+  },
+  {
+    h1: "Travel Whiz.",
+    p: "CO* transforms the hassle of trip planning into a breeze, acting like a dedicated travel agent who understands your needs.",
+    sliderData: slider2Data,
+  },
+  {
+    h1: "Entertainment. <br class='mobile-break'/> Your Way.",
+    p: "CO* learns your tastes to deliver movie suggestions, reviews, and showtimes that fit your schedule. It can even book tickets for you.",
+    sliderData: slider2Data,
+  },
+  {
+    h1: "<span class='first-line'> Powerhouse for Planning.<br/> </span> Research and  <br class='mobile-break'/> Execution. ",
+    p: "It gathers information, synthesizes insights, and provides actionable summaries for efficient decision-making.",
+    sliderData: slider2Data,
+  },
+  {
+    h1: "E-commerce Reinvented.",
+    p: "Ultimate Price Sleuth. Forget scrolling through endless online stores. CO* is your tireless shopping assistant",
+    sliderData: slider2Data,
+  },
+  {
+    h1: "Culinary Companion.",
+    p: "CO* transforms your kitchen experience. It scans your fridge, offers recipe suggestions based on what you have identifies missing ingredients and suggests the best places to buy them.",
+    sliderData: slider2Data,
+  },
+  {
+    h1: "The Multitasking Assistant.<br class='desktop-break'/> Always <br class='mobile-break'/> by Your Side.",
     p: "CO * is your tireless multitasker. It juggles tasks simultaneously, ensuring smooth and efficient completion.",
     sliderData: slider2Data,
   },
