@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "dev": "vite --host",
     "dev:mode": "npm run dev -- --mode dev",
     "prod:mode": "vite --host",
     "build": "vite build",
