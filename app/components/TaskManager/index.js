@@ -128,8 +128,8 @@ export default class TaskManager {
     // Emitter
     this.emitter = emitter;
     this.emitter.on("taskManager:createTask", (task, textAI) => this.createTask(task));
-    this.emitter.on("taskManager:updateStatus", (taskKey, status, container) =>
-      this.onStatusUpdate(taskKey, status, container)
+    this.emitter.on("taskManager:updateStatus", (taskKey, status, container, workflowID) =>
+      this.onStatusUpdate(taskKey, status, container, workflowID)
     );
     this.emitter.on("taskManager:deleteTask", (taskKey) => this.removeTask(taskKey));
 
@@ -182,6 +182,9 @@ export default class TaskManager {
         const container = document.createElement("div");
         container.innerHTML = "Here's your flights to Bamako!";
         this.emitter.emit("taskManager:updateStatus", task.key, status, container);
+      } else if (value === TASK_STATUSES.INPUT_REQUIRED) {
+        const workflowID = "1234";
+        this.emitter.emit("taskManager:updateStatus", task.key, status, null, workflowID);
       } else {
         this.emitter.emit("taskManager:updateStatus", task.key, status);
       }
@@ -320,23 +323,22 @@ export default class TaskManager {
   }
 
   closeNotificationPill() {
-    const label = this.notificationContainer.querySelector(".task-manager__notification-label");
-    const closeBtn = this.notificationContainer.querySelector(".task-manager__notification-closeBtn");
-    const svg = closeBtn.querySelector("svg");
-
-    const initialState = Flip.getState([this.notificationContainer, label, closeBtn, svg]);
-    this.notificationContainer.classList.remove("expanded");
-    Flip.from(initialState, {
-      duration: 0.5,
-      ease: "power2.inOut",
-      absolute: true,
-      onComplete: () => {
-        gsap.to(this.notificationContainer, {
-          opacity: 0,
-          onComplete: () => this.disposeNotificationPill(),
-        });
-      },
-    });
+    // const label = this.notificationContainer.querySelector(".task-manager__notification-label");
+    // const closeBtn = this.notificationContainer.querySelector(".task-manager__notification-closeBtn");
+    // const svg = closeBtn.querySelector("svg");
+    // const initialState = Flip.getState([this.notificationContainer, label, closeBtn, svg]);
+    // this.notificationContainer.classList.remove("expanded");
+    // Flip.from(initialState, {
+    //   duration: 0.5,
+    //   ease: "power2.inOut",
+    //   absolute: true,
+    //   onComplete: () => {
+    //     gsap.to(this.notificationContainer, {
+    //       opacity: 0,
+    //       onComplete: () => this.disposeNotificationPill(),
+    //     });
+    //   },
+    // });
   }
 
   disposeNotificationPill() {
@@ -591,9 +593,10 @@ export default class TaskManager {
 
   handleInputSubmit(e, key, container) {
     e.preventDefault();
+    const task = this.tasks.find((task) => task.key === key);
     const input = e.target.querySelector("input");
     const value = input.value;
-    console.log(value); // here is the value from input
+    this.emitter.emit("taskManager:inputSubmit", value, task);
 
     this.closeInput(container);
 
@@ -625,10 +628,11 @@ export default class TaskManager {
     }
   }
 
-  onStatusUpdate(taskKey, status, container) {
+  onStatusUpdate(taskKey, status, container, workflowID) {
     const task = this.tasks.find((task) => task.key === taskKey);
     task.status = status;
     task.resultsContainer = container;
+    task.workflowID = workflowID;
     this.handleButton();
     this.updateTaskUI(taskKey, status);
     this.handleNotificationPill(taskKey, status);

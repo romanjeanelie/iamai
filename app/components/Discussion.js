@@ -406,6 +406,10 @@ export default class Discussion {
     this.AIContainer.setAttribute("taskKey", task.key);
   }
 
+  onUserAnswerTask(text, task) {
+    this.Chat.submituserreply(text, task.workflowID);
+  }
+
   onStatusUpdate(taskKey, status) {
     // if (status.type === TASK_STATUSES.COMPLETED) {
     //   const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskKey="${taskKey}"]`);
@@ -463,6 +467,7 @@ export default class Discussion {
 
     this.emitter.on("taskManager:createTask", (task, textAI) => this.onCreatedTask(task, textAI));
     this.emitter.on("taskManager:updateStatus", (taskKey, status) => this.onStatusUpdate(taskKey, status));
+    this.emitter.on("taskManager:inputSubmit", (text, task) => this.onUserAnswerTask(text, task));
     this.emitter.on("taskManager:deleteTask", (taskKey) => this.onRemoveTask(taskKey));
     this.emitter.on("taskManager:viewResults", (task, resultsContainer) =>
       this.viewTaskResults(task, resultsContainer)
