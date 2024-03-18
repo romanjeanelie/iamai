@@ -257,7 +257,7 @@ class Chat {
           //   });
           // await this.callbacks.addAIText({ text: "Please click here, to start a new session to chat or close the browser.", type: 'link', container: this.container });
           // textEl.innerHTML = 'Please click <a href="./index.html">here</a>, to start a new session to chat or close the browser.';
-        } else if (mdata.awaiting) {
+        } else if (mdata.awaiting && !mdata.micro_thread_id) {
           var mtext = JSON.parse(mdata.response_json).text;
           console.log("awaiting:" + mdata.message_type);
           console.log("mtext:" + mtext);
@@ -325,9 +325,13 @@ class Chat {
           this.callbacks.emitter.emit(PA_RESPONSE_ENDED);
         } else if (mdata.status && mdata.status == AGENT_STARTED) {
           // micro_thread_id =  mdata.micro_thread_id;
+          let taskname = mdata.task_name;
+          if (taskname.length > 100)
+            taskname.substring(0, 100 - 3) + '...';
+
           const task = {
             key: mdata.micro_thread_id,
-            name: mdata.task_name,
+            name: taskname,
             status: {
               type: TASK_STATUSES.IN_PROGRESS,
               title: "Planning",
@@ -338,15 +342,32 @@ class Chat {
           // await this.createTask(task, textAI)
           this.callbacks.emitter.emit("taskManager:createTask", task, textAI);
         } else if (mdata.status && mdata.status == AGENT_PROGRESSING) {
-          const task = {
-            key: mdata.micro_thread_id,
-            status: {
-              type: TASK_STATUSES.IN_PROGRESS,
-              title: mdata.response_json.text.split(" ")[0],
-              description: mdata.response_json.text,
-            },
-          };
-          this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status);
+          if (mdata.awaiting) {
+            let taskname = mdata.task_name;
+            if (taskname.length > 100)
+              taskname.substring(0, 100 - 3) + '...';
+            const task = {
+              key: mdata.micro_thread_id,
+              status: {
+                type: TASK_STATUSES.INPUT_REQUIRED,
+                label: taskname,
+                title: taskname,
+                description: mdata.response_json.text,
+              },
+              workflowID: mdata.session_id,
+            };
+            this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, null, task.workflowID);
+          } else {
+            const task = {
+              key: mdata.micro_thread_id,
+              status: {
+                type: TASK_STATUSES.IN_PROGRESS,
+                title: mdata.response_json.text.split(" ")[0],
+                description: mdata.response_json.text,
+              },
+            };
+            this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status);
+          }
         } else if (mdata.status && mdata.status == AGENT_ANSWERED) {
           this.callbacks.emitter.emit(AGENT_ENDED);
           let container;
@@ -364,22 +385,20 @@ class Chat {
               container = this.getProductUI(JSON.parse(data.ProductSearchResults));
             }
           }
+          let taskname = mdata.task_name;
+          if (taskname.length > 100)
+            taskname.substring(0, 100 - 3) + '...';
           const task = {
             key: mdata.micro_thread_id,
             status: {
               type: TASK_STATUSES.COMPLETED,
               title: "Completed",
               description: mdata.response_json.text,
-              label: mdata.task_name + " is completed"
+              label: taskname + " is completed"
             },
           };
 
-          // const divqns = adduserqns(mdata.task_name);
-          const divqns = this.adduserqns("What are the movies available in Singapore tomorrow");
           const divans = this.adduserans(mdata.response_json.text, container);
-          // divasync.appendChild(divqns);
-          // <div class="discussion__user">What are the movies available in Singapore tomorrow</div>
-          // <div class="discussion__ai"><div class="text__container"><div></div><span><span class="AIword"></span></span></div></div>
           this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, divans);
           ui_paramsmap.delete(mdata.micro_thread_id);
         }
@@ -840,9 +859,10 @@ class Chat {
 
         // this.updateTextContainer();
         // this.textContainer.appendChild(taxidiv);
-        return taxidiv;
+
       }
     }
+    return taxidiv;
   }
 
   getFlightUI(FlightSearch, FlightSearchResults) {
@@ -871,8 +891,8 @@ class Chat {
     }
     let FlightSearchResultsArr = FlightSearchResults.Outbound;
     for (let flightsi = 0; flightsi < 2; flightsi++) {
-      if (flightsi == 1) FlightSearchResultsArr = this.FlightSearchResults.Return;
-      if (FlightSearchResultsArr.length > 0) {
+      if (flightsi == 1) FlightSearchResultsArr = FlightSearchResults.Return;
+      if (FlightSearchResultsArr && FlightSearchResultsArr.length > 0) {
         const flightResultdiv = document.createElement("div");
         flightResultdiv.className = "flightResult";
         if (flightsi == 0) {
@@ -1041,7 +1061,6 @@ class Chat {
         });
       }
     }
-
     // this.updateTextContainer();
     // this.textContainer.append(FlightContainerdiv);
     return FlightContainerdiv;
