@@ -1,5 +1,6 @@
 .blog__pinkTitle-container {
   h1 {
+    font-size: (32px, 8vw, 60px);
     color: rgba(255, 0, 255, 0.62);
 
     span {
@@ -7,6 +8,7 @@
     }
 
     @include media("<tablet") {
+      // max-width: 482px;
       .desktop-break {
         display: none;
       }

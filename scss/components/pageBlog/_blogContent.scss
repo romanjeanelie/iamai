@@ -59,6 +59,12 @@
       display: none;
     }
 
+    @include media(">phone") {
+      &.desktop-paragraph {
+        display: block;
+      }
+    }
+
     @include media("<phone") {
       font-size: 20px;
       line-height: 24px;

@@ -25,12 +25,14 @@
       display: none;
     }
 
-    @include media("<tablet") {
-      font-size: 22px;
-
+    @include media("<desktop") {
       .desktop-break {
         display: none;
       }
+    }
+
+    @include media("<tablet") {
+      font-size: 22px;
 
       .mobile-break {
         display: inline;
