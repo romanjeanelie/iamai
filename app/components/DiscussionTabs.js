@@ -153,7 +153,7 @@ export default class DiscussionTabs {
     // // this.removeStatus({ container: this.container });
     // if (aiStatus) this.container.remove(aiStatus);
     this.tabsContentContainer.appendChild(this.imagesContainer);
-    this.scrollToBottom();
+    // this.scrollToBottom();
   }
 
   handleImgClick(imgs) {

@@ -138,7 +138,7 @@ export function staircaseAnimation(elements) {
   tl.fromTo(
     elements,
     {
-      y: "50vh",
+      y: "20vh",
     },
     {
       y: 0,

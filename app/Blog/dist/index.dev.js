@@ -26,8 +26,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 var slider1Data = [{
   id: 1,
-  video: "/videos/blog/Desktop_Zoom_In_ChatGPT.mp4",
-  videoMobile: "/videos/blog/Mobile_Zoom_In_ChatGPT.mp4",
+  video: "https://player.vimeo.com/progressive_redirect/playback/924982744/rendition/720p/file.mp4?loc=external&signature=c55335972741066a22d9cd5365a00153e41eea2cd679367676a90ddd8361f504",
+  videoMobile: "https://player.vimeo.com/progressive_redirect/playback/924982589/rendition/720p/file.mp4?loc=external&signature=bed79de08eaae0b9c19e2c8acf024a35be1f25b844ed618588086d8dc5434d2b",
   description: "ChatGPT in action."
 }, {
   id: 2,
