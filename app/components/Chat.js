@@ -326,8 +326,7 @@ class Chat {
         } else if (mdata.status && mdata.status == AGENT_STARTED) {
           // micro_thread_id =  mdata.micro_thread_id;
           let taskname = mdata.task_name;
-          if (taskname.length > 100)
-            taskname.substring(0, 100 - 3) + '...';
+          if (taskname.length > 100) taskname.substring(0, 100 - 3) + "...";
 
           const task = {
             key: mdata.micro_thread_id,
@@ -344,8 +343,7 @@ class Chat {
         } else if (mdata.status && mdata.status == AGENT_PROGRESSING) {
           if (mdata.awaiting) {
             let taskname = mdata.task_name;
-            if (taskname.length > 100)
-              taskname.substring(0, 100 - 3) + '...';
+            if (taskname.length > 100) taskname.substring(0, 100 - 3) + "...";
             const task = {
               key: mdata.micro_thread_id,
               status: {
@@ -386,15 +384,14 @@ class Chat {
             }
           }
           let taskname = mdata.task_name;
-          if (taskname.length > 100)
-            taskname.substring(0, 100 - 3) + '...';
+          if (taskname.length > 100) taskname.substring(0, 100 - 3) + "...";
           const task = {
             key: mdata.micro_thread_id,
             status: {
               type: TASK_STATUSES.COMPLETED,
               title: "Completed",
               description: mdata.response_json.text,
-              label: taskname + " is completed"
+              label: taskname + " is completed",
             },
           };
 
@@ -429,7 +426,6 @@ class Chat {
     return divdiscussionuser;
   }
   adduserans(userAns, container) {
-
     const divtextcontainer = document.createElement("div");
     divtextcontainer.className = "text__container";
     const divans = document.createElement("div");
@@ -859,7 +855,6 @@ class Chat {
 
         // this.updateTextContainer();
         // this.textContainer.appendChild(taxidiv);
-
       }
     }
     return taxidiv;

@@ -5,17 +5,10 @@ import Discussion from "./components/Discussion";
 import Slider from "./components/Slider";
 import TaskManager from "./components/TaskManager";
 import User from "./User";
-import { getUser, getsessionID, saveUserDataFireDB, getUserDataFireDB, redirectToLogin } from "./User";
+import { getUser, saveUserDataFireDB, getUserDataFireDB, redirectToLogin } from "./User";
 import { createNanoEvents } from "nanoevents";
-import { app, auth } from "./firebaseConfig";
-import {
-  GoogleAuthProvider,
-  connectAuthEmulator,
-  getAuth,
-  onAuthStateChanged,
-  signInWithPopup,
-  signOut,
-} from "firebase/auth";
+import { auth } from "./firebaseConfig";
+import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
 import * as dat from "dat.gui";
 
 var animation;

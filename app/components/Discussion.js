@@ -39,6 +39,8 @@ export default class Discussion {
     this.centralFinished = false;
     this.tabs = null;
 
+    this.currentAnswerContainer = null;
+
     this.Chat = new Chat({
       discussionContainer: this.discussionContainer,
       addAIText: this.addAIText.bind(this),
@@ -275,6 +277,16 @@ export default class Discussion {
     }
 
     if (!this.tabs) {
+      this.tabs = new DiscussionTabs({
+        container: container,
+        emitter: this.emitter,
+        removeStatus: this.removeStatus,
+        scrollToBottom: this.scrollToBottom,
+      });
+    }
+
+    if (container !== this.currentAnswerContainer) {
+      this.currentAnswerContainer = container;
       this.tabs = new DiscussionTabs({
         container: container,
         emitter: this.emitter,
