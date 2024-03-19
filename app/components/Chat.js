@@ -37,7 +37,9 @@ const ANSWER = "answer",
   FLIGHTSEARCH = "FlightSearch",
   PRODUCTSEARCH = "ProductSearch",
   AGENT_PROGRESSING = "agent_progressing",
-  AGENT_ANSWERED = "agent_answered";
+  AGENT_ANSWERED = "agent_answered",
+  IMAGE_GENERATION_IN_PROGRESS = "image_generation_in_progress",
+  RESPONSE_FOLLOW_UP = "response_follow_up";
 let micro_thread_id = "";
 
 class Chat {
@@ -411,6 +413,12 @@ class Chat {
           const divans = this.adduserans(mdata.response_json.text, container);
           this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, divans);
           ui_paramsmap.delete(mdata.micro_thread_id);
+        } 
+        else if (mdata.status && mdata.status == RESPONSE_FOLLOW_UP) 
+        {}
+        else if (mdata.status && mdata.status == IMAGE_GENERATION_IN_PROGRESS) 
+        {
+
         }
         // } else if (mtext.trim().length > 0) { //ADDED THIS FOR conversation_question and other cases.
         //   var AIAnswer = await this.toTitleCase2(mtext);
