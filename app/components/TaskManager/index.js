@@ -323,26 +323,28 @@ export default class TaskManager {
   }
 
   closeNotificationPill() {
-    // const label = this.notificationContainer.querySelector(".task-manager__notification-label");
-    // const closeBtn = this.notificationContainer.querySelector(".task-manager__notification-closeBtn");
-    // const svg = closeBtn.querySelector("svg");
-    // const initialState = Flip.getState([this.notificationContainer, label, closeBtn, svg]);
-    // this.notificationContainer.classList.remove("expanded");
-    // Flip.from(initialState, {
-    //   duration: 0.5,
-    //   ease: "power2.inOut",
-    //   absolute: true,
-    //   onComplete: () => {
-    //     gsap.to(this.notificationContainer, {
-    //       opacity: 0,
-    //       onComplete: () => this.disposeNotificationPill(),
-    //     });
-    //   },
-    // });
+    if (!this.notificationContainer) return;
+
+    const label = this.notificationContainer.querySelector(".task-manager__notification-label");
+    const closeBtn = this.notificationContainer.querySelector(".task-manager__notification-closeBtn");
+    const svg = closeBtn.querySelector("svg");
+    const initialState = Flip.getState([this.notificationContainer, label, closeBtn, svg]);
+    this.notificationContainer.classList.remove("expanded");
+    Flip.from(initialState, {
+      duration: 0.5,
+      ease: "power2.inOut",
+      absolute: true,
+      onComplete: () => {
+        gsap.to(this.notificationContainer, {
+          opacity: 0,
+          onComplete: () => this.disposeNotificationPill(),
+        });
+      },
+    });
   }
 
   disposeNotificationPill() {
-    this.notificationContainer.remove();
+    this.notificationContainer?.remove();
     this.notificationContainer = null;
   }
 
@@ -620,6 +622,7 @@ export default class TaskManager {
   }
 
   removeTask(taskKey) {
+    console.log("in remove task");
     this.tasks = this.tasks.filter((task) => task.key !== taskKey);
     this.removeTaskUI(taskKey);
     this.handleButton();
@@ -643,9 +646,9 @@ export default class TaskManager {
     const task = this.tasks.find((task) => task.key === key);
     this.emitter.emit("taskManager:viewResults", task, task.resultsContainer);
 
-    this.removeTask(key);
-    this.closeTaskManager();
     this.closeNotificationPill();
+    this.closeTaskManager();
+    this.removeTask(key);
   }
 
   addListeners() {
