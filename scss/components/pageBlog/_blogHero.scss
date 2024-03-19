@@ -23,9 +23,33 @@
 
   video {
     width: 100%;
+    // opacity: 0;
     height: 100%;
     object-fit: cover;
     object-position: center;
+  }
+
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+    &.mobile-poster {
+      display: none;
+    }
+
+    @include media("<phone") {
+      &.desktop-poster {
+        display: none;
+      }
+
+      &.mobile-poster {
+        display: block;
+      }
+    }
   }
 
   &.mobile-video {
