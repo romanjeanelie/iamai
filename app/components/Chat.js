@@ -257,8 +257,9 @@ class Chat {
           //   });
           // await this.callbacks.addAIText({ text: "Please click here, to start a new session to chat or close the browser.", type: 'link', container: this.container });
           // textEl.innerHTML = 'Please click <a href="./index.html">here</a>, to start a new session to chat or close the browser.';
-        } else if (mdata.awaiting && !mdata.micro_thread_id) {
-          var mtext = JSON.parse(mdata.response_json).text;
+        } else if (mdata.awaiting && (!mdata.micro_thread_id || mdata.micro_thread_id == "NA")) {
+          // var mtext = JSON.parse(mdata.response_json).text;
+          var mtext = mdata.response_json.text;
           console.log("awaiting:" + mdata.message_type);
           console.log("mtext:" + mtext);
           this.workflowID = mdata.session_id;
@@ -317,6 +318,20 @@ class Chat {
           //       type: "status",
           //     });
           //   }
+        } else if (mdata.micro_thread_id == "NA") {
+          var mtext = mdata.response_json.text;
+          var AIAnswer = await this.toTitleCase2(mtext);
+          if (this.sourcelang != "en") {
+            var transresponse = await this.googletranslate(
+              await this.toTitleCase2(mtext),
+              this.sourcelang,
+              this.targetlang
+            );
+            AIAnswer = transresponse.data.translations[0].translatedText;
+          }
+          await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang });
+          this.callbacks.emitter.emit("endStream");
+          this.callbacks.emitter.emit(STREAM_ENDED);
         } else if (mdata.status && mdata.status == AGENT_ENDED) {
           // micro_thread_id =  mdata.micro_thread_id;
         } else if (mdata.status.toLowerCase() == PA_RESPONSE_ENDED) {
@@ -325,9 +340,7 @@ class Chat {
           this.callbacks.emitter.emit(PA_RESPONSE_ENDED);
         } else if (mdata.status && mdata.status == AGENT_STARTED) {
           // micro_thread_id =  mdata.micro_thread_id;
-          let taskname = mdata.task_name;
-          if (taskname.length > 100)
-            taskname.substring(0, 100 - 3) + '...';
+          let taskname = this.extractSubstringWithEllipsis(mdata.task_name);
 
           const task = {
             key: mdata.micro_thread_id,
@@ -343,9 +356,7 @@ class Chat {
           this.callbacks.emitter.emit("taskManager:createTask", task, textAI);
         } else if (mdata.status && mdata.status == AGENT_PROGRESSING) {
           if (mdata.awaiting) {
-            let taskname = mdata.task_name;
-            if (taskname.length > 100)
-              taskname.substring(0, 100 - 3) + '...';
+            let taskname = this.extractSubstringWithEllipsis(mdata.task_name);
             const task = {
               key: mdata.micro_thread_id,
               status: {
@@ -385,9 +396,8 @@ class Chat {
               container = this.getProductUI(JSON.parse(data.ProductSearchResults));
             }
           }
-          let taskname = mdata.task_name;
-          if (taskname.length > 100)
-            taskname.substring(0, 100 - 3) + '...';
+          let taskname = this.extractSubstringWithEllipsis(mdata.task_name);
+          console.log("taskname",taskname)
           const task = {
             key: mdata.micro_thread_id,
             status: {
@@ -422,6 +432,17 @@ class Chat {
     nc.drain();
   };
 
+  extractSubstringWithEllipsis(text) {
+    if (text.length <= 40) {
+      return text;
+    }
+    for (let i = 40; i < text.length; i++) {
+      if (text[i] === ' ' || [',', '.', '!', '?', ';'].includes(text[i])) {
+        return text.substring(0, i) + " ...";
+      }
+    }
+    return text.substring(0, 40) + " ...";
+  }
   adduserqns(userQns) {
     const divdiscussionuser = document.createElement("div");
     divdiscussionuser.className = "discussion__user";
