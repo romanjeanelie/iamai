@@ -633,6 +633,7 @@ export default class TaskManager {
 
   onStatusUpdate(taskKey, status, container, workflowID) {
     const task = this.tasks.find((task) => task.key === taskKey);
+    if (!task) return;
     task.status = status;
     task.resultsContainer = container;
     task.workflowID = workflowID;

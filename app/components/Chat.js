@@ -404,7 +404,7 @@ class Chat {
               type: TASK_STATUSES.COMPLETED,
               title: "Completed",
               description: mdata.response_json.text,
-              label: taskname + " is completed"
+              label: taskname + " is completed",
             },
           };
 
@@ -450,7 +450,6 @@ class Chat {
     return divdiscussionuser;
   }
   adduserans(userAns, container) {
-
     const divtextcontainer = document.createElement("div");
     divtextcontainer.className = "text__container";
     const divans = document.createElement("div");
@@ -880,7 +879,6 @@ class Chat {
 
         // this.updateTextContainer();
         // this.textContainer.appendChild(taxidiv);
-
       }
     }
     return taxidiv;
