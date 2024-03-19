@@ -23,6 +23,7 @@ $zIndex: 10;
   }
 
   @include media("<phone") {
+    right: 28px;
     bottom: 110px;
   }
 }

@@ -1,10 +1,10 @@
 .blog__pinkTitle-container {
   h1 {
     font-size: (32px, 8vw, 60px);
-    color: rgba(255, 0, 255, 0.62);
+    color: $colorLightOrange;
 
     span {
-      color: $colorPink;
+      color: $colorOrange;
     }
 
     @include media("<tablet") {
@@ -18,10 +18,10 @@
       color: $colorLightOrange;
       background: -webkit-linear-gradient(
         1deg,
-        rgba(255, 0, 255, 0.62) 0%,
-        rgba(255, 0, 255, 0.62) 50%,
-        $colorPink 51%,
-        rgba(255, 0, 255, 0.62) 100%
+        $colorLightOrange 0%,
+        $colorLightOrange 50%,
+        $colorOrange 51%,
+        $colorLightOrange 100%
       );
       background-size: 200% 200%;
       -webkit-background-clip: text;
