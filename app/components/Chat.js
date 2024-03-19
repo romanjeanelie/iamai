@@ -399,7 +399,7 @@ class Chat {
             }
           }
           let taskname = this.extractSubstringWithEllipsis(mdata.task_name);
-          console.log("taskname",taskname)
+          console.log("taskname", taskname)
           const task = {
             key: mdata.micro_thread_id,
             status: {
@@ -413,11 +413,19 @@ class Chat {
           const divans = this.adduserans(mdata.response_json.text, container);
           this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, divans);
           ui_paramsmap.delete(mdata.micro_thread_id);
-        } 
-        else if (mdata.status && mdata.status == RESPONSE_FOLLOW_UP) 
-        {}
-        else if (mdata.status && mdata.status == IMAGE_GENERATION_IN_PROGRESS) 
-        {
+        }else if (mdata.status && mdata.status == RESPONSE_FOLLOW_UP) {
+          var mtext = mdata.response_json.text;
+          var AIAnswer = await this.toTitleCase2(mtext);
+          if (this.sourcelang != "en") {
+            var transresponse = await this.googletranslate(
+              await this.toTitleCase2(mtext),
+              this.sourcelang,
+              this.targetlang
+            );
+            AIAnswer = transresponse.data.translations[0].translatedText;
+          }
+          await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang });
+        }else if (mdata.status && mdata.status == IMAGE_GENERATION_IN_PROGRESS) {
 
         }
         // } else if (mtext.trim().length > 0) { //ADDED THIS FOR conversation_question and other cases.
