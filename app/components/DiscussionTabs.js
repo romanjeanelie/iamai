@@ -29,9 +29,9 @@ export default class DiscussionTabs {
   init() {
     if (this.tabsHeaderContainer || this.tabsContentContainer) return;
     this.tabsHeaderContainer = document.createElement("ul");
-    this.tabsHeaderContainer.className = "discussion__tabs-header hidden";
+    this.tabsHeaderContainer.className = "discussion__tabs-header";
     this.tabsContentContainer = document.createElement("div");
-    this.tabsContentContainer.className = "discussion__tabs-content hidden";
+    this.tabsContentContainer.className = "discussion__tabs-content";
 
     this.container.appendChild(this.tabsHeaderContainer);
     this.container.appendChild(this.tabsContentContainer);
@@ -44,6 +44,7 @@ export default class DiscussionTabs {
       li.style.order = 0;
     } else {
       li.style.order = 1;
+      li.className = "sourcesTab hidden";
     }
 
     li.textContent = tabName;
@@ -85,8 +86,8 @@ export default class DiscussionTabs {
       this.sources?.classList.add("none");
       this.imagesContainer?.classList.remove("none");
     } else if (this.selectedTab === "") {
-      !this.sources?.classList.contains("none") && this.sources?.classList.add("none");
-      !this.imagesContainer?.classList.contains("none") && this.imagesContainer?.classList.add("none");
+      this.sources?.classList.add("none");
+      this.imagesContainer?.classList.add("none");
     }
   }
 
@@ -103,9 +104,9 @@ export default class DiscussionTabs {
     }
   }
 
-  showTabs() {
-    this.tabsHeaderContainer.classList.remove("hidden");
-    this.tabsContentContainer.classList.remove("hidden");
+  showSourcesTab() {
+    const sourcesTab = this.tabsHeaderContainer.querySelector(".sourcesTab");
+    sourcesTab?.classList.remove("hidden"); // Remove 'hidden' class from 'Sources' tab
   }
 
   initSources(sourcesData) {
@@ -150,10 +151,7 @@ export default class DiscussionTabs {
     });
 
     this.handleImgClick(imgs);
-    // // this.removeStatus({ container: this.container });
-    // if (aiStatus) this.container.remove(aiStatus);
     this.tabsContentContainer.appendChild(this.imagesContainer);
-    // this.scrollToBottom();
   }
 
   handleImgClick(imgs) {

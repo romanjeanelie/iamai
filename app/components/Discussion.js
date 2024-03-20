@@ -44,6 +44,7 @@ export default class Discussion {
     this.Chat = new Chat({
       discussionContainer: this.discussionContainer,
       addAIText: this.addAIText.bind(this),
+      initImages: this.initImages.bind(this),
       addImages: this.addImages.bind(this),
       addSources: this.addSources.bind(this),
       addURL: this.addURL.bind(this),
@@ -276,14 +277,14 @@ export default class Discussion {
       container.appendChild(textContainer);
     }
 
-    if (!this.tabs) {
-      this.tabs = new DiscussionTabs({
-        container: container,
-        emitter: this.emitter,
-        removeStatus: this.removeStatus,
-        scrollToBottom: this.scrollToBottom,
-      });
-    }
+    // if (!this.tabs) {
+    //   this.tabs = new DiscussionTabs({
+    //     container: container,
+    //     emitter: this.emitter,
+    //     removeStatus: this.removeStatus,
+    //     scrollToBottom: this.scrollToBottom,
+    //   });
+    // }
 
     if (container !== this.currentAnswerContainer) {
       this.currentAnswerContainer = container;
@@ -333,11 +334,13 @@ export default class Discussion {
     this.scrollToBottom();
   }
 
-  addImages({ imgSrcs = [], container } = {}) {
+  initImages() {
     this.tabs?.addTab("Images");
+  }
+
+  addImages({ imgSrcs = [], container } = {}) {
     this.tabs?.initImages(imgSrcs);
     this.typingStatus = null;
-    this.tabs?.showTabs();
     // container?.appendChild(this.topStatus);
   }
 
@@ -473,7 +476,7 @@ export default class Discussion {
       await this.endStatusAnimation();
       this.removeStatus({ container: this.discussionContainer });
       this.tabs?.displayDefaultTab();
-      this.tabs?.showTabs();
+      this.tabs?.showSourcesTab();
       this.tabs = null;
     });
 
@@ -486,7 +489,7 @@ export default class Discussion {
     );
 
     // window.addEventListener("load", this.onLoad.bind(this));
-    const resizeObserver = new ResizeObserver(this.scrollToBottom.bind(this));
-    resizeObserver.observe(this.discussionContainer);
+    // const resizeObserver = new ResizeObserver(this.scrollToBottom.bind(this));
+    // resizeObserver.observe(this.discussionContainer);
   }
 }

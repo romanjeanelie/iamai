@@ -226,7 +226,6 @@ class Chat {
           console.log("----- sources in CHAT -----");
           this.callbacks.addSources(this.Sources);
         }
-
         //generate data
         if (mdata.status && mdata.status == STREAM_STARTED) {
           this.callbacks.emitter.emit(STREAM_STARTED);
@@ -399,7 +398,7 @@ class Chat {
             }
           }
           let taskname = this.extractSubstringWithEllipsis(mdata.task_name);
-          console.log("taskname", taskname)
+          console.log("taskname", taskname);
           const task = {
             key: mdata.micro_thread_id,
             status: {
@@ -413,7 +412,7 @@ class Chat {
           const divans = this.adduserans(mdata.response_json.text, container);
           this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, divans);
           ui_paramsmap.delete(mdata.micro_thread_id);
-        }else if (mdata.status && mdata.status == RESPONSE_FOLLOW_UP) {
+        } else if (mdata.status && mdata.status == RESPONSE_FOLLOW_UP) {
           var mtext = mdata.response_json.text;
           var AIAnswer = await this.toTitleCase2(mtext);
           if (this.sourcelang != "en") {
@@ -425,8 +424,8 @@ class Chat {
             AIAnswer = transresponse.data.translations[0].translatedText;
           }
           await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang });
-        }else if (mdata.status && mdata.status == IMAGE_GENERATION_IN_PROGRESS) {
-
+        } else if (mdata.status && mdata.status == IMAGE_GENERATION_IN_PROGRESS) {
+          this.callbacks.initImages();
         }
         // } else if (mtext.trim().length > 0) { //ADDED THIS FOR conversation_question and other cases.
         //   var AIAnswer = await this.toTitleCase2(mtext);
@@ -453,7 +452,7 @@ class Chat {
       return text;
     }
     for (let i = 40; i < text.length; i++) {
-      if (text[i] === ' ' || [',', '.', '!', '?', ';'].includes(text[i])) {
+      if (text[i] === " " || [",", ".", "!", "?", ";"].includes(text[i])) {
         return text.substring(0, i) + " ...";
       }
     }

@@ -108,18 +108,16 @@ function () {
         });
         tab.classList.add("active");
         this.selectedTab = tab.textContent;
-      } // // displaying, or not, the section based on the selected tab
-      // if (this.selectedTab === "Sources") {
-      //   this.sources?.classList.remove("none");
-      //   this.imagesContainer?.classList.add("none");
-      // } else if (this.selectedTab === "Images") {
-      //   this.sources?.classList.add("none");
-      //   this.imagesContainer?.classList.remove("none");
-      // } else if (this.selectedTab === "") {
-      //   !this.sources?.classList.contains("none") && this.sources?.classList.add("none");
-      //   !this.imagesContainer?.classList.contains("none") && this.imagesContainer?.classList.add("none");
-      // }
+      } // displaying, or not, the section based on the selected tab
 
+
+      if (this.selectedTab === "Sources") {// this.sources?.classList.remove("none");
+        // this.imagesContainer?.classList.add("none");
+      } else if (this.selectedTab === "Images") {// this.sources?.classList.add("none");
+        // this.imagesContainer?.classList.remove("none");
+      } else if (this.selectedTab === "") {// !this.sources?.classList.contains("none") && this.sources?.classList.add("none");
+        // !this.imagesContainer?.classList.contains("none") && this.imagesContainer?.classList.add("none");
+      }
     }
   }, {
     key: "displayDefaultTab",
