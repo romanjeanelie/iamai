@@ -243,7 +243,7 @@ class App {
     window.addEventListener("load", () => {
       let user = getUser();
       signInButton.addEventListener("click", this.toggleSignIn, false);
-      signInButton.style.display = "none";
+      // signInButton.style.display = "none";
 
       divlottieanimation.style.display = "none";
       animation = lottie.loadAnimation({
