@@ -1,7 +1,7 @@
 import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scss";
 import TypingText from "../TypingText";
 import Chat from "./Chat.js";
-import DiscussionTabs from "./DiscussionTabs.js"
+import DiscussionTabs from "./DiscussionTabs.js";
 
 import { getsessionID } from "../User";
 import { asyncAnim } from "../utils/anim.js";
@@ -96,7 +96,7 @@ export default class Discussion {
   //   }
 
   disableInput() {
-    console.log("disable input")
+    console.log("disable input");
     this.inputText.disabled = true;
     const childNodes = this.inputContainer.getElementsByTagName("*");
     for (var node of childNodes) {
@@ -142,7 +142,19 @@ export default class Discussion {
       const userEl = document.createElement("div");
       userEl.classList.add("discussion__user");
       this.discussionContainer.appendChild(userEl);
-      this.addImages({ container: userEl, srcs: imgs.map((img) => img.src) });
+
+      if (!this.tabs) {
+        this.tabs = new DiscussionTabs({
+          container: userEl,
+          emitter: this.emitter,
+          removeStatus: this.removeStatus,
+          scrollToBottom: this.scrollToBottom,
+        });
+      } else {
+        this.tabs.container = userEl;
+      }
+
+      this.addImages({ container: userEl, imgSrcs: imgs.map((img) => img.src) });
     }
 
     const userEl = document.createElement("div");
@@ -168,21 +180,22 @@ export default class Discussion {
   }
 
   async animateProgressBar(currProgress, nextProgress, duration = 500) {
-    await asyncAnim(this.progressBar, [
-      { transform: `scaleX(${currProgress/100})` },
-      { transform: `scaleX(${nextProgress/100})` },
-    ], {
-      duration: duration,
-      fill: "forwards",
-      ease: "ease-out",
-    })
+    await asyncAnim(
+      this.progressBar,
+      [{ transform: `scaleX(${currProgress / 100})` }, { transform: `scaleX(${nextProgress / 100})` }],
+      {
+        duration: duration,
+        fill: "forwards",
+        ease: "ease-out",
+      }
+    );
   }
 
-  async endStatusAnimation(){
+  async endStatusAnimation() {
     await this.animateProgressBar(this.currentProgress, 100, 200);
     this.statusContainer.classList.add("hidden");
     this.lastStatus.classList.add("hidden");
-    
+
     this.currentProgress = 0;
     this.nextProgress = 0;
     this.centralFinished = false;
@@ -191,7 +204,7 @@ export default class Discussion {
   async addStatus({ text, textEl, container }) {
     const topStatus = getTopStatus(text);
     const isImageSearch = this.Chat.task_name === "Image Status Push";
-    
+
     if (!this.lastStatus) {
       // Init status
       this.statusContainer = document.createElement("div");
@@ -203,19 +216,19 @@ export default class Discussion {
       this.progressBar = document.createElement("div");
       this.progressBar.className = "progress-bar";
 
-      if (isImageSearch){    
-        this.topStatus.style.marginTop= "0px";
-        this.topStatus.style.height= "0px";
+      if (isImageSearch) {
+        this.topStatus.style.marginTop = "0px";
+        this.topStatus.style.height = "0px";
         this.topStatus.classList.add("image-skeleton");
 
-        this.tabs?.addTab("Images")
+        this.tabs?.addTab("Images");
 
         this.typingStatus = new TypingText({
           text: "",
           container: this.topStatus,
           backgroundColor: backgroundColorGreyPage,
         });
-        
+
         this.typingStatus.fadeIn();
         this.typingStatus.displayImageSkeleton();
         container.appendChild(this.topStatus);
@@ -232,9 +245,8 @@ export default class Discussion {
     }
     this.lastStatus = textEl;
 
-
     if (topStatus && (topStatus !== this.currentTopStatus || !this.currentTopStatus)) {
-      this.updateTopStatus({ status : text, topStatus, container: this.topStatus });
+      this.updateTopStatus({ status: text, topStatus, container: this.topStatus });
       this.currentTopStatus = topStatus;
     }
 
@@ -273,20 +285,20 @@ export default class Discussion {
     this.resetStatuses();
   }
 
-  async addAIText({ text, container, targetlang, type = null } = {}) {    
+  async addAIText({ text, container, targetlang, type = null } = {}) {
     const isImageSearch = this.Chat.task_name === "Image Status Push";
     let textContainer = container.querySelector(".text__container");
 
-    if (!textContainer){
+    if (!textContainer) {
       textContainer = document.createElement("div");
       textContainer.className = "text__container";
       container.appendChild(textContainer);
     }
 
-    if (!this.tabs){
+    if (!this.tabs) {
       this.tabs = new DiscussionTabs({
         container: container,
-        emitter : this.emitter,
+        emitter: this.emitter,
         removeStatus: this.removeStatus,
         scrollToBottom: this.scrollToBottom,
       });
@@ -299,7 +311,7 @@ export default class Discussion {
 
     if (type === "status") {
       textEl.className = "AIstatus";
-      this.addStatus({ text, textEl, container : textContainer });
+      this.addStatus({ text, textEl, container: textContainer });
     } else if (this.lastStatus) {
       this.removeStatus({ container: textContainer });
     }
@@ -308,8 +320,8 @@ export default class Discussion {
 
     // text = text.replace(/<br\/?>\s*/g, "\n");
     if (type !== "status") this.scrollToBottom();
-    if (isImageSearch) return
-    return typeByWord(textEl, text);  
+    if (isImageSearch) return;
+    return typeByWord(textEl, text);
   }
 
   addURL({ text, label, url, container }) {
@@ -335,7 +347,7 @@ export default class Discussion {
   }
 
   addSources(sourcesData) {
-    this.tabs?.addTab("Sources")
+    this.tabs?.addTab("Sources");
     this.tabs?.initSources(sourcesData);
   }
 
@@ -360,7 +372,7 @@ export default class Discussion {
     // if (!deploy_ID){
     //   this.Chat.deploy_ID = deploy_ID
     // }
-    
+
     if (urlParams.get("location") && urlParams.get("location") != "") {
       this.Chat.location = urlParams.get("location");
     }
@@ -396,14 +408,14 @@ export default class Discussion {
     window.addEventListener("load", this.onLoad());
 
     this.emitter.on("centralFinished", () => {
-      this.centralFinished = true
-      this.endStatusAnimation()
-    })
+      this.centralFinished = true;
+      this.endStatusAnimation();
+    });
 
-    this.emitter.on("paEnd" , () => {
+    this.emitter.on("paEnd", () => {
       this.tabs?.displayDefaultTab();
       this.tabs = null;
-    })
+    });
     // window.addEventListener("load", this.onLoad.bind(this));
     const resizeObserver = new ResizeObserver(this.scrollToBottom.bind(this));
     resizeObserver.observe(this.discussionContainer);
