@@ -341,7 +341,7 @@ class Chat {
           this.callbacks.emitter.emit(PA_RESPONSE_ENDED);
         } else if (mdata.status && mdata.status == AGENT_STARTED) {
           // micro_thread_id =  mdata.micro_thread_id;
-          let taskname = this.extractSubstringWithEllipsis(mdata.task_name);
+          let taskname = mdata.task_name;
 
           const task = {
             key: mdata.micro_thread_id,
@@ -357,7 +357,7 @@ class Chat {
           this.callbacks.emitter.emit("taskManager:createTask", task, textAI);
         } else if (mdata.status && mdata.status == AGENT_PROGRESSING) {
           if (mdata.awaiting) {
-            let taskname = this.extractSubstringWithEllipsis(mdata.task_name);
+            let taskname = mdata.task_name;
             const task = {
               key: mdata.micro_thread_id,
               status: {
@@ -397,7 +397,7 @@ class Chat {
               container = this.getProductUI(JSON.parse(data.ProductSearchResults));
             }
           }
-          let taskname = this.extractSubstringWithEllipsis(mdata.task_name);
+          let taskname = mdata.task_name;
           console.log("taskname", taskname);
           const task = {
             key: mdata.micro_thread_id,
