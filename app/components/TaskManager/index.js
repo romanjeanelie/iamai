@@ -270,9 +270,10 @@ export default class TaskManager {
 
     this.notificationContainer.style.backgroundColor = STATUS_COLORS[status.type];
 
-    const notificationLabel = document.createElement("p");
+    const notificationLabel = document.createElement("div");
     notificationLabel.classList.add("task-manager__notification-label");
-    notificationLabel.textContent = status.label || status.type;
+    const notificationLabelP = document.createElement("p");
+    notificationLabelP.textContent = status.label || status.type;
 
     const notificationCloseBtn = document.createElement("button");
     notificationCloseBtn.classList.add("task-manager__notification-closeBtn");
@@ -283,6 +284,7 @@ export default class TaskManager {
       </svg>
     `;
 
+    notificationLabel.appendChild(notificationLabelP);
     this.notificationContainer.appendChild(notificationLabel);
     this.notificationContainer.appendChild(notificationCloseBtn);
     document.body.appendChild(this.notificationContainer);

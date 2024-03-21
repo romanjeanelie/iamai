@@ -382,6 +382,18 @@ $zIndex: 10;
     font-weight: 450;
     line-height: 20px;
     letter-spacing: 0.5px;
+    overflow: hidden;
+    max-width: 350px;
+
+    p {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    @include media("<phone") {
+      max-width: 200px;
+    }
   }
 }
 
