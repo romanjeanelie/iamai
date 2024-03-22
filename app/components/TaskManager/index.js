@@ -563,8 +563,11 @@ export default class TaskManager {
   removePanel(key) {
     const task = this.accordionContainer.querySelector(`[task-key="${key}"]`);
     const header = task.querySelector(".task-manager__accordion-header");
+    const chevron = header.querySelector(".task-manager__accordion-chevron");
     const panel = task.querySelector(".task-manager__accordion-panel");
     panel.remove();
+    // hide the chevron button
+    chevron.classList.add("hidden");
 
     header.removeEventListener("click", () => this.togglePanel(key));
     header.addEventListener("click", () => this.viewResults(key));

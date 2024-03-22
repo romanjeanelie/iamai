@@ -181,6 +181,11 @@ $zIndex: 10;
         img {
           width: 100%;
         }
+
+        &.hidden {
+          opacity: 0;
+          pointer-events: none;
+        }
       }
     }
 
