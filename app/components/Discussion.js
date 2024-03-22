@@ -459,6 +459,7 @@ export default class Discussion {
   }
 
   async viewTaskResults(task, resultsContainer) {
+    console.log("------ view results from discussion.js ------");
     const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskKey="${task.key}"]`);
     const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskKey="${task.key}"]`);
     this.discussionContainer.removeChild(userContainer);

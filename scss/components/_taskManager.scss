@@ -59,6 +59,7 @@ $zIndex: 10;
     top: 0;
     left: 0;
     width: 100%;
+    z-index: 1;
     padding: 8px;
     display: flex;
     background-color: $backgroundTaskManager;
@@ -171,6 +172,13 @@ $zIndex: 10;
         padding: 5px 30px;
         border-radius: 32px;
         color: $colorMain;
+        transition: background-color 0.3s $ease-out;
+
+        &.clickable {
+          &:hover {
+            background-color: rgb(3, 107, 70) !important;
+          }
+        }
       }
 
       .task-manager__accordion-chevron {
@@ -253,6 +261,11 @@ $zIndex: 10;
       margin: 8px 0;
     }
   }
+}
+
+// forced to add that to prevent the result panel to be decentralized
+.task-manager__content * {
+  margin-left: 0;
 }
 
 // ------ fullscreen version ------

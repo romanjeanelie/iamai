@@ -40,34 +40,10 @@ const defaultValues = {
 gsap.registerPlugin(Flip);
 
 // TO DO
-// [X] make the button appear when a task is created
-// [X] update the button with the state
-// [X] show number of tasks on the button
-// [X] Do the basic layout for the minimized state
-// [X] make the accordion for the task list
-// [X] update the active tasks in the accordion
-// [X] intro animation for taskManager
-// [X] Do the basic layout for the fullscreen state
-// [X] handle transition between minimized and fullscreen state
-// [X] handle transition between fullscreen and minimized state
-// [X] finish integration of fullscreen state
-// [X] retourne the chevron when panel is opened
-// [X] make the accordion dynamic
-// [X] change the color  of the status-pill in the accordion in function of the status
-// [X] when adding a new panel to the accordion, update the click event listener
-// [X] handle the accordion panel in function of the type of the status (input required, in progress, completed)
-// [X] for the input required change the status after input has been entered
-// [X] handle the notification pastille when input required or completed
-// [X] do the animation of the notification pastille
-// [X] do repsonsive version
-// [X] position the task manager above the nav
-// [X] when click on pastille -> scroll to the panel
-// [X] check the closeFullscreen icon when resize out of mobile -> potential bug
-// [X] remove notif pill after 5 seconds
-// [X] remove taskUI on delete task
-// [] on complete remove all the panels and only keep the header + change the onClick event if status === completed
-// [] empêcher opening pastille if task manager already open ?
-// [] ask about the mobile version of the input ?
+// [X] on complete, in the task manager, replace all the status by the actual results
+// [X] remove margin -16px from the resultsTask in taskmanager
+// [] recalculate the size of the panel when it's updated with the results
+// [] after input entered, do ot close the task panel
 
 export default class TaskManager {
   constructor({ gui, emitter }) {
@@ -551,7 +527,7 @@ export default class TaskManager {
     if (status.type !== TASK_STATUSES.COMPLETED) {
       this.addPanel(key, panel, status);
     } else {
-      this.removePanel(key);
+      this.replacePanelContentByResults(key);
     }
   }
 
@@ -560,14 +536,20 @@ export default class TaskManager {
     task.remove();
   }
 
-  removePanel(key) {
+  replacePanelContentByResults(key) {
     const task = this.accordionContainer.querySelector(`[task-key="${key}"]`);
+    const taskData = this.tasks.find((task) => task.key === key);
     const header = task.querySelector(".task-manager__accordion-header");
+    const statusPill = header.querySelector(".task-manager__status-pill");
+    statusPill.classList.add("clickable");
     const panel = task.querySelector(".task-manager__accordion-panel");
-    panel.remove();
+    // remove all the children in panel
+    panel.innerHTML = "";
 
-    header.removeEventListener("click", () => this.togglePanel(key));
-    header.addEventListener("click", () => this.viewResults(key));
+    statusPill.addEventListener("click", (e) => this.viewResults(key, e));
+    panel.appendChild(taskData.resultsContainer);
+    // scroll to the right task + update the size of the panel
+    this.goToPanel(key);
   }
 
   // ---------- Handling the input ----------
@@ -644,8 +626,9 @@ export default class TaskManager {
     this.handleNotificationPill(taskKey, status);
   }
 
-  // Roman : function triggered when click on completed task or the notification pill for completed task
-  viewResults(key) {
+  // function triggered when click on completed task or the notification pill for completed task
+  viewResults(key, e) {
+    e?.stopPropagation();
     const task = this.tasks.find((task) => task.key === key);
     this.emitter.emit("taskManager:viewResults", task, task.resultsContainer);
 
