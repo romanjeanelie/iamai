@@ -157,7 +157,7 @@ export default class Discussion {
         this.tabs.container = userContainer;
       }
 
-      this.addImages({ container: userContainer, imgSrcs: imgs.map((img) => img.src) });
+      this.addImages({ imgSrcs: imgs.map((img) => img.src) });
     }
 
     this.userContainer = document.createElement("div");

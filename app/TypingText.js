@@ -1,4 +1,4 @@
-import anim from "./utils/anim";
+import anim, { asyncAnim } from "./utils/anim.js";
 
 export default class TypingText {
   constructor({ text, container, backgroundColor, marginLeft }) {
@@ -69,9 +69,9 @@ export default class TypingText {
     });
   }
 
-  fadeOut() {
-    this.logo.classList.add("hidden");
-    this.skeletonContainer.classList.add("hidden");
+  async fadeOut() {
+    await asyncAnim(this.typingContainer, [{ opacity: 1 }, { opacity: 0 }]);
+    this.typingContainer.style.display = "none";
   }
 
   writing() {
