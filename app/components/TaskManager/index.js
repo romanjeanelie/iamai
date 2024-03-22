@@ -39,12 +39,6 @@ const defaultValues = {
 
 gsap.registerPlugin(Flip);
 
-// TO DO
-// [X] on complete, in the task manager, replace all the status by the actual results
-// [X] remove margin -16px from the resultsTask in taskmanager
-// [] recalculate the size of the panel when it's updated with the results
-// [] after input entered, do ot close the task panel
-
 export default class TaskManager {
   constructor({ gui, emitter }) {
     // DOM Elements
@@ -411,7 +405,7 @@ export default class TaskManager {
     this.accordionPanels.forEach((panel) => (panel.style.maxHeight = "0px"));
     this.accordionHeaders.forEach((header) => header.classList.remove("active"));
 
-    // Open the panel or update its max height
+    // Open the panel or if already openned update its the panel height
     const currentTask = this.accordionContainer.querySelector(`[task-key="${key}"]`);
     currentTask.querySelector(".task-manager__accordion-header").classList.add("active");
     const panel = currentTask.querySelector(".task-manager__accordion-panel");
