@@ -1,0 +1,48 @@
+.discussion__tabs-container.none {
+  display: none;
+}
+
+.discussion__tabs-header {
+  position: relative;
+  margin-top: 16px;
+  display: flex;
+  gap: 24px;
+  cursor: pointer;
+  transition: opacity 0.3s ease-out;
+
+  li {
+    font-family: "Circular";
+    font-size: 14px;
+    font-weight: 450;
+    line-height: 20px;
+    letter-spacing: 0.6px;
+    color: $colorBlackForGreyPage;
+
+    &:hover {
+      color: $colorBlack;
+    }
+
+    &.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  li.active {
+    color: $colorBlack;
+  }
+
+  &.hidden {
+    opacity: 0;
+  }
+}
+
+.discussion__tabs-content {
+  position: relative;
+  margin-top: 12px;
+  transition: opacity 0.3s ease-out;
+
+  &.hidden {
+    opacity: 0;
+  }
+}

@@ -1,4 +1,5 @@
 import anim from "../utils/anim";
+import loadImages from "../utils/loadImages";
 
 function getDomainAndFavicon(url) {
   const urlObj = new URL(url);
@@ -28,16 +29,20 @@ export default class DiscussionTabs {
 
   init() {
     if (this.tabsHeaderContainer || this.tabsContentContainer) return;
+    this.tabsContainer = document.createElement("div");
+    this.tabsContainer.className = "discussion__tabs-container none";
     this.tabsHeaderContainer = document.createElement("ul");
     this.tabsHeaderContainer.className = "discussion__tabs-header";
     this.tabsContentContainer = document.createElement("div");
     this.tabsContentContainer.className = "discussion__tabs-content";
 
-    this.container.appendChild(this.tabsHeaderContainer);
-    this.container.appendChild(this.tabsContentContainer);
+    this.tabsContainer.appendChild(this.tabsHeaderContainer);
+    this.tabsContainer.appendChild(this.tabsContentContainer);
+    this.container.appendChild(this.tabsContainer);
   }
 
   addTab(tabName) {
+    this.tabsContainer.classList.remove("none");
     const li = document.createElement("li");
     li.className = tabName;
     if (tabName === "Images") {
@@ -136,10 +141,12 @@ export default class DiscussionTabs {
   }
 
   async initImages(srcs) {
+    this.tabsContainer.classList.remove("none");
+
     this.imagesContainer = document.createElement("div");
     this.imagesContainer.className = "images__container";
 
-    const successfulSrcs = await this.loadImages(srcs);
+    const successfulSrcs = await loadImages(srcs);
 
     this.imagesSkeletons.forEach((skeleton) => this.skeletonContainer.removeChild(skeleton));
 
@@ -163,35 +170,7 @@ export default class DiscussionTabs {
   }
 
   openSlider(imgs, currentIndex) {
-    console.log("---- in open slider ----");
     this.emitter.emit("slider:open", { imgs, currentIndex });
-  }
-
-  loadImage(src) {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => resolve();
-      img.onerror = (error) => reject(error);
-      img.src = src;
-    });
-  }
-
-  async loadImages(srcs) {
-    const successfulSrcs = [];
-    const errors = [];
-
-    await Promise.all(
-      srcs.map((src) =>
-        this.loadImage(src)
-          .then(() => successfulSrcs.push(src))
-          .catch((error) => {
-            errors.push({ src, error });
-            console.log("Error loading image:", error);
-          })
-      )
-    );
-
-    return successfulSrcs;
   }
 
   createImageSkeletons() {
