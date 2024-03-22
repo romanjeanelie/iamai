@@ -1,17 +1,6 @@
-@font-face {
-  font-family: "CircularStd";
-  src: url("/fonts/CircularStd-Book.woff2");
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "CircularStd-Medium";
-  src: url("/fonts/CircularStd-Medium.woff2");
-  font-style: normal;
-}
 
 .assistantbody {
-  font-family: "CircularStd";
+  font-family: "Noto Sans";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 450;
@@ -153,7 +142,7 @@ button:focus {
   backdrop-filter: blur(100px);
   border: none;
   margin-bottom: 32px;
-  font-family: "CircularStd";
+  font-family: "Noto Sans";
   letter-spacing: 0.6;
   /* height: 24px; */
   font-size: 16px;
@@ -176,7 +165,7 @@ button:focus {
   backdrop-filter: blur(100px);
   border: none;
   margin-bottom: 48px;
-  font-family: "CircularStd";
+  font-family: "Noto Sans";
   font-size: 16px;
   line-height: 20px;
   letter-spacing: 0.6;

@@ -58,7 +58,7 @@
 
   .discussion__user,
   .discussion__ai {
-    font-family: "Antwerp";
+    font-family: "Noto Sans";
     position: relative;
     margin-bottom: 32px;
     font-size: 20px;
@@ -78,7 +78,7 @@
         background-color: rgba(0, 0, 0, 0.04);
         border-radius: 50px;
         padding: 4px 12px 4px 4px;
-        font-family: "Circular";
+        font-family: "SFPro";
         font-size: 12px;
         line-height: 20px;
         text-decoration: none;
@@ -183,7 +183,7 @@
     }
 
     .top-status {
-      font-family: "Circular";
+      font-family: "SFPro";
       margin-top: 16px;
       color: $colorBlack;
       font-size: 16px;
@@ -218,7 +218,7 @@
 
     .AIstatus {
       display: block;
-      font-family: "Circular";
+      font-family: "SFPro";
       font-size: 14px;
       font-weight: 450;
       line-height: 20px;

@@ -98,7 +98,7 @@ iframe {
   colorMain: #fff;
   backgroundColor: #648ff2;
 }
-@font-face {
+/* @font-face {
   font-family: "Circular";
   src: url("/fonts/CircularStd-Book.woff2");
   font-weight: 400;
@@ -106,6 +106,17 @@ iframe {
 @font-face {
   font-family: "Circular";
   src: url("/fonts/CircularStd-Medium.woff2");
+  font-weight: 600;
+} */
+@font-face {
+  font-family: "SFPro";
+  src: url("/fonts/SF-Pro-Display-Medium.otf");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "SFPro";
+  src: url("/fonts/SF-Pro-Display-Semibold.otf");
   font-weight: 600;
 }
 .preload * {
@@ -118,7 +129,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: Circular;
+  font-family: SFPro;
   font-weight: 400;
 }
 .logo__main {

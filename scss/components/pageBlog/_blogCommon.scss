@@ -13,17 +13,17 @@
   font-style: normal;
 }
 
-@font-face {
-  font-family: "Circular";
-  src: url("/fonts/CircularStd-Medium.woff2");
-  font-weight: 500;
-}
+// @font-face {
+//   font-family: "Circular";
+//   src: url("/fonts/CircularStd-Medium.woff2");
+//   font-weight: 500;
+// }
 
-@font-face {
-  font-family: "Antwerp";
-  src: url("/fonts/Antwerp_Light.otf");
-  font-weight: 300;
-}
+// @font-face {
+//   font-family: "Antwerp";
+//   src: url("/fonts/Antwerp_Light.otf");
+//   font-weight: 300;
+// }
 
 h1 {
   font-size: clamp(32px, 7vw, 60px);
@@ -131,7 +131,7 @@ section {
 
 .blog__cta {
   color: $colorMain;
-  font-family: "Circular";
+  font-family: "SFPro";
   width: fit-content;
   padding: 16px 32px;
   background: rgba(0, 0, 0, 0.72);

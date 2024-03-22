@@ -5,23 +5,34 @@ $paddingHorMobile: 12px;
 $paddingTopMobile: 28px;
 
 // Fonts
+// @font-face {
+//   font-family: "Circular";
+//   src: url("/fonts/CircularStd-Book.woff2");
+//   font-weight: 450;
+// }
+
+// @font-face {
+//   font-family: "Circular";
+//   src: url("/fonts/CircularStd-Medium.woff2");
+//   font-weight: 500;
+// }
 @font-face {
-  font-family: "Circular";
-  src: url("/fonts/CircularStd-Book.woff2");
+  font-family: "SFPro";
+  src: url("/fonts/SF-Pro-Display-Medium.otf");
   font-weight: 450;
 }
 
 @font-face {
-  font-family: "Circular";
-  src: url("/fonts/CircularStd-Medium.woff2");
+  font-family: "SFPro";
+  src: url("/fonts/SF-Pro-Display-Semibold.otf");
   font-weight: 500;
 }
 
-@font-face {
-  font-family: "Antwerp";
-  src: url("/fonts/Antwerp_Light.otf");
-  font-weight: 300;
-}
+// @font-face {
+//   font-family: "Antwerp";
+//   src: url("/fonts/Antwerp_Light.otf");
+//   font-weight: 300;
+// }
 
 // Reset all transitions
 .preload * {
@@ -34,7 +45,7 @@ html {
 
 body {
   color: $colorMain;
-  font-family: Circular;
+  font-family: SFPro;
   font-weight: 400;
   font-feature-settings: "liga" 0;
 }
@@ -160,7 +171,7 @@ button {
   margin-left: -16px;
   margin-top: 8px;
   margin-bottom: 16px;
-  font-family: "Circular";
+  font-family: "SFPro";
 }
 
 .movies-card {
@@ -297,7 +308,7 @@ button {
   margin-left: 15px;
   margin-top: 8px;
   margin-bottom: 16px;
-  font-family: "Circular";
+  font-family: "SFPro";
 }
 
 .product-card {
@@ -331,7 +342,6 @@ button {
   color: var(--Text, rgba(0, 0, 0, 0.72));
   text-align: center;
   font-feature-settings: "liga" off;
-  // font-family: Circular Std;
   font-size: 16px;
   font-style: normal;
   font-weight: 450;
@@ -350,7 +360,6 @@ button {
   color: var(--B48-W60, rgba(0, 0, 0, 0.48));
   text-align: center;
   font-feature-settings: "liga" off;
-  // font-family: Circular Std;
   font-size: 14px;
   font-style: normal;
   font-weight: 450;
@@ -531,7 +540,7 @@ button {
   width: 100%;
   margin-top: 16px;
   margin-bottom: 32px;
-  font-family: "Circular";
+  font-family: "SFPro";
 }
 
 .rides-list-item {
@@ -801,7 +810,6 @@ button {
   line-height: 20px;
   /* 125% */
   letter-spacing: 0.6px;
-  // font-family: "Circular Std Medium";
 }
 
 .rides-location-list {
@@ -882,7 +890,7 @@ button {
   margin-bottom: 24px;
   /* border-radius: 20px; */
   /* overflow: hidden; */
-  font-family: "Circular";
+  font-family: "SFPro";
 }
 
 .flight-toggle-button {
@@ -906,7 +914,7 @@ button {
   margin: 20px 0;
   opacity: 0;
   align-self: flex-start;
-  font-family: "Circular";
+  font-family: "SFPro";
   animation: fadeIn 0.3s ease-in-out forwards;
   animation-delay: 1000ms;
 }
@@ -1005,9 +1013,6 @@ button {
   font-weight: 500;
   line-height: 32px;
   letter-spacing: 0.8px;
-  /* margin-bottom: 0; */
-  // font-family: Circular Std Medium;
-  // font-weight: 600;
 }
 
 .small {
@@ -1079,7 +1084,7 @@ button {
   // margin-left: 15px;
   margin-top: 8px;
   margin-bottom: 24px;
-  font-family: "Circular";
+  font-family: "SFPro";
 }
 
 .shopping-card {
