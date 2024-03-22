@@ -1,8 +1,10 @@
 import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scss";
 import TypingText from "../TypingText";
 import Chat from "./Chat.js";
+import History from "./History.js";
 import DiscussionTabs from "./DiscussionTabs.js";
 import { TASK_STATUSES } from "./TaskManager/index.js";
+import { AGENT_STATUSES } from "./constants.js";
 
 import { getsessionID } from "../User";
 import { asyncAnim } from "../utils/anim.js";
@@ -41,6 +43,7 @@ export default class Discussion {
 
     this.currentAnswerContainer = null;
 
+    this.history = new History({ emitter: this.emitter });
     this.Chat = new Chat({
       discussionContainer: this.discussionContainer,
       addAIText: this.addAIText.bind(this),
@@ -382,14 +385,14 @@ export default class Discussion {
       }
     }
     if (q && q != "") {
-      this.getAiAnswer({ text: "" });
+      //   this.getAiAnswer({ text: "" });
     }
 
     if (sessionID && sessionID != "") {
       this.toPageGrey();
       this.Chat.sessionID = sessionID;
       this.Chat.deploy_ID = deploy_ID;
-      this.getAiAnswer({ text: "" });
+      //   this.getAiAnswer({ text: "" });
     } else {
       // this.toPageGrey();
       var usr = await this.user;
@@ -397,9 +400,21 @@ export default class Discussion {
         let data = await getsessionID(usr);
         this.Chat.sessionID = data.SessionID;
         this.Chat.deploy_ID = data.deploy_id;
-        this.getAiAnswer({ text: "" });
+        // this.getAiAnswer({ text: "" });
       }
     }
+    this.uuid = this.Chat.deploy_ID;
+
+    await this.updateHstory({ uuid: this.uuid });
+    this.getAiAnswer({ text: "" });
+  }
+
+  async updateHstory({ uuid }) {
+    return new Promise(async (resolve, reject) => {
+      const { container } = await this.history.getHistory({ uuid });
+      this.discussionContainer.appendChild(container);
+      resolve();
+    });
   }
 
   async onCreatedTask(task, textAI) {
@@ -414,6 +429,7 @@ export default class Discussion {
       this.discussionContainer.appendChild(this.AIContainer);
     }
 
+    if (!this.history.isSet) return;
     await this.addAIText({ text: textAI, container: this.AIContainer });
     this.userContainer.classList.add("discussion__user--task-created");
     this.AIContainer.classList.add("discussion__ai--task-created");
