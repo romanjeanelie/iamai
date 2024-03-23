@@ -46,9 +46,9 @@ class Chat {
   constructor(callbacks) {
     this.callbacks = callbacks;
     this.discussionContainer = this.callbacks.discussionContainer;
-    this.autodetect = false;
+    this.autodetect = true;
     this.targetlang = "en";
-    this.sourcelang = "en";
+    this.sourcelang = "";
     this.location = "US";
     this.status = "";
     this.sessionID = "";
@@ -410,7 +410,8 @@ class Chat {
           };
 
           const divans = this.adduserans(mdata.response_json.text, container);
-          this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, divans);
+          this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, divans, { workflowID: mdata.session_id });
+          // this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, divans, { workflowID: 1234 });
           ui_paramsmap.delete(mdata.micro_thread_id);
         } else if (mdata.status && mdata.status == RESPONSE_FOLLOW_UP) {
           var mtext = mdata.response_json.text;
@@ -509,6 +510,7 @@ class Chat {
       });
       xhr.send(data);
     });
+
   googletranslate = (text, lang, sourcelang) =>
     new Promise(async (resolve, reject) => {
       var xhr = new XMLHttpRequest();
@@ -529,15 +531,22 @@ class Chat {
           console.error("Error:", xhr.responseText);
         }
       };
-
-      var data = JSON.stringify({
-        q: text,
-        target: lang,
-        source: sourcelang,
-      });
-
+      var data = "";
+      if (sourcelang && sourcelang != "") {
+        var data = JSON.stringify({
+          q: text,
+          target: lang,
+          source: sourcelang,
+        });
+      } else {
+        data = JSON.stringify({
+          q: text,
+          target: lang,
+        });
+      }
       xhr.send(data);
     });
+
   toTitleCase(str) {
     str = str.replace(/\w\S*/g, function (txt) {
       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
@@ -551,6 +560,7 @@ class Chat {
     str = str.replaceAll("\n", "<br>");
     return str;
   }
+
   toTitleCase2(str) {
     // str = str
     //   .replace(/&/g, "&amp;")
@@ -561,10 +571,12 @@ class Chat {
     str = str.replaceAll("\n", "<br>");
     return str;
   }
+
   truncate(str) {
     var n = 200;
     return str && str.length > n ? str.slice(0, n - 1) + "&hellip;" : str;
   }
+
   submituserreply(text, suworkflowid, img) {
     var data = "";
     if (img && img.length > 0) {
@@ -1269,6 +1281,7 @@ class Chat {
     divele.appendChild(productdetailscard);
     // scrollToDiv(element.getAttribute('data-info'));
   }
+
   formatDateToString(date) {
     const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -1280,5 +1293,6 @@ class Chat {
 
     return `${dayName}, ${day} ${monthName}`;
   }
+
 }
 export { Chat as default };

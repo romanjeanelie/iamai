@@ -145,9 +145,9 @@ export default class DiscussionTabs {
 
     this.imagesContainer = document.createElement("div");
     this.imagesContainer.className = "images__container";
-
+    console.time("loadImages");
     const successfulSrcs = await loadImages(srcs);
-
+    console.timeEnd("loadImages");
     this.imagesSkeletons.forEach((skeleton) => this.skeletonContainer.removeChild(skeleton));
 
     const imgs = successfulSrcs.map((src) => {
