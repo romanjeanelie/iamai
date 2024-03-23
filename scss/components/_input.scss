@@ -38,7 +38,7 @@
       }
       .input__image {
         background-color: $backgroundColorGreyPage;
-        font-family: Antwerp;
+        font-family: "Noto Sans";
       }
     }
 
@@ -159,7 +159,7 @@
     @include inputTextExpand {
       max-height: calc(15 * 20px);
       margin-bottom: 8px;
-      font-family: Antwerp;
+      font-family: "Noto Sans";
       // font: inherit;
       font-size: 20px;
 

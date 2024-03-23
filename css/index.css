@@ -110,13 +110,13 @@ iframe {
 } */
 @font-face {
   font-family: "SFPro";
-  src: url("/fonts/SF-Pro-Display-Medium.otf");
+  src: url("/fonts/SF_Pro/SF-Pro-Display-Medium.otf");
   font-weight: 400;
 }
 
 @font-face {
   font-family: "SFPro";
-  src: url("/fonts/SF-Pro-Display-Semibold.otf");
+  src: url("/fonts/SF_Pro/SF-Pro-Display-Semibold.otf");
   font-weight: 600;
 }
 .preload * {
