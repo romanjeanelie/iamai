@@ -44,6 +44,8 @@ html {
 }
 
 body {
+  overscroll-behavior: none;
+
   color: $colorMain;
   font-family: SFPro;
   font-weight: 400;
