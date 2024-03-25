@@ -263,11 +263,6 @@ $zIndex: 10;
   }
 }
 
-// forced to add that to prevent the result panel to be decentralized
-.task-manager__content * {
-  margin-left: 0;
-}
-
 // ------ fullscreen version ------
 .task-manager__container.fullscreen {
   border-radius: 0;

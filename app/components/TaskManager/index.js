@@ -482,7 +482,7 @@ export default class TaskManager {
     headerDiv.addEventListener("click", () => this.togglePanel(data.key));
   }
 
-  addPanel(key, panel, status) {
+  addStatus(key, panel, status) {
     const divider = document.createElement("div");
     divider.classList.add("task-manager__accordion-panel-divider");
 
@@ -509,6 +509,24 @@ export default class TaskManager {
     this.goToPanel(key);
   }
 
+  addOnlyStatusTitle(key, panel, status) {
+    const divider = document.createElement("div");
+    divider.classList.add("task-manager__accordion-panel-divider");
+
+    const statusContainerDiv = document.createElement("div");
+    statusContainerDiv.classList.add("task-manager__status-container");
+
+    const statusTitleP = document.createElement("p");
+    statusTitleP.classList.add("task-manager__status-title");
+    statusTitleP.textContent = status.title;
+
+    statusContainerDiv.appendChild(statusTitleP);
+
+    panel.appendChild(divider);
+    panel.appendChild(statusContainerDiv);
+    this.goToPanel(key);
+  }
+
   updateTaskUI(key, status) {
     const task = this.accordionContainer.querySelector(`[task-key="${key}"]`);
     const header = task.querySelector(".task-manager__accordion-header");
@@ -518,10 +536,11 @@ export default class TaskManager {
 
     const panel = task.querySelector(".task-manager__accordion-panel");
 
-    if (status.type !== TASK_STATUSES.COMPLETED) {
-      this.addPanel(key, panel, status);
+    if (status.type === TASK_STATUSES.COMPLETED) {
+      this.addOnlyStatusTitle(key, panel, status);
+      this.makeStatusPillClickable(key, statusPill);
     } else {
-      this.replacePanelContentByResults(key);
+      this.addStatus(key, panel, status);
     }
   }
 
@@ -530,20 +549,12 @@ export default class TaskManager {
     task.remove();
   }
 
-  replacePanelContentByResults(key) {
-    const task = this.accordionContainer.querySelector(`[task-key="${key}"]`);
-    const taskData = this.tasks.find((task) => task.key === key);
-    const header = task.querySelector(".task-manager__accordion-header");
-    const statusPill = header.querySelector(".task-manager__status-pill");
+  makeStatusPillClickable(key, statusPill) {
     statusPill.classList.add("clickable");
-    const panel = task.querySelector(".task-manager__accordion-panel");
-    // remove all the children in panel
-    panel.innerHTML = "";
-
-    statusPill.addEventListener("click", (e) => this.viewResults(key, e));
-    panel.appendChild(taskData.resultsContainer);
-    // scroll to the right task + update the size of the panel
-    this.goToPanel(key);
+    statusPill.addEventListener("click", (e) => {
+      e.stopPropagation();
+      this.viewResults(key);
+    });
   }
 
   // ---------- Handling the input ----------
@@ -621,8 +632,7 @@ export default class TaskManager {
   }
 
   // function triggered when click on completed task or the notification pill for completed task
-  viewResults(key, e) {
-    e?.stopPropagation();
+  viewResults(key) {
     const task = this.tasks.find((task) => task.key === key);
     this.emitter.emit("taskManager:viewResults", task, task.resultsContainer);
 
