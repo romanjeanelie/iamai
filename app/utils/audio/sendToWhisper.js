@@ -1,6 +1,6 @@
 const WHISPER_URL =
   import.meta.env.VITE_API_WHISPER_URL ||
-  "https://api.iamplus.chat/proxy-whisper-api-web/asr?task=transcribe&encode=true&output=json&word_timestamps=false&language=";
+  "https://api.asterizk.ai/proxy-whisper-api-web/asr?task=transcribe&encode=true&output=json&word_timestamps=false&language=";
 const sendToWispher = (url, lang = "", attempt = 0) =>
   new Promise((resolve, reject) => {
     var xhr = new XMLHttpRequest();

@@ -4,7 +4,7 @@ var ddus = document.getElementById("ddus");
 var ddlang = document.getElementById("ddlang");
 var ddsol = document.getElementById("ddsol");
 var prompts;
-const DB_HOST = import.meta.env.VITE_API_DB_HOST || "https://nocodb.iamplus.chat";
+const DB_HOST = import.meta.env.VITE_API_DB_HOST || "https://nocodb.asterizk.ai";
 const DB_TOKEN = import.meta.env.VITE_API_DB_TOKEN || "juIbsot-ERPsSlO3TdkYHRJPznr1gqrLBIpMjWZU";
 let uuid = "";
 
@@ -92,10 +92,10 @@ btnsubmit.addEventListener("click", async function (e) {
     if (this.readyState === 4) {
       console.log(this.responseText);
       btnsubmit.style.display = "block";
-      window.open("https://api.iamplus.chat/callservice/outbound/calls/" + uuid);
+      window.open("https://api.asterizk.ai/callservice/outbound/calls/" + uuid);
     }
   });
-  xhr.open("PUT", "https://api.iamplus.chat/callservice/outbound/calls/" + uuid);
+  xhr.open("PUT", "https://api.asterizk.ai/callservice/outbound/calls/" + uuid);
 
   xhr.setRequestHeader("Content-Type", "application/json");
   xhr.send(data);

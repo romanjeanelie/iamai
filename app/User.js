@@ -2,8 +2,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { app, auth } from "../app/firebaseConfig";
 import { getDatabase, ref, set, get, serverTimestamp } from "firebase/database";
 
-const PA_URL = import.meta.env.VITE_API_PA_URL || "https://api.iamplus.chat/deploy-pa";
-const LOCATION_URL = import.meta.env.VITE_API_LOCATION_URL || "https://api.iamplus.chat/location/";
+const PA_URL = import.meta.env.VITE_API_PA_URL || "https://api.asterizk.ai/deploy-pa";
+const LOCATION_URL = import.meta.env.VITE_API_LOCATION_URL || "https://api.asterizk.ai/location/";
 class User {
   constructor(uuid, name, picture, email) {
     this.uuid = uuid;
