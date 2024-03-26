@@ -1,23 +1,39 @@
 import { TASK_STATUSES } from "./TaskManager/index.js";
-import { AGENT_STATUSES } from "./constants.js";
+import { API_STATUSES } from "./constants.js";
 import fetcher from "../utils/fetcher.js";
 
 const BASE_URL = import.meta.env.VITE_API_HOST || "https://api.asterizk.ai";
 const URL_CONVERSATION_HISTORY = `${BASE_URL}/search/conversation_history`;
 const URL_AGENT_STATUS = `${BASE_URL}/search/agent_status`;
 
+const isTask = (el) => el.micro_thread_id !== "";
+const isTaskViewed = (el) => isTask(el) && el.statuses?.lastStatus === API_STATUSES.VIEWED;
+
 export default class History {
-  constructor({ emitter }) {
+  constructor({ getTaskResultUI, emitter }) {
+    this.getTaskResultUI = getTaskResultUI;
     this.emitter = emitter;
 
     this.elements = null;
     this.isSet = false;
   }
 
-  addStatuses(statuses) {
+  getResultsUI(statuses) {
+    let resultsContainer = null;
+    statuses.forEach((status) => {
+      if (status.type === "ui") {
+        const results = status.response_json;
+        resultsContainer = this.getTaskResultUI(results);
+      }
+    });
+
+    return resultsContainer;
+  }
+
+  addStatuses(statuses, resultsContainer) {
     statuses.forEach((status) => {
       switch (status.status) {
-        case AGENT_STATUSES.STARTED:
+        case API_STATUSES.STARTED:
           let taskname = status.task_name;
 
           const task = {
@@ -31,7 +47,7 @@ export default class History {
           };
           const textAI = status.response_json.text;
           this.emitter.emit("taskManager:createTask", task, textAI);
-        case AGENT_STATUSES.PROGRESSING:
+        case API_STATUSES.PROGRESSING:
           if (status.awaiting) {
             let taskname = status.task_name;
             const task = {
@@ -55,22 +71,37 @@ export default class History {
                 description: status.response_json.text,
               },
             };
+
             this.emitter.emit("taskManager:updateStatus", task.key, task.status);
           }
+          break;
+        case API_STATUSES.ENDED:
+          const taskEnded = {
+            key: status.micro_thread_id,
+            status: {
+              type: TASK_STATUSES.COMPLETED,
+              title: "Completed",
+              description: status.response_json.text,
+              label: status.task_name + " is completed",
+            },
+          };
+          this.emitter.emit("taskManager:updateStatus", taskEnded.key, taskEnded.status, resultsContainer);
           break;
       }
     });
   }
 
-  getLastStatus(data) {
+  getTaskLastStatus(data) {
     const statuses = data.map((obj) => obj.status);
 
-    if (statuses.includes(AGENT_STATUSES.COMPLETED)) {
-      return AGENT_STATUSES.COMPLETED;
-    } else if (statuses.includes(AGENT_STATUSES.PROGRESSING)) {
-      return AGENT_STATUSES.PROGRESSING;
+    if (statuses.includes(API_STATUSES.VIEWED)) {
+      return API_STATUSES.VIEWED;
+    } else if (statuses.includes(API_STATUSES.ENDED)) {
+      return API_STATUSES.ENDED;
+    } else if (statuses.includes(API_STATUSES.PROGRESSING)) {
+      return API_STATUSES.PROGRESSING;
     } else {
-      return AGENT_STATUSES.STARTED;
+      return API_STATUSES.STARTED;
     }
   }
 
@@ -80,7 +111,8 @@ export default class History {
       order,
     };
     const { data, error } = await fetcher({ url: URL_AGENT_STATUS, params });
-    const lastStatus = this.getLastStatus(data.results);
+    const lastStatus = this.getTaskLastStatus(data.results);
+
     data.lastStatus = lastStatus;
     return data;
   }
@@ -95,6 +127,18 @@ export default class History {
     };
     // Get all elements
     const { data, error } = await fetcher({ url: URL_CONVERSATION_HISTORY, params });
+
+    // Remove duplicate tasks
+    const uniqueMicroThreadId = [];
+    const removedDuplicate = data?.results.filter((item) => {
+      if (item.micro_thread_id === "") return true;
+      if (!uniqueMicroThreadId.includes(item.micro_thread_id)) {
+        uniqueMicroThreadId.push(item.micro_thread_id);
+        return true;
+      }
+      return false;
+    });
+    data.results = removedDuplicate;
 
     // Get  statuses tasks
     for (const result of data?.results || []) {
@@ -111,22 +155,31 @@ export default class History {
     const container = document.createElement("div");
 
     elements.forEach((element) => {
-      const isTaskProgressing =
-        element.micro_thread_id !== "" && element.statuses?.lastStatus !== AGENT_STATUSES.COMPLETED;
-
-      if (element.user.length > 0) {
-        const userContainer = document.createElement("div");
-        userContainer.classList.add("discussion__user");
-        userContainer.innerHTML = element.user;
-        container.appendChild(userContainer);
-        if (isTaskProgressing) userContainer.classList.add("discussion__user--task-created");
+      if (isTaskViewed(element) && element.resultsContainer) {
+        container.appendChild(element.resultsContainer);
+      } else {
+        if (element.user.length > 0) {
+          const userContainer = document.createElement("div");
+          userContainer.classList.add("discussion__user");
+          userContainer.innerHTML = element.user;
+          container.appendChild(userContainer);
+          if (isTask(element)) {
+            userContainer.setAttribute("taskKey", element.micro_thread_id);
+            userContainer.classList.add("discussion__user--task-created");
+          }
+        }
+        if (element.assistant.length > 0) {
+          const AIContainer = document.createElement("div");
+          AIContainer.classList.add("discussion__ai");
+          AIContainer.innerHTML = element.assistant;
+          container.appendChild(AIContainer);
+          if (isTask(element)) {
+            AIContainer.setAttribute("taskKey", element.micro_thread_id);
+            AIContainer.classList.add("discussion__ai--task-created");
+          }
+        }
       }
-      if (element.assistant.length > 0) {
-        const AIContainer = document.createElement("div");
-        AIContainer.classList.add("discussion__ai");
-        AIContainer.innerHTML = element.assistant;
-        container.appendChild(AIContainer);
-        if (isTaskProgressing) AIContainer.classList.add("discussion__ai--task-created");
+      if (element.resultsContainer) {
       }
     });
     return container;
@@ -137,14 +190,16 @@ export default class History {
     const elements = await this.getAllElements({ uuid, size });
     // Reverse the order of elements
     elements.results.reverse();
-    const tasksProgressing = elements.results.filter(
-      (element) => element.micro_thread_id !== "" && element.statuses?.lastStatus !== AGENT_STATUSES.COMPLETED
-    );
 
-    // Add tasks
-    tasksProgressing.forEach((task) => {
-      const statuses = task.statuses.results;
-      this.addStatuses(statuses);
+    elements.results.forEach((element) => {
+      if (!isTask(element)) return;
+      const statuses = element.statuses.results;
+      // Get results container
+      const resultsContainer = this.getResultsUI(statuses);
+      element.resultsContainer = resultsContainer;
+      // Add statuses
+      if (isTaskViewed(element)) return;
+      this.addStatuses(statuses, resultsContainer);
     });
 
     // Create UI elements
@@ -154,31 +209,19 @@ export default class History {
     return { elements: elements.results, container };
   }
 
-  async postViewTask({
-    uuid,
-    micro_thread_id,
-    session_id,
-    task_name,
-    status,
-    type,
-    response_json,
-    time_stamp,
-    awaiting,
-  }) {
+  async postViewTask({ uuid, micro_thread_id, session_id }) {
     const result = await fetcher({
       url: URL_AGENT_STATUS,
       params: {
-        uuid: "Cm15ZC1OlxaWeJ3SQnQJZWneDZP2",
-        micro_thread_id: "Cm15ZC1OlxaWeJ3SQnQJZWneDZP2",
-        session_id: "dfsdf",
-        task_name: "What is the stock price of Reliance?",
-        status: "user_viewed",
-        type: "",
-        response_json: { text: "" },
-        time_stamp: "2024-03-06T00:21:00",
-        awaiting: false,
+        uuid,
+        micro_thread_id,
+        session_id,
+        status: API_STATUSES.VIEWED,
+        time_stamp: new Date().toISOString(),
       },
       method: "POST",
     });
+
+    return result;
   }
 }
