@@ -378,10 +378,11 @@ export default class Discussion {
       this.Chat.location = urlParams.get("location");
     }
     if (urlParams.get("lang") && urlParams.get("lang") != "") {
+      
       this.Chat.sourcelang = urlParams.get("lang");
-      if (this.Chat.sourcelang == "ad") {
-        this.Chat.sourcelang = "";
-        this.Chat.autodetect = true;
+      // console.log("this.Chat.sourcelang",this.Chat.sourcelang)
+      if (this.Chat.sourcelang != "ad") {
+        this.Chat.autodetect = false;
       }
     }
     if (q && q != "") {
