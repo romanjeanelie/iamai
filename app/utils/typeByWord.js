@@ -15,7 +15,8 @@ export default function typeByWord(container, text) {
           // console.log(words[wordIndex])
           wordSpan = document.createElement("span");
           wordSpan.className = "AIword";
-          wordSpan.textContent = words[wordIndex] + " ";
+          // wordSpan.textContent = words[wordIndex] + " ";
+          wordSpan.innerHTML = words[wordIndex] + " ";
         }
         //  Append the span to the container
         container.appendChild(wordSpan);
