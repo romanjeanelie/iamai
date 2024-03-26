@@ -378,7 +378,6 @@ export default class Discussion {
       this.Chat.location = urlParams.get("location");
     }
     if (urlParams.get("lang") && urlParams.get("lang") != "") {
-      
       this.Chat.sourcelang = urlParams.get("lang");
       // console.log("this.Chat.sourcelang",this.Chat.sourcelang)
       if (this.Chat.sourcelang != "ad") {
@@ -412,8 +411,16 @@ export default class Discussion {
 
   async updateHstory({ uuid }) {
     return new Promise(async (resolve, reject) => {
-      const { container } = await this.history.getHistory({ uuid });
+      const { container } = await this.history.getHistory({ uuid, size: 3 });
       this.discussionContainer.appendChild(container);
+
+      // Scroll to bottom
+      const containerHistoryHeight = container.offsetHeight;
+      const marginBottom = 32;
+      const newHeight = containerHistoryHeight + window.innerHeight + marginBottom;
+      this.discussionContainer.style.height = `${newHeight}px`;
+      this.scrollToBottom();
+
       resolve();
     });
   }
