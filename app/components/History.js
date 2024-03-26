@@ -85,7 +85,7 @@ export default class History {
     return data;
   }
 
-  async getAllElements({ uuid, start = 0, size = 3, order = "asc" }) {
+  async getAllElements({ uuid, start = 0, size = 3, order = "desc" }) {
     const params = {
       //   uuid: "01240e9b-e666-4b41-9633-12a64ca8d23e_YLeg4G5kNhgQUmYMg5hNDZaGKD82",
       uuid,
@@ -132,9 +132,11 @@ export default class History {
     return container;
   }
 
-  async getHistory({ uuid }) {
+  async getHistory({ uuid, size = 3 }) {
     // Get elements
-    const elements = await this.getAllElements({ uuid });
+    const elements = await this.getAllElements({ uuid, size });
+    // Reverse the order of elements
+    elements.results.reverse();
     const tasksProgressing = elements.results.filter(
       (element) => element.micro_thread_id !== "" && element.statuses?.lastStatus !== AGENT_STATUSES.COMPLETED
     );
