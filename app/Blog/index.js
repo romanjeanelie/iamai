@@ -1,6 +1,6 @@
-import BlogSlider from "../components/BlogSlider";
 import gsap, { Power3 } from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import BlogSlider from "../components/BlogSlider";
 import { generateSliderHeader } from "../utils/generateSlider";
 import {
   blackBlockAnimation,
@@ -10,6 +10,23 @@ import {
   slidesUp,
   staircaseAnimation,
 } from "./BlogAnimations";
+
+const heroData = [
+  "TLDR",
+  "Introducing CO* <br /> World’s First <br /> Personal AI Assistant.",
+  "Revolutionise how you <br /> get things done.",
+  "CO* converses <br class='mobile-break' /> naturally and <br class='desktop-break' /> tackles real-world tasks like a <br class='desktop-break' /> human assistant.",
+  "Get instant answers. <br /> Not search results. ",
+  "Experience true multitasking.",
+  "CO* effortlessly <br class='sm-mobile-break' /> juggles multiple <br class='desktop-break' /> conversations and <br class='sm-mobile-break' /> tasks <br class='desktop-break' /> maximising <br class='sm-mobile-break' />  your time <br class='desktop-break' /> and efficiency.",
+  "CO* speaks over <br /> 100 languages <br class='sm-mobile-break' /> fluently.",
+  "Powered by open-source <br class='desktop-break' /> innovation.",
+  "Our expert fine-tuning <br class='sm-mobile-break' /> of LaMA <br class='desktop-break' /> 70B  <br class='sm-mobile-break' /> model has <br /> created a powerful <br /> Personal AI Assistant.",
+  "With <br /> Advanced planning. Advanced <br class='desktop-break' /> reasoning. Task execution.",
+  "CO* tackles <br class='sm-mobile-break' />  complex tasks. <br />  Breaks tasks down. Execute steps. <br /> Adapts on the fly <br class='sm-mobile-break' />  for <br class='desktop-break' /> successful completion.",
+  "We all want more <br class='sm-mobile-break' />  time, less hassle.<br /> That's why we <br class='sm-mobile-break' />  created CO*.",
+  "A Personal <br class='sm-mobile-break' />  AI Assistant <br class='sm-mobile-break' />  For Everyone",
+];
 
 const slider1Data = [
   {
@@ -78,7 +95,7 @@ const data = [
     sliderData: slider2Data,
   },
   {
-    h1: "CO* get things done.<br/> Like a real assistant.",
+    h1: "CO* gets things done.<br/> Like a real assistant.",
     p: "Everyday Efficiency. CO*  takes the hassle out of your life and functions like a proactive assistant who coordinates seamlessly on your behalf.",
     sliderData: slider2Data,
   },
@@ -120,6 +137,11 @@ const data = [
 // [X] handle the marquee;
 // [X] add correct logos for the marquee;
 // [X] handle the videos (use mobile version when needed)
+// [X] set up hero video sections
+// [X] animate it
+// [] fix space between last slide and video
+// [] watch out for potential bug where both mobile and desktop videos appear
+// [] set up second video background section
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -129,14 +151,102 @@ class Blog {
     this.animation = null;
 
     // DOM Elements
+    this.heroContainer = document.querySelector(".blogHero__container");
     this.blogLottieAnimation = document.querySelector(".blogHero__lottieAnimation");
     this.blogMarquees = document.querySelectorAll(".blogMarquee__app-marquee");
     this.slidersSection = document.querySelector(".blogSliders__container");
 
-    this.initSliders();
+    this.initHeroSections();
     this.pinNavbar();
+    this.initSliders();
     this.initScrollAnims();
     this.playStaticVideosWhenOnScreen();
+
+    // Scroll to top of the page
+    window.scrollTo({
+      top: 0,
+      duration: 0,
+    });
+  }
+
+  initHeroSections() {
+    heroData.forEach((data, idx) => {
+      const firstItem = idx === 0;
+      const lastItem = idx === heroData.length - 1;
+
+      // create the hero section
+      const container = document.createElement("div");
+      container.classList.add("blogHero__section");
+      const text = document.createElement("h1");
+      if (firstItem) text.classList.add("first-title");
+      text.innerHTML = data;
+
+      // append items
+      container.appendChild(text);
+      this.heroContainer.appendChild(container);
+      gsap.set(text, { opacity: 0, y: 200 });
+
+      if (!firstItem) {
+        // set initial state
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: container,
+            start: "top top",
+            end: "bottom+=500 top",
+            scrub: true,
+            pin: true,
+            pinSpacing: false,
+            // pinSpacer: lastItem ? 100 : 0,
+          },
+        });
+
+        tl.to(text, { opacity: 1, y: 0, duration: 0.5 });
+        tl.addLabel("mid-anim");
+        // second part
+        tl.to(text, {
+          y: -200,
+          scale: 0.8,
+          opacity: 0,
+        });
+      } else {
+        gsap.fromTo(
+          text,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            ease: Power3.easeOut,
+          }
+        );
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: container,
+            start: "top+=20px top",
+            end: "bottom+=500 top",
+            markers: true,
+            scrub: true,
+            pin: true,
+            pinSpacing: false,
+          },
+        });
+
+        tl.to(text, { opacity: 1, y: 0, duration: 0 });
+        tl.addLabel("mid-anim");
+        // second part
+        tl.to(text, {
+          y: -200,
+          scale: 0.8,
+          opacity: 0,
+        });
+      }
+    });
+
+    const pinSpacer = document.createElement("div");
+    pinSpacer.style.height = "80vh";
+
+    this.heroContainer.appendChild(pinSpacer);
   }
 
   initSliders() {

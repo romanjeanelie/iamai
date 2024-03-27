@@ -10,14 +10,17 @@
 </head>
 
 <body class="page-blog">
-  {{> blogPage/blogNavbar}}
   {{> blogPage/blogHero}}
-  <div class="blog__container">
-    {{> blogPage/blogIntro}} {{> blogPage/blogMarquee}} {{> blogPage/blogCards}}
-    {{> blogPage/blogContent}}
+  <div class="relative">
+    {{> blogPage/blogNavbar}}
+    {{> blogPage/blogClockVideo}}
+    <div class="blog__container">
+      {{> blogPage/blogIntro}} {{> blogPage/blogMarquee}} {{> blogPage/blogCards}}
+      {{> blogPage/blogContent}}
+    </div>
+    {{> blogPage/blogSlider}} {{> blogPage/blogMainSection}}
+    {{> blogPage/blogSliders}}
   </div>
-  {{> blogPage/blogSlider}} {{> blogPage/blogMainSection}}
-  {{> blogPage/blogSliders}}
 </body>
 
 <script type="module" src="../app/Blog/index.js"></script>

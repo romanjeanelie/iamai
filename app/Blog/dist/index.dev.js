@@ -2,21 +2,21 @@
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-var _BlogSlider = _interopRequireDefault(require("../components/BlogSlider"));
-
 var _gsap = _interopRequireWildcard(require("gsap"));
 
 var _ScrollTrigger = _interopRequireDefault(require("gsap/ScrollTrigger"));
+
+var _BlogSlider = _interopRequireDefault(require("../components/BlogSlider"));
 
 var _generateSlider = require("../utils/generateSlider");
 
 var _BlogAnimations = require("./BlogAnimations");
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -24,6 +24,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+var heroData = ["TLDR", "Introducing CO* <br /> World’s First <br /> Personal AI Assistant.", "Revolutionise how you <br /> get things done.", "CO* converses <br class='mobile-break' /> naturally and <br class='desktop-break' /> tackles real-world tasks like a <br class='desktop-break' /> human assistant.", "Get instant answers. <br /> Not search results. ", "Experience true multitasking.", "CO* effortlessly <br class='sm-mobile-break' /> juggles multiple <br class='desktop-break' /> conversations and <br class='sm-mobile-break' /> tasks <br class='desktop-break' /> maximising <br class='sm-mobile-break' />  your time <br class='desktop-break' /> and efficiency.", "CO* speaks over <br /> 100 languages <br class='sm-mobile-break' /> fluently.", "Powered by open-source <br class='desktop-break' /> innovation.", "Our expert fine-tuning <br class='sm-mobile-break' /> of LaMA <br class='desktop-break' /> 70B  <br class='sm-mobile-break' /> model has <br /> created a powerful <br /> Personal AI Assistant.", "With <br /> Advanced planning. Advanced <br class='desktop-break' /> reasoning. Task execution.", "CO* tackles <br class='sm-mobile-break' />  complex tasks. <br />  Breaks tasks down. Execute steps. <br /> Adapts on the fly <br class='sm-mobile-break' />  for <br class='desktop-break' /> successful completion.", "We all want more <br class='sm-mobile-break' />  time, less hassle.<br /> That's why we <br class='sm-mobile-break' />  created CO*.", "A Personal <br class='sm-mobile-break' />  AI Assistant <br class='sm-mobile-break' />  For Everyone"];
 var slider1Data = [{
   id: 1,
   video: "https://player.vimeo.com/progressive_redirect/playback/924982744/rendition/720p/file.mp4?loc=external&signature=c55335972741066a22d9cd5365a00153e41eea2cd679367676a90ddd8361f504",
@@ -69,7 +70,7 @@ var data = [{
   p: "CO* goes beyond text. It sees (images), hears (your voice), and speaks (respond naturally), providing a truly personalized and intuitive experience.",
   sliderData: slider2Data
 }, {
-  h1: "CO* get things done.<br/> Like a real assistant.",
+  h1: "CO* gets things done.<br/> Like a real assistant.",
   p: "Everyday Efficiency. CO*  takes the hassle out of your life and functions like a proactive assistant who coordinates seamlessly on your behalf.",
   sliderData: slider2Data
 }, {
@@ -102,6 +103,11 @@ var data = [{
 // [X] handle the marquee;
 // [X] add correct logos for the marquee;
 // [X] handle the videos (use mobile version when needed)
+// [X] set up hero video sections
+// [X] animate it
+// [] fix space between last slide and video
+// [] watch out for potential bug where both mobile and desktop videos appear
+// [] set up second video background section
 
 _gsap["default"].registerPlugin(_ScrollTrigger["default"]);
 
@@ -114,19 +120,119 @@ function () {
     // States
     this.animation = null; // DOM Elements
 
+    this.heroContainer = document.querySelector(".blogHero__container");
     this.blogLottieAnimation = document.querySelector(".blogHero__lottieAnimation");
     this.blogMarquees = document.querySelectorAll(".blogMarquee__app-marquee");
     this.slidersSection = document.querySelector(".blogSliders__container");
-    this.initSliders();
+    this.initHeroSections();
     this.pinNavbar();
+    this.initSliders();
     this.initScrollAnims();
-    this.playStaticVideosWhenOnScreen();
+    this.playStaticVideosWhenOnScreen(); // Scroll to top of the page
+
+    window.scrollTo({
+      top: 0,
+      duration: 0
+    });
   }
 
   _createClass(Blog, [{
+    key: "initHeroSections",
+    value: function initHeroSections() {
+      var _this = this;
+
+      heroData.forEach(function (data, idx) {
+        var firstItem = idx === 0;
+        var lastItem = idx === heroData.length - 1; // create the hero section
+
+        var container = document.createElement("div");
+        container.classList.add("blogHero__section");
+        var text = document.createElement("h1");
+        if (firstItem) text.classList.add("first-title");
+        text.innerHTML = data; // append items
+
+        container.appendChild(text);
+
+        _this.heroContainer.appendChild(container);
+
+        _gsap["default"].set(text, {
+          opacity: 0,
+          y: 200
+        });
+
+        if (!firstItem) {
+          // set initial state
+          var tl = _gsap["default"].timeline({
+            scrollTrigger: {
+              trigger: container,
+              start: "top top",
+              end: "bottom+=500 top",
+              scrub: true,
+              pin: true,
+              pinSpacing: false // pinSpacer: lastItem ? 100 : 0,
+
+            }
+          });
+
+          tl.to(text, {
+            opacity: 1,
+            y: 0,
+            duration: 0.5
+          });
+          tl.addLabel("mid-anim"); // second part
+
+          tl.to(text, {
+            y: -200,
+            scale: 0.8,
+            opacity: 0
+          });
+        } else {
+          _gsap["default"].fromTo(text, {
+            opacity: 0,
+            y: 30
+          }, {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            ease: _gsap.Power3.easeOut
+          });
+
+          var _tl = _gsap["default"].timeline({
+            scrollTrigger: {
+              trigger: container,
+              start: "top+=20px top",
+              end: "bottom+=500 top",
+              markers: true,
+              scrub: true,
+              pin: true,
+              pinSpacing: false
+            }
+          });
+
+          _tl.to(text, {
+            opacity: 1,
+            y: 0,
+            duration: 0
+          });
+
+          _tl.addLabel("mid-anim"); // second part
+
+
+          _tl.to(text, {
+            y: -200,
+            scale: 0.8,
+            opacity: 0
+          });
+        }
+      });
+      var pinSpacer = document.createElement("div");
+      pinSpacer.style.height = "80vh";
+      this.heroContainer.appendChild(pinSpacer);
+    }
+  }, {
     key: "initSliders",
     value: function initSliders() {
-      var _this = this;
+      var _this2 = this;
 
       var firstSlider = document.querySelector(".blogSlider__container");
       new _BlogSlider["default"]({
@@ -137,7 +243,7 @@ function () {
       if (!this.slidersSection) return;
       data.forEach(function (data, idx) {
         var isOdd = idx % 2 !== 0;
-        (0, _generateSlider.generateSliderHeader)(data, isOdd, _this.slidersSection);
+        (0, _generateSlider.generateSliderHeader)(data, isOdd, _this2.slidersSection);
       });
       var newSliders = this.slidersSection.querySelectorAll(".blogSlider__container.sliderSection");
       newSliders.forEach(function (slide, idx) {

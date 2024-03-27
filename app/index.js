@@ -1,15 +1,15 @@
+import * as dat from "dat.gui";
+import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
+import { createNanoEvents } from "nanoevents";
+import User, { getUser, getUserDataFireDB, redirectToLogin, saveUserDataFireDB } from "./User";
 import Caroussel from "./components/Caroussel";
+import Discussion from "./components/Discussion";
 import Input from "./components/Input";
 import Navbar from "./components/Navbar";
-import Discussion from "./components/Discussion";
 import Slider from "./components/Slider";
 import TaskManager from "./components/TaskManager";
-import User from "./User";
-import { getUser, saveUserDataFireDB, getUserDataFireDB, redirectToLogin } from "./User";
-import { createNanoEvents } from "nanoevents";
 import { auth } from "./firebaseConfig";
-import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
-import * as dat from "dat.gui";
+import stopOverscroll from "./utils/stopOverscroll";
 
 var animation;
 const divintrotext = document.getElementById("divintrotext");
@@ -39,9 +39,9 @@ class App {
     this.emitter = createNanoEvents();
 
     this.debug = import.meta.env.VITE_DEBUG === "true";
-
     this.addListeners();
     this.resetScroll();
+    stopOverscroll();
 
     if (this.debug) {
       this.gui = new dat.GUI();

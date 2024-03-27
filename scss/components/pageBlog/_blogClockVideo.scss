@@ -1,0 +1,121 @@
+.blogClockVideo__container {
+  position: relative;
+  height: calc(85vh - 144px); // Fallback for browsers not supporting svh
+  height: calc(85svh - 144px);
+  z-index: 1;
+
+  @include media("<tablet") {
+    height: calc(100vh - 80px); // Fallback for browsers not supporting svh
+    height: calc(100svh - 80px);
+  }
+}
+
+.blogClockVideo__videoBg {
+  background-color: $colorBlack;
+  position: absolute;
+  top: -144px;
+  left: 0;
+  width: 100%;
+  height: 85vh; // Fallback for browsers not supporting svh
+  height: 85svh;
+  object-fit: cover;
+  z-index: -1;
+
+  video {
+    width: 100%;
+    // opacity: 0;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+    &.mobile-poster {
+      display: none;
+    }
+
+    @include media("<phone") {
+      &.desktop-poster {
+        display: none;
+      }
+
+      &.mobile-poster {
+        display: block;
+      }
+    }
+  }
+
+  &.mobile-video {
+    display: none;
+  }
+
+  @include media("<tablet") {
+    top: -84px;
+    height: 100vh; // Fallback for browsers not supporting svh
+    height: 100svh;
+  }
+
+  @include media("<phone") {
+    &.desktop-video {
+      display: none;
+    }
+
+    &.mobile-video {
+      display: block;
+    }
+  }
+}
+
+.blogClockVideo__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 740px;
+  gap: 24px;
+}
+
+.blogClockVideo__lottieAnimation {
+  position: relative;
+  width: min(400px, 35vh);
+  height: min(400px, 35vh);
+
+  @include media("<tablet") {
+    margin-top: 22px;
+    width: 311px;
+    height: 311px;
+  }
+
+  @media screen and (max-height: 720px) {
+    height: 30vh; // Fallback for browsers not supporting svh
+    width: 30vh; // fallback for browsers not supporting svh
+    width: 30svh;
+    height: 30svh;
+  }
+}
+
+.blogClockVideo__headline {
+  order: 1;
+  text-align: center;
+  font-size: 28px;
+  font-weight: 450;
+  line-height: 36px;
+  color: $colorMain;
+
+  @include media("<desktop") {
+    font-size: 24px;
+    line-height: 120%;
+  }
+
+  @include media("<tablet") {
+    font-size: 20px;
+    font-weight: 450;
+    line-height: 28px;
+  }
+}
