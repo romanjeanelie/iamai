@@ -139,3 +139,29 @@
     }
   }
 }
+
+.blog__assistantVideo-container {
+  height: 100vh;
+  height: 100svh;
+  position: relative;
+
+  .blogassistantVideo__video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .blog__container {
+    position: relative;
+    color: $colorMain;
+    padding-top: 120px;
+    z-index: 1;
+
+    @include media("<tablet") {
+      padding-top: 80px;
+    }
+  }
+}

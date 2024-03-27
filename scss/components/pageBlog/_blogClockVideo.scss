@@ -56,8 +56,8 @@
     display: none;
   }
 
-  @include media("<tablet") {
-    top: -84px;
+  @include media("<phone") {
+    top: -88px;
     height: 100vh; // Fallback for browsers not supporting svh
     height: 100svh;
   }
@@ -70,52 +70,5 @@
     &.mobile-video {
       display: block;
     }
-  }
-}
-
-.blogClockVideo__content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 740px;
-  gap: 24px;
-}
-
-.blogClockVideo__lottieAnimation {
-  position: relative;
-  width: min(400px, 35vh);
-  height: min(400px, 35vh);
-
-  @include media("<tablet") {
-    margin-top: 22px;
-    width: 311px;
-    height: 311px;
-  }
-
-  @media screen and (max-height: 720px) {
-    height: 30vh; // Fallback for browsers not supporting svh
-    width: 30vh; // fallback for browsers not supporting svh
-    width: 30svh;
-    height: 30svh;
-  }
-}
-
-.blogClockVideo__headline {
-  order: 1;
-  text-align: center;
-  font-size: 28px;
-  font-weight: 450;
-  line-height: 36px;
-  color: $colorMain;
-
-  @include media("<desktop") {
-    font-size: 24px;
-    line-height: 120%;
-  }
-
-  @include media("<tablet") {
-    font-size: 20px;
-    font-weight: 450;
-    line-height: 28px;
   }
 }
