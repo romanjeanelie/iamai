@@ -28,7 +28,6 @@ export default class BlogSlider {
     this.currentSlide = 0;
     this.isProgrammaticScroll = false;
     this.totalSlides = this.slidesData.length;
-    this.isFullscreen = false;
 
     // DOM elements
     this.navBar = document.querySelector(".blogNav__container");
@@ -46,8 +45,6 @@ export default class BlogSlider {
     this.slideMobileDescription = this.container.querySelector(".blogSlider__mobile-description");
     this.infoBtn = this.container.querySelector(".blogSlider__infoBtn");
     this.closeBtn = this.container.querySelector(".blogSlider__closeBtn");
-    this.openFullscreenBtn = this.container.querySelector(".blogSlider__mobileCTA");
-    this.exitFullscreenBtn = this.container.querySelector(".blogSlider__exitFullscreen");
 
     // functions
     this.initSlider();
@@ -162,14 +159,6 @@ export default class BlogSlider {
     this.slideMobileDescription.classList.toggle("hidden");
   }
 
-  toggleFullScreen() {
-    this.isFullscreen = !this.isFullscreen;
-    this.navBar.classList.toggle("hidden");
-    this.container.classList.toggle("fullscreen");
-    this.openFullscreenBtn.classList.toggle("hidden");
-    this.exitFullscreenBtn.classList.toggle("hidden");
-  }
-
   observeSliderInView() {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -202,16 +191,11 @@ export default class BlogSlider {
     const slide = this.slides[index];
     if (slide) {
       const slideRect = slide.getBoundingClientRect();
-      const scrollPos = this.isFullscreen
-        ? slideRect.top + this.slider.scrollTop - this.slider.getBoundingClientRect().top
-        : slideRect.left + this.slider.scrollLeft - this.slider.getBoundingClientRect().left;
-      const centeredPos =
-        scrollPos -
-        this.slider[this.isFullscreen ? "offsetHeight" : "offsetWidth"] / 2 +
-        slideRect[this.isFullscreen ? "height" : "width"] / 2;
+      const scrollPos = slideRect.left + this.slider.scrollLeft - this.slider.getBoundingClientRect().left;
+      const centeredPos = scrollPos - this.slider.offsetWidth / 2 + slideRect.width / 2;
 
       this.slider.scrollTo({
-        [this.isFullscreen ? "top" : "left"]: centeredPos,
+        left: centeredPos,
         behavior: "smooth",
       });
     }
@@ -222,9 +206,7 @@ export default class BlogSlider {
     const sliderRect = this.slider.getBoundingClientRect();
 
     // Calculate the center of the viewport based on the slider's dimensions and position
-    const viewportCenter = this.isFullscreen
-      ? sliderRect.top + sliderRect.height / 2 // Vertical center for fullscreen mode
-      : sliderRect.left + sliderRect.width / 2; // Horizontal center for non-fullscreen mode
+    const viewportCenter = sliderRect.left + sliderRect.width / 2; // Horizontal center
 
     let closestDistance = Infinity;
     let closestIndex = 0;
@@ -234,9 +216,7 @@ export default class BlogSlider {
       const slideRect = this.slides[i].getBoundingClientRect();
 
       // Calculate the center of the current slide
-      const slideCenter = this.isFullscreen
-        ? slideRect.top + slideRect.height / 2 // Vertical center for fullscreen mode
-        : slideRect.left + slideRect.width / 2; // Horizontal center for non-fullscreen mode
+      const slideCenter = slideRect.left + slideRect.width / 2; // Horizontal center
 
       // Calculate the distance between the center of the current slide and the viewport center
       const distance = Math.abs(slideCenter - viewportCenter);
@@ -309,9 +289,6 @@ export default class BlogSlider {
     window.addEventListener("resize", (e) => {
       this.adjustMobilePadding();
       this.handleVideoSrcOnResize();
-      if (window.innerWidth > 560) {
-        this.isFullscreen && this.toggleFullScreen();
-      }
     });
 
     this.slider.addEventListener("mousedown", (e) => this.startDrag(e));
@@ -321,7 +298,5 @@ export default class BlogSlider {
 
     this.infoBtn?.addEventListener("click", () => this.toggleInfo());
     this.closeBtn?.addEventListener("click", () => this.toggleInfo());
-    this.openFullscreenBtn?.addEventListener("click", () => this.toggleFullScreen());
-    this.exitFullscreenBtn?.addEventListener("click", () => this.toggleFullScreen());
   }
 }

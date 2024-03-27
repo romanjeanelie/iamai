@@ -1,4 +1,4 @@
-import gsap, { Power3 } from "gsap";
+import gsap, { Power0, Power3 } from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import BlogSlider from "../components/BlogSlider";
 import { generateSliderHeader } from "../utils/generateSlider";
@@ -24,8 +24,8 @@ const heroData = [
   "Our expert fine-tuning <br class='sm-mobile-break' /> of LaMA <br class='desktop-break' /> 70B  <br class='sm-mobile-break' /> model has <br /> created a powerful <br /> Personal AI Assistant.",
   "With <br /> Advanced planning. Advanced <br class='desktop-break' /> reasoning. Task execution.",
   "CO* tackles <br class='sm-mobile-break' />  complex tasks. <br />  Breaks tasks down. Execute steps. <br /> Adapts on the fly <br class='sm-mobile-break' />  for <br class='desktop-break' /> successful completion.",
-  "We all want more <br class='sm-mobile-break' />  time, less hassle.<br /> That's why we <br class='sm-mobile-break' />  created CO*.",
-  "A Personal <br class='sm-mobile-break' />  AI Assistant <br class='sm-mobile-break' />  For Everyone",
+  "We all want more <br class='sm-mobile-break' />  time, less hassle.<br /> That's why we <br class='sm-mobile-break' />  created CO*",
+  "Personal <br class='sm-mobile-break' />  AI Assistant <br class='sm-mobile-break' />  For Everyone.",
 ];
 
 const slider1Data = [
@@ -172,11 +172,11 @@ class Blog {
   initHeroSections() {
     heroData.forEach((data, idx) => {
       const firstItem = idx === 0;
-      const lastItem = idx === heroData.length - 1;
+      const isMobile = window.innerWidth < 640;
 
       // create the hero section
       const container = document.createElement("div");
-      container.classList.add("blogHero__section");
+      container.className = `blogHero__section ${firstItem && "first-section"}`;
       const text = document.createElement("h1");
       if (firstItem) text.classList.add("first-title");
       text.innerHTML = data;
@@ -189,19 +189,17 @@ class Blog {
       if (!firstItem) {
         // set initial state
         const tl = gsap.timeline({
+          defaults: { ease: Power0.easeNone },
           scrollTrigger: {
             trigger: container,
             start: "top top",
-            end: "bottom+=500 top",
-            scrub: true,
+            end: `bottom+=${isMobile ? "500" : "500"} top`,
+            scrub: 0,
             pin: true,
             pinSpacing: false,
-            // pinSpacer: lastItem ? 100 : 0,
           },
         });
-
-        tl.to(text, { opacity: 1, y: 0, duration: 0.5 });
-        tl.addLabel("mid-anim");
+        tl.to(text, { opacity: 1, y: 0 });
         // second part
         tl.to(text, {
           y: -200,
@@ -232,7 +230,6 @@ class Blog {
         });
 
         tl.to(text, { opacity: 1, y: 0, duration: 0 });
-        tl.addLabel("mid-anim");
         // second part
         tl.to(text, {
           y: -200,

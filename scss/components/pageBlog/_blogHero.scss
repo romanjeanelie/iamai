@@ -11,7 +11,13 @@
 
     @include media("<phone") {
       justify-content: left;
-      padding-left: 22px;
+      padding: 0 22px;
+    }
+  }
+
+  .blogHero__section.first-section {
+    @include media("<phone") {
+      height: 100vh;
     }
   }
 
@@ -19,7 +25,9 @@
     text-align: center;
     color: white;
     line-height: 106%;
+    letter-spacing: 0.5px;
     @include media("<phone") {
+      transform-origin: left;
       text-align: left;
     }
   }
