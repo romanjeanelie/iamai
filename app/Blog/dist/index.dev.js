@@ -202,7 +202,6 @@ function () {
               trigger: container,
               start: "top+=20px top",
               end: "bottom+=500 top",
-              markers: true,
               scrub: true,
               pin: true,
               pinSpacing: false
