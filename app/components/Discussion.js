@@ -413,6 +413,7 @@ export default class Discussion {
     this.uuid = this.Chat.deploy_ID;
 
     await this.updateHstory({ uuid: this.uuid });
+    this.emitter.emit("taskManager:isHistorySet", true);
     this.getAiAnswer({ text: "" });
   }
 
@@ -493,7 +494,7 @@ export default class Discussion {
     this.discussionContainer.appendChild(this.AIContainer);
 
     // Update task to viewed
-    await this.history.postViewTask({
+    const response = await this.history.postViewTask({
       uuid: this.uuid,
       micro_thread_id: task.key,
       session_id: this.Chat.sessionID,

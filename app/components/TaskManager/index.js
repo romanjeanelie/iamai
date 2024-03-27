@@ -50,46 +50,16 @@ export default class TaskManager {
     this.accordionContainer = document.querySelector(".task-manager__accordion-container");
 
     // States
+    this.tasks = [];
     this.taskManagerState = STATES.CLOSED;
     this.notificationTimeoutId = null;
     this.notificationDuration = 5000;
     this.isInputFullscreen = false;
     this.currentTask = null;
 
-    // Init functions
-    this.addListeners();
+    this.isHistorySet = false;
 
-    // ALEX -> Comment/uncomment to have tasks at start for integration
-    this.tasks = [
-      // {
-      //   name: "Task 1",
-      //   key: 1,
-      //   status: {
-      //     type: TASK_STATUSES.IN_PROGRESS,
-      //     title: "searching",
-      //     description:
-      //       "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
-      //   },
-      // },
-      // {
-      //   name: "Task 2",
-      //   key: 2,
-      //   status: {
-      //     type: TASK_STATUSES.INPUT_REQUIRED,
-      //     title: "question",
-      //     description: "Flight for 18th Mar are all fully booked. Is there any other dates you would like to try for?",
-      //   },
-      // },
-      // {
-      //   name: "Task 3",
-      //   key: 3,
-      //   status: {
-      //     type: TASK_STATUSES.COMPLETED,
-      //     title: "",
-      //     description: "",
-      //   },
-      // },
-    ];
+    this.addListeners();
 
     // Debug
     this.debug = import.meta.env.VITE_DEBUG === "true";
@@ -102,6 +72,7 @@ export default class TaskManager {
       this.onStatusUpdate(taskKey, status, container, workflowID)
     );
     this.emitter.on("taskManager:deleteTask", (taskKey) => this.removeTask(taskKey));
+    this.emitter.on("taskManager:isHistorySet", (bool) => (this.isHistorySet = bool));
 
     if (this.debug) {
       console.log("Debug mode enabled");
@@ -627,6 +598,7 @@ export default class TaskManager {
     task.workflowID = workflowID;
     this.handleButton();
     this.updateTaskUI(taskKey, status);
+    if (!this.isHistorySet) return;
     this.handleNotificationPill(taskKey, status);
   }
 

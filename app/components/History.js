@@ -9,6 +9,13 @@ const URL_AGENT_STATUS = `${BASE_URL}/search/agent_status`;
 const isTask = (el) => el.micro_thread_id !== "";
 const isTaskViewed = (el) => isTask(el) && el.statuses?.lastStatus === API_STATUSES.VIEWED;
 
+function getPreviousDayTimestamp() {
+  const currentDate = new Date();
+  const previousDate = new Date(currentDate);
+  previousDate.setDate(currentDate.getDate() - 1);
+  return previousDate.toISOString();
+}
+
 export default class History {
   constructor({ getTaskResultUI, emitter }) {
     this.getTaskResultUI = getTaskResultUI;
@@ -119,7 +126,6 @@ export default class History {
 
   async getAllElements({ uuid, start = 0, size = 3, order = "desc" }) {
     const params = {
-      //   uuid: "01240e9b-e666-4b41-9633-12a64ca8d23e_YLeg4G5kNhgQUmYMg5hNDZaGKD82",
       uuid,
       start,
       size,
@@ -210,15 +216,18 @@ export default class History {
   }
 
   async postViewTask({ uuid, micro_thread_id, session_id }) {
+    const url = URL_AGENT_STATUS;
+    const params = {
+      uuid,
+      micro_thread_id,
+      session_id,
+      status: API_STATUSES.VIEWED,
+      time_stamp: getPreviousDayTimestamp(),
+    };
+
     const result = await fetcher({
-      url: URL_AGENT_STATUS,
-      params: {
-        uuid,
-        micro_thread_id,
-        session_id,
-        status: API_STATUSES.VIEWED,
-        time_stamp: new Date().toISOString(),
-      },
+      url,
+      params,
       method: "POST",
     });
 
