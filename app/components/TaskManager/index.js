@@ -611,7 +611,6 @@ export default class TaskManager {
   }
 
   removeTask(taskKey) {
-    console.log("in remove task");
     this.tasks = this.tasks.filter((task) => task.key !== taskKey);
     this.removeTaskUI(taskKey);
     this.handleButton();
@@ -624,7 +623,7 @@ export default class TaskManager {
     const task = this.tasks.find((task) => task.key === taskKey);
     if (!task) return;
     task.status = status;
-    task.resultsContainer = container;
+    if (container) task.resultsContainer = container;
     task.workflowID = workflowID;
     this.handleButton();
     this.updateTaskUI(taskKey, status);

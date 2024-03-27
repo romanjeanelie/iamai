@@ -385,18 +385,21 @@ class Chat {
           let container;
           let data = ui_paramsmap.get(mdata.micro_thread_id);
           if (data) {
-            let domain = data.domain;
-
-            if (domain == MOVIESEARCH) {
-              container = this.getMovies(JSON.parse(data.MovieSearchResults));
-            } else if (domain == TAXISEARCH) {
-              container = this.getTaxiUI(JSON.parse(data.TaxiSearchResults));
-            } else if (domain == FLIGHTSEARCH) {
-              container = this.getFlightUI(JSON.parse(data.FlightSearch), JSON.parse(data.FlightSearchResults));
-            } else if (domain == PRODUCTSEARCH) {
-              container = this.getProductUI(JSON.parse(data.ProductSearchResults));
-            }
+            container = this.getUI(data);
           }
+          // if (data) {
+          //   let domain = data.domain;
+
+          //   if (domain == MOVIESEARCH) {
+          //     container = this.getMovies(JSON.parse(data.MovieSearchResults));
+          //   } else if (domain == TAXISEARCH) {
+          //     container = this.getTaxiUI(JSON.parse(data.TaxiSearchResults));
+          //   } else if (domain == FLIGHTSEARCH) {
+          //     container = this.getFlightUI(JSON.parse(data.FlightSearch), JSON.parse(data.FlightSearchResults));
+          //   } else if (domain == PRODUCTSEARCH) {
+          //     container = this.getProductUI(JSON.parse(data.ProductSearchResults));
+          //   }
+          // }
           let taskname = mdata.task_name;
           console.log("taskname", taskname);
           const task = {
@@ -448,6 +451,20 @@ class Chat {
     nc.drain();
   };
 
+  getUI(data) {
+    let container;
+    let domain = data.domain;
+    if (domain == MOVIESEARCH) {
+      container = this.getMovies(JSON.parse(data.MovieSearchResults));
+    } else if (domain == TAXISEARCH) {
+      container = this.getTaxiUI(JSON.parse(data.TaxiSearchResults));
+    } else if (domain == FLIGHTSEARCH) {
+      container = this.getFlightUI(JSON.parse(data.FlightSearch), JSON.parse(data.FlightSearchResults));
+    } else if (domain == PRODUCTSEARCH) {
+      container = this.getProductUI(JSON.parse(data.ProductSearchResults));
+    }
+    return container;
+  }
   extractSubstringWithEllipsis(text) {
     if (text.length <= 40) {
       return text;

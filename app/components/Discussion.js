@@ -3,8 +3,6 @@ import TypingText from "../TypingText";
 import Chat from "./Chat.js";
 import History from "./History.js";
 import DiscussionTabs from "./DiscussionTabs.js";
-import { TASK_STATUSES } from "./TaskManager/index.js";
-import { AGENT_STATUSES } from "./constants.js";
 
 import { getsessionID } from "../User";
 import { asyncAnim } from "../utils/anim.js";
@@ -43,7 +41,6 @@ export default class Discussion {
 
     this.currentAnswerContainer = null;
 
-    this.history = new History({ emitter: this.emitter });
     this.Chat = new Chat({
       discussionContainer: this.discussionContainer,
       addAIText: this.addAIText.bind(this),
@@ -55,6 +52,11 @@ export default class Discussion {
       enableInput: this.enableInput.bind(this),
       emitter: emitter,
       user: this.user,
+    });
+
+    this.history = new History({
+      getTaskResultUI: this.Chat.getUI.bind(this.Chat),
+      emitter: this.emitter,
     });
 
     this.addListeners();
@@ -353,6 +355,11 @@ export default class Discussion {
   }
 
   scrollToBottom() {
+    // If overflow remove the height from history
+    if (this.discussionContainer.scrollHeight > this.discussionContainer.clientHeight) {
+      this.discussionContainer.style.height = "unset";
+    }
+
     window.scrollTo({
       top: document.body.scrollHeight,
       behavior: "smooth",
@@ -379,9 +386,9 @@ export default class Discussion {
     }
     if (urlParams.get("lang") && urlParams.get("lang") != "") {
       this.Chat.sourcelang = urlParams.get("lang");
-      if (this.Chat.sourcelang == "ad") {
-        this.Chat.sourcelang = "";
-        this.Chat.autodetect = true;
+      // console.log("this.Chat.sourcelang",this.Chat.sourcelang)
+      if (this.Chat.sourcelang != "ad") {
+        this.Chat.autodetect = false;
       }
     }
     if (q && q != "") {
@@ -411,8 +418,16 @@ export default class Discussion {
 
   async updateHstory({ uuid }) {
     return new Promise(async (resolve, reject) => {
-      const { container } = await this.history.getHistory({ uuid });
+      const { container } = await this.history.getHistory({ uuid, size: 15 });
       this.discussionContainer.appendChild(container);
+
+      // Scroll to bottom
+      const containerHistoryHeight = container.offsetHeight;
+      const marginBottom = 32;
+      const newHeight = containerHistoryHeight + window.innerHeight + marginBottom;
+      this.discussionContainer.style.height = `${newHeight}px`;
+      this.scrollToBottom();
+
       resolve();
     });
   }
@@ -459,11 +474,10 @@ export default class Discussion {
   }
 
   async viewTaskResults(task, resultsContainer) {
-    console.log("------ view results from discussion.js ------");
     const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskKey="${task.key}"]`);
     const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskKey="${task.key}"]`);
-    this.discussionContainer.removeChild(userContainer);
-    this.discussionContainer.removeChild(AIContainer);
+    if (userContainer) userContainer.style.display = "none";
+    if (AIContainer) AIContainer.style.display = "none";
 
     // Reput user question
     this.userContainer = document.createElement("div");
@@ -477,6 +491,13 @@ export default class Discussion {
 
     this.discussionContainer.appendChild(this.userContainer);
     this.discussionContainer.appendChild(this.AIContainer);
+
+    // Update task to viewed
+    await this.history.postViewTask({
+      uuid: this.uuid,
+      micro_thread_id: task.key,
+      session_id: this.Chat.sessionID,
+    });
 
     // await this.addAIText({ text: result, container: this.AIContainer });
   }
