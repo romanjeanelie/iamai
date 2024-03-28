@@ -148,79 +148,13 @@ function () {
         var container = document.createElement("div");
         container.className = "blogHero__section ".concat(firstItem && "first-section");
         var text = document.createElement("h1");
-        if (firstItem) text.classList.add("first-title");
         text.innerHTML = data; // append items
 
         container.appendChild(text);
 
         _this.heroContainer.appendChild(container);
 
-        _gsap["default"].set(text, {
-          opacity: 0,
-          y: 200
-        });
-
-        if (!firstItem) {
-          // set initial state
-          var tl = _gsap["default"].timeline({
-            defaults: {
-              ease: _gsap.Power0.easeNone
-            },
-            scrollTrigger: {
-              trigger: container,
-              start: "top top",
-              end: "bottom+=".concat(isMobile ? "500" : "500", " top"),
-              scrub: 0,
-              pin: true,
-              pinSpacing: false
-            }
-          });
-
-          tl.to(text, {
-            opacity: 1,
-            y: 0
-          }); // second part
-
-          tl.to(text, {
-            y: -200,
-            scale: 0.8,
-            opacity: 0
-          });
-        } else {
-          _gsap["default"].fromTo(text, {
-            opacity: 0,
-            y: 30
-          }, {
-            opacity: 1,
-            y: 0,
-            duration: 0.5,
-            ease: _gsap.Power3.easeOut
-          });
-
-          var _tl = _gsap["default"].timeline({
-            scrollTrigger: {
-              trigger: container,
-              start: "top+=20px top",
-              end: "bottom+=500 top",
-              scrub: true,
-              pin: true,
-              pinSpacing: false
-            }
-          });
-
-          _tl.to(text, {
-            opacity: 1,
-            y: 0,
-            duration: 0
-          }); // second part
-
-
-          _tl.to(text, {
-            y: -200,
-            scale: 0.8,
-            opacity: 0
-          });
-        }
+        (0, _BlogAnimations.heroAnimation)(container, text, firstItem);
       });
       var pinSpacer = document.createElement("div");
       pinSpacer.style.height = "80vh";

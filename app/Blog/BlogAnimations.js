@@ -1,6 +1,64 @@
-import gsap, { Power3 } from "gsap";
+import gsap, { Power3, Power0 } from "gsap";
 
 const toggleActions = "play none play reverse";
+
+// ---- anim A : Hero section animation ----
+export function heroAnimation(container, text, firstItem) {
+  const isMobile = window.innerWidth < 768;
+  gsap.set(text, { opacity: 0, y: 200 });
+
+  if (!firstItem) {
+    // set initial state
+    const tl = gsap.timeline({
+      defaults: { ease: Power0.easeNone },
+      scrollTrigger: {
+        trigger: container,
+        start: "top top",
+        end: `bottom+=${isMobile ? "200" : "500"} top`,
+        scrub: 0,
+        pin: true,
+        pinSpacing: false,
+      },
+    });
+    tl.to(text, { opacity: 1, y: 0 });
+    // second part
+    tl.to(text, {
+      y: -200,
+      scale: 0.8,
+      opacity: 0,
+    });
+  } else {
+    gsap.fromTo(
+      text,
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        ease: Power3.easeOut,
+      }
+    );
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: container,
+        start: "top+=20px top",
+        end: "bottom+=500 top",
+        scrub: 0,
+        pin: true,
+        pinSpacing: false,
+      },
+    });
+
+    tl.to(text, { opacity: 1, y: 0, duration: 0 });
+    // second part
+    tl.to(text, {
+      y: -200,
+      scale: 0.8,
+      opacity: 0,
+    });
+  }
+}
 
 // ---- anim B : Cascading (staggered) Fade in text ----
 export function cascadingFadeInText(elements) {

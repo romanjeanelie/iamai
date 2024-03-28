@@ -5,6 +5,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.heroAnimation = heroAnimation;
 exports.cascadingFadeInText = cascadingFadeInText;
 exports.gradientAnimation = gradientAnimation;
 exports.blackBlockAnimation = blackBlockAnimation;
@@ -18,7 +19,79 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-var toggleActions = "play none play reverse"; // ---- anim B : Cascading (staggered) Fade in text ----
+var toggleActions = "play none play reverse"; // ---- anim A : Hero section animation ----
+
+function heroAnimation(container, text, firstItem) {
+  var isMobile = window.innerWidth < 768;
+
+  _gsap["default"].set(text, {
+    opacity: 0,
+    y: 200
+  });
+
+  if (!firstItem) {
+    // set initial state
+    var tl = _gsap["default"].timeline({
+      defaults: {
+        ease: _gsap.Power0.easeNone
+      },
+      scrollTrigger: {
+        trigger: container,
+        start: "top top",
+        end: "bottom+=".concat(isMobile ? "200" : "500", " top"),
+        scrub: 0,
+        pin: true,
+        pinSpacing: false
+      }
+    });
+
+    tl.to(text, {
+      opacity: 1,
+      y: 0
+    }); // second part
+
+    tl.to(text, {
+      y: -200,
+      scale: 0.8,
+      opacity: 0
+    });
+  } else {
+    _gsap["default"].fromTo(text, {
+      opacity: 0,
+      y: 30
+    }, {
+      opacity: 1,
+      y: 0,
+      duration: 0.5,
+      ease: _gsap.Power3.easeOut
+    });
+
+    var _tl = _gsap["default"].timeline({
+      scrollTrigger: {
+        trigger: container,
+        start: "top+=20px top",
+        end: "bottom+=500 top",
+        scrub: 0,
+        pin: true,
+        pinSpacing: false
+      }
+    });
+
+    _tl.to(text, {
+      opacity: 1,
+      y: 0,
+      duration: 0
+    }); // second part
+
+
+    _tl.to(text, {
+      y: -200,
+      scale: 0.8,
+      opacity: 0
+    });
+  }
+} // ---- anim B : Cascading (staggered) Fade in text ----
+
 
 function cascadingFadeInText(elements) {
   var tl = _gsap["default"].timeline({

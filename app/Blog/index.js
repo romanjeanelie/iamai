@@ -7,6 +7,7 @@ import {
   cascadingFadeInText,
   footerAnimation,
   gradientAnimation,
+  heroAnimation,
   slidesUp,
   staircaseAnimation,
 } from "./BlogAnimations";
@@ -178,65 +179,12 @@ class Blog {
       const container = document.createElement("div");
       container.className = `blogHero__section ${firstItem && "first-section"}`;
       const text = document.createElement("h1");
-      if (firstItem) text.classList.add("first-title");
       text.innerHTML = data;
 
       // append items
       container.appendChild(text);
       this.heroContainer.appendChild(container);
-      gsap.set(text, { opacity: 0, y: 200 });
-
-      if (!firstItem) {
-        // set initial state
-        const tl = gsap.timeline({
-          defaults: { ease: Power0.easeNone },
-          scrollTrigger: {
-            trigger: container,
-            start: "top top",
-            end: `bottom+=${isMobile ? "500" : "500"} top`,
-            scrub: 0,
-            pin: true,
-            pinSpacing: false,
-          },
-        });
-        tl.to(text, { opacity: 1, y: 0 });
-        // second part
-        tl.to(text, {
-          y: -200,
-          scale: 0.8,
-          opacity: 0,
-        });
-      } else {
-        gsap.fromTo(
-          text,
-          { opacity: 0, y: 30 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.5,
-            ease: Power3.easeOut,
-          }
-        );
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: container,
-            start: "top+=20px top",
-            end: "bottom+=500 top",
-            scrub: true,
-            pin: true,
-            pinSpacing: false,
-          },
-        });
-
-        tl.to(text, { opacity: 1, y: 0, duration: 0 });
-        // second part
-        tl.to(text, {
-          y: -200,
-          scale: 0.8,
-          opacity: 0,
-        });
-      }
+      heroAnimation(container, text, firstItem);
     });
 
     const pinSpacer = document.createElement("div");
