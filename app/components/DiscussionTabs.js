@@ -104,7 +104,7 @@ export default class DiscussionTabs {
       this.updateTabUi(defaultTab);
     } else {
       // if there are no images, we display the first tab available
-      const defaultTab = this.tabsHeaderContainer.querySelector(`.${this.tabs[0]}`);
+      const defaultTab = this.tabsHeaderContainer.querySelector(`.sourcesTab`);
       this.updateTabUi(defaultTab);
     }
   }
