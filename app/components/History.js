@@ -1,6 +1,9 @@
 import { TASK_STATUSES } from "./TaskManager/index.js";
 import { API_STATUSES } from "./constants.js";
 import fetcher from "../utils/fetcher.js";
+import DiscussionTabs from "./DiscussionTabs.js";
+
+const isEmpty = (obj) => Object.keys(obj).length === 0;
 
 const BASE_URL = import.meta.env.VITE_API_HOST || "https://api.asterizk.ai";
 const URL_CONVERSATION_HISTORY = `${BASE_URL}/search/conversation_history`;
@@ -183,9 +186,26 @@ export default class History {
             AIContainer.setAttribute("taskKey", element.micro_thread_id);
             AIContainer.classList.add("discussion__ai--task-created");
           }
+          if (!isEmpty(element.sources) || !isEmpty(element.images)) {
+            const tabs = new DiscussionTabs({
+              container: AIContainer,
+              emitter: this.emitter,
+            });
+            if (element.images.images) {
+              tabs?.addTab("Images");
+              tabs?.initImages(JSON.parse(element.images.images));
+            }
+            if (element.sources.sources) {
+              tabs?.addTab("Sources");
+              tabs?.initSources(JSON.parse(element.sources.sources));
+            }
+
+            tabs?.displayDefaultTab();
+            tabs?.showSourcesTab();
+
+            container.appendChild(AIContainer);
+          }
         }
-      }
-      if (element.resultsContainer) {
       }
     });
     return container;
