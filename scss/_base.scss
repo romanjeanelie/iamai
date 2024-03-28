@@ -40,6 +40,7 @@ $paddingTopMobile: 28px;
 }
 
 html {
+  overscroll-behavior: none;
   min-height: 100svh;
   background-color: $backgroundColorGreyPage;
 }

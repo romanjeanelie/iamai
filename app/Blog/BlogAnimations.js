@@ -38,7 +38,6 @@ export function heroAnimation(container, text, firstItem) {
         ease: Power3.easeOut,
       }
     );
-
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: container,
@@ -51,7 +50,6 @@ export function heroAnimation(container, text, firstItem) {
     });
 
     tl.to(text, { opacity: 1, y: 0, duration: 0 });
-    // second part
     tl.to(text, {
       y: -200,
       scale: 0.8,

@@ -124,6 +124,7 @@ function () {
     this.blogLottieAnimation = document.querySelector(".blogHero__lottieAnimation");
     this.blogMarquees = document.querySelectorAll(".blogMarquee__app-marquee");
     this.slidersSection = document.querySelector(".blogSliders__container");
+    this.preloader = document.querySelector(".blog__preload");
     this.initHeroSections();
     this.pinNavbar();
     this.initSliders();
@@ -134,6 +135,7 @@ function () {
       top: 0,
       duration: 0
     });
+    this.preloader.style.display = "none";
   }
 
   _createClass(Blog, [{

@@ -124,6 +124,13 @@ section {
   }
 }
 
+.blog__preload {
+  position: fixed;
+  background-color: $colorBlack;
+  inset: 0;
+  z-index: 10;
+}
+
 .blog__container {
   margin: 0 auto;
   max-width: 972px;

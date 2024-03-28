@@ -81,8 +81,7 @@ function heroAnimation(container, text, firstItem) {
       opacity: 1,
       y: 0,
       duration: 0
-    }); // second part
-
+    });
 
     _tl.to(text, {
       y: -200,

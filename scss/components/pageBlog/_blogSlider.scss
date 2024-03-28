@@ -360,6 +360,10 @@ $sliderMaxWidth: 972px;
 
     .blogSlider__slide.first-slide {
       margin-right: 0;
+
+      @include media("<phone") {
+        height: 50vh;
+      }
     }
 
     .blogSlider__static-description {
