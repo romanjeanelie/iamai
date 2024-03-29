@@ -3,8 +3,8 @@ import Navbar from "../components/Navbar";
 // [X] add new preferences page
 // [X] add link in navbar to go to preferences page
 // [X] make the preferences page integration
-// [] display all the languages
-// [] handle responsiveness for preferences page
+// [X] display all the languages
+// [X] handle responsiveness for preferences page
 // [] set up logic for the search language
 // []
 
@@ -74,12 +74,15 @@ class Settings {
     this.languageSelected = "";
 
     // DOM Elements
-    this.languagesContainer = document.querySelector(".settingsPage__languages-container");
     this.languages = [];
+    this.languagesContainer = document.querySelector(".settingsPage__languages-container");
+    this.languageSearch = document.querySelector(".settingsPage__search");
 
     // init
     this.initNavbar();
     this.initLanguages();
+    this.initSelectedLanguage();
+    this.addEventListener();
   }
 
   initNavbar() {
@@ -108,6 +111,14 @@ class Settings {
     });
   }
 
+  initSelectedLanguage() {
+    // get the selected language from the local storage
+    this.languageSelected = localStorage.getItem("language") || "en";
+
+    // update the selected language
+    this.updateSelectedLanguage({ code: this.languageSelected });
+  }
+
   updateSelectedLanguage(language) {
     // updating the state
     this.languageSelected = language.code;
@@ -120,6 +131,32 @@ class Settings {
     // adding "selected" class to the new selected language
     const selectedLanguage = this.languages.find((language) => language.dataset.code === this.languageSelected);
     selectedLanguage.classList.add("selected");
+  }
+
+  searchLanguage() {
+    const searchValue = this.languageSearch.value.toLowerCase();
+    const filteredLanguages = languagesArray.filter((language) => language.label.toLowerCase().startsWith(searchValue));
+
+    // Clear the current list
+    this.languagesContainer.innerHTML = "";
+
+    // Add filtered languages to the list
+    filteredLanguages.forEach((language) => {
+      this.languagesContainer.innerHTML += `
+        <li class="settingsPage__language" data-code="${language.code}">
+          <p>${language.label}</p>
+          <div class="settingsPage__check-icon">
+            <img src="/icons/check-icon.svg" alt="check icon" />
+          </div>
+        </li>
+      `;
+    });
+  }
+
+  addEventListener() {
+    this.languageSearch.addEventListener("input", () => {
+      this.searchLanguage();
+    });
   }
 }
 

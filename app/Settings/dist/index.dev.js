@@ -13,8 +13,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 // [X] add new preferences page
 // [X] add link in navbar to go to preferences page
 // [X] make the preferences page integration
-// [] display all the languages
-// [] handle responsiveness for preferences page
+// [X] display all the languages
+// [X] handle responsiveness for preferences page
 // [] set up logic for the search language
 // []
 var languagesArray = [{
@@ -199,11 +199,14 @@ function () {
     // States
     this.languageSelected = ""; // DOM Elements
 
+    this.languages = [];
     this.languagesContainer = document.querySelector(".settingsPage__languages-container");
-    this.languages = []; // init
+    this.languageSearch = document.querySelector(".settingsPage__search"); // init
 
     this.initNavbar();
     this.initLanguages();
+    this.initSelectedLanguage();
+    this.addEventListener();
   }
 
   _createClass(Settings, [{
@@ -232,6 +235,16 @@ function () {
       });
     }
   }, {
+    key: "initSelectedLanguage",
+    value: function initSelectedLanguage() {
+      // get the selected language from the local storage
+      this.languageSelected = localStorage.getItem("language") || "en"; // update the selected language
+
+      this.updateSelectedLanguage({
+        code: this.languageSelected
+      });
+    }
+  }, {
     key: "updateSelectedLanguage",
     value: function updateSelectedLanguage(language) {
       var _this2 = this;
@@ -247,6 +260,31 @@ function () {
         return language.dataset.code === _this2.languageSelected;
       });
       selectedLanguage.classList.add("selected");
+    }
+  }, {
+    key: "searchLanguage",
+    value: function searchLanguage() {
+      var _this3 = this;
+
+      var searchValue = this.languageSearch.value.toLowerCase();
+      var filteredLanguages = languagesArray.filter(function (language) {
+        return language.label.toLowerCase().startsWith(searchValue);
+      }); // Clear the current list
+
+      this.languagesContainer.innerHTML = ""; // Add filtered languages to the list
+
+      filteredLanguages.forEach(function (language) {
+        _this3.languagesContainer.innerHTML += "\n        <li class=\"settingsPage__language\" data-code=\"".concat(language.code, "\">\n          <p>").concat(language.label, "</p>\n          <div class=\"settingsPage__check-icon\">\n            <img src=\"/icons/check-icon.svg\" alt=\"check icon\" />\n          </div>\n        </li>\n      ");
+      });
+    }
+  }, {
+    key: "addEventListener",
+    value: function addEventListener() {
+      var _this4 = this;
+
+      this.languageSearch.addEventListener("input", function () {
+        _this4.searchLanguage();
+      });
     }
   }]);
 
