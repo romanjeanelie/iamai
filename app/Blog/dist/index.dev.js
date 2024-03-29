@@ -97,17 +97,7 @@ var data = [{
   h1: "The Multitasking Assistant.<br class='desktop-break'/> Always <br class='mobile-break'/> by Your Side.",
   p: "CO * is your tireless multitasker. It juggles tasks simultaneously, ensuring smooth and efficient completion.",
   sliderData: slider2Data
-}]; // TO DO :
-// [X] adjust the size of the slider to the new design
-// [X] add correct videos to the slider
-// [X] handle the marquee;
-// [X] add correct logos for the marquee;
-// [X] handle the videos (use mobile version when needed)
-// [X] set up hero video sections
-// [X] animate it
-// [] fix space between last slide and video
-// [] watch out for potential bug where both mobile and desktop videos appear
-// [] set up second video background section
+}];
 
 _gsap["default"].registerPlugin(_ScrollTrigger["default"]);
 

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IAMAI Settings</title>
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+  <link rel="stylesheet" href="./scss/index.scss" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-53ZK5Q9K6T"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+
+    gtag("config", "G-53ZK5Q9K6T");
+  </script>
+</head>
+
+<body class="page-settings">
+  {{>navBar}}
+  <h1 class="settingsPage__container"> Settings </h1>
+</body>
+
+<script type="module" src="../app/Settings/index.js"></script>
+
+
+</html>

@@ -132,18 +132,6 @@ const data = [
   },
 ];
 
-// TO DO :
-// [X] adjust the size of the slider to the new design
-// [X] add correct videos to the slider
-// [X] handle the marquee;
-// [X] add correct logos for the marquee;
-// [X] handle the videos (use mobile version when needed)
-// [X] set up hero video sections
-// [X] animate it
-// [] fix space between last slide and video
-// [] watch out for potential bug where both mobile and desktop videos appear
-// [] set up second video background section
-
 gsap.registerPlugin(ScrollTrigger);
 
 class Blog {
