@@ -10,8 +10,12 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-console.log("settings js");
-
+// [X] add new preferences page
+// [] add link in navbar to go to preferences page
+// [] make the preferences page integration
+// [] handle responsiveness for preferences page
+// [] set up logic for the search language
+// []
 var Settings =
 /*#__PURE__*/
 function () {

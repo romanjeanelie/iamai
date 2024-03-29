@@ -30,7 +30,6 @@ class App {
     this.loginPage = document.querySelector(".login-page");
     this.pageBlue = document.querySelector(".page-blue");
     this.pageGrey = document.querySelector(".page-grey");
-    this.navbarEl = document.querySelector(".nav");
     this.cancelBtn = document.querySelector(".cancel-btn");
     this.user = null;
     // getUser().then(user => {
