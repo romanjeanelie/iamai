@@ -5,8 +5,7 @@ export default class Navbar {
     this.navBtn = this.navEl.querySelector(".nav__btn");
     this.navList = this.navEl.querySelector(".nav__list");
 
-    // this.addListeners();
-    this.navList.classList.add("show");
+    this.addListeners();
   }
 
   addListeners() {

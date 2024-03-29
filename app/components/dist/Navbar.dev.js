@@ -23,9 +23,8 @@ function () {
 
     this.navEl = document.querySelector(".nav");
     this.navBtn = this.navEl.querySelector(".nav__btn");
-    this.navList = this.navEl.querySelector(".nav__list"); // this.addListeners();
-
-    this.navList.classList.add("show");
+    this.navList = this.navEl.querySelector(".nav__list");
+    this.addListeners();
   }
 
   _createClass(Navbar, [{
