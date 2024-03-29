@@ -13,9 +13,183 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 // [X] add new preferences page
 // [X] add link in navbar to go to preferences page
 // [X] make the preferences page integration
+// [] display all the languages
 // [] handle responsiveness for preferences page
 // [] set up logic for the search language
 // []
+var languagesArray = [{
+  label: "Afrikaans",
+  code: "af"
+}, {
+  label: "Arabic",
+  code: "ar"
+}, {
+  label: "Armenian",
+  code: "hy"
+}, {
+  label: "Azerbaijani",
+  code: "az"
+}, {
+  label: "Belarusian",
+  code: "be"
+}, {
+  label: "Bosnian",
+  code: "bs"
+}, {
+  label: "Bulgarian",
+  code: "bg"
+}, {
+  label: "Catalan",
+  code: "ca"
+}, {
+  label: "Chinese",
+  code: "zh"
+}, {
+  label: "Croatian",
+  code: "hr"
+}, {
+  label: "Czech",
+  code: "cs"
+}, {
+  label: "Danish",
+  code: "da"
+}, {
+  label: "Dutch",
+  code: "nl"
+}, {
+  label: "English",
+  code: "en"
+}, {
+  label: "Estonian",
+  code: "et"
+}, {
+  label: "Finnish",
+  code: "fi"
+}, {
+  label: "French",
+  code: "fr"
+}, {
+  label: "Galician",
+  code: "gl"
+}, {
+  label: "German",
+  code: "de"
+}, {
+  label: "Greek",
+  code: "el"
+}, {
+  label: "Hebrew",
+  code: "he"
+}, {
+  label: "Hindi",
+  code: "hi"
+}, {
+  label: "Hungarian",
+  code: "hu"
+}, {
+  label: "Icelandic",
+  code: "is"
+}, {
+  label: "Indonesian",
+  code: "id"
+}, {
+  label: "Italian",
+  code: "it"
+}, {
+  label: "Japanese",
+  code: "ja"
+}, {
+  label: "Kannada",
+  code: "kn"
+}, {
+  label: "Kazakh",
+  code: "kk"
+}, {
+  label: "Korean",
+  code: "ko"
+}, {
+  label: "Latvian",
+  code: "lv"
+}, {
+  label: "Lithuanian",
+  code: "lt"
+}, {
+  label: "Macedonian",
+  code: "mk"
+}, {
+  label: "Malay",
+  code: "ms"
+}, {
+  label: "Marathi",
+  code: "mr"
+}, {
+  label: "Maori",
+  code: "mi"
+}, {
+  label: "Nepali",
+  code: "ne"
+}, {
+  label: "Norwegian",
+  code: "no"
+}, {
+  label: "Persian",
+  code: "fa"
+}, {
+  label: "Polish",
+  code: "pl"
+}, {
+  label: "Portuguese",
+  code: "pt"
+}, {
+  label: "Romanian",
+  code: "ro"
+}, {
+  label: "Russian",
+  code: "ru"
+}, {
+  label: "Serbian",
+  code: "sr"
+}, {
+  label: "Slovak",
+  code: "sk"
+}, {
+  label: "Slovenian",
+  code: "sl"
+}, {
+  label: "Spanish",
+  code: "es"
+}, {
+  label: "Swahili",
+  code: "sw"
+}, {
+  label: "Swedish",
+  code: "sv"
+}, {
+  label: "Tagalog",
+  code: "tl"
+}, {
+  label: "Tamil",
+  code: "ta"
+}, {
+  label: "Thai",
+  code: "th"
+}, {
+  label: "Turkish",
+  code: "tr"
+}, {
+  label: "Ukrainian",
+  code: "uk"
+}, {
+  label: "Urdu",
+  code: "ur"
+}, {
+  label: "Vietnamese",
+  code: "vi"
+}, {
+  label: "Welsh",
+  code: "cy"
+}];
+
 var Settings =
 /*#__PURE__*/
 function () {
@@ -24,15 +198,55 @@ function () {
 
     // States
     this.languageSelected = ""; // DOM Elements
-    // init
+
+    this.languagesContainer = document.querySelector(".settingsPage__languages-container");
+    this.languages = []; // init
 
     this.initNavbar();
+    this.initLanguages();
   }
 
   _createClass(Settings, [{
     key: "initNavbar",
     value: function initNavbar() {
       new _Navbar["default"]();
+    }
+  }, {
+    key: "initLanguages",
+    value: function initLanguages() {
+      var _this = this;
+
+      languagesArray.forEach(function (language) {
+        var languageContainer = document.createElement("li");
+        languageContainer.classList.add("settingsPage__language");
+        languageContainer.dataset.code = language.code;
+        languageContainer.innerHTML = "\n        <p>".concat(language.label, "</p>\n        <div class=\"settingsPage__check-icon\">\n          <img src=\"/icons/check-icon.svg\" alt=\"check icon\" />\n        </div>\n      ");
+
+        _this.languages.push(languageContainer);
+
+        _this.languagesContainer.appendChild(languageContainer);
+
+        languageContainer.addEventListener("click", function () {
+          _this.updateSelectedLanguage(language);
+        });
+      });
+    }
+  }, {
+    key: "updateSelectedLanguage",
+    value: function updateSelectedLanguage(language) {
+      var _this2 = this;
+
+      // updating the state
+      this.languageSelected = language.code; // removing "selected" class from every language
+
+      this.languages.forEach(function (language) {
+        language.classList.remove("selected");
+      }); // adding "selected" class to the new selected language
+
+      var selectedLanguage = this.languages.find(function (language) {
+        return language.dataset.code === _this2.languageSelected;
+      });
+      selectedLanguage.classList.add("selected");
     }
   }]);
 
