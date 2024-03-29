@@ -5,17 +5,18 @@ $paddingHorMobile: 12px;
 $paddingTopMobile: 28px;
 
 // Fonts
-// @font-face {
-//   font-family: "Circular";
-//   src: url("/fonts/CircularStd-Book.woff2");
-//   font-weight: 450;
-// }
+@font-face {
+  font-family: "Circular";
+  src: url("/fonts/CircularStd-Book.woff2");
+  font-weight: 450;
+}
 
-// @font-face {
-//   font-family: "Circular";
-//   src: url("/fonts/CircularStd-Medium.woff2");
-//   font-weight: 500;
-// }
+@font-face {
+  font-family: "Circular";
+  src: url("/fonts/CircularStd-Medium.woff2");
+  font-weight: 500;
+}
+
 @font-face {
   font-family: "SFPro";
   src: url("/fonts/SF_Pro/SF-Pro-Display-Medium.otf");

@@ -22,7 +22,20 @@
 
 <body class="page-settings">
   {{>navBar}}
-  <h1 class="settingsPage__container"> Settings </h1>
+  <div class="settingsPage__container">
+    <h2 class="settingsPage__title">Main Language</h2>
+
+    <input type="text" class="settingsPage__search" placeholder="Search" />
+
+    <ul class="settingsPage__languages-container">
+      <li class="settingsPage__language">
+        <p>English</p>
+        <div class="settingsPage__check-icon">
+          <img src="/icons/check-icon.svg" alt="check icon" />
+        </div>
+      </li>
+    </ul>
+  </div>
 </body>
 
 <script type="module" src="../app/Settings/index.js"></script>
