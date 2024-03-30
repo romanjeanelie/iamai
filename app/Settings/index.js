@@ -9,6 +9,7 @@ import Navbar from "../components/Navbar";
 // []
 
 const languagesArray = [
+  { label: "Auto Detect", code: "ad" },
   { label: "Afrikaans", code: "af" },
   { label: "Arabic", code: "ar" },
   { label: "Armenian", code: "hy" },
@@ -113,7 +114,7 @@ class Settings {
 
   initSelectedLanguage() {
     // get the selected language from the local storage
-    this.languageSelected = localStorage.getItem("language") || "en";
+    this.languageSelected = localStorage.getItem("language") || "ad";
 
     // update the selected language
     this.updateSelectedLanguage({ code: this.languageSelected });
