@@ -6,10 +6,12 @@ import Navbar from "../components/Navbar";
 // [X] display all the languages
 // [X] handle responsiveness for preferences page
 // [X] set up logic for the search language
-// [] change the font for Noto
-// [] add the auto-detect choice in the languages
+// [X] change the font for Noto
+// [X] add the auto-detect choice in the languages
+// [] when search, the selected language changes ?
 // [] save the selected language in the local storage
 // [] use it in the chat page
+// [] fix the login page
 
 const languagesArray = [
   { label: "Auto Detect", code: "ad" },
@@ -84,7 +86,7 @@ class Languages {
 
     // init
     this.initNavbar();
-    this.initLanguages();
+    this.initLanguages(languagesArray);
     this.initSelectedLanguage();
     this.addEventListener();
   }
@@ -93,7 +95,9 @@ class Languages {
     new Navbar();
   }
 
-  initLanguages() {
+  initLanguages(languagesArray) {
+    this.languages = [];
+
     languagesArray.forEach((language) => {
       const languageContainer = document.createElement("li");
       languageContainer.classList.add("languagesPage__language");
@@ -113,6 +117,8 @@ class Languages {
         this.updateSelectedLanguage(language);
       });
     });
+
+    this.initSelectedLanguage();
   }
 
   initSelectedLanguage() {
@@ -134,7 +140,10 @@ class Languages {
 
     // adding "selected" class to the new selected language
     const selectedLanguage = this.languages.find((language) => language.dataset.code === this.languageSelected);
-    selectedLanguage.classList.add("selected");
+    selectedLanguage?.classList.add("selected");
+
+    // save the selected language in the local storage
+    localStorage.setItem("language", this.languageSelected);
   }
 
   searchLanguage() {
@@ -145,16 +154,7 @@ class Languages {
     this.languagesContainer.innerHTML = "";
 
     // Add filtered languages to the list
-    filteredLanguages.forEach((language) => {
-      this.languagesContainer.innerHTML += `
-        <li class="languagesPage__language" data-code="${language.code}">
-          <p>${language.label}</p>
-          <div class="languagesPage__check-icon">
-            <img src="/icons/check-icon.svg" alt="check icon" />
-          </div>
-        </li>
-      `;
-    });
+    this.initLanguages(filteredLanguages);
   }
 
   addEventListener() {

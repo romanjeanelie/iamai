@@ -16,11 +16,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 // [X] display all the languages
 // [X] handle responsiveness for preferences page
 // [X] set up logic for the search language
-// [] change the font for Noto
-// [] add the auto-detect choice in the languages
+// [X] change the font for Noto
+// [X] add the auto-detect choice in the languages
+// [] when search, the selected language changes ?
 // [] save the selected language in the local storage
 // [] use it in the chat page
+// [] fix the login page
 var languagesArray = [{
+  label: "Auto Detect",
+  code: "ad"
+}, {
   label: "Afrikaans",
   code: "af"
 }, {
@@ -207,7 +212,7 @@ function () {
     this.languageSearch = document.querySelector(".languagesPage__search"); // init
 
     this.initNavbar();
-    this.initLanguages();
+    this.initLanguages(languagesArray);
     this.initSelectedLanguage();
     this.addEventListener();
   }
@@ -219,9 +224,10 @@ function () {
     }
   }, {
     key: "initLanguages",
-    value: function initLanguages() {
+    value: function initLanguages(languagesArray) {
       var _this = this;
 
+      this.languages = [];
       languagesArray.forEach(function (language) {
         var languageContainer = document.createElement("li");
         languageContainer.classList.add("languagesPage__language");
@@ -236,12 +242,13 @@ function () {
           _this.updateSelectedLanguage(language);
         });
       });
+      this.initSelectedLanguage();
     }
   }, {
     key: "initSelectedLanguage",
     value: function initSelectedLanguage() {
       // get the selected language from the local storage
-      this.languageSelected = localStorage.getItem("language") || "en"; // update the selected language
+      this.languageSelected = localStorage.getItem("language") || "ad"; // update the selected language
 
       this.updateSelectedLanguage({
         code: this.languageSelected
@@ -262,13 +269,13 @@ function () {
       var selectedLanguage = this.languages.find(function (language) {
         return language.dataset.code === _this2.languageSelected;
       });
-      selectedLanguage.classList.add("selected");
+      selectedLanguage.classList.add("selected"); // save the selected language in the local storage
+
+      localStorage.setItem("language", this.languageSelected);
     }
   }, {
     key: "searchLanguage",
     value: function searchLanguage() {
-      var _this3 = this;
-
       var searchValue = this.languageSearch.value.toLowerCase();
       var filteredLanguages = languagesArray.filter(function (language) {
         return language.label.toLowerCase().startsWith(searchValue);
@@ -276,17 +283,15 @@ function () {
 
       this.languagesContainer.innerHTML = ""; // Add filtered languages to the list
 
-      filteredLanguages.forEach(function (language) {
-        _this3.languagesContainer.innerHTML += "\n        <li class=\"languagesPage__language\" data-code=\"".concat(language.code, "\">\n          <p>").concat(language.label, "</p>\n          <div class=\"languagesPage__check-icon\">\n            <img src=\"/icons/check-icon.svg\" alt=\"check icon\" />\n          </div>\n        </li>\n      ");
-      });
+      this.initLanguages(filteredLanguages);
     }
   }, {
     key: "addEventListener",
     value: function addEventListener() {
-      var _this4 = this;
+      var _this3 = this;
 
       this.languageSearch.addEventListener("input", function () {
-        _this4.searchLanguage();
+        _this3.searchLanguage();
       });
     }
   }]);
