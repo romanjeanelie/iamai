@@ -15,8 +15,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 // [X] make the preferences page integration
 // [X] display all the languages
 // [X] handle responsiveness for preferences page
-// [] set up logic for the search language
-// []
+// [X] set up logic for the search language
+// [] change the font for Noto
+// [] add the auto-detect choice in the languages
+// [] save the selected language in the local storage
+// [] use it in the chat page
 var languagesArray = [{
   label: "Afrikaans",
   code: "af"
@@ -190,18 +193,18 @@ var languagesArray = [{
   code: "cy"
 }];
 
-var Settings =
+var Languages =
 /*#__PURE__*/
 function () {
-  function Settings() {
-    _classCallCheck(this, Settings);
+  function Languages() {
+    _classCallCheck(this, Languages);
 
     // States
     this.languageSelected = ""; // DOM Elements
 
     this.languages = [];
-    this.languagesContainer = document.querySelector(".settingsPage__languages-container");
-    this.languageSearch = document.querySelector(".settingsPage__search"); // init
+    this.languagesContainer = document.querySelector(".languagesPage__languages-container");
+    this.languageSearch = document.querySelector(".languagesPage__search"); // init
 
     this.initNavbar();
     this.initLanguages();
@@ -209,7 +212,7 @@ function () {
     this.addEventListener();
   }
 
-  _createClass(Settings, [{
+  _createClass(Languages, [{
     key: "initNavbar",
     value: function initNavbar() {
       new _Navbar["default"]();
@@ -221,9 +224,9 @@ function () {
 
       languagesArray.forEach(function (language) {
         var languageContainer = document.createElement("li");
-        languageContainer.classList.add("settingsPage__language");
+        languageContainer.classList.add("languagesPage__language");
         languageContainer.dataset.code = language.code;
-        languageContainer.innerHTML = "\n        <p>".concat(language.label, "</p>\n        <div class=\"settingsPage__check-icon\">\n          <img src=\"/icons/check-icon.svg\" alt=\"check icon\" />\n        </div>\n      ");
+        languageContainer.innerHTML = "\n        <p>".concat(language.label, "</p>\n        <div class=\"languagesPage__check-icon\">\n          <img src=\"/icons/check-icon.svg\" alt=\"check icon\" />\n        </div>\n      ");
 
         _this.languages.push(languageContainer);
 
@@ -274,7 +277,7 @@ function () {
       this.languagesContainer.innerHTML = ""; // Add filtered languages to the list
 
       filteredLanguages.forEach(function (language) {
-        _this3.languagesContainer.innerHTML += "\n        <li class=\"settingsPage__language\" data-code=\"".concat(language.code, "\">\n          <p>").concat(language.label, "</p>\n          <div class=\"settingsPage__check-icon\">\n            <img src=\"/icons/check-icon.svg\" alt=\"check icon\" />\n          </div>\n        </li>\n      ");
+        _this3.languagesContainer.innerHTML += "\n        <li class=\"languagesPage__language\" data-code=\"".concat(language.code, "\">\n          <p>").concat(language.label, "</p>\n          <div class=\"languagesPage__check-icon\">\n            <img src=\"/icons/check-icon.svg\" alt=\"check icon\" />\n          </div>\n        </li>\n      ");
       });
     }
   }, {
@@ -288,7 +291,7 @@ function () {
     }
   }]);
 
-  return Settings;
+  return Languages;
 }();
 
-new Settings();
+new Languages();

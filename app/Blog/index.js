@@ -1,7 +1,10 @@
-import gsap, { Power0, Power3 } from "gsap";
+import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import BlogSlider from "../components/BlogSlider";
+
 import { generateSliderHeader } from "../utils/generateSlider";
+import { preloadVideos } from "../utils/preloadVideos";
+
 import {
   blackBlockAnimation,
   cascadingFadeInText,
@@ -11,6 +14,8 @@ import {
   slidesUp,
   staircaseAnimation,
 } from "./BlogAnimations";
+
+const isMobile = window.innerWidth < 640;
 
 const heroData = [
   "TLDR",
@@ -132,6 +137,18 @@ const data = [
   },
 ];
 
+const videoData = [
+  isMobile
+    ? "https://player.vimeo.com/progressive_redirect/playback/924947253/rendition/540p/file.mp4?loc=external&signature=1ac3b9615414a3836482d3065790a9f4477d850995f5d7e54d32f81d2cec1a43"
+    : "https://player.vimeo.com/progressive_redirect/playback/924947288/rendition/720p/file.mp4?loc=external&signature=ab23a22926dedd5ed226323655c0b85676d3a4856746fe10aef74fb1552eaafe",
+  isMobile
+    ? "https://player.vimeo.com/progressive_redirect/playback/924982717/rendition/480p/file.mp4?loc=external&signature=8619fc24410a36d101d0290fb232f644ae087db9bb47dd7f6673e85b92b4a633"
+    : "https://player.vimeo.com/progressive_redirect/playback/924982649/rendition/360p/file.mp4?loc=external&signature=238d6fa86e19d03bb6b6a4ac9b4c92c64eb1ee769062b1b0d4435370d645e9f3",
+  isMobile
+    ? "https://player.vimeo.com/progressive_redirect/playback/924982682/rendition/480p/file.mp4?loc=external&signature=1aef2b4018851aa08562e87b014b6abd6fbdbebdef849a05edcf59f1b64db3f5"
+    : "https://player.vimeo.com/progressive_redirect/playback/924982615/rendition/360p/file.mp4?loc=external&signature=ab8215600529b576ca8efa77be6acb4aa0ea78dcc8d2b11b17bfa0961caa68ca",
+];
+
 gsap.registerPlugin(ScrollTrigger);
 
 class Blog {
@@ -151,6 +168,8 @@ class Blog {
     this.initSliders();
     this.initScrollAnims();
     this.playStaticVideosWhenOnScreen();
+
+    // this.preloadStaticVideos();
 
     // Scroll to top of the page
     window.scrollTo({
@@ -291,6 +310,10 @@ class Blog {
     videos.forEach((video) => {
       videoObserver.observe(video);
     });
+  }
+
+  preloadStaticVideos() {
+    preloadVideos(videoData, { onComplete: () => console.log("All videos preloaded") });
   }
 }
 

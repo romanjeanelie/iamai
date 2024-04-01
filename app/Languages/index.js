@@ -5,8 +5,11 @@ import Navbar from "../components/Navbar";
 // [X] make the preferences page integration
 // [X] display all the languages
 // [X] handle responsiveness for preferences page
-// [] set up logic for the search language
-// []
+// [X] set up logic for the search language
+// [] change the font for Noto
+// [] add the auto-detect choice in the languages
+// [] save the selected language in the local storage
+// [] use it in the chat page
 
 const languagesArray = [
   { label: "Afrikaans", code: "af" },
@@ -68,15 +71,15 @@ const languagesArray = [
   { label: "Welsh", code: "cy" },
 ];
 
-class Settings {
+class Languages {
   constructor() {
     // States
     this.languageSelected = "";
 
     // DOM Elements
     this.languages = [];
-    this.languagesContainer = document.querySelector(".settingsPage__languages-container");
-    this.languageSearch = document.querySelector(".settingsPage__search");
+    this.languagesContainer = document.querySelector(".languagesPage__languages-container");
+    this.languageSearch = document.querySelector(".languagesPage__search");
 
     // init
     this.initNavbar();
@@ -92,12 +95,12 @@ class Settings {
   initLanguages() {
     languagesArray.forEach((language) => {
       const languageContainer = document.createElement("li");
-      languageContainer.classList.add("settingsPage__language");
+      languageContainer.classList.add("languagesPage__language");
       languageContainer.dataset.code = language.code;
 
       languageContainer.innerHTML = `
         <p>${language.label}</p>
-        <div class="settingsPage__check-icon">
+        <div class="languagesPage__check-icon">
           <img src="/icons/check-icon.svg" alt="check icon" />
         </div>
       `;
@@ -143,9 +146,9 @@ class Settings {
     // Add filtered languages to the list
     filteredLanguages.forEach((language) => {
       this.languagesContainer.innerHTML += `
-        <li class="settingsPage__language" data-code="${language.code}">
+        <li class="languagesPage__language" data-code="${language.code}">
           <p>${language.label}</p>
-          <div class="settingsPage__check-icon">
+          <div class="languagesPage__check-icon">
             <img src="/icons/check-icon.svg" alt="check icon" />
           </div>
         </li>
@@ -160,4 +163,4 @@ class Settings {
   }
 }
 
-new Settings();
+new Languages();

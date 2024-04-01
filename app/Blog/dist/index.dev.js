@@ -1,8 +1,6 @@
 "use strict";
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-var _gsap = _interopRequireWildcard(require("gsap"));
+var _gsap = _interopRequireDefault(require("gsap"));
 
 var _ScrollTrigger = _interopRequireDefault(require("gsap/ScrollTrigger"));
 
@@ -10,13 +8,11 @@ var _BlogSlider = _interopRequireDefault(require("../components/BlogSlider"));
 
 var _generateSlider = require("../utils/generateSlider");
 
+var _preloadVideos = require("../utils/preloadVideos");
+
 var _BlogAnimations = require("./BlogAnimations");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -24,6 +20,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+var isMobile = window.innerWidth < 640;
 var heroData = ["TLDR", "Introducing CO* <br /> World’s First <br /> Personal AI Assistant.", "Revolutionise how you <br /> get things done.", "CO* converses <br class='mobile-break' /> naturally and <br class='desktop-break' /> tackles real-world tasks like a <br class='desktop-break' /> human assistant.", "Get instant answers. <br /> Not search results. ", "Experience true multitasking.", "CO* effortlessly <br class='sm-mobile-break' /> juggles multiple <br class='desktop-break' /> conversations and <br class='sm-mobile-break' /> tasks <br class='desktop-break' /> maximising <br class='sm-mobile-break' />  your time <br class='desktop-break' /> and efficiency.", "CO* speaks over <br /> 100 languages <br class='sm-mobile-break' /> fluently.", "Powered by open-source <br class='desktop-break' /> innovation.", "Our expert fine-tuning <br class='sm-mobile-break' /> of LaMA <br class='desktop-break' /> 70B  <br class='sm-mobile-break' /> model has <br /> created a powerful <br /> Personal AI Assistant.", "With <br /> Advanced planning. Advanced <br class='desktop-break' /> reasoning. Task execution.", "CO* tackles <br class='sm-mobile-break' />  complex tasks. <br />  Breaks tasks down. Execute steps. <br /> Adapts on the fly <br class='sm-mobile-break' />  for <br class='desktop-break' /> successful completion.", "We all want more <br class='sm-mobile-break' />  time, less hassle.<br /> That's why we <br class='sm-mobile-break' />  created CO*", "Personal <br class='sm-mobile-break' />  AI Assistant <br class='sm-mobile-break' />  For Everyone."];
 var slider1Data = [{
   id: 1,
@@ -98,6 +95,7 @@ var data = [{
   p: "CO * is your tireless multitasker. It juggles tasks simultaneously, ensuring smooth and efficient completion.",
   sliderData: slider2Data
 }];
+var videoData = [isMobile ? "https://player.vimeo.com/progressive_redirect/playback/924947253/rendition/540p/file.mp4?loc=external&signature=1ac3b9615414a3836482d3065790a9f4477d850995f5d7e54d32f81d2cec1a43" : "https://player.vimeo.com/progressive_redirect/playback/924947288/rendition/720p/file.mp4?loc=external&signature=ab23a22926dedd5ed226323655c0b85676d3a4856746fe10aef74fb1552eaafe", isMobile ? "https://player.vimeo.com/progressive_redirect/playback/924982717/rendition/480p/file.mp4?loc=external&signature=8619fc24410a36d101d0290fb232f644ae087db9bb47dd7f6673e85b92b4a633" : "https://player.vimeo.com/progressive_redirect/playback/924982649/rendition/360p/file.mp4?loc=external&signature=238d6fa86e19d03bb6b6a4ac9b4c92c64eb1ee769062b1b0d4435370d645e9f3", isMobile ? "https://player.vimeo.com/progressive_redirect/playback/924982682/rendition/480p/file.mp4?loc=external&signature=1aef2b4018851aa08562e87b014b6abd6fbdbebdef849a05edcf59f1b64db3f5" : "https://player.vimeo.com/progressive_redirect/playback/924982615/rendition/360p/file.mp4?loc=external&signature=ab8215600529b576ca8efa77be6acb4aa0ea78dcc8d2b11b17bfa0961caa68ca"];
 
 _gsap["default"].registerPlugin(_ScrollTrigger["default"]);
 
@@ -119,7 +117,8 @@ function () {
     this.pinNavbar();
     this.initSliders();
     this.initScrollAnims();
-    this.playStaticVideosWhenOnScreen(); // Scroll to top of the page
+    this.playStaticVideosWhenOnScreen(); // this.preloadStaticVideos();
+    // Scroll to top of the page
 
     window.scrollTo({
       top: 0,
@@ -264,6 +263,15 @@ function () {
 
       videos.forEach(function (video) {
         videoObserver.observe(video);
+      });
+    }
+  }, {
+    key: "preloadStaticVideos",
+    value: function preloadStaticVideos() {
+      (0, _preloadVideos.preloadVideos)(videoData, {
+        onComplete: function onComplete() {
+          return console.log("All videos preloaded");
+        }
       });
     }
   }]);
