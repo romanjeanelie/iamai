@@ -8,9 +8,9 @@ import Navbar from "../components/Navbar";
 // [X] set up logic for the search language
 // [X] change the font for Noto
 // [X] add the auto-detect choice in the languages
-// [] when search, the selected language changes ?
-// [] save the selected language in the local storage
-// [] use it in the chat page
+// [X] when search, the selected language changes ?
+// [X] save the selected language in the local storage
+// [X] use it in the chat page
 // [] fix the login page
 
 const languagesArray = [

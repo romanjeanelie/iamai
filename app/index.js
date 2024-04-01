@@ -239,12 +239,16 @@ class App {
       }
     });
 
-    window.addEventListener("load", () => {
-      let user = getUser();
-      signInButton.addEventListener("click", this.toggleSignIn, false);
-      // signInButton.style.display = "none";
+    window.addEventListener("load", async () => {
+      let user = await getUser();
 
-      divlottieanimation.style.display = "none";
+      if (user) {
+        this.checkuserwaitlist(user);
+        divlottieanimation.style.display = "block";
+        signInButton.style.display = "none";
+      } else {
+        divlottieanimation.style.display = "none";
+      }
       animation = lottie.loadAnimation({
         container: divlottieanimation,
         renderer: "svg",
@@ -252,6 +256,10 @@ class App {
         autoplay: false,
         path: "../animations/asterisk_loading.json",
       });
+      animation.play();
+
+      signInButton.addEventListener("click", this.toggleSignIn, false);
+      // signInButton.style.display = "none";
 
       // Avoid flash blue page
       document.getElementById("signOutButton").addEventListener("click", () => {
@@ -278,8 +286,6 @@ class App {
         "What are the movies playing",
       ];
       this.startAnimations(texts, divinfotext);
-      // });
-      // });
     });
     document.fonts.ready.then(() => {
       this.app.classList.remove("preload");

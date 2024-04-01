@@ -384,8 +384,9 @@ export default class Discussion {
     if (urlParams.get("location") && urlParams.get("location") != "") {
       this.Chat.location = urlParams.get("location");
     }
-    if (urlParams.get("lang") && urlParams.get("lang") != "") {
-      this.Chat.sourcelang = urlParams.get("lang");
+
+    if (localStorage.getItem("language") && localStorage.getItem("language") != "") {
+      this.Chat.sourcelang = localStorage.getItem("language");
       // console.log("this.Chat.sourcelang",this.Chat.sourcelang)
       if (this.Chat.sourcelang != "ad") {
         this.Chat.autodetect = false;
