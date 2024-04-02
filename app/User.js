@@ -10,9 +10,9 @@ class User {
     this.name = name;
     this.picture = picture;
     this.email = email;
-    console.time("getUserTimezone");
+    // console.time("getUserTimezone");
     this.timezone = this.getUserTimezone();
-    console.timeEnd("getUserTimezone");
+    // console.timeEnd("getUserTimezone");
     this.area_name = "";
     this.country_name = "";
     this.pincode = "";
@@ -21,9 +21,9 @@ class User {
     this.administrative_area_level_2 = "";
   }
   async setuseraddress() {
-    console.time("getaddressdetails");
+    // console.time("getaddressdetails");
     let address = await this.getaddressdetails();
-    console.timeEnd("getaddressdetails");
+    // console.timeEnd("getaddressdetails");
     this.area_name = address.area_name;
     this.country_name = address.country_name;
     this.pincode = address.pincode;
@@ -38,19 +38,19 @@ class User {
 
   getaddressdetails() {
     return new Promise(async (resolve, reject) => {
-      console.time("getUserLocation");
+      //   console.time("getUserLocation");
       let location = await this.getUserLocation();
-      console.timeEnd("getUserLocation");
+      //   console.timeEnd("getUserLocation");
       location = JSON.parse(location);
       var xhr = new XMLHttpRequest();
       xhr.addEventListener("readystatechange", function () {
         if (this.readyState === 4) {
-          console.log(this.responseText);
+          //   console.log(this.responseText);
           resolve(JSON.parse(this.responseText));
         }
       });
       let url = LOCATION_URL + "getaddress?latitude=" + location.lat + "&longitude=" + location.long;
-      console.log("URL:" + url);
+      //   console.log("URL:" + url);
       xhr.open("GET", url);
       xhr.send();
     });
@@ -59,21 +59,21 @@ class User {
   getUserLocation() {
     return new Promise((resolve, reject) => {
       if (!navigator.geolocation || navigator.userAgent.includes("Chrome")) {
-        console.log("Geolocation is not supported by your browser");
+        // console.log("Geolocation is not supported by your browser");
         resolve(this.getipadress());
         // reject(new Error("Geolocation is not supported by your browser"));
       } else {
         // navigator.geolocation.getCurrentPosition(success, getipadress);
         navigator.geolocation.getCurrentPosition(
           (pos) => {
-            console.log("got geo location");
+            // console.log("got geo location");
             resolve(JSON.stringify({ lat: pos.coords.latitude, long: pos.coords.longitude }));
           },
           (error) => {
-            console.log("Geolocation permission denied");
-            console.time("getipadress");
+            // console.log("Geolocation permission denied");
+            // console.time("getipadress");
             resolve(this.getipadress());
-            console.timeEnd("getipadress");
+            // console.timeEnd("getipadress");
           }
         );
       }
@@ -88,7 +88,7 @@ class User {
       request.onreadystatechange = function () {
         if (this.readyState === 4) {
           var data = JSON.parse(this.responseText);
-          console.log(`ip lat: ${data.latitude} long: ${data.longitude}`);
+          //   console.log(`ip lat: ${data.latitude} long: ${data.longitude}`);
           resolve(JSON.stringify({ lat: data.latitude, long: data.longitude }));
         }
       };
@@ -143,7 +143,7 @@ const getsessionID = (user) =>
     // xhr.withCredentials = true;
     xhr.addEventListener("readystatechange", function () {
       if (this.readyState === 4) {
-        console.log(this.responseText);
+        // console.log(this.responseText);
         resolve(JSON.parse(this.responseText));
       }
     });

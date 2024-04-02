@@ -216,7 +216,7 @@ class App {
         await user.setuseraddress();
         this.toPageGrey({ duration: 1200 });
         this.user = user;
-        console.log("user", user);
+        // console.log("user", user);
         if (this.debug) return;
         this.initApp();
       } else {

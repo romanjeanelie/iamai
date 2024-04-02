@@ -82,10 +82,10 @@ class Chat {
     if (this.autodetect) {
       var response = await this.googletranslate(input_text, this.targetlang, "");
       input_text = response.data.translations[0].translatedText;
-      console.log(
-        "response.data.translations[0].detectedSourceLanguage",
-        response.data.translations[0].detectedSourceLanguage
-      );
+      //   console.log(
+      //     "response.data.translations[0].detectedSourceLanguage",
+      //     response.data.translations[0].detectedSourceLanguage
+      //   );
       if (response.data.translations[0].detectedSourceLanguage)
         this.sourcelang = response.data.translations[0].detectedSourceLanguage;
     } else if (this.sourcelang != this.targetlang) {
@@ -107,7 +107,7 @@ class Chat {
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = async () => {
         if (xhr.readyState == 4) {
-          console.log(xhr.response);
+          //   console.log(xhr.response);
           let text = JSON.parse(xhr.response);
           // console.log(text.stream_id);
           let stream_name = text.stream_id;
@@ -185,7 +185,7 @@ class Chat {
     };
     for await (const m of iter) {
       var mdata = m.json();
-      console.log(mdata);
+      //   console.log(mdata);
       if (steamseq.includes(m.seq) && m.redelivered) {
         console.log("prevent duplicate");
         m.ack();
@@ -413,7 +413,9 @@ class Chat {
           };
 
           const divans = this.adduserans(mdata.response_json.text, container);
-          this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, divans, { workflowID: mdata.session_id });
+          this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, divans, {
+            workflowID: mdata.session_id,
+          });
           // this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, divans, { workflowID: 1234 });
           ui_paramsmap.delete(mdata.micro_thread_id);
         } else if (mdata.status && mdata.status == RESPONSE_FOLLOW_UP) {
@@ -539,7 +541,7 @@ class Chat {
 
       xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
-          console.log("google:" + xhr.responseText);
+          //   console.log("google:" + xhr.responseText);
           var jsonResponse = JSON.parse(xhr.responseText);
           if (jsonResponse.data && jsonResponse.data.translations) {
             resolve(jsonResponse);
@@ -627,8 +629,8 @@ class Chat {
 
     xhr.addEventListener("readystatechange", function () {
       if (this.readyState === 4) {
-        console.log(this.responseText);
-        console.time("RequestStart");
+        // console.log(this.responseText);
+        // console.time("RequestStart");
       }
     });
 
@@ -1310,6 +1312,5 @@ class Chat {
 
     return `${dayName}, ${day} ${monthName}`;
   }
-
 }
 export { Chat as default };

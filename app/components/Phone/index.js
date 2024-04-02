@@ -48,7 +48,6 @@ export default class Phone {
     this.isAIPaused = false;
     this.isStreamEnded = false;
     this.emitter.on("endStream", () => {
-      console.log("stream end /////// ");
       this.isStreamEnded = true;
     });
     // Mic
