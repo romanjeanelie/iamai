@@ -243,7 +243,7 @@ class App {
       let user = await getUser();
 
       if (user) {
-        this.checkuserwaitlist(user);
+        // this.checkuserwaitlist(user);
         divlottieanimation.style.display = "block";
         signInButton.style.display = "none";
       } else {
