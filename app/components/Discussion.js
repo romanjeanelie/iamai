@@ -535,6 +535,13 @@ export default class Discussion {
       session_id: this.Chat.sessionID,
     });
 
+    // scroll to this.userContainer
+    const margin = 75;
+    window.scrollTo({
+      top: this.userContainer.offsetTop - margin,
+      behavior: "smooth",
+    });
+
     // await this.addAIText({ text: result, container: this.AIContainer });
   }
 

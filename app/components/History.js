@@ -37,6 +37,9 @@ export default class History {
       if (status.type === "ui") {
         const results = status.response_json;
         resultsContainer = this.getTaskResultUI(results);
+      } else if (status.status === API_STATUSES.ANSWERED) {
+        resultsContainer = document.createElement("div");
+        resultsContainer.innerHTML = status.response_json.text || "";
       }
     });
 
@@ -232,7 +235,6 @@ export default class History {
     // Get elements
     const elements = await this.getAllElements({ uuid, size, start: this.newStart });
     const tempElements = await this.getAllElements({ uuid, size: size * 3, start: this.newStart });
-    console.log("history1", elements, tempElements);
     // Reverse the order of elements
     elements.results.reverse();
 
