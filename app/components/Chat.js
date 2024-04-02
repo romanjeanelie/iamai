@@ -187,7 +187,7 @@ class Chat {
       var mdata = m.json();
       //   console.log(mdata);
       if (steamseq.includes(m.seq) && m.redelivered) {
-        console.log("prevent duplicate");
+        // console.log("prevent duplicate");
         m.ack();
       } else {
         steamseq.push(m.seq);
