@@ -420,7 +420,7 @@ export default class Discussion {
 
   async updateHstory({ uuid }) {
     return new Promise(async (resolve, reject) => {
-      const { container } = await this.history.getHistory({ uuid, size: 15 });
+      const { container } = await this.history.getHistory({ uuid });
       this.discussionContainer.appendChild(container);
 
       // Scroll to bottom
@@ -503,9 +503,18 @@ export default class Discussion {
 
     // await this.addAIText({ text: result, container: this.AIContainer });
   }
+  async onScrollTop() {
+    const { container } = await this.history.getHistory({ uuid: this.uuid });
+    this.discussionContainer.prepend(container);
+    document.body.scrollTop = document.documentElement.scrollTop = container.offsetHeight;
+  }
 
   addListeners() {
     window.addEventListener("load", this.onLoad());
+
+    window.addEventListener("scroll", () => {
+      if (window.scrollY === 0) this.onScrollTop();
+    });
 
     this.emitter.on("centralFinished", () => {
       this.centralFinished = true;

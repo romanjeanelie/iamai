@@ -26,6 +26,8 @@ export default class History {
 
     this.elements = null;
     this.isSet = false;
+    this.isFetching = false;
+    this.newStart = 0;
   }
 
   getResultsUI(statuses) {
@@ -222,8 +224,9 @@ export default class History {
   }
 
   async getHistory({ uuid, size = 3 }) {
+    this.isFetching = true;
     // Get elements
-    const elements = await this.getAllElements({ uuid, size });
+    const elements = await this.getAllElements({ uuid, size, start: this.newStart });
     // Reverse the order of elements
     elements.results.reverse();
 
@@ -242,6 +245,9 @@ export default class History {
     const container = this.createUIElements(elements.results);
 
     this.isSet = true;
+    this.isFetching = false;
+    this.newStart += size;
+
     return { elements: elements.results, container };
   }
 
