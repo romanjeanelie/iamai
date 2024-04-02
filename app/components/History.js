@@ -172,6 +172,16 @@ export default class History {
           userContainer.classList.add("discussion__user");
           userContainer.innerHTML = element.user;
           container.appendChild(userContainer);
+
+          if (!isEmpty(element.images)) {
+            const tabs = new DiscussionTabs({
+              container: userContainer,
+              emitter: this.emitter,
+            });
+            tabs?.initImages(JSON.parse(element.images.user_images));
+            container.appendChild(userContainer);
+          }
+
           if (isTask(element)) {
             userContainer.setAttribute("taskKey", element.micro_thread_id);
             userContainer.classList.add("discussion__user--task-created");
