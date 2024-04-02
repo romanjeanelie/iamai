@@ -180,7 +180,8 @@ export default class History {
               container: userContainer,
               emitter: this.emitter,
             });
-            tabs?.initImages(JSON.parse(element.images.user_images));
+            if(element.images.user_images)
+              tabs?.initImages(JSON.parse(element.images.user_images));
             container.appendChild(userContainer);
           }
 
