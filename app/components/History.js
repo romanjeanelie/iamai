@@ -32,6 +32,7 @@ export default class History {
 
   getResultsUI(statuses) {
     let resultsContainer = null;
+
     statuses.forEach((status) => {
       if (status.type === "ui") {
         const results = status.response_json;
@@ -166,58 +167,60 @@ export default class History {
     const container = document.createElement("div");
 
     elements.forEach((element) => {
-      if (isTaskViewed(element) && element.resultsContainer) {
-        container.appendChild(element.resultsContainer);
-      } else {
-        if (element.user.length > 0) {
-          const userContainer = document.createElement("div");
-          userContainer.classList.add("discussion__user");
-          userContainer.innerHTML = element.user;
+      if (element.user.length > 0) {
+        const userContainer = document.createElement("div");
+        userContainer.classList.add("discussion__user");
+        userContainer.innerHTML = element.user;
+        container.appendChild(userContainer);
+
+        if (!isEmpty(element.images)) {
+          const tabs = new DiscussionTabs({
+            container: userContainer,
+            emitter: this.emitter,
+          });
+          if (element.images.user_images) tabs?.initImages(JSON.parse(element.images.user_images));
           container.appendChild(userContainer);
-
-          if (!isEmpty(element.images)) {
-            const tabs = new DiscussionTabs({
-              container: userContainer,
-              emitter: this.emitter,
-            });
-            if(element.images.user_images)
-              tabs?.initImages(JSON.parse(element.images.user_images));
-            container.appendChild(userContainer);
-          }
-
-          if (isTask(element)) {
-            userContainer.setAttribute("taskKey", element.micro_thread_id);
-            userContainer.classList.add("discussion__user--task-created");
-          }
         }
-        if (element.assistant.length > 0) {
-          const AIContainer = document.createElement("div");
-          AIContainer.classList.add("discussion__ai");
-          AIContainer.innerHTML = element.assistant;
+
+        if (isTask(element)) {
+          userContainer.setAttribute("taskKey", element.micro_thread_id);
+          userContainer.classList.add("discussion__user--task-created");
+        }
+      }
+
+      if (isTaskViewed(element) && element.resultsContainer) {
+        const AIContainer = document.createElement("div");
+        AIContainer.classList.add("discussion__ai");
+        AIContainer.innerHTML = element.assistant;
+        AIContainer.appendChild(element.resultsContainer);
+        container.appendChild(AIContainer);
+      } else if (element.assistant.length > 0) {
+        const AIContainer = document.createElement("div");
+        AIContainer.classList.add("discussion__ai");
+        AIContainer.innerHTML = element.assistant;
+        container.appendChild(AIContainer);
+        if (isTask(element)) {
+          AIContainer.setAttribute("taskKey", element.micro_thread_id);
+          AIContainer.classList.add("discussion__ai--task-created");
+        }
+        if (!isEmpty(element.sources) || !isEmpty(element.images)) {
+          const tabs = new DiscussionTabs({
+            container: AIContainer,
+            emitter: this.emitter,
+          });
+          if (element.images.images) {
+            tabs?.addTab("Images");
+            tabs?.initImages(JSON.parse(element.images.images));
+          }
+          if (element.sources.sources) {
+            tabs?.addTab("Sources");
+            tabs?.initSources(JSON.parse(element.sources.sources));
+          }
+
+          tabs?.displayDefaultTab();
+          tabs?.showSourcesTab();
+
           container.appendChild(AIContainer);
-          if (isTask(element)) {
-            AIContainer.setAttribute("taskKey", element.micro_thread_id);
-            AIContainer.classList.add("discussion__ai--task-created");
-          }
-          if (!isEmpty(element.sources) || !isEmpty(element.images)) {
-            const tabs = new DiscussionTabs({
-              container: AIContainer,
-              emitter: this.emitter,
-            });
-            if (element.images.images) {
-              tabs?.addTab("Images");
-              tabs?.initImages(JSON.parse(element.images.images));
-            }
-            if (element.sources.sources) {
-              tabs?.addTab("Sources");
-              tabs?.initSources(JSON.parse(element.sources.sources));
-            }
-
-            tabs?.displayDefaultTab();
-            tabs?.showSourcesTab();
-
-            container.appendChild(AIContainer);
-          }
         }
       }
     });
@@ -228,6 +231,8 @@ export default class History {
     this.isFetching = true;
     // Get elements
     const elements = await this.getAllElements({ uuid, size, start: this.newStart });
+    const tempElements = await this.getAllElements({ uuid, size: size * 3, start: this.newStart });
+    console.log("history1", elements, tempElements);
     // Reverse the order of elements
     elements.results.reverse();
 

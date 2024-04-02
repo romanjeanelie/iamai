@@ -509,6 +509,7 @@ export default class Discussion {
   }
 
   async viewTaskResults(task, resultsContainer) {
+    if (!resultsContainer) return;
     const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskKey="${task.key}"]`);
     const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskKey="${task.key}"]`);
     if (userContainer) userContainer.style.display = "none";
