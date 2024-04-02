@@ -41,6 +41,8 @@ export default class Discussion {
 
     this.currentAnswerContainer = null;
 
+    this.isAutoScrollActive = true;
+
     this.Chat = new Chat({
       discussionContainer: this.discussionContainer,
       addAIText: this.addAIText.bind(this),
@@ -90,14 +92,12 @@ export default class Discussion {
   }
 
   //   scrollToDiv(element) {
-  //     console.log("scroll to", element);
   //     let divOffset = 0;
   //     let currentElement = element;
   //     while (currentElement && this.discussionContainer.contains(currentElement)) {
   //       divOffset += currentElement.offsetTop;
   //       currentElement = currentElement.offsetParent;
   //     }
-  //     console.log({ divOffset });
   //     this.discussionContainer.scrollTo({
   //       top: divOffset,
   //       behavior: "smooth",
@@ -122,10 +122,11 @@ export default class Discussion {
   }
 
   getAiAnswer({ text, imgs }) {
+    // this.scrollToBottom();
     this.AIContainer = document.createElement("div");
     this.AIContainer.classList.add("discussion__ai");
     this.discussionContainer.appendChild(this.AIContainer);
-    this.scrollToBottom();
+    // this.scrollToBottom();
 
     this.typingText = new TypingText({
       text: "",
@@ -146,6 +147,8 @@ export default class Discussion {
   }
 
   addUserElement({ text, imgs, debug = false } = {}) {
+    this.makePreviousElementsScrollUp();
+
     if (imgs && imgs.length > 0) {
       const userContainer = document.createElement("div");
       userContainer.classList.add("discussion__user");
@@ -171,7 +174,7 @@ export default class Discussion {
 
     this.discussionContainer.appendChild(this.userContainer);
 
-    this.scrollToBottom();
+    // this.scrollToBottom();
     this.disableInput();
     if (debug) {
       setTimeout(() => {
@@ -317,12 +320,15 @@ export default class Discussion {
     textContainer.appendChild(textEl);
 
     // text = text.replace(/<br\/?>\s*/g, "\n");
-    if (type !== "status") this.scrollToBottom();
+    // if (type !== "status") this.scrollToBottom();
     if (type === "images") return;
     return typeByWord(textEl, text);
   }
 
   addURL({ text, label, url, container }) {
+    // this.scrollToBottom();
+    this.makePreviousElementsScrollUp();
+
     this.typingText?.fadeOut();
     const linkEl = document.createElement("a");
     linkEl.href = url;
@@ -336,7 +342,7 @@ export default class Discussion {
       container.appendChild(textEL);
     }
     container.appendChild(linkEl);
-    this.scrollToBottom();
+    // this.scrollToBottom();
   }
 
   initImages() {
@@ -354,16 +360,45 @@ export default class Discussion {
     this.tabs?.initSources(sourcesData);
   }
 
+  // Scroll
   scrollToBottom() {
     // If overflow remove the height from history
-    if (this.discussionContainer.scrollHeight > this.discussionContainer.clientHeight) {
-      this.discussionContainer.style.height = "unset";
-    }
+    // if (this.discussionContainer.scrollHeight > this.discussionContainer.clientHeight) {
+    //   this.discussionContainer.style.height = "unset";
+    // }
+    // window.scrollTo({
+    //   top: document.body.scrollHeight,
+    //   behavior: "smooth",
+    // });
+  }
 
+  makePreviousElementsScrollUp() {
     window.scrollTo({
       top: document.body.scrollHeight,
       behavior: "smooth",
     });
+    setTimeout(() => {
+      this.isAutoScrollActive = true;
+    }, 1000);
+  }
+
+  async onScrollTop() {
+    const { container } = await this.history.getHistory({ uuid: this.uuid });
+    this.discussionContainer.prepend(container);
+    document.body.scrollTop = document.documentElement.scrollTop = container.offsetHeight;
+  }
+
+  updateScroll() {
+    const scrollY = window.scrollY;
+    const scrollView = scrollY + window.innerHeight * 0.8;
+    const containerHeight = this.discussionContainer.clientHeight - window.innerHeight;
+    const isOverflow = containerHeight > scrollView;
+    if (isOverflow && scrollY > 0 && this.isAutoScrollActive) {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   }
 
   async onLoad() {
@@ -387,7 +422,6 @@ export default class Discussion {
 
     if (localStorage.getItem("language") && localStorage.getItem("language") != "") {
       this.Chat.sourcelang = localStorage.getItem("language");
-      // console.log("this.Chat.sourcelang",this.Chat.sourcelang)
       if (this.Chat.sourcelang != "ad") {
         this.Chat.autodetect = false;
       }
@@ -422,18 +456,12 @@ export default class Discussion {
     return new Promise(async (resolve, reject) => {
       const { container } = await this.history.getHistory({ uuid });
       this.discussionContainer.appendChild(container);
-
-      // Scroll to bottom
-      const containerHistoryHeight = container.offsetHeight;
-      const marginBottom = 32;
-      const newHeight = containerHistoryHeight + window.innerHeight + marginBottom;
-      this.discussionContainer.style.height = `${newHeight}px`;
-      this.scrollToBottom();
-
+      this.makePreviousElementsScrollUp();
       resolve();
     });
   }
 
+  // Taks
   async onCreatedTask(task, textAI) {
     if (this.debug) {
       this.userContainer = document.createElement("div");
@@ -447,6 +475,11 @@ export default class Discussion {
     }
 
     if (!this.history.isSet) return;
+    if (!this.userContainer) {
+      this.userContainer = document.createElement("div");
+      this.userContainer.classList.add("discussion__user");
+      this.discussionContainer.appendChild(this.userContainer);
+    }
     await this.addAIText({ text: textAI, container: this.AIContainer });
     this.userContainer.classList.add("discussion__user--task-created");
     this.AIContainer.classList.add("discussion__ai--task-created");
@@ -503,16 +536,12 @@ export default class Discussion {
 
     // await this.addAIText({ text: result, container: this.AIContainer });
   }
-  async onScrollTop() {
-    const { container } = await this.history.getHistory({ uuid: this.uuid });
-    this.discussionContainer.prepend(container);
-    document.body.scrollTop = document.documentElement.scrollTop = container.offsetHeight;
-  }
 
   addListeners() {
     window.addEventListener("load", this.onLoad());
 
     window.addEventListener("scroll", () => {
+      this.isAutoScrollActive = false;
       if (window.scrollY === 0) this.onScrollTop();
     });
 
@@ -537,8 +566,8 @@ export default class Discussion {
       this.viewTaskResults(task, resultsContainer)
     );
 
-    // window.addEventListener("load", this.onLoad.bind(this));
-    // const resizeObserver = new ResizeObserver(this.scrollToBottom.bind(this));
-    // resizeObserver.observe(this.discussionContainer);
+    window.addEventListener("load", this.onLoad.bind(this));
+    const resizeObserver = new ResizeObserver(this.updateScroll.bind(this));
+    resizeObserver.observe(this.discussionContainer);
   }
 }
