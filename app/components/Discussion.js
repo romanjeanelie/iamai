@@ -7,7 +7,7 @@ import DiscussionTabs from "./DiscussionTabs.js";
 import { getsessionID } from "../User";
 import { asyncAnim } from "../utils/anim.js";
 import typeByWord from "../utils/typeByWord.js";
-
+import getStyleElement from "../utils/getStyleElement.js";
 const topStatusText = ["finding", "checking", "searching", "analyzing", "scanning", "finalizing", "processing"];
 const defaultTopStatus = "searching";
 
@@ -373,13 +373,16 @@ export default class Discussion {
   }
 
   makePreviousElementsScrollUp() {
+    const paddingTop = parseInt(getStyleElement(this.discussionContainer, "padding-top"));
+    this.discussionContainer.style.paddingBottom = `calc(100vh - ${paddingTop}px)`;
+
     window.scrollTo({
       top: document.body.scrollHeight,
       behavior: "smooth",
     });
-    setTimeout(() => {
-      this.isAutoScrollActive = true;
-    }, 1000);
+    // setTimeout(() => {
+    //   this.isAutoScrollActive = true;
+    // }, 1000);
   }
 
   async onScrollTop() {
@@ -388,17 +391,40 @@ export default class Discussion {
     document.body.scrollTop = document.documentElement.scrollTop = container.offsetHeight;
   }
 
-  updateScroll() {
+  onChangeHeightDiscussionContainer() {
     const scrollY = window.scrollY;
     const scrollView = scrollY + window.innerHeight * 0.8;
     const containerHeight = this.discussionContainer.clientHeight - window.innerHeight;
     const isOverflow = containerHeight > scrollView;
     if (isOverflow && scrollY > 0 && this.isAutoScrollActive) {
+      // Scroll to bottom
       window.scrollTo({
         top: document.body.scrollHeight,
         behavior: "smooth",
       });
     }
+  }
+
+  onUserContainerAppend(mutationsList) {
+    for (const mutation of mutationsList) {
+      const container = mutation.addedNodes[0];
+      if (container.classList.contains("discussion__user")) {
+        // Wait for window scroll
+        setTimeout(() => {
+          this.removeUnuusedBottomScroll();
+        }, 2000);
+      }
+    }
+  }
+  removeUnuusedBottomScroll() {
+    const scrollY = window.scrollY + window.innerHeight;
+    const pageHeight = document.body.scrollHeight;
+    const scrollDistance = pageHeight - scrollY;
+    if (scrollDistance <= 0) return;
+    const paddingTop = parseInt(getStyleElement(this.discussionContainer, "padding-top"));
+    this.discussionContainer.style.paddingBottom = `calc(100vh - ${scrollDistance + paddingTop}px)`;
+    document.body.scrollTop = document.documentElement.scrollTop = document.body.scrollHeight;
+    this.isAutoScrollActive = true;
   }
 
   async onLoad() {
@@ -457,6 +483,9 @@ export default class Discussion {
       const { container } = await this.history.getHistory({ uuid });
       this.discussionContainer.appendChild(container);
       this.makePreviousElementsScrollUp();
+      setTimeout(() => {
+        this.removeUnuusedBottomScroll();
+      }, 1000);
       resolve();
     });
   }
@@ -548,8 +577,17 @@ export default class Discussion {
   addListeners() {
     window.addEventListener("load", this.onLoad());
 
+    // Check if the user is scrolling
+
     window.addEventListener("scroll", () => {
-      this.isAutoScrollActive = false;
+      const scrollY = window.scrollY + window.innerHeight;
+      // TODO remove it
+      const pageHeight = document.body.scrollHeight;
+      const scrollDistance = pageHeight - scrollY;
+      if (scrollDistance > 200) {
+        this.isAutoScrollActive = false;
+      }
+
       if (window.scrollY === 0) this.onScrollTop();
     });
 
@@ -575,7 +613,13 @@ export default class Discussion {
     );
 
     window.addEventListener("load", this.onLoad.bind(this));
-    const resizeObserver = new ResizeObserver(this.updateScroll.bind(this));
+
+    const resizeObserver = new ResizeObserver(this.onChangeHeightDiscussionContainer.bind(this));
     resizeObserver.observe(this.discussionContainer);
+
+    const observer = new MutationObserver((mutationsList) => {
+      this.onUserContainerAppend(mutationsList);
+    });
+    observer.observe(this.discussionContainer, { childList: true });
   }
 }

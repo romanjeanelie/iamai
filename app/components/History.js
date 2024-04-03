@@ -251,6 +251,7 @@ export default class History {
 
     // Create UI elements
     const container = this.createUIElements(elements.results);
+    container.classList.add("history__container");
 
     this.isSet = true;
     this.isFetching = false;
