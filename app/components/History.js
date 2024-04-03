@@ -121,9 +121,11 @@ export default class History {
     }
   }
 
-  async getStatusesTask({ micro_thread_id, order = "asc" }) {
+  async getStatusesTask({ micro_thread_id, start = 0, size  = 50, order = "asc" }) {
     const params = {
       micro_thread_id,
+      start,
+      size,
       order,
     };
     const { data, error } = await fetcher({ url: URL_AGENT_STATUS, params });
