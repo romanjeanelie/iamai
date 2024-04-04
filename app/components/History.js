@@ -34,15 +34,15 @@ export default class History {
     const resultsContainer = document.createElement("div");
 
     statuses.forEach((status) => {
-      if (status.status === API_STATUSES.ANSWERED) {
-        const answerContainer = document.createElement("div");
-        answerContainer.innerHTML = status.response_json.text || "";
-        resultsContainer.prepend(answerContainer);
-      }
       if (status.type === "ui") {
         const results = status.response_json;
         const uiResults = this.getTaskResultUI(results);
         resultsContainer.appendChild(uiResults);
+      }
+      if (status.status === API_STATUSES.ANSWERED) {
+        const answerContainer = document.createElement("div");
+        answerContainer.innerHTML = status.response_json.text || "";
+        resultsContainer.append(answerContainer);
       }
     });
 
