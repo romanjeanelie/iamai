@@ -121,7 +121,7 @@ export default class History {
     }
   }
 
-  async getStatusesTask({ micro_thread_id, start = 0, size  = 50, order = "asc" }) {
+  async getStatusesTask({ micro_thread_id, start = 0, size = 50, order = "asc" }) {
     const params = {
       micro_thread_id,
       start,
@@ -196,7 +196,6 @@ export default class History {
       if (isTaskViewed(element) && element.resultsContainer) {
         const AIContainer = document.createElement("div");
         AIContainer.classList.add("discussion__ai");
-        AIContainer.innerHTML = element.assistant;
         AIContainer.appendChild(element.resultsContainer);
         container.appendChild(AIContainer);
       } else if (element.assistant.length > 0) {
@@ -236,7 +235,6 @@ export default class History {
     this.isFetching = true;
     // Get elements
     const elements = await this.getAllElements({ uuid, size, start: this.newStart });
-    const tempElements = await this.getAllElements({ uuid, size: size * 3, start: this.newStart });
     // Reverse the order of elements
     elements.results.reverse();
 
