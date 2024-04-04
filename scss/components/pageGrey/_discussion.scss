@@ -38,13 +38,13 @@
   /* for Internet Explorer and Edge */
   //   padding-bottom: 124px;
   padding-top: 55px;
-  //   padding-bottom: calc(100vh - 55px);
+  padding-bottom: calc(100vh - 55px);
 
   @include media("<tablet") {
     // max-width: 95vw;
     padding: 0 8px;
     // padding-bottom: 80px;
-    // padding-bottom: calc(100vh - 76px);
+    padding-bottom: calc(100vh - 76px);
     // padding-bottom: 100vh;
     padding-top: 76px;
 
