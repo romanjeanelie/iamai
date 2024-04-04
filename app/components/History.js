@@ -31,15 +31,18 @@ export default class History {
   }
 
   getResultsUI(statuses) {
-    let resultsContainer = null;
+    const resultsContainer = document.createElement("div");
 
     statuses.forEach((status) => {
+      if (status.status === API_STATUSES.ANSWERED) {
+        const answerContainer = document.createElement("div");
+        answerContainer.innerHTML = status.response_json.text || "";
+        resultsContainer.prepend(answerContainer);
+      }
       if (status.type === "ui") {
         const results = status.response_json;
-        resultsContainer = this.getTaskResultUI(results);
-      } else if (status.status === API_STATUSES.ANSWERED) {
-        resultsContainer = document.createElement("div");
-        resultsContainer.innerHTML = status.response_json.text || "";
+        const uiResults = this.getTaskResultUI(results);
+        resultsContainer.appendChild(uiResults);
       }
     });
 
@@ -187,7 +190,7 @@ export default class History {
           container.appendChild(userContainer);
         }
 
-        if (isTask(element)) {
+        if (isTask(element) && !isTaskViewed(element)) {
           userContainer.setAttribute("taskKey", element.micro_thread_id);
           userContainer.classList.add("discussion__user--task-created");
         }
