@@ -1,0 +1,55 @@
+.accorHotels__container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-column-gap: 24px;
+  grid-row-gap: 32px; // Vertical gap
+  margin-top: 40px;
+}
+
+.accorHotels__hotel-card {
+  height: 343px;
+  background-color: $backgroundColorGreyPage;
+  border-radius: 16px;
+}
+
+.accorHotels__more-btn {
+  padding: 4px 12px;
+  border: solid 1px $accorMain;
+  border-radius: 4px;
+  margin: 48px auto 0;
+}
+
+.accorHotels__bg-img-container {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+
+  p {
+    margin-left: min(15vw, 220px);
+    position: inherit;
+    z-index: 1;
+    font-size: 96px;
+    font-weight: 600;
+    line-height: 100px;
+    letter-spacing: 0.5px;
+    color: white;
+  }
+}
+
+.accorHotels__bg-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  height: 100svh;
+
+  img {
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+}
