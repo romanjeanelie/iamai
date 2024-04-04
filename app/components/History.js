@@ -31,15 +31,18 @@ export default class History {
   }
 
   getResultsUI(statuses) {
-    let resultsContainer = null;
+    const resultsContainer = document.createElement("div");
 
     statuses.forEach((status) => {
       if (status.type === "ui") {
         const results = status.response_json;
-        resultsContainer = this.getTaskResultUI(results);
-      } else if (status.status === API_STATUSES.ANSWERED) {
-        resultsContainer = document.createElement("div");
-        resultsContainer.innerHTML = status.response_json.text || "";
+        const uiResults = this.getTaskResultUI(results);
+        resultsContainer.appendChild(uiResults);
+      }
+      if (status.status === API_STATUSES.ANSWERED) {
+        const answerContainer = document.createElement("div");
+        answerContainer.innerHTML = status.response_json.text || "";
+        resultsContainer.append(answerContainer);
       }
     });
 
@@ -121,9 +124,11 @@ export default class History {
     }
   }
 
-  async getStatusesTask({ micro_thread_id, order = "asc" }) {
+  async getStatusesTask({ micro_thread_id, start = 0, size = 50, order = "asc" }) {
     const params = {
       micro_thread_id,
+      start,
+      size,
       order,
     };
     const { data, error } = await fetcher({ url: URL_AGENT_STATUS, params });
@@ -185,7 +190,7 @@ export default class History {
           container.appendChild(userContainer);
         }
 
-        if (isTask(element)) {
+        if (isTask(element) && !isTaskViewed(element)) {
           userContainer.setAttribute("taskKey", element.micro_thread_id);
           userContainer.classList.add("discussion__user--task-created");
         }
@@ -194,7 +199,6 @@ export default class History {
       if (isTaskViewed(element) && element.resultsContainer) {
         const AIContainer = document.createElement("div");
         AIContainer.classList.add("discussion__ai");
-        AIContainer.innerHTML = element.assistant;
         AIContainer.appendChild(element.resultsContainer);
         container.appendChild(AIContainer);
       } else if (element.assistant.length > 0) {
@@ -234,7 +238,6 @@ export default class History {
     this.isFetching = true;
     // Get elements
     const elements = await this.getAllElements({ uuid, size, start: this.newStart });
-    const tempElements = await this.getAllElements({ uuid, size: size * 3, start: this.newStart });
     // Reverse the order of elements
     elements.results.reverse();
 

@@ -372,13 +372,13 @@ export default class Discussion {
     // });
   }
 
-  makePreviousElementsScrollUp() {
+  makePreviousElementsScrollUp({ isSmooth = true } = {}) {
     const paddingTop = parseInt(getStyleElement(this.discussionContainer, "padding-top"));
     this.discussionContainer.style.paddingBottom = `calc(100vh - ${paddingTop}px)`;
 
     window.scrollTo({
       top: document.body.scrollHeight,
-      behavior: "smooth",
+      behavior: isSmooth ? "smooth" : "auto",
     });
     // setTimeout(() => {
     //   this.isAutoScrollActive = true;
@@ -482,7 +482,7 @@ export default class Discussion {
     return new Promise(async (resolve, reject) => {
       const { container } = await this.history.getHistory({ uuid });
       this.discussionContainer.appendChild(container);
-      this.makePreviousElementsScrollUp();
+      this.makePreviousElementsScrollUp({ isSmooth: false });
       setTimeout(() => {
         this.removeUnuusedBottomScroll();
       }, 1000);
