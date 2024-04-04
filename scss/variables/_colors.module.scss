@@ -12,6 +12,11 @@ $colorBlackForGreyPage: rgba(0, 0, 0, 0.4);
 $blogMainColor: rgba(0, 0, 0, 0.4);
 $colorGrey: #c2c2c2;
 
+// Accor colors
+$accorMain: rgba(18, 17, 49, 1);
+$accorSecondary: rgba(18, 17, 49, 0.6);
+$accorLight: rgba(18, 17, 49, 0.4);
+
 :export {
   colorMain: $colorMain;
   backgroundColorBluePage: $backgroundColorBluePage;

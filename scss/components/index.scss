@@ -40,6 +40,11 @@
   @import "./pageBlog/blogText";
 }
 
+.page-accor {
+  @import "./pageAccor/accorCommon";
+  @import "./pageAccor/accorNavbar";
+}
+
 .page-languages {
   @import "./pageLanguages/languagesPage";
 }

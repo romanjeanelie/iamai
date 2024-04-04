@@ -1,0 +1,128 @@
+.accorNavbar__container {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  padding: 20px 24px 32px;
+
+  @include media("<tablet") {
+    grid-template-columns: 1fr;
+  }
+}
+
+.accorNavbar__item {
+  grid-column: span 2;
+  display: flex;
+  align-items: center;
+}
+
+.accorNavbar__logo {
+  width: 80px;
+  padding: 8px 10px;
+  margin-left: 16px;
+  @include media("<tablet") {
+    display: none;
+  }
+}
+
+.accorNavbar__navlist {
+  justify-content: end;
+  gap: 8px;
+
+  li {
+    padding: 6px 16px;
+  }
+
+  @include media("<tablet") {
+    display: none;
+  }
+}
+
+.accorSearchBar__container {
+  grid-column: span 6;
+  justify-content: center;
+  gap: 24px;
+}
+
+.accorSearchBar__item-container {
+  border-radius: 60px;
+  padding: 10px;
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.08);
+
+  & > * {
+    align-self: center;
+  }
+}
+
+.accorSearchBar__callBar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.accorSearchBar__write-btn {
+  margin-left: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+  letter-spacing: 0.5px;
+  text-align: left;
+
+  span {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 0.5px;
+    color: $accorLight;
+  }
+}
+
+.accorSearchBar__expand-btn {
+  background-color: rgba(18, 17, 49, 0.24);
+  border-radius: 50px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  transition: background-color 0.2s ease-out;
+
+  img {
+    width: 10px;
+  }
+
+  &:hover {
+    background-color: rgba(18, 17, 49, 0.48);
+  }
+}
+
+.accorSearchBar__phone-btn {
+  background-color: $accorSecondary;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-self: end;
+  border-radius: 50px;
+  transition: background-color 0.2s ease-out;
+
+  img {
+    width: 16px;
+  }
+
+  &:hover {
+    background-color: $accorMain;
+  }
+}
+
+.accorSearchBar__advanced-btn {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: 0.5px;
+  color: $accorSecondary;
+  transition: color 0.2s ease-out;
+
+  &:hover {
+    color: $accorMain;
+  }
+}

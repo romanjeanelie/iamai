@@ -158,6 +158,14 @@ button {
   background-color: $colorMain;
 }
 
+.page-accor {
+  background-color: white;
+  color: $accorMain;
+  overflow-x: hidden;
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
 // Debug
 .dg.ac {
   z-index: 100 !important;
