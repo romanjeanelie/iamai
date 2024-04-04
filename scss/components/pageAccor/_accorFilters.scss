@@ -1,0 +1,43 @@
+.accorFilters__container {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.16);
+  padding: 16px 0;
+
+  @include media("<tablet") {
+    padding: 0px 0px 16px;
+  }
+
+  .accor__container {
+    overflow-x: hidden;
+  }
+}
+
+.accorFilters__items-container {
+  display: flex;
+  gap: 36px;
+}
+
+.accorFilters__item {
+  opacity: 0.6;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: opacity 0.2s ease-out;
+  cursor: pointer;
+
+  img {
+    height: 24px;
+    aspect-ratio: 1/1;
+    width: auto;
+  }
+
+  p {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 0.5px;
+  }
+
+  &:hover {
+    opacity: 1;
+  }
+}

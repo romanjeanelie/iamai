@@ -45,7 +45,6 @@ img {
 .accor__container {
   max-width: 1077px;
   margin: 0 auto;
-  height: 200vh;
 
   @include media("<large") {
     margin: 0 clamp(24px, 4vw, 108px);
