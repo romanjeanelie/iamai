@@ -13,9 +13,9 @@
 }
 
 .accorHotels__more-btn {
-  padding: 4px 12px;
-  border: solid 1px $accorMain;
-  border-radius: 4px;
+  padding: 10px 27px;
+  border: solid 2px $accorMain;
+  border-radius: 12px;
   margin: 48px auto 0;
 }
 
@@ -51,5 +51,67 @@
     min-height: 100%;
     object-fit: cover;
     object-position: center;
+  }
+}
+
+.accorBreaks {
+  h5 {
+    padding-top: 10px;
+  }
+
+  h2 {
+    margin-top: 24px;
+  }
+}
+
+.accorBreaks__container {
+  margin-top: 60px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.accorBreaks__item {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.accorBreaks__item-location {
+  height: 200px;
+  background-image: url("/public/images/accor/bg-islands.png"); // will be set through js later
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 40px;
+    letter-spacing: 0.5px;
+    color: white;
+  }
+}
+
+.accorBreaks__item-footer {
+  background-color: rgba(248, 246, 242, 1);
+  padding: 8px 0 16px;
+
+  p {
+    text-align: center;
+  }
+
+  .accorBreaks__item-price {
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 40px;
+    letter-spacing: 1px;
+  }
+
+  .accorBreaks__item-currency {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0.800000011920929px;
   }
 }

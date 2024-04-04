@@ -9,6 +9,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 // TO DO
+// [] set up the city breaks with initCityBreaks
 // [] manage all the different states for the search bar (create a search bar class)
 // [] manage the filters carousel
 var Accor =
