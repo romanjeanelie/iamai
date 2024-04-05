@@ -21,7 +21,20 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var isMobile = window.innerWidth < 640;
-var heroData = ["TLDR", "Introducing CO* <br /> World’s First <br /> Personal AI Assistant.", "Revolutionise how you <br /> get things done.", "CO* converses <br class='mobile-break' /> naturally and <br class='desktop-break' /> tackles real-world tasks like a <br class='desktop-break' /> human assistant.", "Get instant answers. <br /> Not search results. ", "Experience true multitasking.", "CO* effortlessly <br class='sm-mobile-break' /> juggles multiple <br class='desktop-break' /> conversations and <br class='sm-mobile-break' /> tasks <br class='desktop-break' /> maximising <br class='sm-mobile-break' />  your time <br class='desktop-break' /> and efficiency.", "CO* is massively multilingual <br/> Speaks several languages fluently.", "Powered by open-source <br class='desktop-break' /> innovation.", "Our expert fine-tuning <br class='sm-mobile-break' /> of LlaMA <br class='desktop-break' /> 70B  <br class='sm-mobile-break' /> model has <br /> created a powerful <br /> Personal AI Assistant.", "With <br /> Advanced planning. Advanced <br class='desktop-break' /> reasoning. Task execution.", "CO* tackles <br class='sm-mobile-break' />  complex tasks. <br />  Breaks tasks down. Execute steps. <br /> Adapts on the fly <br class='sm-mobile-break' />  for <br class='desktop-break' /> successful completion.", "We all want more <br class='sm-mobile-break' />  time, less hassle.<br /> That's why we <br class='sm-mobile-break' />  created CO*", "Personal <br class='sm-mobile-break' />  AI Assistant <br class='sm-mobile-break' />  For Everyone."];
+var heroData = ["TLDR" // "Introducing CO* <br /> World’s First <br /> Personal AI Assistant.",
+// "Revolutionise how you <br /> get things done.",
+// "CO* converses <br class='mobile-break' /> naturally and <br class='desktop-break' /> tackles real-world tasks like a <br class='desktop-break' /> human assistant.",
+// "Get instant answers. <br /> Not search results. ",
+// "Experience true multitasking.",
+// "CO* effortlessly <br class='sm-mobile-break' /> juggles multiple <br class='desktop-break' /> conversations and <br class='sm-mobile-break' /> tasks <br class='desktop-break' /> maximising <br class='sm-mobile-break' />  your time <br class='desktop-break' /> and efficiency.",
+// "CO* is massively multilingual <br/> Speaks several languages fluently.",
+// "Powered by open-source <br class='desktop-break' /> innovation.",
+// "Our expert fine-tuning <br class='sm-mobile-break' /> of LlaMA <br class='desktop-break' /> 70B  <br class='sm-mobile-break' /> model has <br /> created a powerful <br /> Personal AI Assistant.",
+// "With <br /> Advanced planning. Advanced <br class='desktop-break' /> reasoning. Task execution.",
+// "CO* tackles <br class='sm-mobile-break' />  complex tasks. <br />  Breaks tasks down. Execute steps. <br /> Adapts on the fly <br class='sm-mobile-break' />  for <br class='desktop-break' /> successful completion.",
+// "We all want more <br class='sm-mobile-break' />  time, less hassle.<br /> That's why we <br class='sm-mobile-break' />  created CO*",
+// "Personal <br class='sm-mobile-break' />  AI Assistant <br class='sm-mobile-break' />  For Everyone.",
+];
 var slider1Data = [{
   id: 1,
   video: "https://player.vimeo.com/progressive_redirect/playback/924982744/rendition/720p/file.mp4?loc=external&signature=c55335972741066a22d9cd5365a00153e41eea2cd679367676a90ddd8361f504",
@@ -113,15 +126,18 @@ function () {
     this.blogMarquees = document.querySelectorAll(".blogMarquee__app-marquee");
     this.slidersSection = document.querySelector(".blogSliders__container");
     this.preloader = document.querySelector(".blog__preload");
+    this.blogAssistantSection = document.querySelector(".blog__assistantVideo-container");
     this.initHeroSections();
     this.pinNavbar();
     this.initSliders();
     this.initScrollAnims();
+    this.initAssistantVideoAnim();
     this.playStaticVideosWhenOnScreen(); // this.preloadStaticVideos();
     // Scroll to top of the page
 
     window.scrollTo({
-      top: 0,
+      // top: 0,
+      top: this.blogAssistantSection.offsetTop,
       duration: 0
     });
     this.preloader.style.display = "none";
@@ -238,6 +254,58 @@ function () {
 
       var blogCards = document.querySelectorAll(".blogCards__card");
       (0, _BlogAnimations.staircaseAnimation)(blogCards);
+    }
+  }, {
+    key: "initAssistantVideoAnim",
+    value: function initAssistantVideoAnim() {
+      var title = this.blogAssistantSection.querySelector("h1");
+      var video = this.blogAssistantSection.querySelectorAll("video");
+
+      _gsap["default"].set(title, {
+        opacity: 0,
+        y: 20
+      });
+
+      _ScrollTrigger["default"].create({
+        trigger: this.blogAssistantSection,
+        top: "top top",
+        end: "bottom top",
+        pin: true
+      }); // title animation
+
+
+      _gsap["default"].fromTo(title, {
+        opacity: 0,
+        y: 20
+      }, {
+        opacity: 1,
+        y: 0,
+        scrollTrigger: {
+          trigger: this.blogAssistantSection,
+          start: "top 30%",
+          end: "top 5%",
+          markers: true,
+          toggleActions: "play none play reverse ",
+          onLeave: function onLeave() {
+            _gsap["default"].to(title, {
+              opacity: 0,
+              y: -20
+            });
+
+            video.play();
+          }
+        }
+      }); // gsap.to(title, {
+      //   opacity: 0,
+      //   y: -50,
+      //   scrollTrigger: {
+      //     trigger: this.blogAssistantSection,
+      //     start: "top 40%",
+      //     markers: true,
+      //     toggleActions: "play none play reverse ",
+      //   },
+      // });
+
     }
   }, {
     key: "playStaticVideosWhenOnScreen",

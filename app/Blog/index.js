@@ -19,19 +19,19 @@ const isMobile = window.innerWidth < 640;
 
 const heroData = [
   "TLDR",
-  "Introducing CO* <br /> World’s First <br /> Personal AI Assistant.",
-  "Revolutionise how you <br /> get things done.",
-  "CO* converses <br class='mobile-break' /> naturally and <br class='desktop-break' /> tackles real-world tasks like a <br class='desktop-break' /> human assistant.",
-  "Get instant answers. <br /> Not search results. ",
-  "Experience true multitasking.",
-  "CO* effortlessly <br class='sm-mobile-break' /> juggles multiple <br class='desktop-break' /> conversations and <br class='sm-mobile-break' /> tasks <br class='desktop-break' /> maximising <br class='sm-mobile-break' />  your time <br class='desktop-break' /> and efficiency.",
-  "CO* is massively multilingual <br/> Speaks several languages fluently.",
-  "Powered by open-source <br class='desktop-break' /> innovation.",
-  "Our expert fine-tuning <br class='sm-mobile-break' /> of LlaMA <br class='desktop-break' /> 70B  <br class='sm-mobile-break' /> model has <br /> created a powerful <br /> Personal AI Assistant.",
-  "With <br /> Advanced planning. Advanced <br class='desktop-break' /> reasoning. Task execution.",
-  "CO* tackles <br class='sm-mobile-break' />  complex tasks. <br />  Breaks tasks down. Execute steps. <br /> Adapts on the fly <br class='sm-mobile-break' />  for <br class='desktop-break' /> successful completion.",
-  "We all want more <br class='sm-mobile-break' />  time, less hassle.<br /> That's why we <br class='sm-mobile-break' />  created CO*",
-  "Personal <br class='sm-mobile-break' />  AI Assistant <br class='sm-mobile-break' />  For Everyone.",
+  // "Introducing CO* <br /> World’s First <br /> Personal AI Assistant.",
+  // "Revolutionise how you <br /> get things done.",
+  // "CO* converses <br class='mobile-break' /> naturally and <br class='desktop-break' /> tackles real-world tasks like a <br class='desktop-break' /> human assistant.",
+  // "Get instant answers. <br /> Not search results. ",
+  // "Experience true multitasking.",
+  // "CO* effortlessly <br class='sm-mobile-break' /> juggles multiple <br class='desktop-break' /> conversations and <br class='sm-mobile-break' /> tasks <br class='desktop-break' /> maximising <br class='sm-mobile-break' />  your time <br class='desktop-break' /> and efficiency.",
+  // "CO* is massively multilingual <br/> Speaks several languages fluently.",
+  // "Powered by open-source <br class='desktop-break' /> innovation.",
+  // "Our expert fine-tuning <br class='sm-mobile-break' /> of LlaMA <br class='desktop-break' /> 70B  <br class='sm-mobile-break' /> model has <br /> created a powerful <br /> Personal AI Assistant.",
+  // "With <br /> Advanced planning. Advanced <br class='desktop-break' /> reasoning. Task execution.",
+  // "CO* tackles <br class='sm-mobile-break' />  complex tasks. <br />  Breaks tasks down. Execute steps. <br /> Adapts on the fly <br class='sm-mobile-break' />  for <br class='desktop-break' /> successful completion.",
+  // "We all want more <br class='sm-mobile-break' />  time, less hassle.<br /> That's why we <br class='sm-mobile-break' />  created CO*",
+  // "Personal <br class='sm-mobile-break' />  AI Assistant <br class='sm-mobile-break' />  For Everyone.",
 ];
 
 const slider1Data = [
@@ -139,8 +139,8 @@ const data = [
 
 const videoData = [
   isMobile
-    ? "https://player.vimeo.com/progressive_redirect/playback/924947253/rendition/540p/file.mp4?loc=external&signature=1ac3b9615414a3836482d3065790a9f4477d850995f5d7e54d32f81d2cec1a43"
-    : "https://player.vimeo.com/progressive_redirect/playback/924947288/rendition/720p/file.mp4?loc=external&signature=ab23a22926dedd5ed226323655c0b85676d3a4856746fe10aef74fb1552eaafe",
+    ? "https://res.cloudinary.com/dfdqiqn98/video/upload/q_auto:best/v1712314254/blog/COstarSeq02Mobile01_tbpni9.mp4"
+    : "https://res.cloudinary.com/dfdqiqn98/video/upload/q_auto:best/v1712314224/blog/COstarSeq02_02_zeb2bd.mp4",
   isMobile
     ? "https://player.vimeo.com/progressive_redirect/playback/924982717/rendition/480p/file.mp4?loc=external&signature=8619fc24410a36d101d0290fb232f644ae087db9bb47dd7f6673e85b92b4a633"
     : "https://player.vimeo.com/progressive_redirect/playback/924982649/rendition/360p/file.mp4?loc=external&signature=238d6fa86e19d03bb6b6a4ac9b4c92c64eb1ee769062b1b0d4435370d645e9f3",
@@ -162,11 +162,13 @@ class Blog {
     this.blogMarquees = document.querySelectorAll(".blogMarquee__app-marquee");
     this.slidersSection = document.querySelector(".blogSliders__container");
     this.preloader = document.querySelector(".blog__preload");
+    this.blogAssistantSection = document.querySelector(".blog__assistantVideo-container");
 
     this.initHeroSections();
     this.pinNavbar();
     this.initSliders();
     this.initScrollAnims();
+    this.initAssistantVideoAnim();
     this.playStaticVideosWhenOnScreen();
 
     // this.preloadStaticVideos();
@@ -174,6 +176,7 @@ class Blog {
     // Scroll to top of the page
     window.scrollTo({
       top: 0,
+      // top: this.blogAssistantSection.offsetTop,
       duration: 0,
     });
 
@@ -284,6 +287,51 @@ class Blog {
     // ---- anim E - Staircase Animation ----
     const blogCards = document.querySelectorAll(".blogCards__card");
     staircaseAnimation(blogCards);
+  }
+
+  initAssistantVideoAnim() {
+    const title = this.blogAssistantSection.querySelector("h1");
+    const videos = this.blogAssistantSection.querySelectorAll("video");
+    const videoDesktop = this.blogAssistantSection.querySelector(".desktop-video");
+    const videoMobile = this.blogAssistantSection.querySelector(".mobile-video");
+
+    gsap.set(title, { opacity: 0, y: 20 });
+    gsap.set(videos, { opacity: 0.5 });
+
+    ScrollTrigger.create({
+      trigger: this.blogAssistantSection,
+      top: "top top",
+      end: "bottom center",
+      pin: true,
+    });
+
+    // title animation
+    gsap.fromTo(
+      title,
+      { opacity: 0, y: 20 },
+      {
+        opacity: 1,
+        y: 0,
+        scrollTrigger: {
+          trigger: this.blogAssistantSection,
+          start: "top 30%",
+          end: "top 5%",
+          toggleActions: "play none play reverse ",
+          onLeave: () => {
+            gsap.to(title, { opacity: 0, y: -20 });
+            gsap.to(videos, { opacity: 1 });
+            videoDesktop?.play();
+            videoMobile?.play();
+          },
+          onEnterBack: () => {
+            gsap.to(title, { opacity: 1, y: 0 });
+            gsap.to(videos, { opacity: 0.5 });
+            videoDesktop?.pause();
+            videoMobile?.pause();
+          },
+        },
+      }
+    );
   }
 
   playStaticVideosWhenOnScreen() {
