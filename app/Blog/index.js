@@ -20,7 +20,7 @@ const isMobile = window.innerWidth < 640;
 // TO DO
 // [X] block the video when scroll past it
 // [X] add the unmute/mute button to the video
-// [] push the tryCoStart Button after the clock video
+// [X] push the tryCoStart Button after the clock video
 // [] hide the tryCoStar button when on highlight video + any of the sliders
 // [] add a mute / unmute btn to the videos
 // [] link it to them all
@@ -37,6 +37,7 @@ class Blog {
     this.isMobile = window.innerWidth < 820;
 
     // DOM Elements
+    this.navbar = document.querySelector("nav");
     this.heroContainer = document.querySelector(".blogHero__container");
     this.blogLottieAnimation = document.querySelector(".blogHero__lottieAnimation");
     this.blogMarquees = document.querySelectorAll(".blogMarquee__app-marquee");
@@ -100,6 +101,10 @@ class Blog {
     newSliders.forEach((slide, idx) => {
       new BlogSlider({ sliderData: data[idx].sliderData, container: slide });
     });
+  }
+
+  toggleNavbar() {
+    this.navbar.classList.toggle("hidden");
   }
 
   pinNavbar() {
@@ -199,11 +204,19 @@ class Blog {
       trigger: this.blogAssistantSection,
       top: "top 5%",
       end: "bottom+=50% top",
+      onEnter: () => {
+        this.toggleNavbar();
+      },
       onEnterBack: () => {
+        this.toggleNavbar();
         playVideo();
       },
       onLeave: () => {
+        this.toggleNavbar();
         pauseVideo();
+      },
+      onLeaveBack: () => {
+        this.toggleNavbar();
       },
     });
 
