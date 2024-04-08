@@ -1,2 +1,40 @@
-.accorPartners__container {
+.accorPartners__partners-wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.accorPartners__partner {
+  h3 {
+    margin: 32px 0 16px;
+  }
+
+  p {
+    color: $accorLight;
+  }
+}
+
+.accorPartners__partner-logo {
+  background-color: $backgroundColorGreyPage;
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 180px;
+
+  img {
+    max-width: 75%;
+  }
+
+  &.qatar img {
+    max-width: 85%;
+  }
+
+  &.europcar img {
+    max-width: 100%;
+  }
+
+  &.europcar {
+    background-color: #0e8102;
+  }
 }

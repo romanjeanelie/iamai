@@ -26,6 +26,7 @@
   overflow: hidden;
   display: flex;
   align-items: center;
+  background-image: url("/images/accor/bg-islands.png");
 
   p {
     margin-left: min(15vw, 220px);
@@ -39,33 +40,13 @@
   }
 }
 
-.accorHotels__bg-img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  height: 100svh;
-
-  img {
-    min-width: 100%;
-    min-height: 100%;
-    object-fit: cover;
-    object-position: center;
-  }
-}
-
 .accorBreaks {
   h5 {
     padding-top: 10px;
   }
-
-  h2 {
-    margin-top: 24px;
-  }
 }
 
 .accorBreaks__container {
-  margin-top: 60px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   column-gap: 24px;
