@@ -13,9 +13,10 @@ $blogMainColor: rgba(0, 0, 0, 0.4);
 $colorGrey: #c2c2c2;
 
 // Accor colors
-$accorMain: rgba(18, 17, 49, 1);
-$accorSecondary: rgba(18, 17, 49, 0.6);
-$accorLight: rgba(18, 17, 49, 0.4);
+$accorMain: rgb(18, 17, 49);
+$accorLight: rgba(18, 17, 49, 0.6);
+$accorExtraLight: rgba(18, 17, 49, 0.4);
+$accorSecondary: #f9cc7d;
 
 :export {
   colorMain: $colorMain;

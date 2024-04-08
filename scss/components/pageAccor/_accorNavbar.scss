@@ -70,7 +70,7 @@
     font-weight: 500;
     line-height: 16px;
     letter-spacing: 0.5px;
-    color: $accorLight;
+    color: $accorExtraLight;
   }
 }
 
@@ -95,7 +95,7 @@
 }
 
 .accorSearchBar__phone-btn {
-  background-color: $accorSecondary;
+  background-color: $accorLight;
   width: 40px;
   height: 40px;
   display: flex;
@@ -119,7 +119,7 @@
   font-weight: 500;
   line-height: 20px;
   letter-spacing: 0.5px;
-  color: $accorSecondary;
+  color: $accorLight;
   transition: color 0.2s ease-out;
 
   &:hover {

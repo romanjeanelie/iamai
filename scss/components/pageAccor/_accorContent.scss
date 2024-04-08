@@ -10,7 +10,7 @@
   }
 
   p {
-    color: $accorLight;
+    color: $accorExtraLight;
   }
 }
 
@@ -36,5 +36,15 @@
 
   &.europcar {
     background-color: #0e8102;
+  }
+}
+
+.accorOffers__container {
+  background-color: $accorMain;
+  color: $accorSecondary;
+  padding: 120px 220px;
+
+  h5 {
+    color: $accorSecondary;
   }
 }
