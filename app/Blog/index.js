@@ -45,9 +45,9 @@ const slider1Data = [
   {
     id: 1,
     video:
-      "https://player.vimeo.com/progressive_redirect/playback/924982744/rendition/720p/file.mp4?loc=external&signature=c55335972741066a22d9cd5365a00153e41eea2cd679367676a90ddd8361f504",
+      "https://res.cloudinary.com/dfdqiqn98/video/upload/q_auto:best/v1712325504/Desktop_Zoom_In_ChatGPT_q9c27m.mp4",
     videoMobile:
-      "https://player.vimeo.com/progressive_redirect/playback/924982589/rendition/720p/file.mp4?loc=external&signature=bed79de08eaae0b9c19e2c8acf024a35be1f25b844ed618588086d8dc5434d2b",
+      "https://res.cloudinary.com/dfdqiqn98/video/upload/q_auto:best/v1712326125/Mobile_Zoom_In_ChatGPT_msk62g.mp4",
     description: "ChatGPT in action.",
   },
   {
