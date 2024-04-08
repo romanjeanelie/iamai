@@ -68,6 +68,8 @@
   margin-top: 60px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  column-gap: 24px;
+  row-gap: 32px;
 }
 
 .accorBreaks__item {
@@ -77,7 +79,7 @@
 
 .accorBreaks__item-location {
   height: 200px;
-  background-image: url("/public/images/accor/bg-islands.png"); // will be set through js later
+  // background-image: url("/public/images/accor/bg-islands.png"); // will be set through js later
   background-position: center;
   background-size: cover;
   display: flex;

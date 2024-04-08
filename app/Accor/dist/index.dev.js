@@ -21,10 +21,13 @@ function () {
     // States
     this.filterSelected = ""; // DOM Elements
 
-    this.filterContainer = document.querySelector(".accorFilters__items-container"); // Init
+    this.filterContainer = document.querySelector(".accorFilters__items-container");
+    this.cityBreaksContainer = document.querySelector(".accorBreaks__container"); // Init
 
     this.initFilters();
-  }
+    this.initCityBreaks();
+  } // ------ Filters Section ------
+
 
   _createClass(Accor, [{
     key: "initFilters",
@@ -48,8 +51,17 @@ function () {
   }, {
     key: "updateSelectedFilter",
     value: function updateSelectedFilter(filter) {
-      console.log("".concat(filter, " is selected"));
       this.filterSelected = filter;
+    } // ------ City Breaks Section ------
+
+  }, {
+    key: "initCityBreaks",
+    value: function initCityBreaks() {
+      var _this2 = this;
+
+      _accorData.cityBreaksData.forEach(function (cityBreak) {
+        _this2.cityBreaksContainer.innerHTML += "\n      <div class=\"accorBreaks__item\">\n        <div\n          class=\"accorBreaks__item-location\"\n          style=\"background-image: url('".concat(cityBreak.bg, "')\"\n        >\n          <p>").concat(cityBreak.city, "</p>\n        </div>\n        <div class=\"accorBreaks__item-footer\">\n          <p class=\"accorBreaks__item-price\">\n            ").concat(cityBreak.price, "\n          </p>\n          <p class=\"accorBreaks__item-currency\">\n            ").concat(cityBreak.currency, "\n          </p>\n        </div>\n      </div>\n      ");
+      });
     }
   }]);
 

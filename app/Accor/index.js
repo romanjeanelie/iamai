@@ -1,4 +1,4 @@
-import { filtersArray } from "./accorData";
+import { filtersArray, cityBreaksData } from "./accorData";
 
 // TO DO
 // [] set up the city breaks with initCityBreaks
@@ -12,11 +12,14 @@ class Accor {
 
     // DOM Elements
     this.filterContainer = document.querySelector(".accorFilters__items-container");
+    this.cityBreaksContainer = document.querySelector(".accorBreaks__container");
 
     // Init
     this.initFilters();
+    this.initCityBreaks();
   }
 
+  // ------ Filters Section ------
   initFilters() {
     filtersArray.forEach((filter) => {
       const filterContainer = document.createElement("li");
@@ -39,8 +42,31 @@ class Accor {
   }
 
   updateSelectedFilter(filter) {
-    console.log(`${filter} is selected`);
     this.filterSelected = filter;
+  }
+
+  // ------ City Breaks Section ------
+  initCityBreaks() {
+    cityBreaksData.forEach((cityBreak) => {
+      this.cityBreaksContainer.innerHTML += `
+      <div class="accorBreaks__item">
+        <div
+          class="accorBreaks__item-location"
+          style="background-image: url('${cityBreak.bg}')"
+        >
+          <p>${cityBreak.city}</p>
+        </div>
+        <div class="accorBreaks__item-footer">
+          <p class="accorBreaks__item-price">
+            ${cityBreak.price}
+          </p>
+          <p class="accorBreaks__item-currency">
+            ${cityBreak.currency}
+          </p>
+        </div>
+      </div>
+      `;
+    });
   }
 }
 
