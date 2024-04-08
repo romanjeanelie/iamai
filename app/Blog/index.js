@@ -17,6 +17,13 @@ import {
 
 const isMobile = window.innerWidth < 640;
 
+// TO DO
+// [] block the video when scroll past it
+// [] add the unmute/mute button to the video
+// [] compress the too large size videos
+// [] upload them to cloudinary
+// [] manage all the videos in the blog page
+
 const heroData = [
   "TLDR",
   "Introducing CO* <br /> World’s First <br /> Personal AI Assistant.",
@@ -25,11 +32,11 @@ const heroData = [
   "Get instant answers. <br /> Not search results. ",
   "Experience true multitasking.",
   "CO* effortlessly <br class='sm-mobile-break' /> juggles multiple <br class='desktop-break' /> conversations and <br class='sm-mobile-break' /> tasks <br class='desktop-break' /> maximising <br class='sm-mobile-break' />  your time <br class='desktop-break' /> and efficiency.",
-  "CO* is massively multilingual <br/> Speaks several languages fluently.",
+  "CO* is multilingual.<br/> Speaks several languages fluently.",
   "Powered by open-source <br class='desktop-break' /> innovation.",
-  "Our expert fine-tuning <br class='sm-mobile-break' /> of LlaMA <br class='desktop-break' /> 70B  <br class='sm-mobile-break' /> model has <br /> created a powerful <br /> Personal AI Assistant.",
-  "With <br /> Advanced planning. Advanced <br class='desktop-break' /> reasoning. Task execution.",
-  "CO* tackles <br class='sm-mobile-break' />  complex tasks. <br />  Breaks tasks down. Execute steps. <br /> Adapts on the fly <br class='sm-mobile-break' />  for <br class='desktop-break' /> successful completion.",
+  "Our expert fine-tuning <br class='sm-mobile-break' /> of LLaMA <br class='desktop-break' /> 70B  <br class='sm-mobile-break' /> model has <br /> created a powerful <br /> Personal AI Assistant.",
+  "With <br /> Advanced planning. <br/> Advanced reasoning. <br />Task execution.",
+  "CO* tackles <br class='sm-mobile-break' />  complex tasks. <br />  Breaks tasks down.<br /> Execute steps. <br /> Adapts on the fly <br class='sm-mobile-break' />  for <br class='desktop-break' /> successful completion.",
   "We all want more <br class='sm-mobile-break' />  time, less hassle.<br /> That's why we <br class='sm-mobile-break' />  created CO*",
   "Personal <br class='sm-mobile-break' />  AI Assistant <br class='sm-mobile-break' />  For Everyone.",
 ];
@@ -295,6 +302,16 @@ class Blog {
     const videoDesktop = this.blogAssistantSection.querySelector(".desktop-video");
     const videoMobile = this.blogAssistantSection.querySelector(".mobile-video");
 
+    const pauseVideo = () => {
+      videoDesktop.pause();
+      videoMobile.pause();
+    };
+
+    const playVideo = () => {
+      videoDesktop.play();
+      videoMobile.play();
+    };
+
     gsap.set(title, { opacity: 0, y: 20 });
     gsap.set(videos, { opacity: 0.5 });
 
@@ -303,6 +320,18 @@ class Blog {
       top: "top top",
       end: "bottom center",
       pin: true,
+    });
+
+    ScrollTrigger.create({
+      trigger: this.blogAssistantSection,
+      top: "top 5%",
+      end: "bottom+=50% top",
+      onEnterBack: () => {
+        playVideo();
+      },
+      onLeave: () => {
+        pauseVideo();
+      },
     });
 
     // title animation

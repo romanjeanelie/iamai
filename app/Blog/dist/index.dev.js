@@ -20,7 +20,13 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var isMobile = window.innerWidth < 640;
+var isMobile = window.innerWidth < 640; // TO DO
+// [] block the video when scroll past it
+// [] add the unmute/mute button to the video
+// [] compress the too large size videos
+// [] upload them to cloudinary
+// [] manage all the videos in the blog page
+
 var heroData = ["TLDR" // "Introducing CO* <br /> World’s First <br /> Personal AI Assistant.",
 // "Revolutionise how you <br /> get things done.",
 // "CO* converses <br class='mobile-break' /> naturally and <br class='desktop-break' /> tackles real-world tasks like a <br class='desktop-break' /> human assistant.",
@@ -108,7 +114,7 @@ var data = [{
   p: "CO * is your tireless multitasker. It juggles tasks simultaneously, ensuring smooth and efficient completion.",
   sliderData: slider2Data
 }];
-var videoData = [isMobile ? "https://player.vimeo.com/progressive_redirect/playback/924947253/rendition/540p/file.mp4?loc=external&signature=1ac3b9615414a3836482d3065790a9f4477d850995f5d7e54d32f81d2cec1a43" : "https://player.vimeo.com/progressive_redirect/playback/924947288/rendition/720p/file.mp4?loc=external&signature=ab23a22926dedd5ed226323655c0b85676d3a4856746fe10aef74fb1552eaafe", isMobile ? "https://player.vimeo.com/progressive_redirect/playback/924982717/rendition/480p/file.mp4?loc=external&signature=8619fc24410a36d101d0290fb232f644ae087db9bb47dd7f6673e85b92b4a633" : "https://player.vimeo.com/progressive_redirect/playback/924982649/rendition/360p/file.mp4?loc=external&signature=238d6fa86e19d03bb6b6a4ac9b4c92c64eb1ee769062b1b0d4435370d645e9f3", isMobile ? "https://player.vimeo.com/progressive_redirect/playback/924982682/rendition/480p/file.mp4?loc=external&signature=1aef2b4018851aa08562e87b014b6abd6fbdbebdef849a05edcf59f1b64db3f5" : "https://player.vimeo.com/progressive_redirect/playback/924982615/rendition/360p/file.mp4?loc=external&signature=ab8215600529b576ca8efa77be6acb4aa0ea78dcc8d2b11b17bfa0961caa68ca"];
+var videoData = [isMobile ? "https://res.cloudinary.com/dfdqiqn98/video/upload/q_auto:best/v1712314254/blog/COstarSeq02Mobile01_tbpni9.mp4" : "https://res.cloudinary.com/dfdqiqn98/video/upload/q_auto:best/v1712314224/blog/COstarSeq02_02_zeb2bd.mp4", isMobile ? "https://player.vimeo.com/progressive_redirect/playback/924982717/rendition/480p/file.mp4?loc=external&signature=8619fc24410a36d101d0290fb232f644ae087db9bb47dd7f6673e85b92b4a633" : "https://player.vimeo.com/progressive_redirect/playback/924982649/rendition/360p/file.mp4?loc=external&signature=238d6fa86e19d03bb6b6a4ac9b4c92c64eb1ee769062b1b0d4435370d645e9f3", isMobile ? "https://player.vimeo.com/progressive_redirect/playback/924982682/rendition/480p/file.mp4?loc=external&signature=1aef2b4018851aa08562e87b014b6abd6fbdbebdef849a05edcf59f1b64db3f5" : "https://player.vimeo.com/progressive_redirect/playback/924982615/rendition/360p/file.mp4?loc=external&signature=ab8215600529b576ca8efa77be6acb4aa0ea78dcc8d2b11b17bfa0961caa68ca"];
 
 _gsap["default"].registerPlugin(_ScrollTrigger["default"]);
 
@@ -136,8 +142,8 @@ function () {
     // Scroll to top of the page
 
     window.scrollTo({
-      // top: 0,
-      top: this.blogAssistantSection.offsetTop,
+      top: 0,
+      // top: this.blogAssistantSection.offsetTop,
       duration: 0
     });
     this.preloader.style.display = "none";
@@ -259,18 +265,49 @@ function () {
     key: "initAssistantVideoAnim",
     value: function initAssistantVideoAnim() {
       var title = this.blogAssistantSection.querySelector("h1");
-      var video = this.blogAssistantSection.querySelectorAll("video");
+      var videos = this.blogAssistantSection.querySelectorAll("video");
+      var videoDesktop = this.blogAssistantSection.querySelector(".desktop-video");
+      var videoMobile = this.blogAssistantSection.querySelector(".mobile-video");
+
+      var pauseVideo = function pauseVideo() {
+        videoDesktop.pause();
+        videoMobile.pause();
+      };
+
+      var playVideo = function playVideo() {
+        videoDesktop.play();
+        videoMobile.play();
+      };
 
       _gsap["default"].set(title, {
         opacity: 0,
         y: 20
       });
 
+      _gsap["default"].set(videos, {
+        opacity: 0.5
+      });
+
       _ScrollTrigger["default"].create({
         trigger: this.blogAssistantSection,
         top: "top top",
-        end: "bottom top",
+        end: "bottom center",
         pin: true
+      });
+
+      _ScrollTrigger["default"].create({
+        trigger: this.blogAssistantSection,
+        top: "top 5%",
+        end: "bottom+=50% top",
+        onEnter: function onEnter() {
+          playVideo();
+        },
+        onEnterBack: function onEnterBack() {
+          pauseVideo();
+        },
+        onLeave: function onLeave() {
+          pauseVideo();
+        }
       }); // title animation
 
 
@@ -284,7 +321,6 @@ function () {
           trigger: this.blogAssistantSection,
           start: "top 30%",
           end: "top 5%",
-          markers: true,
           toggleActions: "play none play reverse ",
           onLeave: function onLeave() {
             _gsap["default"].to(title, {
@@ -292,20 +328,22 @@ function () {
               y: -20
             });
 
-            video.play();
+            _gsap["default"].to(videos, {
+              opacity: 1
+            });
+          },
+          onEnterBack: function onEnterBack() {
+            _gsap["default"].to(title, {
+              opacity: 1,
+              y: 0
+            });
+
+            _gsap["default"].to(videos, {
+              opacity: 0.5
+            });
           }
         }
-      }); // gsap.to(title, {
-      //   opacity: 0,
-      //   y: -50,
-      //   scrollTrigger: {
-      //     trigger: this.blogAssistantSection,
-      //     start: "top 40%",
-      //     markers: true,
-      //     toggleActions: "play none play reverse ",
-      //   },
-      // });
-
+      });
     }
   }, {
     key: "playStaticVideosWhenOnScreen",
