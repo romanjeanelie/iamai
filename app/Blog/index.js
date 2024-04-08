@@ -15,8 +15,6 @@ import {
   staircaseAnimation,
 } from "./BlogAnimations";
 
-const isMobile = window.innerWidth < 640;
-
 // TO DO
 // [X] block the video when scroll past it
 // [X] add the unmute/mute button to the video
@@ -49,17 +47,16 @@ class Blog {
     this.initHeroSections();
     this.pinNavbar();
     this.initSliders();
-    this.initScrollAnims();
     this.initAssistantVideoAnim();
+    this.initScrollAnims();
     this.playStaticVideosWhenOnScreen();
     this.addEvents();
 
-    // this.preloadStaticVideos();
+    ScrollTrigger.refresh();
 
     // Scroll to top of the page
     window.scrollTo({
       top: 0,
-      // top: this.blogAssistantSection.offsetTop,
       duration: 0,
     });
 

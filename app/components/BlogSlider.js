@@ -5,6 +5,7 @@
 // [X] play the video only when it's current slider;
 // [X] fix the glitch when you scroll too fast;
 
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { cascadingFadeInText } from "../Blog/BlogAnimations";
 import { asyncAnim } from "../utils/anim";
 import { generateSlider } from "../utils/generateSlider";
@@ -22,6 +23,7 @@ export default class BlogSlider {
     this.isDown = false;
     this.startX;
     this.scrollLeft;
+    this.isMobile = window.innerWidth < 640;
 
     // Global States
     this.isInView = false;
@@ -41,7 +43,7 @@ export default class BlogSlider {
     this.slideDescription = this.container.querySelector(".blogSlider__slide-description");
     this.slideNavigation = this.container.querySelector(".blogSlider__navigation");
 
-    // mobile dom elements
+    // Mobile dom elements
     this.slideMobileDescription = this.container.querySelector(".blogSlider__mobile-description");
     this.infoBtn = this.container.querySelector(".blogSlider__infoBtn");
     this.closeBtn = this.container.querySelector(".blogSlider__closeBtn");
@@ -110,6 +112,26 @@ export default class BlogSlider {
     this.gutterRight = document.createElement("div");
     this.gutterRight.classList.add("blogSlider__gutter-right", "blogSlider__gutter");
     this.slider.appendChild(this.gutterRight);
+
+    // hide the navbar when the slider is in view
+    ScrollTrigger.create({
+      trigger: this.container,
+      start: "top top",
+      end: "bottom top",
+      // markers: true,
+      onEnter: () => {
+        if (this.isMobile) this.navBar.classList.add("hidden");
+      },
+      onEnterBack: () => {
+        if (this.isMobile) this.navBar.classList.add("hidden");
+      },
+      onLeave: () => {
+        this.navBar.classList.remove("hidden");
+      },
+      onLeaveBack: () => {
+        this.navBar.classList.remove("hidden");
+      },
+    });
 
     this.updateUI();
   }
@@ -312,6 +334,7 @@ export default class BlogSlider {
     window.addEventListener("resize", (e) => {
       this.adjustMobilePadding();
       this.handleVideoSrcOnResize();
+      this.isMobile = window.innerWidth < 640;
     });
 
     this.slider.addEventListener("mousedown", (e) => this.startDrag(e));
