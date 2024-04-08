@@ -12,9 +12,9 @@
 <body class="page-blog">
   {{> blogPage/blogHero}}
   <div class="relative">
-    {{> blogPage/blogNavbar}}
     {{> blogPage/blogClockVideo}}
-    <div class="blog__container">
+    <div class="blog__container relative">
+      {{> blogPage/blogNavbar}}
       {{> blogPage/blogIntro}} {{> blogPage/blogMarquee}} {{> blogPage/blogCards}}
       {{> blogPage/blogContent}}
     </div>

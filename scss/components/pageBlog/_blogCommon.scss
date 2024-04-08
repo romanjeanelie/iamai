@@ -112,14 +112,14 @@ section {
   margin-top: 150px;
 
   &.first-section {
-    margin-top: 250px;
+    margin-top: calc(250px - 136px); // we remove the size of the navbar that takes up space
   }
 
   @include media("<tablet") {
     margin-top: 80px;
 
     &.first-section {
-      margin-top: 60px;
+      margin-top: calc(60px - 20px);
     }
   }
 }
