@@ -7,6 +7,18 @@
   .blog__unmute-btn {
     transform: translateY(-144px);
 
+    svg {
+      fill-opacity: 1;
+
+      path {
+        fill: white;
+      }
+    }
+
+    &.muted svg {
+      fill-opacity: 0.4;
+    }
+
     @include media("<phone") {
       transform: translateY(-88px);
     }

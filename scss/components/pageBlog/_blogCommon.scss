@@ -135,14 +135,23 @@ section {
   z-index: 1;
   padding: 10px 7px;
 
-  img {
+  svg {
+    fill-opacity: 0.72;
     height: 20px;
+
+    path {
+      fill: black;
+    }
+  }
+
+  &.muted svg {
+    fill-opacity: 0.4;
   }
 
   @include media("<phone") {
     right: 24px;
 
-    img {
+    svg {
       height: 12px;
     }
   }
