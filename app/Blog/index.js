@@ -19,9 +19,9 @@ import {
 // [X] block the video when scroll past it
 // [X] add the unmute/mute button to the video
 // [X] push the tryCoStart Button after the clock video
-// [] hide the tryCoStar button when on highlight video + any of the sliders
-// [] add a mute / unmute btn to the videos
-// [] link it to them all
+// [X] hide the tryCoStar button when on highlight video + any of the sliders
+// [X] add a mute / unmute btn to the videos
+// [X] link it to them all
 // [] compress the too large size videos
 // [] upload them to cloudinary
 // [] manage all the videos in the blog page
@@ -99,10 +99,6 @@ class Blog {
     newSliders.forEach((slide, idx) => {
       new BlogSlider({ sliderData: data[idx].sliderData, container: slide });
     });
-  }
-
-  toggleNavbar() {
-    this.navbar.classList.toggle("hidden");
   }
 
   pinNavbar() {
@@ -203,18 +199,18 @@ class Blog {
       top: "top 5%",
       end: "bottom+=50% top",
       onEnter: () => {
-        this.toggleNavbar();
+        this.navbar.classList.add("hidden");
       },
       onEnterBack: () => {
-        this.toggleNavbar();
+        this.navbar.classList.add("hidden");
         playVideo();
       },
       onLeave: () => {
-        this.toggleNavbar();
+        this.navbar.classList.remove("hidden");
         pauseVideo();
       },
       onLeaveBack: () => {
-        this.toggleNavbar();
+        this.navbar.classList.remove("hidden");
       },
     });
 
