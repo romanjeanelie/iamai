@@ -50,6 +50,7 @@ class Blog {
     this.initAssistantVideoAnim();
     this.initScrollAnims();
     this.playStaticVideosWhenOnScreen();
+    this.initUnmuteBtns();
     this.addEvents();
 
     ScrollTrigger.refresh();
@@ -245,18 +246,18 @@ class Blog {
       }
     );
 
-    // handle the unmute button
-    this.unmuteBtn.addEventListener("click", () => {
-      if (videoDesktop.muted) {
-        videoDesktop.muted = this.isMobile ? true : false;
-        videoMobile.muted = this.isMobile ? false : true;
-        this.unmuteBtn.innerHTML = "Mute";
-      } else {
-        videoDesktop.muted = true;
-        videoMobile.muted = true;
-        this.unmuteBtn.innerHTML = "Unmute";
-      }
-    });
+    // // handle the unmute button
+    // this.unmuteBtn.addEventListener("click", () => {
+    //   if (videoDesktop.muted) {
+    //     videoDesktop.muted = this.isMobile ? true : false;
+    //     videoMobile.muted = this.isMobile ? false : true;
+    //     this.unmuteBtn.innerHTML = "Mute";
+    //   } else {
+    //     videoDesktop.muted = true;
+    //     videoMobile.muted = true;
+    //     this.unmuteBtn.innerHTML = "Unmute";
+    //   }
+    // });
   }
 
   playStaticVideosWhenOnScreen() {
@@ -282,6 +283,47 @@ class Blog {
     // Observe each video element
     videos.forEach((video) => {
       videoObserver.observe(video);
+    });
+  }
+
+  initUnmuteBtns() {
+    // Select all the .video-container elements
+    const videoContainers = document.querySelectorAll(".video-container");
+
+    // Iterate over each .video-container
+    videoContainers.forEach((container) => {
+      // Create a button element
+      const unmuteButton = document.createElement("button");
+      unmuteButton.classList.add("blog__unmute-btn");
+
+      // Create an image element
+      const iconImg = document.createElement("img");
+      iconImg.src = "/public/icons/unmute-icon.svg";
+      iconImg.alt = "unmute icon";
+
+      // Append the image to the button
+      unmuteButton.appendChild(iconImg);
+
+      // Get the video element within the container
+      const video = container.querySelector("video");
+
+      // Attach click event listener to the button
+      unmuteButton.addEventListener("click", () => {
+        // Toggle the mute state of the video
+        video.muted = !video.muted;
+
+        // Update button text based on mute state
+        if (video.muted) {
+          iconImg.src = "/public/icons/unmute-icon.svg";
+          iconImg.alt = "unmute icon";
+        } else {
+          iconImg.src = "/public/icons/mute-icon.svg";
+          iconImg.alt = "mute icon";
+        }
+      });
+
+      // Append the button to the .video-container
+      container.appendChild(unmuteButton);
     });
   }
 

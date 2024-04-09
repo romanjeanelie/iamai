@@ -124,6 +124,28 @@ section {
   }
 }
 
+.video-container {
+  position: relative;
+}
+
+.blog__unmute-btn {
+  position: absolute;
+  top: 60px;
+  right: 48px;
+  background-color: $backgroundColorGreyPage;
+  border-radius: 50px;
+  z-index: 1;
+  padding: 10px 7px;
+
+  img {
+    width: 27px;
+  }
+
+  @include media("<phone") {
+    right: 24px;
+  }
+}
+
 .blog__preload {
   position: fixed;
   background-color: $colorBlack;

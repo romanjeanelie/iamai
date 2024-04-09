@@ -4,6 +4,14 @@
   height: calc(85svh - 144px);
   z-index: 1;
 
+  .blog__unmute-btn {
+    transform: translateY(-144px);
+
+    @include media("<phone") {
+      transform: translateY(-88px);
+    }
+  }
+
   @include media("<tablet") {
     height: calc(100vh - 80px); // Fallback for browsers not supporting svh
     height: calc(100svh - 80px);

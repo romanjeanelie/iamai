@@ -83,6 +83,7 @@ export default class BlogSlider {
 
       let mediaEl;
       if (slide.video) {
+        slideEl.classList.add("video-container");
         mediaEl = document.createElement("video");
         mediaEl.controls = false;
         mediaEl.playsInline = true;
@@ -118,7 +119,6 @@ export default class BlogSlider {
       trigger: this.container,
       start: "top top",
       end: "bottom top",
-      // markers: true,
       onEnter: () => {
         if (this.isMobile) this.navBar.classList.add("hidden");
       },

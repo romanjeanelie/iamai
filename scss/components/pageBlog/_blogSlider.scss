@@ -75,6 +75,16 @@ $sliderMaxWidth: 972px;
     width: calc($sliderHeight * 9 / 16);
   }
 
+  .blog__unmute-btn {
+    top: 20px;
+    right: 20px;
+
+    @include media("<phone") {
+      top: 60px;
+      right: 24px;
+    }
+  }
+
   .blogSlider__mediaEl {
     width: 100%;
     height: 100%;
