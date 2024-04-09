@@ -23,6 +23,8 @@ export default {
         login_google: resolve(__dirname, "login/login_google.html"),
         assistant: resolve(__dirname, "assistant/assistant.html"),
         blog: resolve(__dirname, "blog/index.html"),
+        lang: resolve(__dirname, "lang/index.html"),
+        languages: resolve(__dirname, "languages.html"),
       },
       output: {
         preserveModules: false,
