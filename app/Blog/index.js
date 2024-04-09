@@ -294,7 +294,7 @@ class Blog {
 
       // Create an image element
       const iconImg = document.createElement("img");
-      iconImg.src = "/public/icons/mute-icon.svg";
+      iconImg.src = "/icons/mute-icon.svg";
       iconImg.alt = "mute icon";
 
       // Append the image to the button
@@ -310,10 +310,10 @@ class Blog {
 
         // Update button text based on mute state
         if (video.muted) {
-          iconImg.src = "/public/icons/mute-icon.svg";
+          iconImg.src = "/icons/mute-icon.svg";
           iconImg.alt = "unmute icon";
         } else {
-          iconImg.src = "/public/icons/unmute-icon.svg";
+          iconImg.src = "/icons/unmute-icon.svg";
           iconImg.alt = "mute icon";
         }
       });
