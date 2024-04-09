@@ -1,13 +1,14 @@
 .blogNav__container {
   position: absolute;
   right: 48px;
-  padding-top: 24px;
+  padding-top: 60px;
   display: flex;
   justify-content: end;
   transition: opacity 0.3s $ease-out;
   z-index: 3;
 
   @include media("<tablet") {
+    padding-top: 24px;
     right: 24px;
   }
 
