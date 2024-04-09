@@ -112,14 +112,14 @@ section {
   margin-top: 150px;
 
   &.first-section {
-    margin-top: calc(250px - 136px); // we remove the size of the navbar that takes up space
+    margin-top: 250px; // we remove the size of the navbar that takes up space
   }
 
   @include media("<tablet") {
     margin-top: 80px;
 
     &.first-section {
-      margin-top: calc(60px - 20px);
+      margin-top: 60px;
     }
   }
 }
@@ -132,17 +132,19 @@ section {
   position: absolute;
   top: 60px;
   right: 48px;
-  background-color: $backgroundColorGreyPage;
-  border-radius: 50px;
   z-index: 1;
   padding: 10px 7px;
 
   img {
-    width: 27px;
+    height: 20px;
   }
 
   @include media("<phone") {
     right: 24px;
+
+    img {
+      height: 12px;
+    }
   }
 }
 

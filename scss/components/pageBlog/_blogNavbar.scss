@@ -1,16 +1,14 @@
 .blogNav__container {
-  position: relative;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 48px;
+  position: absolute;
+  right: 48px;
+  padding-top: 24px;
   display: flex;
   justify-content: end;
   transition: opacity 0.3s $ease-out;
   z-index: 3;
 
   @include media("<tablet") {
-    padding: 60px 24px 0px;
+    right: 24px;
   }
 
   &.hidden {

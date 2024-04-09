@@ -83,7 +83,7 @@ export default class BlogSlider {
 
       let mediaEl;
       if (slide.video) {
-        slideEl.classList.add("video-container");
+        slide.sound && slideEl.classList.add("video-container");
         mediaEl = document.createElement("video");
         mediaEl.controls = false;
         mediaEl.playsInline = true;

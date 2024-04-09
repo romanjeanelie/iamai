@@ -80,7 +80,7 @@ $sliderMaxWidth: 972px;
     right: 20px;
 
     @include media("<phone") {
-      top: 60px;
+      top: 20px;
       right: 24px;
     }
   }

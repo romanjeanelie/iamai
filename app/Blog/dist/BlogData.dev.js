@@ -10,7 +10,8 @@ var slider1Data = [{
   id: 1,
   video: "https://res.cloudinary.com/dfdqiqn98/video/upload/q_auto:best/v1712325504/Desktop_Zoom_In_ChatGPT_q9c27m.mp4",
   videoMobile: "https://res.cloudinary.com/dfdqiqn98/video/upload/q_auto:best/v1712326125/Mobile_Zoom_In_ChatGPT_msk62g.mp4",
-  description: "ChatGPT in action."
+  description: "ChatGPT in action.",
+  sound: false
 }, {
   id: 2,
   image: "/images/blog/slider1-2.png",
@@ -26,16 +27,19 @@ exports.slider1Data = slider1Data;
 var slider2Data = [{
   id: 1,
   video: "https://dl.dropbox.com/s/gftbpl8lczyg9dvoirjjs/kreyda_alpha_0911-hevc-safari.mp4?rlkey=8v48lqnlbtbe3neg86p02c4p5&dl=0",
-  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit."
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.",
+  sound: false
 }, {
   id: 2,
   video: "https://dl.dropbox.com/s/gftbpl8lczyg9dvoirjjs/kreyda_alpha_0911-hevc-safari.mp4?rlkey=8v48lqnlbtbe3neg86p02c4p5&dl=0",
   description: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.",
+  sound: false,
   mobileFormat: true
 }, {
   id: 3,
   video: "https://dl.dropbox.com/s/gftbpl8lczyg9dvoirjjs/kreyda_alpha_0911-hevc-safari.mp4?rlkey=8v48lqnlbtbe3neg86p02c4p5&dl=0",
-  description: "Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
+  description: "Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+  sound: false
 }];
 exports.slider2Data = slider2Data;
 var data = [{
