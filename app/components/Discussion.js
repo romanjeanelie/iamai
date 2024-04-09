@@ -3,11 +3,13 @@ import TypingText from "../TypingText";
 import Chat from "./Chat.js";
 import History from "./History.js";
 import DiscussionTabs from "./DiscussionTabs.js";
-
+import fetcher from "../utils/fetcher.js";
 import { getsessionID } from "../User";
 import { asyncAnim } from "../utils/anim.js";
 import typeByWord from "../utils/typeByWord.js";
 import getStyleElement from "../utils/getStyleElement.js";
+import { URL_DELETE_STATUS } from "./constants.js";
+
 const topStatusText = ["finding", "checking", "searching", "analyzing", "scanning", "finalizing", "processing"];
 const defaultTopStatus = "searching";
 
@@ -529,12 +531,24 @@ export default class Discussion {
     // }
   }
 
-  onRemoveTask(taskKey) {
+  async onRemoveTask(taskKey) {
+    // Post delete task
+    const params = {
+      micro_thread_id: taskKey,
+      uuid: this.uuid,
+    };
+
+    const result = await fetcher({
+      url: URL_DELETE_STATUS,
+      params,
+      method: "DELETE",
+    });
+    console.log({ result });
     // Remove lines
-    // const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskKey="${taskKey}"]`);
-    // const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskKey="${taskKey}"]`);
-    // userContainer.classList.remove("discussion__user--task-created");
-    // AIContainer.classList.remove("discussion__ai--task-created");
+    const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskKey="${taskKey}"]`);
+    const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskKey="${taskKey}"]`);
+    userContainer.classList.remove("discussion__user--task-created");
+    AIContainer.classList.remove("discussion__ai--task-created");
   }
 
   async viewTaskResults(task, resultsContainer) {
