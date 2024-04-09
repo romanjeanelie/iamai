@@ -1,6 +1,7 @@
 import gsap from "gsap";
 import Flip from "gsap/Flip";
 import scrollToDiv from "../../utils/scrollToDiv";
+import fetcher from "../../utils/fetcher";
 
 const STATES = {
   CLOSED: "closed",
@@ -71,7 +72,7 @@ export default class TaskManager {
     this.emitter.on("taskManager:updateStatus", (taskKey, status, container, workflowID) =>
       this.onStatusUpdate(taskKey, status, container, workflowID)
     );
-    this.emitter.on("taskManager:deleteTask", (taskKey) => this.removeTask(taskKey));
+    this.emitter.on("taskManager:deleteTask", (taskKey) => this.deleteTask(taskKey));
     this.emitter.on("taskManager:isHistorySet", (bool) => (this.isHistorySet = bool));
 
     if (this.debug) {
@@ -419,6 +420,9 @@ export default class TaskManager {
     const panelDiv = document.createElement("div");
     panelDiv.classList.add("task-manager__accordion-panel");
 
+    const statusWrapperDiv = document.createElement("div");
+    statusWrapperDiv.classList.add("task-manager__status-wrapper");
+
     const statusContainerDiv = document.createElement("div");
     statusContainerDiv.classList.add("task-manager__status-container");
 
@@ -430,6 +434,10 @@ export default class TaskManager {
     statusDescriptionP.classList.add("task-manager__status-description");
     statusDescriptionP.textContent = data.status.description;
 
+    const deleteButton = document.createElement("button");
+    deleteButton.classList.add("task-manager__delete-btn");
+    deleteButton.textContent = "DELETE";
+
     // Append elements
     headerDiv.appendChild(headerTitle);
     statusDiv.appendChild(statusPill);
@@ -439,7 +447,9 @@ export default class TaskManager {
 
     statusContainerDiv.appendChild(statusTitleP);
     statusContainerDiv.appendChild(statusDescriptionP);
-    panelDiv.appendChild(statusContainerDiv);
+    statusWrapperDiv.appendChild(statusContainerDiv);
+    panelDiv.appendChild(statusWrapperDiv);
+    panelDiv.appendChild(deleteButton);
 
     li.appendChild(headerDiv);
     li.appendChild(panelDiv);
@@ -451,9 +461,10 @@ export default class TaskManager {
     this.accordionPanels = Array.from(document.querySelectorAll(".task-manager__accordion-panel"));
 
     headerDiv.addEventListener("click", () => this.togglePanel(data.key));
+    deleteButton.addEventListener("click", () => this.emitter.emit("taskManager:deleteTask", data.key));
   }
 
-  addStatus(key, panel, status) {
+  addStatus(key, statusWrapper, status) {
     const divider = document.createElement("div");
     divider.classList.add("task-manager__accordion-panel-divider");
 
@@ -475,12 +486,12 @@ export default class TaskManager {
       this.addInput(key, statusContainerDiv);
     }
 
-    panel.appendChild(divider);
-    panel.appendChild(statusContainerDiv);
+    statusWrapper.appendChild(divider);
+    statusWrapper.appendChild(statusContainerDiv);
     this.goToPanel(key);
   }
 
-  addOnlyStatusTitle(key, panel, status) {
+  addOnlyStatusTitle(key, statusWrapper, status) {
     const divider = document.createElement("div");
     divider.classList.add("task-manager__accordion-panel-divider");
 
@@ -493,8 +504,8 @@ export default class TaskManager {
 
     statusContainerDiv.appendChild(statusTitleP);
 
-    panel.appendChild(divider);
-    panel.appendChild(statusContainerDiv);
+    statusWrapper.appendChild(divider);
+    statusWrapper.appendChild(statusContainerDiv);
     this.goToPanel(key);
   }
 
@@ -506,16 +517,19 @@ export default class TaskManager {
     statusPill.style.backgroundColor = STATUS_COLORS[status.type];
 
     const panel = task.querySelector(".task-manager__accordion-panel");
+    const statusWrapper = task.querySelector(".task-manager__status-wrapper");
+    const buttonDelete = task.querySelector(".task-manager__delete-btn");
 
     if (status.type === TASK_STATUSES.COMPLETED) {
-      this.addOnlyStatusTitle(key, panel, status);
+      buttonDelete.classList.add("hidden");
+      this.addOnlyStatusTitle(key, statusWrapper, status);
       this.makeStatusPillClickable(key, statusPill);
     } else {
-      this.addStatus(key, panel, status);
+      this.addStatus(key, statusWrapper, status);
     }
   }
 
-  removeTaskUI(key) {
+  deleteTaskUI(key) {
     const task = this.accordionContainer.querySelector(`[task-key="${key}"]`);
     task.remove();
   }
@@ -581,9 +595,9 @@ export default class TaskManager {
     this.handleButton();
   }
 
-  removeTask(taskKey) {
+  deleteTask(taskKey) {
     this.tasks = this.tasks.filter((task) => task.key !== taskKey);
-    this.removeTaskUI(taskKey);
+    this.deleteTaskUI(taskKey);
     this.handleButton();
     if (this.tasks.length === 0) {
       this.closeTaskManager();
@@ -609,7 +623,7 @@ export default class TaskManager {
 
     this.closeNotificationPill();
     this.closeTaskManager();
-    this.removeTask(key);
+    this.deleteTask(key);
   }
 
   addListeners() {

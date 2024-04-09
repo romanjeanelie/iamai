@@ -2,16 +2,13 @@ import { TASK_STATUSES } from "./TaskManager/index.js";
 import { API_STATUSES } from "./constants.js";
 import fetcher from "../utils/fetcher.js";
 import DiscussionTabs from "./DiscussionTabs.js";
+import { URL_CONVERSATION_HISTORY, URL_AGENT_STATUS } from "./constants.js";
 
 const isEmpty = (obj) => Object.keys(obj).length === 0;
 
-const BASE_URL = import.meta.env.VITE_API_HOST || "https://api.asterizk.ai";
-const URL_CONVERSATION_HISTORY = `${BASE_URL}/search/conversation_history`;
-const URL_AGENT_STATUS = `${BASE_URL}/search/agent_status`;
-
 const isTask = (el) => el.micro_thread_id !== "";
 const isTaskViewed = (el) => isTask(el) && el.statuses?.lastStatus === API_STATUSES.VIEWED;
-
+const isTaskCancelled = (el) => isTask(el) && el.statuses?.lastStatus === API_STATUSES.CANCELLED;
 function getPreviousDayTimestamp() {
   const currentDate = new Date();
   const previousDate = new Date(currentDate);
@@ -113,7 +110,9 @@ export default class History {
   getTaskLastStatus(data) {
     const statuses = data.map((obj) => obj.status);
 
-    if (statuses.includes(API_STATUSES.VIEWED)) {
+    if (statuses.includes(API_STATUSES.CANCELLED)) {
+      return API_STATUSES.CANCELLED;
+    } else if (statuses.includes(API_STATUSES.VIEWED)) {
       return API_STATUSES.VIEWED;
     } else if (statuses.includes(API_STATUSES.ENDED)) {
       return API_STATUSES.ENDED;
@@ -167,6 +166,15 @@ export default class History {
         result.statuses = statuses;
       }
     }
+
+    // Remove tasks with status CANCELLED
+    data.results = data.results.filter((item) => {
+      if (isTaskCancelled(item)) {
+        return false;
+      } else {
+        return true;
+      }
+    });
 
     return data;
   }
