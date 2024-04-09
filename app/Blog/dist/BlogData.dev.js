@@ -8,8 +8,8 @@ var heroData = ["TLDR", "Introducing CO* <br /> World’s First <br /> Personal 
 exports.heroData = heroData;
 var slider1Data = [{
   id: 1,
-  video: "https://res.cloudinary.com/dfdqiqn98/video/upload/q_auto:best/v1712325504/Desktop_Zoom_In_ChatGPT_q9c27m.mp4",
-  videoMobile: "https://res.cloudinary.com/dfdqiqn98/video/upload/q_auto:best/v1712326125/Mobile_Zoom_In_ChatGPT_msk62g.mp4",
+  video: "https://res.cloudinary.com/dfdqiqn98/video/upload/v1712695615/blog/Desktop_Zoom_In_ChatGPT_webm_ongtpi.webm",
+  videoMobile: "https://res.cloudinary.com/dfdqiqn98/video/upload/v1712695624/blog/Mobile_Zoom_In_ChatGPT_webm_dtxj5p.webm",
   description: "ChatGPT in action.",
   sound: false
 }, {
