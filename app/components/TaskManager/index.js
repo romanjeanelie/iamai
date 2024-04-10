@@ -436,7 +436,7 @@ export default class TaskManager {
 
     const deleteButton = document.createElement("button");
     deleteButton.classList.add("task-manager__delete-btn");
-    deleteButton.textContent = "DELETE";
+    deleteButton.textContent = "CANCEL";
 
     // Append elements
     headerDiv.appendChild(headerTitle);
