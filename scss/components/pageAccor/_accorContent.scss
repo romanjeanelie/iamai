@@ -55,6 +55,21 @@
   h4 {
     color: white;
     margin-top: 8px;
+    line-height: 100%;
+  }
+
+  @include media("<phone") {
+    .accor__container {
+      margin: 0;
+    }
+
+    .accorOffers__header {
+      padding: 0 clamp(24px, 4vw, 108px);
+
+      h2 {
+        max-width: 250px;
+      }
+    }
   }
 }
 
@@ -80,11 +95,41 @@
       object-position: center;
     }
   }
+
+  @include media("<phone") {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
 }
 
 .accorOffers__main-item {
   h3 {
     max-width: 350px;
+  }
+
+  .img-container {
+    height: 500px;
+  }
+
+  @include media("<phone") {
+    h3 {
+      max-width: 330px;
+    }
+
+    h4 {
+      max-width: 262px;
+    }
+
+    h3,
+    h4 {
+      padding: 0 clamp(24px, 4vw, 108px);
+    }
+
+    .img-container {
+      border-radius: 0;
+      height: auto;
+      aspect-ratio: square;
+    }
   }
 }
 
@@ -93,7 +138,13 @@
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: max-content;
   column-gap: 24px;
-  row-gap: 44px;
+  row-gap: 48px;
+
+  @include media("<phone") {
+    grid-template-columns: 1fr;
+    padding: 0 clamp(24px, 4vw, 108px);
+    row-gap: 32px;
+  }
 }
 
 .accorOffers__item {
@@ -108,6 +159,7 @@
   margin-top: 142px;
   display: flex;
   justify-content: space-between;
+  gap: 24px;
 
   .accorOffers__newsletter-form {
     background-color: white;
@@ -132,6 +184,7 @@
       font-size: 12px;
       line-height: 16px;
       letter-spacing: 0.5px;
+      white-space: nowrap;
       transition: background-color 0.2s ease-out;
 
       &:hover {
@@ -154,6 +207,17 @@
       font-size: 16px;
       margin-top: 8px;
       font-weight: 500;
+    }
+  }
+
+  @include media("<phone") {
+    margin-top: 60px;
+    flex-direction: column;
+    gap: 48px;
+    padding: 0 clamp(24px, 4vw, 108px);
+
+    .accorOffers__newsletter-form {
+      margin-top: 40px;
     }
   }
 }
