@@ -543,12 +543,11 @@ export default class Discussion {
       params,
       method: "DELETE",
     });
-    console.log({ result });
-    // Remove lines
+    // Remove elements
     const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskKey="${taskKey}"]`);
     const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskKey="${taskKey}"]`);
-    userContainer.classList.remove("discussion__user--task-created");
-    AIContainer.classList.remove("discussion__ai--task-created");
+    userContainer.remove();
+    AIContainer.remove();
   }
 
   async viewTaskResults(task, resultsContainer) {
