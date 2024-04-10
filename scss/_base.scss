@@ -1093,7 +1093,7 @@ button {
   grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
   padding: 20px;
   width: 100%;
-  background: #ffffff;
+  // background: #ffffff;
   text-align: center;
   border-radius: 16px;
   // margin-left: 15px;
@@ -1108,6 +1108,8 @@ button {
   position: relative;
   overflow: hidden;
   padding: 16px 0 16px 0;
+  border-radius: 16px;
+  margin-bottom: 24px;
 }
 
 .shopping-card:hover .shopping-overlay {
@@ -1122,10 +1124,11 @@ button {
 .shopping-image {
   width: auto;
   height: auto;
-  max-width: 210px;
+  max-width: 150px;
   border-radius: 8px;
   text-align: center;
   display: inline;
+  padding: 16px 16px 16px 16px;
 }
 
 .shopping-name {
@@ -1138,22 +1141,33 @@ button {
   line-height: 20px;
   letter-spacing: 0.6px;
   padding: 16px 16px 4px 16px;
+  height: 60px;
 }
 
 .shopping-description {
   font-size: 0.9em;
   color: #555;
 }
+.shopping-image-dev{
+  height: 150px;
+  align-content: center;
+  display: grid;
+  align-items: center;
+  text-align: center;
+  margin: auto;
+  justify-content: center;
+}
 
 .shopping-price {
   color: var(--Text, #000);
   font-feature-settings: "liga" off;
-  font-size: 14px;
+  font-size: 36px;
   font-style: normal;
   font-weight: 450;
   line-height: 20px;
   letter-spacing: 0.6px;
-  padding-bottom: 4px;
+  // padding-bottom: 4px;
+  padding: 16px 16px 20px 16px;
 }
 
 .shopping-source {
@@ -1166,6 +1180,7 @@ button {
   line-height: 16px;
   /* 133.333% */
   letter-spacing: 0.6px;
+  padding: 0 16px 4px 16px;
 }
 
 .shopping-overlay {
