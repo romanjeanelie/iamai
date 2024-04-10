@@ -5,9 +5,6 @@
   bottom: 60px;
 
   @include media("<tablet") {
-    bottom: unset;
-    top: 42px;
-    transform: scale(0.7);
-    left: 24px;
+    display: none;
   }
 }

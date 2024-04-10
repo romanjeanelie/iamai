@@ -13,6 +13,10 @@
     transition-delay: 0s;
   }
 
+  .logo {
+    display: none;
+  }
+
   rect {
     transition: fill 1s ease-in-out;
   }
@@ -49,9 +53,20 @@
   }
 
   @include media("<tablet") {
-    right: $paddingHorMobile;
-    top: $paddingTopMobile;
+    left: 0;
+    right: 0;
+    top: 0;
+    padding: $paddingTopMobile $paddingHorMobile;
     height: unset;
+    display: flex;
+    justify-content: space-between;
+    backdrop-filter: blur(10px); /* Adjust the blur radius as needed */
+
+    .logo {
+      display: flex;
+      transform: scale(0.7);
+      align-items: center;
+    }
   }
 
   .nav__btn {
