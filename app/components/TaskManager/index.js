@@ -173,6 +173,12 @@ export default class TaskManager {
     this.taskManagerState = newState;
     const initialState = Flip.getState(this.container);
 
+    if (newState !== STATES.FULLSCREEN) {
+      this.unblockScroll();
+    } else {
+      this.blockScroll();
+    }
+
     // Remove all state classes
     this.container.classList.remove("closed", "minimized", "fullscreen");
     // Add the new state class
@@ -195,6 +201,16 @@ export default class TaskManager {
     const isMobile = window.innerWidth < 820;
     // if on mobile, we go straight to fullscreen
     this.changeState(isMobile ? STATES.FULLSCREEN : STATES.MINIMIZED);
+  }
+
+  blockScroll() {
+    document.body.style.overflow = "hidden";
+    document.body.style.height = "100vh";
+  }
+
+  unblockScroll() {
+    document.body.style.overflow = "";
+    document.body.style.height = "";
   }
 
   toFullscreen() {
