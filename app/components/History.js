@@ -186,7 +186,11 @@ export default class History {
       if (element.user.length > 0) {
         const userContainer = document.createElement("div");
         userContainer.classList.add("discussion__user");
-        userContainer.innerHTML = element.user;
+        var userContainerspan = document.createElement("span");
+        userContainerspan.classList.add("discussion__userspan");
+        userContainerspan.innerHTML = element.user;
+        userContainer.appendChild(userContainerspan);
+        // userContainer.innerHTML = element.user;
         container.appendChild(userContainer);
 
         if (!isEmpty(element.images)) {

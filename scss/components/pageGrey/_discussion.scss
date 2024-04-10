@@ -2,11 +2,15 @@
   &::before {
     content: "";
     position: absolute;
-    @if $position == top {
+
+    @if $position ==top {
       top: -16px;
-    } @else {
+    }
+
+    @else {
       bottom: -16px;
     }
+
     left: 0;
     width: 100%;
     height: 2px;
@@ -18,6 +22,7 @@
 
   &--task-created {
     margin-bottom: 42px;
+
     &:before {
       transform: scaleX(1);
     }
@@ -130,6 +135,12 @@
     }
   }
 
+  .discussion__userspan {
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 16px;
+    padding: 16px;
+  }
+
   .discussion__user {
     // color: rgba($colorBlue, 0.72);
     color: rgba($colorBlack, 0.72);
@@ -142,6 +153,7 @@
     .images__container {
       justify-content: flex-end;
     }
+
     img {
       //   margin-left: auto;
       //   width: unset;
@@ -171,6 +183,7 @@
     .text-beforeLink {
       margin-right: 4px;
     }
+
     a {
       color: $colorBlack;
       text-decoration: underline;
@@ -253,6 +266,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }

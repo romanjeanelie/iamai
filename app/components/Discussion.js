@@ -172,7 +172,11 @@ export default class Discussion {
 
     this.userContainer = document.createElement("div");
     this.userContainer.classList.add("discussion__user");
-    this.userContainer.innerHTML = text.replace(/\n/g, "<br>");
+    var userContainerspan = document.createElement("span");
+    userContainerspan.classList.add("discussion__userspan");
+    userContainerspan.innerHTML = text.replace(/\n/g, "<br>");
+    this.userContainer.appendChild(userContainerspan);
+    // this.userContainer.innerHTML = text.replace(/\n/g, "<br>");
 
     this.discussionContainer.appendChild(this.userContainer);
 
@@ -497,7 +501,11 @@ export default class Discussion {
     if (this.debug) {
       this.userContainer = document.createElement("div");
       this.userContainer.classList.add("discussion__user");
-      this.userContainer.innerHTML = "bonjour";
+      var userContainerspan = document.createElement("span");
+      userContainerspan.classList.add("discussion__userspan");
+      userContainerspan.innerHTML = "bonjour";
+      this.userContainer.appendChild(userContainerspan);
+      // this.userContainer.innerHTML = "bonjour";
       this.discussionContainer.appendChild(this.userContainer);
 
       this.AIContainer = document.createElement("div");
@@ -561,7 +569,11 @@ export default class Discussion {
     // Reput user question
     this.userContainer = document.createElement("div");
     this.userContainer.classList.add("discussion__user");
-    this.userContainer.innerHTML = task.name;
+    var userContainerspan = document.createElement("span");
+    userContainerspan.classList.add("discussion__userspan");
+    userContainerspan.innerHTML = task.name
+    this.userContainer.appendChild(userContainerspan);
+    // this.userContainer.innerHTML = task.name;
 
     // Add AI results
     this.AIContainer = document.createElement("div");
