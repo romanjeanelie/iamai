@@ -31,7 +31,8 @@ $colorTalkAI: black;
 }
 
 .phone__container {
-  position: absolute;
+  //   position: absolute;
+  position: fixed;
   z-index: 2;
   //   top: 50%;
   backdrop-filter: blur(10px);
@@ -91,9 +92,7 @@ $colorTalkAI: black;
     align-items: center;
 
     button {
-      transition:
-        background 300ms ease-in-out,
-        opacity 300ms ease-in-out;
+      transition: background 300ms ease-in-out, opacity 300ms ease-in-out;
       border-radius: 50%;
       path {
         transition: stroke 300ms ease-in-out;

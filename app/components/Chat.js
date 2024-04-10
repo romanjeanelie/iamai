@@ -356,6 +356,7 @@ class Chat {
           const textAI = mdata.response_json.text;
           // await this.createTask(task, textAI)
           this.callbacks.emitter.emit("taskManager:createTask", task, textAI);
+          this.callbacks.emitter.emit("endStream");
         } else if (mdata.status && mdata.status == AGENT_PROGRESSING) {
           if (mdata.awaiting) {
             let taskname = mdata.task_name;
