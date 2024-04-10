@@ -140,16 +140,20 @@
     }
   }
 
+  .accorOffers__contacts li {
+    color: white;
+    margin-top: 16px;
+    font-weight: 600;
+    font-size: 20px;
+  }
+
   .accorOffers__contacts-infos {
     margin-top: 48px;
 
     ul li {
+      font-size: 16px;
       margin-top: 8px;
+      font-weight: 500;
     }
-  }
-
-  .accorOffers__contacts li {
-    color: white;
-    margin-top: 16px;
   }
 }
