@@ -607,10 +607,10 @@ class Chat {
     return str;
   }
 
-  truncate(str) {
-    var n = 200;
-    return str && str.length > n ? str.slice(0, n - 1) + "&hellip;" : str;
-  }
+    truncate(str,n = 200) {
+      // var n = 200;
+      return str && str.length > n ? str.slice(0, n - 1) + "&hellip;" : str;
+    }
 
   submituserreply(text, suworkflowid, img) {
     var data = "";
@@ -1210,38 +1210,44 @@ class Chat {
     productcardcontainerdiv.className = "shopping-container";
     productdiv.appendChild(productcardcontainerdiv);
 
-    ProductSearchResults.forEach((element) => {
-      const productcarddiv = document.createElement("div");
-      productcarddiv.className = "shopping-card";
-      // productcarddiv.setAttribute("data-info", "product-details");
-      // productcarddiv.setAttribute("data-details", JSON.stringify(element).replace(/'/g, "&#39;"));
-      // productcarddiv.addEventListener("click", (event) => this.showProductDetail(event));
-      productcardcontainerdiv.appendChild(productcarddiv);
-      const productcarddivA = document.createElement("a");
-      productcarddivA.setAttribute("href", element.link);
-      productcarddivA.setAttribute("target", "_blank");
-      productcarddiv.appendChild(productcarddivA);
+      ProductSearchResults.forEach((element) => {
+        const productcarddiv = document.createElement("div");
+        productcarddiv.className = "shopping-card";
+        // productcarddiv.setAttribute("data-info", "product-details");
+        // productcarddiv.setAttribute("data-details", JSON.stringify(element).replace(/'/g, "&#39;"));
+        // productcarddiv.addEventListener("click", (event) => this.showProductDetail(event));
+        productcardcontainerdiv.appendChild(productcarddiv);
+        const productcarddivA = document.createElement("a");
+        productcarddivA.setAttribute("href", element.link);
+        productcarddivA.setAttribute("target", "_blank");
+        productcarddiv.appendChild(productcarddivA);
+        
+        const productimagediv = document.createElement("div");
+        productimagediv.className = "shopping-image-dev";
+        productcarddivA.appendChild(productimagediv);
 
-      const productimage = document.createElement("img");
-      productimage.className = "shopping-image";
-      productimage.setAttribute("src", element.imageUrl);
-      productimage.setAttribute("alt", element.title);
-      productcarddivA.appendChild(productimage);
+        const productimage = document.createElement("img");
+        productimage.className = "shopping-image";
+        productimage.setAttribute("src", element.imageUrl);
+        productimage.setAttribute("alt", element.title);
+        productimagediv.appendChild(productimage);
+        
 
-      const productname = document.createElement("h3");
-      productname.className = "shopping-name";
-      productname.innerHTML = element.title;
-      productcarddivA.appendChild(productname);
+        const productname = document.createElement("h3");
+        productname.className = "shopping-name";
+        var ptitle = this.truncate(element.title, 30)
+        productname.innerHTML = ptitle
+        productcarddivA.appendChild(productname);
 
-      const productprice = document.createElement("p");
-      productprice.className = "shopping-price";
-      productprice.innerHTML = element.price;
-      productcarddivA.appendChild(productprice);
+        const productsource = document.createElement("p");
+        productsource.className = "shopping-source";
+        productsource.innerHTML = element.source;
+        productcarddivA.appendChild(productsource);
 
-      const productsource = document.createElement("p");
-      productsource.className = "shopping-source";
-      productsource.innerHTML = element.source;
-      productcarddivA.appendChild(productsource);
+        const productprice = document.createElement("p");
+        productprice.className = "shopping-price";
+        productprice.innerHTML = element.price;
+        productcarddivA.appendChild(productprice);
 
       const productoverlay = document.createElement("div");
       productoverlay.className = "shopping-overlay";

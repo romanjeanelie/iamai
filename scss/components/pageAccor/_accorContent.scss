@@ -42,9 +42,118 @@
 .accorOffers__container {
   background-color: $accorMain;
   color: $accorSecondary;
-  padding: 120px 220px;
+  padding: 120px 0;
 
   h5 {
     color: $accorSecondary;
+  }
+
+  h2 {
+    margin-bottom: 40px;
+  }
+
+  h4 {
+    color: white;
+    margin-top: 8px;
+  }
+}
+
+.accorOffers__bento-container {
+  display: grid;
+  grid-template-columns: 46% 1fr;
+  gap: 32px;
+  width: 100%;
+
+  h3,
+  p {
+    margin-top: 16px;
+  }
+
+  .img-container {
+    border-radius: 16px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+}
+
+.accorOffers__main-item {
+  h3 {
+    max-width: 350px;
+  }
+}
+
+.accorOffers__items-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: max-content;
+  column-gap: 24px;
+  row-gap: 44px;
+}
+
+.accorOffers__item {
+  height: fit-content;
+
+  .img-container {
+    height: 209px;
+  }
+}
+
+.accorOffers__footer {
+  margin-top: 142px;
+  display: flex;
+  justify-content: space-between;
+
+  .accorOffers__newsletter-form {
+    background-color: white;
+    max-width: 500px;
+    color: $accorMain;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    border-radius: 12px;
+    margin-top: 16px;
+    padding: 8px 8px 8px 24px;
+
+    input {
+      width: 100%;
+    }
+
+    button {
+      background-color: $accorMain;
+      color: white;
+      padding: 8px 24px;
+      border-radius: 12px;
+      font-size: 12px;
+      line-height: 16px;
+      letter-spacing: 0.5px;
+      transition: background-color 0.2s ease-out;
+
+      &:hover {
+        background-color: $accorLight;
+      }
+    }
+  }
+
+  .accorOffers__contacts li {
+    color: white;
+    margin-top: 16px;
+    font-weight: 600;
+    font-size: 20px;
+  }
+
+  .accorOffers__contacts-infos {
+    margin-top: 48px;
+
+    ul li {
+      font-size: 16px;
+      margin-top: 8px;
+      font-weight: 500;
+    }
   }
 }
