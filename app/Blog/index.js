@@ -290,7 +290,7 @@ class Blog {
     videoContainers.forEach((container) => {
       // Create a button element
       const unmuteButton = document.createElement("button");
-      unmuteButton.classList.add("blog__unmute-btn");
+      unmuteButton.classList = "blog__unmute-btn muted";
 
       // Create an image element
       const muteIcon = `
