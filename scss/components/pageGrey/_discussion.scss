@@ -157,7 +157,7 @@
     @include underline-task(top);
 
     @include media("<tablet") {
-      //   padding-right: 24px;
+      padding-left: 32px;
     }
   }
 
@@ -244,6 +244,7 @@
 
     @include media("<tablet") {
       //   padding-left: 24px;
+      padding-right: 32px;
       margin-right: unset;
     }
   }
