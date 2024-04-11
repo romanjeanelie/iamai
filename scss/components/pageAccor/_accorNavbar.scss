@@ -4,6 +4,7 @@ $expandedSearchBarWidth: min(763px, 50vw);
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   padding: 20px 24px 32px;
+  overflow: hidden;
 
   @include media("<tablet") {
     grid-template-columns: 1fr;
@@ -39,10 +40,15 @@ $expandedSearchBarWidth: min(763px, 50vw);
 }
 
 // SEARCH BAR COMPONENT
+.accorNavbar__mainBar {
+  display: flex;
+  gap: 24px;
+}
+
 .accorSearchBar__wrapper {
+  position: relative;
   grid-column: span 6;
   justify-content: center;
-  gap: 24px;
 }
 
 .accorSearchBar__item-container {
@@ -245,7 +251,7 @@ $expandedSearchBarWidth: min(763px, 50vw);
   }
 }
 
-.accorSearchBar__advanced-btn {
+.switch-btn {
   font-size: 16px;
   font-weight: 500;
   line-height: 20px;
@@ -255,5 +261,41 @@ $expandedSearchBarWidth: min(763px, 50vw);
 
   &:hover {
     color: $accorMain;
+  }
+}
+
+// SECONDARY BARS (ADVANCED AND CALL)
+.accorBar__secondaryBar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 10px;
+  // opacity: 0.5;
+  display: flex;
+  justify-content: center;
+}
+
+// ADVANCED BAR
+.accorBar__advancedBar-wrapper {
+  display: flex;
+  gap: 16px;
+}
+
+.accorNavbar__advancedBar {
+  position: relative;
+  background-color: white;
+  border-radius: 60px;
+  padding: 10px 10px 10px 24px;
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.08);
+  width: $expandedSearchBarWidth;
+  display: flex;
+  justify-content: space-between;
+
+  & > * {
+    align-self: center;
+  }
+
+  .advanced-input {
+    display: block;
   }
 }

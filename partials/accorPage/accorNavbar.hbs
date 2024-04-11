@@ -4,51 +4,89 @@
   </div>
 
   <div class="accorNavbar__item accorSearchBar__wrapper minimized">
-    <div class="accorSearchBar__container accorSearchBar__item-container">
-      {{! MINIMIZED STATE ELEMENTS }}
-      <button class="accorSearchBar__write-btn">
-        Tell me?
-        <br />
-        <span class="hidden">Where & When</span>
-      </button>
+    <div class="accorNavbar__mainBar">
+      <div class="accorSearchBar__container accorSearchBar__item-container">
+        {{! MINIMIZED STATE ELEMENTS }}
+        <button class="accorSearchBar__write-btn">
+          Tell me?
+          <br />
+          <span class="hidden">Where & When</span>
+        </button>
 
-      <button class="accorSearchBar__expand-btn" data>
-        <img src="/icons/arrow-right.svg" alt="arrow left icon" />
-        <span>Options</span>
-      </button>
+        <button class="accorSearchBar__expand-btn" data>
+          <img src="/icons/arrow-right.svg" alt="arrow left icon" />
+          <span>Options</span>
+        </button>
 
-      {{! TEXT-INPUT ELEMENT }}
-      <form class="accorSearchBar__text-input-container">
-        <input type="text" class="accorSearchBar__text-input" placeholder="Where & When" />
-      </form>
+        {{! TEXT-INPUT ELEMENT }}
+        <form class="accorSearchBar__text-input-container">
+          <input type="text" class="accorSearchBar__text-input" placeholder="Where & When" />
+        </form>
 
-      {{! STANDARD OPTIONS }}
-      <button class="accorSearchBar__input-btn standard-input">
-        Check In
-        <br />
-        <span class="hidden">Add Dates</span>
-      </button>
-      <button class="accorSearchBar__input-btn standard-input">
-        Check Out
-        <br />
-        <span class="hidden">Add Dates</span>
-      </button>
-      <button class="accorSearchBar__input-btn standard-input">
-        Guests
-        <br />
-        <span class="hidden">Add Guests</span>
-      </button>
+        {{! STANDARD OPTIONS }}
+        <button class="accorSearchBar__input-btn standard-input">
+          Check In
+          <br />
+          <span class="hidden">Add Dates</span>
+        </button>
+        <button class="accorSearchBar__input-btn standard-input">
+          Check Out
+          <br />
+          <span class="hidden">Add Dates</span>
+        </button>
+        <button class="accorSearchBar__input-btn standard-input">
+          Guests
+          <br />
+          <span class="hidden">Add Guests</span>
+        </button>
 
-      {{! ACTION BTN STAYS ON EVERY STATE }}
-      <button class="accorSearchBar__action-btn">
-        <img src="/icons/phone-icon.svg" class="phone-icon" alt="phone icon" />
-        <img src="/icons/arrow-right.svg" class="arrow-icon" alt="arrow icon" />
-      </button>
+        {{! ACTION BTN STAYS ON EVERY STATE }}
+        <button class="accorSearchBar__action-btn">
+          <img src="/icons/phone-icon.svg" class="phone-icon" alt="phone icon" />
+          <img src="/icons/arrow-right.svg" class="arrow-icon" alt="arrow icon" />
+        </button>
 
+      </div>
+      <button class="accorSearchBar__advanced-btn switch-btn">
+        Advanced
+      </button>
     </div>
-    <button class="accorSearchBar__advanced-btn">
-      Advanced
-    </button>
+
+    <div class="accorBar__secondaryBar">
+      <div class="accorBar__advancedBar-wrapper">
+        <div class="accorNavbar__advancedBar">
+          <button class="accorSearchBar__input-btn advanced-input">
+            Travellers
+            <br />
+            <span class="hidden">Subscription Number</span>
+          </button>
+          <button class="accorSearchBar__input-btn advanced-input">
+            Professional Travellers
+            <br />
+            <span class="hidden">Business Client</span>
+          </button>
+          <button class="accorSearchBar__input-btn advanced-input">
+            Access Code
+            <br />
+            <span class="hidden">10 Characters</span>
+          </button>
+          <button class="accorSearchBar__input-btn advanced-input">
+            Special Rates
+            <br />
+            <span class="hidden">Choose a Rate</span>
+          </button>
+
+          <button class="accorSearchBar__action-btn">
+            <img src="/icons/phone-icon.svg" class="phone-icon" alt="phone icon" />
+            <img src="/icons/arrow-right.svg" class="arrow-icon" alt="arrow icon" />
+          </button>
+        </div>
+        <button class="accorSearchBar__standard-btn switch-btn">
+          Standard
+        </button>
+
+      </div>
+    </div>
   </div>
 
   <ul class="accorNavbar__item accorNavbar__navlist">

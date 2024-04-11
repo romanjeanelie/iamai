@@ -55,8 +55,11 @@ function () {
     this.writeBtn = document.querySelector(".accorSearchBar__write-btn");
     this.expandBtn = document.querySelector(".accorSearchBar__expand-btn");
     this.callBtn = document.querySelector(".accorSearchBar__action-btn");
-    this.advancedBtn = document.querySelector(".accorSearchBar__advanced-btn"); // Init
+    this.advancedBtn = document.querySelector(".accorSearchBar__advanced-btn");
+    this.standardBtn = document.querySelector(".accorSearchBar__standard-btn");
+    this.secondaryBarContainer = document.querySelector(".accorBar__secondaryBar"); // Init
 
+    this.initSecondaryBar();
     this.addEventListener();
   }
 
@@ -107,6 +110,29 @@ function () {
       this.switchStateClass(STATES.STANDARD_OPTIONS);
     }
   }, {
+    key: "toSecondaryBar",
+    value: function toSecondaryBar() {
+      _gsap["default"].killTweensOf(this.searchBar);
+
+      _gsap["default"].to(this.wrapper, {
+        y: -200
+      });
+    }
+  }, {
+    key: "fromSecondaryBar",
+    value: function fromSecondaryBar() {
+      _gsap["default"].to(this.wrapper, {
+        y: 0
+      });
+    }
+  }, {
+    key: "initSecondaryBar",
+    value: function initSecondaryBar() {
+      _gsap["default"].set(this.secondaryBarContainer, {
+        y: 200
+      });
+    }
+  }, {
     key: "addEventListener",
     value: function addEventListener() {
       var _this = this;
@@ -119,8 +145,10 @@ function () {
           _this.toMinimized();
         }
       });
+      this.advancedBtn.addEventListener("click", this.toSecondaryBar.bind(this));
+      this.standardBtn.addEventListener("click", this.fromSecondaryBar.bind(this));
       document.addEventListener("click", function (event) {
-        if (!_this.searchBar.contains(event.target)) {
+        if (!_this.wrapper.contains(event.target)) {
           _this.toMinimized();
         }
       });

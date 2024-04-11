@@ -23,8 +23,11 @@ export default class AccorSearchBar {
     this.expandBtn = document.querySelector(".accorSearchBar__expand-btn");
     this.callBtn = document.querySelector(".accorSearchBar__action-btn");
     this.advancedBtn = document.querySelector(".accorSearchBar__advanced-btn");
+    this.standardBtn = document.querySelector(".accorSearchBar__standard-btn");
+    this.secondaryBarContainer = document.querySelector(".accorBar__secondaryBar");
 
     // Init
+    this.initSecondaryBar();
     this.addEventListener();
   }
 
@@ -64,6 +67,23 @@ export default class AccorSearchBar {
     this.switchStateClass(STATES.STANDARD_OPTIONS);
   }
 
+  toSecondaryBar() {
+    gsap.killTweensOf(this.searchBar);
+    gsap.to(this.wrapper, {
+      y: -200,
+    });
+  }
+
+  fromSecondaryBar() {
+    gsap.to(this.wrapper, {
+      y: 0,
+    });
+  }
+
+  initSecondaryBar() {
+    gsap.set(this.secondaryBarContainer, { y: 200 });
+  }
+
   addEventListener() {
     this.writeBtn.addEventListener("click", this.toTextInput.bind(this));
     this.expandBtn.addEventListener("click", () => {
@@ -73,9 +93,11 @@ export default class AccorSearchBar {
         this.toMinimized();
       }
     });
+    this.advancedBtn.addEventListener("click", this.toSecondaryBar.bind(this));
+    this.standardBtn.addEventListener("click", this.fromSecondaryBar.bind(this));
 
     document.addEventListener("click", (event) => {
-      if (!this.searchBar.contains(event.target)) {
+      if (!this.wrapper.contains(event.target)) {
         this.toMinimized();
       }
     });
