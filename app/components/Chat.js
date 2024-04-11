@@ -36,6 +36,7 @@ const ANSWER = "answer",
   RAGCHAT = "RAG_CHAT",
   FLIGHTSEARCH = "FlightSearch",
   PRODUCTSEARCH = "ProductSearch",
+  HOTELSEARCH = "HotelSearch",
   AGENT_PROGRESSING = "agent_progressing",
   AGENT_ANSWERED = "agent_answered",
   IMAGE_GENERATION_IN_PROGRESS = "image_generation_in_progress",
@@ -480,6 +481,8 @@ class Chat {
       container = this.getFlightUI(JSON.parse(data.FlightSearch), JSON.parse(data.FlightSearchResults));
     } else if (domain == PRODUCTSEARCH) {
       container = this.getProductUI(JSON.parse(data.ProductSearchResults));
+    } else if (domain == HOTELSEARCH) {
+      container = this.getHotelsUI(JSON.parse(data.HotelSearch), JSON.parse(data.HotelSearchResults));
     }
     return container;
   }
@@ -607,10 +610,10 @@ class Chat {
     return str;
   }
 
-    truncate(str,n = 200) {
-      // var n = 200;
-      return str && str.length > n ? str.slice(0, n - 1) + "&hellip;" : str;
-    }
+  truncate(str, n = 200) {
+    // var n = 200;
+    return str && str.length > n ? str.slice(0, n - 1) + "&hellip;" : str;
+  }
 
   submituserreply(text, suworkflowid, img) {
     var data = "";
@@ -1210,44 +1213,44 @@ class Chat {
     productcardcontainerdiv.className = "shopping-container";
     productdiv.appendChild(productcardcontainerdiv);
 
-      ProductSearchResults.forEach((element) => {
-        const productcarddiv = document.createElement("div");
-        productcarddiv.className = "shopping-card";
-        // productcarddiv.setAttribute("data-info", "product-details");
-        // productcarddiv.setAttribute("data-details", JSON.stringify(element).replace(/'/g, "&#39;"));
-        // productcarddiv.addEventListener("click", (event) => this.showProductDetail(event));
-        productcardcontainerdiv.appendChild(productcarddiv);
-        const productcarddivA = document.createElement("a");
-        productcarddivA.setAttribute("href", element.link);
-        productcarddivA.setAttribute("target", "_blank");
-        productcarddiv.appendChild(productcarddivA);
-        
-        const productimagediv = document.createElement("div");
-        productimagediv.className = "shopping-image-dev";
-        productcarddivA.appendChild(productimagediv);
+    ProductSearchResults.forEach((element) => {
+      const productcarddiv = document.createElement("div");
+      productcarddiv.className = "shopping-card";
+      // productcarddiv.setAttribute("data-info", "product-details");
+      // productcarddiv.setAttribute("data-details", JSON.stringify(element).replace(/'/g, "&#39;"));
+      // productcarddiv.addEventListener("click", (event) => this.showProductDetail(event));
+      productcardcontainerdiv.appendChild(productcarddiv);
+      const productcarddivA = document.createElement("a");
+      productcarddivA.setAttribute("href", element.link);
+      productcarddivA.setAttribute("target", "_blank");
+      productcarddiv.appendChild(productcarddivA);
 
-        const productimage = document.createElement("img");
-        productimage.className = "shopping-image";
-        productimage.setAttribute("src", element.imageUrl);
-        productimage.setAttribute("alt", element.title);
-        productimagediv.appendChild(productimage);
-        
+      const productimagediv = document.createElement("div");
+      productimagediv.className = "shopping-image-dev";
+      productcarddivA.appendChild(productimagediv);
 
-        const productname = document.createElement("h3");
-        productname.className = "shopping-name";
-        var ptitle = this.truncate(element.title, 30)
-        productname.innerHTML = ptitle
-        productcarddivA.appendChild(productname);
+      const productimage = document.createElement("img");
+      productimage.className = "shopping-image";
+      productimage.setAttribute("src", element.imageUrl);
+      productimage.setAttribute("alt", element.title);
+      productimagediv.appendChild(productimage);
 
-        const productsource = document.createElement("p");
-        productsource.className = "shopping-source";
-        productsource.innerHTML = element.source;
-        productcarddivA.appendChild(productsource);
 
-        const productprice = document.createElement("p");
-        productprice.className = "shopping-price";
-        productprice.innerHTML = element.price;
-        productcarddivA.appendChild(productprice);
+      const productname = document.createElement("h3");
+      productname.className = "shopping-name";
+      var ptitle = this.truncate(element.title, 30)
+      productname.innerHTML = ptitle
+      productcarddivA.appendChild(productname);
+
+      const productsource = document.createElement("p");
+      productsource.className = "shopping-source";
+      productsource.innerHTML = element.source;
+      productcarddivA.appendChild(productsource);
+
+      const productprice = document.createElement("p");
+      productprice.className = "shopping-price";
+      productprice.innerHTML = element.price;
+      productcarddivA.appendChild(productprice);
 
       const productoverlay = document.createElement("div");
       productoverlay.className = "shopping-overlay";
@@ -1321,6 +1324,119 @@ class Chat {
     divele.innerHTML = "";
     divele.appendChild(productdetailscard);
     // scrollToDiv(element.getAttribute('data-info'));
+  }
+
+  getHotelsUI(HotelSearch, HotelSearchResults) {
+    const hotelsdiv = document.createElement("div");
+    const hotelcardcontainerdiv = document.createElement("div");
+    hotelcardcontainerdiv.className = "hotelscard-container";
+    HotelSearchResults.airbnb.forEach((element) => {
+      const hotelcarddiv = document.createElement("div");
+      hotelcarddiv.className = "hotels-card";
+      const hotelcardimagediv = document.createElement("div");
+      hotelcardimagediv.className = "hotels-image-div";
+      const hotelcardimageslidesdiv = document.createElement("div");
+      hotelcardimageslidesdiv.className = "hotels-image-slides";
+      hotelcardimagediv.appendChild(hotelcardimageslidesdiv);
+      const hoteldots = document.createElement("div");
+      hoteldots.className = "hotels-dots";
+      // moviescarddiv.addEventListener("click", (event) => this.showMovieDetail(event));
+      let index = 0;
+      element.rooms[0].pictures.forEach((pictures) => {
+        const hotelcardimageslidediv = document.createElement("div");
+        if (index === 0)
+          hotelcardimageslidediv.className = "hotels-image-slide active";
+        else
+          hotelcardimageslidediv.className = "hotels-image-slide";
+
+        hotelcardimageslidesdiv.appendChild(hotelcardimageslidediv);
+        const hotelsimg = document.createElement("img");
+
+        hotelsimg.className = "hotels-image";
+        hotelsimg.setAttribute("alt", element.title.replace(/'/g, "&#39;"));
+        hotelsimg.setAttribute("src", pictures);
+        hotelcardimageslidediv.appendChild(hotelsimg);
+
+        const dot = document.createElement("span");
+        if (index === 0)
+          dot.className = "hotels-dot active";
+        else
+          dot.classList.add("hotels-dot");
+        hoteldots.appendChild(dot);
+        index++;
+      });
+
+      const hotelimagesprev = document.createElement("button");
+      hotelimagesprev.className = "hotels-prev";
+      hotelimagesprev.innerHTML = "&#10094;"
+      hotelimagesprev.addEventListener("click", (event) =>
+        this.hotelmoveSlide(event, false)
+      );
+      hotelcardimagediv.appendChild(hotelimagesprev);
+
+      const hotelimagesnext = document.createElement("button");
+      hotelimagesnext.className = "hotels-next";
+      hotelimagesnext.innerHTML = "&#10095;"
+
+      hotelimagesnext.addEventListener("click", (event) =>
+        this.hotelmoveSlide(event, true)
+      );
+      hotelcardimagediv.appendChild(hotelimagesnext);
+      // <button class="prev" onclick="moveSlide(-1)"></button>
+      // <button class="next" onclick="moveSlide(1)"></button>
+
+      hotelcardimagediv.appendChild(hoteldots);
+      hotelcarddiv.appendChild(hotelcardimagediv);
+
+      const hoteltitlep = document.createElement("p");
+      hoteltitlep.className = "hotels-title";
+      hoteltitlep.innerText = element.title;
+      hotelcarddiv.appendChild(hoteltitlep);
+
+      const hotelratingp = document.createElement("p");
+      hotelratingp.className = "hotels-rating";
+      hotelratingp.innerText = element.rating;
+      hotelcarddiv.appendChild(hotelratingp);
+
+      const hotelpricep = document.createElement("div");
+      hotelpricep.className = "hotels-price";
+      hotelpricep.innerText = element.rooms[0].price;
+      const hotelview = document.createElement("button");
+      hotelview.className = "hotels-view";
+      hotelview.innerHTML = '<svg width="95" height="40" viewBox="0 0 95 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="95" height="40" rx="12" fill="black" fill-opacity="0.6"/><path d="M32.0879 24L29.1582 15.5449H30.8047L32.9492 22.3887H32.9785L35.1289 15.5449H36.7754L33.8398 24H32.0879ZM40.0777 24V15.5449H41.5895V24H40.0777ZM45.4777 24V15.5449H50.9504V16.8164H46.9895V19.0957H50.7336V20.3203H46.9895V22.7285H50.9504V24H45.4777ZM56.4383 24L54.1707 15.5449H55.741L57.2117 21.9258H57.241L58.9344 15.5449H60.3055L61.9988 21.9258H62.0281L63.4988 15.5449H65.0691L62.8016 24H61.3426L59.6375 17.9355H59.6023L57.8973 24H56.4383Z" fill="white"/></svg>';
+      hotelview.setAttribute("onclick", "window.open('" + element.booking_url + "', '_blank');");
+      hotelpricep.appendChild(hotelview);
+      hotelcarddiv.appendChild(hotelpricep);
+
+
+
+
+      hotelcardcontainerdiv.appendChild(hotelcarddiv);
+    });
+    hotelsdiv.appendChild(hotelcardcontainerdiv);
+
+    return hotelsdiv;
+
+  }
+  hotelmoveSlide(event, next) {
+    let currentSlide = event.target.parentElement.querySelector(".hotels-image-slide.active");
+    let currentDot = event.target.parentElement.querySelector(".hotels-dot.active");
+    currentSlide.classList.remove('active');
+    currentDot.classList.remove('active');
+    
+    if (next) {
+      // Move to the next slide, or loop back to the first if at the end
+      let nextSlide = currentSlide.nextElementSibling || currentSlide.parentNode.firstElementChild;
+      nextSlide.classList.add('active');
+      let nextDot = currentDot.nextElementSibling || currentDot.parentNode.firstElementChild;
+      nextDot.classList.add('active');
+    } else {
+      // Move to the previous slide, or loop back to the last if at the beginning
+      let prevSlide = currentSlide.previousElementSibling || currentSlide.parentNode.lastElementChild;
+      prevSlide.classList.add('active');
+      let prevDot = currentDot.previousElementSibling || currentDot.parentNode.lastElementChild;
+      prevDot.classList.add('active');
+    }
   }
 
   formatDateToString(date) {

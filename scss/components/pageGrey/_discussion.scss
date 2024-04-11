@@ -141,6 +141,9 @@
     padding: 16px;
     display: inline-block;
     text-align: justify;
+    @include media("<tablet") {
+      padding: 12px;
+    }
   }
 
   .discussion__user {
