@@ -498,6 +498,7 @@ export default class Discussion {
 
   // Taks
   async onCreatedTask(task, textAI) {
+    console.log("this.debug",this.debug)
     if (this.debug) {
       this.userContainer = document.createElement("div");
       this.userContainer.classList.add("discussion__user");
@@ -512,6 +513,10 @@ export default class Discussion {
       this.AIContainer.classList.add("discussion__ai");
       this.discussionContainer.appendChild(this.AIContainer);
     }
+
+    const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskKey="${task.key}"]`);
+    const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskKey="${task.key}"]`);
+    // if(userContainer || AIContainer) return
 
     if (!this.history.isSet) return;
     if (!this.userContainer) {
@@ -570,7 +575,7 @@ export default class Discussion {
     this.userContainer.classList.add("discussion__user");
     var userContainerspan = document.createElement("span");
     userContainerspan.classList.add("discussion__userspan");
-    userContainerspan.innerHTML = task.name
+    userContainerspan.innerHTML = task.name;
     this.userContainer.appendChild(userContainerspan);
     // this.userContainer.innerHTML = task.name;
 

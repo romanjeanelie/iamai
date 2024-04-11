@@ -62,8 +62,6 @@ export default class History {
             },
           };
           const textAI = status.response_json.text;
-          // If task is already completed, don't emit the event
-          if (resultsContainer) break;
           this.emitter.emit("taskManager:createTask", task, textAI);
         case API_STATUSES.PROGRESSING:
           if (status.awaiting) {

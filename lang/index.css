@@ -1,0 +1,87 @@
+body {
+    font-family: Noto Sans;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 28px;
+    letter-spacing: 0.5px;
+
+
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    /* Aligns items on the main-axis (horizontal) */
+    text-align: center;
+    /* Aligns text inside the flex items if they are inline elements or text nodes */
+    height: 100vh;
+    /* Use full height of the viewport */
+    margin: 0;
+    /* Removes default body margin */
+    background-color: #f8f6f2;
+}
+
+.container {
+    display: flex;
+    /* Enables flexbox for this container */
+    flex-direction: column;
+    /* Stack items vertically
+    /*justify-content: center; /* Center items vertically */
+    /*align-items: center; /* Center items horizontally */
+    height: 100%;
+    /* Full height */
+    width: 900px;
+    text-align: left;
+}
+
+.divorignaltext {
+    text-align: left;
+}
+
+.divtranslated {
+    text-align: right;
+}
+
+.mic-btn__container {
+    display: flex;
+    align-items: center;
+    background-color: antiquewhite;
+    padding: 20px;
+    margin: 20px 0 20px 0;
+    border-radius: 25px;
+    justify-content: center;
+
+    p {
+        visibility: hidden;
+    }
+
+    &.active {
+        p {
+            visibility: visible;
+        }
+
+        path {
+            fill: red;
+        }
+
+        rect {
+            stroke: red;
+        }
+    }
+}
+
+.mic-btn {
+    background-color: transparent;
+    border: none;
+
+    path {
+        fill: black;
+    }
+
+    rect {
+        stroke: black;
+    }
+}
+
+.small-record-counter {
+    color: red;
+    font-size: 14px;
+}

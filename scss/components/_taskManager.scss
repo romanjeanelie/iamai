@@ -99,6 +99,7 @@ $zIndex: 10;
 
     .task-manager__closing-icon {
       padding: 13px;
+      opacity: 60%;
     }
 
     .task-manager__closeFullscreen-icon {
@@ -149,17 +150,17 @@ $zIndex: 10;
         white-space: nowrap;
       }
 
-      &.active {
-        background-color: rgba(0, 0, 0, 0.1);
+      // &.active {
+      //   background-color: rgba(0, 0, 0, 0.1);
 
-        .task-manager__accordion-chevron {
-          transform: rotate(180deg);
-        }
-      }
+      //   .task-manager__accordion-chevron {
+      //     transform: rotate(180deg);
+      //   }
+      // }
 
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.1);
-      }
+      // &:hover {
+      //   background-color: rgba(0, 0, 0, 0.1);
+      // }
 
       div {
         flex: none;
@@ -211,13 +212,14 @@ $zIndex: 10;
 
       .task-manager__delete-btn {
         background: #fe5858;
-        margin: 0 auto;
-        margin-top: 16px;
+        // margin: 0 auto;
+        margin-top: 12px;
         margin-bottom: 24px;
         border-radius: 40px;
-        padding: 12px 24px;
+        padding: 6px 12px;
         font-size: 14px;
         color: white;
+        float: right;
 
         &.hidden {
           display: none;
