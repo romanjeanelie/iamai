@@ -338,7 +338,7 @@ button {
   // font-family: "SFPro";
   @include media("<tablet") {
     place-items: center;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(327px, 1fr));
   }
 }
 
@@ -352,7 +352,7 @@ button {
   margin-bottom: 24px;
 
   @include media("<tablet") {
-    max-width: 180px;
+    max-width: 327px;
   }
 }
 .hotels-image-div{
@@ -372,6 +372,9 @@ button {
   opacity: 88%;
   max-height: 200px;
   display: block;
+  @include media("<tablet") {
+    max-height:unset;
+  }
 }
 
 .hotels-title {
@@ -383,10 +386,10 @@ button {
   padding: 16px 24px 8px 24px;
   text-align: left;
 
-  @include media("<tablet") {
-    font-size: 12px;
-    line-height: 16px;
-  }
+  // @include media("<tablet") {
+  //   font-size: 12px;
+  //   line-height: 16px;
+  // }
 }
 .hotels-rating{
   font-feature-settings: "liga" off;
@@ -397,10 +400,10 @@ button {
   padding: 0px 24px 8px 24px;
   text-align: left;
 
-  @include media("<tablet") {
-    font-size: 12px;
-    line-height: 16px;
-  }
+  // @include media("<tablet") {
+  //   font-size: 12px;
+  //   line-height: 16px;
+  // }
 }
 
 .hotels-price{
@@ -412,10 +415,10 @@ button {
   padding: 8px 24px 24px 24px;
   text-align: left;
 
-  @include media("<tablet") {
-    font-size: 12px;
-    line-height: 16px;
-  }
+  // @include media("<tablet") {
+  //   font-size: 12px;
+  //   line-height: 16px;
+  // }
 }
 .hotels-view{
   float: right;
