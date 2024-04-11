@@ -36,6 +36,7 @@ function () {
     // States
     this.searchBarState = STATES.MINIMIZED; // Dom Elements
 
+    this.wrapper = document.querySelector(".accorSearchBar__wrapper");
     this.searchBar = document.querySelector(".accorSearchBar__container");
     this.writeBtn = document.querySelector(".accorSearchBar__write-btn");
     this.expandBtn = document.querySelector(".accorSearchBar__expand-btn");
@@ -46,8 +47,46 @@ function () {
   }
 
   _createClass(AccorSearchBar, [{
+    key: "switchStateClass",
+    value: function switchStateClass(state) {
+      console.log();
+      this.searchBarState = state;
+      this.wrapper.className = "accorNavbar__item accorSearchBar__wrapper ".concat(state);
+    }
+  }, {
+    key: "toMinimized",
+    value: function toMinimized() {
+      this.switchStateClass(STATES.MINIMIZED);
+    }
+  }, {
+    key: "toTextInput",
+    value: function toTextInput() {
+      this.switchStateClass(STATES.TEXT_INPUT);
+    }
+  }, {
+    key: "toStandardOptions",
+    value: function toStandardOptions() {
+      this.switchStateClass(STATES.STANDARD_OPTIONS);
+    }
+  }, {
     key: "addEventListener",
-    value: function addEventListener() {}
+    value: function addEventListener() {
+      var _this = this;
+
+      this.writeBtn.addEventListener("click", this.toTextInput.bind(this));
+      this.expandBtn.addEventListener("click", function () {
+        if (_this.searchBarState !== STATES.STANDARD_OPTIONS) {
+          _this.toStandardOptions();
+        } else {
+          _this.toMinimized();
+        }
+      });
+      document.addEventListener("click", function (event) {
+        if (!_this.searchBar.contains(event.target)) {
+          _this.toMinimized();
+        }
+      });
+    }
   }]);
 
   return AccorSearchBar;
