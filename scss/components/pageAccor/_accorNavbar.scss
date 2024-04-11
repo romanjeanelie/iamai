@@ -80,7 +80,7 @@ $expandedSearchBarWidth: min(763px, 50vw);
 .text-input {
   .accorSearchBar__container {
     display: flex;
-    justify-content: space-between;
+    gap: 8px;
     min-width: $expandedSearchBarWidth;
   }
 
@@ -94,6 +94,15 @@ $expandedSearchBarWidth: min(763px, 50vw);
 
   .accorSearchBar__text-input-container {
     display: block;
+    width: 100%;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0.800000011920929px;
+
+    input {
+      width: 100%;
+    }
   }
 
   .accorSearchBar__action-btn {
@@ -104,6 +113,31 @@ $expandedSearchBarWidth: min(763px, 50vw);
     .arrow-icon {
       display: block;
     }
+  }
+}
+
+// STANDARD-OPTIONS STATE
+.standard-options {
+  position: relative;
+
+  .accorSearchBar__container {
+    display: flex;
+    justify-content: space-between;
+    width: $expandedSearchBarWidth;
+  }
+
+  .accorSearchBar__write-btn {
+    display: block;
+  }
+
+  .accorSearchBar__expand-btn {
+    position: absolute;
+    left: calc(94px + 5%);
+    transform: rotate(180deg);
+  }
+
+  .standard-input {
+    display: block;
   }
 }
 
@@ -127,6 +161,23 @@ $expandedSearchBarWidth: min(763px, 50vw);
 
 .accorSearchBar__text-input-container {
   display: none;
+}
+
+.accorSearchBar__input-btn {
+  display: none;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.5px;
+  text-align: left;
+
+  span {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 0.5px;
+    color: $accorExtraLight;
+  }
 }
 
 .accorSearchBar__action-btn {

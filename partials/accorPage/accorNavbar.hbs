@@ -5,7 +5,7 @@
 
   {{! STATES = minimized, text-input, standard-options, advanced-options, call }}
 
-  <div class="accorNavbar__item accorSearchBar__wrapper minimized">
+  <div class="accorNavbar__item accorSearchBar__wrapper standard-options">
     <div class="accorSearchBar__container accorSearchBar__item-container">
       {{! MINIMIZED STATE ELEMENTS }}
       <button class="accorSearchBar__write-btn">
@@ -24,11 +24,29 @@
         <input type="text" class="accorSearchBar__text-input" placeholder="Where & When" />
       </form>
 
+      {{! STANDARD OPTIONS }}
+      <button class="accorSearchBar__input-btn standard-input">
+        Check In
+        <br />
+        <span class="hidden">Add Dates</span>
+      </button>
+      <button class="accorSearchBar__input-btn standard-input">
+        Check Out
+        <br />
+        <span class="hidden">Add Dates</span>
+      </button>
+      <button class="accorSearchBar__input-btn standard-input">
+        Guests
+        <br />
+        <span class="hidden">Add Guests</span>
+      </button>
+
       {{! ACTION BTN STAYS ON EVERY STATE }}
       <button class="accorSearchBar__action-btn">
         <img src="/icons/phone-icon.svg" class="phone-icon" alt="phone icon" />
         <img src="/icons/arrow-right.svg" class="arrow-icon" alt="arrow icon" />
       </button>
+
     </div>
     <button class="accorSearchBar__advanced-btn">
       Advanced
