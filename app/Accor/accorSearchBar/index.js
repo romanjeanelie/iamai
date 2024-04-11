@@ -1,4 +1,4 @@
-import gsap, { Power2 } from "gsap";
+import gsap, { Power2, Power3 } from "gsap";
 import Flip from "gsap/Flip";
 
 const STATES = {
@@ -28,7 +28,6 @@ export default class AccorSearchBar {
 
     this.secondaryBarContainer = document.querySelector(".accorBar__secondaryBar");
     this.secondaryBarPhoneBtn = document.querySelector(".secondary-action-btn");
-    console.log(this.secondaryBarPhoneBtn);
 
     this.advancedBar = document.querySelector(".accorBar__advancedBar-wrapper");
     this.phoneBar = document.querySelector(".accorSearchBar__phoneBar");
@@ -63,6 +62,7 @@ export default class AccorSearchBar {
     });
   }
 
+  // Transitions between states of main bar (minimized, text input, standard options)
   toMinimized() {
     this.switchStateClass(STATES.MINIMIZED);
   }
@@ -75,16 +75,17 @@ export default class AccorSearchBar {
     this.switchStateClass(STATES.STANDARD_OPTIONS);
   }
 
-  resetPhoneBar() {
-    this.phoneBar.classList.remove("absolute");
-    gsap.set(this.wrapper, {
-      y: -200,
-    });
+  // Transitions between states of secondary bar (advanced options, call)
+  initSecondaryBar() {
+    gsap.set(this.secondaryBarContainer, { y: 200 });
   }
 
   toSecondaryBar(floor = 1) {
     gsap.killTweensOf(this.searchBar);
-    gsap.to(this.wrapper, {
+    const tl = gsap.timeline({ defaults: { ease: Power3.easeOut } });
+
+    tl.to([this.standardBtn, this.advancedBtn], { opacity: 0, duration: 0.1 });
+    tl.to(this.wrapper, {
       y: -200 * floor,
       onComplete: () => {
         if (floor === 2) {
@@ -93,6 +94,21 @@ export default class AccorSearchBar {
         }
       },
     });
+    tl.to([this.standardBtn, this.advancedBtn], { opacity: 1 });
+  }
+
+  fromSecondaryBar() {
+    const tl = gsap.timeline({ defaults: { ease: Power3.easeOut } });
+
+    tl.to([this.standardBtn, this.advancedBtn], { opacity: 0, duration: 0.1 });
+    tl.to(this.wrapper, {
+      y: 0,
+      onComplete: () => {
+        this.advancedBar.classList.add("none");
+        this.phoneBar.classList.add("none");
+      },
+    });
+    tl.to([this.standardBtn, this.advancedBtn], { opacity: 1 });
   }
 
   toAdvanceOptions() {
@@ -109,20 +125,14 @@ export default class AccorSearchBar {
     this.searchBarState = STATES.CALL;
   }
 
-  fromSecondaryBar() {
-    gsap.to(this.wrapper, {
-      y: 0,
-      onComplete: () => {
-        this.advancedBar.classList.add("none");
-        this.phoneBar.classList.add("none");
-      },
+  resetPhoneBar() {
+    this.phoneBar.classList.remove("absolute");
+    gsap.set(this.wrapper, {
+      y: -200,
     });
   }
 
-  initSecondaryBar() {
-    gsap.set(this.secondaryBarContainer, { y: 200 });
-  }
-
+  // Event Listeners
   addEventListener() {
     this.writeBtn.addEventListener("click", this.toTextInput.bind(this));
     this.expandBtn.addEventListener("click", () => {

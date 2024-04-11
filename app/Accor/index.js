@@ -3,7 +3,8 @@ import SearchBar from "./accorSearchBar/index.js";
 
 // TO DO
 // [X] set up the city breaks with initCityBreaks
-// [] manage all the different states for the search bar (create a search bar class)
+// [X] manage all the different states for the search bar (create a search bar class)
+// [] make the animations for the Phone
 // [] manage the filters carousel
 
 class Accor {

@@ -60,7 +60,6 @@ function () {
     this.actionBtn = document.querySelector(".accorSearchBar__action-btn");
     this.secondaryBarContainer = document.querySelector(".accorBar__secondaryBar");
     this.secondaryBarPhoneBtn = document.querySelector(".secondary-action-btn");
-    console.log(this.secondaryBarPhoneBtn);
     this.advancedBar = document.querySelector(".accorBar__advancedBar-wrapper");
     this.phoneBar = document.querySelector(".accorSearchBar__phoneBar");
     this.phoneCloseBtn = document.querySelector(".accorSearchBar__phoneClose"); // Init
@@ -99,7 +98,8 @@ function () {
           });
         }
       });
-    }
+    } // Transitions between states of main bar (minimized, text input, standard options)
+
   }, {
     key: "toMinimized",
     value: function toMinimized() {
@@ -114,14 +114,13 @@ function () {
     key: "toStandardOptions",
     value: function toStandardOptions() {
       this.switchStateClass(STATES.STANDARD_OPTIONS);
-    }
-  }, {
-    key: "resetPhoneBar",
-    value: function resetPhoneBar() {
-      this.phoneBar.classList.remove("absolute");
+    } // Transitions between states of secondary bar (advanced options, call)
 
-      _gsap["default"].set(this.wrapper, {
-        y: -200
+  }, {
+    key: "initSecondaryBar",
+    value: function initSecondaryBar() {
+      _gsap["default"].set(this.secondaryBarContainer, {
+        y: 200
       });
     }
   }, {
@@ -133,7 +132,17 @@ function () {
 
       _gsap["default"].killTweensOf(this.searchBar);
 
-      _gsap["default"].to(this.wrapper, {
+      var tl = _gsap["default"].timeline({
+        defaults: {
+          ease: _gsap.Power3.easeOut
+        }
+      });
+
+      tl.to([this.standardBtn, this.advancedBtn], {
+        opacity: 0,
+        duration: 0.1
+      });
+      tl.to(this.wrapper, {
         y: -200 * floor,
         onComplete: function onComplete() {
           if (floor === 2) {
@@ -142,6 +151,36 @@ function () {
             _this.advancedBar.classList.add("none");
           }
         }
+      });
+      tl.to([this.standardBtn, this.advancedBtn], {
+        opacity: 1
+      });
+    }
+  }, {
+    key: "fromSecondaryBar",
+    value: function fromSecondaryBar() {
+      var _this2 = this;
+
+      var tl = _gsap["default"].timeline({
+        defaults: {
+          ease: _gsap.Power3.easeOut
+        }
+      });
+
+      tl.to([this.standardBtn, this.advancedBtn], {
+        opacity: 0,
+        duration: 0.1
+      });
+      tl.to(this.wrapper, {
+        y: 0,
+        onComplete: function onComplete() {
+          _this2.advancedBar.classList.add("none");
+
+          _this2.phoneBar.classList.add("none");
+        }
+      });
+      tl.to([this.standardBtn, this.advancedBtn], {
+        opacity: 1
       });
     }
   }, {
@@ -160,26 +199,15 @@ function () {
       this.searchBarState = STATES.CALL;
     }
   }, {
-    key: "fromSecondaryBar",
-    value: function fromSecondaryBar() {
-      var _this2 = this;
+    key: "resetPhoneBar",
+    value: function resetPhoneBar() {
+      this.phoneBar.classList.remove("absolute");
 
-      _gsap["default"].to(this.wrapper, {
-        y: 0,
-        onComplete: function onComplete() {
-          _this2.advancedBar.classList.add("none");
+      _gsap["default"].set(this.wrapper, {
+        y: -200
+      });
+    } // Event Listeners
 
-          _this2.phoneBar.classList.add("none");
-        }
-      });
-    }
-  }, {
-    key: "initSecondaryBar",
-    value: function initSecondaryBar() {
-      _gsap["default"].set(this.secondaryBarContainer, {
-        y: 200
-      });
-    }
   }, {
     key: "addEventListener",
     value: function addEventListener() {
