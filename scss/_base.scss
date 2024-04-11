@@ -325,6 +325,161 @@ button {
   outline: none;
 }
 
+/* #######  Hotels  ##########*/
+
+.hotelscard-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(343px, 1fr));
+  width: 100%;
+  text-align: center;
+  margin-top: 8px;
+  margin-bottom: 16px;
+
+  // font-family: "SFPro";
+  @include media("<tablet") {
+    place-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(327px, 1fr));
+  }
+}
+
+.hotels-card {
+  background: #ffffff;
+  max-width: 343px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  border-radius: 16px !important;
+  margin-bottom: 24px;
+
+  @include media("<tablet") {
+    max-width: 327px;
+  }
+}
+.hotels-image-div{
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hotels-image:hover {
+  opacity: 100%;
+}
+
+.hotels-image {
+  width: 100%;
+  height: auto;
+  border-radius: 16px !important;
+  opacity: 88%;
+  max-height: 200px;
+  display: block;
+  @include media("<tablet") {
+    max-height:unset;
+  }
+}
+
+.hotels-title {
+  font-feature-settings: "liga" off;
+  text-overflow: ellipsis;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: 0.6px;
+  padding: 16px 24px 8px 24px;
+  text-align: left;
+
+  // @include media("<tablet") {
+  //   font-size: 12px;
+  //   line-height: 16px;
+  // }
+}
+.hotels-rating{
+  font-feature-settings: "liga" off;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: 0.6px;
+  padding: 0px 24px 8px 24px;
+  text-align: left;
+
+  // @include media("<tablet") {
+  //   font-size: 12px;
+  //   line-height: 16px;
+  // }
+}
+
+.hotels-price{
+  font-feature-settings: "liga" off;
+  text-overflow: ellipsis;
+  font-size: 40px;
+  line-height: 40px;
+  letter-spacing: 0.6px;
+  padding: 8px 24px 24px 24px;
+  text-align: left;
+
+  // @include media("<tablet") {
+  //   font-size: 12px;
+  //   line-height: 16px;
+  // }
+}
+.hotels-view{
+  float: right;
+  // padding-right: 24px;
+}
+.hotels-image-slides {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.hotels-image-slide {
+  min-width: 100%; /* Each slide is the full width of the slider */
+  box-sizing: border-box;
+  display: none; /* Hide all slides by default */
+  
+}
+.hotels-image-slide.active{
+  display: block;
+}
+
+.hotels-prev, .hotels-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 18px;
+}
+
+.hotels-prev {
+  left: 0;
+}
+
+.hotels-next {
+  right: 0;
+}
+
+.hotels-dots {
+  text-align: center;
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+}
+
+.hotels-dot {
+  display: inline-block;
+  margin: 0 5px;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  width: 8px;
+  height: 8px;
+}
+
+.hotels-dot.active {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+
 /* #######  GUCCI  ##########*/
 
 .productcard-container {
