@@ -11,8 +11,8 @@ const STATES = {
 
 export const TASK_STATUSES = {
   IN_PROGRESS: "In Progress",
-  INPUT_REQUIRED: "Input required",
-  COMPLETED: "View results",
+  INPUT_REQUIRED: "Input Required",
+  COMPLETED: "View Results",
 };
 
 const STATUS_COLORS = {

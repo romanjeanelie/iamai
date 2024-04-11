@@ -5,17 +5,17 @@ $paddingHorMobile: 12px;
 $paddingTopMobile: 28px;
 
 // Fonts
-@font-face {
-  font-family: "Circular";
-  src: url("/fonts/CircularStd-Book.woff2");
-  font-weight: 450;
-}
+// @font-face {
+//   font-family: "Circular";
+//   src: url("/fonts/CircularStd-Book.woff2");
+//   font-weight: 450;
+// }
 
-@font-face {
-  font-family: "Circular";
-  src: url("/fonts/CircularStd-Medium.woff2");
-  font-weight: 500;
-}
+// @font-face {
+//   font-family: "Circular";
+//   src: url("/fonts/CircularStd-Medium.woff2");
+//   font-weight: 500;
+// }
 
 @font-face {
   font-family: "SFPro";
@@ -51,7 +51,7 @@ body {
   overflow-x: hidden;
   overscroll-behavior: none;
   color: $colorMain;
-  font-family: SFPro;
+  font-family: Noto Sans;
   font-weight: 400;
   font-feature-settings: "liga" 0;
 }
@@ -85,6 +85,7 @@ button {
   main {
     z-index: 2;
   }
+
   .input__wrapper {
     display: flex;
     justify-content: center;
@@ -111,8 +112,7 @@ button {
       width: 100%;
     }
 
-    .bottom {
-    }
+    .bottom {}
   }
 
   &.hidden {
@@ -156,6 +156,7 @@ button {
   overflow-x: hidden;
   color: $colorBlack;
   background-color: $colorMain;
+  font-family: "SFPro";
 }
 
 .page-accor {
@@ -175,26 +176,37 @@ button {
 
 .moviescard-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(166px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(236px, 1fr));
   // padding: 20px;
-  padding-top: 16px;
-  padding-left: 16px;
+  // padding-top: 16px;
+  // padding-left: 16px;
   width: 100%;
-  background: #ffffff;
+  // background: #ffffff;
   text-align: center;
-  border-radius: 16px;
-  margin-left: -16px;
+  // border-radius: 16px;
+  // margin-left: -16px;
   margin-top: 8px;
   margin-bottom: 16px;
-  font-family: "SFPro";
+
+  // font-family: "SFPro";
+  @include media("<tablet") {
+    place-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
 }
 
 .movies-card {
   background: #ffffff;
-  max-width: 166px;
+  max-width: 236px;
   position: relative;
   overflow: hidden;
   cursor: pointer;
+  border-radius: 16px !important;
+  margin-bottom: 24px;
+
+  @include media("<tablet") {
+    max-width: 180px;
+  }
 }
 
 .movies-image:hover {
@@ -202,9 +214,9 @@ button {
 }
 
 .movies-image {
-  width: 166px;
+  width: 100%;
   height: auto;
-  border-radius: 8px !important;
+  border-radius: 16px !important;
   opacity: 88%;
 }
 
@@ -213,14 +225,19 @@ button {
   font-feature-settings: "liga" off;
   text-overflow: ellipsis;
   // white-space: nowrap;
-  font-size: 14px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 500;
-  line-height: 20px;
+  line-height: 24px;
   /* 142.857% */
   letter-spacing: 0.6px;
-  padding: 8px 8px 24px 8px;
+  padding: 16px 8px 24px 8px;
   text-align: left;
+
+  @include media("<tablet") {
+    font-size: 12px;
+    line-height: 16px;
+  }
 }
 
 .movie-details-card {
@@ -233,7 +250,7 @@ button {
   border-radius: var(--24, 24px);
   // background: var(--BG-Card, rgba(255, 255, 255, 0.48));
   background: #ffffff;
-  margin-left: -16px;
+  // margin-left: -16px;
   margin-top: 8px;
   margin-bottom: 16px;
 }
@@ -323,7 +340,7 @@ button {
   margin-left: 15px;
   margin-top: 8px;
   margin-bottom: 16px;
-  font-family: "SFPro";
+  // font-family: "SFPro";
 }
 
 .product-card {
@@ -555,7 +572,7 @@ button {
   width: 100%;
   margin-top: 16px;
   margin-bottom: 32px;
-  font-family: "SFPro";
+  // font-family: "SFPro";
 }
 
 .rides-list-item {
@@ -747,7 +764,7 @@ button {
   cursor: pointer;
 }
 
-.rides-timepicker-wrapper .time:hover > .arrow {
+.rides-timepicker-wrapper .time:hover>.arrow {
   opacity: 1;
 }
 
@@ -905,7 +922,7 @@ button {
   margin-bottom: 24px;
   /* border-radius: 20px; */
   /* overflow: hidden; */
-  font-family: "SFPro";
+  // font-family: "SFPro";
 }
 
 .flight-toggle-button {
@@ -929,7 +946,7 @@ button {
   margin: 20px 0;
   opacity: 0;
   align-self: flex-start;
-  font-family: "SFPro";
+  // font-family: "SFPro";
   animation: fadeIn 0.3s ease-in-out forwards;
   animation-delay: 1000ms;
 }
@@ -1099,7 +1116,7 @@ button {
   // margin-left: 15px;
   margin-top: 8px;
   margin-bottom: 24px;
-  font-family: "SFPro";
+  // font-family: "SFPro";
 }
 
 .shopping-card {
@@ -1148,6 +1165,7 @@ button {
   font-size: 0.9em;
   color: #555;
 }
+
 .shopping-image-dev {
   height: 150px;
   align-content: center;
@@ -1199,6 +1217,7 @@ button {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
