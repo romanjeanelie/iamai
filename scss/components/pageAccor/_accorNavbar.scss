@@ -1,3 +1,5 @@
+$expandedSearchBarWidth: min(763px, 50vw);
+
 .accorNavbar__container {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
@@ -36,7 +38,8 @@
   }
 }
 
-.accorSearchBar__container {
+// SEARCH BAR COMPONENT
+.accorSearchBar__wrapper {
   grid-column: span 6;
   justify-content: center;
   gap: 24px;
@@ -44,7 +47,7 @@
 
 .accorSearchBar__item-container {
   border-radius: 60px;
-  padding: 10px;
+  padding: 10px 10px 10px 24px;
   box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.08);
 
   & > * {
@@ -52,13 +55,61 @@
   }
 }
 
-.accorSearchBar__callBar {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+// MINIMIZED STATE
+.minimized {
+  .accorSearchBar__container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .accorSearchBar__write-btn {
+    display: block;
+  }
+
+  .accorSearchBar__expand-btn span {
+    display: block;
+  }
+
+  .accorSearchBar__expand-btn:hover span {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
 
+// TEXT-INPUT STATE
+.text-input {
+  .accorSearchBar__container {
+    display: flex;
+    justify-content: space-between;
+    min-width: $expandedSearchBarWidth;
+  }
+
+  .accorSearchBar__write-btn {
+    display: none;
+  }
+
+  .accorSearchBar__expand-btn {
+    display: none;
+  }
+
+  .accorSearchBar__text-input-container {
+    display: block;
+  }
+
+  .accorSearchBar__action-btn {
+    .phone-icon {
+      display: none;
+    }
+
+    .arrow-icon {
+      display: block;
+    }
+  }
+}
+
+// Elements present on several states
 .accorSearchBar__write-btn {
-  margin-left: 14px;
+  display: none;
   font-size: 16px;
   font-weight: 600;
   line-height: 20px;
@@ -74,7 +125,37 @@
   }
 }
 
+.accorSearchBar__text-input-container {
+  display: none;
+}
+
+.accorSearchBar__action-btn {
+  background-color: $accorLight;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-self: end;
+  border-radius: 50px;
+  transition: background-color 0.2s ease-out;
+
+  img {
+    width: 16px;
+  }
+
+  .arrow-icon {
+    display: none;
+    width: 18px;
+  }
+
+  &:hover {
+    background-color: $accorMain;
+  }
+}
+
 .accorSearchBar__expand-btn {
+  position: relative;
   background-color: rgba(18, 17, 49, 0.24);
   border-radius: 50px;
   width: 24px;
@@ -89,24 +170,20 @@
     width: 10px;
   }
 
-  &:hover {
-    background-color: rgba(18, 17, 49, 0.48);
-  }
-}
-
-.accorSearchBar__phone-btn {
-  background-color: $accorLight;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  justify-self: end;
-  border-radius: 50px;
-  transition: background-color 0.2s ease-out;
-
-  img {
-    width: 16px;
+  span {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: calc(100% + 8px);
+    transform: translateY(-50%);
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 10px;
+    letter-spacing: 0.5px;
+    color: $accorMain;
+    transition: opacity 0.2s ease-out;
+    opacity: 0;
+    pointer-events: none;
   }
 
   &:hover {

@@ -1,7 +1,6 @@
 import gsap from "gsap";
 import Flip from "gsap/Flip";
 import scrollToDiv from "../../utils/scrollToDiv";
-import fetcher from "../../utils/fetcher";
 
 const STATES = {
   CLOSED: "closed",

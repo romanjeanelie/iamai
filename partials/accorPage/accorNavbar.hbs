@@ -3,20 +3,31 @@
     <img src="/images/logo/accor-logo.png" alt="Accor Logo" />
   </div>
 
-  <div class="accorNavbar__item accorSearchBar__container">
-    <div class="accorSearchBar__callBar accorSearchBar__item-container">
+  {{! STATES = minimized, text-input, standard-options, advanced-options, call }}
+
+  <div class="accorNavbar__item accorSearchBar__wrapper minimized">
+    <div class="accorSearchBar__container accorSearchBar__item-container">
+      {{! MINIMIZED STATE ELEMENTS }}
       <button class="accorSearchBar__write-btn">
         Tell me?
         <br />
-        <span>Where & When</span>
+        <span class="hidden">Where & When</span>
       </button>
 
       <button class="accorSearchBar__expand-btn">
         <img src="/icons/arrow-right.svg" alt="arrow left icon" />
+        <span>Options</span>
       </button>
 
-      <button class="accorSearchBar__phone-btn">
-        <img src="/icons/phone-icon.svg" alt="phone icon" />
+      {{! TEXT-INPUT ELEMENT }}
+      <form class="accorSearchBar__text-input-container">
+        <input type="text" class="accorSearchBar__text-input" placeholder="Where & When" />
+      </form>
+
+      {{! ACTION BTN STAYS ON EVERY STATE }}
+      <button class="accorSearchBar__action-btn">
+        <img src="/icons/phone-icon.svg" class="phone-icon" alt="phone icon" />
+        <img src="/icons/arrow-right.svg" class="arrow-icon" alt="arrow icon" />
       </button>
     </div>
     <button class="accorSearchBar__advanced-btn">

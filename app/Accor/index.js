@@ -1,7 +1,8 @@
 import { filtersArray, cityBreaksData } from "./accorData";
+import SearchBar from "./accorSearchBar/index.js";
 
 // TO DO
-// [] set up the city breaks with initCityBreaks
+// [X] set up the city breaks with initCityBreaks
 // [] manage all the different states for the search bar (create a search bar class)
 // [] manage the filters carousel
 
@@ -17,6 +18,8 @@ class Accor {
     // Init
     this.initFilters();
     this.initCityBreaks();
+
+    new SearchBar();
   }
 
   // ------ Filters Section ------
