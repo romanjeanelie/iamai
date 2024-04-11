@@ -112,7 +112,8 @@ button {
       width: 100%;
     }
 
-    .bottom {}
+    .bottom {
+    }
   }
 
   &.hidden {
@@ -162,6 +163,7 @@ button {
 .page-accor {
   background-color: white;
   color: $accorMain;
+  font-family: "SFPro";
   overflow-x: hidden;
   min-height: 100vh;
   min-height: 100svh;
@@ -764,7 +766,7 @@ button {
   cursor: pointer;
 }
 
-.rides-timepicker-wrapper .time:hover>.arrow {
+.rides-timepicker-wrapper .time:hover > .arrow {
   opacity: 1;
 }
 
