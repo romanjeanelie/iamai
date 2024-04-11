@@ -58,8 +58,9 @@ function () {
     this.advancedBtn = document.querySelector(".accorSearchBar__advanced-btn");
     this.standardBtn = document.querySelector(".accorSearchBar__standard-btn");
     this.actionBtn = document.querySelector(".accorSearchBar__action-btn");
-    console.log(this.actionBtn);
     this.secondaryBarContainer = document.querySelector(".accorBar__secondaryBar");
+    this.secondaryBarPhoneBtn = document.querySelector(".secondary-action-btn");
+    console.log(this.secondaryBarPhoneBtn);
     this.advancedBar = document.querySelector(".accorBar__advancedBar-wrapper");
     this.phoneBar = document.querySelector(".accorSearchBar__phoneBar");
     this.phoneCloseBtn = document.querySelector(".accorSearchBar__phoneClose"); // Init
@@ -115,12 +116,32 @@ function () {
       this.switchStateClass(STATES.STANDARD_OPTIONS);
     }
   }, {
+    key: "resetPhoneBar",
+    value: function resetPhoneBar() {
+      this.phoneBar.classList.remove("absolute");
+
+      _gsap["default"].set(this.wrapper, {
+        y: -200
+      });
+    }
+  }, {
     key: "toSecondaryBar",
     value: function toSecondaryBar() {
+      var _this = this;
+
+      var floor = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+
       _gsap["default"].killTweensOf(this.searchBar);
 
       _gsap["default"].to(this.wrapper, {
-        y: -200
+        y: -200 * floor,
+        onComplete: function onComplete() {
+          if (floor === 2) {
+            _this.resetPhoneBar();
+
+            _this.advancedBar.classList.add("none");
+          }
+        }
       });
     }
   }, {
@@ -128,24 +149,27 @@ function () {
     value: function toAdvanceOptions() {
       this.advancedBar.classList.remove("none");
       this.toSecondaryBar();
+      this.phoneBar.classList.add("absolute");
+      this.searchBarState = STATES.ADVANCED_OPTIONS;
     }
   }, {
     key: "toPhoneBar",
     value: function toPhoneBar() {
       this.phoneBar.classList.remove("none");
-      this.toSecondaryBar();
+      this.toSecondaryBar(this.searchBarState === STATES.ADVANCED_OPTIONS ? 2 : 1);
+      this.searchBarState = STATES.CALL;
     }
   }, {
     key: "fromSecondaryBar",
     value: function fromSecondaryBar() {
-      var _this = this;
+      var _this2 = this;
 
       _gsap["default"].to(this.wrapper, {
         y: 0,
         onComplete: function onComplete() {
-          _this.advancedBar.classList.add("none");
+          _this2.advancedBar.classList.add("none");
 
-          _this.phoneBar.classList.add("none");
+          _this2.phoneBar.classList.add("none");
         }
       });
     }
@@ -159,28 +183,29 @@ function () {
   }, {
     key: "addEventListener",
     value: function addEventListener() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.writeBtn.addEventListener("click", this.toTextInput.bind(this));
       this.expandBtn.addEventListener("click", function () {
-        if (_this2.searchBarState !== STATES.STANDARD_OPTIONS) {
-          _this2.toStandardOptions();
+        if (_this3.searchBarState !== STATES.STANDARD_OPTIONS) {
+          _this3.toStandardOptions();
         } else {
-          _this2.toMinimized();
+          _this3.toMinimized();
         }
       });
       this.advancedBtn.addEventListener("click", this.toAdvanceOptions.bind(this));
       this.standardBtn.addEventListener("click", this.fromSecondaryBar.bind(this));
       this.actionBtn.addEventListener("click", function () {
-        if (_this2.searchBarState === STATES.TEXT_INPUT) {// TO DO - SUBMIT THE INPUT VALUE (on submit function)
+        if (_this3.searchBarState === STATES.TEXT_INPUT) {// TO DO - SUBMIT THE INPUT VALUE (on submit function)
         } else {
-          _this2.toPhoneBar();
+          _this3.toPhoneBar();
         }
       });
+      this.secondaryBarPhoneBtn.addEventListener("click", this.toPhoneBar.bind(this));
       this.phoneCloseBtn.addEventListener("click", this.fromSecondaryBar.bind(this));
       document.addEventListener("click", function (event) {
-        if (!_this2.wrapper.contains(event.target)) {
-          _this2.toMinimized();
+        if (!_this3.wrapper.contains(event.target)) {
+          _this3.toMinimized();
         }
       });
     }

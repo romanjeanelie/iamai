@@ -307,11 +307,17 @@ $expandedSearchBarWidth: min(763px, 50vw);
 // CALL BAR
 .accorSearchBar__phoneBar {
   display: flex;
+  padding-top: 10px;
   align-items: center;
   gap: 86px;
 
   &.none {
     display: none;
+  }
+
+  &.absolute {
+    position: absolute;
+    top: 200px;
   }
 
   .phone-bar__container {

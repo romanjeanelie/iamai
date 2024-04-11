@@ -25,9 +25,11 @@ export default class AccorSearchBar {
     this.advancedBtn = document.querySelector(".accorSearchBar__advanced-btn");
     this.standardBtn = document.querySelector(".accorSearchBar__standard-btn");
     this.actionBtn = document.querySelector(".accorSearchBar__action-btn");
-    console.log(this.actionBtn);
 
     this.secondaryBarContainer = document.querySelector(".accorBar__secondaryBar");
+    this.secondaryBarPhoneBtn = document.querySelector(".secondary-action-btn");
+    console.log(this.secondaryBarPhoneBtn);
+
     this.advancedBar = document.querySelector(".accorBar__advancedBar-wrapper");
     this.phoneBar = document.querySelector(".accorSearchBar__phoneBar");
     this.phoneCloseBtn = document.querySelector(".accorSearchBar__phoneClose");
@@ -73,21 +75,38 @@ export default class AccorSearchBar {
     this.switchStateClass(STATES.STANDARD_OPTIONS);
   }
 
-  toSecondaryBar() {
+  resetPhoneBar() {
+    this.phoneBar.classList.remove("absolute");
+    gsap.set(this.wrapper, {
+      y: -200,
+    });
+  }
+
+  toSecondaryBar(floor = 1) {
     gsap.killTweensOf(this.searchBar);
     gsap.to(this.wrapper, {
-      y: -200,
+      y: -200 * floor,
+      onComplete: () => {
+        if (floor === 2) {
+          this.resetPhoneBar();
+          this.advancedBar.classList.add("none");
+        }
+      },
     });
   }
 
   toAdvanceOptions() {
     this.advancedBar.classList.remove("none");
     this.toSecondaryBar();
+    this.phoneBar.classList.add("absolute");
+    this.searchBarState = STATES.ADVANCED_OPTIONS;
   }
 
   toPhoneBar() {
     this.phoneBar.classList.remove("none");
-    this.toSecondaryBar();
+    this.toSecondaryBar(this.searchBarState === STATES.ADVANCED_OPTIONS ? 2 : 1);
+
+    this.searchBarState = STATES.CALL;
   }
 
   fromSecondaryBar() {
@@ -122,6 +141,7 @@ export default class AccorSearchBar {
         this.toPhoneBar();
       }
     });
+    this.secondaryBarPhoneBtn.addEventListener("click", this.toPhoneBar.bind(this));
     this.phoneCloseBtn.addEventListener("click", this.fromSecondaryBar.bind(this));
 
     document.addEventListener("click", (event) => {
