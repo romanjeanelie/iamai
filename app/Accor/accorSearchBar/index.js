@@ -24,7 +24,13 @@ export default class AccorSearchBar {
     this.callBtn = document.querySelector(".accorSearchBar__action-btn");
     this.advancedBtn = document.querySelector(".accorSearchBar__advanced-btn");
     this.standardBtn = document.querySelector(".accorSearchBar__standard-btn");
+    this.actionBtn = document.querySelector(".accorSearchBar__action-btn");
+    console.log(this.actionBtn);
+
     this.secondaryBarContainer = document.querySelector(".accorBar__secondaryBar");
+    this.advancedBar = document.querySelector(".accorBar__advancedBar-wrapper");
+    this.phoneBar = document.querySelector(".accorSearchBar__phoneBar");
+    this.phoneCloseBtn = document.querySelector(".accorSearchBar__phoneClose");
 
     // Init
     this.initSecondaryBar();
@@ -74,9 +80,23 @@ export default class AccorSearchBar {
     });
   }
 
+  toAdvanceOptions() {
+    this.advancedBar.classList.remove("none");
+    this.toSecondaryBar();
+  }
+
+  toPhoneBar() {
+    this.phoneBar.classList.remove("none");
+    this.toSecondaryBar();
+  }
+
   fromSecondaryBar() {
     gsap.to(this.wrapper, {
       y: 0,
+      onComplete: () => {
+        this.advancedBar.classList.add("none");
+        this.phoneBar.classList.add("none");
+      },
     });
   }
 
@@ -93,8 +113,16 @@ export default class AccorSearchBar {
         this.toMinimized();
       }
     });
-    this.advancedBtn.addEventListener("click", this.toSecondaryBar.bind(this));
+    this.advancedBtn.addEventListener("click", this.toAdvanceOptions.bind(this));
     this.standardBtn.addEventListener("click", this.fromSecondaryBar.bind(this));
+    this.actionBtn.addEventListener("click", () => {
+      if (this.searchBarState === STATES.TEXT_INPUT) {
+        // TO DO - SUBMIT THE INPUT VALUE (on submit function)
+      } else {
+        this.toPhoneBar();
+      }
+    });
+    this.phoneCloseBtn.addEventListener("click", this.fromSecondaryBar.bind(this));
 
     document.addEventListener("click", (event) => {
       if (!this.wrapper.contains(event.target)) {

@@ -279,9 +279,13 @@ $expandedSearchBarWidth: min(763px, 50vw);
 .accorBar__advancedBar-wrapper {
   display: flex;
   gap: 16px;
+
+  &.none {
+    display: none;
+  }
 }
 
-.accorNavbar__advancedBar {
+.accorSearchBar__advancedBar {
   position: relative;
   background-color: white;
   border-radius: 60px;
@@ -297,5 +301,83 @@ $expandedSearchBarWidth: min(763px, 50vw);
 
   .advanced-input {
     display: block;
+  }
+}
+
+// CALL BAR
+.accorSearchBar__phoneBar {
+  display: flex;
+  align-items: center;
+  gap: 86px;
+
+  &.none {
+    display: none;
+  }
+
+  .phone-bar__container {
+    height: 8px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+
+    .phone-bar__one,
+    .phone-bar__processing,
+    .phone-bar__AI,
+    .phone-bar__pause {
+      height: 8px;
+      position: absolute;
+      border-radius: 8px;
+      // overflow: hidden;
+      .dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 8px;
+        transition: width 0.3s ease-in-out;
+      }
+    }
+
+    .phone-bar__one {
+      // border: 1px solid red;
+      width: 32px;
+      &.active {
+        background: $colorGrey;
+      }
+
+      &.talkToMe {
+        background: $colorTalkUser;
+        transition: background 300ms ease-in-out;
+      }
+
+      .dot {
+        position: absolute;
+        top: 0;
+        background: $colorGrey;
+
+        &:nth-child(0) {
+          left: 0;
+        }
+        &:nth-child(1) {
+          right: 0;
+        }
+
+        &.expand {
+          width: 30px;
+        }
+      }
+    }
+  }
+
+  .accorSearchBar__action-btn {
+    background-color: #fe5858;
+    transition: background-color 0.2s ease-out;
+
+    img {
+      transform: rotate(-135deg);
+    }
+
+    &:hover {
+      background-color: #ff0000;
+    }
   }
 }

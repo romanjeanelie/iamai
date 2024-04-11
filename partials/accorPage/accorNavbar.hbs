@@ -53,8 +53,9 @@
     </div>
 
     <div class="accorBar__secondaryBar">
-      <div class="accorBar__advancedBar-wrapper">
-        <div class="accorNavbar__advancedBar">
+      {{! Advanced Bar }}
+      <div class="accorBar__advancedBar-wrapper none">
+        <div class="accorSearchBar__advancedBar">
           <button class="accorSearchBar__input-btn advanced-input">
             Travellers
             <br />
@@ -84,7 +85,35 @@
         <button class="accorSearchBar__standard-btn switch-btn">
           Standard
         </button>
+      </div>
 
+      {{! Phone Bar }}
+      <div class="accorSearchBar__phoneBar none">
+        <div class="phone-bar__container">
+          <div class="phone-bar__one">
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+          <div class="phone-bar__processing">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+          <div class="phone-bar__AI">
+          </div>
+          <div class="phone-bar__pause">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+        </div>
+
+        <button class="accorSearchBar__action-btn accorSearchBar__phoneClose">
+          <img src="/icons/phone-icon.svg" class="phone-icon" alt="phone icon" />
+          <img src="/icons/arrow-right.svg" class="arrow-icon" alt="arrow icon" />
+        </button>
       </div>
     </div>
   </div>
