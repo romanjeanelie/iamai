@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IAMAI Languages</title>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="./index.css" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-53ZK5Q9K6T"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag("js", new Date());
+
+        gtag("config", "G-53ZK5Q9K6T");
+    </script>
+</head>
+
+<body>
+    <div class="container">
+    <div class="mic-btn__container">
+        Voice: <select name="voiceid" id="voiceid">
+            <option value="8gdR829EHLCmpY0Ljr2l">Rahul</option>
+            <option value="ZVKjrJiWeTKF1FZwjENi">Default</option>
+        </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        Target Language: <select name="targetlang" id="targetlang">
+            <option value="ta">Tamil</option>
+            <option value="de">German</option>
+            <option value="hi">Hindi</option>
+        </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="mic-btn" type="button">
+            <svg class="icon-mic" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none">
+                <path
+                  fill="#000"
+                  fill-opacity=".72"
+                  fill-rule="evenodd"
+                  d="M9.6 13.916a.8.8 0 0 0-1.6 0v2.415a8.301 8.301 0 0 0 7.5 8.262V28h1.6v-3.407a8.301 8.301 0 0 0 7.5-8.262v-2.415a.8.8 0 0 0-1.6 0v2.415a6.7 6.7 0 0 1-13.4 0v-2.415Z"
+                  clip-rule="evenodd"
+                />
+                <rect
+                  width="6.971"
+                  height="15.098"
+                  x="12.8"
+                  y="4.8"
+                  stroke="#000"
+                  stroke-linejoin="round"
+                  stroke-opacity=".72"
+                  stroke-width="1.6"
+                  rx="3.486"
+                />
+              </svg>
+        </button>
+        <p class="small-record-counter">00:00</p>
+
+    </div>
+    <div id="divcontainer"></div>
+    </div>
+
+
+<script src="/lang/libAudioRecorder/WebAudioRecorder.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="module" src="index.js"></script>
+</body>
+</html>
