@@ -513,6 +513,10 @@ export default class Discussion {
       this.discussionContainer.appendChild(this.AIContainer);
     }
 
+    const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskKey="${taskKey}"]`);
+    const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskKey="${taskKey}"]`);
+    // if(userContainer || AIContainer) return
+
     if (!this.history.isSet) return;
     if (!this.userContainer) {
       this.userContainer = document.createElement("div");
@@ -570,7 +574,7 @@ export default class Discussion {
     this.userContainer.classList.add("discussion__user");
     var userContainerspan = document.createElement("span");
     userContainerspan.classList.add("discussion__userspan");
-    userContainerspan.innerHTML = task.name
+    userContainerspan.innerHTML = task.name;
     this.userContainer.appendChild(userContainerspan);
     // this.userContainer.innerHTML = task.name;
 
