@@ -1,4 +1,4 @@
-import gsap from "gsap";
+import gsap, { Power2 } from "gsap";
 import Flip from "gsap/Flip";
 
 const STATES = {
@@ -21,7 +21,7 @@ export default class AccorSearchBar {
     this.searchBar = document.querySelector(".accorSearchBar__container");
     this.writeBtn = document.querySelector(".accorSearchBar__write-btn");
     this.expandBtn = document.querySelector(".accorSearchBar__expand-btn");
-    this.callBtn = document.querySelector(".accorSearchBar__phone-btn");
+    this.callBtn = document.querySelector(".accorSearchBar__action-btn");
     this.advancedBtn = document.querySelector(".accorSearchBar__advanced-btn");
 
     // Init
@@ -29,9 +29,27 @@ export default class AccorSearchBar {
   }
 
   switchStateClass(state) {
-    console.log();
     this.searchBarState = state;
-    this.wrapper.className = `accorNavbar__item accorSearchBar__wrapper ${state}`;
+
+    // grab state
+    const initialState = Flip.getState([this.searchBar, this.advancedBtn]);
+    this.wrapper.classList.remove(...Object.values(STATES));
+    this.wrapper.classList.add(state);
+
+    gsap.killTweensOf(".standard-input");
+    gsap.set(".standard-input", { opacity: 0 });
+
+    // Animate from the initial state to the end state
+    Flip.from(initialState, {
+      duration: 0.5,
+      ease: "power3.out",
+      absolute: true,
+      onComplete: () => {
+        gsap.to(".standard-input", {
+          opacity: 1,
+        });
+      },
+    });
   }
 
   toMinimized() {
@@ -55,6 +73,7 @@ export default class AccorSearchBar {
         this.toMinimized();
       }
     });
+
     document.addEventListener("click", (event) => {
       if (!this.searchBar.contains(event.target)) {
         this.toMinimized();
