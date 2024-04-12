@@ -5,9 +5,7 @@
 
     @if $position ==top {
       top: -16px;
-    }
-
-    @else {
+    } @else {
       bottom: -16px;
     }
 
@@ -69,8 +67,13 @@
     font-family: "Noto Sans";
     position: relative;
     margin-bottom: 32px;
-    font-size: 20px;
     line-height: 28px;
+    color: #00254e;
+    font-feature-settings: "liga" off;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0.75px;
 
     p {
       overflow-wrap: break-word;
@@ -131,7 +134,8 @@
     }
 
     @include media("<tablet") {
-      font-size: 18px;
+      font-size: 16px;
+      line-height: 26px; /* 162.5% */
     }
   }
 
