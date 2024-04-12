@@ -66,6 +66,8 @@
   .discussion__ai {
     font-family: "Noto Sans";
     position: relative;
+    overflow-wrap: anywhere;
+
     margin-bottom: 24px;
     line-height: 28px;
     color: #00254e;
