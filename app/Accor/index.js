@@ -14,12 +14,16 @@ import SearchBar from "./accorSearchBar/index.js";
 class Accor {
   constructor() {
     // States
+    this.isTablet = window.innerWidth <= 820;
+    this.isMobile = window.innerWidth <= 640;
     this.filterSelected = "";
 
     // DOM Elements
     this.filterContainer = document.querySelector(".accorFilters__items-container");
     this.cityBreaksContainer = document.querySelector(".accorBreaks__container");
     this.filtersArrow = document.querySelector(".accorFilters__arrow");
+
+    this.cityBreakMoreBtn = document.querySelector(".accorBreaks__btn");
 
     // Init
     this.initFilters();
@@ -78,8 +82,8 @@ class Accor {
   }
 
   // ------ City Breaks Section ------
-  initCityBreaks() {
-    cityBreaksData.forEach((cityBreak) => {
+  generateCityBreaks(citiesData) {
+    citiesData.forEach((cityBreak) => {
       this.cityBreaksContainer.innerHTML += `
       <div class="accorBreaks__item">
         <div
@@ -101,8 +105,46 @@ class Accor {
     });
   }
 
+  initCityBreaks() {
+    let displayCount;
+
+    if (this.isMobile) {
+      displayCount = 3;
+    } else if (this.isTablet) {
+      displayCount = 4;
+    } else {
+      displayCount = cityBreaksData.length;
+    }
+
+    let displayedCities = cityBreaksData.slice(0, displayCount);
+
+    this.generateCityBreaks(displayedCities);
+  }
+
+  resetCityBreaks() {
+    // Clear existing city breaks
+    this.cityBreaksContainer.innerHTML = "";
+    // Add new city breaks based on the updated device type
+    this.initCityBreaks();
+  }
+
+  displayMoreCityBreaks() {
+    // Clear existing city breaks
+    console.log("dislay more city breaks");
+    this.cityBreaksContainer.innerHTML = "";
+
+    this.generateCityBreaks(cityBreaksData);
+  }
+
   addEventListeners() {
     this.filtersArrow.addEventListener("click", this.navigateThroughFilters.bind(this));
+    this.cityBreakMoreBtn.addEventListener("click", this.displayMoreCityBreaks.bind(this));
+
+    window.addEventListener("resize", () => {
+      this.isTablet = window.innerWidth <= 820;
+      this.isMobile = window.innerWidth <= 640;
+      this.resetCityBreaks();
+    });
   }
 }
 

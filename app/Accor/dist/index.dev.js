@@ -29,11 +29,14 @@ function () {
     _classCallCheck(this, Accor);
 
     // States
+    this.isTablet = window.innerWidth <= 820;
+    this.isMobile = window.innerWidth <= 640;
     this.filterSelected = ""; // DOM Elements
 
     this.filterContainer = document.querySelector(".accorFilters__items-container");
     this.cityBreaksContainer = document.querySelector(".accorBreaks__container");
-    this.filtersArrow = document.querySelector(".accorFilters__arrow"); // Init
+    this.filtersArrow = document.querySelector(".accorFilters__arrow");
+    this.cityBreakMoreBtn = document.querySelector(".accorBreaks__btn"); // Init
 
     this.initFilters();
     this.initCityBreaks();
@@ -91,18 +94,60 @@ function () {
     } // ------ City Breaks Section ------
 
   }, {
-    key: "initCityBreaks",
-    value: function initCityBreaks() {
+    key: "generateCityBreaks",
+    value: function generateCityBreaks(citiesData) {
       var _this2 = this;
 
-      _accorData.cityBreaksData.forEach(function (cityBreak) {
+      citiesData.forEach(function (cityBreak) {
         _this2.cityBreaksContainer.innerHTML += "\n      <div class=\"accorBreaks__item\">\n        <div\n          class=\"accorBreaks__item-location\"\n          style=\"background-image: url('".concat(cityBreak.bg, "')\"\n        >\n          <p>").concat(cityBreak.city, "</p>\n        </div>\n        <div class=\"accorBreaks__item-footer\">\n          <p class=\"accorBreaks__item-price\">\n            ").concat(cityBreak.price, "\n          </p>\n          <p class=\"accorBreaks__item-currency\">\n            ").concat(cityBreak.currency, "\n          </p>\n        </div>\n      </div>\n      ");
       });
     }
   }, {
+    key: "initCityBreaks",
+    value: function initCityBreaks() {
+      var displayCount;
+
+      if (this.isMobile) {
+        displayCount = 3;
+      } else if (this.isTablet) {
+        displayCount = 4;
+      } else {
+        displayCount = _accorData.cityBreaksData.length;
+      }
+
+      var displayedCities = _accorData.cityBreaksData.slice(0, displayCount);
+
+      this.generateCityBreaks(displayedCities);
+    }
+  }, {
+    key: "resetCityBreaks",
+    value: function resetCityBreaks() {
+      // Clear existing city breaks
+      this.cityBreaksContainer.innerHTML = ""; // Add new city breaks based on the updated device type
+
+      this.initCityBreaks();
+    }
+  }, {
+    key: "displayMoreCityBreaks",
+    value: function displayMoreCityBreaks() {
+      // Clear existing city breaks
+      console.log("dislay more city breaks");
+      this.cityBreaksContainer.innerHTML = "";
+      this.generateCityBreaks(_accorData.cityBreaksData);
+    }
+  }, {
     key: "addEventListeners",
     value: function addEventListeners() {
+      var _this3 = this;
+
       this.filtersArrow.addEventListener("click", this.navigateThroughFilters.bind(this));
+      this.cityBreakMoreBtn.addEventListener("click", this.displayMoreCityBreaks.bind(this));
+      window.addEventListener("resize", function () {
+        _this3.isTablet = window.innerWidth <= 820;
+        _this3.isMobile = window.innerWidth <= 640;
+
+        _this3.resetCityBreaks();
+      });
     }
   }]);
 
