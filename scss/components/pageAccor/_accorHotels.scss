@@ -35,6 +35,8 @@
   display: flex;
   align-items: center;
   background-image: url("/images/accor/bg-islands.png");
+  background-position: center;
+  background-size: cover;
 
   p {
     margin-left: min(15vw, 220px);

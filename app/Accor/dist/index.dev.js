@@ -18,7 +18,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 // [X] set up the city breaks with initCityBreaks
 // [X] manage all the different states for the search bar (create a search bar class)
 // [X] manage the filters carousel
-// [] make the forgotten components responsive
+// [X] make the forgotten components responsive
 // [] make the animations for the Call
 // [] make the custom Date Picker
 // [] make the search bar responsive

@@ -56,16 +56,19 @@
     left: 0;
     right: 0;
     top: 0;
-    padding: $paddingTopMobile $paddingHorMobile;
     height: unset;
     display: flex;
     justify-content: space-between;
-    backdrop-filter: blur(10px); /* Adjust the blur radius as needed */
+    align-items: center;
+    /* Adjust the blur radius as needed */
+    padding: $paddingTopMobile $paddingHorMobile;
 
     .logo {
+      padding: 23.2px 17.54px;
       display: flex;
       transform: scale(0.7);
       align-items: center;
+      backdrop-filter: blur(10px);
     }
   }
 
@@ -76,6 +79,10 @@
 
     .lines-icon {
       transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    }
+
+    @include media("<tablet") {
+      backdrop-filter: blur(10px);
     }
   }
 
