@@ -64,10 +64,12 @@
     padding: $paddingTopMobile $paddingHorMobile;
 
     .logo {
-      padding: 23.2px 17.54px;
+      padding: 4px 6px;
       display: flex;
       transform: scale(0.7);
+      border-radius: 12px;
       align-items: center;
+      overflow: hidden;
       backdrop-filter: blur(10px);
     }
   }
@@ -81,6 +83,7 @@
       transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
     }
     @include media("<tablet") {
+      border-radius: 12px;
       backdrop-filter: blur(10px);
     }
   }
