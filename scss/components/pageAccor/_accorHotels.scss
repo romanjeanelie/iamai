@@ -4,6 +4,14 @@
   grid-column-gap: 24px;
   grid-row-gap: 32px; // Vertical gap
   margin-top: 40px;
+
+  @include media("<tablet") {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include media("<phone") {
+    grid-template-columns: 1fr;
+  }
 }
 
 .accorHotels__hotel-card {
