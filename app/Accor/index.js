@@ -5,10 +5,10 @@ import SearchBar from "./accorSearchBar/index.js";
 // TO DO
 // [X] set up the city breaks with initCityBreaks
 // [X] manage all the different states for the search bar (create a search bar class)
-// [] manage the filters carousel
+// [X] manage the filters carousel
+// [] make the forgotten components responsive
 // [] make the animations for the Call
 // [] make the custom Date Picker
-// [] make the forgotten components responsive
 // [] make the search bar responsive
 
 class Accor {
@@ -20,8 +20,6 @@ class Accor {
     this.filterContainer = document.querySelector(".accorFilters__items-container");
     this.cityBreaksContainer = document.querySelector(".accorBreaks__container");
     this.filtersArrow = document.querySelector(".accorFilters__arrow");
-
-    console.log(this.filterContainer.clientWidth);
 
     // Init
     this.initFilters();

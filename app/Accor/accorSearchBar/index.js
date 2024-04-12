@@ -42,7 +42,7 @@ export default class AccorSearchBar {
     this.searchBarState = state;
 
     // grab state
-    const initialState = Flip.getState([this.searchBar, this.advancedBtn]);
+    const initialState = Flip.getState([this.wrapper, this.searchBar]);
     this.wrapper.classList.remove(...Object.values(STATES));
     this.wrapper.classList.add(state);
 
@@ -53,7 +53,7 @@ export default class AccorSearchBar {
     Flip.from(initialState, {
       duration: 0.5,
       ease: "power3.out",
-      absolute: true,
+      // absolute: true,
       onComplete: () => {
         gsap.to(".standard-input", {
           opacity: 1,
