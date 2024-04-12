@@ -131,7 +131,6 @@ function () {
     key: "displayMoreCityBreaks",
     value: function displayMoreCityBreaks() {
       // Clear existing city breaks
-      console.log("dislay more city breaks");
       this.cityBreaksContainer.innerHTML = "";
       this.generateCityBreaks(_accorData.cityBreaksData);
     }

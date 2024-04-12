@@ -32,11 +32,15 @@
     margin-left: min(15vw, 220px);
     position: inherit;
     z-index: 1;
-    font-size: 96px;
+    font-size: clamp(48px, 10vw, 96px);
     font-weight: 600;
-    line-height: 100px;
+    line-height: clamp(60px, 12vw, 100px);
     letter-spacing: 0.5px;
     color: white;
+
+    @include media("<phone") {
+      margin-left: 24px;
+    }
   }
 }
 

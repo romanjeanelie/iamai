@@ -130,7 +130,6 @@ class Accor {
 
   displayMoreCityBreaks() {
     // Clear existing city breaks
-    console.log("dislay more city breaks");
     this.cityBreaksContainer.innerHTML = "";
 
     this.generateCityBreaks(cityBreaksData);
