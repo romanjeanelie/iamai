@@ -49,6 +49,7 @@ $expandedSearchBarWidth: min(763px, 50vw);
   position: relative;
   grid-column: span 6;
   justify-content: center;
+  min-height: 60px;
 }
 
 .accorSearchBar__item-container {

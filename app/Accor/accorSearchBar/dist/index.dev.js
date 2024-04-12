@@ -89,7 +89,7 @@ function () {
 
 
       _Flip["default"].from(initialState, {
-        duration: 0.5,
+        duration: 0.2,
         ease: "power3.out",
         absolute: true,
         onComplete: function onComplete() {

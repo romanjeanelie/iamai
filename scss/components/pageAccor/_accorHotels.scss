@@ -4,6 +4,14 @@
   grid-column-gap: 24px;
   grid-row-gap: 32px; // Vertical gap
   margin-top: 40px;
+
+  @include media("<tablet") {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include media("<phone") {
+    grid-template-columns: 1fr;
+  }
 }
 
 .accorHotels__hotel-card {
@@ -32,11 +40,15 @@
     margin-left: min(15vw, 220px);
     position: inherit;
     z-index: 1;
-    font-size: 96px;
+    font-size: clamp(48px, 10vw, 96px);
     font-weight: 600;
-    line-height: 100px;
+    line-height: clamp(60px, 12vw, 100px);
     letter-spacing: 0.5px;
     color: white;
+
+    @include media("<phone") {
+      margin-left: 24px;
+    }
   }
 }
 
@@ -51,6 +63,14 @@
   grid-template-columns: repeat(3, 1fr);
   column-gap: 24px;
   row-gap: 32px;
+
+  @include media("<tablet") {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include media("<phone") {
+    grid-template-columns: 1fr;
+  }
 }
 
 .accorBreaks__item {
