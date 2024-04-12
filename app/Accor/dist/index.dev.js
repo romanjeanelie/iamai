@@ -1,5 +1,7 @@
 "use strict";
 
+var _gsap = _interopRequireDefault(require("gsap"));
+
 var _accorData = require("./accorData");
 
 var _index = _interopRequireDefault(require("./accorSearchBar/index.js"));
@@ -15,8 +17,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 // TO DO
 // [X] set up the city breaks with initCityBreaks
 // [X] manage all the different states for the search bar (create a search bar class)
-// [] make the animations for the Phone
 // [] manage the filters carousel
+// [] make the animations for the Call
+// [] make the custom Date Picker
+// [] make the forgotten components responsive
+// [] make the search bar responsive
 var Accor =
 /*#__PURE__*/
 function () {
@@ -27,10 +32,13 @@ function () {
     this.filterSelected = ""; // DOM Elements
 
     this.filterContainer = document.querySelector(".accorFilters__items-container");
-    this.cityBreaksContainer = document.querySelector(".accorBreaks__container"); // Init
+    this.cityBreaksContainer = document.querySelector(".accorBreaks__container");
+    this.filtersArrow = document.querySelector(".accorFilters__arrow");
+    console.log(this.filterContainer.clientWidth); // Init
 
     this.initFilters();
     this.initCityBreaks();
+    this.addEventListeners();
     new _index["default"]();
   } // ------ Filters Section ------
 
@@ -58,6 +66,29 @@ function () {
     key: "updateSelectedFilter",
     value: function updateSelectedFilter(filter) {
       this.filterSelected = filter;
+    }
+  }, {
+    key: "navigateThroughFilters",
+    value: function navigateThroughFilters() {
+      var filters = document.querySelectorAll(".accorFilters__item");
+      var lastFilter = filters[filters.length - 1];
+      var isLastFilterVisible = lastFilter.offsetLeft + lastFilter.clientWidth <= this.filterContainer.scrollLeft + this.filterContainer.clientWidth;
+
+      if (isLastFilterVisible) {
+        this.filtersArrow.style.transform = "translateY(-50%) rotate(0deg)"; // If the last filter is visible, animate the filters back to the start
+
+        _gsap["default"].to(this.filterContainer, {
+          scrollLeft: 0,
+          duration: 1
+        });
+      } else {
+        this.filtersArrow.style.transform = "translateY(-50%) rotate(180deg)"; // If the last filter is not visible, animate the filters to the left
+
+        _gsap["default"].to(this.filterContainer, {
+          scrollLeft: this.filterContainer.scrollLeft + this.filterContainer.clientWidth,
+          duration: 1
+        });
+      }
     } // ------ City Breaks Section ------
 
   }, {
@@ -68,6 +99,11 @@ function () {
       _accorData.cityBreaksData.forEach(function (cityBreak) {
         _this2.cityBreaksContainer.innerHTML += "\n      <div class=\"accorBreaks__item\">\n        <div\n          class=\"accorBreaks__item-location\"\n          style=\"background-image: url('".concat(cityBreak.bg, "')\"\n        >\n          <p>").concat(cityBreak.city, "</p>\n        </div>\n        <div class=\"accorBreaks__item-footer\">\n          <p class=\"accorBreaks__item-price\">\n            ").concat(cityBreak.price, "\n          </p>\n          <p class=\"accorBreaks__item-currency\">\n            ").concat(cityBreak.currency, "\n          </p>\n        </div>\n      </div>\n      ");
       });
+    }
+  }, {
+    key: "addEventListeners",
+    value: function addEventListeners() {
+      this.filtersArrow.addEventListener("click", this.navigateThroughFilters.bind(this));
     }
   }]);
 

@@ -1,19 +1,57 @@
 .accorFilters__container {
   border-bottom: 1px solid rgba(0, 0, 0, 0.16);
   padding: 16px 0;
+  position: relative;
 
   @include media("<tablet") {
     padding: 0px 0px 16px;
   }
 
   .accor__container {
-    overflow-x: hidden;
+    position: relative;
   }
 }
 
 .accorFilters__items-container {
+  overflow-x: hidden;
   display: flex;
   gap: 36px;
+
+  @include media("<desktop") {
+    overflow-x: scroll;
+  }
+}
+
+.accorFilters__arrow {
+  position: absolute;
+  background-color: rgba(18, 17, 49, 0.24);
+  width: 24px;
+  right: calc(100% + 24px);
+  top: 50%;
+  height: 24px;
+  border-radius: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateY(-50%);
+  transition: transform 0.2s ease-out;
+
+  img {
+    width: 10px;
+    transform: rotate(180deg);
+  }
+
+  &:hover {
+    background-color: $accorExtraLight;
+  }
+
+  @include media("<large") {
+    right: calc(100% + 8px);
+  }
+
+  @include media("<desktop") {
+    display: none;
+  }
 }
 
 .accorFilters__item {
