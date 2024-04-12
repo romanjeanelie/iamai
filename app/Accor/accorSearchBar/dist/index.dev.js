@@ -75,7 +75,7 @@ function () {
 
       this.searchBarState = state; // grab state
 
-      var initialState = _Flip["default"].getState([this.wrapper, this.searchBar]);
+      var initialState = _Flip["default"].getState([this.searchBar, this.advancedBtn]);
 
       (_this$wrapper$classLi = this.wrapper.classList).remove.apply(_this$wrapper$classLi, _toConsumableArray(Object.values(STATES)));
 
@@ -89,9 +89,9 @@ function () {
 
 
       _Flip["default"].from(initialState, {
-        duration: 0.5,
+        duration: 0.2,
         ease: "power3.out",
-        // absolute: true,
+        absolute: true,
         onComplete: function onComplete() {
           _gsap["default"].to(".standard-input", {
             opacity: 1
