@@ -498,7 +498,6 @@ export default class Discussion {
 
   // Taks
   async onCreatedTask(task, textAI) {
-    console.log("this.debug",this.debug)
     if (this.debug) {
       this.userContainer = document.createElement("div");
       this.userContainer.classList.add("discussion__user");
@@ -514,11 +513,7 @@ export default class Discussion {
       this.discussionContainer.appendChild(this.AIContainer);
     }
 
-    const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskKey="${task.key}"]`);
-    const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskKey="${task.key}"]`);
-    // if(userContainer || AIContainer) return
-
-    if (!this.history.isSet) return;
+    if (!this.history.isSet || this.history.isFetching) return;
     if (!this.userContainer) {
       this.userContainer = document.createElement("div");
       this.userContainer.classList.add("discussion__user");
