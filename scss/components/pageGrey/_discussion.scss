@@ -66,7 +66,7 @@
   .discussion__ai {
     font-family: "Noto Sans";
     position: relative;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
     line-height: 28px;
     color: #00254e;
     font-feature-settings: "liga" off;
@@ -155,8 +155,6 @@
     color: rgba($colorBlack, 0.72);
     text-align: right;
     margin-left: auto;
-    padding-right: 16px;
-    padding-top: 8px;
     padding-left: 112px;
 
     .images__container {
@@ -177,7 +175,8 @@
     @include underline-task(top);
 
     @include media("<tablet") {
-      padding-left: 32px;
+      padding-left: 48px;
+      padding-right: 24px;
     }
   }
 
@@ -187,7 +186,6 @@
     min-height: 24px;
     padding-left: 16px;
     padding-right: 112px;
-    padding-bottom: 8px;
 
     .text-beforeLink {
       margin-right: 4px;
@@ -264,8 +262,8 @@
     @include underline-task(bottom);
 
     @include media("<tablet") {
-      //   padding-left: 24px;
-      padding-right: 32px;
+      padding-left: 24px;
+      padding-right: 48px;
       margin-right: unset;
     }
   }

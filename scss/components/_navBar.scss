@@ -80,7 +80,6 @@
     .lines-icon {
       transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
     }
-
     @include media("<tablet") {
       backdrop-filter: blur(10px);
     }
