@@ -25,6 +25,7 @@ export default {
         blog: resolve(__dirname, "blog/index.html"),
         lang: resolve(__dirname, "lang/index.html"),
         languages: resolve(__dirname, "languages.html"),
+        accor: resolve(__dirname, "accor.html"),
       },
       output: {
         preserveModules: false,
