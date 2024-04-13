@@ -71,6 +71,7 @@
       align-items: center;
       overflow: hidden;
       backdrop-filter: blur(10px);
+      background-color: #f8f6f272;
     }
   }
 
@@ -85,6 +86,7 @@
     @include media("<tablet") {
       border-radius: 12px;
       backdrop-filter: blur(10px);
+      background-color: #f8f6f272;
     }
   }
 
