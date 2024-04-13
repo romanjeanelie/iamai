@@ -15,7 +15,7 @@ export const TASK_STATUSES = {
 };
 
 const STATUS_COLORS = {
-  [TASK_STATUSES.IN_PROGRESS]: "rgba(0, 0, 0, 0.72)",
+  [TASK_STATUSES.IN_PROGRESS]: "#00254E",
   [TASK_STATUSES.INPUT_REQUIRED]: "rgba(224, 149, 2, 1)",
   [TASK_STATUSES.COMPLETED]: "rgba(0, 128, 83, 1)",
 };
@@ -428,9 +428,18 @@ export default class TaskManager {
     const chevronButton = document.createElement("button");
     chevronButton.classList.add("task-manager__accordion-chevron");
 
-    const chevronIcon = document.createElement("img");
-    chevronIcon.src = "/images/down.svg";
-    chevronIcon.alt = "chevron down icon";
+    chevronButton.innerHTML = `
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip0_9405_89899)">
+          <path d="M6 9L11.6464 14.6464C11.8417 14.8417 12.1583 14.8417 12.3536 14.6464L18 9" stroke="black" stroke-width="1.6" stroke-linecap="round"/>
+        </g>
+        <defs>
+          <clipPath id="clip0_9405_89899">
+            <path d="M12 0C18.6274 0 24 5.37258 24 12C24 18.6274 18.6274 24 12 24C5.37258 24 0 18.6274 0 12C0 5.37258 5.37258 0 12 0Z" fill="white"/>
+          </clipPath>
+        </defs>
+      </svg>
+    `;
 
     const panelDiv = document.createElement("div");
     panelDiv.classList.add("task-manager__accordion-panel");
@@ -456,7 +465,6 @@ export default class TaskManager {
     // Append elements
     headerDiv.appendChild(headerTitle);
     statusDiv.appendChild(statusPill);
-    chevronButton.appendChild(chevronIcon);
     statusDiv.appendChild(chevronButton);
     headerDiv.appendChild(statusDiv);
 
@@ -634,7 +642,7 @@ export default class TaskManager {
   // function triggered when click on completed task or the notification pill for completed task
   viewResults(key) {
     const task = this.tasks.find((task) => task.key === key);
-    console.log("task:",task)
+    console.log("task:", task);
     this.emitter.emit("taskManager:viewResults", task, task.resultsContainer);
 
     this.closeNotificationPill();
