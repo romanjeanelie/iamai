@@ -511,7 +511,7 @@ export default class TaskManager {
 
     statusWrapper.appendChild(divider);
     statusWrapper.appendChild(statusContainerDiv);
-    this.goToPanel(key);
+    // this.goToPanel(key); // I don't want to go to the panel when adding a new status
   }
 
   addOnlyStatusTitle(key, statusWrapper, status) {
