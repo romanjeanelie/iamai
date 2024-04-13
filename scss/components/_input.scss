@@ -46,6 +46,10 @@
       background-color: $backgroundColorGreyPage;
       border-radius: 24px;
 
+      text-area {
+        color: red;
+      }
+
       .input__controls {
         .left {
           .camera-btn {
@@ -156,6 +160,7 @@
 
   .input-text__expand {
     @include inputTextExpand {
+      color: #00254e;
       max-height: calc(15 * 20px);
       margin-bottom: 8px;
       font-family: "Noto Sans";
@@ -221,7 +226,7 @@
       align-items: center;
       justify-content: center;
       // background: $colorBlue;
-      background: rgba($colorBlack, 0.8);
+      background: #00254e;
       border-radius: 50%;
 
       &:disabled {
