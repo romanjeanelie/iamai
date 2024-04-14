@@ -383,7 +383,7 @@ export default class Input {
       this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
     });
 
-    this.inputText.addEventListener("keyup", (event) => {
+    this.inputText.addEventListener("input", (event) => {
       this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
     });
     this.inputText.addEventListener("keydown", (event) => {
