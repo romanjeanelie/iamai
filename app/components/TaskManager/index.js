@@ -377,14 +377,18 @@ export default class TaskManager {
     this.accordionHeaders.forEach((header) => header.classList.remove("active"));
     // If the clicked panel was not already open, open it
     if (!isPanelOpen) {
-      const currentTask = this.accordionContainer.querySelector(`[task-key="${key}"]`);
-      currentTask.querySelector(".task-manager__accordion-header").classList.add("active");
-      const panel = currentTask.querySelector(".task-manager__accordion-panel");
-      panel.style.maxHeight = panel.scrollHeight + "px";
-      this.currentTask = key;
+      this.openPanel(key);
     } else {
       this.currentTask = null;
     }
+  }
+
+  openPanel(key) {
+    const currentTask = this.accordionContainer.querySelector(`[task-key="${key}"]`);
+    currentTask.querySelector(".task-manager__accordion-header").classList.add("active");
+    const panel = currentTask.querySelector(".task-manager__accordion-panel");
+    panel.style.maxHeight = panel.scrollHeight + "px";
+    this.currentTask = key;
   }
 
   goToPanel(key) {
@@ -393,11 +397,7 @@ export default class TaskManager {
     this.accordionHeaders.forEach((header) => header.classList.remove("active"));
 
     // Open the panel or if already openned update its the panel height
-    const currentTask = this.accordionContainer.querySelector(`[task-key="${key}"]`);
-    currentTask.querySelector(".task-manager__accordion-header").classList.add("active");
-    const panel = currentTask.querySelector(".task-manager__accordion-panel");
-    panel.style.maxHeight = panel.scrollHeight + "px";
-    this.currentTask = key;
+    this.openPanel(key);
 
     // Scroll to the last status from the panel
     const statuses = Array.from(panel.querySelectorAll(".task-manager__status-container"));
@@ -511,7 +511,9 @@ export default class TaskManager {
 
     statusWrapper.appendChild(divider);
     statusWrapper.appendChild(statusContainerDiv);
-    // this.goToPanel(key); // I don't want to go to the panel when adding a new status
+    if (this.currentTask === key) {
+      this.goToPanel(key);
+    }
   }
 
   addOnlyStatusTitle(key, statusWrapper, status) {
