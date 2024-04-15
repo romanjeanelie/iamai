@@ -17,7 +17,7 @@ export const TASK_STATUSES = {
 const STATUS_COLORS = {
   [TASK_STATUSES.IN_PROGRESS]: "#00254E",
   [TASK_STATUSES.INPUT_REQUIRED]: "rgba(224, 149, 2, 1)",
-  [TASK_STATUSES.COMPLETED]: "rgba(0, 128, 83, 1)",
+  [TASK_STATUSES.COMPLETED]: "#007AFF",
 };
 
 const defaultValues = {
