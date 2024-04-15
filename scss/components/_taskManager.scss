@@ -118,6 +118,7 @@ $taskSecondaryColor: #007aff;
   padding: 20px 24px;
 
   h2 {
+    padding-left: 16px;
     font-size: 24px;
     font-weight: 500;
     line-height: 28px;
@@ -308,6 +309,7 @@ $taskSecondaryColor: #007aff;
     margin: 0 auto;
 
     h2 {
+      padding-left: 0;
       font-size: 40px;
       line-height: 48px;
       font-weight: 500;
@@ -315,7 +317,7 @@ $taskSecondaryColor: #007aff;
     }
   }
 
-  @include media("<tablet") {
+  @include media("<phone") {
     .task-manager__header {
       h2 {
         display: block;
