@@ -1421,7 +1421,6 @@ class Chat {
 
   }
   hotelmoveSlide(event, next) {
-    console.log("event.target:",event.target);
     let currentSlide = event.target.parentElement.parentElement.querySelector(".hotels-image-slide.active");
     let currentDot = event.target.parentElement.parentElement.querySelector(".hotels-dot.active");
     currentSlide.classList.remove('active');
