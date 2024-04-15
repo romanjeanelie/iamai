@@ -383,10 +383,14 @@ export default class TaskManager {
     }
   }
 
-  openPanel(key) {
+  selectCurrentPanel(key) {
     const currentTask = this.accordionContainer.querySelector(`[task-key="${key}"]`);
     currentTask.querySelector(".task-manager__accordion-header").classList.add("active");
-    const panel = currentTask.querySelector(".task-manager__accordion-panel");
+    return currentTask.querySelector(".task-manager__accordion-panel");
+  }
+
+  openPanel(key) {
+    const panel = this.selectCurrentPanel(key);
     panel.style.maxHeight = panel.scrollHeight + "px";
     this.currentTask = key;
   }
@@ -397,6 +401,7 @@ export default class TaskManager {
     this.accordionHeaders.forEach((header) => header.classList.remove("active"));
 
     // Open the panel or if already openned update its the panel height
+    const panel = this.selectCurrentPanel(key);
     this.openPanel(key);
 
     // Scroll to the last status from the panel
