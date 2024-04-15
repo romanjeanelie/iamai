@@ -175,8 +175,6 @@
       //   border-radius: 20px;
     }
 
-    @include underline-task(top);
-
     @include media("<tablet") {
       padding-left: 48px;
       padding-right: 24px;
@@ -200,74 +198,38 @@
       display: inline-block;
     }
 
-    .status-container {
-      transition: opacity 0.3s ease-out;
-
-      &.hidden {
-        opacity: 0;
-      }
-    }
-
-    .top-status {
-      font-family: "SFPro";
-      margin-top: 16px;
-      color: $colorBlack;
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 450;
-      line-height: 20px;
-      letter-spacing: 0.6px;
-      text-transform: capitalize;
-      position: relative;
-      height: 30px;
-      display: flex;
-      align-items: center;
-      // justify-content: flex-end;
-      letter-spacing: 0.6px;
-    }
-
-    .progress-bar-container {
-      background-color: rgba(255, 0, 255, 0.08);
-      height: 2px;
-      width: calc(100% + 112px);
-      margin: 16px 0;
-    }
-
-    .progress-bar {
-      background-color: $colorPink;
-      height: 2px;
-      width: 100%;
-      transform-origin: left;
-      transform: scaleX(0);
-      transition: transform 0.5s ease-out;
-    }
-
-    .AIstatus {
-      display: block;
-      font-family: "SFPro";
-      font-size: 14px;
-      font-weight: 450;
-      line-height: 20px;
-      letter-spacing: 0.6px;
-      text-align: left;
-      transition: opacity 0.3 ease-out;
-
-      &.hidden {
-        opacity: 0;
-      }
-    }
-
     .AIword {
       opacity: 0;
       animation: fadeIn 0.2s $ease-in forwards;
     }
 
-    @include underline-task(bottom);
+    &.discussion__ai--task-created {
+      position: relative;
+      margin-left: 48px;
+
+      &::before {
+        content: url("/icons/timer.svg");
+        position: absolute;
+        top: 50%;
+        left: -2px;
+        transform: translate(-50%, -50%);
+      }
+    }
 
     @include media("<tablet") {
       padding-left: 24px;
       padding-right: 48px;
       margin-right: unset;
+
+      &.discussion__ai--task-created {
+        position: relative;
+        margin-left: 24px;
+
+        &::before {
+          left: 4px;
+          transform: translate(-50%, -50%);
+        }
+      }
     }
   }
 }
