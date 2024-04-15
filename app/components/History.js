@@ -137,7 +137,7 @@ export default class History {
     return data;
   }
 
-  async getAllElements({ uuid, start = 0, size = 3, order = "desc" }) {
+  async getAllElements({ uuid, start = 0, size = 10, order = "desc" }) {
     const params = {
       uuid,
       start,

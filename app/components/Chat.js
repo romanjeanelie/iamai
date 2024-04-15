@@ -1343,7 +1343,7 @@ class Chat {
       // moviescarddiv.addEventListener("click", (event) => this.showMovieDetail(event));
       // let index = 0;
       // element.rooms[0].pictures.forEach((pictures) => {
-        for (let index = 0; index < element.rooms[0].pictures.length; index++) {
+      for (let index = 0; index < element.rooms[0].pictures.length; index++) {
         const hotelcardimageslidediv = document.createElement("div");
         if (index === 0)
           hotelcardimageslidediv.className = "hotels-image-slide active";
@@ -1366,6 +1366,12 @@ class Chat {
         hoteldots.appendChild(dot);
         if (index === 3)
           break;
+      }
+      if (element.website == "airbnb") {
+        const hotelsimgairbnb = document.createElement("img");
+        hotelsimgairbnb.className = "hotels-image-airbnb";
+        hotelsimgairbnb.setAttribute("src", "./icons/airbnb.svg");
+        hotelcardimagediv.appendChild(hotelsimgairbnb);
       }
 
       const hotelimagesprev = document.createElement("button");
@@ -1425,7 +1431,7 @@ class Chat {
     let currentDot = event.target.parentElement.parentElement.querySelector(".hotels-dot.active");
     currentSlide.classList.remove('active');
     currentDot.classList.remove('active');
-    
+
     if (next) {
       // Move to the next slide, or loop back to the first if at the end
       let nextSlide = currentSlide.nextElementSibling || currentSlide.parentNode.firstElementChild;

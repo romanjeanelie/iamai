@@ -4,22 +4,24 @@
 
 .discussion__tabs-header {
   position: relative;
-  margin-top: 16px;
+  margin-top: 24px;
+  margin-bottom: 24px;
   display: flex;
-  gap: 24px;
+  gap: 40px;
   cursor: pointer;
   transition: opacity 0.3s ease-out;
 
   li {
     font-family: "SFPro";
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 450;
     line-height: 20px;
-    letter-spacing: 0.6px;
-    color: $colorBlackForGreyPage;
+    letter-spacing: 0.5px;
+    color: #00254E;
+    opacity: .6;
 
     &:hover {
-      color: $colorBlack;
+      opacity: 1;
     }
 
     &.hidden {
@@ -29,7 +31,8 @@
   }
 
   li.active {
-    color: $colorBlack;
+    color: #00254E;
+    opacity: 1;
   }
 
   &.hidden {

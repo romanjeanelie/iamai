@@ -5,7 +5,7 @@
   max-width: 904px;
   display: flex;
   flex-direction: column;
-  color: $colorBlack;
+  color: #00254E;
   height: 100vh;
 
   @include media("<desktop") {
@@ -22,21 +22,27 @@
     font-weight: 500;
     line-height: 48px;
     letter-spacing: 0.6px;
+    padding-left: 16px;
   }
 
   .languagesPage__search {
     font-size: 24px;
     line-height: 24px;
-    padding-left: 6px;
-    border-left: 2px solid $colorBlack;
+    padding-left: 16px;
+    // border-left: 2px solid $colorBlack;
     font-weight: 500;
     letter-spacing: 0.6000000238418579px;
+    color: #00254E;
+    opacity: 0.6;
 
     margin: 44px 0;
 
     @include media("<tablet") {
       font-size: 20px;
       margin: 40px 0;
+    }
+    &:focus{
+      opacity: 1;
     }
   }
 

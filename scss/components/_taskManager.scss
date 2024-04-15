@@ -154,13 +154,13 @@ $taskSecondaryColor: #007aff;
         white-space: nowrap;
       }
 
-      // &.active {
+      &.active {
       //   background-color: rgba(0, 0, 0, 0.1);
 
-      //   .task-manager__accordion-chevron {
-      //     transform: rotate(180deg);
-      //   }
-      // }
+        .task-manager__accordion-chevron {
+          transform: rotate(180deg);
+        }
+      }
 
       // &:hover {
       //   background-color: rgba(0, 0, 0, 0.1);
@@ -326,6 +326,9 @@ $taskSecondaryColor: #007aff;
         line-height: 28px;
         letter-spacing: 0.6px;
         padding-left: 16px;
+        @include media("<tablet") {
+          padding-left: 24px;
+        }
       }
     }
 

@@ -28,7 +28,7 @@
 
   &.dark {
     rect {
-      fill: $colorBlack;
+      fill: #00254E;
     }
   }
 
@@ -115,7 +115,7 @@
       justify-content: flex-start;
       align-items: center;
       background-color: $backgroundColorGreyPage;
-      padding-top: 148px;
+      padding-top: 100px;
 
       svg {
         width: 80px;

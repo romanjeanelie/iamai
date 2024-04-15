@@ -29,10 +29,10 @@
         background-color: $backgroundColorGreyPage;
 
         path:not(:first-child) {
-          stroke: $colorBlackForGreyPage;
+          stroke: #00254e;
         }
         rect {
-          fill: $colorBlackForGreyPage;
+          fill: #00254e;
         }
       }
       .input__image {
@@ -56,21 +56,21 @@
             path,
             circle,
             rect {
-              stroke: $colorBlackForGreyPage;
+              stroke: #00254E;
             }
           }
           .mic-btn {
             path {
-              fill: $colorBlackForGreyPage;
+              fill: #00254E;
             }
             rect {
-              stroke: $colorBlackForGreyPage;
+              stroke: #00254E;
             }
           }
         }
         .right {
           path {
-            fill: $backgroundColorGreyPage;
+            fill: #ffffff;
           }
         }
       }
@@ -239,7 +239,8 @@
       border-radius: 50%;
 
       &:disabled {
-        background: $colorGrey;
+        background: #00254E;
+        opacity: .25;
       }
     }
   }
