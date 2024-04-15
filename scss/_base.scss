@@ -190,7 +190,7 @@ button {
   margin-top: 8px;
   margin-bottom: 16px;
 
-  // font-family: "SFPro";
+  font-family: "SFPro";
   @include media("<tablet") {
     place-items: center;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -335,7 +335,7 @@ button {
   margin-top: 8px;
   margin-bottom: 16px;
 
-  // font-family: "SFPro";
+  font-family: "SFPro";
   @include media("<tablet") {
     place-items: center;
     grid-template-columns: repeat(auto-fit, minmax(327px, 1fr));
@@ -347,7 +347,7 @@ button {
   max-width: 343px;
   position: relative;
   overflow: hidden;
-  cursor: pointer;
+  // cursor: pointer;
   border-radius: 16px !important;
   margin-bottom: 24px;
 
@@ -368,7 +368,7 @@ button {
 .hotels-image {
   width: 100%;
   height: auto;
-  border-radius: 16px !important;
+  border-radius: 16px 16px 0 0 !important;
   opacity: 88%;
   max-height: 200px;
   display: block;
@@ -382,9 +382,10 @@ button {
   text-overflow: ellipsis;
   font-size: 18px;
   line-height: 24px;
-  letter-spacing: 0.6px;
-  padding: 16px 24px 8px 24px;
+  letter-spacing: 0.8px;
+  padding: 8px 24px 0px 24px;
   text-align: left;
+  height: 56px;
 
   // @include media("<tablet") {
   //   font-size: 12px;
@@ -396,9 +397,10 @@ button {
   text-overflow: ellipsis;
   font-size: 14px;
   line-height: 24px;
-  letter-spacing: 0.6px;
-  padding: 0px 24px 8px 24px;
+  letter-spacing: 0.8px;
+  padding: 0px 24px 0px 24px;
   text-align: left;
+  color: rgba(0, 37, 78, 0.60);
 
   // @include media("<tablet") {
   //   font-size: 12px;
@@ -412,7 +414,7 @@ button {
   font-size: 40px;
   line-height: 40px;
   letter-spacing: 0.6px;
-  padding: 8px 24px 24px 24px;
+  padding: 24px 24px 24px 24px;
   text-align: left;
 
   // @include media("<tablet") {
@@ -423,6 +425,10 @@ button {
 .hotels-view{
   float: right;
   // padding-right: 24px;
+}
+.hotels-view:hover{
+  background: #00254E;
+  border-radius: 12px;
 }
 .hotels-image-slides {
   display: flex;
@@ -446,7 +452,7 @@ button {
   color: white;
   border: none;
   cursor: pointer;
-  padding: 10px;
+  // padding: 10px;
   font-size: 18px;
 }
 
@@ -468,7 +474,7 @@ button {
 .hotels-dot {
   display: inline-block;
   margin: 0 5px;
-  cursor: pointer;
+  // cursor: pointer;
   background-color: rgba(255, 255, 255, 0.6);
   border-radius: 50%;
   width: 8px;
@@ -497,7 +503,7 @@ button {
   margin-left: 15px;
   margin-top: 8px;
   margin-bottom: 16px;
-  // font-family: "SFPro";
+  font-family: "SFPro";
 }
 
 .product-card {
@@ -729,7 +735,7 @@ button {
   width: 100%;
   margin-top: 16px;
   margin-bottom: 32px;
-  // font-family: "SFPro";
+  font-family: "SFPro";
 }
 
 .rides-list-item {
@@ -1079,7 +1085,7 @@ button {
   margin-bottom: 24px;
   /* border-radius: 20px; */
   /* overflow: hidden; */
-  // font-family: "SFPro";
+  font-family: "SFPro";
 }
 
 .flight-toggle-button {
@@ -1273,7 +1279,7 @@ button {
   // margin-left: 15px;
   margin-top: 8px;
   margin-bottom: 24px;
-  // font-family: "SFPro";
+  font-family: "SFPro";
 }
 
 .shopping-card {

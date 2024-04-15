@@ -977,7 +977,9 @@ async function updateindexstatus(itemid, session_id) {
 async function deploy(itemid) {
   let assistant = await getassistant_itemid(itemid);
   // WARNING: For POST requests, body is set to null by browsers.
-  const deploy_id = crypto.randomUUID() + "_" + assistant.UUID;
+  // const deploy_id = crypto.randomUUID() + "_" + assistant.UUID;
+  const deploy_id = assistant.system_assistantID + "_" + assistant.UUID;
+  
   console.log("assistant.Retrieval:" + assistant.Retrieval);
   if (assistant.Retrieval == "true") {
     console.log("workflow assistant.Retrieval:" + assistant.Retrieval);
