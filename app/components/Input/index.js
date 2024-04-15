@@ -345,7 +345,7 @@ export default class Input {
     });
 
     // Prevent input hidden by keyboard on mobile
-    if (isMobile() && isTouch()) {
+    if (isMobile()) {
       this.inputImageEl.addEventListener("focus", (e) => {
         document.documentElement.style.overflow = "unset";
         window.scrollTo(0, document.body.scrollHeight);

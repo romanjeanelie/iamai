@@ -223,7 +223,12 @@ export default class InputAnimations {
 
     if (!focus) return;
     if (isMobile() && !this.isPageBlue) {
-      this.inputText.click();
+      // this.inputText.click();
+      this.inputText.focus();
+      document.documentElement.style.overflow = "unset";
+      setTimeout(() => {
+        window.scrollTo(0, document.body.scrollHeight);
+      }, 50);
     } else {
       this.inputText.focus();
       this.inputText.setSelectionRange(this.inputText.value.length, this.inputText.value.length);

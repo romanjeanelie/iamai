@@ -475,7 +475,7 @@ function () {
         _this4.anims.leaveDragImage();
       }); // Prevent input hidden by keyboard on mobile
 
-      if ((0, _isMobile["default"])() && (0, _detectNavigators.isTouch)()) {
+      if ((0, _isMobile["default"])()) {
         this.inputImageEl.addEventListener("focus", function (e) {
           document.documentElement.style.overflow = "unset";
           window.scrollTo(0, document.body.scrollHeight);
