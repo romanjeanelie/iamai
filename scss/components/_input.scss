@@ -137,8 +137,16 @@
       }
     }
 
+    .camera-btn,
+    .phone-btn {
+      svg path,
+      svg circle {
+        stroke: rgba(#00254e, 0.6);
+      }
+    }
+
     .center-btn {
-      color: rgba($colorBlack, 0.5);
+      color: rgba(#00254e, 0.72);
       font-size: 20px;
       flex: 1;
       @media (max-height: 780px) {
