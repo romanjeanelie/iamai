@@ -1341,8 +1341,9 @@ class Chat {
       const hoteldots = document.createElement("div");
       hoteldots.className = "hotels-dots";
       // moviescarddiv.addEventListener("click", (event) => this.showMovieDetail(event));
-      let index = 0;
-      element.rooms[0].pictures.forEach((pictures) => {
+      // let index = 0;
+      // element.rooms[0].pictures.forEach((pictures) => {
+        for (let index = 0; index < element.rooms[0].pictures.length; index++) {
         const hotelcardimageslidediv = document.createElement("div");
         if (index === 0)
           hotelcardimageslidediv.className = "hotels-image-slide active";
@@ -1354,7 +1355,7 @@ class Chat {
 
         hotelsimg.className = "hotels-image";
         hotelsimg.setAttribute("alt", element.title.replace(/'/g, "&#39;"));
-        hotelsimg.setAttribute("src", pictures);
+        hotelsimg.setAttribute("src", element.rooms[0].pictures[index]);
         hotelcardimageslidediv.appendChild(hotelsimg);
 
         const dot = document.createElement("span");
@@ -1363,12 +1364,13 @@ class Chat {
         else
           dot.classList.add("hotels-dot");
         hoteldots.appendChild(dot);
-        index++;
-      });
+        if (index === 3)
+          break;
+      }
 
       const hotelimagesprev = document.createElement("button");
       hotelimagesprev.className = "hotels-prev";
-      hotelimagesprev.innerHTML = "&#10094;"
+      hotelimagesprev.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="40" viewBox="0 0 48 40" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M24.0736 28L19.4977 20L24.0736 12H26L21.4241 20L26 28H24.0736Z" fill="white"/></svg>'
       hotelimagesprev.addEventListener("click", (event) =>
         this.hotelmoveSlide(event, false)
       );
@@ -1376,7 +1378,7 @@ class Chat {
 
       const hotelimagesnext = document.createElement("button");
       hotelimagesnext.className = "hotels-next";
-      hotelimagesnext.innerHTML = "&#10095;"
+      hotelimagesnext.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="40" viewBox="0 0 48 40" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M23.9264 12L28.5023 20L23.9264 28H22L26.5759 20L22 12H23.9264Z" fill="white"/></svg>';
 
       hotelimagesnext.addEventListener("click", (event) =>
         this.hotelmoveSlide(event, true)
@@ -1403,7 +1405,7 @@ class Chat {
       hotelpricep.innerText = element.rooms[0].price;
       const hotelview = document.createElement("button");
       hotelview.className = "hotels-view";
-      hotelview.innerHTML = '<svg width="95" height="40" viewBox="0 0 95 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="95" height="40" rx="12" fill="black" fill-opacity="0.6"/><path d="M32.0879 24L29.1582 15.5449H30.8047L32.9492 22.3887H32.9785L35.1289 15.5449H36.7754L33.8398 24H32.0879ZM40.0777 24V15.5449H41.5895V24H40.0777ZM45.4777 24V15.5449H50.9504V16.8164H46.9895V19.0957H50.7336V20.3203H46.9895V22.7285H50.9504V24H45.4777ZM56.4383 24L54.1707 15.5449H55.741L57.2117 21.9258H57.241L58.9344 15.5449H60.3055L61.9988 21.9258H62.0281L63.4988 15.5449H65.0691L62.8016 24H61.3426L59.6375 17.9355H59.6023L57.8973 24H56.4383Z" fill="white"/></svg>';
+      hotelview.innerHTML = '<svg width="95" height="40" viewBox="0 0 95 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="95" height="40" rx="12" fill="#00254E" fill-opacity="0.6"/><path d="M32.0879 24L29.1582 15.5449H30.8047L32.9492 22.3887H32.9785L35.1289 15.5449H36.7754L33.8398 24H32.0879ZM40.0777 24V15.5449H41.5895V24H40.0777ZM45.4777 24V15.5449H50.9504V16.8164H46.9895V19.0957H50.7336V20.3203H46.9895V22.7285H50.9504V24H45.4777ZM56.4383 24L54.1707 15.5449H55.741L57.2117 21.9258H57.241L58.9344 15.5449H60.3055L61.9988 21.9258H62.0281L63.4988 15.5449H65.0691L62.8016 24H61.3426L59.6375 17.9355H59.6023L57.8973 24H56.4383Z" fill="white"/></svg>';
       hotelview.setAttribute("onclick", "window.open('" + element.booking_url + "', '_blank');");
       hotelpricep.appendChild(hotelview);
       hotelcarddiv.appendChild(hotelpricep);
@@ -1419,8 +1421,8 @@ class Chat {
 
   }
   hotelmoveSlide(event, next) {
-    let currentSlide = event.target.parentElement.querySelector(".hotels-image-slide.active");
-    let currentDot = event.target.parentElement.querySelector(".hotels-dot.active");
+    let currentSlide = event.target.parentElement.parentElement.querySelector(".hotels-image-slide.active");
+    let currentDot = event.target.parentElement.parentElement.querySelector(".hotels-dot.active");
     currentSlide.classList.remove('active');
     currentDot.classList.remove('active');
     
