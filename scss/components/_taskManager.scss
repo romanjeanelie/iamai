@@ -99,6 +99,10 @@ $taskSecondaryColor: #007aff;
     .task-manager__closing-icon {
       padding: 13px;
       opacity: 60%;
+
+      rect {
+        fill: rgba(#00254e, 0.6);
+      }
     }
 
     .task-manager__closeFullscreen-icon {
@@ -227,6 +231,11 @@ $taskSecondaryColor: #007aff;
 
       .task-manager__status-container {
         margin: 10px 0 16px;
+
+        .task-manager__status-description {
+          font-weight: 500;
+          letter-spacing: -0.5px;
+        }
 
         &:last-of-type {
           color: $taskSecondaryColor;
