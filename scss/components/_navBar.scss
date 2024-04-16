@@ -28,7 +28,7 @@
 
   &.dark {
     rect {
-      fill: #00254E;
+      fill: #00254e;
     }
   }
 
@@ -108,12 +108,14 @@
       position: fixed;
       top: 0;
       left: 0;
+      bottom: 0;
+      right: 0;
       width: 100vw;
-      height: 100svh;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
+      overflow-y: scroll;
       background-color: $backgroundColorGreyPage;
       padding-top: 100px;
 

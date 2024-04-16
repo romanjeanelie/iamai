@@ -380,8 +380,8 @@ export default class PhoneAnimations {
     backgroundBarProcessingYoyo: [
       { background: "unset", offset: 0 },
       { background: "unset", offset: 0.29 },
-      { background: "#ff3e33", offset: 0.3 },
-      { background: "#ff3e33", offset: 0.7 },
+      { background: "unset", offset: 0.3 },
+      { background: "unset", offset: 0.7 },
       { background: "unset", offset: 0.71 },
       { background: "unset", offset: 1 },
     ],
