@@ -156,6 +156,7 @@ export default class InputAnimations {
   toInitial({ delay = 0, animButtons = true, animBottom = true, animLogo = true } = {}) {
     this.inputFrontEl.style.pointerEvents = "auto";
     this.inputBackEl.style.pointerEvents = "none";
+    this.inputEl.style.overflow = "visible";
 
     this.collapseHeightInputFront({ duration: 250 });
 
