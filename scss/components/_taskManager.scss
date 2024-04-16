@@ -1,6 +1,6 @@
 $zIndex: 10;
 $backgroundTaskManager: #f0efec;
-$taskMainColor: #00254e;
+$taskMainColor: $colorBlueText;
 $taskSecondaryColor: #007aff;
 
 .task-manager__button {
@@ -88,7 +88,7 @@ $taskSecondaryColor: #007aff;
 
       &:hover {
         // background-color: rgba(0, 0, 0, 0.1);
-        background-color: rgba(#00254e, 0.06);
+        background-color: rgba($colorBlueText, 0.06);
         // stroke: #fff;
 
         // path {
@@ -108,7 +108,7 @@ $taskSecondaryColor: #007aff;
 
       // opacity: 60%;
       &:hover {
-        background-color: rgba(#00254e, 0.06);
+        background-color: rgba($colorBlueText, 0.06);
         // rect {
         //   fill: rgba(#fff, 1);
         // }
@@ -145,7 +145,7 @@ $taskSecondaryColor: #007aff;
 
   .task-manager__accordion {
     border-radius: 16px;
-    background-color: #00254e03;
+    background-color: rgba($colorBlueText, 0.03);
 
     .task-manager__accordion-header {
       padding: 14px 16px;
@@ -203,7 +203,7 @@ $taskSecondaryColor: #007aff;
         transition: transform 0.3s $ease-out;
 
         path {
-          stroke: #00254e60;
+          stroke: rgba($colorBlueText, 0.60);
         }
 
         &.hidden {
@@ -295,7 +295,7 @@ $taskSecondaryColor: #007aff;
     .task-manager__accordion-panel-divider {
       height: 2px;
       width: 100%;
-      background-color: #00254e08;
+      background-color: $colorBlueText;
       margin: 8px 0;
     }
   }

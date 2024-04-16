@@ -1,13 +1,13 @@
 $colorTalkUser: #007AFF;
 $colorProcessing: #FFA000;
-$colorTalkAI: #00254E;
+$colorTalkAI: $colorBlueText;
 
 .phone__debug {
   position: fixed;
   display: none;
   gap: 16px;
   top: 0;
-  color: #00254E;
+  color: $colorBlueText;
 
   &.show {
     display: flex;
@@ -15,7 +15,7 @@ $colorTalkAI: #00254E;
   }
 
   button {
-    border: 1px solid #00254E;
+    border: 1px solid $colorBlueText;
     // Initial syles
     background: unset;
 
@@ -62,7 +62,6 @@ $colorTalkAI: #00254E;
   &:hover {
     .phone__top > button {
       visibility: visible;
-      // background-color: rgba(#00254e, 0.06);
       @include media("<tablet") {
         visibility: unset;
         opacity: unset;
@@ -100,10 +99,10 @@ $colorTalkAI: #00254E;
 
       &:hover,
       &.active {
-        background-color: rgba(#00254e, 0.06);
+        background-color: rgba($colorBlueText, 0.06);
 
         path {
-          stroke: #00254E;
+          stroke: $colorBlueText;
           stroke-opacity: 1;
           opacity: 1;
         }
@@ -134,13 +133,11 @@ $colorTalkAI: #00254E;
       }
       .phone-bar__one {
         // border: 1px solid red;
-        background: #00254E;
         opacity: 0.6;
         width: 32px;
         &.active {
           // background: $colorGrey;
-          background: #00254E;
-          opacity: 1;
+          background: $colorBlueText;
         }
 
         &.talkToMe {
@@ -153,7 +150,7 @@ $colorTalkAI: #00254E;
           position: absolute;
           top: 0;
           // background: $colorGrey;
-          background: #00254E;
+          background: $colorBlueText;
           opacity: 1;
           // opacity: 0.4;
 

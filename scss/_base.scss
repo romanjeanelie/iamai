@@ -189,7 +189,7 @@ button {
   margin-top: 8px;
   margin-bottom: 16px;
   font-family: "SFPro";
-  color: #00254E;
+  color: $colorBlueText;
 
   @include media("<tablet") {
     place-items: center;
@@ -337,7 +337,7 @@ button {
   text-align: center;
   margin-top: 8px;
   margin-bottom: 16px;
-  color: #00254E;
+  color: $colorBlueText;
   font-family: "SFPro";
 
   @include media("<tablet") {
@@ -461,7 +461,7 @@ button {
 }
 
 .hotels-view:hover {
-  background: #00254E;
+  background: $colorBlueText;
   border-radius: 12px;
 }
 
@@ -554,7 +554,7 @@ button {
   margin-top: 8px;
   margin-bottom: 16px;
   font-family: "SFPro";
-  color: #00254E;
+  color: $colorBlueText;
 }
 
 .product-card {
@@ -795,15 +795,15 @@ button {
   margin-top: 16px;
   margin-bottom: 32px;
   font-family: "SFPro";
-  color: #00254E;
+  color: $colorBlueText;
 }
 
 .rides-list-wrapper a {
-  color: #00254E !important;
+  color: $colorBlueText !important;
 }
 
 .rides-list-wrapper p {
-  color: #00254E !important;
+  color: $colorBlueText !important;
 }
 
 .rides-list-item {
@@ -1163,7 +1163,7 @@ button {
   /* border-radius: 20px; */
   /* overflow: hidden; */
   font-family: "SFPro";
-  color: #00254E;
+  color: $colorBlueText;
 }
 
 .flight-toggle-button {
@@ -1365,11 +1365,11 @@ button {
   margin-top: 8px;
   margin-bottom: 24px;
   font-family: "SFPro";
-  color: #00254E;
+  color: $colorBlueText;
 }
 
 .shopping-container a{
-  color: #00254E !important;
+  color: $colorBlueText !important;
 }
 
 .shopping-card {

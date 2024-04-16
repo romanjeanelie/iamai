@@ -29,10 +29,10 @@
         background-color: $backgroundColorGreyPage;
 
         path:not(:first-child) {
-          stroke: #00254e;
+          stroke: $colorBlueText;
         }
         rect {
-          fill: #00254e;
+          fill: $colorBlueText;
         }
       }
       .input__image {
@@ -56,15 +56,15 @@
             path,
             circle,
             rect {
-              stroke: #00254e;
+              stroke: $colorBlueText;
             }
           }
           .mic-btn {
             path {
-              fill: #00254e;
+              fill: $colorBlueText;
             }
             rect {
-              stroke: #00254e;
+              stroke: $colorBlueText;
             }
           }
         }
@@ -141,12 +141,12 @@
     .phone-btn {
       svg path,
       svg circle {
-        stroke: rgba(#00254e, 0.6);
+        stroke: rgba($colorBlueText, 0.6);
       }
     }
 
     .center-btn {
-      color: rgba(#00254e, 0.72);
+      color: rgba($colorBlueText, 0.72);
       font-size: 20px;
       flex: 1;
       @media (max-height: 780px) {
@@ -169,7 +169,7 @@
 
   .input-text__expand {
     @include inputTextExpand {
-      color: #00254e;
+      color: $colorBlueText;
       max-height: calc(15 * 20px);
       margin-bottom: 8px;
       font-family: "Noto Sans";
@@ -235,12 +235,12 @@
       align-items: center;
       justify-content: center;
       // background: $colorBlue;
-      background: #00254e;
+      background: $colorBlueText;
       border-radius: 50%;
 
       &:disabled {
-        background: #00254e;
-        opacity: 0.25;
+        background: $colorBlueText;
+        opacity: .25;
       }
     }
   }
