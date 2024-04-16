@@ -194,7 +194,8 @@
         content: url("/icons/timer.svg");
         position: absolute;
         top: 50%;
-        left: -2px;
+        // left: -2px;
+        padding-right: 40px;
         transform: translate(-50%, -50%);
       }
     }
@@ -209,7 +210,8 @@
         margin-left: 24px;
 
         &::before {
-          left: 4px;
+          // left: 4px;
+          padding-right: 40px;
           transform: translate(-50%, -50%);
         }
       }
