@@ -167,11 +167,19 @@
 }
 .divwaitlistlogo {
   margin-bottom: 132px;
+
   @include media("<tablet") {
     margin-bottom: 80px;
   }
 }
-.divwaitlisttext {
+
+#divlottieanimation {
+  svg path {
+    fill: #003979;
+  }
+}
+
+.divlottie .divwaitlisttext {
   color: $colorBlack;
   text-align: center;
   font-feature-settings: "liga" off;

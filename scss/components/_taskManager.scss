@@ -1,14 +1,13 @@
 $zIndex: 10;
-
-.task-manager__debug {
-}
+$backgroundTaskManager: #f0efec;
+$taskMainColor: $colorBlueText;
+$taskSecondaryColor: #007aff;
 
 .task-manager__button {
   z-index: 9;
   position: fixed;
   bottom: 120px;
   right: 40px;
-  background-color: salmon;
   width: 40px;
   height: 40px;
   border-radius: 100%;
@@ -36,7 +35,7 @@ $zIndex: 10;
   z-index: $zIndex;
   overflow-y: scroll;
   background-color: $backgroundTaskManager;
-  color: $colorBlack;
+  color: $taskMainColor;
   transition: opacity 0.3s $ease-out;
 
   &.hidden {
@@ -80,7 +79,7 @@ $zIndex: 10;
 
     .icon {
       padding: 8px;
-      border-radius: 4px;
+      border-radius: 24px;
       transition: opacity 0.3s $ease-out;
 
       img {
@@ -88,7 +87,14 @@ $zIndex: 10;
       }
 
       &:hover {
-        background-color: rgba(0, 0, 0, 0.1);
+        // background-color: rgba(0, 0, 0, 0.1);
+        background-color: rgba($colorBlueText, 0.06);
+        // stroke: #fff;
+
+        // path {
+        //   fill: #fff;
+        // }
+
       }
 
       &.hidden {
@@ -99,7 +105,14 @@ $zIndex: 10;
 
     .task-manager__closing-icon {
       padding: 13px;
-      opacity: 60%;
+
+      // opacity: 60%;
+      &:hover {
+        background-color: rgba($colorBlueText, 0.06);
+        // rect {
+        //   fill: rgba(#fff, 1);
+        // }
+      }
     }
 
     .task-manager__closeFullscreen-icon {
@@ -115,6 +128,7 @@ $zIndex: 10;
   padding: 20px 24px;
 
   h2 {
+    padding-left: 16px;
     font-size: 24px;
     font-weight: 500;
     line-height: 28px;
@@ -131,7 +145,7 @@ $zIndex: 10;
 
   .task-manager__accordion {
     border-radius: 16px;
-    background-color: rgba(0, 0, 0, 0.04);
+    background-color: rgba($colorBlueText, 0.03);
 
     .task-manager__accordion-header {
       padding: 14px 16px;
@@ -150,13 +164,13 @@ $zIndex: 10;
         white-space: nowrap;
       }
 
-      // &.active {
-      //   background-color: rgba(0, 0, 0, 0.1);
+      &.active {
+        //   background-color: rgba(0, 0, 0, 0.1);
 
-      //   .task-manager__accordion-chevron {
-      //     transform: rotate(180deg);
-      //   }
-      // }
+        .task-manager__accordion-chevron {
+          transform: rotate(180deg);
+        }
+      }
 
       // &:hover {
       //   background-color: rgba(0, 0, 0, 0.1);
@@ -178,7 +192,7 @@ $zIndex: 10;
 
         &.clickable {
           &:hover {
-            background-color: rgb(3, 107, 70) !important;
+            background-color: #0059BB !important;
           }
         }
       }
@@ -188,8 +202,8 @@ $zIndex: 10;
         margin: 0 10px;
         transition: transform 0.3s $ease-out;
 
-        img {
-          width: 100%;
+        path {
+          stroke: rgba($colorBlueText, 0.60);
         }
 
         &.hidden {
@@ -203,7 +217,7 @@ $zIndex: 10;
       padding: 0 16px;
       overflow: hidden;
       font-size: 16px;
-      font-weight: 450;
+      font-weight: 600;
       max-height: 0;
       line-height: 18px;
       letter-spacing: 0.6px;
@@ -217,7 +231,7 @@ $zIndex: 10;
         margin-bottom: 24px;
         border-radius: 40px;
         padding: 6px 12px;
-        font-size: 14px;
+        font-size: 12px;
         color: white;
         float: right;
 
@@ -229,8 +243,13 @@ $zIndex: 10;
       .task-manager__status-container {
         margin: 10px 0 16px;
 
+        .task-manager__status-description {
+          font-weight: 500;
+          letter-spacing: -0.5px;
+        }
+
         &:last-of-type {
-          color: $colorPink;
+          color: $taskSecondaryColor;
         }
       }
 
@@ -276,7 +295,7 @@ $zIndex: 10;
     .task-manager__accordion-panel-divider {
       height: 2px;
       width: 100%;
-      background-color: #00000014;
+      background-color: $colorBlueText;
       margin: 8px 0;
     }
   }
@@ -300,6 +319,7 @@ $zIndex: 10;
     margin: 0 auto;
 
     h2 {
+      padding-left: 0;
       font-size: 40px;
       line-height: 48px;
       font-weight: 500;
@@ -307,7 +327,7 @@ $zIndex: 10;
     }
   }
 
-  @include media("<tablet") {
+  @include media("<phone") {
     .task-manager__header {
       h2 {
         display: block;
@@ -316,6 +336,10 @@ $zIndex: 10;
         line-height: 28px;
         letter-spacing: 0.6px;
         padding-left: 16px;
+
+        @include media("<tablet") {
+          padding-left: 24px;
+        }
       }
     }
 

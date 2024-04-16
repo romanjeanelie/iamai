@@ -1,8 +1,12 @@
 .logo {
   position: fixed;
   z-index: 2;
-  left: 48px;
-  bottom: 60px;
+  left: 60px;
+  bottom: 63px;
+
+  @include media("<large") {
+    left: 48px;
+  }
 
   @include media("<tablet") {
     display: none;

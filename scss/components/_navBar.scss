@@ -28,7 +28,7 @@
 
   &.dark {
     rect {
-      fill: $colorBlack;
+      fill: $colorBlueText;
     }
   }
 
@@ -64,11 +64,14 @@
     padding: $paddingTopMobile $paddingHorMobile;
 
     .logo {
-      padding: 23.2px 17.54px;
+      padding: 4px 6px;
       display: flex;
       transform: scale(0.7);
+      border-radius: 12px;
       align-items: center;
+      overflow: hidden;
       backdrop-filter: blur(10px);
+      background-color: #f8f6f272;
     }
   }
 
@@ -81,7 +84,9 @@
       transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
     }
     @include media("<tablet") {
+      border-radius: 12px;
       backdrop-filter: blur(10px);
+      background-color: #f8f6f272;
     }
   }
 
@@ -103,14 +108,16 @@
       position: fixed;
       top: 0;
       left: 0;
+      bottom: 0;
+      right: 0;
       width: 100vw;
-      height: 100svh;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
+      overflow-y: scroll;
       background-color: $backgroundColorGreyPage;
-      padding-top: 148px;
+      padding-top: 100px;
 
       svg {
         width: 80px;

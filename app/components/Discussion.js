@@ -218,29 +218,6 @@ export default class Discussion {
     else this.getAiAnswer({ text });
   }
 
-  async animateProgressBar(currProgress, nextProgress, duration = 500) {
-    if (!this.progressBar) return;
-    this.statusContainer?.classList.remove("hidden");
-
-    await asyncAnim(
-      this.progressBar,
-      [{ transform: `scaleX(${currProgress / 100})` }, { transform: `scaleX(${nextProgress / 100})` }],
-      {
-        duration: duration,
-        fill: "forwards",
-        ease: "ease-out",
-      }
-    );
-  }
-
-  async endStatusAnimation() {
-    await this.animateProgressBar(this.currentProgress, 100, 200);
-    this.statusContainer?.classList.add("hidden");
-    this.currentProgress = 0;
-    this.nextProgress = 0;
-    this.centralFinished = false;
-  }
-
   async addStatus({ text, textEl, container }) {
     const topStatus = getTopStatus(text);
 
@@ -294,8 +271,6 @@ export default class Discussion {
     const remainingProgress = 100 - this.currentProgress;
     const portionOfRemainProgress = Math.ceil(remainingProgress / 5);
     this.nextProgress += this.currentProgress <= 60 ? 20 : portionOfRemainProgress;
-
-    this.animateProgressBar(this.currentProgress, this.nextProgress);
   }
 
   async removeStatus({ container }) {
@@ -468,7 +443,7 @@ export default class Discussion {
     });
   }
 
-  // Taks
+  // Tasks
   async onCreatedTask(task, textAI) {
     if (this.debug) {
       this.userContainer = document.createElement("div");
@@ -594,11 +569,9 @@ export default class Discussion {
 
     this.emitter.on("centralFinished", () => {
       this.centralFinished = true;
-      this.endStatusAnimation();
     });
 
     this.emitter.on("paEnd", async () => {
-      await this.endStatusAnimation();
       this.removeStatus({ container: this.discussionContainer });
       this.tabs?.displayDefaultTab();
       this.tabs?.showSourcesTab();

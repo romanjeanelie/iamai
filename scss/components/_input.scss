@@ -29,10 +29,10 @@
         background-color: $backgroundColorGreyPage;
 
         path:not(:first-child) {
-          stroke: $colorBlackForGreyPage;
+          stroke: $colorBlueText;
         }
         rect {
-          fill: $colorBlackForGreyPage;
+          fill: $colorBlueText;
         }
       }
       .input__image {
@@ -46,27 +46,31 @@
       background-color: $backgroundColorGreyPage;
       border-radius: 24px;
 
+      text-area {
+        color: red;
+      }
+
       .input__controls {
         .left {
           .camera-btn {
             path,
             circle,
             rect {
-              stroke: $colorBlackForGreyPage;
+              stroke: $colorBlueText;
             }
           }
           .mic-btn {
             path {
-              fill: $colorBlackForGreyPage;
+              fill: $colorBlueText;
             }
             rect {
-              stroke: $colorBlackForGreyPage;
+              stroke: $colorBlueText;
             }
           }
         }
         .right {
           path {
-            fill: $backgroundColorGreyPage;
+            fill: #ffffff;
           }
         }
       }
@@ -133,8 +137,16 @@
       }
     }
 
+    .camera-btn,
+    .phone-btn {
+      svg path,
+      svg circle {
+        stroke: rgba($colorBlueText, 0.6);
+      }
+    }
+
     .center-btn {
-      color: rgba($colorBlack, 0.5);
+      color: rgba($colorBlueText, 0.72);
       font-size: 20px;
       flex: 1;
       @media (max-height: 780px) {
@@ -148,6 +160,8 @@
 
     background-color: $colorMain;
     padding: 16px;
+    word-break: break-word;
+    overflow-wrap: anywhere;
 
     pointer-events: none;
     opacity: 0;
@@ -155,6 +169,7 @@
 
   .input-text__expand {
     @include inputTextExpand {
+      color: $colorBlueText;
       max-height: calc(15 * 20px);
       margin-bottom: 8px;
       font-family: "Noto Sans";
@@ -220,11 +235,12 @@
       align-items: center;
       justify-content: center;
       // background: $colorBlue;
-      background: rgba($colorBlack, 0.8);
+      background: $colorBlueText;
       border-radius: 50%;
 
       &:disabled {
-        background: $colorGrey;
+        background: $colorBlueText;
+        opacity: .25;
       }
     }
   }

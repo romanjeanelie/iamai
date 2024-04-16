@@ -124,7 +124,7 @@ export default class InputAnimations {
     });
   }
 
-  expandHeightInputFront({ delay = 0, duration = 250, heighTarget = 110 } = {}) {
+  expandHeightInputFront({ delay = 0, duration = 250, heighTarget = 100 } = {}) {
     return anim(this.inputFrontEl, [{ height: `${this.inputFrontHeight}px` }, { height: `${heighTarget}px` }], {
       delay,
       duration,
@@ -156,6 +156,7 @@ export default class InputAnimations {
   toInitial({ delay = 0, animButtons = true, animBottom = true, animLogo = true } = {}) {
     this.inputFrontEl.style.pointerEvents = "auto";
     this.inputBackEl.style.pointerEvents = "none";
+    this.inputEl.style.overflow = "visible";
 
     this.collapseHeightInputFront({ duration: 250 });
 
@@ -195,7 +196,7 @@ export default class InputAnimations {
     this.inputText.placeholder = placeholder;
     this.inputFrontEl.style.pointerEvents = "none";
     this.inputBackEl.style.pointerEvents = "auto";
-    this.inputEl.style.overflow = "hidden";
+    // this.inputEl.style.overflow = "hidden";
 
     if (animLogos) {
       this.fadeOutLogo();

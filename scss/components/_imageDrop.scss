@@ -85,7 +85,7 @@
     }
     &:hover {
       svg {
-        opacity: 0.4;
+        opacity: 1;
       }
     }
   }
@@ -113,7 +113,7 @@
   .input__image--closeBtn {
     width: 32px;
     height: 32px;
-    background: $colorGrey;
+    background: $colorBlueText;
     margin-right: 16px;
     border-radius: 50%;
     display: flex;

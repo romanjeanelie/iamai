@@ -345,7 +345,7 @@ export default class Input {
     });
 
     // Prevent input hidden by keyboard on mobile
-    if (isMobile() && isTouch()) {
+    if (isMobile()) {
       this.inputImageEl.addEventListener("focus", (e) => {
         document.documentElement.style.overflow = "unset";
         window.scrollTo(0, document.body.scrollHeight);
@@ -383,7 +383,7 @@ export default class Input {
       this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
     });
 
-    this.inputText.addEventListener("keyup", (event) => {
+    this.inputText.addEventListener("input", (event) => {
       this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
     });
     this.inputText.addEventListener("keydown", (event) => {
