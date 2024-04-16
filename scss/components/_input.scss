@@ -56,15 +56,15 @@
             path,
             circle,
             rect {
-              stroke: #00254E;
+              stroke: #00254e;
             }
           }
           .mic-btn {
             path {
-              fill: #00254E;
+              fill: #00254e;
             }
             rect {
-              stroke: #00254E;
+              stroke: #00254e;
             }
           }
         }
@@ -239,8 +239,8 @@
       border-radius: 50%;
 
       &:disabled {
-        background: #00254E;
-        opacity: .25;
+        background: #00254e;
+        opacity: 0.25;
       }
     }
   }
