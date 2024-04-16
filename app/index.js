@@ -265,10 +265,12 @@ class App {
       document.getElementById("signOutButton").addEventListener("click", () => {
         this.signoutgoogle();
       });
-      linksignout.addEventListener("click", (e) => {
-        // e.preventDefault();
-        this.signoutgoogle();
-      });
+      if (linksignout) {
+        linksignout.addEventListener("click", (e) => {
+          // e.preventDefault();
+          this.signoutgoogle();
+        });
+      }
 
       //load and play the animations
       divwaitlist.style.display = "none";
