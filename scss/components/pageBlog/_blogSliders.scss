@@ -136,13 +136,12 @@
   padding: 24px;
 
   .gradient-wrapper {
-    $lightBlue: #b6d5ff;
-    $strongBlue: #005ec6;
-
+    $lightBlue: #00f0ff;
+    $strongBlue: #0066ff;
     max-width: 996px;
     font-weight: 600;
     letter-spacing: 0.3px;
-    background: -webkit-linear-gradient(315deg, #000000 40%, $lightBlue 70%, $strongBlue 100%);
+    background: -webkit-linear-gradient(315deg, #000000 40%, $lightBlue 60%, $strongBlue 100%);
     background-size: 300% 300%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
