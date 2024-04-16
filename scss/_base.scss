@@ -112,8 +112,7 @@ button {
       width: 100%;
     }
 
-    .bottom {
-    }
+    .bottom {}
   }
 
   &.hidden {
@@ -189,8 +188,9 @@ button {
   // margin-left: -16px;
   margin-top: 8px;
   margin-bottom: 16px;
-
   font-family: "SFPro";
+  color: #00254E;
+
   @include media("<tablet") {
     place-items: center;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -205,25 +205,26 @@ button {
   cursor: pointer;
   border-radius: 16px !important;
   margin-bottom: 24px;
+  opacity: 80%;
 
   @include media("<tablet") {
     max-width: 180px;
   }
 }
 
-.movies-image:hover {
+.movies-card:hover {
   opacity: 100%;
 }
 
 .movies-image {
   width: 100%;
   height: auto;
-  border-radius: 16px !important;
-  opacity: 88%;
+  border-radius: 16px 16px 0 0 !important;
 }
 
 .movies-title {
-  color: var(--Text, rgba(0, 0, 0, 0.72));
+  // color: var(--Text, rgba(0, 0, 0, 0.72));
+  // opacity: .72;
   font-feature-settings: "liga" off;
   text-overflow: ellipsis;
   // white-space: nowrap;
@@ -258,7 +259,8 @@ button {
 }
 
 .movie-details-theater-header h2 {
-  color: var(--Text, rgba(0, 0, 0, 0.72));
+  // color: var(--Text, rgba(0, 0, 0, 0.72));
+  // opacity: 0.72;
   font-size: 18px;
   font-style: normal;
   font-weight: 700;
@@ -288,7 +290,8 @@ button {
 }
 
 .movie-details-date-selector .arrow:disabled {
-  color: rgba(0, 0, 0, 0.24);
+  // color: rgba(0, 0, 0, 0.24);
+  opacity: 0.24;
   cursor: auto;
 }
 
@@ -308,10 +311,10 @@ button {
   align-items: center;
   gap: 10px;
   border-radius: var(--8, 8px);
-  border-top: 1px solid var(--B40-W48, rgba(0, 0, 0, 0.4));
-  border-right: var(--0, 1px) solid var(--B40-W48, rgba(0, 0, 0, 0.4));
-  border-bottom: var(--0, 1px) solid var(--B40-W48, rgba(0, 0, 0, 0.4));
-  border-left: var(--0, 1px) solid var(--B40-W48, rgba(0, 0, 0, 0.4));
+  border-top: 1px solid var(--B40-W48, rgba(0, 37, 78, 0.4));
+  border-right: var(--0, 1px) solid var(--B40-W48, rgba(0, 37, 78, 0.4));
+  border-bottom: var(--0, 1px) solid var(--B40-W48, rgba(0, 37, 78, 0.4));
+  border-left: var(--0, 1px) solid var(--B40-W48, rgba(0, 37, 78, 0.4));
   margin-bottom: 8px;
 }
 
@@ -334,8 +337,9 @@ button {
   text-align: center;
   margin-top: 8px;
   margin-bottom: 16px;
-
+  color: #00254E;
   font-family: "SFPro";
+
   @include media("<tablet") {
     place-items: center;
     grid-template-columns: repeat(auto-fit, minmax(327px, 1fr));
@@ -350,14 +354,20 @@ button {
   // cursor: pointer;
   border-radius: 16px !important;
   margin-bottom: 24px;
+  opacity: 80%;
 
   @include media("<tablet") {
     max-width: 327px;
   }
 }
-.hotels-image-div{
+
+.hotels-card:hover {
+  opacity: 100%;
+}
+
+.hotels-image-div {
   height: 200px;
-  opacity: 88%;
+  // opacity: 88%;
   position: relative;
   overflow: hidden;
 }
@@ -372,19 +382,27 @@ button {
   border-radius: 16px 16px 0 0 !important;
   max-height: 200px;
   display: block;
+
   @include media("<tablet") {
-    max-height:unset;
+    max-height: unset;
   }
 }
+
 .hotels-image-airbnb {
-  position: absolute; /* Position the image absolutely within its relative parent */
-  top: 0; /* Align the top edge of the image to the top of the container */
-  right: 0; /* Align the right edge of the image to the right of the container */
-  width: 32px; /* Adjust the size as needed */
+  position: absolute;
+  /* Position the image absolutely within its relative parent */
+  top: 0;
+  /* Align the top edge of the image to the top of the container */
+  right: 0;
+  /* Align the right edge of the image to the right of the container */
+  width: 32px;
+  /* Adjust the size as needed */
   height: 32px;
   margin: 16px 16px 0 0;
+
   @include media("<tablet") {
-    width: 30px; /* Adjust the size as needed */
+    width: 30px;
+    /* Adjust the size as needed */
     height: 30px;
     margin: 15px 15px 0 0;
   }
@@ -405,7 +423,8 @@ button {
   //   line-height: 16px;
   // }
 }
-.hotels-rating{
+
+.hotels-rating {
   font-feature-settings: "liga" off;
   text-overflow: ellipsis;
   font-size: 14px;
@@ -421,7 +440,7 @@ button {
   // }
 }
 
-.hotels-price{
+.hotels-price {
   font-feature-settings: "liga" off;
   text-overflow: ellipsis;
   font-size: 40px;
@@ -435,46 +454,64 @@ button {
   //   line-height: 16px;
   // }
 }
-.hotels-view{
+
+.hotels-view {
   float: right;
   // padding-right: 24px;
 }
-.hotels-view:hover{
+
+.hotels-view:hover {
   background: #00254E;
   border-radius: 12px;
 }
+
 .hotels-image-slides {
   display: flex;
   transition: transform 0.5s ease;
 }
 
 .hotels-image-slide {
-  min-width: 100%; /* Each slide is the full width of the slider */
+  min-width: 100%;
+  /* Each slide is the full width of the slider */
   box-sizing: border-box;
-  display: none; /* Hide all slides by default */
-  
+  display: none;
+  /* Hide all slides by default */
+
 }
-.hotels-image-slide.active{
+
+.hotels-image-slide.active {
   display: block;
 }
 
-.hotels-prev, .hotels-next {
+.hotels-prev,
+.hotels-next {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   color: white;
   border: none;
   cursor: pointer;
-  // padding: 10px;
   font-size: 18px;
 }
 
 .hotels-prev {
   left: 0;
+
+  &:hover {
+    circle {
+      fill-opacity: 0.6;
+    }
+  }
 }
 
 .hotels-next {
   right: 0;
+
+  &:hover {
+    circle {
+      fill-opacity: 0.6;
+    }
+  }
 }
 
 .hotels-dots {
@@ -517,6 +554,7 @@ button {
   margin-top: 8px;
   margin-bottom: 16px;
   font-family: "SFPro";
+  color: #00254E;
 }
 
 .product-card {
@@ -529,6 +567,11 @@ button {
   max-width: 215px;
   position: relative;
   overflow: hidden;
+  opacity: 80%;
+
+  &hover {
+    opacity: 100%;
+  }
 }
 
 .product-card:hover .product-overlay {
@@ -547,7 +590,8 @@ button {
 }
 
 .product-name {
-  color: var(--Text, rgba(0, 0, 0, 0.72));
+  // color: var(--Text, rgba(0, 0, 0, 0.72));
+  opacity: 0.72;
   text-align: center;
   font-feature-settings: "liga" off;
   font-size: 16px;
@@ -565,7 +609,8 @@ button {
 }
 
 .product-price {
-  color: var(--B48-W60, rgba(0, 0, 0, 0.48));
+  // color: var(--B48-W60, rgba(0, 0, 0, 0.48));
+  opacity: 0.48;
   text-align: center;
   font-feature-settings: "liga" off;
   font-size: 14px;
@@ -582,7 +627,8 @@ button {
   margin-top: 10px;
   text-decoration: none;
   /* background: #007bff; */
-  color: rgba(0, 0, 0, 0.6);
+  // color: rgba(0, 0, 0, 0.6);
+  opacity: 0.6;
   /* padding: 10px 15px; */
   /* border-radius: 5px; */
   /* transition: background-color 0.3s ease-in-out; */
@@ -749,6 +795,15 @@ button {
   margin-top: 16px;
   margin-bottom: 32px;
   font-family: "SFPro";
+  color: #00254E;
+}
+
+.rides-list-wrapper a {
+  color: #00254E !important;
+}
+
+.rides-list-wrapper p {
+  color: #00254E !important;
 }
 
 .rides-list-item {
@@ -763,6 +818,10 @@ button {
   border-radius: 16px;
   background-color: rgba(255, 255, 255, 0.48);
   position: relative;
+  opacity: 80%;
+  &:hover{
+    opacity: 100%;
+  }
 }
 
 .rides-list-item.active {
@@ -796,19 +855,22 @@ button {
   font-size: 1rem;
   line-height: 1.25rem;
   font-weight: 500;
-  color: rgba(0, 0, 0, 0.72);
+  // color: rgba(0, 0, 0, 0.72);
+  // opacity: .72;
 }
 
 .rides-list-item-header-info p:nth-of-type(2) {
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: rgba(0, 0, 0, 0.48);
+  // color: rgba(0, 0, 0, 0.48);
+  opacity: .48;
 }
 
 .rides-list-item-header-info p:nth-of-type(3) {
   font-size: 0.75rem;
   line-height: 1rem;
-  color: rgba(0, 0, 0, 0.48);
+  // color: rgba(0, 0, 0, 0.48);
+  opacity: .48;
 }
 
 .rides-list-item-content {
@@ -824,7 +886,7 @@ button {
   position: absolute;
   bottom: calc(100% - 16px);
   right: 20%;
-  background-color: red;
+  // background-color: red;
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
@@ -854,13 +916,15 @@ button {
 .rides-list-item-content-prices span:nth-of-type(1) {
   font-size: 1rem;
   line-height: 1.25rem;
-  color: rgba(0, 0, 0, 0.4);
+  // color: rgba(0, 0, 0, 0.4);
+  opacity: 0.4;
 }
 
 .rides-list-item-content-prices span:nth-of-type(2) {
   font-size: 1.75rem;
   line-height: 2rem;
-  color: rgba(0, 0, 0, 0.72);
+  // color: rgba(0, 0, 0, 0.72);
+  opacity: 0.72;
 }
 
 .rides-list-content {
@@ -940,7 +1004,7 @@ button {
   cursor: pointer;
 }
 
-.rides-timepicker-wrapper .time:hover > .arrow {
+.rides-timepicker-wrapper .time:hover>.arrow {
   opacity: 1;
 }
 
@@ -1077,7 +1141,7 @@ button {
   /* Hide by default */
 }
 
-@media (max-width: 600px) {
+@include media("<tablet") {
   .ridesinput-container {
     justify-content: center;
     /* Centers boxes on small screens if they don't wrap */
@@ -1099,6 +1163,7 @@ button {
   /* border-radius: 20px; */
   /* overflow: hidden; */
   font-family: "SFPro";
+  color: #00254E;
 }
 
 .flight-toggle-button {
@@ -1136,9 +1201,13 @@ button {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: center;
+  // justify-content: center;
   align-items: center;
   gap: 0 1.2rem;
+
+  @include media("<tablet") {
+    justify-content: center;
+  }
 }
 
 .flightCard {
@@ -1154,22 +1223,22 @@ button {
   justify-content: center;
   align-content: space-between;
   gap: 10px;
-  opacity: 0.8;
-
-  color: rgba(0, 0, 0, 0.72);
+  opacity: 1;
+  // color: rgba(0, 0, 0, 0.72);
   font-size: 1rem;
   font-style: normal;
   font-weight: 100;
   line-height: 20px;
   letter-spacing: 1.2px;
+  opacity: 80%;
 }
 
 .flightCard:hover {
   cursor: pointer;
-  opacity: 1;
+  opacity: 100;
 }
 
-@media (width <=600px) {
+@include media("<tablet") {
   .flightCard {
     width: 95%;
   }
@@ -1212,7 +1281,8 @@ button {
 
 .currency {
   font-size: 0.8rem;
-  color: rgba(0, 0, 0, 0.6);
+  // color: rgba(0, 0, 0, 0.6);
+  opacity: 0.6;
 }
 
 .big {
@@ -1224,7 +1294,8 @@ button {
 }
 
 .small {
-  color: var(--B60--W80, rgba(0, 0, 0, 0.6));
+  // color: var(--B60--W80, rgba(0, 0, 0, 0.6));
+  opacity: 0.6;
   font-size: 14px;
   font-style: normal;
   font-weight: 600;
@@ -1271,7 +1342,8 @@ button {
   left: 0;
   bottom: 0;
   transform: translate(30%, 140%);
-  color: rgba(0, 0, 0, 0.48);
+  // color: rgba(0, 0, 0, 0.48);
+  opacity: 0.6;
   font-size: 0.8rem;
   font-style: normal;
   font-weight: 100;
@@ -1293,6 +1365,11 @@ button {
   margin-top: 8px;
   margin-bottom: 24px;
   font-family: "SFPro";
+  color: #00254E;
+}
+
+.shopping-container a{
+  color: #00254E !important;
 }
 
 .shopping-card {
@@ -1303,12 +1380,16 @@ button {
   padding: 16px 0 16px 0;
   border-radius: 16px;
   margin-bottom: 24px;
+  opacity: 80%;
 }
 
-.shopping-card:hover .shopping-overlay {
-  border-radius: 8px;
-  background-color: rgba(0, 0, 0, 0.04);
+.shopping-card:hover{
+  opacity: 100%;
 }
+// .shopping-card:hover .shopping-overlay {
+//   border-radius: 8px;
+//   background-color: rgba(0, 0, 0, 0.04);
+// }
 
 .shopping-card a {
   text-decoration: none !important;
@@ -1325,7 +1406,7 @@ button {
 }
 
 .shopping-name {
-  color: var(--Text, rgba(0, 0, 0, 0.72));
+  // color: var(--Text, rgba(0, 0, 0, 0.72));
   text-align: center;
   font-feature-settings: "liga" off;
   font-size: 16px;
@@ -1339,7 +1420,7 @@ button {
 
 .shopping-description {
   font-size: 0.9em;
-  color: #555;
+  // color: #555;
 }
 
 .shopping-image-dev {
@@ -1353,19 +1434,21 @@ button {
 }
 
 .shopping-price {
-  color: var(--Text, #000);
+  // color: var(--Text, #000);
   font-feature-settings: "liga" off;
-  font-size: 36px;
+  font-size: 32px;
   font-style: normal;
   font-weight: 450;
   line-height: 20px;
   letter-spacing: 0.6px;
   // padding-bottom: 4px;
   padding: 16px 16px 20px 16px;
+  line-height: 34px;
 }
 
 .shopping-source {
-  color: var(--B48-W60, rgba(0, 0, 0, 0.48));
+  // color: var(--B48-W60, rgba(0, 0, 0, 0.48));
+  opacity: 0.48;
   text-align: center;
   font-feature-settings: "liga" off;
   font-size: 12px;

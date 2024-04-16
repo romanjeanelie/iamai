@@ -1070,7 +1070,7 @@ class Chat {
           durationdiv.appendChild(dDirectiondiv);
 
           let flightsresultsstr =
-            '<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.053 15.5789L12 24L10 24L12.526 15.5789L7.166 15.5789L5.5 18.7368L4 18.7368L5 14L4 9.26316L5.5 9.26316L7.167 12.4211L12.527 12.4211L10 4L12 4L17.053 12.4211L22.5 12.4211C22.8978 12.4211 23.2794 12.5874 23.5607 12.8835C23.842 13.1796 24 13.5812 24 14C24 14.4188 23.842 14.8204 23.5607 15.1165C23.2794 15.4126 22.8978 15.5789 22.5 15.5789L17.053 15.5789Z" fill="black" fill-opacity="0.4"/></svg>';
+            '<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.053 15.5789L12 24L10 24L12.526 15.5789L7.166 15.5789L5.5 18.7368L4 18.7368L5 14L4 9.26316L5.5 9.26316L7.167 12.4211L12.527 12.4211L10 4L12 4L17.053 12.4211L22.5 12.4211C22.8978 12.4211 23.2794 12.5874 23.5607 12.8835C23.842 13.1796 24 13.5812 24 14C24 14.4188 23.842 14.8204 23.5607 15.1165C23.2794 15.4126 22.8978 15.5789 22.5 15.5789L17.053 15.5789Z" fill="#00254E" fill-opacity="0.6"/></svg>';
           if (FlightSearchResult.travel.stops == 0) {
             flightsresultsstr +=
               '<svg xmlns="http://www.w3.org/2000/svg" width="152" height="28" viewBox="0 0 152 28" fill="none">';
@@ -1098,7 +1098,7 @@ class Chat {
           }
           flightsresultsstr +=
             '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20" fill="none">';
-          flightsresultsstr += '<circle cx="9.50002" cy="10.0001" r="3.75002" fill="black" fill-opacity="0.4" />';
+          flightsresultsstr += '<circle cx="9.50002" cy="10.0001" r="3.75002" fill="#00254E" fill-opacity="0.6" />';
           flightsresultsstr += "</svg>";
           durationdiv.innerHTML = flightsresultsstr;
 
@@ -1249,7 +1249,11 @@ class Chat {
 
       const productprice = document.createElement("p");
       productprice.className = "shopping-price";
-      productprice.innerHTML = element.price;
+      console.log("element.price.charAt(.)",element.price.indexOf("."))
+      if(element.price.includes(".00"))
+        productprice.innerHTML = element.price.substring(0,element.price.indexOf(".00"));
+      else
+        productprice.innerHTML = element.price;
       productcarddivA.appendChild(productprice);
 
       const productoverlay = document.createElement("div");
@@ -1376,7 +1380,7 @@ class Chat {
 
       const hotelimagesprev = document.createElement("button");
       hotelimagesprev.className = "hotels-prev";
-      hotelimagesprev.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="40" viewBox="0 0 48 40" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M24.0736 28L19.4977 20L24.0736 12H26L21.4241 20L26 28H24.0736Z" fill="white"/></svg>'
+      hotelimagesprev.innerHTML = '<svg width="48" height="40" viewBox="0 0 48 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="20" r="20" fill="#00254E" fill-opacity="0.24"/><path fill-rule="evenodd" clip-rule="evenodd" d="M25.0742 12.0002L20.5 20.0002L25.0742 28.0002H27L22.4258 20.0002L27 12.0002H25.0742Z" fill="white"/></svg>'
       hotelimagesprev.addEventListener("click", (event) =>
         this.hotelmoveSlide(event, false)
       );
@@ -1384,7 +1388,7 @@ class Chat {
 
       const hotelimagesnext = document.createElement("button");
       hotelimagesnext.className = "hotels-next";
-      hotelimagesnext.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="40" viewBox="0 0 48 40" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M23.9264 12L28.5023 20L23.9264 28H22L26.5759 20L22 12H23.9264Z" fill="white"/></svg>';
+      hotelimagesnext.innerHTML = '<svg width="48" height="40" viewBox="0 0 48 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="20" r="20" fill="#00254E" fill-opacity="0.24"/><path fill-rule="evenodd" clip-rule="evenodd" d="M23.9264 12L28.5023 20L23.9264 28H22L26.5759 20L22 12H23.9264Z" fill="white"/></svg>';
 
       hotelimagesnext.addEventListener("click", (event) =>
         this.hotelmoveSlide(event, true)
