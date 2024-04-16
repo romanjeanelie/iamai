@@ -5,7 +5,7 @@
   max-width: 904px;
   display: flex;
   flex-direction: column;
-  color: #00254E;
+  color: $colorBlueText;
   height: 100vh;
 
   @include media("<desktop") {
@@ -32,7 +32,7 @@
     // border-left: 2px solid $colorBlack;
     font-weight: 500;
     letter-spacing: 0.6000000238418579px;
-    color: #00254E;
+    color:$colorBlueText;
     opacity: 0.6;
 
     margin: 44px 0;
