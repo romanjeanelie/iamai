@@ -9,7 +9,7 @@ import { asyncAnim } from "../utils/anim.js";
 import typeByWord from "../utils/typeByWord.js";
 import getStyleElement from "../utils/getStyleElement.js";
 import { URL_DELETE_STATUS } from "./constants.js";
-
+import { gsap } from "gsap";
 const topStatusText = ["finding", "checking", "searching", "analyzing", "scanning", "finalizing", "processing"];
 const defaultTopStatus = "searching";
 
@@ -28,8 +28,10 @@ export default class Discussion {
     this.toPageGrey = toPageGrey;
     this.user = user;
     this.pageEl = document.querySelector(".page-grey");
+    this.mainEl = this.pageEl.querySelector("main");
     this.inputContainer = this.pageEl.querySelector("div.input__container.grey");
     this.inputText = this.pageEl.querySelector(".input-text");
+    this.prevDiscussionContainer = document.querySelector(".prev-discussion__container");
     this.discussionContainer = document.querySelector(".discussion__container");
 
     this.addUserElement = this.addUserElement.bind(this);
@@ -148,8 +150,24 @@ export default class Discussion {
     this.currentTopStatus = null;
   }
 
-  addUserElement({ text, imgs, debug = false } = {}) {
-    this.makePreviousElementsScrollUp();
+  moveChildrenToPrevContainer() {
+    this.prevDiscussionContainer.classList.add("hidden");
+    const children = Array.from(this.discussionContainer.childNodes);
+
+    children.forEach((child) => {
+      this.prevDiscussionContainer.appendChild(child);
+    });
+    this.scrollToBottom();
+
+    // Wait for scroll finish
+    setTimeout(() => {
+      this.prevDiscussionContainer.classList.remove("hidden");
+    }, 1000);
+  }
+
+  async addUserElement({ text, imgs, debug = false } = {}) {
+    await gsap.to(this.discussionContainer, { duration: 0.5, y: -20, opacity: 0, ease: "power2.inOut" });
+    this.moveChildrenToPrevContainer();
 
     if (imgs && imgs.length > 0) {
       const userContainer = document.createElement("div");
@@ -176,9 +194,13 @@ export default class Discussion {
     userContainerspan.classList.add("discussion__userspan");
     userContainerspan.innerHTML = text.replace(/\n/g, "<br>");
     this.userContainer.appendChild(userContainerspan);
-    // this.userContainer.innerHTML = text.replace(/\n/g, "<br>");
 
     this.discussionContainer.appendChild(this.userContainer);
+    gsap.fromTo(
+      this.discussionContainer,
+      { y: 20, opacity: 0 },
+      { duration: 0.5, delay: 0.2, y: 0, opacity: 1, ease: "power2.inOut" }
+    );
 
     // this.scrollToBottom();
     this.disableInput();
@@ -332,9 +354,6 @@ export default class Discussion {
   }
 
   addURL({ text, label, url, container }) {
-    // this.scrollToBottom();
-    this.makePreviousElementsScrollUp();
-
     this.typingText?.fadeOut();
     const linkEl = document.createElement("a");
     linkEl.href = url;
@@ -367,7 +386,12 @@ export default class Discussion {
   }
 
   // Scroll
-  scrollToBottom() {
+  scrollToBottom(isSmooth = true) {
+    this.mainEl.scrollTo({
+      top: this.mainEl.scrollHeight,
+      behavior: isSmooth ? "smooth" : "auto",
+    });
+    // scrollTop = this.mainEl.scrollHeight;
     // If overflow remove the height from history
     // if (this.discussionContainer.scrollHeight > this.discussionContainer.clientHeight) {
     //   this.discussionContainer.style.height = "unset";
@@ -378,59 +402,10 @@ export default class Discussion {
     // });
   }
 
-  makePreviousElementsScrollUp({ isSmooth = true } = {}) {
-    const paddingTop = parseInt(getStyleElement(this.discussionContainer, "padding-top"));
-    this.discussionContainer.style.paddingBottom = `calc(100vh - ${paddingTop}px)`;
-
-    window.scrollTo({
-      top: document.body.scrollHeight,
-      behavior: isSmooth ? "smooth" : "auto",
-    });
-    // setTimeout(() => {
-    //   this.isAutoScrollActive = true;
-    // }, 1000);
-  }
-
   async onScrollTop() {
     const { container } = await this.history.getHistory({ uuid: this.uuid });
-    this.discussionContainer.prepend(container);
-    document.body.scrollTop = document.documentElement.scrollTop = container.offsetHeight;
-  }
-
-  onChangeHeightDiscussionContainer() {
-    const scrollY = window.scrollY;
-    const scrollView = scrollY + window.innerHeight * 0.8;
-    const containerHeight = this.discussionContainer.clientHeight - window.innerHeight;
-    const isOverflow = containerHeight > scrollView;
-    if (isOverflow && scrollY > 0 && this.isAutoScrollActive) {
-      // Scroll to bottom
-      window.scrollTo({
-        top: document.body.scrollHeight,
-        behavior: "smooth",
-      });
-    }
-  }
-
-  onUserContainerAppend(mutationsList) {
-    for (const mutation of mutationsList) {
-      const container = mutation.addedNodes[0];
-      if (container.classList.contains("discussion__user")) {
-        // Wait for window scroll
-        setTimeout(() => {
-          this.removeUnuusedBottomScroll();
-        }, 2000);
-      }
-    }
-  }
-  removeUnuusedBottomScroll() {
-    const scrollY = window.scrollY + window.innerHeight;
-    const pageHeight = document.body.scrollHeight;
-    const scrollDistance = pageHeight - scrollY;
-    if (scrollDistance <= 0) return;
-    const paddingTop = parseInt(getStyleElement(this.discussionContainer, "padding-top"));
-    this.discussionContainer.style.paddingBottom = `calc(100vh - ${scrollDistance + paddingTop}px)`;
-    document.body.scrollTop = document.documentElement.scrollTop = document.body.scrollHeight;
-    this.isAutoScrollActive = true;
+    this.prevDiscussionContainer.prepend(container);
+    this.mainEl.scrollTop = document.documentElement.scrollTop = container.offsetHeight;
   }
 
   async onLoad() {
@@ -480,18 +455,15 @@ export default class Discussion {
     this.uuid = this.Chat.deploy_ID;
 
     await this.updateHstory({ uuid: this.uuid });
+    this.scrollToBottom(false);
     this.emitter.emit("taskManager:isHistorySet", true);
     this.getAiAnswer({ text: "" });
   }
 
   async updateHstory({ uuid }) {
     return new Promise(async (resolve, reject) => {
-      const { container } = await this.history.getHistory({ uuid });
-      this.discussionContainer.appendChild(container);
-      this.makePreviousElementsScrollUp({ isSmooth: false });
-      setTimeout(() => {
-        this.removeUnuusedBottomScroll();
-      }, 1000);
+      const { container } = await this.history.getHistory({ uuid, size: 10 });
+      this.prevDiscussionContainer.appendChild(container);
       resolve();
     });
   }
@@ -522,8 +494,8 @@ export default class Discussion {
     await this.addAIText({ text: textAI, container: this.AIContainer });
     this.userContainer.classList.add("discussion__user--task-created");
     this.AIContainer.classList.add("discussion__ai--task-created");
-    this.userContainer.setAttribute("taskKey", task.key);
-    this.AIContainer.setAttribute("taskKey", task.key);
+    this.userContainer.setAttribute("taskkey", task.key);
+    this.AIContainer.setAttribute("taskkey", task.key);
   }
 
   onUserAnswerTask(text, task) {
@@ -532,8 +504,8 @@ export default class Discussion {
 
   onStatusUpdate(taskKey, status) {
     // if (status.type === TASK_STATUSES.COMPLETED) {
-    //   const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskKey="${taskKey}"]`);
-    //   const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskKey="${taskKey}"]`);
+    //   const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskkey="${taskKey}"]`);
+    //   const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskkey="${taskKey}"]`);
     //   userContainer.classList.remove("discussion__user--task-created");
     //   AIContainer.classList.remove("discussion__ai--task-created");
     // }
@@ -552,16 +524,16 @@ export default class Discussion {
       method: "DELETE",
     });
     // Remove elements
-    const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskKey="${taskKey}"]`);
-    const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskKey="${taskKey}"]`);
+    const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskkey="${taskKey}"]`);
+    const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskkey="${taskKey}"]`);
     userContainer.remove();
     AIContainer.remove();
   }
 
   async viewTaskResults(task, resultsContainer) {
     if (!resultsContainer) return;
-    const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskKey="${task.key}"]`);
-    const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskKey="${task.key}"]`);
+    const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskkey="${task.key}"]`);
+    const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskkey="${task.key}"]`);
     if (userContainer) userContainer.style.display = "none";
     if (AIContainer) AIContainer.style.display = "none";
 
@@ -579,6 +551,8 @@ export default class Discussion {
     this.AIContainer.classList.add("discussion__ai");
     this.AIContainer.appendChild(resultsContainer);
 
+    this.moveChildrenToPrevContainer();
+
     this.discussionContainer.appendChild(this.userContainer);
     this.discussionContainer.appendChild(this.AIContainer);
 
@@ -588,33 +562,35 @@ export default class Discussion {
       micro_thread_id: task.key,
       session_id: this.Chat.sessionID,
     });
+  }
 
-    // scroll to this.userContainer
-    const margin = 75;
-    window.scrollTo({
-      top: this.userContainer.offsetTop - margin,
-      behavior: "smooth",
-    });
+  checkIfPrevDiscussionContainerVisible() {
+    let options = {
+      rootMargin: "-100px",
+    };
 
-    // await this.addAIText({ text: result, container: this.AIContainer });
+    const observerCallback = (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          this.prevDiscussionContainer.classList.add("visible");
+        } else {
+          this.prevDiscussionContainer.classList.remove("visible");
+        }
+      });
+    };
+
+    let observer = new IntersectionObserver(observerCallback, options);
+    observer.observe(this.prevDiscussionContainer);
   }
 
   addListeners() {
     window.addEventListener("load", this.onLoad());
 
-    // Check if the user is scrolling
-
-    window.addEventListener("scroll", () => {
-      const scrollY = window.scrollY + window.innerHeight;
-      // TODO remove it
-      const pageHeight = document.body.scrollHeight;
-      const scrollDistance = pageHeight - scrollY;
-      if (scrollDistance > 200) {
-        this.isAutoScrollActive = false;
-      }
-
-      if (window.scrollY === 0) this.onScrollTop();
+    this.mainEl.addEventListener("scroll", () => {
+      if (this.mainEl.scrollTop === 0) this.onScrollTop();
     });
+
+    this.checkIfPrevDiscussionContainerVisible();
 
     this.emitter.on("centralFinished", () => {
       this.centralFinished = true;
@@ -637,14 +613,6 @@ export default class Discussion {
       this.viewTaskResults(task, resultsContainer)
     );
 
-    window.addEventListener("load", this.onLoad.bind(this));
-
-    const resizeObserver = new ResizeObserver(this.onChangeHeightDiscussionContainer.bind(this));
-    resizeObserver.observe(this.discussionContainer);
-
-    const observer = new MutationObserver((mutationsList) => {
-      this.onUserContainerAppend(mutationsList);
-    });
-    observer.observe(this.discussionContainer, { childList: true });
+    // window.addEventListener("load", this.onLoad.bind(this));
   }
 }
