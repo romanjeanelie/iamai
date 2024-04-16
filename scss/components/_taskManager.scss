@@ -94,7 +94,6 @@ $taskSecondaryColor: #007aff;
         // path {
         //   fill: #fff;
         // }
-
       }
 
       &.hidden {
@@ -162,19 +161,20 @@ $taskSecondaryColor: #007aff;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+
+        @include media("<phone") {
+          font-size: 14px;
+          font-weight: 600;
+          line-height: 18px; /* 128.571% */
+          letter-spacing: 0;
+        }
       }
 
       &.active {
-        //   background-color: rgba(0, 0, 0, 0.1);
-
         .task-manager__accordion-chevron {
           transform: rotate(180deg);
         }
       }
-
-      // &:hover {
-      //   background-color: rgba(0, 0, 0, 0.1);
-      // }
 
       div {
         flex: none;
@@ -192,7 +192,7 @@ $taskSecondaryColor: #007aff;
 
         &.clickable {
           &:hover {
-            background-color: #0059BB !important;
+            background-color: #0059bb !important;
           }
         }
       }
@@ -203,7 +203,7 @@ $taskSecondaryColor: #007aff;
         transition: transform 0.3s $ease-out;
 
         path {
-          stroke: rgba($colorBlueText, 0.60);
+          stroke: rgba($colorBlueText, 0.6);
         }
 
         &.hidden {
@@ -251,6 +251,17 @@ $taskSecondaryColor: #007aff;
         &:last-of-type {
           color: $taskSecondaryColor;
         }
+
+        @include media("<phone") {
+          font-size: 14px;
+          font-weight: 600;
+          letter-spacing: 0;
+          line-height: 18px; /* 128.571% */
+
+          .task-manager__status-description {
+            letter-spacing: 0.5px;
+          }
+        }
       }
 
       .task-manager__input-container {
@@ -295,7 +306,7 @@ $taskSecondaryColor: #007aff;
     .task-manager__accordion-panel-divider {
       height: 2px;
       width: 100%;
-      background-color: $colorBlueText;
+      background-color: rgba($colorBlueText, 0.08);
       margin: 8px 0;
     }
   }
