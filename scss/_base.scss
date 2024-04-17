@@ -212,8 +212,8 @@ button {
   color: $colorBlueText;
 
   @include media("<tablet") {
-    place-items: center;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    // place-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
   }
 }
 
@@ -228,7 +228,7 @@ button {
   opacity: 80%;
 
   @include media("<tablet") {
-    max-width: 180px;
+    max-width: 215px;
   }
 }
 
@@ -258,8 +258,8 @@ button {
   text-align: left;
 
   @include media("<tablet") {
-    font-size: 12px;
-    line-height: 16px;
+    font-size: 16px;
+    line-height: 20px;
   }
 }
 
@@ -588,7 +588,7 @@ button {
   overflow: hidden;
   opacity: 80%;
 
-  &hover {
+  &:hover {
     opacity: 100%;
   }
 }
@@ -927,6 +927,11 @@ button {
   display: -ms-flexbox;
   display: flex;
   gap: 8px;
+
+  @include media("<tablet") {
+    width: 100px;
+    padding-left: 20px;
+  }
 }
 
 .rides-list-item-content-prices span {
@@ -938,6 +943,11 @@ button {
   line-height: 1.25rem;
   // color: rgba(0, 0, 0, 0.4);
   opacity: 0.4;
+
+  @include media("<tablet") {
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
 }
 
 .rides-list-item-content-prices span:nth-of-type(2) {
@@ -945,6 +955,11 @@ button {
   line-height: 2rem;
   // color: rgba(0, 0, 0, 0.72);
   opacity: 0.72;
+
+  @include media("<tablet") {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
 }
 
 .rides-list-content {
@@ -1210,6 +1225,7 @@ button {
   // font-family: "SFPro";
   animation: fadeIn 0.3s ease-in-out forwards;
   animation-delay: 1000ms;
+
   @include media("<tablet") {
     max-width: 315px;
   }
@@ -1314,6 +1330,7 @@ button {
   font-weight: 500;
   line-height: 32px;
   letter-spacing: 0.8px;
+
   @include media("<tablet") {
     font-size: 24px;
     line-height: 28px;
@@ -1329,12 +1346,14 @@ button {
   line-height: 24px;
   /* 171.429% */
   letter-spacing: 1.2px;
+
   @include media("<tablet") {
     font-size: 12px;
     line-height: 20px;
   }
 }
-.flightimg{
+
+.flightimg {
   @include media("<tablet") {
     height: 24px;
     width: 24px;
@@ -1405,7 +1424,8 @@ button {
   color: $colorBlueText;
 
   @include media("<tablet") {
-    place-items: center;
+    //   place-items: center;
+    padding: 20px 0 20px 0;
   }
 }
 
