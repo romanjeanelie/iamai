@@ -1,4 +1,5 @@
 import gsap from "gsap";
+import { createNanoEvents } from "nanoevents";
 import { filtersArray, cityBreaksData } from "./accorData";
 import SearchBar from "./accorSearchBar/index.js";
 
@@ -13,6 +14,9 @@ import SearchBar from "./accorSearchBar/index.js";
 
 class Accor {
   constructor() {
+    // Event Emitter
+    this.emitter = createNanoEvents();
+
     // States
     this.isTablet = window.innerWidth <= 820;
     this.isMobile = window.innerWidth <= 640;
@@ -30,7 +34,9 @@ class Accor {
     this.initCityBreaks();
     this.addEventListeners();
 
-    new SearchBar();
+    new SearchBar({
+      emitter: this.emitter,
+    });
   }
 
   // ------ Filters Section ------

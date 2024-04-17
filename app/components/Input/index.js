@@ -6,7 +6,6 @@ import TypingText from "../../TypingText";
 // Utils
 import minSecStr from "../../utils/minSecStr";
 import isMobile from "../../utils/isMobile";
-import { isTouch } from "../../utils/detectNavigators";
 
 import AudioRecorder from "../../AudioRecorder";
 import InputAnimations from "./InputAnimations";

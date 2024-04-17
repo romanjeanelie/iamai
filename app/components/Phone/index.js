@@ -376,27 +376,31 @@ export default class Phone {
     });
 
     // Close
-    this.closeBtn.addEventListener("click", async () => {
-      this.anims.toStopPhoneRecording();
-      this.leave();
-    });
+    if (this.closeBtn) {
+      this.closeBtn.addEventListener("click", async () => {
+        this.anims.toStopPhoneRecording();
+        this.leave();
+      });
+    }
 
     // Pause
-    this.pauseBtn.addEventListener("click", async () => {
-      if (this.isAITalking) {
-        if (!this.isAIPaused) {
-          this.pauseAI();
+    if (this.pauseBtn) {
+      this.pauseBtn.addEventListener("click", async () => {
+        if (this.isAITalking) {
+          if (!this.isAIPaused) {
+            this.pauseAI();
+          } else {
+            this.resumeAI();
+          }
         } else {
-          this.resumeAI();
+          if (!this.isMicMuted) {
+            this.muteMic();
+          } else {
+            this.unmuteMic();
+          }
         }
-      } else {
-        if (!this.isMicMuted) {
-          this.muteMic();
-        } else {
-          this.unmuteMic();
-        }
-      }
-    });
+      });
+    }
 
     // Click outside
     this.pageEl.addEventListener(
@@ -405,7 +409,7 @@ export default class Phone {
         if (this.debug) return;
 
         // TODO add close btn to expetion
-        if (this.pauseBtn.contains(event.target) || this.closeBtn.contains(event.target)) return;
+        if (this.pauseBtn?.contains(event.target) || this.closeBtn?.contains(event.target)) return;
         if (this.onClickOutside.resumeAI) {
           this.resumeAI();
         }

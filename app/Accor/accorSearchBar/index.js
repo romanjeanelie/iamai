@@ -1,5 +1,7 @@
-import gsap, { Power2, Power3 } from "gsap";
+import * as dat from "dat.gui";
+import gsap, { Power3 } from "gsap";
 import Flip from "gsap/Flip";
+import Phone from "../../components/Phone";
 
 const STATES = {
   MINIMIZED: "minimized",
@@ -12,7 +14,10 @@ const STATES = {
 gsap.registerPlugin(Flip);
 
 export default class AccorSearchBar {
-  constructor() {
+  constructor({ emitter }) {
+    // Event Emitter
+    this.emitter = emitter;
+
     // States
     this.searchBarState = STATES.MINIMIZED;
 
@@ -32,6 +37,25 @@ export default class AccorSearchBar {
     this.advancedBar = document.querySelector(".accorBar__advancedBar-wrapper");
     this.phoneBar = document.querySelector(".accorSearchBar__phoneBar");
     this.phoneCloseBtn = document.querySelector(".accorSearchBar__phoneClose");
+
+    this.phone = new Phone({
+      pageEl: document,
+      emitter: this.emitter,
+      anims: {
+        toStartPhoneRecording: this.toPhoneBar.bind(this),
+        toStopPhoneRecording: this.fromSecondaryBar.bind(this),
+      },
+    });
+
+    // Debug
+    this.debug = import.meta.env.VITE_DEBUG === "true";
+    if (this.debug) {
+      this.gui = new dat.GUI();
+      this.toPhoneBar();
+      this.gui.add(this, "searchBarState", Object.values(STATES)).onFinishChange((value) => {
+        this.switchStateClass(value);
+      });
+    }
 
     // Init
     this.initSecondaryBar();
@@ -121,7 +145,6 @@ export default class AccorSearchBar {
   toPhoneBar() {
     this.phoneBar.classList.remove("none");
     this.toSecondaryBar(this.searchBarState === STATES.ADVANCED_OPTIONS ? 2 : 1);
-
     this.searchBarState = STATES.CALL;
   }
 

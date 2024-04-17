@@ -1,10 +1,10 @@
-$colorTalkUser: #007AFF;
-$colorProcessing: #FFA000;
+$colorTalkUser: #007aff;
+$colorProcessing: #ffa000;
 $colorTalkAI: $colorBlueText;
 
 .phone__debug {
   position: fixed;
-  display: none;
+  display: block;
   gap: 16px;
   top: 0;
   color: $colorBlueText;
