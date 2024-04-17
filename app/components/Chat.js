@@ -1011,7 +1011,7 @@ class Chat {
             "src",
             FlightSearchResult.travel.airlines_logo ? FlightSearchResult.travel.airlines_logo : "./images/flight.jpg"
           );
-          flightlogoimg.setAttribute("style", "height: 40px;mix-blend-mode: multiply;");
+          flightlogoimg.setAttribute("style", "height: 40px;mix-blend-mode: multiply;width:auto");
           logoFightdivdiv.appendChild(flightlogoimg);
 
           const flghtCostdiv = document.createElement("div");
