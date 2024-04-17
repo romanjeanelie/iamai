@@ -112,8 +112,7 @@ button {
       width: 100%;
     }
 
-    .bottom {
-    }
+    .bottom {}
   }
 
   &.hidden {
@@ -147,12 +146,10 @@ button {
       height: 60px;
       background: red;
       // Gradient background vertical with backgroundColorGreyPage
-      background: linear-gradient(
-        180deg,
-        $backgroundColorGreyPage 0%,
-        $backgroundColorGreyPage 15%,
-        rgba($backgroundColorGreyPage, 0) 100%
-      );
+      background: linear-gradient(180deg,
+          $backgroundColorGreyPage 0%,
+          $backgroundColorGreyPage 15%,
+          rgba($backgroundColorGreyPage, 0) 100%);
 
       z-index: 1;
     }
@@ -433,18 +430,88 @@ button {
 
 .hotels-title {
   font-feature-settings: "liga" off;
-  text-overflow: ellipsis;
+
   font-size: 18px;
   line-height: 24px;
   letter-spacing: 0.8px;
   padding: 8px 24px 0px 24px;
   text-align: left;
-  height: 56px;
+  // display: -webkit-box;
+  // -webkit-line-clamp: 1; /* Number of lines you want to display before truncating */
+  // -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  // width: 100%;
+
 
   // @include media("<tablet") {
   //   font-size: 12px;
   //   line-height: 16px;
   // }
+}
+
+.hotelscard-filter {
+  display: flex;
+  // padding-bottom: 56px;
+  // padding-right: 60px;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+  /* 133.333% */
+  letter-spacing: 0.5px;
+  margin-top: 60px;
+}
+
+.hotelscard-filterall {
+  // display: flex;
+  margin-right: 60px;
+  margin-bottom: 60px;
+  display: grid;
+  place-items: center;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  cursor: pointer;
+  opacity: 0.6;
+}
+#border{
+  height: var(--4, 4px);
+  /* Height of the curve */
+  border-radius: var(--4, 4px) var(--4, 4px) var(--0, 0px) var(--0, 0px);
+  background: $backgroundColorGreyPage;
+  width: 100%;
+}
+
+.hotelfilteractive {
+  background: #000 !important;
+}
+.hotelactive{
+  opacity: 1 !important;
+}
+
+.hotelscard-filterairbnb {
+  // display: flex;
+  margin-right: 60px;
+  margin-bottom: 60px;
+  display: grid;
+  place-items: center;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.hotelscard-filterhotels {
+  // display: flex;
+  // margin-right: 60px;
+  margin-bottom: 60px;
+  display: grid;
+  place-items: center;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  cursor: pointer;
+  opacity: 0.6;
 }
 
 .hotels-rating {
@@ -455,8 +522,8 @@ button {
   letter-spacing: 0.8px;
   padding: 0px 24px 0px 24px;
   text-align: left;
-  color: rgba(0, 37, 78, 0.6);
-
+  color: rgba(0, 37, 78, 0.60);
+  display: flex;
   // @include media("<tablet") {
   //   font-size: 12px;
   //   line-height: 16px;
@@ -469,7 +536,7 @@ button {
   font-size: 40px;
   line-height: 40px;
   letter-spacing: 0.6px;
-  padding: 24px 24px 24px 24px;
+  padding: 16px 24px 24px 24px;
   text-align: left;
 
   // @include media("<tablet") {
@@ -1041,7 +1108,7 @@ button {
   cursor: pointer;
 }
 
-.rides-timepicker-wrapper .time:hover > .arrow {
+.rides-timepicker-wrapper .time:hover>.arrow {
   opacity: 1;
 }
 
