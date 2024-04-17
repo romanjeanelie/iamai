@@ -31,6 +31,7 @@ export default class Discussion {
     this.mainEl = this.pageEl.querySelector("main");
     this.inputContainer = this.pageEl.querySelector("div.input__container.grey");
     this.inputText = this.pageEl.querySelector(".input-text");
+    this.discussionWrapper = document.querySelector(".discussion__wrapper");
     this.prevDiscussionContainer = document.querySelector(".prev-discussion__container");
     this.discussionContainer = document.querySelector(".discussion__container");
 
@@ -166,7 +167,7 @@ export default class Discussion {
   }
 
   async addUserElement({ text, imgs, debug = false } = {}) {
-    await gsap.to(this.discussionContainer, { duration: 0.5, y: -20, opacity: 0, ease: "power2.inOut" });
+    await gsap.to(this.discussionContainer, { duration: 0.5, y: -40, opacity: 0, ease: "power2.inOut" });
     this.moveChildrenToPrevContainer();
 
     if (imgs && imgs.length > 0) {
@@ -479,8 +480,8 @@ export default class Discussion {
 
   onStatusUpdate(taskKey, status) {
     // if (status.type === TASK_STATUSES.COMPLETED) {
-    //   const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskkey="${taskKey}"]`);
-    //   const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskkey="${taskKey}"]`);
+    //   const userContainer = this.discussionWrapper.querySelector(`.discussion__user[taskkey="${taskKey}"]`);
+    //   const AIContainer = this.discussionWrapper.querySelector(`.discussion__ai[taskkey="${taskKey}"]`);
     //   userContainer.classList.remove("discussion__user--task-created");
     //   AIContainer.classList.remove("discussion__ai--task-created");
     // }
@@ -499,16 +500,16 @@ export default class Discussion {
       method: "DELETE",
     });
     // Remove elements
-    const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskkey="${taskKey}"]`);
-    const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskkey="${taskKey}"]`);
+    const userContainer = this.discussionWrapper.querySelector(`.discussion__user[taskkey="${taskKey}"]`);
+    const AIContainer = this.discussionWrapper.querySelector(`.discussion__ai[taskkey="${taskKey}"]`);
     userContainer.remove();
     AIContainer.remove();
   }
 
   async viewTaskResults(task, resultsContainer) {
     if (!resultsContainer) return;
-    const userContainer = this.discussionContainer.querySelector(`.discussion__user[taskkey="${task.key}"]`);
-    const AIContainer = this.discussionContainer.querySelector(`.discussion__ai[taskkey="${task.key}"]`);
+    const userContainer = this.discussionWrapper.querySelector(`.discussion__user[taskkey="${task.key}"]`);
+    const AIContainer = this.discussionWrapper.querySelector(`.discussion__ai[taskkey="${task.key}"]`);
     if (userContainer) userContainer.style.display = "none";
     if (AIContainer) AIContainer.style.display = "none";
 
