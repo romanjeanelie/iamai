@@ -130,7 +130,7 @@
     border-radius: 16px;
     padding: 16px;
     display: inline-block;
-    text-align: justify;
+    text-align: left;
     @include media("<tablet") {
       padding: 12px;
     }

@@ -146,12 +146,10 @@ button {
       height: 100px;
       background: red;
       // Gradient background vertical with backgroundColorGreyPage
-      background: linear-gradient(
-        180deg,
-        $backgroundColorGreyPage 0%,
-        $backgroundColorGreyPage 15%,
-        rgba($backgroundColorGreyPage, 0) 100%
-      );
+      background: linear-gradient(180deg,
+          $backgroundColorGreyPage 0%,
+          $backgroundColorGreyPage 15%,
+          rgba($backgroundColorGreyPage, 0) 100%);
 
       z-index: 10;
     }
@@ -364,7 +362,7 @@ button {
 
   @include media("<tablet") {
     place-items: center;
-    grid-template-columns: repeat(auto-fit, minmax(327px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(315px, 1fr));
   }
 }
 
@@ -379,7 +377,7 @@ button {
   opacity: 80%;
 
   @include media("<tablet") {
-    max-width: 327px;
+    max-width: 315px;
   }
 }
 
@@ -840,7 +838,8 @@ button {
   background-color: rgba(255, 255, 255, 0.48);
   position: relative;
   opacity: 80%;
-  &:hover{
+
+  &:hover {
     opacity: 100%;
   }
 }
@@ -1211,6 +1210,9 @@ button {
   // font-family: "SFPro";
   animation: fadeIn 0.3s ease-in-out forwards;
   animation-delay: 1000ms;
+  @include media("<tablet") {
+    max-width: 315px;
+  }
 }
 
 .FlightContainer:not(.Travellers-Mini) {
@@ -1261,7 +1263,7 @@ button {
 
 @include media("<tablet") {
   .flightCard {
-    width: 95%;
+    width: 100%;
   }
 }
 
@@ -1312,6 +1314,10 @@ button {
   font-weight: 500;
   line-height: 32px;
   letter-spacing: 0.8px;
+  @include media("<tablet") {
+    font-size: 24px;
+    line-height: 28px;
+  }
 }
 
 .small {
@@ -1323,6 +1329,16 @@ button {
   line-height: 24px;
   /* 171.429% */
   letter-spacing: 1.2px;
+  @include media("<tablet") {
+    font-size: 12px;
+    line-height: 20px;
+  }
+}
+.flightimg{
+  @include media("<tablet") {
+    height: 24px;
+    width: 24px;
+  }
 }
 
 .duration {
@@ -1387,15 +1403,19 @@ button {
   margin-bottom: 24px;
   font-family: "SFPro";
   color: $colorBlueText;
+
+  @include media("<tablet") {
+    place-items: center;
+  }
 }
 
-.shopping-container a{
+.shopping-container a {
   color: $colorBlueText !important;
 }
 
 .shopping-card {
   background: #ffffff;
-  max-width: 215px;
+  width: 215px;
   position: relative;
   overflow: hidden;
   padding: 16px 0 16px 0;
@@ -1404,9 +1424,10 @@ button {
   opacity: 80%;
 }
 
-.shopping-card:hover{
+.shopping-card:hover {
   opacity: 100%;
 }
+
 // .shopping-card:hover .shopping-overlay {
 //   border-radius: 8px;
 //   background-color: rgba(0, 0, 0, 0.04);

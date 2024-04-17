@@ -1070,7 +1070,7 @@ class Chat {
           durationdiv.appendChild(dDirectiondiv);
 
           let flightsresultsstr =
-            '<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.053 15.5789L12 24L10 24L12.526 15.5789L7.166 15.5789L5.5 18.7368L4 18.7368L5 14L4 9.26316L5.5 9.26316L7.167 12.4211L12.527 12.4211L10 4L12 4L17.053 12.4211L22.5 12.4211C22.8978 12.4211 23.2794 12.5874 23.5607 12.8835C23.842 13.1796 24 13.5812 24 14C24 14.4188 23.842 14.8204 23.5607 15.1165C23.2794 15.4126 22.8978 15.5789 22.5 15.5789L17.053 15.5789Z" fill="#00254E" fill-opacity="0.6"/></svg>';
+            '<svg class="flightimg" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.053 15.5789L12 24L10 24L12.526 15.5789L7.166 15.5789L5.5 18.7368L4 18.7368L5 14L4 9.26316L5.5 9.26316L7.167 12.4211L12.527 12.4211L10 4L12 4L17.053 12.4211L22.5 12.4211C22.8978 12.4211 23.2794 12.5874 23.5607 12.8835C23.842 13.1796 24 13.5812 24 14C24 14.4188 23.842 14.8204 23.5607 15.1165C23.2794 15.4126 22.8978 15.5789 22.5 15.5789L17.053 15.5789Z" fill="#00254E" fill-opacity="0.6"/></svg>';
           if (FlightSearchResult.travel.stops == 0) {
             flightsresultsstr +=
               '<svg xmlns="http://www.w3.org/2000/svg" width="152" height="28" viewBox="0 0 152 28" fill="none">';
@@ -1249,7 +1249,6 @@ class Chat {
 
       const productprice = document.createElement("p");
       productprice.className = "shopping-price";
-      console.log("element.price.charAt(.)",element.price.indexOf("."))
       if(element.price.includes(".00"))
         productprice.innerHTML = element.price.substring(0,element.price.indexOf(".00"));
       else
@@ -1347,7 +1346,7 @@ class Chat {
       // moviescarddiv.addEventListener("click", (event) => this.showMovieDetail(event));
       // let index = 0;
       // element.rooms[0].pictures.forEach((pictures) => {
-      for (let index = 0; index < element.rooms[0].pictures.length; index++) {
+      for (let index = 0; index < element.pictures.length; index++) {
         const hotelcardimageslidediv = document.createElement("div");
         if (index === 0)
           hotelcardimageslidediv.className = "hotels-image-slide active";
@@ -1359,7 +1358,7 @@ class Chat {
 
         hotelsimg.className = "hotels-image";
         hotelsimg.setAttribute("alt", element.title.replace(/'/g, "&#39;"));
-        hotelsimg.setAttribute("src", element.rooms[0].pictures[index]);
+        hotelsimg.setAttribute("src", element.pictures[index]);
         hotelcardimageslidediv.appendChild(hotelsimg);
 
         const dot = document.createElement("span");
@@ -1412,7 +1411,7 @@ class Chat {
 
       const hotelpricep = document.createElement("div");
       hotelpricep.className = "hotels-price";
-      hotelpricep.innerText = element.rooms[0].price;
+      hotelpricep.innerText = element.price;
       const hotelview = document.createElement("button");
       hotelview.className = "hotels-view";
       hotelview.innerHTML = '<svg width="95" height="40" viewBox="0 0 95 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="95" height="40" rx="12" fill="#00254E" fill-opacity="0.6"/><path d="M32.0879 24L29.1582 15.5449H30.8047L32.9492 22.3887H32.9785L35.1289 15.5449H36.7754L33.8398 24H32.0879ZM40.0777 24V15.5449H41.5895V24H40.0777ZM45.4777 24V15.5449H50.9504V16.8164H46.9895V19.0957H50.7336V20.3203H46.9895V22.7285H50.9504V24H45.4777ZM56.4383 24L54.1707 15.5449H55.741L57.2117 21.9258H57.241L58.9344 15.5449H60.3055L61.9988 21.9258H62.0281L63.4988 15.5449H65.0691L62.8016 24H61.3426L59.6375 17.9355H59.6023L57.8973 24H56.4383Z" fill="white"/></svg>';
@@ -1431,8 +1430,8 @@ class Chat {
 
   }
   hotelmoveSlide(event, next) {
-    let currentSlide = event.target.parentElement.parentElement.querySelector(".hotels-image-slide.active");
-    let currentDot = event.target.parentElement.parentElement.querySelector(".hotels-dot.active");
+    let currentSlide = event.target.parentElement.parentElement.parentElement.querySelector(".hotels-image-slide.active");
+    let currentDot = event.target.parentElement.parentElement.parentElement.querySelector(".hotels-dot.active");
     currentSlide.classList.remove('active');
     currentDot.classList.remove('active');
 
