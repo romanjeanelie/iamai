@@ -366,16 +366,8 @@ export default class Discussion {
     this.mainEl.scrollTo({
       top: this.mainEl.scrollHeight,
       behavior: isSmooth ? "smooth" : "auto",
+      //   behavior: "smooth",
     });
-    // scrollTop = this.mainEl.scrollHeight;
-    // If overflow remove the height from history
-    // if (this.discussionContainer.scrollHeight > this.discussionContainer.clientHeight) {
-    //   this.discussionContainer.style.height = "unset";
-    // }
-    // window.scrollTo({
-    //   top: document.body.scrollHeight,
-    //   behavior: "smooth",
-    // });
   }
 
   async onScrollTop() {
@@ -431,7 +423,9 @@ export default class Discussion {
     this.uuid = this.Chat.deploy_ID;
 
     await this.updateHstory({ uuid: this.uuid });
-    this.scrollToBottom(false);
+    setTimeout(() => {
+      this.scrollToBottom(false);
+    }, 100);
     this.emitter.emit("taskManager:isHistorySet", true);
     this.getAiAnswer({ text: "" });
   }

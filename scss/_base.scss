@@ -48,8 +48,10 @@ html {
 
 body {
   width: 100vw;
-  overflow-x: hidden;
-  overscroll-behavior: none;
+  //   overflow-x: hidden;
+  //   overscroll-behavior: none;
+  height: 100vh;
+  overflow: hidden;
   color: $colorMain;
   font-family: Noto Sans;
   font-weight: 400;
@@ -126,10 +128,7 @@ button {
   min-height: 100svh;
 
   main {
-    // min-height: 100vh; // in case svh is not supported by browser
-    height: 100vh; // in case svh is not supported by browser
-    // min-height: 100svh;
-    height: 100svh;
+    height: 100vh;
     overflow-y: scroll;
     position: relative;
     display: flex;
