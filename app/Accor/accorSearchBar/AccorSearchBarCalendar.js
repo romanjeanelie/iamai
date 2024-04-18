@@ -38,7 +38,7 @@ export default class AccorSearchBarCalendar {
   };
 
   isSelectedDay = (day, cell) => {
-    if (day.timestamp === selectedDay) {
+    if (day.timestamp === this.selectedDay) {
       cell.classList.add("active");
       cell.classList.add("isSelected");
     }
@@ -67,19 +67,21 @@ export default class AccorSearchBarCalendar {
   setCalBody = (monthDetails) => {
     // Add dates to calendar
     for (let i = 0; i < monthDetails.length; i++) {
-      let div = document.createElement("div"),
-        span = document.createElement("span");
+      let div = document.createElement("div");
+      let cellDate = monthDetails[i];
 
       div.classList.add("cell_wrapper");
       div.classList.add("cal_date");
       monthDetails[i].month === 0 && div.classList.add("current");
       monthDetails[i].month === 0 && this.isCurrentDay(monthDetails[i], div);
-      span.classList.add("cell_item");
 
-      span.innerText = monthDetails[i].date;
+      div.innerText = cellDate.date;
 
-      div.appendChild(span);
       this.calendar.appendChild(div);
+
+      div.addEventListener("click", () => {
+        this.updateSelectedDay(cellDate, div);
+      });
     }
   };
 
@@ -112,6 +114,14 @@ export default class AccorSearchBarCalendar {
     this.setHeader(newCal.year, newCal.month);
     this.calendar.innerHTML = "";
     this.setCalBody(newCal.monthDetails);
+  };
+
+  updateSelectedDay = (date, cell) => {
+    this.selectedDay = date.timestamp;
+    document.querySelectorAll(".cell_wrapper").forEach((cell) => {
+      cell.classList.remove("active");
+    });
+    this.isSelectedDay(date, cell);
   };
 
   addEventListeners = () => {

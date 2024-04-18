@@ -117,16 +117,4 @@
     border-radius: 30px;
     outline: 4px solid $accorMain;
   }
-
-  .inactive_indicator:after {
-    /*   text-decoration: underline; */
-    content: "";
-    width: 3px;
-    height: 3px;
-    background: red;
-    border-radius: 50%;
-    position: absolute;
-    bottom: 3px;
-    left: 50%;
-  }
 }
