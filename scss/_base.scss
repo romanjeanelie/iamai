@@ -151,10 +151,12 @@ button {
       height: 60px;
       background: red;
       // Gradient background vertical with backgroundColorGreyPage
-      background: linear-gradient(180deg,
-          $backgroundColorGreyPage 0%,
-          $backgroundColorGreyPage 15%,
-          rgba($backgroundColorGreyPage, 0) 100%);
+      background: linear-gradient(
+        180deg,
+        $backgroundColorGreyPage 0%,
+        $backgroundColorGreyPage 15%,
+        rgba($backgroundColorGreyPage, 0) 100%
+      );
 
       z-index: 1;
     }
@@ -479,7 +481,6 @@ button {
   cursor: pointer;
   opacity: 0.6;
 }
-
 #border {
   height: var(--4, 4px);
   /* Height of the curve */
@@ -491,7 +492,6 @@ button {
 .hotelfilteractive {
   background: #000 !important;
 }
-
 .hotelactive {
   opacity: 1 !important;
 }
@@ -1114,7 +1114,7 @@ button {
   cursor: pointer;
 }
 
-.rides-timepicker-wrapper .time:hover>.arrow {
+.rides-timepicker-wrapper .time:hover > .arrow {
   opacity: 1;
 }
 
