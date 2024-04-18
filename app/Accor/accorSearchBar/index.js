@@ -1,8 +1,6 @@
-import * as dat from "dat.gui";
-
-import Phone from "../../components/Phone";
 import PhoneAnimations from "../../components/Phone/PhoneAnimations";
-import AccorSearchBarAnims from "./accorSearchBarAnims";
+import AccorSearchBarAnims from "./AccorSearchBarAnims";
+import AccorSearchBarPhone from "./AccorSearchBarPhone";
 
 export const STATES = {
   MINIMIZED: "minimized",
@@ -14,7 +12,8 @@ export const STATES = {
 
 // TO DO
 // [X] remove the "phone-btn" when on text input state
-// [] change the logic of action button when on text-input
+// [X] change the logic of action button when on text-input
+// [X] refactor by creating AccorSearchBarAnims
 // [] fix the bug when clicking on the phone button on the secondary bar
 
 export default class AccorSearchBar {
@@ -36,13 +35,6 @@ export default class AccorSearchBar {
     this.actionBtn = document.querySelector(".accorSearchBar__action-btn");
     this.secondaryBarPhoneBtn = document.querySelector(".secondary-action-btn");
 
-    // Phone Elements
-    this.phoneCloseBtn = document.querySelector(".accorSearchBar__phoneClose");
-
-    // Animations
-    this.anims = new AccorSearchBarAnims(this.searchBarState);
-    this.phoneAnimations = new PhoneAnimations({ pageEl: document });
-
     // Debug
     this.debug = import.meta.env.VITE_DEBUG === "true";
     if (this.debug) {
@@ -52,6 +44,13 @@ export default class AccorSearchBar {
       // this.anims.toPhoneBar();
     }
 
+    // Phone Elements
+    this.phoneCloseBtn = document.querySelector(".accorSearchBar__phoneClose");
+    this.phone = new AccorSearchBarPhone({ debug: this.debug });
+
+    // Animations
+    this.anims = new AccorSearchBarAnims(this.searchBarState);
+
     // Init
     this.addEventListener();
   }
@@ -60,6 +59,18 @@ export default class AccorSearchBar {
   onSubmit() {
     const input = document.querySelector(".standard-input");
     console.log("on submit");
+  }
+
+  startPhoneCall() {
+    // TO DO - TRIGGER THE PHONE LOGIC
+    this.anims.toPhoneBar();
+    this.phone.startConnecting();
+  }
+
+  endPhoneCall() {
+    // TO DO - CLOSE THE PHONE BAR + END THE PHONE LOGIC
+    this.phone.leave();
+    this.anims.fromSecondaryBar();
   }
 
   // Event Listeners
@@ -79,14 +90,11 @@ export default class AccorSearchBar {
         // TO DO - SUBMIT THE INPUT VALUE (on submit function)
         this.onSubmit();
       } else {
-        this.anims.toPhoneBar();
+        this.startPhoneCall();
       }
     });
     this.secondaryBarPhoneBtn.addEventListener("click", this.anims.toPhoneBar.bind(this.anims));
-    this.phoneCloseBtn.addEventListener("click", () => {
-      // TO DO - CLOSE THE PHONE BAR
-      this.anims.fromSecondaryBar();
-    });
+    this.phoneCloseBtn.addEventListener("click", this.endPhoneCall.bind(this));
 
     document.addEventListener("click", (event) => {
       if (!this.wrapper.contains(event.target)) {

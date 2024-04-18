@@ -221,6 +221,7 @@ $colorTalkAI: $colorBlueText;
       left: 50%;
       opacity: 0;
       transform: translateX(-50%);
+      text-wrap: nowrap;
 
       &.active {
         opacity: 1;
