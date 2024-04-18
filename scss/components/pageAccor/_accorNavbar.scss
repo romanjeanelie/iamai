@@ -1,11 +1,15 @@
 @import "./accorCalendar.scss";
+
 $expandedSearchBarWidth: min(763px, 50vw);
 
 .accorNavbar__container {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   padding: 20px 24px 32px;
-  overflow: hidden;
+
+  &.overflow-hidden {
+    overflow: hidden;
+  }
 
   @include media("<tablet") {
     grid-template-columns: 1fr;

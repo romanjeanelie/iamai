@@ -1,0 +1,5 @@
+.accorSearchBar__calendar-wrapper {
+  position: absolute;
+  opacity: 0;
+  top: calc(100% + 32px);
+}

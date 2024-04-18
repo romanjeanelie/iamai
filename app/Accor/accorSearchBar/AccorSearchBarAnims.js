@@ -12,6 +12,7 @@ export default class AccorSearchBarAnims {
     this.updateState = updateState;
 
     // Dom Elements
+    this.navbar = document.querySelector(".accorNavbar__container");
     this.wrapper = document.querySelector(".accorSearchBar__wrapper");
     this.searchBar = document.querySelector(".accorSearchBar__container");
     this.writeBtn = document.querySelector(".accorSearchBar__write-btn");
@@ -78,35 +79,36 @@ export default class AccorSearchBarAnims {
     gsap.set(this.secondaryBarContainer, { y: 200 });
   }
 
-  toSecondaryBar(floor = 1) {
+  animateSecondaryBar(targetY, floor, callback) {
+    this.navbar.classList.add("overflow-hidden");
     gsap.killTweensOf(this.searchBar);
     const tl = gsap.timeline({ defaults: { ease: Power3.easeOut } });
 
     tl.to([this.standardBtn, this.advancedBtn], { opacity: 0, duration: 0.1 });
     tl.to(this.wrapper, {
-      y: -200 * floor,
+      y: targetY,
       onComplete: () => {
-        if (floor === 2) {
-          this.resetPhoneBar();
-          this.advancedBar.classList.add("none");
-        }
+        callback(floor);
+        this.navbar.classList.remove("overflow-hidden");
       },
     });
     tl.to([this.standardBtn, this.advancedBtn], { opacity: 1 });
   }
 
-  fromSecondaryBar() {
-    const tl = gsap.timeline({ defaults: { ease: Power3.easeOut } });
-
-    tl.to([this.standardBtn, this.advancedBtn], { opacity: 0, duration: 0.1 });
-    tl.to(this.wrapper, {
-      y: 0,
-      onComplete: () => {
+  toSecondaryBar(floor = 1) {
+    this.animateSecondaryBar(-200 * floor, floor, (floor) => {
+      if (floor === 2) {
+        this.resetPhoneBar();
         this.advancedBar.classList.add("none");
-        this.phoneBar.classList.add("none");
-      },
+      }
     });
-    tl.to([this.standardBtn, this.advancedBtn], { opacity: 1 });
+  }
+
+  fromSecondaryBar() {
+    this.animateSecondaryBar(0, null, () => {
+      this.advancedBar.classList.add("none");
+      this.phoneBar.classList.add("none");
+    });
   }
 
   toAdvanceOptions() {

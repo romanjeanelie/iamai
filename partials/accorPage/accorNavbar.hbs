@@ -12,7 +12,6 @@
   </div>
 
   <div class="accorNavbar__item accorSearchBar__wrapper minimized">
-
     <div class="accorNavbar__mainBar">
       <div class="accorSearchBar__container accorSearchBar__item-container">
         {{! MINIMIZED STATE ELEMENTS }}
@@ -59,11 +58,6 @@
       <button class="accorSearchBar__advanced-btn switch-btn">
         Advanced
       </button>
-    </div>
-
-    {{! CALENDAR INPUT }}
-    <div class="accorSearchBar__calendar-wrapper">
-
     </div>
 
     <div class="accorBar__secondaryBar">
@@ -138,6 +132,30 @@
           <img src="/icons/phone-icon.svg" class="phone-icon" alt="phone icon" />
           <img src="/icons/arrow-right.svg" class="arrow-icon" alt="arrow icon" />
         </button>
+      </div>
+    </div>
+
+    {{! CALENDAR }}
+    <div class="accorSearchBar__calendar-wrapper input-wrapper">
+      <div id="date_picker">
+        <div id="date_picker_input">
+          <input type="text" id="date" />
+        </div>
+        <div id="date_picker_calendar">
+          <div id="calendar_header">
+            <button class="cal-btn back"><img
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAABJUlEQVR4nO2Uv0oDQRCHR9BKrAQJ2FgIdnc7njtzSbMzd7lGC80T5DXMW+gzpNJHsPEJYuELBA60EBELsfIfBGIixvNyt0IKP9h2vt3fb1iAfxaCXZt0DGuOrO8+jmHNQ3JHnwLDeutrOI4lJDcTAcngDwSDSUSkCbK++RSEJAdfejCkfX+31/63oq1N15H0rn7Bch80s42Z22SsdGsLrHQLVxZJLioLSC8BYKlQELLbQpanCrk/Y+y2C4dPFd6bP3s9hrI455aR9GqO219HUbRSWjB6xV5qDcnL7wJ5RZs2oQpIelqi2BOoShBkq0g6LMg932m11qAOhnX/5+zlEHyALOczhp+BL6x1DSR9mPoOHsM42QSfGE6yUR+kQxO7ttfhC80HheuaG9wAq10AAAAASUVORK5CYII="
+              /></button>
+            <span></span>
+            <button class="cal-btn front"><img
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAABJUlEQVR4nO2Uv0oDQRCHR9BKrAQJ2FgIdnc7njtzSbMzd7lGC80T5DXMW+gzpNJHsPEJYuELBA60EBELsfIfBGIixvNyt0IKP9h2vt3fb1iAfxaCXZt0DGuOrO8+jmHNQ3JHnwLDeutrOI4lJDcTAcngDwSDSUSkCbK++RSEJAdfejCkfX+31/63oq1N15H0rn7Bch80s42Z22SsdGsLrHQLVxZJLioLSC8BYKlQELLbQpanCrk/Y+y2C4dPFd6bP3s9hrI455aR9GqO219HUbRSWjB6xV5qDcnL7wJ5RZs2oQpIelqi2BOoShBkq0g6LMg932m11qAOhnX/5+zlEHyALOczhp+BL6x1DSR9mPoOHsM42QSfGE6yUR+kQxO7ttfhC80HheuaG9wAq10AAAAASUVORK5CYII="
+              /></button>
+          </div>
+          <div id="cal_wrapper">
+            <div id="cal_days"></div>
+            <div id="calendar_main"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

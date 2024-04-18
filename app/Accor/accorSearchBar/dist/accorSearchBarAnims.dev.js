@@ -45,6 +45,7 @@ function () {
     this.searchBarState = state;
     this.updateState = updateState; // Dom Elements
 
+    this.navbar = document.querySelector(".accorNavbar__container");
     this.wrapper = document.querySelector(".accorSearchBar__wrapper");
     this.searchBar = document.querySelector(".accorSearchBar__container");
     this.writeBtn = document.querySelector(".accorSearchBar__write-btn");
@@ -123,11 +124,11 @@ function () {
       });
     }
   }, {
-    key: "toSecondaryBar",
-    value: function toSecondaryBar() {
+    key: "animateSecondaryBar",
+    value: function animateSecondaryBar(targetY, floor, callback) {
       var _this = this;
 
-      var floor = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      this.navbar.classList.add("overflow-hidden");
 
       _gsap["default"].killTweensOf(this.searchBar);
 
@@ -142,13 +143,11 @@ function () {
         duration: 0.1
       });
       tl.to(this.wrapper, {
-        y: -200 * floor,
+        y: targetY,
         onComplete: function onComplete() {
-          if (floor === 2) {
-            _this.resetPhoneBar();
+          callback(floor);
 
-            _this.advancedBar.classList.add("none");
-          }
+          _this.navbar.classList.remove("overflow-hidden");
         }
       });
       tl.to([this.standardBtn, this.advancedBtn], {
@@ -156,30 +155,28 @@ function () {
       });
     }
   }, {
-    key: "fromSecondaryBar",
-    value: function fromSecondaryBar() {
+    key: "toSecondaryBar",
+    value: function toSecondaryBar() {
       var _this2 = this;
 
-      var tl = _gsap["default"].timeline({
-        defaults: {
-          ease: _gsap.Power3.easeOut
-        }
-      });
+      var floor = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      this.animateSecondaryBar(-200 * floor, floor, function (floor) {
+        if (floor === 2) {
+          _this2.resetPhoneBar();
 
-      tl.to([this.standardBtn, this.advancedBtn], {
-        opacity: 0,
-        duration: 0.1
-      });
-      tl.to(this.wrapper, {
-        y: 0,
-        onComplete: function onComplete() {
           _this2.advancedBar.classList.add("none");
-
-          _this2.phoneBar.classList.add("none");
         }
       });
-      tl.to([this.standardBtn, this.advancedBtn], {
-        opacity: 1
+    }
+  }, {
+    key: "fromSecondaryBar",
+    value: function fromSecondaryBar() {
+      var _this3 = this;
+
+      this.animateSecondaryBar(0, null, function () {
+        _this3.advancedBar.classList.add("none");
+
+        _this3.phoneBar.classList.add("none");
       });
     }
   }, {

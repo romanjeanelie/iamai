@@ -1,5 +1,5 @@
-import AccorSearchBarAnims from "./AccorSearchBarAnims";
-import AccorSearchBarPhone from "./AccorSearchBarPhone";
+import AccorSearchBarAnims from "./AccorSearchBarAnims.js";
+import AccorSearchBarPhone from "./AccorSearchBarPhone.js";
 
 export const STATES = {
   MINIMIZED: "minimized",
@@ -55,6 +55,7 @@ export default class AccorSearchBar {
   }
 
   updateSearchBarState(newState) {
+    console.log(newState);
     this.searchBarState = newState;
   }
 
