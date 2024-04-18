@@ -201,7 +201,7 @@ class Chat {
         if (mdata.type == UI) {
           // this.domain = mdata.response_json.domain;
           console.log("domain:" + this.domain);
-          if(ui_paramsmap.get(mdata.micro_thread_id))
+          if (ui_paramsmap.get(mdata.micro_thread_id))
             ui_paramsmap.get(mdata.micro_thread_id).push(mdata.response_json);
           else
             ui_paramsmap.set(mdata.micro_thread_id, [mdata.response_json]);
@@ -390,9 +390,11 @@ class Chat {
           this.callbacks.emitter.emit(AGENT_ENDED);
           const container = document.createElement("div");
           let datas = ui_paramsmap.get(mdata.micro_thread_id);
-          datas.forEach(data => {
-            container.appendChild(this.getUI(data));
-          });
+          if (datas) {
+            datas.forEach(data => {
+              container.appendChild(this.getUI(data));
+            });
+          }
           // if (data) {
           //   let domain = data.domain;
 
@@ -1471,8 +1473,8 @@ class Chat {
         }
       });
     } catch (e) {
-      console.log("hotels UI:",e)
-    }finally{
+      console.log("hotels UI:", e)
+    } finally {
       return hotelcardcontainerdiv;
     }
   }
