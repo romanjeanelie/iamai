@@ -13,6 +13,11 @@ const STATES = {
 
 gsap.registerPlugin(Flip);
 
+// TO DO
+// [X] remove the "phone-btn" when on text input state
+// [] change the logic of action button when on text-input
+// [] fix the bug when clicking on the phone button on the secondary bar
+
 export default class AccorSearchBar {
   constructor({ emitter }) {
     // Event Emitter
@@ -38,18 +43,10 @@ export default class AccorSearchBar {
     this.phoneBar = document.querySelector(".accorSearchBar__phoneBar");
     this.phoneCloseBtn = document.querySelector(".accorSearchBar__phoneClose");
 
-    this.phone = new Phone({
-      pageEl: document,
-      emitter: this.emitter,
-      anims: {
-        toStartPhoneRecording: this.toPhoneBar.bind(this),
-        toStopPhoneRecording: this.fromSecondaryBar.bind(this),
-      },
-    });
-
     // Debug
     this.debug = import.meta.env.VITE_DEBUG === "true";
     if (this.debug) {
+      console.log("-------- debug state ---------");
       this.gui = new dat.GUI();
       this.toPhoneBar();
       this.gui.add(this, "searchBarState", Object.values(STATES)).onFinishChange((value) => {
@@ -64,6 +61,9 @@ export default class AccorSearchBar {
 
   switchStateClass(state) {
     this.searchBarState = state;
+    // handle action btn
+    this.actionBtn.classList.remove("phone-btn");
+    if (this.searchBarState !== STATES.TEXT_INPUT) this.actionBtn.classList.add("phone-btn");
 
     // grab state
     const initialState = Flip.getState([this.searchBar, this.advancedBtn]);
@@ -75,7 +75,7 @@ export default class AccorSearchBar {
 
     // Animate from the initial state to the end state
     Flip.from(initialState, {
-      duration: 0.2,
+      duration: 0.4,
       ease: "power3.out",
       absolute: true,
       onComplete: () => {
@@ -146,6 +146,7 @@ export default class AccorSearchBar {
     this.phoneBar.classList.remove("none");
     this.toSecondaryBar(this.searchBarState === STATES.ADVANCED_OPTIONS ? 2 : 1);
     this.searchBarState = STATES.CALL;
+    // HERE INITIATE THE PHONE ANIMATION
   }
 
   resetPhoneBar() {
@@ -153,6 +154,12 @@ export default class AccorSearchBar {
     gsap.set(this.wrapper, {
       y: -200,
     });
+  }
+
+  // Submit the input value
+  onSubmit() {
+    const input = document.querySelector(".standard-input");
+    console.log("on submit");
   }
 
   // Event Listeners
@@ -170,12 +177,16 @@ export default class AccorSearchBar {
     this.actionBtn.addEventListener("click", () => {
       if (this.searchBarState === STATES.TEXT_INPUT) {
         // TO DO - SUBMIT THE INPUT VALUE (on submit function)
+        this.onSubmit();
       } else {
         this.toPhoneBar();
       }
     });
     this.secondaryBarPhoneBtn.addEventListener("click", this.toPhoneBar.bind(this));
-    this.phoneCloseBtn.addEventListener("click", this.fromSecondaryBar.bind(this));
+    this.phoneCloseBtn.addEventListener("click", () => {
+      // TO DO - CLOSE THE PHONE BAR
+      this.fromSecondaryBar();
+    });
 
     document.addEventListener("click", (event) => {
       if (!this.wrapper.contains(event.target)) {

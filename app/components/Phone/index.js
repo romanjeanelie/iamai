@@ -18,7 +18,7 @@ export default class Phone {
     this.pageEl = pageEl;
     this.discussion = discussion;
     this.phoneContainer = this.pageEl.querySelector(".phone__container");
-    this.phoneBtn = this.pageEl.querySelector(".phone-btn");
+    this.phoneBtns = this.pageEl.querySelectorAll(".phone-btn");
     this.infoText = this.phoneContainer.querySelector(".phone__info.active");
     this.pauseBtn = this.phoneContainer.querySelector(".phone__pause");
     this.closeBtn = this.phoneContainer.querySelector(".phone__close");
@@ -365,14 +365,16 @@ export default class Phone {
 
   addListeners() {
     // Open
-    this.phoneBtn.addEventListener("click", async () => {
-      this.audioContext = unlockAudio();
-      this.anims.toStartPhoneRecording();
-      if (this.debug) {
-        this.startConnecting();
-        return;
-      }
-      this.startRecording();
+    this.phoneBtns.forEach((phoneBtn) => {
+      phoneBtn.addEventListener("click", async () => {
+        this.audioContext = unlockAudio();
+        this.anims.toStartPhoneRecording();
+        if (this.debug) {
+          this.startConnecting();
+          return;
+        }
+        this.startRecording();
+      });
     });
 
     // Close
