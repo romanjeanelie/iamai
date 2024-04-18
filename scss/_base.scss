@@ -118,8 +118,7 @@ button {
       width: 100%;
     }
 
-    .bottom {
-    }
+    .bottom {}
   }
 
   &.hidden {
@@ -153,12 +152,10 @@ button {
       height: 60px;
       background: red;
       // Gradient background vertical with backgroundColorGreyPage
-      background: linear-gradient(
-        180deg,
-        $backgroundColorGreyPage 0%,
-        $backgroundColorGreyPage 15%,
-        rgba($backgroundColorGreyPage, 0) 100%
-      );
+      background: linear-gradient(180deg,
+          $backgroundColorGreyPage 0%,
+          $backgroundColorGreyPage 15%,
+          rgba($backgroundColorGreyPage, 0) 100%);
 
       z-index: 1;
     }
@@ -483,6 +480,7 @@ button {
   cursor: pointer;
   opacity: 0.6;
 }
+
 #border {
   height: var(--4, 4px);
   /* Height of the curve */
@@ -494,6 +492,7 @@ button {
 .hotelfilteractive {
   background: #000 !important;
 }
+
 .hotelactive {
   opacity: 1 !important;
 }
@@ -1116,7 +1115,7 @@ button {
   cursor: pointer;
 }
 
-.rides-timepicker-wrapper .time:hover > .arrow {
+.rides-timepicker-wrapper .time:hover>.arrow {
   opacity: 1;
 }
 
@@ -1343,7 +1342,7 @@ button {
   // color: rgba(0, 0, 0, 0.72);
   font-size: 1rem;
   font-style: normal;
-  font-weight: 100;
+  font-weight: 500;
   line-height: 20px;
   letter-spacing: 1.2px;
   opacity: 80%;
@@ -1372,7 +1371,7 @@ button {
   text-align: right;
   font-size: 0.8rem;
   font-style: normal;
-  font-weight: 100;
+  // font-weight: 100;
   line-height: 16px;
   letter-spacing: 1.2px;
   text-transform: uppercase;
@@ -1396,8 +1395,8 @@ button {
 }
 
 .currency {
-  font-size: 0.8rem;
-  // color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  // font-style: normal;
   opacity: 0.6;
 }
 
