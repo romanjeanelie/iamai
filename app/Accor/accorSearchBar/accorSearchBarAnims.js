@@ -28,13 +28,13 @@ export default class AccorSearchBarAnims {
   }
 
   // Helper method to update the searchBarState and call the updateState function
-  updateSearchBarStateAndInvokeUpdate(newState) {
+  updateStateAndInvokeUpdate(newState) {
     this.searchBarState = newState;
     this.updateState(newState);
   }
 
   switchStateClass(state) {
-    this.updateSearchBarStateAndInvokeUpdate(state);
+    this.updateStateAndInvokeUpdate(state);
     // handle action btn
     this.actionBtn.classList.remove("phone-btn");
     if (this.searchBarState !== STATES.TEXT_INPUT) this.actionBtn.classList.add("phone-btn");
@@ -113,13 +113,13 @@ export default class AccorSearchBarAnims {
     this.advancedBar.classList.remove("none");
     this.toSecondaryBar();
     this.phoneBar.classList.add("absolute");
-    this.updateSearchBarStateAndInvokeUpdate(STATES.ADVANCED_OPTIONS);
+    this.updateStateAndInvokeUpdate(STATES.ADVANCED_OPTIONS);
   }
 
   toPhoneBar() {
     this.phoneBar.classList.remove("none");
     this.toSecondaryBar(this.searchBarState === STATES.ADVANCED_OPTIONS ? 2 : 1);
-    this.updateSearchBarStateAndInvokeUpdate(STATES.CALL);
+    this.updateStateAndInvokeUpdate(STATES.CALL);
     // HERE INITIATE THE PHONE ANIMATION
     // this.phoneAnimations.toProcessing();
   }

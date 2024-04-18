@@ -1,4 +1,3 @@
-import PhoneAnimations from "../../components/Phone/PhoneAnimations";
 import AccorSearchBarAnims from "./AccorSearchBarAnims";
 import AccorSearchBarPhone from "./AccorSearchBarPhone";
 
@@ -84,14 +83,7 @@ export default class AccorSearchBar {
         this.anims.toMinimized();
       }
     });
-    this.advancedBtn.addEventListener("click", () => {
-      console.log(this.searchBarState);
-      if (this.searchBarState !== STATES.ADVANCED_OPTIONS) {
-        this.anims.toAdvanceOptions();
-      } else {
-        this.anims.toMinimized();
-      }
-    });
+    this.advancedBtn.addEventListener("click", this.anims.toAdvanceOptions.bind(this.anims));
     this.standardBtn.addEventListener("click", this.anims.fromSecondaryBar.bind(this.anims));
     this.actionBtn.addEventListener("click", () => {
       if (this.searchBarState === STATES.TEXT_INPUT) {

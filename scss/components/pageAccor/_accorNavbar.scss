@@ -275,6 +275,16 @@ $expandedSearchBarWidth: min(763px, 50vw);
   // opacity: 0.5;
   display: flex;
   justify-content: center;
+
+  .accorSearchBar__action-btn {
+    .arrow-icon {
+      display: none;
+    }
+
+    .phone-icon {
+      display: block;
+    }
+  }
 }
 
 // ADVANCED BAR
@@ -311,7 +321,7 @@ $expandedSearchBarWidth: min(763px, 50vw);
   display: flex;
   padding-top: 10px;
   align-items: center;
-  gap: 48px;
+  gap: 8px;
 
   &.none {
     display: none;

@@ -59,8 +59,8 @@ function () {
 
 
   _createClass(AccorSearchBarAnims, [{
-    key: "updateSearchBarStateAndInvokeUpdate",
-    value: function updateSearchBarStateAndInvokeUpdate(newState) {
+    key: "updateStateAndInvokeUpdate",
+    value: function updateStateAndInvokeUpdate(newState) {
       this.searchBarState = newState;
       this.updateState(newState);
     }
@@ -69,7 +69,7 @@ function () {
     value: function switchStateClass(state) {
       var _this$wrapper$classLi;
 
-      this.updateSearchBarStateAndInvokeUpdate(state); // handle action btn
+      this.updateStateAndInvokeUpdate(state); // handle action btn
 
       this.actionBtn.classList.remove("phone-btn");
       if (this.searchBarState !== _.STATES.TEXT_INPUT) this.actionBtn.classList.add("phone-btn"); // grab state
@@ -188,14 +188,14 @@ function () {
       this.advancedBar.classList.remove("none");
       this.toSecondaryBar();
       this.phoneBar.classList.add("absolute");
-      this.updateSearchBarStateAndInvokeUpdate(_.STATES.ADVANCED_OPTIONS);
+      this.updateStateAndInvokeUpdate(_.STATES.ADVANCED_OPTIONS);
     }
   }, {
     key: "toPhoneBar",
     value: function toPhoneBar() {
       this.phoneBar.classList.remove("none");
       this.toSecondaryBar(this.searchBarState === _.STATES.ADVANCED_OPTIONS ? 2 : 1);
-      this.updateSearchBarStateAndInvokeUpdate(_.STATES.CALL); // HERE INITIATE THE PHONE ANIMATION
+      this.updateStateAndInvokeUpdate(_.STATES.CALL); // HERE INITIATE THE PHONE ANIMATION
       // this.phoneAnimations.toProcessing();
     }
   }, {
