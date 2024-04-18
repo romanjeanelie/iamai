@@ -1,144 +1,109 @@
 .accorSearchBar__calendar-wrapper {
-  display: none;
-  --dark-body-bg: #232429;
-  --light-body-bg: #f5f7fb;
-
-  --dark-input: #323741;
-  --light-input: #ffffff;
-
-  --dark-border: #484d5a;
-  --light-border: #b8bccb;
-
-  --dark-date-foreground: #ffffff;
-  --dark-inactive-fg: #636a78;
-  --dark-active-fg: #9ca0b1;
-  --dark-current-year: #3b414a;
-  --dark-current-year-fg: #b2b8c9;
-  --dark-selected: #1d5eff;
-  --dark-hover: #2c437b;
-  --dark-arrows-bg: #b0b8cc;
-  --dark-arrows-fill: #333641;
-
+  // display: none;
   position: absolute;
   width: 666px;
   min-height: 100px;
   background-color: $backgroundColorGreyPage;
   border-radius: 16px;
   padding: 24px 16px 32px;
+  display: flex;
+  justify-content: center;
 
   top: calc(100% + 32px);
   z-index: 1;
 
-  #date_picker {
-    width: 300px;
-    margin: 0 auto;
+  .date_picker_calendar {
     position: relative;
-    top: 15%;
-  }
-
-  #date_picker_input {
-    margin-bottom: 8px;
-  }
-
-  label {
-    display: block;
-    color: #8a8f9f;
-    font-size: 1.02rem;
-    font-weight: 300;
-    margin-bottom: 10px;
-  }
-
-  #date {
-    color: var(--dark-date-foreground);
-    font-size: 16px;
-    padding: 12px 20px;
-  }
-
-  #date_picker_calendar {
+    width: 252px;
     min-height: fit-content;
-    box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.2);
     overflow: hidden;
     padding: 12px;
   }
 
-  #date,
-  #date_picker_calendar {
+  .date_picker_calendar {
     border-radius: 15px;
-    background: var(--dark-input);
-    border: 2px solid var(--dark-border);
-    width: 100%;
+    background-color: inherit;
   }
 
-  #calendar_header {
+  .calendar_header {
     width: 100%;
     min-height: 30px;
     /*   background: pink; */
-    margin-bottom: 8px;
-    color: var(--dark-date-foreground);
+    margin-bottom: 24px;
+    color: $accorMain;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    font-weight: 600;
   }
 
   .cal-btn {
-    width: 20px;
-    height: 20px;
-    background: var(--dark-arrows-bg);
-    border: none;
-    padding: 0;
-    margin: 0;
-    border-radius: 6px;
+    width: 24px;
+    height: 24px;
+    background-color: rgba($accorMain, 0.24);
+    border-radius: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s ease-out;
+
+    &:hover {
+      background-color: $accorMain;
+    }
   }
 
   .cal-btn img {
-    width: 42%;
-    height: 42%;
+    width: auto;
+    // height: 100%;
   }
 
   .cal-btn.back img {
-    transform: rotate(90deg);
+    transform: rotate(180deg);
   }
 
-  .cal-btn.front img {
-    transform: rotate(-90deg);
-  }
-
-  #cal_days,
-  #calendar_main {
+  .cal_days,
+  .calendar_main {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     row-gap: 5px;
     column-gap: 5px;
-    color: var(--dark-inactive-fg);
+    color: $accorMain;
   }
 
-  #cal_days {
+  .cal_days {
     margin-top: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 24px;
+    font-size: 12px;
+    font-weight: 600;
+
+    .cell_wrapper {
+      font-size: 12px;
+      color: $accorMain;
+    }
   }
 
-  #calendar_main {
+  .calendar_main {
     grid-template-rows: repeat(5, min(30px));
   }
 
   .cell_wrapper {
-    /*   background: yellow; */
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 8px;
     position: relative;
+    color: rgba($accorMain, 0.24);
+    font-size: 10px;
+    font-weight: 600;
   }
 
   .current {
-    background: var(--dark-current-year);
-    color: var(--dark-current-year-fg);
+    transition: background-color 0.2s ease-out;
+    color: $accorMain;
   }
 
   .current:not(.active):hover {
-    background: var(--dark-hover);
-    color: var(--dark-date-foreground);
-    border: 2px solid var(--dark-selected);
+    background-color: $accorExtraExtraLight;
   }
 
   .cal-btn:hover,
@@ -147,8 +112,10 @@
   }
 
   .active {
-    background: var(--dark-selected);
-    color: var(--dark-date-foreground);
+    background: $accorMain;
+    color: white;
+    border-radius: 30px;
+    outline: 4px solid $accorMain;
   }
 
   .inactive_indicator:after {

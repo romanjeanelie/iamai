@@ -1,4 +1,5 @@
 import AccorSearchBarAnims from "./AccorSearchBarAnims.js";
+import AccorSearchBarCalendar from "./AccorSearchBarCalendar.js";
 import AccorSearchBarPhone from "./AccorSearchBarPhone.js";
 
 export const STATES = {
@@ -51,7 +52,12 @@ export default class AccorSearchBar {
     this.anims = new AccorSearchBarAnims(this.searchBarState, this.updateSearchBarState.bind(this));
 
     // Init
+    this.initCalendars();
     this.addEventListener();
+  }
+
+  initCalendars() {
+    new AccorSearchBarCalendar();
   }
 
   updateSearchBarState(newState) {
