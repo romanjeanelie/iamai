@@ -5,6 +5,7 @@ html {
   -webkit-text-size-adjust: none;
   -webkit-font-smoothing: subpixel-antialiased;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility !important;
 }
 html,
 body,
@@ -176,24 +177,18 @@ body {
 .nav .nav__btn .lines-icon {
   opacity: 0;
   visibility: hidden;
-  transition:
-    opacity 0.3s ease-in-out,
-    visibility 0.3s ease-in-out;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
 }
 .nav .nav__btn .close-icon {
   position: absolute;
   opacity: 1;
   visibility: visible;
-  transition:
-    opacity 0.3s ease-in-out,
-    visibility 0.3s ease-in-out;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
 }
 .nav .nav__list {
   visibility: hidden;
   opacity: 0;
-  transition:
-    opacity 0.3s ease-in-out,
-    visibility 0.3s ease-in-out;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
 }
 .nav .nav__list li {
   margin-top: 40px;
@@ -514,9 +509,7 @@ body {
   border-top: 4px solid;
   border-top-color: #648ff2;
   opacity: 0.6;
-  transition:
-    opacity 0.3s ease-in-out,
-    border-color 0.3s ease-in-out;
+  transition: opacity 0.3s ease-in-out, border-color 0.3s ease-in-out;
 }
 .categories__list--container .categories__list li.active,
 .categories__list--container .categories__list li:hover {

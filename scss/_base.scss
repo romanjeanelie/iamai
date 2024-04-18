@@ -30,6 +30,12 @@ $paddingTopMobile: 28px;
 }
 
 // @font-face {
+//   font-family: "Noto Sans";
+//   src: url("/fonts/Noto_Sans/Noto-Sans-Regular.ttf");
+//   font-weight: 400 700;
+// }
+
+// @font-face {
 //   font-family: "Antwerp";
 //   src: url("/fonts/Antwerp_Light.otf");
 //   font-weight: 300;
@@ -112,7 +118,8 @@ button {
       width: 100%;
     }
 
-    .bottom {}
+    .bottom {
+    }
   }
 
   &.hidden {
@@ -146,10 +153,12 @@ button {
       height: 60px;
       background: red;
       // Gradient background vertical with backgroundColorGreyPage
-      background: linear-gradient(180deg,
-          $backgroundColorGreyPage 0%,
-          $backgroundColorGreyPage 15%,
-          rgba($backgroundColorGreyPage, 0) 100%);
+      background: linear-gradient(
+        180deg,
+        $backgroundColorGreyPage 0%,
+        $backgroundColorGreyPage 15%,
+        rgba($backgroundColorGreyPage, 0) 100%
+      );
 
       z-index: 1;
     }
@@ -444,7 +453,6 @@ button {
   white-space: nowrap;
   // width: 100%;
 
-
   // @include media("<tablet") {
   //   font-size: 12px;
   //   line-height: 16px;
@@ -475,7 +483,7 @@ button {
   cursor: pointer;
   opacity: 0.6;
 }
-#border{
+#border {
   height: var(--4, 4px);
   /* Height of the curve */
   border-radius: var(--4, 4px) var(--4, 4px) var(--0, 0px) var(--0, 0px);
@@ -486,7 +494,7 @@ button {
 .hotelfilteractive {
   background: #000 !important;
 }
-.hotelactive{
+.hotelactive {
   opacity: 1 !important;
 }
 
@@ -522,7 +530,7 @@ button {
   letter-spacing: 0.8px;
   padding: 0px 24px 0px 24px;
   text-align: left;
-  color: rgba(0, 37, 78, 0.60);
+  color: rgba(0, 37, 78, 0.6);
   display: flex;
   // @include media("<tablet") {
   //   font-size: 12px;
@@ -1108,7 +1116,7 @@ button {
   cursor: pointer;
 }
 
-.rides-timepicker-wrapper .time:hover>.arrow {
+.rides-timepicker-wrapper .time:hover > .arrow {
   opacity: 1;
 }
 

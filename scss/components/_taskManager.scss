@@ -28,6 +28,7 @@ $taskSecondaryColor: #007aff;
 }
 
 .task-manager__container {
+  font-family: "Noto Sans", sans-serif;
   position: fixed;
   bottom: 120px;
   right: 40px;
@@ -219,8 +220,8 @@ $taskSecondaryColor: #007aff;
       padding: 0 16px;
       overflow: hidden;
       font-size: 16px;
-      font-weight: 600;
       max-height: 0;
+      font-weight: 500;
       line-height: 18px;
       letter-spacing: 0.6px;
       transition: all 0.3s ease-in-out;
