@@ -6,9 +6,10 @@ import { STATES } from ".";
 gsap.registerPlugin(Flip);
 
 export default class AccorSearchBarAnims {
-  constructor(state) {
+  constructor(state, updateState) {
     // States
     this.searchBarState = state;
+    this.updateState = updateState;
 
     // Dom Elements
     this.wrapper = document.querySelector(".accorSearchBar__wrapper");
@@ -26,8 +27,14 @@ export default class AccorSearchBarAnims {
     this.initSecondaryBar();
   }
 
+  // Helper method to update the searchBarState and call the updateState function
+  updateSearchBarStateAndInvokeUpdate(newState) {
+    this.searchBarState = newState;
+    this.updateState(newState);
+  }
+
   switchStateClass(state) {
-    this.searchBarState = state;
+    this.updateSearchBarStateAndInvokeUpdate(state);
     // handle action btn
     this.actionBtn.classList.remove("phone-btn");
     if (this.searchBarState !== STATES.TEXT_INPUT) this.actionBtn.classList.add("phone-btn");
@@ -103,17 +110,16 @@ export default class AccorSearchBarAnims {
   }
 
   toAdvanceOptions() {
-    console.log(this.advancedBar);
     this.advancedBar.classList.remove("none");
     this.toSecondaryBar();
     this.phoneBar.classList.add("absolute");
-    this.searchBarState = STATES.ADVANCED_OPTIONS;
+    this.updateSearchBarStateAndInvokeUpdate(STATES.ADVANCED_OPTIONS);
   }
 
   toPhoneBar() {
     this.phoneBar.classList.remove("none");
     this.toSecondaryBar(this.searchBarState === STATES.ADVANCED_OPTIONS ? 2 : 1);
-    this.searchBarState = STATES.CALL;
+    this.updateSearchBarStateAndInvokeUpdate(STATES.CALL);
     // HERE INITIATE THE PHONE ANIMATION
     // this.phoneAnimations.toProcessing();
   }

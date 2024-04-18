@@ -38,11 +38,12 @@ _gsap["default"].registerPlugin(_Flip["default"]);
 var AccorSearchBarAnims =
 /*#__PURE__*/
 function () {
-  function AccorSearchBarAnims(state) {
+  function AccorSearchBarAnims(state, updateState) {
     _classCallCheck(this, AccorSearchBarAnims);
 
     // States
-    this.searchBarState = state; // Dom Elements
+    this.searchBarState = state;
+    this.updateState = updateState; // Dom Elements
 
     this.wrapper = document.querySelector(".accorSearchBar__wrapper");
     this.searchBar = document.querySelector(".accorSearchBar__container");
@@ -54,14 +55,21 @@ function () {
     this.advancedBar = document.querySelector(".accorBar__advancedBar-wrapper");
     this.phoneBar = document.querySelector(".accorSearchBar__phoneBar");
     this.initSecondaryBar();
-  }
+  } // Helper method to update the searchBarState and call the updateState function
+
 
   _createClass(AccorSearchBarAnims, [{
+    key: "updateSearchBarStateAndInvokeUpdate",
+    value: function updateSearchBarStateAndInvokeUpdate(newState) {
+      this.searchBarState = newState;
+      this.updateState(newState);
+    }
+  }, {
     key: "switchStateClass",
     value: function switchStateClass(state) {
       var _this$wrapper$classLi;
 
-      this.searchBarState = state; // handle action btn
+      this.updateSearchBarStateAndInvokeUpdate(state); // handle action btn
 
       this.actionBtn.classList.remove("phone-btn");
       if (this.searchBarState !== _.STATES.TEXT_INPUT) this.actionBtn.classList.add("phone-btn"); // grab state
@@ -177,18 +185,17 @@ function () {
   }, {
     key: "toAdvanceOptions",
     value: function toAdvanceOptions() {
-      console.log(this.advancedBar);
       this.advancedBar.classList.remove("none");
       this.toSecondaryBar();
       this.phoneBar.classList.add("absolute");
-      this.searchBarState = _.STATES.ADVANCED_OPTIONS;
+      this.updateSearchBarStateAndInvokeUpdate(_.STATES.ADVANCED_OPTIONS);
     }
   }, {
     key: "toPhoneBar",
     value: function toPhoneBar() {
       this.phoneBar.classList.remove("none");
       this.toSecondaryBar(this.searchBarState === _.STATES.ADVANCED_OPTIONS ? 2 : 1);
-      this.searchBarState = _.STATES.CALL; // HERE INITIATE THE PHONE ANIMATION
+      this.updateSearchBarStateAndInvokeUpdate(_.STATES.CALL); // HERE INITIATE THE PHONE ANIMATION
       // this.phoneAnimations.toProcessing();
     }
   }, {

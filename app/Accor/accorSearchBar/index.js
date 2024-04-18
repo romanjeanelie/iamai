@@ -49,26 +49,27 @@ export default class AccorSearchBar {
     this.phone = new AccorSearchBarPhone({ debug: this.debug });
 
     // Animations
-    this.anims = new AccorSearchBarAnims(this.searchBarState);
+    this.anims = new AccorSearchBarAnims(this.searchBarState, this.updateSearchBarState.bind(this));
 
     // Init
     this.addEventListener();
   }
 
+  updateSearchBarState(newState) {
+    this.searchBarState = newState;
+  }
+
   // Submit the input value
   onSubmit() {
     const input = document.querySelector(".standard-input");
-    console.log("on submit");
   }
 
   startPhoneCall() {
-    // TO DO - TRIGGER THE PHONE LOGIC
     this.anims.toPhoneBar();
     this.phone.startConnecting();
   }
 
   endPhoneCall() {
-    // TO DO - CLOSE THE PHONE BAR + END THE PHONE LOGIC
     this.phone.leave();
     this.anims.fromSecondaryBar();
   }
@@ -83,7 +84,14 @@ export default class AccorSearchBar {
         this.anims.toMinimized();
       }
     });
-    this.advancedBtn.addEventListener("click", this.anims.toAdvanceOptions.bind(this.anims));
+    this.advancedBtn.addEventListener("click", () => {
+      console.log(this.searchBarState);
+      if (this.searchBarState !== STATES.ADVANCED_OPTIONS) {
+        this.anims.toAdvanceOptions();
+      } else {
+        this.anims.toMinimized();
+      }
+    });
     this.standardBtn.addEventListener("click", this.anims.fromSecondaryBar.bind(this.anims));
     this.actionBtn.addEventListener("click", () => {
       if (this.searchBarState === STATES.TEXT_INPUT) {
