@@ -2,6 +2,8 @@
 
 var _gsap = _interopRequireDefault(require("gsap"));
 
+var _nanoevents = require("nanoevents");
+
 var _accorData = require("./accorData");
 
 var _index = _interopRequireDefault(require("./accorSearchBar/index.js"));
@@ -28,7 +30,9 @@ function () {
   function Accor() {
     _classCallCheck(this, Accor);
 
-    // States
+    // Event Emitter
+    this.emitter = (0, _nanoevents.createNanoEvents)(); // States
+
     this.isTablet = window.innerWidth <= 820;
     this.isMobile = window.innerWidth <= 640;
     this.filterSelected = ""; // DOM Elements
@@ -41,7 +45,9 @@ function () {
     this.initFilters();
     this.initCityBreaks();
     this.addEventListeners();
-    new _index["default"]();
+    new _index["default"]({
+      emitter: this.emitter
+    });
   } // ------ Filters Section ------
 
 

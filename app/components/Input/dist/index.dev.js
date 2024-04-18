@@ -15,8 +15,6 @@ var _minSecStr = _interopRequireDefault(require("../../utils/minSecStr"));
 
 var _isMobile = _interopRequireDefault(require("../../utils/isMobile"));
 
-var _detectNavigators = require("../../utils/detectNavigators");
-
 var _AudioRecorder = _interopRequireDefault(require("../../AudioRecorder"));
 
 var _InputAnimations = _interopRequireDefault(require("./InputAnimations"));

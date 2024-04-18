@@ -1,5 +1,5 @@
-$colorTalkUser: #007AFF;
-$colorProcessing: #FFA000;
+$colorTalkUser: #007aff;
+$colorProcessing: #ffa000;
 $colorTalkAI: $colorBlueText;
 
 .phone__debug {
@@ -221,6 +221,7 @@ $colorTalkAI: $colorBlueText;
       left: 50%;
       opacity: 0;
       transform: translateX(-50%);
+      text-wrap: nowrap;
 
       &.active {
         opacity: 1;

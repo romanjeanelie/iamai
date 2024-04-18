@@ -18,7 +18,7 @@ export default class Phone {
     this.pageEl = pageEl;
     this.discussion = discussion;
     this.phoneContainer = this.pageEl.querySelector(".phone__container");
-    this.phoneBtn = this.pageEl.querySelector(".phone-btn");
+    this.phoneBtns = this.pageEl.querySelectorAll(".phone-btn");
     this.infoText = this.phoneContainer.querySelector(".phone__info.active");
     this.pauseBtn = this.phoneContainer.querySelector(".phone__pause");
     this.closeBtn = this.phoneContainer.querySelector(".phone__close");
@@ -365,38 +365,44 @@ export default class Phone {
 
   addListeners() {
     // Open
-    this.phoneBtn.addEventListener("click", async () => {
-      this.audioContext = unlockAudio();
-      this.anims.toStartPhoneRecording();
-      if (this.debug) {
-        this.startConnecting();
-        return;
-      }
-      this.startRecording();
+    this.phoneBtns.forEach((phoneBtn) => {
+      phoneBtn.addEventListener("click", async () => {
+        this.audioContext = unlockAudio();
+        this.anims.toStartPhoneRecording();
+        if (this.debug) {
+          this.startConnecting();
+          return;
+        }
+        this.startRecording();
+      });
     });
 
     // Close
-    this.closeBtn.addEventListener("click", async () => {
-      this.anims.toStopPhoneRecording();
-      this.leave();
-    });
+    if (this.closeBtn) {
+      this.closeBtn.addEventListener("click", async () => {
+        this.anims.toStopPhoneRecording();
+        this.leave();
+      });
+    }
 
     // Pause
-    this.pauseBtn.addEventListener("click", async () => {
-      if (this.isAITalking) {
-        if (!this.isAIPaused) {
-          this.pauseAI();
+    if (this.pauseBtn) {
+      this.pauseBtn.addEventListener("click", async () => {
+        if (this.isAITalking) {
+          if (!this.isAIPaused) {
+            this.pauseAI();
+          } else {
+            this.resumeAI();
+          }
         } else {
-          this.resumeAI();
+          if (!this.isMicMuted) {
+            this.muteMic();
+          } else {
+            this.unmuteMic();
+          }
         }
-      } else {
-        if (!this.isMicMuted) {
-          this.muteMic();
-        } else {
-          this.unmuteMic();
-        }
-      }
-    });
+      });
+    }
 
     // Click outside
     this.pageEl.addEventListener(
@@ -405,7 +411,7 @@ export default class Phone {
         if (this.debug) return;
 
         // TODO add close btn to expetion
-        if (this.pauseBtn.contains(event.target) || this.closeBtn.contains(event.target)) return;
+        if (this.pauseBtn?.contains(event.target) || this.closeBtn?.contains(event.target)) return;
         if (this.onClickOutside.resumeAI) {
           this.resumeAI();
         }

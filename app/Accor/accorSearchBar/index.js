@@ -1,7 +1,7 @@
-import gsap, { Power2, Power3 } from "gsap";
-import Flip from "gsap/Flip";
+import AccorSearchBarAnims from "./AccorSearchBarAnims";
+import AccorSearchBarPhone from "./AccorSearchBarPhone";
 
-const STATES = {
+export const STATES = {
   MINIMIZED: "minimized",
   TEXT_INPUT: "text-input",
   STANDARD_OPTIONS: "standard-options",
@@ -9,10 +9,17 @@ const STATES = {
   CALL: "call",
 };
 
-gsap.registerPlugin(Flip);
+// TO DO
+// [X] remove the "phone-btn" when on text input state
+// [X] change the logic of action button when on text-input
+// [X] refactor by creating AccorSearchBarAnims
+// [] fix the bug when clicking on the phone button on the secondary bar
 
 export default class AccorSearchBar {
-  constructor() {
+  constructor({ emitter }) {
+    // Event Emitter
+    this.emitter = emitter;
+
     // States
     this.searchBarState = STATES.MINIMIZED;
 
@@ -25,138 +32,73 @@ export default class AccorSearchBar {
     this.advancedBtn = document.querySelector(".accorSearchBar__advanced-btn");
     this.standardBtn = document.querySelector(".accorSearchBar__standard-btn");
     this.actionBtn = document.querySelector(".accorSearchBar__action-btn");
-
-    this.secondaryBarContainer = document.querySelector(".accorBar__secondaryBar");
     this.secondaryBarPhoneBtn = document.querySelector(".secondary-action-btn");
 
-    this.advancedBar = document.querySelector(".accorBar__advancedBar-wrapper");
-    this.phoneBar = document.querySelector(".accorSearchBar__phoneBar");
+    // Debug
+    this.debug = import.meta.env.VITE_DEBUG === "true";
+    if (this.debug) {
+      console.log("-------- debug state ---------");
+      const phone__debug = document.querySelector(".phone__debug");
+      phone__debug.style.display = "block";
+      // this.anims.toPhoneBar();
+    }
+
+    // Phone Elements
     this.phoneCloseBtn = document.querySelector(".accorSearchBar__phoneClose");
+    this.phone = new AccorSearchBarPhone({ debug: this.debug });
+
+    // Animations
+    this.anims = new AccorSearchBarAnims(this.searchBarState, this.updateSearchBarState.bind(this));
 
     // Init
-    this.initSecondaryBar();
     this.addEventListener();
   }
 
-  switchStateClass(state) {
-    this.searchBarState = state;
-
-    // grab state
-    const initialState = Flip.getState([this.searchBar, this.advancedBtn]);
-    this.wrapper.classList.remove(...Object.values(STATES));
-    this.wrapper.classList.add(state);
-
-    gsap.killTweensOf(".standard-input");
-    gsap.set(".standard-input", { opacity: 0 });
-
-    // Animate from the initial state to the end state
-    Flip.from(initialState, {
-      duration: 0.2,
-      ease: "power3.out",
-      absolute: true,
-      onComplete: () => {
-        gsap.to(".standard-input", {
-          opacity: 1,
-        });
-      },
-    });
+  updateSearchBarState(newState) {
+    this.searchBarState = newState;
   }
 
-  // Transitions between states of main bar (minimized, text input, standard options)
-  toMinimized() {
-    this.switchStateClass(STATES.MINIMIZED);
+  // Submit the input value
+  onSubmit() {
+    const input = document.querySelector(".standard-input");
   }
 
-  toTextInput() {
-    this.switchStateClass(STATES.TEXT_INPUT);
+  startPhoneCall() {
+    this.anims.toPhoneBar();
+    this.phone.startConnecting();
   }
 
-  toStandardOptions() {
-    this.switchStateClass(STATES.STANDARD_OPTIONS);
-  }
-
-  // Transitions between states of secondary bar (advanced options, call)
-  initSecondaryBar() {
-    gsap.set(this.secondaryBarContainer, { y: 200 });
-  }
-
-  toSecondaryBar(floor = 1) {
-    gsap.killTweensOf(this.searchBar);
-    const tl = gsap.timeline({ defaults: { ease: Power3.easeOut } });
-
-    tl.to([this.standardBtn, this.advancedBtn], { opacity: 0, duration: 0.1 });
-    tl.to(this.wrapper, {
-      y: -200 * floor,
-      onComplete: () => {
-        if (floor === 2) {
-          this.resetPhoneBar();
-          this.advancedBar.classList.add("none");
-        }
-      },
-    });
-    tl.to([this.standardBtn, this.advancedBtn], { opacity: 1 });
-  }
-
-  fromSecondaryBar() {
-    const tl = gsap.timeline({ defaults: { ease: Power3.easeOut } });
-
-    tl.to([this.standardBtn, this.advancedBtn], { opacity: 0, duration: 0.1 });
-    tl.to(this.wrapper, {
-      y: 0,
-      onComplete: () => {
-        this.advancedBar.classList.add("none");
-        this.phoneBar.classList.add("none");
-      },
-    });
-    tl.to([this.standardBtn, this.advancedBtn], { opacity: 1 });
-  }
-
-  toAdvanceOptions() {
-    this.advancedBar.classList.remove("none");
-    this.toSecondaryBar();
-    this.phoneBar.classList.add("absolute");
-    this.searchBarState = STATES.ADVANCED_OPTIONS;
-  }
-
-  toPhoneBar() {
-    this.phoneBar.classList.remove("none");
-    this.toSecondaryBar(this.searchBarState === STATES.ADVANCED_OPTIONS ? 2 : 1);
-
-    this.searchBarState = STATES.CALL;
-  }
-
-  resetPhoneBar() {
-    this.phoneBar.classList.remove("absolute");
-    gsap.set(this.wrapper, {
-      y: -200,
-    });
+  endPhoneCall() {
+    this.phone.leave();
+    this.anims.fromSecondaryBar();
   }
 
   // Event Listeners
   addEventListener() {
-    this.writeBtn.addEventListener("click", this.toTextInput.bind(this));
+    this.writeBtn.addEventListener("click", this.anims.toTextInput.bind(this.anims));
     this.expandBtn.addEventListener("click", () => {
       if (this.searchBarState !== STATES.STANDARD_OPTIONS) {
-        this.toStandardOptions();
+        this.anims.toStandardOptions();
       } else {
-        this.toMinimized();
+        this.anims.toMinimized();
       }
     });
-    this.advancedBtn.addEventListener("click", this.toAdvanceOptions.bind(this));
-    this.standardBtn.addEventListener("click", this.fromSecondaryBar.bind(this));
+    this.advancedBtn.addEventListener("click", this.anims.toAdvanceOptions.bind(this.anims));
+    this.standardBtn.addEventListener("click", this.anims.fromSecondaryBar.bind(this.anims));
     this.actionBtn.addEventListener("click", () => {
       if (this.searchBarState === STATES.TEXT_INPUT) {
         // TO DO - SUBMIT THE INPUT VALUE (on submit function)
+        this.onSubmit();
       } else {
-        this.toPhoneBar();
+        this.startPhoneCall();
       }
     });
-    this.secondaryBarPhoneBtn.addEventListener("click", this.toPhoneBar.bind(this));
-    this.phoneCloseBtn.addEventListener("click", this.fromSecondaryBar.bind(this));
+    this.secondaryBarPhoneBtn.addEventListener("click", this.anims.toPhoneBar.bind(this.anims));
+    this.phoneCloseBtn.addEventListener("click", this.endPhoneCall.bind(this));
 
     document.addEventListener("click", (event) => {
       if (!this.wrapper.contains(event.target)) {
-        this.toMinimized();
+        this.anims.toMinimized();
       }
     });
   }

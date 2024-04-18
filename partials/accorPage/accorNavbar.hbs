@@ -1,3 +1,11 @@
+<div class="phone__debug">
+  <button id="btn-toConnected">To connected</button>
+  <button id="btn-toTalkToMe">To Talk to me</button>
+  <button id="btn-toListening">To Listening</button>
+  <button id="btn-finishTalk">Finish talk</button>
+  <button id="btn-finishProcessing">Finish processing</button>
+</div>
+
 <nav class="accorNavbar__container">
   <div class="accorNavbar__item accorNavbar__logo">
     <img src="/images/logo/accor-logo.png" alt="Accor Logo" />
@@ -41,7 +49,7 @@
         </button>
 
         {{! ACTION BTN STAYS ON EVERY STATE }}
-        <button class="accorSearchBar__action-btn">
+        <button class="accorSearchBar__action-btn phone-btn">
           <img src="/icons/phone-icon.svg" class="phone-icon" alt="phone icon" />
           <img src="/icons/arrow-right.svg" class="arrow-icon" alt="arrow icon" />
         </button>
@@ -77,9 +85,8 @@
             <span class="hidden">Choose a Rate</span>
           </button>
 
-          <button class="accorSearchBar__action-btn secondary-action-btn">
+          <button class="accorSearchBar__action-btn phone-btn secondary-action-btn">
             <img src="/icons/phone-icon.svg" class="phone-icon" alt="phone icon" />
-            <img src="/icons/arrow-right.svg" class="arrow-icon" alt="arrow icon" />
           </button>
         </div>
         <button class="accorSearchBar__standard-btn switch-btn">
@@ -90,23 +97,34 @@
       {{! Phone Bar }}
       <div class="accorSearchBar__phoneBar none">
         <div class="phone-bar__container">
-          <div class="phone-bar__one">
-            <span class="dot"></span>
-            <span class="dot"></span>
-          </div>
-          <div class="phone-bar__processing">
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-          </div>
-          <div class="phone-bar__AI">
-          </div>
-          <div class="phone-bar__pause">
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
+          <div class="phone__container">
+            <div class="phone__top">
+              <div class="phone-bar__container">
+                <div class="phone-bar__one">
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                </div>
+                <div class="phone-bar__processing">
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                </div>
+                <div class="phone-bar__AI">
+                </div>
+                <div class="phone-bar__pause">
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="phone__bottom">
+              <p class="phone__info active"></p>
+              <p class="phone__info">not active</p>
+            </div>
           </div>
         </div>
 

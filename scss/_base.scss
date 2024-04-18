@@ -30,6 +30,12 @@ $paddingTopMobile: 28px;
 }
 
 // @font-face {
+//   font-family: "Noto Sans";
+//   src: url("/fonts/Noto_Sans/Noto-Sans-Regular.ttf");
+//   font-weight: 400 700;
+// }
+
+// @font-face {
 //   font-family: "Antwerp";
 //   src: url("/fonts/Antwerp_Light.otf");
 //   font-weight: 300;
@@ -443,7 +449,6 @@ button {
   white-space: nowrap;
   // width: 100%;
 
-
   // @include media("<tablet") {
   //   font-size: 12px;
   //   line-height: 16px;
@@ -474,7 +479,8 @@ button {
   cursor: pointer;
   opacity: 0.6;
 }
-#border{
+
+#border {
   height: var(--4, 4px);
   /* Height of the curve */
   border-radius: var(--4, 4px) var(--4, 4px) var(--0, 0px) var(--0, 0px);
@@ -485,7 +491,8 @@ button {
 .hotelfilteractive {
   background: #000 !important;
 }
-.hotelactive{
+
+.hotelactive {
   opacity: 1 !important;
 }
 
@@ -521,7 +528,7 @@ button {
   letter-spacing: 0.8px;
   padding: 0px 24px 0px 24px;
   text-align: left;
-  color: rgba(0, 37, 78, 0.60);
+  color: rgba(0, 37, 78, 0.6);
   display: flex;
   // @include media("<tablet") {
   //   font-size: 12px;
@@ -1334,7 +1341,7 @@ button {
   // color: rgba(0, 0, 0, 0.72);
   font-size: 1rem;
   font-style: normal;
-  font-weight: 100;
+  font-weight: 500;
   line-height: 20px;
   letter-spacing: 1.2px;
   opacity: 80%;
@@ -1363,7 +1370,7 @@ button {
   text-align: right;
   font-size: 0.8rem;
   font-style: normal;
-  font-weight: 100;
+  // font-weight: 100;
   line-height: 16px;
   letter-spacing: 1.2px;
   text-transform: uppercase;
@@ -1387,8 +1394,8 @@ button {
 }
 
 .currency {
-  font-size: 0.8rem;
-  // color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  // font-style: normal;
   opacity: 0.6;
 }
 
