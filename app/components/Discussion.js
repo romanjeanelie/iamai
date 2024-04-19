@@ -183,8 +183,6 @@ export default class Discussion {
         this.tabs = new DiscussionTabs({
           container: userContainer,
           emitter: this.emitter,
-          removeStatus: this.removeStatus,
-          scrollToBottom: this.scrollToBottom,
         });
       } else {
         this.tabs.container = userContainer;
@@ -297,8 +295,7 @@ export default class Discussion {
     //   this.tabs = new DiscussionTabs({
     //     container: container,
     //     emitter: this.emitter,
-    //     removeStatus: this.removeStatus,
-    //     scrollToBottom: this.scrollToBottom,
+
     //   });
     // }
 
@@ -307,8 +304,6 @@ export default class Discussion {
       this.tabs = new DiscussionTabs({
         container: container,
         emitter: this.emitter,
-        removeStatus: this.removeStatus,
-        scrollToBottom: this.scrollToBottom,
       });
     }
 
@@ -467,8 +462,6 @@ export default class Discussion {
       const tabs = new DiscussionTabs({
         container: this.AIContainer,
         emitter: this.emitter,
-        removeStatus: this.removeStatus,
-        scrollToBottom: this.scrollToBottom,
       });
 
       tabs.addTab("Images");

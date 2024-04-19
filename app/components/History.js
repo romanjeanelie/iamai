@@ -222,6 +222,7 @@ export default class History {
           AIContainer.setAttribute("taskKey", element.micro_thread_id);
           AIContainer.classList.add("discussion__ai--task-created");
         }
+        // ------------- HERE IS WHERE WE HANDLE IMGS AND SOURCES --------------
         if (!isEmpty(element.sources) || !isEmpty(element.images)) {
           const tabs = new DiscussionTabs({
             container: AIContainer,
@@ -235,9 +236,6 @@ export default class History {
             tabs?.addTab("Sources");
             tabs?.initSources(JSON.parse(element.sources.sources));
           }
-
-          tabs?.displayDefaultTab();
-          tabs?.showSourcesTab();
 
           container.appendChild(AIContainer);
         }

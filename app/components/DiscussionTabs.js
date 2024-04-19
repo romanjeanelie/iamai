@@ -9,11 +9,9 @@ function getDomainAndFavicon(url) {
 }
 
 export default class DiscussionTabs {
-  constructor({ container, removeStatus, scrollToBottom, emitter }) {
+  constructor({ container, emitter }) {
     this.container = container;
     this.emitter = emitter;
-    this.removeStatus = removeStatus;
-    this.scrollToBottom = scrollToBottom;
 
     this.selectedTab = "";
     this.tabsHeaderContainer = null;
@@ -125,7 +123,7 @@ export default class DiscussionTabs {
     this.skeletonContainer = document.createElement("div");
     this.skeletonContainer.className = "image__skeleton-container";
 
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 8; i++) {
       let skeleton = document.createElement("div");
       skeleton.classList.add("image__skeleton-item");
       this.imagesSkeletons.push(skeleton);

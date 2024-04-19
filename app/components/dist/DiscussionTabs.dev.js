@@ -32,16 +32,12 @@ var DiscussionTabs =
 function () {
   function DiscussionTabs(_ref) {
     var container = _ref.container,
-        removeStatus = _ref.removeStatus,
-        scrollToBottom = _ref.scrollToBottom,
         emitter = _ref.emitter;
 
     _classCallCheck(this, DiscussionTabs);
 
     this.container = container;
     this.emitter = emitter;
-    this.removeStatus = removeStatus;
-    this.scrollToBottom = scrollToBottom;
     this.selectedTab = "";
     this.tabsHeaderContainer = null;
     this.tabsContentContainer = null;
@@ -203,7 +199,7 @@ function () {
       this.skeletonContainer = document.createElement("div");
       this.skeletonContainer.className = "image__skeleton-container";
 
-      for (var i = 0; i < 4; i++) {
+      for (var i = 0; i < 8; i++) {
         var skeleton = document.createElement("div");
         skeleton.classList.add("image__skeleton-item");
         this.imagesSkeletons.push(skeleton);

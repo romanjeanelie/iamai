@@ -1,9 +1,8 @@
-.discussion__tabs-container.none {
+.none {
   display: none;
 }
 
 .discussion__tabs-header {
-  position: relative;
   margin-top: 24px;
   margin-bottom: 24px;
   display: flex;
@@ -32,7 +31,7 @@
   }
 }
 
-.discussion__tabs-content .sources-container {
+.sources-container {
   display: flex;
   margin-top: 12px;
   flex-wrap: wrap;
@@ -46,7 +45,7 @@
     font-size: 12px;
     line-height: 20px;
     text-decoration: none;
-    display: flex;
+    display: flex !important;
     align-items: center;
     gap: 8px;
 
