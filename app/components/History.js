@@ -1,7 +1,7 @@
 import { TASK_STATUSES } from "./TaskManager/index.js";
 import { API_STATUSES } from "./constants.js";
 import fetcher from "../utils/fetcher.js";
-import DiscussionTabs from "./DiscussionTabs.js";
+import DiscussionMedia from "./DiscussionMedia.js";
 import { URL_CONVERSATION_HISTORY, URL_AGENT_STATUS } from "./constants.js";
 
 const isEmpty = (obj) => Object.keys(obj).length === 0;
@@ -194,11 +194,11 @@ export default class History {
         container.appendChild(userContainer);
 
         if (!isEmpty(element.images)) {
-          const tabs = new DiscussionTabs({
+          const media = new DiscussionMedia({
             container: userContainer,
             emitter: this.emitter,
           });
-          if (element.images.user_images) tabs?.initImages(JSON.parse(element.images.user_images));
+          if (element.images.user_images) media?.initImages(JSON.parse(element.images.user_images));
           container.appendChild(userContainer);
         }
 
@@ -223,15 +223,15 @@ export default class History {
           AIContainer.classList.add("discussion__ai--task-created");
         }
         if (!isEmpty(element.sources) || !isEmpty(element.images)) {
-          const tabs = new DiscussionTabs({
+          const media = new DiscussionMedia({
             container: AIContainer,
             emitter: this.emitter,
           });
           if (element.images.images) {
-            tabs?.addImages(JSON.parse(element.images.images).slice(0, 8));
+            media?.addImages(JSON.parse(element.images.images).slice(0, 8));
           }
           if (element.sources.sources) {
-            tabs?.addSources(JSON.parse(element.sources.sources));
+            media?.addSources(JSON.parse(element.sources.sources));
           }
 
           container.appendChild(AIContainer);

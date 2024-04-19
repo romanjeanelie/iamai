@@ -2,7 +2,7 @@ import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scs
 import TypingText from "../TypingText";
 import Chat from "./Chat.js";
 import History from "./History.js";
-import DiscussionTabs from "./DiscussionTabs.js";
+import DiscussionMedia from "./DiscussionMedia.js";
 import fetcher from "../utils/fetcher.js";
 import { getsessionID } from "../User";
 import { asyncAnim } from "../utils/anim.js";
@@ -42,7 +42,6 @@ export default class Discussion {
     this.currentTopStatus = null;
     this.lastStatus = null;
     this.centralFinished = false;
-    this.tabs = null;
 
     this.currentAnswerContainer = null;
 
@@ -51,8 +50,6 @@ export default class Discussion {
     this.Chat = new Chat({
       discussionContainer: this.discussionContainer,
       addAIText: this.addAIText.bind(this),
-      addImages: this.addImages.bind(this),
-      addSources: this.addSources.bind(this),
       addURL: this.addURL.bind(this),
       disableInput: this.disableInput.bind(this),
       enableInput: this.enableInput.bind(this),
@@ -178,13 +175,13 @@ export default class Discussion {
       userContainer.classList.add("discussion__user");
       this.discussionContainer.appendChild(userContainer);
 
-      if (!this.tabs) {
-        this.tabs = new DiscussionTabs({
+      if (!this.media) {
+        this.media = new DiscussionMedia({
           container: userContainer,
           emitter: this.emitter,
         });
       } else {
-        this.tabs.container = userContainer;
+        this.media.container = userContainer;
       }
 
       this.addImages({ imgSrcs: imgs.map((img) => img.src) });
@@ -290,8 +287,8 @@ export default class Discussion {
       container.appendChild(textContainer);
     }
 
-    // if (!this.tabs) {
-    //   this.tabs = new DiscussionTabs({
+    // if (!this.media) {
+    //   this.media = new DiscussionMedia({
     //     container: container,
     //     emitter: this.emitter,
 
@@ -300,10 +297,6 @@ export default class Discussion {
 
     if (container !== this.currentAnswerContainer) {
       this.currentAnswerContainer = container;
-      this.tabs = new DiscussionTabs({
-        container: container,
-        emitter: this.emitter,
-      });
     }
 
     this.typingText?.fadeOut();
@@ -342,17 +335,6 @@ export default class Discussion {
     }
     container.appendChild(linkEl);
     // this.scrollToBottom();
-  }
-
-  addImages({ imgSrcs = [] } = {}) {
-    this.tabs?.initImages(imgSrcs);
-    this.typingStatus = null;
-    // container?.appendChild(this.topStatus);
-  }
-
-  addSources(sourcesData) {
-    this.tabs?.addTab("Sources");
-    this.tabs?.initSources(sourcesData);
   }
 
   // Scroll
@@ -454,18 +436,18 @@ export default class Discussion {
 
       this.AIContainer.appendChild(textContainer);
       this.discussionContainer.appendChild(this.AIContainer);
-      const tabs = new DiscussionTabs({
+      const media = new DiscussionMedia({
         container: this.AIContainer,
         emitter: this.emitter,
       });
 
-      tabs.addImages([
+      media.addImages([
         "https://picsum.photos/300/500",
         "https://picsum.photos/300/500",
         "https://picsum.photos/300/500",
       ]);
 
-      tabs.addSources([
+      media.addSources([
         "https://m.economictimes.com/news/international/us/dont-be-shocked-if-michelle-obama-joins-presidential-election-2024-writes-columnist-here-is-what-we-know-so-far/articleshow/106961021.cms",
         "https://thehill.com/blogs/in-the-know/4395192-michelle-obama-terrified-election-2024/",
         "https://www.obama.org/my-brothers-keeper-alliance/events/mbk-rising/celebrating-black-joy-through-art-joshua-mays/",
@@ -590,7 +572,6 @@ export default class Discussion {
 
     this.emitter.on("paEnd", async () => {
       this.removeStatus({ container: this.discussionContainer });
-      this.tabs = null;
     });
 
     this.emitter.on("taskManager:createTask", (task, textAI) => this.onCreatedTask(task, textAI));

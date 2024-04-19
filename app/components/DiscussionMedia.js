@@ -8,11 +8,10 @@ function getDomainAndFavicon(url) {
   return { domain, favicon };
 }
 
-export default class DiscussionTabs {
+export default class DiscussionMedia {
   constructor({ container, emitter }) {
     this.container = container;
     this.emitter = emitter;
-
     this.imagesSkeletons = [];
 
     this.init();
@@ -30,7 +29,6 @@ export default class DiscussionTabs {
   }
 
   addSources(sourcesData) {
-    console.log("from DiscussionTabs" + sourcesData);
     this.sourcesWrapper.classList.remove("none");
     this.sourcesHeader = document.createElement("h3");
     this.sourcesHeader.className = "discussion__sources-header";

@@ -1,6 +1,6 @@
 import { connect, AckPolicy, JSONCodec } from "https://cdn.jsdelivr.net/npm/nats.ws@latest/esm/nats.js";
 import { TASK_STATUSES } from "./TaskManager/index.js";
-import DiscussionTabs from "./DiscussionTabs.js";
+import DiscussionMedia from "./DiscussionMedia.js";
 // const uuid = "omega_" + crypto.randomUUID();
 // import { getUser } from "../User.js";
 // const IS_DEV_MODE = import.meta.env.MODE === "development";
@@ -222,17 +222,15 @@ class Chat {
           // }
         } else if (mdata.type == IMAGES) {
           // this.image_urls = JSON.parse(mdata.ui_params.image_urls); // old version
-          const tabs = new DiscussionTabs({ container: this.container, emitter: this.callbacks.emitter });
+          const media = new DiscussionMedia({ container: this.container, emitter: this.callbacks.emitter });
           this.image_urls = JSON.parse(mdata.response_json.images);
 
-          this.image_urls && tabs.addImages(this.image_urls.slice(0, 8));
+          this.image_urls && media.addImages(this.image_urls.slice(0, 8));
         } else if (mdata.type == SOURCES) {
-          const tabs = new DiscussionTabs({ container: this.container, emitter: this.callbacks.emitter });
+          const media = new DiscussionMedia({ container: this.container, emitter: this.callbacks.emitter });
 
           this.Sources = JSON.parse(mdata.response_json.sources);
-          // Add Call to add sources
-          console.log("----- sources in CHAT -----");
-          tabs.addSources(this.Sources);
+          media.addSources(this.Sources);
         }
         //generate data
         if (mdata.status && mdata.status == STREAM_STARTED) {
