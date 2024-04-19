@@ -57,6 +57,14 @@
     grid-template-columns: repeat(4, 120px);
     gap: 16px;
 
+    @include media("<phone") {
+      grid-template-columns: repeat(3, 120px);
+    }
+
+    @include media("<minimum") {
+      grid-template-columns: repeat(2, 120px);
+    }
+
     img {
       width: 100%;
       height: 120px;

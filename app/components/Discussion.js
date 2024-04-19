@@ -474,16 +474,6 @@ export default class Discussion {
         "https://www.obamalibrary.gov/obamas/president-barack-obama",
       ]);
 
-      this.typingText = new TypingText({
-        text: "",
-        container: this.AIContainer,
-        backgroundColor: backgroundColorGreyPage,
-        marginLeft: 16,
-      });
-
-      this.typingText.fadeIn();
-      this.typingText.displayTextSkeleton();
-
       // tabs.createImageSkeletons();
     }
 
