@@ -120,7 +120,8 @@ button {
       width: 100%;
     }
 
-    .bottom {}
+    .bottom {
+    }
   }
 
   &.hidden {
@@ -190,9 +191,9 @@ button {
   background-color: white;
   color: $accorMain;
   font-family: "SFPro";
+  overflow: auto;
   overflow-x: hidden;
-  min-height: 100vh;
-  min-height: 100svh;
+  height: auto;
 }
 
 // Debug

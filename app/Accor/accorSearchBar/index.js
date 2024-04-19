@@ -1,5 +1,5 @@
 import AccorSearchBarAnims from "./AccorSearchBarAnims.js";
-import AccorSearchBarCalendar from "./AccorSearchBarCalendar.js";
+import AccorSearchBarCalendar from "./AccorSearchBarCalendars.js";
 import AccorSearchBarPhone from "./AccorSearchBarPhone.js";
 
 export const STATES = {
@@ -34,6 +34,7 @@ export default class AccorSearchBar {
     this.standardBtn = document.querySelector(".accorSearchBar__standard-btn");
     this.actionBtn = document.querySelector(".accorSearchBar__action-btn");
     this.secondaryBarPhoneBtn = document.querySelector(".secondary-action-btn");
+    this.inputBtns = document.querySelectorAll(".accorSearchBar__input-btn");
 
     // Debug
     this.debug = import.meta.env.VITE_DEBUG === "true";
@@ -52,12 +53,7 @@ export default class AccorSearchBar {
     this.anims = new AccorSearchBarAnims(this.searchBarState, this.updateSearchBarState.bind(this));
 
     // Init
-    this.initCalendars();
     this.addEventListener();
-  }
-
-  initCalendars() {
-    new AccorSearchBarCalendar();
   }
 
   updateSearchBarState(newState) {
@@ -107,6 +103,17 @@ export default class AccorSearchBar {
       if (!this.wrapper.contains(event.target)) {
         this.anims.toMinimized();
       }
+    });
+
+    // handling all the inputs
+    this.inputBtns.forEach((inputBtn) => {
+      inputBtn.addEventListener("click", () => {
+        console.log("clicked");
+        const dataType = inputBtn.getAttribute("data-type");
+        if (dataType === "calendar") {
+          this.calendars = new AccorSearchBarCalendar();
+        }
+      });
     });
   }
 }

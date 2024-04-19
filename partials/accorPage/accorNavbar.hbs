@@ -21,7 +21,7 @@
           <span class="hidden">Where & When</span>
         </button>
 
-        <button class="accorSearchBar__expand-btn" data>
+        <button class="accorSearchBar__expand-btn">
           <img src="/icons/arrow-right.svg" alt="arrow left icon" />
           <span>Options</span>
         </button>
@@ -32,13 +32,13 @@
         </form>
 
         {{! STANDARD OPTIONS }}
-        <button class="accorSearchBar__input-btn standard-input">
+        <button class="accorSearchBar__input-btn standard-input" data-type="calendar">
           Check In
           <br />
           <span class="hidden">Add Dates</span>
         </button>
 
-        <button class="accorSearchBar__input-btn standard-input">
+        <button class="accorSearchBar__input-btn standard-input" data-type="calendar">
           Check Out
           <br />
           <span class="hidden">Add Dates</span>
@@ -137,21 +137,32 @@
 
     {{! CALENDAR }}
     <div class="accorSearchBar__calendar-wrapper input-wrapper">
+      <button class="cal-btn back">
+        <img src="/public/icons/arrow-right.svg" />
+      </button>
       <div class="date_picker_calendar">
         <div class="calendar_header">
-          <button class="cal-btn back">
-            <img src="/public/icons/arrow-right.svg" />
-          </button>
-          <span></span>
-          <button class="cal-btn front">
-            <img src="/public/icons/arrow-right.svg" />
-          </button>
+
         </div>
         <div class="cal_wrapper">
           <div class="cal_days"></div>
           <div class="calendar_main"></div>
         </div>
       </div>
+      <div class="date_picker_calendar">
+        <div class="calendar_header">
+
+          <span></span>
+
+        </div>
+        <div class="cal_wrapper">
+          <div class="cal_days"></div>
+          <div class="calendar_main"></div>
+        </div>
+      </div>
+      <button class="cal-btn front">
+        <img src="/public/icons/arrow-right.svg" />
+      </button>
     </div>
   </div>
 
