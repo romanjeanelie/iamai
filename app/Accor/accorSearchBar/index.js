@@ -16,6 +16,10 @@ export const STATES = {
 // [X] refactor by creating AccorSearchBarAnims
 // [] fix the bug when clicking on the phone button on the secondary bar
 
+const oneDay = 60 * 60 * 24 * 1000;
+
+let todayTimestamp = Date.now() - (Date.now() % oneDay) + new Date().getTimezoneOffset() * 1000 * 60;
+
 export default class AccorSearchBar {
   constructor({ emitter }) {
     // Event Emitter
@@ -23,6 +27,15 @@ export default class AccorSearchBar {
 
     // States
     this.searchBarState = STATES.MINIMIZED;
+    this.inputsValues = {
+      departureDate: todayTimestamp,
+      arrivalDate: null,
+      departureCity: null,
+      arrivalCity: null,
+      adults: 1,
+      children: 0,
+      rooms: 1,
+    };
 
     // Dom Elements
     this.wrapper = document.querySelector(".accorSearchBar__wrapper");
@@ -56,8 +69,17 @@ export default class AccorSearchBar {
     this.addEventListener();
   }
 
+  setInputValues(key, value) {
+    // Check if the key exists in the inputsValues object
+    if (this.inputsValues.hasOwnProperty(key)) {
+      // Update the value of the specified key
+      this.inputsValues[key] = value;
+    } else {
+      console.error(`Input key ${key} does not exist.`);
+    }
+  }
+
   updateSearchBarState(newState) {
-    console.log(newState);
     this.searchBarState = newState;
   }
 
@@ -66,6 +88,7 @@ export default class AccorSearchBar {
     const input = document.querySelector(".standard-input");
   }
 
+  // Phone Call
   startPhoneCall() {
     this.anims.toPhoneBar();
     this.phone.startConnecting();
@@ -74,6 +97,14 @@ export default class AccorSearchBar {
   endPhoneCall() {
     this.phone.leave();
     this.anims.fromSecondaryBar();
+  }
+
+  // Inputs
+  destroyCalendar() {
+    if (this.calendars) {
+      this.calendars.destroy();
+      this.calendars = null;
+    }
   }
 
   // Event Listeners
@@ -89,6 +120,7 @@ export default class AccorSearchBar {
     this.advancedBtn.addEventListener("click", this.anims.toAdvanceOptions.bind(this.anims));
     this.standardBtn.addEventListener("click", this.anims.fromSecondaryBar.bind(this.anims));
     this.actionBtn.addEventListener("click", () => {
+      this.destroyCalendar();
       if (this.searchBarState === STATES.TEXT_INPUT) {
         // TO DO - SUBMIT THE INPUT VALUE (on submit function)
         this.onSubmit();
@@ -103,6 +135,14 @@ export default class AccorSearchBar {
       if (!this.wrapper.contains(event.target)) {
         this.anims.toMinimized();
       }
+
+      if (
+        this.calendarContainer &&
+        !this.calendarContainer.contains(event.target) &&
+        !this.searchBar.contains(event.target)
+      ) {
+        this.destroyCalendar();
+      }
     });
 
     // handling all the inputs
@@ -110,7 +150,16 @@ export default class AccorSearchBar {
       inputBtn.addEventListener("click", () => {
         const dataType = inputBtn.getAttribute("data-type");
         if (dataType === "calendar") {
-          this.calendars = new AccorSearchBarCalendar();
+          if (this.calendars) {
+            this.destroyCalendar();
+          } else {
+            this.calendars = new AccorSearchBarCalendar({
+              selectedDay: this.inputsValues[inputBtn.getAttribute("data-key")],
+              key: inputBtn.getAttribute("data-key"),
+              setGlobalInputValues: this.setInputValues.bind(this),
+            });
+            this.calendarContainer = document.querySelector(".accorSearchBar__calendar-wrapper");
+          }
         }
       });
     });

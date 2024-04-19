@@ -1,13 +1,13 @@
 import { days, getMonthDetails, getMonthStr } from "../../utils/dateUtils";
 
-const oneDay = 60 * 60 * 24 * 1000;
-
-let todayTimestamp = Date.now() - (Date.now() % oneDay) + new Date().getTimezoneOffset() * 1000 * 60;
-
 export default class AccorSearchBarCalendars {
-  constructor() {
+  constructor({ selectedDay, key, setGlobalInputValues }) {
+    this.key = key;
+    this.setGlobalInputValues = setGlobalInputValues;
+
     // States
-    this.selectedDay = todayTimestamp;
+    this.isCalendarInstanced = false;
+    this.selectedDay = selectedDay;
     this.calendars = [];
 
     // Dom Elements
@@ -16,11 +16,12 @@ export default class AccorSearchBarCalendars {
     this.btns = document.querySelectorAll(".cal-btn");
 
     this.init();
+    this.show();
     this.addEventListeners();
   }
 
   init() {
-    this.wrapper.style.display = "flex";
+    this.isCalendarInstanced = true;
     this.containers.forEach((container, i) => {
       const calendar = new Calendar({
         container,
@@ -32,6 +33,14 @@ export default class AccorSearchBarCalendars {
     });
   }
 
+  show = () => {
+    this.wrapper.style.display = "flex";
+  };
+
+  hide = () => {
+    this.wrapper.style.display = "none";
+  };
+
   handleSelectedDayChange(newSelectedDay) {
     this.selectedDay = newSelectedDay;
     // Update all calendars with the new selected day
@@ -39,7 +48,7 @@ export default class AccorSearchBarCalendars {
       calendar.selectedDay = newSelectedDay;
     });
 
-    console.log("from accorSearchBarCalendars" + this.selectedDay);
+    this.setGlobalInputValues(this.key, newSelectedDay);
   }
 
   updateCalendars = (btn) => {
@@ -54,6 +63,10 @@ export default class AccorSearchBarCalendars {
 
   destroy = () => {
     this.wrapper.style.display = "none";
+    // Clear inner HTML of all calendar bodies
+    this.calendars.forEach((calendar) => {
+      calendar.clearCal();
+    });
   };
 
   addEventListeners = () => {
@@ -61,15 +74,6 @@ export default class AccorSearchBarCalendars {
       btn.addEventListener("click", () => {
         this.updateCalendars(btn);
       });
-    });
-
-    document.addEventListener("click", (event) => {
-      if (!this.wrapper.contains(event.target)) {
-        console.log("ezdjn");
-        this.wrapper.style.display = "none";
-
-        // this.destroy().bind(this);
-      }
     });
   };
 }
@@ -146,6 +150,11 @@ class Calendar {
         this.updateSelectedDay(cellDate, div);
       });
     }
+  };
+
+  clearCal = () => {
+    this.calDays.innerHTML = "";
+    this.calendar.innerHTML = "";
   };
 
   handleHeaderChange = (offset) => {
