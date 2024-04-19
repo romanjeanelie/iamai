@@ -49,7 +49,7 @@ export default class DiscussionTabs {
       li.style.order = 0;
     } else {
       li.style.order = 1;
-      li.className = "sourcesTab hidden";
+      li.className = "sourcesTab";
     }
 
     li.textContent = tabName;
@@ -60,68 +60,16 @@ export default class DiscussionTabs {
     if (tabName === "Images") {
       this.createImageSkeletons(li);
     }
-    this.handleTabClick(li);
-  }
-
-  handleTabClick(tab) {
-    tab.addEventListener("click", () => {
-      this.updateTabUi(tab);
-    });
-  }
-
-  updateTabUi(tab) {
-    if (!tab) return;
-
-    if (this.selectedTab === tab.textContent) {
-      // If the clicked tab is already the selected tab, remove 'active'
-      tab.classList.remove("active");
-      this.selectedTab = ""; // Reset selectedTab
-    } else {
-      // If the clicked tab is not the selected tab, make it active
-      this.tabsHeaderContainer.querySelectorAll("li").forEach((li) => li.classList.remove("active"));
-      tab.classList.add("active");
-      this.selectedTab = tab.textContent;
-    }
-
-    // displaying, or not, the section based on the selected tab
-    if (this.selectedTab === "Sources") {
-      this.sources?.classList.remove("none");
-      this.imagesContainer?.classList.add("none");
-    } else if (this.selectedTab === "Images") {
-      this.sources?.classList.add("none");
-      this.imagesContainer?.classList.remove("none");
-    } else if (this.selectedTab === "") {
-      this.sources?.classList.add("none");
-      this.imagesContainer?.classList.add("none");
-    }
-  }
-
-  displayDefaultTab() {
-    // by default if there are images, we display the images tab
-    const hasImages = this.tabs.some((tab) => tab === "Images");
-    if (hasImages) {
-      const defaultTab = this.tabsHeaderContainer.querySelector(".Images");
-      this.updateTabUi(defaultTab);
-    } else {
-      // if there are no images, we display the first tab available
-      const defaultTab = this.tabsHeaderContainer.querySelector(`.sourcesTab`);
-      this.updateTabUi(defaultTab);
-    }
-  }
-
-  showSourcesTab() {
-    const sourcesTab = this.tabsHeaderContainer.querySelector(".sourcesTab");
-    sourcesTab?.classList.remove("hidden"); // Remove 'hidden' class from 'Sources' tab
   }
 
   initSources(sourcesData) {
     this.sources = document.createElement("div");
-    this.sources.className = "images__sources none";
+    this.sources.className = "sources-container";
 
     for (let source of sourcesData) {
       if (!source) continue;
       const sourceEl = document.createElement("a");
-      sourceEl.classList.add("source");
+      sourceEl.classList.add("sources-item");
       sourceEl.href = source;
       sourceEl.target = "_blank";
 

@@ -472,6 +472,16 @@ export default class Discussion {
       });
 
       tabs.addTab("Images");
+      tabs.addTab("Sources");
+      tabs.initSources([
+        "https://m.economictimes.com/news/international/us/dont-be-shocked-if-michelle-obama-joins-presidential-election-2024-writes-columnist-here-is-what-we-know-so-far/articleshow/106961021.cms",
+        "https://thehill.com/blogs/in-the-know/4395192-michelle-obama-terrified-election-2024/",
+        "https://www.obama.org/my-brothers-keeper-alliance/events/mbk-rising/celebrating-black-joy-through-art-joshua-mays/",
+        "https://en.wikipedia.org/wiki/Barack_Obama",
+        "https://www.whitehouse.gov/about-the-white-house/presidents/barack-obama/",
+        "https://www.obamalibrary.gov/obamas/president-barack-obama",
+      ]);
+
       // tabs.createImageSkeletons();
     }
 
@@ -588,8 +598,6 @@ export default class Discussion {
 
     this.emitter.on("paEnd", async () => {
       this.removeStatus({ container: this.discussionContainer });
-      this.tabs?.displayDefaultTab();
-      this.tabs?.showSourcesTab();
       this.tabs = null;
     });
 

@@ -18,25 +18,7 @@
     line-height: 20px;
     letter-spacing: 0.5px;
     color: $colorBlueText;
-    opacity: .6;
-
-    &:hover {
-      opacity: 1;
-    }
-
-    &.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-  }
-
-  li.active {
-    color: $colorBlueText;
-    opacity: 1;
-  }
-
-  &.hidden {
-    opacity: 0;
+    opacity: 0.6;
   }
 }
 
@@ -47,5 +29,39 @@
 
   &.hidden {
     opacity: 0;
+  }
+}
+
+.discussion__tabs-content .sources-container {
+  display: flex;
+  margin-top: 12px;
+  flex-wrap: wrap;
+  gap: 12px;
+
+  .sources-item {
+    background-color: rgba(0, 0, 0, 0.04);
+    border-radius: 50px;
+    padding: 4px 12px 4px 4px;
+    font-family: "SFPro";
+    font-size: 12px;
+    line-height: 20px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.08);
+    }
+  }
+
+  a img {
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+  }
+
+  &.none {
+    display: none;
   }
 }
