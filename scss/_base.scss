@@ -181,6 +181,7 @@ button {
 .page-blog {
   position: relative;
   min-height: 100svh;
+  overflow: auto;
   overflow-x: hidden;
   color: $colorBlack;
   background-color: $colorMain;

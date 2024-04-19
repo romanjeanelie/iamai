@@ -108,7 +108,6 @@ export default class AccorSearchBar {
     // handling all the inputs
     this.inputBtns.forEach((inputBtn) => {
       inputBtn.addEventListener("click", () => {
-        console.log("clicked");
         const dataType = inputBtn.getAttribute("data-type");
         if (dataType === "calendar") {
           this.calendars = new AccorSearchBarCalendar();
