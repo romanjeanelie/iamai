@@ -1,0 +1,31 @@
+.image__skeleton-container {
+  display: grid;
+  grid-template-columns: repeat(4, 120px);
+  gap: 16px;
+
+  .image__skeleton-item {
+    height: 120px;
+    background-color: $accorExtraExtraLight;
+    transform-origin: top;
+    border-radius: 12px;
+    background: linear-gradient(
+      -90deg,
+      $backgroundColorGreyPage 0%,
+      $backgroundColorGreyPage 25%,
+      #cccccc50 50%,
+      $backgroundColorGreyPage 75%,
+      $backgroundColorGreyPage 100%
+    );
+    background-size: 400% 400%;
+    animation: pulse 2s ease-in infinite;
+  }
+}
+
+@keyframes pulse {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: -135% 0%;
+  }
+}

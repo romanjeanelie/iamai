@@ -175,16 +175,16 @@ export default class DiscussionTabs {
 
   createImageSkeletons() {
     this.skeletonContainer = document.createElement("div");
-    this.skeletonContainer.className = "typing__skeleton-container skeleton__image";
+    this.skeletonContainer.className = "image__skeleton-container";
 
     for (let i = 0; i < 4; i++) {
       let skeleton = document.createElement("div");
-      skeleton.classList.add("typing__skeleton");
+      skeleton.classList.add("image__skeleton-item");
       this.imagesSkeletons.push(skeleton);
     }
 
     this.imagesSkeletons.forEach((skeleton) => this.skeletonContainer.appendChild(skeleton));
-    this.tabsHeaderContainer.appendChild(this.skeletonContainer);
+    this.tabsContentContainer.appendChild(this.skeletonContainer);
 
     this.imagesSkeletons.forEach((skeleton, idx) => {
       anim(skeleton, [{ transform: "scaleY(0)" }, { transform: "scaleY(1)" }], {

@@ -98,11 +98,6 @@ export default class Discussion {
     //   srcs: ["https://picsum.photos/300/500"],
     //   container: tempContainer,
     // });
-
-    // LAYOUT DEBUG
-    if (this.layout_debug) {
-      // this.getAiAnswer({ text: "Hello" });
-    }
   }
 
   //   scrollToDiv(element) {

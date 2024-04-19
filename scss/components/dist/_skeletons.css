@@ -1,0 +1,8 @@
+.image__skeleton-container {
+  display: grid;
+  grid-template-columns: repeat(4, 120px);
+  gap: 16px;
+}
+.image__skeleton-container .image__skeleton-item {
+  height: 120px;
+}
