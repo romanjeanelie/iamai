@@ -1,13 +1,12 @@
 $radiusDotTyping: 22px;
 
 .typing__container {
-  // position: absolute;
   z-index: 1;
   width: 99%;
   height: $radiusDotTyping;
   top: 0;
   left: 0;
-  display: flex;
+
   align-items: center;
   visibility: hidden;
   // overflow: hidden;
@@ -16,20 +15,15 @@ $radiusDotTyping: 22px;
 
 .typing__mask {
   display: block;
-  position: absolute;
   z-index: 1;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  transform: translateX(0%);
 }
 
 .typing__logo {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  margin-bottom: 12px;
   width: $radiusDotTyping;
   height: $radiusDotTyping;
   border-radius: 50%;
@@ -42,7 +36,7 @@ $radiusDotTyping: 22px;
 }
 
 .typing__skeleton-container {
-  position: absolute;
+  position: static;
   top: calc(50% + 20px);
   width: calc(100% - 48px);
   display: flex;
@@ -105,20 +99,11 @@ $radiusDotTyping: 22px;
   color: $colorBlack;
 }
 
-@keyframes pulse {
-  from {
-    background-position: 0% 0%;
-  }
-  to {
-    background-position: -135% 0%;
-  }
-}
-
 @keyframes rotate {
   from {
-    transform: translateY(-50%) rotate(0deg);
+    transform: rotate(0deg);
   }
   to {
-    transform: translateY(-50%) rotate(360deg);
+    transform: rotate(360deg);
   }
 }
