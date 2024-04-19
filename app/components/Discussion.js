@@ -69,7 +69,11 @@ export default class Discussion {
     this.addListeners();
 
     this.debug = import.meta.env.VITE_DEBUG === "true";
+    this.layout_debug = import.meta.env.VITE_LAYOUT_DEBUG === "true";
     // DEBUG
+    if (this.debug) {
+      this.onCreatedTask();
+    }
     // const tempContainer = document.createElement("div");
     // tempContainer.classList.add("discussion__ai");
     // this.discussionContainer.appendChild(tempContainer);
@@ -94,6 +98,11 @@ export default class Discussion {
     //   srcs: ["https://picsum.photos/300/500"],
     //   container: tempContainer,
     // });
+
+    // LAYOUT DEBUG
+    if (this.layout_debug) {
+      // this.getAiAnswer({ text: "Hello" });
+    }
   }
 
   //   scrollToDiv(element) {
@@ -445,14 +454,30 @@ export default class Discussion {
       this.userContainer.classList.add("discussion__user");
       var userContainerspan = document.createElement("span");
       userContainerspan.classList.add("discussion__userspan");
-      userContainerspan.innerHTML = "bonjour";
+      userContainerspan.innerHTML = "who's obama ?";
       this.userContainer.appendChild(userContainerspan);
       // this.userContainer.innerHTML = "bonjour";
       this.discussionContainer.appendChild(this.userContainer);
 
       this.AIContainer = document.createElement("div");
       this.AIContainer.classList.add("discussion__ai");
+
+      const textContainer = document.createElement("div");
+      textContainer.classList.add("text__container");
+      textContainer.innerText =
+        "Obama, or Barack Hussein Obama II, is an American politician who served as the 44th president of the United States from 2009 to 2017. He is a member of the Democratic Party and is known for being the first African-American president in U. S. history. Born on August 4, 1961, in Honolulu, Hawaii, Obama's parents were Barack H. Obama, Sr., and Stanley Ann Dunham. What do you think about Obama's presidency and its impact on the U.S.?";
+
+      this.AIContainer.appendChild(textContainer);
       this.discussionContainer.appendChild(this.AIContainer);
+      const tabs = new DiscussionTabs({
+        container: this.AIContainer,
+        emitter: this.emitter,
+        removeStatus: this.removeStatus,
+        scrollToBottom: this.scrollToBottom,
+      });
+
+      tabs.addTab("Images");
+      // tabs.createImageSkeletons();
     }
 
     if (!this.history.isSet || this.history.isFetching) return;

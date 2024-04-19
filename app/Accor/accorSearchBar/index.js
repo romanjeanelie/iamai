@@ -14,7 +14,7 @@ export const STATES = {
 // [X] remove the "phone-btn" when on text input state
 // [X] change the logic of action button when on text-input
 // [X] refactor by creating AccorSearchBarAnims
-// [] fix the bug when clicking on the phone button on the secondary bar
+// [X] fix the bug when clicking on the phone button on the secondary bar
 
 const oneDay = 60 * 60 * 24 * 1000;
 
