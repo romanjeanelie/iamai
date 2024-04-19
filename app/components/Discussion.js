@@ -51,7 +51,6 @@ export default class Discussion {
     this.Chat = new Chat({
       discussionContainer: this.discussionContainer,
       addAIText: this.addAIText.bind(this),
-      initImages: this.initImages.bind(this),
       addImages: this.addImages.bind(this),
       addSources: this.addSources.bind(this),
       addURL: this.addURL.bind(this),
@@ -345,11 +344,7 @@ export default class Discussion {
     // this.scrollToBottom();
   }
 
-  initImages() {
-    this.tabs?.addTab("Images");
-  }
-
-  addImages({ imgSrcs = [], container } = {}) {
+  addImages({ imgSrcs = [] } = {}) {
     this.tabs?.initImages(imgSrcs);
     this.typingStatus = null;
     // container?.appendChild(this.topStatus);

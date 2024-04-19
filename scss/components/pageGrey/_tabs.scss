@@ -8,6 +8,7 @@
   font-size: 12px;
   font-weight: 500;
   line-height: 100%;
+  margin-bottom: 16px;
 }
 
 .discussion__sources-wrapper {
@@ -16,7 +17,6 @@
 
 .sources-container {
   display: flex;
-  margin-top: 16px;
   flex-wrap: wrap;
   row-gap: 16px;
   column-gap: 24px;
@@ -51,10 +51,6 @@
 
 .discussion__images-wrapper {
   margin-top: 24px;
-
-  .discussion__images-container {
-    margin-top: 16px;
-  }
 
   .discussion__images-container {
     display: grid;

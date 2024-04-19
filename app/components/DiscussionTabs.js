@@ -30,6 +30,7 @@ export default class DiscussionTabs {
   }
 
   addSources(sourcesData) {
+    console.log("from DiscussionTabs" + sourcesData);
     this.sourcesWrapper.classList.remove("none");
     this.sourcesHeader = document.createElement("h3");
     this.sourcesHeader.className = "discussion__sources-header";
