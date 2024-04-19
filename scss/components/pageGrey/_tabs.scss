@@ -2,40 +2,24 @@
   display: none;
 }
 
-.discussion__tabs-header {
-  margin-top: 24px;
-  margin-bottom: 24px;
-  display: flex;
-  gap: 40px;
-  cursor: pointer;
-  transition: opacity 0.3s ease-out;
-
-  li {
-    font-family: "SFPro";
-    font-size: 16px;
-    font-weight: 450;
-    line-height: 20px;
-    letter-spacing: 0.5px;
-    color: $colorBlueText;
-    opacity: 0.6;
-  }
+.discussion__sources-header,
+.discussion__images-header {
+  color: $colorBlueText;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 100%;
 }
 
-.discussion__tabs-content {
-  position: relative;
-  margin-top: 12px;
-  transition: opacity 0.3s ease-out;
-
-  &.hidden {
-    opacity: 0;
-  }
+.discussion__sources-wrapper {
+  margin-bottom: 24px;
 }
 
 .sources-container {
   display: flex;
-  margin-top: 12px;
+  margin-top: 16px;
   flex-wrap: wrap;
-  gap: 12px;
+  row-gap: 16px;
+  column-gap: 24px;
 
   .sources-item {
     background-color: rgba(0, 0, 0, 0.04);
@@ -62,5 +46,34 @@
 
   &.none {
     display: none;
+  }
+}
+
+.discussion__images-wrapper {
+  margin-top: 24px;
+
+  .discussion__images-container {
+    margin-top: 16px;
+  }
+
+  .discussion__images-container {
+    display: grid;
+    grid-template-columns: repeat(4, 120px);
+    gap: 16px;
+
+    img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    img:hover {
+      cursor: pointer;
+    }
+
+    &.none {
+      display: none;
+    }
   }
 }

@@ -464,9 +464,13 @@ export default class Discussion {
         emitter: this.emitter,
       });
 
-      tabs.addTab("Images");
-      tabs.addTab("Sources");
-      tabs.initSources([
+      tabs.addImages([
+        "https://picsum.photos/300/500",
+        "https://picsum.photos/300/500",
+        "https://picsum.photos/300/500",
+      ]);
+
+      tabs.addSources([
         "https://m.economictimes.com/news/international/us/dont-be-shocked-if-michelle-obama-joins-presidential-election-2024-writes-columnist-here-is-what-we-know-so-far/articleshow/106961021.cms",
         "https://thehill.com/blogs/in-the-know/4395192-michelle-obama-terrified-election-2024/",
         "https://www.obama.org/my-brothers-keeper-alliance/events/mbk-rising/celebrating-black-joy-through-art-joshua-mays/",

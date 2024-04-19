@@ -13,54 +13,30 @@ export default class DiscussionTabs {
     this.container = container;
     this.emitter = emitter;
 
-    this.selectedTab = "";
-    this.tabsHeaderContainer = null;
-    this.tabsContentContainer = null;
-
-    this.tabs = [];
     this.imagesSkeletons = [];
-    this.sources = null;
-    this.imagesContainer = null;
 
     this.init();
   }
 
   init() {
-    if (this.tabsHeaderContainer || this.tabsContentContainer) return;
-    this.tabsContainer = document.createElement("div");
-    this.tabsContainer.className = "discussion__tabs-container none";
-    this.tabsHeaderContainer = document.createElement("ul");
-    this.tabsHeaderContainer.className = "discussion__tabs-header";
-    this.tabsContentContainer = document.createElement("div");
-    this.tabsContentContainer.className = "discussion__tabs-content";
+    this.sourcesWrapper = document.createElement("div");
+    this.sourcesWrapper.className = "discussion__sources-wrapper none";
 
-    this.tabsContainer.appendChild(this.tabsHeaderContainer);
-    this.tabsContainer.appendChild(this.tabsContentContainer);
-    this.container.appendChild(this.tabsContainer);
+    this.imagesWrapper = document.createElement("div");
+    this.imagesWrapper.className = "discussion__images-wrapper none";
+
+    this.container.prepend(this.sourcesWrapper);
+    this.container.appendChild(this.imagesWrapper);
   }
 
-  addTab(tabName) {
-    this.tabsContainer.classList.remove("none");
-    const li = document.createElement("li");
-    li.className = tabName;
-    if (tabName === "Images") {
-      li.style.order = 0;
-    } else {
-      li.style.order = 1;
-      li.className = "sourcesTab";
-    }
+  addSources(sourcesData) {
+    this.sourcesWrapper.classList.remove("none");
+    this.sourcesHeader = document.createElement("h3");
+    this.sourcesHeader.className = "discussion__sources-header";
+    this.sourcesHeader.innerText = "Sources";
 
-    li.textContent = tabName;
+    this.sourcesWrapper.appendChild(this.sourcesHeader);
 
-    this.tabs.push(tabName);
-
-    this.tabsHeaderContainer.appendChild(li);
-    if (tabName === "Images") {
-      this.createImageSkeletons(li);
-    }
-  }
-
-  initSources(sourcesData) {
     this.sources = document.createElement("div");
     this.sources.className = "sources-container";
 
@@ -83,18 +59,23 @@ export default class DiscussionTabs {
       this.sources.appendChild(sourceEl);
     }
 
-    this.tabsContentContainer.appendChild(this.sources);
+    this.sourcesWrapper.appendChild(this.sources);
   }
 
-  async initImages(srcs) {
-    this.tabsContainer.classList.remove("none");
+  async addImages(srcs) {
+    this.imagesWrapper.classList.remove("none");
+
+    this.imagesHeader = document.createElement("h3");
+    this.imagesHeader.className = "discussion__images-header";
+    this.imagesHeader.innerText = "Images";
+
+    this.imagesWrapper.appendChild(this.imagesHeader);
 
     this.imagesContainer = document.createElement("div");
-    this.imagesContainer.className = "images__container";
-    // console.time("loadImages");
+    this.imagesContainer.className = "discussion__images-container";
+    this.createImageSkeletons();
     const successfulSrcs = await loadImages(srcs);
-    // console.timeEnd("loadImages");
-    this.imagesSkeletons.forEach((skeleton) => this.skeletonContainer.removeChild(skeleton));
+    this.destroyImageSkeletons();
 
     const imgs = successfulSrcs.map((src) => {
       const img = document.createElement("img");
@@ -104,7 +85,7 @@ export default class DiscussionTabs {
     });
 
     this.handleImgClick(imgs);
-    this.tabsContentContainer.appendChild(this.imagesContainer);
+    this.imagesWrapper.appendChild(this.imagesContainer);
   }
 
   handleImgClick(imgs) {
@@ -130,7 +111,7 @@ export default class DiscussionTabs {
     }
 
     this.imagesSkeletons.forEach((skeleton) => this.skeletonContainer.appendChild(skeleton));
-    this.tabsContentContainer.appendChild(this.skeletonContainer);
+    this.imagesWrapper.appendChild(this.skeletonContainer);
 
     this.imagesSkeletons.forEach((skeleton, idx) => {
       anim(skeleton, [{ transform: "scaleY(0)" }, { transform: "scaleY(1)" }], {
@@ -140,5 +121,8 @@ export default class DiscussionTabs {
         ease: "ease-out",
       });
     });
+  }
+  destroyImageSkeletons() {
+    this.imagesSkeletons.forEach((skeleton) => this.skeletonContainer.removeChild(skeleton));
   }
 }

@@ -69,60 +69,39 @@
       overflow-wrap: break-word;
     }
 
-    .sources {
-      display: flex;
-      margin-top: 12px;
-      flex-wrap: wrap;
-      gap: 12px;
+    //  .sources {
+    //     display: flex;
+    //     margin-top: 12px;
+    //     flex-wrap: wrap;
+    //     gap: 12px;
 
-      a {
-        background-color: rgba(0, 0, 0, 0.04);
-        border-radius: 50px;
-        padding: 4px 12px 4px 4px;
-        font-family: "SFPro";
-        font-size: 12px;
-        line-height: 20px;
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-        gap: 8px;
+    //     a {
+    //       background-color: rgba(0, 0, 0, 0.04);
+    //       border-radius: 50px;
+    //       padding: 4px 12px 4px 4px;
+    //       font-family: "SFPro";
+    //       font-size: 12px;
+    //       line-height: 20px;
+    //       text-decoration: none;
+    //       display: flex;
+    //       align-items: center;
+    //       gap: 8px;
 
-        &:hover {
-          background-color: rgba(0, 0, 0, 0.08);
-        }
-      }
+    //       &:hover {
+    //         background-color: rgba(0, 0, 0, 0.08);
+    //       }
+    //     }
 
-      a img {
-        width: 20px;
-        height: 20px;
-        border-radius: 100%;
-      }
+    //     a img {
+    //       width: 20px;
+    //       height: 20px;
+    //       border-radius: 100%;
+    //     }
 
-      &.none {
-        display: none;
-      }
-    }
-
-    .images__container {
-      display: grid;
-      grid-template-columns: repeat(4, 120px);
-      gap: 16px;
-
-      img {
-        width: 100%;
-        height: 120px;
-        object-fit: cover;
-        border-radius: 4px;
-      }
-
-      img:hover {
-        cursor: pointer;
-      }
-
-      &.none {
-        display: none;
-      }
-    }
+    //     &.none {
+    //       display: none;
+    //     }
+    //   }
 
     @include media("<tablet") {
       font-size: 16px;

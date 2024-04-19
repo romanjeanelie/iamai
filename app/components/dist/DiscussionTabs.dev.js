@@ -38,55 +38,28 @@ function () {
 
     this.container = container;
     this.emitter = emitter;
-    this.selectedTab = "";
-    this.tabsHeaderContainer = null;
-    this.tabsContentContainer = null;
-    this.tabs = [];
     this.imagesSkeletons = [];
-    this.sources = null;
-    this.imagesContainer = null;
     this.init();
   }
 
   _createClass(DiscussionTabs, [{
     key: "init",
     value: function init() {
-      if (this.tabsHeaderContainer || this.tabsContentContainer) return;
-      this.tabsContainer = document.createElement("div");
-      this.tabsContainer.className = "discussion__tabs-container none";
-      this.tabsHeaderContainer = document.createElement("ul");
-      this.tabsHeaderContainer.className = "discussion__tabs-header";
-      this.tabsContentContainer = document.createElement("div");
-      this.tabsContentContainer.className = "discussion__tabs-content";
-      this.tabsContainer.appendChild(this.tabsHeaderContainer);
-      this.tabsContainer.appendChild(this.tabsContentContainer);
-      this.container.appendChild(this.tabsContainer);
+      this.sourcesWrapper = document.createElement("div");
+      this.sourcesWrapper.className = "discussion__sources-wrapper none";
+      this.imagesWrapper = document.createElement("div");
+      this.imagesWrapper.className = "discussion__images-wrapper none";
+      this.container.prepend(this.sourcesWrapper);
+      this.container.appendChild(this.imagesWrapper);
     }
   }, {
-    key: "addTab",
-    value: function addTab(tabName) {
-      this.tabsContainer.classList.remove("none");
-      var li = document.createElement("li");
-      li.className = tabName;
-
-      if (tabName === "Images") {
-        li.style.order = 0;
-      } else {
-        li.style.order = 1;
-        li.className = "sourcesTab";
-      }
-
-      li.textContent = tabName;
-      this.tabs.push(tabName);
-      this.tabsHeaderContainer.appendChild(li);
-
-      if (tabName === "Images") {
-        this.createImageSkeletons(li);
-      }
-    }
-  }, {
-    key: "initSources",
-    value: function initSources(sourcesData) {
+    key: "addSources",
+    value: function addSources(sourcesData) {
+      this.sourcesWrapper.classList.remove("none");
+      this.sourcesHeader = document.createElement("h3");
+      this.sourcesHeader.className = "discussion__sources-header";
+      this.sourcesHeader.innerText = "Sources";
+      this.sourcesWrapper.appendChild(this.sourcesHeader);
       this.sources = document.createElement("div");
       this.sources.className = "sources-container";
       var _iteratorNormalCompletion = true;
@@ -129,31 +102,32 @@ function () {
         }
       }
 
-      this.tabsContentContainer.appendChild(this.sources);
+      this.sourcesWrapper.appendChild(this.sources);
     }
   }, {
-    key: "initImages",
-    value: function initImages(srcs) {
+    key: "addImages",
+    value: function addImages(srcs) {
       var _this = this;
 
       var successfulSrcs, imgs;
-      return regeneratorRuntime.async(function initImages$(_context) {
+      return regeneratorRuntime.async(function addImages$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              this.tabsContainer.classList.remove("none");
+              this.imagesWrapper.classList.remove("none");
+              this.imagesHeader = document.createElement("h3");
+              this.imagesHeader.className = "discussion__images-header";
+              this.imagesHeader.innerText = "Images";
+              this.imagesWrapper.appendChild(this.imagesHeader);
               this.imagesContainer = document.createElement("div");
-              this.imagesContainer.className = "images__container"; // console.time("loadImages");
-
-              _context.next = 5;
+              this.imagesContainer.className = "discussion__images-container";
+              this.createImageSkeletons();
+              _context.next = 10;
               return regeneratorRuntime.awrap((0, _loadImages["default"])(srcs));
 
-            case 5:
+            case 10:
               successfulSrcs = _context.sent;
-              // console.timeEnd("loadImages");
-              this.imagesSkeletons.forEach(function (skeleton) {
-                return _this.skeletonContainer.removeChild(skeleton);
-              });
+              this.destroyImageSkeletons();
               imgs = successfulSrcs.map(function (src) {
                 var img = document.createElement("img");
                 img.src = src;
@@ -163,9 +137,9 @@ function () {
                 return img;
               });
               this.handleImgClick(imgs);
-              this.tabsContentContainer.appendChild(this.imagesContainer);
+              this.imagesWrapper.appendChild(this.imagesContainer);
 
-            case 10:
+            case 15:
             case "end":
               return _context.stop();
           }
@@ -208,7 +182,7 @@ function () {
       this.imagesSkeletons.forEach(function (skeleton) {
         return _this3.skeletonContainer.appendChild(skeleton);
       });
-      this.tabsContentContainer.appendChild(this.skeletonContainer);
+      this.imagesWrapper.appendChild(this.skeletonContainer);
       this.imagesSkeletons.forEach(function (skeleton, idx) {
         (0, _anim["default"])(skeleton, [{
           transform: "scaleY(0)"
@@ -220,6 +194,15 @@ function () {
           fill: "forwards",
           ease: "ease-out"
         });
+      });
+    }
+  }, {
+    key: "destroyImageSkeletons",
+    value: function destroyImageSkeletons() {
+      var _this4 = this;
+
+      this.imagesSkeletons.forEach(function (skeleton) {
+        return _this4.skeletonContainer.removeChild(skeleton);
       });
     }
   }]);
