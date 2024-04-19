@@ -45,21 +45,21 @@ function () {
   _createClass(DiscussionMedia, [{
     key: "init",
     value: function init() {
-      this.sourcesWrapper = document.createElement("div");
-      this.sourcesWrapper.className = "discussion__sources-wrapper none";
-      this.imagesWrapper = document.createElement("div");
-      this.imagesWrapper.className = "discussion__images-wrapper none";
-      this.container.prepend(this.sourcesWrapper);
-      this.container.appendChild(this.imagesWrapper);
+      this.topWrapper = document.createElement("div");
+      this.topWrapper.className = "discussion__top-wrapper none";
+      this.bottomWrapper = document.createElement("div");
+      this.bottomWrapper.className = "discussion__bottom-wrapper none";
+      this.container.prepend(this.topWrapper);
+      this.container.appendChild(this.bottomWrapper);
     }
   }, {
     key: "addSources",
     value: function addSources(sourcesData) {
-      this.sourcesWrapper.classList.remove("none");
+      this.topWrapper.classList.remove("none");
       this.sourcesHeader = document.createElement("h3");
       this.sourcesHeader.className = "discussion__sources-header";
       this.sourcesHeader.innerText = "Sources";
-      this.sourcesWrapper.appendChild(this.sourcesHeader);
+      this.topWrapper.appendChild(this.sourcesHeader);
       this.sources = document.createElement("div");
       this.sources.className = "sources-container";
       var _iteratorNormalCompletion = true;
@@ -102,7 +102,7 @@ function () {
         }
       }
 
-      this.sourcesWrapper.appendChild(this.sources);
+      this.topWrapper.appendChild(this.sources);
     }
   }, {
     key: "addImages",
@@ -114,13 +114,13 @@ function () {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              this.imagesWrapper.classList.remove("none");
+              this.bottomWrapper.classList.remove("none");
               this.imagesHeader = document.createElement("h3");
               this.imagesHeader.className = "discussion__images-header";
               this.imagesHeader.innerText = "Images";
-              this.imagesWrapper.appendChild(this.imagesHeader);
+              this.bottomWrapper.appendChild(this.imagesHeader);
               this.imagesContainer = document.createElement("div");
-              this.imagesContainer.className = "discussion__images-container";
+              this.imagesContainer.className = "discussion__images-container user-images";
               this.createImageSkeletons();
               _context.next = 10;
               return regeneratorRuntime.awrap((0, _loadImages["default"])(srcs));
@@ -137,11 +137,41 @@ function () {
                 return img;
               });
               this.handleImgClick(imgs);
-              this.imagesWrapper.appendChild(this.imagesContainer);
+              this.bottomWrapper.appendChild(this.imagesContainer);
 
             case 15:
             case "end":
               return _context.stop();
+          }
+        }
+      }, null, this);
+    }
+  }, {
+    key: "addUserImages",
+    value: function addUserImages(srcs) {
+      var imagesContainer, successfulSrcs;
+      return regeneratorRuntime.async(function addUserImages$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              this.topWrapper.classList.remove("none");
+              imagesContainer = document.createElement("div");
+              imagesContainer.classList.add("discussion__images-container");
+              _context2.next = 5;
+              return regeneratorRuntime.awrap((0, _loadImages["default"])(srcs));
+
+            case 5:
+              successfulSrcs = _context2.sent;
+              successfulSrcs.map(function (src) {
+                var img = document.createElement("img");
+                img.src = src;
+                imagesContainer.appendChild(img);
+              });
+              this.topWrapper.appendChild(imagesContainer);
+
+            case 8:
+            case "end":
+              return _context2.stop();
           }
         }
       }, null, this);
@@ -182,7 +212,7 @@ function () {
       this.imagesSkeletons.forEach(function (skeleton) {
         return _this3.skeletonContainer.appendChild(skeleton);
       });
-      this.imagesWrapper.appendChild(this.skeletonContainer);
+      this.bottomWrapper.appendChild(this.skeletonContainer);
       this.imagesSkeletons.forEach(function (skeleton, idx) {
         (0, _anim["default"])(skeleton, [{
           transform: "scaleY(0)"

@@ -10,6 +10,7 @@ import typeByWord from "../utils/typeByWord.js";
 import getStyleElement from "../utils/getStyleElement.js";
 import { URL_DELETE_STATUS } from "./constants.js";
 import { gsap } from "gsap";
+import loadImages from "../utils/loadImages.js";
 const topStatusText = ["finding", "checking", "searching", "analyzing", "scanning", "finalizing", "processing"];
 const defaultTopStatus = "searching";
 
@@ -175,16 +176,12 @@ export default class Discussion {
       userContainer.classList.add("discussion__user");
       this.discussionContainer.appendChild(userContainer);
 
-      if (!this.media) {
-        this.media = new DiscussionMedia({
-          container: userContainer,
-          emitter: this.emitter,
-        });
-      } else {
-        this.media.container = userContainer;
-      }
+      this.media = new DiscussionMedia({
+        container: userContainer,
+        emitter: this.emitter,
+      });
 
-      this.addImages({ imgSrcs: imgs.map((img) => img.src) });
+      this.media.addUserImages(imgs.map((img) => img.src));
     }
 
     this.userContainer = document.createElement("div");

@@ -198,7 +198,7 @@ export default class History {
             container: userContainer,
             emitter: this.emitter,
           });
-          if (element.images.user_images) media?.initImages(JSON.parse(element.images.user_images));
+          if (element.images.user_images) media?.addUserImages(JSON.parse(element.images.user_images));
           container.appendChild(userContainer);
         }
 

@@ -18,23 +18,23 @@ export default class DiscussionMedia {
   }
 
   init() {
-    this.sourcesWrapper = document.createElement("div");
-    this.sourcesWrapper.className = "discussion__sources-wrapper none";
+    this.topWrapper = document.createElement("div");
+    this.topWrapper.className = "discussion__top-wrapper none";
 
-    this.imagesWrapper = document.createElement("div");
-    this.imagesWrapper.className = "discussion__images-wrapper none";
+    this.bottomWrapper = document.createElement("div");
+    this.bottomWrapper.className = "discussion__bottom-wrapper none";
 
-    this.container.prepend(this.sourcesWrapper);
-    this.container.appendChild(this.imagesWrapper);
+    this.container.prepend(this.topWrapper);
+    this.container.appendChild(this.bottomWrapper);
   }
 
   addSources(sourcesData) {
-    this.sourcesWrapper.classList.remove("none");
+    this.topWrapper.classList.remove("none");
     this.sourcesHeader = document.createElement("h3");
     this.sourcesHeader.className = "discussion__sources-header";
     this.sourcesHeader.innerText = "Sources";
 
-    this.sourcesWrapper.appendChild(this.sourcesHeader);
+    this.topWrapper.appendChild(this.sourcesHeader);
 
     this.sources = document.createElement("div");
     this.sources.className = "sources-container";
@@ -58,20 +58,20 @@ export default class DiscussionMedia {
       this.sources.appendChild(sourceEl);
     }
 
-    this.sourcesWrapper.appendChild(this.sources);
+    this.topWrapper.appendChild(this.sources);
   }
 
   async addImages(srcs) {
-    this.imagesWrapper.classList.remove("none");
+    this.bottomWrapper.classList.remove("none");
 
     this.imagesHeader = document.createElement("h3");
     this.imagesHeader.className = "discussion__images-header";
     this.imagesHeader.innerText = "Images";
 
-    this.imagesWrapper.appendChild(this.imagesHeader);
+    this.bottomWrapper.appendChild(this.imagesHeader);
 
     this.imagesContainer = document.createElement("div");
-    this.imagesContainer.className = "discussion__images-container";
+    this.imagesContainer.className = "discussion__images-container user-images";
     this.createImageSkeletons();
     const successfulSrcs = await loadImages(srcs);
     this.destroyImageSkeletons();
@@ -84,7 +84,22 @@ export default class DiscussionMedia {
     });
 
     this.handleImgClick(imgs);
-    this.imagesWrapper.appendChild(this.imagesContainer);
+    this.bottomWrapper.appendChild(this.imagesContainer);
+  }
+
+  async addUserImages(srcs) {
+    this.topWrapper.classList.remove("none");
+    const imagesContainer = document.createElement("div");
+    imagesContainer.classList.add("discussion__images-container");
+
+    const successfulSrcs = await loadImages(srcs);
+    successfulSrcs.map((src) => {
+      const img = document.createElement("img");
+      img.src = src;
+      imagesContainer.appendChild(img);
+    });
+
+    this.topWrapper.appendChild(imagesContainer);
   }
 
   handleImgClick(imgs) {
@@ -110,7 +125,7 @@ export default class DiscussionMedia {
     }
 
     this.imagesSkeletons.forEach((skeleton) => this.skeletonContainer.appendChild(skeleton));
-    this.imagesWrapper.appendChild(this.skeletonContainer);
+    this.bottomWrapper.appendChild(this.skeletonContainer);
 
     this.imagesSkeletons.forEach((skeleton, idx) => {
       anim(skeleton, [{ transform: "scaleY(0)" }, { transform: "scaleY(1)" }], {
@@ -121,6 +136,7 @@ export default class DiscussionMedia {
       });
     });
   }
+
   destroyImageSkeletons() {
     this.imagesSkeletons.forEach((skeleton) => this.skeletonContainer.removeChild(skeleton));
   }
