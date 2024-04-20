@@ -8,8 +8,8 @@ import SearchBar from "./accorSearchBar/index.js";
 // [X] manage all the different states for the search bar (create a search bar class)
 // [X] manage the filters carousel
 // [X] make the forgotten components responsive
-// [] make the animations for the Call
-// [] make the custom Date Picker
+// [X] make the animations for the Call
+// [X] make the custom Date Picker
 // [] make the search bar responsive
 
 class Accor {
