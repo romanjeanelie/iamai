@@ -6,9 +6,16 @@
   background-color: $backgroundColorGreyPage;
   border-radius: 16px;
   padding: 24px 16px 32px;
-  justify-content: center;
   top: calc(100% + 32px);
   z-index: 1;
+
+  .date_pick-container {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    align-items: center;
+    margin-bottom: 24px;
+  }
 
   .date_picker_calendar {
     position: relative;

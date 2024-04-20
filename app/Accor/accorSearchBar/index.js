@@ -51,12 +51,6 @@ export default class AccorSearchBar {
 
     // Debug
     this.debug = import.meta.env.VITE_DEBUG === "true";
-    if (this.debug) {
-      console.log("-------- debug state ---------");
-      const phone__debug = document.querySelector(".phone__debug");
-      phone__debug.style.display = "block";
-      // this.anims.toPhoneBar();
-    }
 
     // Phone Elements
     this.phoneCloseBtn = document.querySelector(".accorSearchBar__phoneClose");
@@ -64,7 +58,12 @@ export default class AccorSearchBar {
 
     // Animations
     this.anims = new AccorSearchBarAnims(this.searchBarState, this.updateSearchBarState.bind(this));
-
+    if (this.debug) {
+      console.log("-------- debug state ---------");
+      const phone__debug = document.querySelector(".phone__debug");
+      phone__debug.style.display = "block";
+      this.anims.toStandardOptions();
+    }
     // Init
     this.addEventListener();
   }
