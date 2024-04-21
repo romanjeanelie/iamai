@@ -1,18 +1,24 @@
 import Calendar from "../../components/Calendar";
 
+const CALENDARS_STATES = {
+  DATES: "dates",
+  MONTHS: "months",
+  YEARS: "years",
+};
+
 export default class AccorSearchBarCalendars {
   constructor({ selectedDay, key, setGlobalInputValues }) {
     this.key = key;
     this.setGlobalInputValues = setGlobalInputValues;
 
     // States
-    this.isCalendarInstanced = false;
-    this.selectedDay = selectedDay;
     this.calendars = [];
+    this.selectedDay = selectedDay;
+    this.state = CALENDARS_STATES.DATES;
 
     // Dom Elements
     this.wrapper = document.querySelector(".accorSearchBar__calendar-wrapper");
-    this.containers = document.querySelectorAll(".date_picker_calendar");
+    this.calContainer = document.querySelector(".date_pick-container");
     this.btns = document.querySelectorAll(".cal-btn");
 
     this.init();
@@ -21,17 +27,17 @@ export default class AccorSearchBarCalendars {
   }
 
   init() {
-    this.isCalendarInstanced = true;
-    this.containers.forEach((container, i) => {
+    this.show();
+    for (let i = 0; i < 2; i++) {
       const calendar = new Calendar({
-        container,
+        container: this.calContainer,
         month: new Date().getMonth() + i,
         year: new Date().getFullYear(),
         selectedDay: this.selectedDay,
         setSelectedDay: this.handleSelectedDayChange.bind(this),
       });
       this.calendars.push(calendar);
-    });
+    }
   }
 
   show = () => {

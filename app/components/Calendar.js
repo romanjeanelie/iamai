@@ -12,16 +12,17 @@ export default class Calendar {
     this.monthDetails = getMonthDetails(this.year, this.month);
 
     // DOM Elements
-    this.calendar = this.container.querySelector(".calendar_main");
-    this.input = this.container.querySelector(".date");
-    this.calHeader = this.container.querySelector(".calendar_header");
-    this.calHeaderTitle = this.container.querySelector(".calendar_header");
-    this.calDays = this.container.querySelector(".cal_days");
+    // this.calendar = this.container.querySelector(".calendar_main");
+    // this.input = this.container.querySelector(".date");
+    // this.calHeader = this.container.querySelector(".calendar_header");
+    // this.calHeaderTitle = this.container.querySelector(".calendar_header");
+    // this.calDays = this.container.querySelector(".cal_days");
 
     // Initialize
-    this.setHeader(this.year, this.month);
-    this.setCalDays();
-    this.setCalBody(this.monthDetails);
+    this.renderStructure();
+    this.renderHeader(this.year, this.month);
+    this.renderDays();
+    this.renderBody(this.monthDetails);
     this.addEventListeners();
   }
 
@@ -33,11 +34,41 @@ export default class Calendar {
   };
 
   // Initialize the calendar
-  setHeader = (year, month) => {
+  renderStructure = () => {
+    // Create calendar elements
+    this.calendarContainer = document.createElement("div");
+    this.calendarContainer.classList.add("date_picker_calendar");
+
+    this.calHeader = document.createElement("div");
+    this.calHeader.classList.add("calendar_header");
+
+    this.calHeaderTitle = document.createElement("span");
+    this.calHeader.appendChild(this.calHeaderTitle);
+
+    this.calDays = document.createElement("div");
+    this.calDays.classList.add("cal_days");
+
+    this.calendar = document.createElement("div");
+    this.calendar.classList.add("calendar_main");
+
+    const calWrapper = document.createElement("div");
+    calWrapper.classList.add("cal_wrapper");
+    calWrapper.appendChild(this.calDays);
+    calWrapper.appendChild(this.calendar);
+
+    // Append elements to the container
+    this.calendarContainer.appendChild(this.calHeader);
+    this.calendarContainer.appendChild(calWrapper);
+
+    // Append the container to the parent element
+    this.container.appendChild(this.calendarContainer);
+  };
+
+  renderHeader = (year, month) => {
     this.calHeaderTitle.innerHTML = getMonthStr(month) + " " + year;
   };
 
-  setCalDays = () => {
+  renderDays = () => {
     for (let i = 0; i < days.length; i++) {
       let div = document.createElement("div"),
         span = document.createElement("span");
@@ -52,7 +83,7 @@ export default class Calendar {
     }
   };
 
-  setCalBody = (monthDetails) => {
+  renderBody = (monthDetails) => {
     // Add dates to calendar
     for (let i = 0; i < monthDetails.length; i++) {
       let div = document.createElement("div");
@@ -94,12 +125,12 @@ export default class Calendar {
     };
   };
 
-  updateCalendar = (offset) => {
+  updateCalendarMonth = (offset) => {
     let newCal;
     newCal = this.handleHeaderChange(offset);
-    this.setHeader(newCal.year, newCal.month);
+    this.renderHeader(newCal.year, newCal.month);
     this.calendar.innerHTML = "";
-    this.setCalBody(newCal.monthDetails);
+    this.renderBody(newCal.monthDetails);
   };
 
   updateSelectedDay = (date, cell) => {
@@ -112,5 +143,7 @@ export default class Calendar {
     this.isSelectedDay(date, cell);
   };
 
-  addEventListeners = () => {};
+  addEventListeners = () => {
+    document.addEventListener("resize", () => {});
+  };
 }
