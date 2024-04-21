@@ -13,6 +13,7 @@ export default class AccorSearchBarCalendars {
 
     // States
     this.calendars = [];
+    this.isMobile = window.innerWidth < 820;
     this.selectedDay = selectedDay;
     this.state = CALENDARS_STATES.DATES;
 
@@ -27,8 +28,8 @@ export default class AccorSearchBarCalendars {
   }
 
   init() {
-    this.show();
-    for (let i = 0; i < 2; i++) {
+    const calendarCount = this.isMobile ? 1 : 2;
+    for (let i = 0; i < calendarCount; i++) {
       const calendar = new Calendar({
         container: this.calContainer,
         month: new Date().getMonth() + i,
@@ -61,9 +62,9 @@ export default class AccorSearchBarCalendars {
   updateCalendars = (btn) => {
     this.calendars.forEach((calendar) => {
       if (btn.classList.contains("back")) {
-        calendar.updateCalendar(-1);
+        calendar.updateCalendarMonth(-1);
       } else {
-        calendar.updateCalendar(1);
+        calendar.updateCalendarMonth(1);
       }
     });
   };
@@ -76,11 +77,32 @@ export default class AccorSearchBarCalendars {
     });
   };
 
+  handleWindowResize() {
+    if (!this.isMobile && this.calendars.length === 1) {
+      const newCalendar = new Calendar({
+        container: this.calContainer,
+        month: new Date().getMonth() + 1,
+        year: new Date().getFullYear(),
+        selectedDay: this.selectedDay,
+        setSelectedDay: this.handleSelectedDayChange.bind(this),
+      });
+      this.calendars.push(newCalendar);
+    } else if (this.isMobile && this.calendars.length === 2) {
+      const removedCalendar = this.calendars.pop();
+      removedCalendar.destroy();
+    }
+  }
+
   addEventListeners = () => {
     this.btns.forEach((btn) => {
       btn.addEventListener("click", () => {
         this.updateCalendars(btn);
       });
+    });
+
+    window.addEventListener("resize", () => {
+      this.isMobile = window.innerWidth < 820;
+      this.handleWindowResize();
     });
   };
 }

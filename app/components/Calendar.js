@@ -12,11 +12,11 @@ export default class Calendar {
     this.monthDetails = getMonthDetails(this.year, this.month);
 
     // DOM Elements
-    // this.calendar = this.container.querySelector(".calendar_main");
-    // this.input = this.container.querySelector(".date");
-    // this.calHeader = this.container.querySelector(".calendar_header");
-    // this.calHeaderTitle = this.container.querySelector(".calendar_header");
-    // this.calDays = this.container.querySelector(".cal_days");
+    this.calendar;
+    this.input;
+    this.calHeader;
+    this.calHeaderTitle;
+    this.calDays;
 
     // Initialize
     this.renderStructure();
@@ -141,6 +141,10 @@ export default class Calendar {
       cell.classList.remove("active");
     });
     this.isSelectedDay(date, cell);
+  };
+
+  destroy = () => {
+    this.container.removeChild(this.calendarContainer);
   };
 
   addEventListeners = () => {

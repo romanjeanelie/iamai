@@ -9,6 +9,10 @@
   top: calc(100% + 32px);
   z-index: 1;
 
+  @include media("<tablet") {
+    width: 100%;
+  }
+
   .accorSearchBar__calendar-nav {
     display: flex;
     margin-bottom: 24px;
