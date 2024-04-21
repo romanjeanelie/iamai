@@ -107,7 +107,7 @@ export default class AccorSearchBar {
   // Inputs
   destroyCalendar() {
     if (this.calendars) {
-      this.calendars.destroy();
+      this.calendars.hide();
       this.calendars = null;
     }
   }

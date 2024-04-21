@@ -12,10 +12,10 @@ export default class Calendar {
     this.monthDetails = getMonthDetails(this.year, this.month);
 
     // DOM Elements
-    this.calendar;
-    this.input;
+    this.calendarContainer;
     this.calHeader;
     this.calHeaderTitle;
+    this.calendar;
     this.calDays;
 
     // Initialize
@@ -65,7 +65,17 @@ export default class Calendar {
   };
 
   renderHeader = (year, month) => {
-    this.calHeaderTitle.innerHTML = getMonthStr(month) + " " + year;
+    this.calHeaderTitle.innerHTML = "";
+    const monthHeader = document.createElement("span");
+    monthHeader.classList.add("month");
+    monthHeader.innerText = getMonthStr(month);
+
+    const yearHeader = document.createElement("span");
+    yearHeader.classList.add("year");
+    yearHeader.innerText = ` ${year}`;
+
+    this.calHeaderTitle.appendChild(monthHeader);
+    this.calHeaderTitle.appendChild(yearHeader);
   };
 
   renderDays = () => {

@@ -136,29 +136,31 @@
     </div>
 
     {{! CALENDAR }}
-    <div class="accorSearchBar__calendar-wrapper input-wrapper">
+    <div class="accorSearchBar__calendar-wrapper input-wrapper dates">
       <button class="cal-btn back">
         <img src="/public/icons/arrow-right.svg" />
       </button>
 
       <ul class="accorSearchBar__calendar-nav">
         <li>
-          <button class="calendar_nav-item active">
+          <button class="calendar_nav-item active" data-state="dates">
             Dates
           </button>
         </li>
         <li>
-          <button class="calendar_nav-item">
+          <button class="calendar_nav-item" data-state="months">
             Month
           </button>
         </li>
         <li>
-          <button class="calendar_nav-item">
+          <button class="calendar_nav-item" data-state="years">
             Years
           </button>
         </li>
 
       </ul>
+
+      <div class="years_pick-container"></div>
 
       <div class="date_pick-container">
         {{! GENERATED IN CALENDAR.JS }}
@@ -170,7 +172,6 @@
             <div class="calendar_main"></div>
           </div>
         </div> }}
-
       </div>
 
       <button class="cal-btn front">
