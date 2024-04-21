@@ -16,7 +16,9 @@ export default class AccorSearchBarCalendars {
     this.calendars = [];
     this.isMobile = window.innerWidth < 820;
     this.selectedDay = selectedDay;
+    console.log("selectedDay", new Date(selectedDay).getMonth());
     this.currentYear = new Date().getFullYear();
+    this.centeredYear = this.currentYear;
     this.state = CALENDARS_STATES.DATES;
 
     // Dom Elements
@@ -76,7 +78,7 @@ export default class AccorSearchBarCalendars {
     this.yearsContainer.classList.remove("months");
     const years = [];
     for (let i = -4; i <= 4; i++) {
-      years.push(this.currentYear + i);
+      years.push(this.centeredYear + i);
     }
 
     // Create a button for each year
@@ -85,9 +87,9 @@ export default class AccorSearchBarCalendars {
       btn.classList.add("year-btn");
 
       // Add appropriate classes based on the relationship with currentYear
-      if (year < this.currentYear) {
+      if (year < this.centeredYear) {
         btn.classList.add("unactive");
-      } else if (year === this.currentYear) {
+      } else if (year === this.centeredYear) {
         btn.classList.add("selected");
       } else {
         btn.classList.add("active");
@@ -96,6 +98,7 @@ export default class AccorSearchBarCalendars {
       btn.innerText = year;
       btn.addEventListener("click", () => {
         this.currentYear = year;
+        this.centeredYear = year;
         this.updateCalendarsState(CALENDARS_STATES.MONTHS);
       });
       this.yearsContainer.appendChild(btn);
@@ -123,7 +126,11 @@ export default class AccorSearchBarCalendars {
   }
 
   // update the calendar state (dates, months, years)
-  updateCalendarsState = (newState, month, year) => {
+  updateCalendarsState = (
+    newState,
+    month = new Date(this.selectedDay).getMonth(),
+    year = new Date(this.selectedDay).getFullYear()
+  ) => {
     if (this.state === newState) return;
     this.state = newState;
     this.updateHeader(newState);
@@ -169,6 +176,11 @@ export default class AccorSearchBarCalendars {
       const isBack = btn.classList.contains("back");
       this.currentYear = isBack ? this.currentYear - 1 : this.currentYear + 1;
       this.initMonths();
+    } else if (this.state === CALENDARS_STATES.YEARS) {
+      const isBack = btn.classList.contains("back");
+      this.centeredYear = this.centeredYear + (isBack ? -4 : 4);
+      this.destroyCalendars();
+      this.initYears();
     }
   };
 
