@@ -37,15 +37,33 @@
   }
 
   .years_pick-container {
-    margin: 6px 100px 12px;
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin: 00;
+
     color: $accorMain;
     font-size: 12px;
-    font-weight: 600;
-    line-height: 16px; /* 133.333% */
+    line-height: 16px; /** 133.333% */
     letter-spacing: 0.5px;
+    font-weight: 600;
 
-    @include media("<phone") {
-      margin: 6px 0 12px;
+    &.months {
+      display: block;
+      margin: 6px 100px 12px;
+
+      @include media("<phone") {
+        margin: 6px 0 12px;
+      }
+    }
+
+    .unactive {
+      color: rgba($accorMain, 0.12);
+    }
+
+    .selected {
+      font-size: 16px;
+      line-height: 20px;
     }
   }
 

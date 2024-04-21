@@ -53,6 +53,7 @@ export default class AccorSearchBarCalendars {
   }
 
   initMonths() {
+    this.yearsContainer.classList.add("months");
     this.yearsContainer.innerText = this.currentYear;
     for (let i = 0; i < 12; i++) {
       const calendar = new Calendar({
@@ -71,7 +72,34 @@ export default class AccorSearchBarCalendars {
   }
 
   initYears() {
-    this.yearsContainer.innerHTML = "A LOT OF YEARS";
+    // get the 4 years before and after the current year and put them into an array
+    this.yearsContainer.classList.remove("months");
+    const years = [];
+    for (let i = -4; i <= 4; i++) {
+      years.push(this.currentYear + i);
+    }
+
+    // Create a button for each year
+    years.forEach((year) => {
+      const btn = document.createElement("button");
+      btn.classList.add("year-btn");
+
+      // Add appropriate classes based on the relationship with currentYear
+      if (year < this.currentYear) {
+        btn.classList.add("unactive");
+      } else if (year === this.currentYear) {
+        btn.classList.add("selected");
+      } else {
+        btn.classList.add("active");
+      }
+
+      btn.innerText = year;
+      btn.addEventListener("click", () => {
+        this.currentYear = year;
+        this.updateCalendarsState(CALENDARS_STATES.MONTHS);
+      });
+      this.yearsContainer.appendChild(btn);
+    });
   }
 
   show = () => {
