@@ -97,7 +97,6 @@ export default class Calendar {
   updateCalendar = (offset) => {
     let newCal;
     newCal = this.handleHeaderChange(offset);
-    // console.log(monthDetails)
     this.setHeader(newCal.year, newCal.month);
     this.calendar.innerHTML = "";
     this.setCalBody(newCal.monthDetails);
@@ -106,7 +105,6 @@ export default class Calendar {
   updateSelectedDay = (date, cell) => {
     // Call the callback function to notify the parent class of the change
     this.setSelectedDay(date.timestamp);
-    console.log("from calendar" + this.selectedDay);
 
     document.querySelectorAll(".cell_wrapper").forEach((cell) => {
       cell.classList.remove("active");

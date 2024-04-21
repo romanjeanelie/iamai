@@ -63,6 +63,12 @@ export default class AccorSearchBar {
       const phone__debug = document.querySelector(".phone__debug");
       phone__debug.style.display = "block";
       this.anims.toStandardOptions();
+
+      this.calendars = new AccorSearchBarCalendar({
+        key: "departureDate",
+        selectedDay: this.inputsValues["departureDate"],
+        setGlobalInputValues: this.setInputValues.bind(this),
+      });
     }
     // Init
     this.addEventListener();
@@ -153,8 +159,8 @@ export default class AccorSearchBar {
             this.destroyCalendar();
           } else {
             this.calendars = new AccorSearchBarCalendar({
-              selectedDay: this.inputsValues[inputBtn.getAttribute("data-key")],
               key: inputBtn.getAttribute("data-key"),
+              selectedDay: this.inputsValues[inputBtn.getAttribute("data-key")],
               setGlobalInputValues: this.setInputValues.bind(this),
             });
             this.calendarContainer = document.querySelector(".accorSearchBar__calendar-wrapper");

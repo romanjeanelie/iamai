@@ -9,6 +9,29 @@
   top: calc(100% + 32px);
   z-index: 1;
 
+  .accorSearchBar__calendar-nav {
+    display: flex;
+    margin-bottom: 24px;
+    justify-content: center;
+    gap: 16px;
+
+    .calendar_nav-item {
+      padding: 8px 16px;
+      border-radius: 32px;
+      font-size: 12px;
+      line-height: 16px; /* 133.333% */
+      letter-spacing: 0.5px;
+
+      &.active {
+        background-color: rgba($accorMain, 0.12);
+      }
+
+      &:not(.active):hover {
+        background: rgba($accorMain, 0.05);
+      }
+    }
+  }
+
   .date_pick-container {
     display: flex;
     justify-content: center;
@@ -95,37 +118,37 @@
 
   .calendar_main {
     grid-template-rows: repeat(5, min(30px));
-  }
 
-  .cell_wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 8px;
-    position: relative;
-    color: rgba($accorMain, 0.24);
-    font-size: 10px;
-    font-weight: 600;
-  }
+    .cell_wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 8px;
+      position: relative;
+      color: rgba($accorMain, 0.24);
+      font-size: 10px;
+      font-weight: 600;
+    }
 
-  .current {
-    transition: background-color 0.2s ease-out;
-    color: $accorMain;
-  }
+    .current {
+      transition: background-color 0.2s ease-out;
+      color: $accorMain;
+    }
 
-  .current:not(.active):hover {
-    background-color: $accorExtraExtraLight;
+    .current:not(.active):hover {
+      background-color: $accorExtraExtraLight;
+    }
+
+    .active {
+      background: $accorMain;
+      color: white;
+      border-radius: 30px;
+      outline: 3px solid $accorMain;
+    }
   }
 
   .cal-btn:hover,
   .current:hover {
     cursor: pointer;
-  }
-
-  .active {
-    background: $accorMain;
-    color: white;
-    border-radius: 30px;
-    outline: 3px solid $accorMain;
   }
 }
