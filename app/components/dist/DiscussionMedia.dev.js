@@ -105,6 +105,18 @@ function () {
       this.topWrapper.appendChild(this.sources);
     }
   }, {
+    key: "initImages",
+    value: function initImages() {
+      this.bottomWrapper.classList.remove("none");
+      this.imagesHeader = document.createElement("h3");
+      this.imagesHeader.className = "discussion__images-header";
+      this.imagesHeader.innerText = "Images";
+      this.bottomWrapper.appendChild(this.imagesHeader);
+      this.imagesContainer = document.createElement("div");
+      this.imagesContainer.className = "discussion__images-container user-images";
+      this.createImageSkeletons();
+    }
+  }, {
     key: "addImages",
     value: function addImages(srcs) {
       var _this = this;
@@ -114,18 +126,10 @@ function () {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              this.bottomWrapper.classList.remove("none");
-              this.imagesHeader = document.createElement("h3");
-              this.imagesHeader.className = "discussion__images-header";
-              this.imagesHeader.innerText = "Images";
-              this.bottomWrapper.appendChild(this.imagesHeader);
-              this.imagesContainer = document.createElement("div");
-              this.imagesContainer.className = "discussion__images-container user-images";
-              this.createImageSkeletons();
-              _context.next = 10;
+              _context.next = 2;
               return regeneratorRuntime.awrap((0, _loadImages["default"])(srcs));
 
-            case 10:
+            case 2:
               successfulSrcs = _context.sent;
               this.destroyImageSkeletons();
               imgs = successfulSrcs.map(function (src) {
@@ -139,7 +143,7 @@ function () {
               this.handleImgClick(imgs);
               this.bottomWrapper.appendChild(this.imagesContainer);
 
-            case 15:
+            case 7:
             case "end":
               return _context.stop();
           }

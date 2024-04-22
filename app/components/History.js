@@ -228,6 +228,7 @@ export default class History {
             emitter: this.emitter,
           });
           if (element.images.images) {
+            media.initImages();
             media?.addImages(JSON.parse(element.images.images).slice(0, 8));
           }
           if (element.sources.sources) {

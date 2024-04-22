@@ -438,6 +438,8 @@ export default class Discussion {
         emitter: this.emitter,
       });
 
+      media.initImages();
+
       media.addImages([
         "https://picsum.photos/300/500",
         "https://picsum.photos/300/500",

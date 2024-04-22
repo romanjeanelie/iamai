@@ -61,7 +61,7 @@ export default class DiscussionMedia {
     this.topWrapper.appendChild(this.sources);
   }
 
-  async addImages(srcs) {
+  initImages() {
     this.bottomWrapper.classList.remove("none");
 
     this.imagesHeader = document.createElement("h3");
@@ -73,6 +73,9 @@ export default class DiscussionMedia {
     this.imagesContainer = document.createElement("div");
     this.imagesContainer.className = "discussion__images-container user-images";
     this.createImageSkeletons();
+  }
+
+  async addImages(srcs) {
     const successfulSrcs = await loadImages(srcs);
     this.destroyImageSkeletons();
 

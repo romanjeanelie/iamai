@@ -222,10 +222,10 @@ class Chat {
           // }
         } else if (mdata.type == IMAGES) {
           // this.image_urls = JSON.parse(mdata.ui_params.image_urls); // old version
-          const media = new DiscussionMedia({ container: this.container, emitter: this.callbacks.emitter });
+
           this.image_urls = JSON.parse(mdata.response_json.images);
 
-          this.image_urls && media.addImages(this.image_urls.slice(0, 8));
+          this.image_urls && this.media.addImages(this.image_urls.slice(0, 8));
         } else if (mdata.type == SOURCES) {
           const media = new DiscussionMedia({ container: this.container, emitter: this.callbacks.emitter });
 
@@ -440,6 +440,9 @@ class Chat {
           }
           await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang });
         } else if (mdata.status && mdata.status == IMAGE_GENERATION_IN_PROGRESS) {
+          // set up the images scene with images skeletons
+          this.media = new DiscussionMedia({ container: this.container, emitter: this.callbacks.emitter });
+          this.media.initImages();
         } else if (mdata.status && mdata.status == RESPONSE_GREETING) {
           var mtext = mdata.response_json.text;
           if (mtext.trim().length > 0) {
