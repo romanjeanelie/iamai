@@ -66,6 +66,7 @@ export default class DiscussionMedia {
 
     // animation
     if (this.textContainer) {
+      gsap.set(this.topWrapper, { opacity: 0 });
       const initialState = Flip.getState([this.topWrapper, this.textContainer]);
       this.topWrapper.classList.remove("none");
 
@@ -75,12 +76,11 @@ export default class DiscussionMedia {
         onEnter: () => {
           gsap.fromTo(
             this.topWrapper,
-            { opacity: 0, yPercent: -100 },
+            { opacity: 0 },
             {
               opacity: 1,
-              yPercent: 0,
+              delay: 0.4,
               ease: Power3.easeOut,
-              delay: 0.02,
               duration: 1,
             }
           );
