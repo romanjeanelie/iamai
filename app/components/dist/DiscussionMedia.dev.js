@@ -5,6 +5,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
+var _gsap = _interopRequireDefault(require("gsap"));
+
+var _Flip = _interopRequireDefault(require("gsap/Flip"));
+
 var _anim = _interopRequireDefault(require("../utils/anim"));
 
 var _loadImages = _interopRequireDefault(require("../utils/loadImages"));
@@ -16,6 +20,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+_gsap["default"].registerPlugin(_Flip["default"]);
 
 function getDomainAndFavicon(url) {
   var urlObj = new URL(url);
@@ -39,6 +45,8 @@ function () {
     this.container = container;
     this.emitter = emitter;
     this.imagesSkeletons = [];
+    this.textContainer = this.container.querySelector(".text__container");
+    console.log(this.textContainer);
     this.init();
   }
 
@@ -55,7 +63,6 @@ function () {
   }, {
     key: "addSources",
     value: function addSources(sourcesData) {
-      this.topWrapper.classList.remove("none");
       this.sourcesHeader = document.createElement("h3");
       this.sourcesHeader.className = "discussion__sources-header";
       this.sourcesHeader.innerText = "Sources";
@@ -103,6 +110,25 @@ function () {
       }
 
       this.topWrapper.appendChild(this.sources);
+      console.log("before initial State"); // const initialState = Flip.getState([this.topWrapper, this.textContainer]);
+      // console.log("after iinitial");
+      // this.topWrapper.classList.remove("none");
+      // console.log("before flip");
+      // Flip?.from(initialState, {
+      //   duration: 0.3,
+      //   ease: "power3.out",
+      //   onEnter: () => {
+      //     console.log("before gsap");
+      //     gsap.fromTo(
+      //       this.topWrapper,
+      //       { opacity: 0, yPercent: -100 },
+      //       {
+      //         opacity: 1,
+      //         yPercent: 0,
+      //       }
+      //     );
+      //   },
+      // });
     }
   }, {
     key: "initImages",

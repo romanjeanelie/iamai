@@ -439,7 +439,6 @@ export default class Discussion {
       });
 
       media.initImages();
-
       media.addImages([
         "https://picsum.photos/300/500",
         "https://picsum.photos/300/500",

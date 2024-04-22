@@ -42,6 +42,14 @@ function () {
     value: function init() {
       var _this = this;
 
+      var textContainer = this.container.querySelector(".text__container");
+
+      if (!textContainer) {
+        textContainer = document.createElement("div");
+        textContainer.className = "text__container";
+        this.container.appendChild(textContainer);
+      }
+
       this.typingContainer = document.createElement("div");
       this.maskEl = document.createElement("div");
       this.logo = document.createElement("div");
@@ -74,7 +82,7 @@ function () {
       this.skeletons.forEach(function (skeleton) {
         return _this.skeletonContainer.appendChild(skeleton);
       });
-      this.container.appendChild(this.typingContainer);
+      textContainer.appendChild(this.typingContainer);
       this.translateCursor = null;
     }
   }, {

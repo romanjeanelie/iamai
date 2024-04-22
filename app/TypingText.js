@@ -10,6 +10,14 @@ export default class TypingText {
   }
 
   init() {
+    let textContainer = this.container.querySelector(".text__container");
+
+    if (!textContainer) {
+      textContainer = document.createElement("div");
+      textContainer.className = "text__container";
+      this.container.appendChild(textContainer);
+    }
+
     this.typingContainer = document.createElement("div");
     this.maskEl = document.createElement("div");
     this.logo = document.createElement("div");
@@ -43,7 +51,7 @@ export default class TypingText {
     this.typingContainer.appendChild(this.textEl);
     this.typingContainer.appendChild(this.skeletonContainer);
     this.skeletons.forEach((skeleton) => this.skeletonContainer.appendChild(skeleton));
-    this.container.appendChild(this.typingContainer);
+    textContainer.appendChild(this.typingContainer);
 
     this.translateCursor = null;
   }

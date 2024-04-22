@@ -1,5 +1,9 @@
+import gsap, { Power3 } from "gsap";
+import Flip from "gsap/Flip";
 import anim from "../utils/anim";
 import loadImages from "../utils/loadImages";
+
+gsap.registerPlugin(Flip);
 
 function getDomainAndFavicon(url) {
   const urlObj = new URL(url);
@@ -13,6 +17,7 @@ export default class DiscussionMedia {
     this.container = container;
     this.emitter = emitter;
     this.imagesSkeletons = [];
+    this.textContainer = this.container.querySelector(".text__container");
 
     this.init();
   }
@@ -29,7 +34,6 @@ export default class DiscussionMedia {
   }
 
   addSources(sourcesData) {
-    this.topWrapper.classList.remove("none");
     this.sourcesHeader = document.createElement("h3");
     this.sourcesHeader.className = "discussion__sources-header";
     this.sourcesHeader.innerText = "Sources";
@@ -59,6 +63,32 @@ export default class DiscussionMedia {
     }
 
     this.topWrapper.appendChild(this.sources);
+
+    // animation
+    if (this.textContainer) {
+      const initialState = Flip.getState([this.topWrapper, this.textContainer]);
+      this.topWrapper.classList.remove("none");
+
+      Flip?.from(initialState, {
+        duration: 0.3,
+        ease: Power3.easeOut,
+        onEnter: () => {
+          gsap.fromTo(
+            this.topWrapper,
+            { opacity: 0, yPercent: -100 },
+            {
+              opacity: 1,
+              yPercent: 0,
+              ease: Power3.easeOut,
+              delay: 0.02,
+              duration: 0.5,
+            }
+          );
+        },
+      });
+    } else {
+      this.topWrapper.classList.remove("none");
+    }
   }
 
   initImages() {
