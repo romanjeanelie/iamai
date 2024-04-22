@@ -665,6 +665,7 @@ class Chat {
     xhr.setRequestHeader("Content-Type", "application/json");
 
     xhr.send(data);
+    console.timeEnd("input");
   }
 
   updateTextContainer() {
