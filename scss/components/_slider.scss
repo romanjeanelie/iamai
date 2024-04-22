@@ -103,7 +103,7 @@
         overflow: hidden;
 
         img {
-          opacity: 0.5;
+          opacity: 0.8;
         }
 
         &:last-child {
@@ -111,7 +111,9 @@
         }
 
         &.selected {
-          opacity: 1;
+          img {
+            opacity: 1;
+          }
 
           .selected-icon {
             display: block;
