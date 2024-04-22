@@ -94,33 +94,27 @@
 
       .slider__img-container {
         position: relative;
-        opacity: 0.5;
         cursor: pointer;
         border-radius: 8px;
         overflow: hidden;
+
+        img {
+          opacity: 0.5;
+        }
 
         &:last-child {
           margin-right: 16px;
         }
 
-        .icon-badge {
-          .background {
-            fill: white;
-          }
-          .stroke {
-            stroke: black;
-          }
-        }
-
         &.selected {
           opacity: 1;
-          .icon-badge {
-            .background {
-              fill: #0047ff;
-            }
-            .stroke {
-              stroke: white;
-            }
+
+          .selected-icon {
+            display: block;
+          }
+
+          .unselected-icon {
+            display: none;
           }
         }
 
@@ -212,6 +206,7 @@
   .icon-badge {
     display: none;
     position: absolute;
+    box-sizing: oc-box;
     top: 16px;
     right: 16px;
 
@@ -219,12 +214,16 @@
       display: inline-block;
     }
 
-    .background {
-      fill: #0047ff;
-    }
+    .selected-icon {
+      display: none;
 
-    .stroke {
-      stroke: white;
+      .background {
+        fill: $colorBlueText;
+      }
+
+      .stroke {
+        stroke: white;
+      }
     }
   }
 }
