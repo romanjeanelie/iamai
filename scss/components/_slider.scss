@@ -63,6 +63,11 @@
     }
   }
 
+  .slider__gutter {
+    flex: none;
+    width: 100px;
+  }
+
   .slider__contentQuestionsWrapper {
     position: absolute;
     top: 0;
@@ -79,7 +84,6 @@
 
     .slider__contentQuestions {
       height: 100%;
-
       display: flex;
       align-items: center;
       gap: 16px;

@@ -440,9 +440,14 @@ export default class Discussion {
 
       media.initImages();
       media.addImages([
-        "https://picsum.photos/300/500",
-        "https://picsum.photos/300/500",
-        "https://picsum.photos/300/500",
+        "https://m.media-amazon.com/images/I/712uMZHVT2L._AC_UF1000,1000_QL80_.jpg",
+        "https://m.media-amazon.com/images/I/71cx53o2tEL._AC_UF1000,1000_QL80_.jpg",
+        "https://upload.wikimedia.org/wikipedia/commons/8/8d/President_Barack_Obama.jpg",
+        "https://upload.wikimedia.org/wikipedia/commons/e/e9/Official_portrait_of_Barack_Obama.jpg",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/President_Barack_Obama.jpg/800px-President_Barack_Obama.jpg",
+        "https://cdn.britannica.com/43/172743-138-545C299D/overview-Barack-Obama.jpg?w=800&h=450&c=crop",
+        "https://www.whitehouse.gov/wp-content/uploads/2021/01/44_barack_obama.jpg",
+        "https://trumpwhitehouse.archives.gov/wp-content/uploads/2017/12/44_barack_obama1.jpg",
       ]);
 
       media.addSources([
