@@ -98,11 +98,13 @@ export default class DiscussionMedia {
     this.imagesHeader.className = "discussion__images-header";
     this.imagesHeader.innerText = "Images";
 
+    gsap.set([this.imagesHeader, this.imagesContainer], { opacity: 0 });
     this.bottomWrapper.appendChild(this.imagesHeader);
 
     this.imagesContainer = document.createElement("div");
     this.imagesContainer.className = "discussion__images-container user-images";
-    this.createImageSkeletons();
+    const skeletonsContainer = this.createImageSkeletons();
+    gsap.fromTo([this.imagesHeader, skeletonsContainer], { opacity: 0 }, { opacity: 1, duration: 1 });
   }
 
   async addImages(srcs) {
@@ -160,14 +162,7 @@ export default class DiscussionMedia {
     this.imagesSkeletons.forEach((skeleton) => this.skeletonContainer.appendChild(skeleton));
     this.bottomWrapper.appendChild(this.skeletonContainer);
 
-    this.imagesSkeletons.forEach((skeleton, idx) => {
-      anim(skeleton, [{ transform: "scaleY(0)" }, { transform: "scaleY(1)" }], {
-        duration: 500,
-        delay: 50 * idx,
-        fill: "forwards",
-        ease: "ease-out",
-      });
-    });
+    return this.skeletonContainer;
   }
 
   destroyImageSkeletons() {
