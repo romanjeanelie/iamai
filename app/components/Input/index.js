@@ -231,6 +231,7 @@ export default class Input {
   // Submit
   onSubmit(event) {
     event.preventDefault();
+    console.time("input");
     if (this.isPageBlue) {
       this.toPageGrey({ duration: 1200 });
     }

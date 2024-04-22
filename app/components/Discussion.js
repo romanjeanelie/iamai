@@ -168,7 +168,9 @@ export default class Discussion {
   }
 
   async addUserElement({ text, imgs, debug = false } = {}) {
-    await gsap.to(this.discussionContainer, { duration: 0.5, y: -40, opacity: 0, ease: "power2.inOut" });
+    
+    //reduced the duration to save time
+    await gsap.to(this.discussionContainer, { duration: 0.0005, y: -40, opacity: 0, ease: "power2.inOut" });
     this.moveChildrenToPrevContainer();
 
     if (imgs && imgs.length > 0) {
@@ -192,6 +194,10 @@ export default class Discussion {
     this.userContainer.appendChild(userContainerspan);
 
     this.discussionContainer.appendChild(this.userContainer);
+    //moves this to save time
+    if (imgs && imgs.length > 0) this.getAiAnswer({ text, imgs });
+    else this.getAiAnswer({ text });
+
     gsap.fromTo(
       this.discussionContainer,
       { y: 20, opacity: 0 },
@@ -210,8 +216,8 @@ export default class Discussion {
       }, 1000);
       return;
     }
-    if (imgs && imgs.length > 0) this.getAiAnswer({ text, imgs });
-    else this.getAiAnswer({ text });
+    // if (imgs && imgs.length > 0) this.getAiAnswer({ text, imgs });
+    // else this.getAiAnswer({ text });
   }
 
   async addStatus({ text, textEl, container }) {
