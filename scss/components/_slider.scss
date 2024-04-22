@@ -1,4 +1,6 @@
 .slider {
+  $disabledColor: #92a1b1;
+
   position: fixed;
   top: 0;
   left: 0;
@@ -138,16 +140,22 @@
   .slider__questions {
     width: 40px;
     height: 40px;
-    background: rgba($colorMain, 0.48);
+    background: rgba(white, 0.8);
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
 
-    transition: opacity 0.3s ease-in-out;
+    transition: background-color 0.3s ease-in-out;
 
     &:hover {
-      opacity: 0.8;
+      background-color: rgba(white, 1);
+    }
+
+    path,
+    rect {
+      transition: fill 0.3s ease-in-out;
+      fill: $colorBlueText;
     }
   }
 
@@ -181,7 +189,11 @@
     transform: translateY(-50%);
 
     &:disabled {
-      opacity: 0.3;
+      background-color: rgba(white, 0.6);
+      path,
+      rect {
+        fill: $disabledColor;
+      }
     }
 
     @include media("<tablet") {
