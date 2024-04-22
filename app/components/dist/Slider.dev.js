@@ -5,6 +5,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
+var _gsap = _interopRequireDefault(require("gsap"));
+
+var _ScrollTrigger = _interopRequireDefault(require("gsap/ScrollTrigger"));
+
 var _getImageOrientation = _interopRequireDefault(require("../utils/getImageOrientation"));
 
 var _isMobile = _interopRequireDefault(require("../utils/isMobile"));
@@ -24,6 +28,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+_gsap["default"].registerPlugin(_ScrollTrigger["default"]);
 
 var Slider =
 /*#__PURE__*/
@@ -164,6 +170,10 @@ function () {
       this.leftGutter = document.createElement("div");
       this.leftGutter.className = "slider__gutter slider__left-gutter";
       this.sliderContentQuestionsEl.appendChild(this.leftGutter);
+      this.selectedCounter = document.createElement("div");
+      this.selectedCounter.className = "slider__selected-counter";
+      this.selectedCounter.innerHTML = "Images Selected <span class=\"selected-counter empty\">0</span> of ".concat(this.imgs.length);
+      this.sliderContentQuestionsWrapperEl.appendChild(this.selectedCounter);
       this.imgs.forEach(function (img, i) {
         _this3.addImg({
           img: img,
@@ -221,10 +231,23 @@ function () {
       this.inputTextEl.classList.remove("height-imageQuestions");
     }
   }, {
+    key: "updateSelectedCounter",
+    value: function updateSelectedCounter() {
+      var selectCounterSpan = this.selectedCounter.querySelector(".selected-counter");
+      selectCounterSpan.textContent = this.imgsSelected.length;
+
+      if (this.imgsSelected.length > 0) {
+        selectCounterSpan.classList.remove("empty");
+      } else {
+        selectCounterSpan.classList.add("empty");
+      }
+    }
+  }, {
     key: "checkImagesSelected",
     value: function checkImagesSelected() {
       var imgsSelected = this.sliderContentQuestionsEl.querySelectorAll(".selected img");
       this.imgsSelected = _toConsumableArray(imgsSelected);
+      this.updateSelectedCounter();
       this.emitter.emit("input:updateImages", this.imgsSelected);
     }
   }, {

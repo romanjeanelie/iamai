@@ -1,5 +1,9 @@
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 import getImageOrientation from "../utils/getImageOrientation";
 import isMobile from "../utils/isMobile";
+
+gsap.registerPlugin(ScrollTrigger);
 export default class Slider {
   constructor({ emitter, pageEl }) {
     this.emitter = emitter;
@@ -91,6 +95,12 @@ export default class Slider {
     this.leftGutter.className = "slider__gutter slider__left-gutter";
     this.sliderContentQuestionsEl.appendChild(this.leftGutter);
 
+    this.selectedCounter = document.createElement("div");
+    this.selectedCounter.className = "slider__selected-counter";
+    this.selectedCounter.innerHTML = `Images Selected <span class="selected-counter empty">0</span> of ${this.imgs.length}`;
+
+    this.sliderContentQuestionsWrapperEl.appendChild(this.selectedCounter);
+
     this.imgs.forEach((img, i) => {
       this.addImg({ img, type: "questions" });
     });
@@ -149,9 +159,20 @@ export default class Slider {
     this.inputTextEl.classList.remove("height-imageQuestions");
   }
 
+  updateSelectedCounter() {
+    const selectCounterSpan = this.selectedCounter.querySelector(".selected-counter");
+    selectCounterSpan.textContent = this.imgsSelected.length;
+    if (this.imgsSelected.length > 0) {
+      selectCounterSpan.classList.remove("empty");
+    } else {
+      selectCounterSpan.classList.add("empty");
+    }
+  }
+
   checkImagesSelected() {
     const imgsSelected = this.sliderContentQuestionsEl.querySelectorAll(".selected img");
     this.imgsSelected = [...imgsSelected];
+    this.updateSelectedCounter();
     this.emitter.emit("input:updateImages", this.imgsSelected);
   }
 

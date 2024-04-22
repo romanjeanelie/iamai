@@ -64,8 +64,11 @@
   }
 
   .slider__gutter {
+    position: relative;
+    height: 30vh;
     flex: none;
     width: 100px;
+    z-index: 999;
   }
 
   .slider__contentQuestionsWrapper {
@@ -82,11 +85,29 @@
       display: block;
     }
 
+    .slider__selected-counter {
+      // background-color: red;
+      color: $colorBlueText;
+      position: fixed;
+      top: calc(35vh - 20px - 24px);
+      left: 30vw;
+      transform: translate(-50%, 0);
+      color: $colorBlueText;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 20px; /* 125% */
+      text-wrap: nowrap;
+
+      .selected-counter.empty {
+        color: rgba($colorBlueText, 0.4);
+      }
+    }
+
     .slider__contentQuestions {
       height: 100%;
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 24px;
 
       overflow-x: scroll;
       // Hide scrollbar
