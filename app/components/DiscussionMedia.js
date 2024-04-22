@@ -70,7 +70,7 @@ export default class DiscussionMedia {
       this.topWrapper.classList.remove("none");
 
       Flip?.from(initialState, {
-        duration: 0.3,
+        duration: 1,
         ease: Power3.easeOut,
         onEnter: () => {
           gsap.fromTo(
@@ -81,7 +81,7 @@ export default class DiscussionMedia {
               yPercent: 0,
               ease: Power3.easeOut,
               delay: 0.02,
-              duration: 0.5,
+              duration: 1,
             }
           );
         },
