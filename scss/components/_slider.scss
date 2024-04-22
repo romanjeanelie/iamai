@@ -110,6 +110,10 @@
           margin-right: 16px;
         }
 
+        &.hidden {
+          opacity: 0;
+        }
+
         &.selected {
           img {
             opacity: 1;

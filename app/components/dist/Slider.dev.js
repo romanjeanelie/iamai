@@ -52,6 +52,8 @@ function () {
     this.navbarEl = document.querySelector(".nav");
     this.inputEl = pageEl.querySelector(".input__wrapper");
     this.inputTextEl = this.inputEl.querySelector(".input-text__expand");
+    this.selectedCounter = null; // set in open questions slider
+
     this.imgs = [];
     this.imgsSelected = [];
     this.questionsImgs = [];
@@ -171,16 +173,24 @@ function () {
       this.rightGutter = document.createElement("div");
       this.rightGutter.className = "slider__gutter slider__right-gutter";
       this.sliderContentQuestionsEl.appendChild(this.rightGutter);
-      var firstImg = this.questionsImgs[0]; // Wait for the image to load
+      var firstImg = this.questionsImgs[0].querySelector("img"); // Wait for the image to load
 
-      firstImg.querySelector("img").addEventListener("load", function () {
-        _this3.setGutterWidth("left");
+      firstImg.addEventListener("load", function () {
+        setTimeout(function () {
+          _this3.setGutterWidth("left");
 
-        _this3.sliderContentQuestionsWrapperEl.classList.add("show");
+          _this3.questionsImgs.forEach(function (img) {
+            img.classList.remove("hidden");
+          });
+        }, 50);
       });
-      var lastImg = this.questionsImgs[this.questionsImgs.length - 1];
-      lastImg.querySelector("img").addEventListener("load", function () {
-        _this3.setGutterWidth("right");
+      this.sliderContentQuestionsWrapperEl.classList.add("show");
+      var lastImg = this.questionsImgs[this.questionsImgs.length - 1].querySelector("img");
+      lastImg.addEventListener("load", function () {
+        // need to wait for the image to load to calculate the gutter width
+        setTimeout(function () {
+          _this3.setGutterWidth("right");
+        }, 50);
       }); // this.sliderEl.classList.remove("all-page");
 
       this.setMaxHeightInputText();
@@ -227,6 +237,7 @@ function () {
           type = _ref5$type === void 0 ? null : _ref5$type;
       var imgContainer = document.createElement("div");
       imgContainer.className = "slider__img-container";
+      imgContainer.classList.add("hidden");
       var imgCopy = img.cloneNode(true);
       var orientation = (0, _getImageOrientation["default"])(imgCopy);
       imgCopy.classList.add(orientation);

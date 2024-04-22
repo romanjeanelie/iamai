@@ -21,6 +21,7 @@ export default class Slider {
     this.navbarEl = document.querySelector(".nav");
     this.inputEl = pageEl.querySelector(".input__wrapper");
     this.inputTextEl = this.inputEl.querySelector(".input-text__expand");
+    this.selectedCounter = null; // set in open questions slider
 
     this.imgs = [];
     this.imgsSelected = [];
@@ -98,16 +99,25 @@ export default class Slider {
     this.rightGutter.className = "slider__gutter slider__right-gutter";
     this.sliderContentQuestionsEl.appendChild(this.rightGutter);
 
-    const firstImg = this.questionsImgs[0];
-    // Wait for the image to load
-    firstImg.querySelector("img").addEventListener("load", () => {
-      this.setGutterWidth("left");
-      this.sliderContentQuestionsWrapperEl.classList.add("show");
-    });
+    const firstImg = this.questionsImgs[0].querySelector("img");
 
-    const lastImg = this.questionsImgs[this.questionsImgs.length - 1];
-    lastImg.querySelector("img").addEventListener("load", () => {
-      this.setGutterWidth("right");
+    // Wait for the image to load
+    firstImg.addEventListener("load", () => {
+      setTimeout(() => {
+        this.setGutterWidth("left");
+        this.questionsImgs.forEach((img) => {
+          img.classList.remove("hidden");
+        });
+      }, 50);
+    });
+    this.sliderContentQuestionsWrapperEl.classList.add("show");
+
+    const lastImg = this.questionsImgs[this.questionsImgs.length - 1].querySelector("img");
+    lastImg.addEventListener("load", () => {
+      // need to wait for the image to load to calculate the gutter width
+      setTimeout(() => {
+        this.setGutterWidth("right");
+      }, 50);
     });
 
     // this.sliderEl.classList.remove("all-page");
@@ -148,6 +158,7 @@ export default class Slider {
   addImg({ img, type = null }) {
     const imgContainer = document.createElement("div");
     imgContainer.className = "slider__img-container";
+    imgContainer.classList.add("hidden");
     const imgCopy = img.cloneNode(true);
     const orientation = getImageOrientation(imgCopy);
     imgCopy.classList.add(orientation);
