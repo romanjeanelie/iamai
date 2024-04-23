@@ -101,6 +101,12 @@
       .selected-counter.empty {
         color: rgba($colorBlueText, 0.4);
       }
+
+      @include media("<phone") {
+        text-wrap: wrap;
+        left: 24px;
+        transform: translate(0);
+      }
     }
 
     .slider__contentQuestions {

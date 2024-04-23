@@ -136,12 +136,12 @@ export default class Slider {
     if (!this.questionsImgs.length) return;
     if (gutter === "left") {
       const leftGutterWidth =
-        window.innerWidth < 560 ? 24 : (window.innerWidth - this.questionsImgs[0].offsetWidth) / 2 - this.gap;
+        window.innerWidth < 560 ? 0 : (window.innerWidth - this.questionsImgs[0].offsetWidth) / 2 - this.gap;
       this.leftGutter.style.width = `${leftGutterWidth}px`;
     } else if (gutter === "right") {
       const rightGutterWidth =
         window.innerWidth < 560
-          ? 24
+          ? 0
           : (window.innerWidth - this.questionsImgs[this.questionsImgs.length - 1].offsetWidth) / 2 - this.gap;
       this.rightGutter.style.width = `${rightGutterWidth}px`;
     }
