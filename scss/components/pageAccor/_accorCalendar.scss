@@ -1,14 +1,24 @@
 .accorSearchBar__calendar-wrapper {
   display: none;
   position: absolute;
+  top: calc(100% + 32px);
+}
+
+.accorSearchBar__calendar-bg {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(white, 0.65);
+  z-index: 0;
+}
+
+.accorSearchBar__calendar {
+  position: relative;
   width: 666px;
   min-height: 100px;
   background-color: $backgroundColorGreyPage;
   border-radius: 16px;
   padding: 24px 16px 32px;
-  top: calc(100% + 32px);
   z-index: 1;
-  box-shadow: 0 0 0 1000vh rgba(white, 0.65); /* Drop shadow effect */
 
   @include media("<tablet") {
     width: 100%;

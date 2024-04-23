@@ -8,9 +8,10 @@ const CALENDARS_STATES = {
 };
 
 export default class AccorSearchBarCalendars {
-  constructor({ selectedDay, key, setGlobalInputValues }) {
+  constructor({ selectedDay, key, setGlobalInputValues, emitter }) {
     this.key = key;
     this.setGlobalInputValues = setGlobalInputValues;
+    this.emitter = emitter;
 
     // States
     this.calendars = [];
@@ -22,7 +23,9 @@ export default class AccorSearchBarCalendars {
     this.state = CALENDARS_STATES.DATES;
 
     // Dom Elements
-    this.wrapper = document.querySelector(".accorSearchBar__calendar-wrapper");
+    this.surWrapper = document.querySelector(".accorSearchBar__calendar-wrapper");
+    this.background = document.querySelector(".accorSearchBar__calendar-bg");
+    this.wrapper = document.querySelector(".accorSearchBar__calendar");
     this.yearsContainer = document.querySelector(".years_pick-container");
     this.calContainer = document.querySelector(".date_pick-container");
     this.headerBtns = document.querySelectorAll(".calendar_nav-item");
@@ -108,11 +111,11 @@ export default class AccorSearchBarCalendars {
   }
 
   show = () => {
-    this.wrapper.style.display = "block";
+    this.surWrapper.style.display = "block";
   };
 
   hide = () => {
-    this.wrapper.style.display = "none";
+    this.surWrapper.style.display = "none";
   };
 
   // Update the selected day
@@ -204,6 +207,7 @@ export default class AccorSearchBarCalendars {
 
     // Nullify properties that could be holding large amounts of data
     this.calendars = null;
+    this.surWrapper = null;
     this.wrapper = null;
     this.yearsContainer = null;
     this.calContainer = null;
@@ -229,6 +233,11 @@ export default class AccorSearchBarCalendars {
       }
   }
 
+  closeOnClickOutside = () => {
+    this.emitter.emit("closeCalendar");
+    this.destroy();
+  };
+
   addEventListeners = () => {
     this.headerBtns.forEach((btn) => {
       btn.addEventListener("click", () => {
@@ -243,6 +252,8 @@ export default class AccorSearchBarCalendars {
         this.updateCalendars(btn);
       });
     });
+
+    this.background.addEventListener("click", this.closeOnClickOutside);
 
     window.addEventListener("resize", () => {
       this.isMobile = window.innerWidth < 820;

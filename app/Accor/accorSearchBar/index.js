@@ -140,13 +140,9 @@ export default class AccorSearchBar {
       if (!this.wrapper.contains(event.target) && !this.calendars) {
         this.anims.toMinimized();
       }
-
-      if (this.calendars) {
-        if (!this.wrapper.contains(event.target) && !this.calendars.wrapper.contains(event.target)) {
-          this.destroyCalendar();
-        }
-      }
     });
+
+    this.emitter.on("closeCalendar", this.destroyCalendar.bind(this));
 
     // handling all the inputs
     this.inputBtns.forEach((inputBtn) => {
@@ -160,6 +156,7 @@ export default class AccorSearchBar {
               key: inputBtn.getAttribute("data-key"),
               selectedDay: this.inputsValues[inputBtn.getAttribute("data-key")],
               setGlobalInputValues: this.setInputValues.bind(this),
+              emitter: this.emitter,
             });
           }
         }
