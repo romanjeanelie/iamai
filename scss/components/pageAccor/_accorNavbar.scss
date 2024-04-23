@@ -49,6 +49,7 @@ $expandedSearchBarWidth: min(763px, 50vw);
 .accorNavbar__mainBar {
   display: flex;
   gap: 24px;
+  z-index: 10;
 }
 
 .accorSearchBar__wrapper {

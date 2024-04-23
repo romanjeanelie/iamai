@@ -16,7 +16,7 @@ export default class AccorSearchBarCalendars {
     this.calendars = [];
     this.isMobile = window.innerWidth < 820;
     this.selectedDay = selectedDay;
-    console.log("selectedDay", new Date(selectedDay).getMonth());
+
     this.currentYear = new Date().getFullYear();
     this.centeredYear = this.currentYear;
     this.state = CALENDARS_STATES.DATES;
@@ -28,13 +28,14 @@ export default class AccorSearchBarCalendars {
     this.headerBtns = document.querySelectorAll(".calendar_nav-item");
     this.btns = document.querySelectorAll(".cal-btn");
 
+    this.updateHeader(CALENDARS_STATES.DATES);
     this.initDates();
     this.show();
     this.addEventListeners();
   }
 
   // Initialize the calendars
-  initDates(month = 11, year = new Date().getFullYear()) {
+  initDates(month = new Date(this.selectedDay).getMonth(), year = new Date(this.selectedDay).getFullYear()) {
     const calendarCount = this.isMobile ? 1 : 2;
 
     for (let i = 0; i < calendarCount; i++) {
@@ -68,6 +69,7 @@ export default class AccorSearchBarCalendars {
       this.calendars.push(calendar);
 
       calendar.calendarContainer.addEventListener("click", () => {
+        console.log(this.currentYear);
         this.updateCalendarsState(CALENDARS_STATES.DATES, i, this.currentYear);
       });
     }
@@ -111,7 +113,6 @@ export default class AccorSearchBarCalendars {
 
   hide = () => {
     this.wrapper.style.display = "none";
-    this.destroyCalendars();
   };
 
   // Update the selected day
@@ -147,7 +148,7 @@ export default class AccorSearchBarCalendars {
   updateHeader = (newState) => {
     // Remove active class from all buttons
     let btn;
-    this.headerBtns.forEach((headerBtn) => {
+    this.headerBtns?.forEach((headerBtn) => {
       headerBtn.classList.remove("active");
       // get the button with data-state equal to newState
       if (headerBtn.getAttribute("data-state") === newState) {
@@ -155,10 +156,10 @@ export default class AccorSearchBarCalendars {
       }
     });
 
-    btn.classList.add("active");
+    btn?.classList.add("active");
     // Update wrapper class
-    this.wrapper.classList.remove("dates", "months", "years");
-    this.wrapper.classList.add(newState);
+    this.wrapper?.classList.remove("dates", "months", "years");
+    this.wrapper?.classList.add(newState);
   };
 
   // Navigate through the calendars (clicking the back and next buttons)
@@ -187,18 +188,33 @@ export default class AccorSearchBarCalendars {
   destroyCalendars = () => {
     // this.wrapper.style.display = "none";
     // Clear inner HTML of all calendar bodies
-    this.calendars.forEach((calendar) => {
+    this.calendars?.forEach((calendar) => {
       calendar.destroy();
     });
     this.calendars = [];
 
-    this.yearsContainer.innerHTML = "";
+    if (this.yearsContainer) this.yearsContainer.innerHTML = "";
+  };
+
+  destroy = () => {
+    this.hide();
+
+    // Destroy all calendars
+    this.destroyCalendars();
+
+    // Nullify properties that could be holding large amounts of data
+    this.calendars = null;
+    this.wrapper = null;
+    this.yearsContainer = null;
+    this.calContainer = null;
+    this.headerBtns = null;
+    this.btns = null;
   };
 
   handleWindowResize() {
     // only when state is DATES
     if (this.state)
-      if (!this.isMobile && this.calendars.length === 1) {
+      if (!this.isMobile && this.calendars?.length === 1) {
         const newCalendar = new Calendar({
           container: this.calContainer,
           month: new Date().getMonth() + 1,

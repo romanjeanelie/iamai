@@ -107,7 +107,7 @@ export default class AccorSearchBar {
   // Inputs
   destroyCalendar() {
     if (this.calendars) {
-      this.calendars.hide();
+      this.calendars.destroy();
       this.calendars = null;
     }
   }
@@ -137,16 +137,14 @@ export default class AccorSearchBar {
     this.phoneCloseBtn.addEventListener("click", this.endPhoneCall.bind(this));
 
     document.addEventListener("click", (event) => {
-      if (!this.wrapper.contains(event.target)) {
+      if (!this.wrapper.contains(event.target) && !this.calendars) {
         this.anims.toMinimized();
       }
 
-      if (
-        this.calendarContainer &&
-        !this.calendarContainer.contains(event.target) &&
-        !this.searchBar.contains(event.target)
-      ) {
-        this.destroyCalendar();
+      if (this.calendars) {
+        if (!this.wrapper.contains(event.target) && !this.calendars.wrapper.contains(event.target)) {
+          this.destroyCalendar();
+        }
       }
     });
 
@@ -163,7 +161,6 @@ export default class AccorSearchBar {
               selectedDay: this.inputsValues[inputBtn.getAttribute("data-key")],
               setGlobalInputValues: this.setInputValues.bind(this),
             });
-            this.calendarContainer = document.querySelector(".accorSearchBar__calendar-wrapper");
           }
         }
       });
