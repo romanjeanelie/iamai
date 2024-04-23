@@ -197,14 +197,15 @@ function () {
       var lastImg = this.questionsImgs[this.questionsImgs.length - 1].querySelector("img");
       lastImg.addEventListener("load", function () {
         _this3.setGutterWidth("right");
-      }); // this.sliderEl.classList.remove("all-page");
-
+      });
+      this.sliderEl.classList.remove("all-page");
       this.setMaxHeightInputText();
     }
   }, {
     key: "setGutterWidth",
     value: function setGutterWidth() {
       var gutter = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "left";
+      if (!this.questionsImgs.length) return;
 
       if (gutter === "left") {
         var leftGutterWidth = window.innerWidth < 560 ? 24 : (window.innerWidth - this.questionsImgs[0].offsetWidth) / 2 - this.gap;

@@ -13,11 +13,6 @@
 
 .discussion__top-wrapper {
   margin-bottom: 24px;
-
-  // &.none {
-  //   height: 0;
-  //   overflow: hidden;
-  // }
 }
 
 .discussion__top-wrapper {
@@ -57,7 +52,7 @@
   .discussion__images-container {
     display: flex;
     justify-content: end;
-
+    gap: 16px;
     img {
       width: auto;
       height: 98px;

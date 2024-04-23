@@ -127,12 +127,13 @@ export default class Slider {
       this.setGutterWidth("right");
     });
 
-    // this.sliderEl.classList.remove("all-page");
+    this.sliderEl.classList.remove("all-page");
 
     this.setMaxHeightInputText();
   }
 
   setGutterWidth(gutter = "left") {
+    if (!this.questionsImgs.length) return;
     if (gutter === "left") {
       const leftGutterWidth =
         window.innerWidth < 560 ? 24 : (window.innerWidth - this.questionsImgs[0].offsetWidth) / 2 - this.gap;

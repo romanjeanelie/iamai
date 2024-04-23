@@ -129,8 +129,12 @@ export default class Input {
     this.addListeners();
 
     // Emitter
-    this.emitter.on("input:toWrite", () => {
-      this.toWrite.bind(this);
+    this.emitter.on("input:toWrite", (data) => {
+      if (data && data.type === "imageQuestions") {
+        this.toWrite({ type: data.type });
+      } else {
+        this.toWrite();
+      }
     });
     this.emitter.on("input:updateImages", this.updateImages.bind(this));
 

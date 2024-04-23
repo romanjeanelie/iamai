@@ -147,8 +147,14 @@ function () {
 
     this.addListeners(); // Emitter
 
-    this.emitter.on("input:toWrite", function () {
-      _this.toWrite.bind(_this);
+    this.emitter.on("input:toWrite", function (data) {
+      if (data && data.type === "imageQuestions") {
+        _this.toWrite({
+          type: data.type
+        });
+      } else {
+        _this.toWrite();
+      }
     });
     this.emitter.on("input:updateImages", this.updateImages.bind(this)); // TEMP
 
@@ -327,6 +333,7 @@ function () {
     key: "onSubmit",
     value: function onSubmit(event) {
       event.preventDefault();
+      console.time("input");
 
       if (this.isPageBlue) {
         this.toPageGrey({
