@@ -31,6 +31,7 @@ export default class Slider {
     this.imgsSelected = [];
     this.questionsImgs = [];
     this.currentIndex = 0;
+    this.gap = 24;
 
     this.emitter.on("slider:open", (data) => this.open(data));
     this.emitter.on("slider:addImg", (img) => this.addImg({ img }));
@@ -112,22 +113,18 @@ export default class Slider {
     const firstImg = this.questionsImgs[0].querySelector("img");
 
     // Wait for the image to load
-    firstImg.addEventListener("load", () => {
-      setTimeout(() => {
-        this.setGutterWidth("left");
-        this.questionsImgs.forEach((img) => {
-          img.classList.remove("hidden");
-        });
-      }, 50);
+    firstImg.addEventListener("load", (e) => {
+      this.setGutterWidth("left");
+      this.questionsImgs.forEach((img) => {
+        img.classList.remove("hidden");
+      });
     });
+
     this.sliderContentQuestionsWrapperEl.classList.add("show");
 
     const lastImg = this.questionsImgs[this.questionsImgs.length - 1].querySelector("img");
     lastImg.addEventListener("load", () => {
-      // need to wait for the image to load to calculate the gutter width
-      setTimeout(() => {
-        this.setGutterWidth("right");
-      }, 50);
+      this.setGutterWidth("right");
     });
 
     // this.sliderEl.classList.remove("all-page");
@@ -138,13 +135,13 @@ export default class Slider {
   setGutterWidth(gutter = "left") {
     if (gutter === "left") {
       const leftGutterWidth =
-        window.innerWidth < 560 ? 24 : (window.innerWidth - this.questionsImgs[0].offsetWidth) / 2 - 16;
+        window.innerWidth < 560 ? 24 : (window.innerWidth - this.questionsImgs[0].offsetWidth) / 2 - this.gap;
       this.leftGutter.style.width = `${leftGutterWidth}px`;
     } else if (gutter === "right") {
       const rightGutterWidth =
         window.innerWidth < 560
           ? 24
-          : (window.innerWidth - this.questionsImgs[this.questionsImgs.length - 1].offsetWidth) / 2 - 16;
+          : (window.innerWidth - this.questionsImgs[this.questionsImgs.length - 1].offsetWidth) / 2 - this.gap;
       this.rightGutter.style.width = `${rightGutterWidth}px`;
     }
   }
@@ -154,6 +151,8 @@ export default class Slider {
   }
 
   resetImageQuestions() {
+    this.selectedCounter.remove();
+    this.questionsImgs = [];
     this.sliderContentQuestionsEl.innerHTML = "";
     this.sliderContentQuestionsWrapperEl.classList.remove("show");
     this.inputTextEl.classList.remove("height-imageQuestions");

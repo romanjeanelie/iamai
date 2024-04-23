@@ -64,6 +64,7 @@ function () {
     this.imgsSelected = [];
     this.questionsImgs = [];
     this.currentIndex = 0;
+    this.gap = 24;
     this.emitter.on("slider:open", function (data) {
       return _this.open(data);
     });
@@ -185,22 +186,17 @@ function () {
       this.sliderContentQuestionsEl.appendChild(this.rightGutter);
       var firstImg = this.questionsImgs[0].querySelector("img"); // Wait for the image to load
 
-      firstImg.addEventListener("load", function () {
-        setTimeout(function () {
-          _this3.setGutterWidth("left");
+      firstImg.addEventListener("load", function (e) {
+        _this3.setGutterWidth("left");
 
-          _this3.questionsImgs.forEach(function (img) {
-            img.classList.remove("hidden");
-          });
-        }, 50);
+        _this3.questionsImgs.forEach(function (img) {
+          img.classList.remove("hidden");
+        });
       });
       this.sliderContentQuestionsWrapperEl.classList.add("show");
       var lastImg = this.questionsImgs[this.questionsImgs.length - 1].querySelector("img");
       lastImg.addEventListener("load", function () {
-        // need to wait for the image to load to calculate the gutter width
-        setTimeout(function () {
-          _this3.setGutterWidth("right");
-        }, 50);
+        _this3.setGutterWidth("right");
       }); // this.sliderEl.classList.remove("all-page");
 
       this.setMaxHeightInputText();
@@ -211,10 +207,10 @@ function () {
       var gutter = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "left";
 
       if (gutter === "left") {
-        var leftGutterWidth = window.innerWidth < 560 ? 24 : (window.innerWidth - this.questionsImgs[0].offsetWidth) / 2 - 16;
+        var leftGutterWidth = window.innerWidth < 560 ? 24 : (window.innerWidth - this.questionsImgs[0].offsetWidth) / 2 - this.gap;
         this.leftGutter.style.width = "".concat(leftGutterWidth, "px");
       } else if (gutter === "right") {
-        var rightGutterWidth = window.innerWidth < 560 ? 24 : (window.innerWidth - this.questionsImgs[this.questionsImgs.length - 1].offsetWidth) / 2 - 16;
+        var rightGutterWidth = window.innerWidth < 560 ? 24 : (window.innerWidth - this.questionsImgs[this.questionsImgs.length - 1].offsetWidth) / 2 - this.gap;
         this.rightGutter.style.width = "".concat(rightGutterWidth, "px");
       }
     }
@@ -226,6 +222,8 @@ function () {
   }, {
     key: "resetImageQuestions",
     value: function resetImageQuestions() {
+      this.selectedCounter.remove();
+      this.questionsImgs = [];
       this.sliderContentQuestionsEl.innerHTML = "";
       this.sliderContentQuestionsWrapperEl.classList.remove("show");
       this.inputTextEl.classList.remove("height-imageQuestions");
