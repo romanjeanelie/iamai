@@ -41,9 +41,7 @@
 .prev-discussion__container {
   width: 100%;
   max-width: $discussionMaxWidth;
-  scrollbar-width: none;
-  /* for Firefox */
-  -ms-overflow-style: none;
+
   padding-top: 55px;
 
   @include media("<tablet") {
@@ -68,40 +66,6 @@
     p {
       overflow-wrap: break-word;
     }
-
-    //  .sources {
-    //     display: flex;
-    //     margin-top: 12px;
-    //     flex-wrap: wrap;
-    //     gap: 12px;
-
-    //     a {
-    //       background-color: rgba(0, 0, 0, 0.04);
-    //       border-radius: 50px;
-    //       padding: 4px 12px 4px 4px;
-    //       font-family: "SFPro";
-    //       font-size: 12px;
-    //       line-height: 20px;
-    //       text-decoration: none;
-    //       display: flex;
-    //       align-items: center;
-    //       gap: 8px;
-
-    //       &:hover {
-    //         background-color: rgba(0, 0, 0, 0.08);
-    //       }
-    //     }
-
-    //     a img {
-    //       width: 20px;
-    //       height: 20px;
-    //       border-radius: 100%;
-    //     }
-
-    //     &.none {
-    //       display: none;
-    //     }
-    //   }
 
     @include media("<tablet") {
       font-size: 16px;
@@ -131,15 +95,8 @@
       justify-content: flex-end;
     }
 
-    img {
-      //   margin-left: auto;
-      //   width: unset;
-      //   height: unset;
-      //   max-width: 100%;
-      //   max-height: 60vh;
-      //   object-fit: cover;
-      //   object-position: center;
-      //   border-radius: 20px;
+    @include media("<desktop") {
+      padding-right: 16px;
     }
 
     @include media("<tablet") {
