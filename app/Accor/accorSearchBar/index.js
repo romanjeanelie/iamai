@@ -151,14 +151,13 @@ export default class AccorSearchBar {
         if (dataType === "calendar") {
           if (this.calendars) {
             this.destroyCalendar();
-          } else {
-            this.calendars = new AccorSearchBarCalendar({
-              key: inputBtn.getAttribute("data-key"),
-              selectedDay: this.inputsValues[inputBtn.getAttribute("data-key")],
-              setGlobalInputValues: this.setInputValues.bind(this),
-              emitter: this.emitter,
-            });
           }
+          this.calendars = new AccorSearchBarCalendar({
+            key: inputBtn.getAttribute("data-key"),
+            selectedDay: this.inputsValues[inputBtn.getAttribute("data-key")],
+            setGlobalInputValues: this.setInputValues.bind(this),
+            emitter: this.emitter,
+          });
         }
       });
     });

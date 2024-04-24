@@ -1,4 +1,3 @@
-import { STATES } from ".";
 import Calendar from "../../components/Calendar";
 
 const CALENDARS_STATES = {
@@ -18,6 +17,7 @@ export default class AccorSearchBarCalendars {
     this.isMobile = window.innerWidth < 820;
     this.selectedDay = selectedDay;
 
+    this.currentMonth = new Date().getMonth();
     this.currentYear = new Date().getFullYear();
     this.centeredYear = this.currentYear;
     this.state = CALENDARS_STATES.DATES;
@@ -32,7 +32,7 @@ export default class AccorSearchBarCalendars {
     this.btns = document.querySelectorAll(".cal-btn");
 
     this.updateHeader(CALENDARS_STATES.DATES);
-    this.initDates();
+    this.selectedDay === null ? this.initDates(this.currentMonth, this.currentYear) : this.initDates();
     this.show();
     this.addEventListeners();
   }
@@ -132,8 +132,8 @@ export default class AccorSearchBarCalendars {
   // update the calendar state (dates, months, years)
   updateCalendarsState = (
     newState,
-    month = new Date(this.selectedDay).getMonth(),
-    year = new Date(this.selectedDay).getFullYear()
+    month = this.selectedDay ? new Date(this.selectedDay).getMonth() : this.currentMonth,
+    year = this.selectedDay ? new Date(this.selectedDay).getFullYear() : this.currentYear
   ) => {
     if (this.state === newState) return;
     this.state = newState;
