@@ -32,7 +32,6 @@ export default class AccorSearchBarAnims {
 
   // Helper method to update the searchBarState and call the updateState function
   updateStateAndInvokeUpdate(newState) {
-    console.log(newState);
     this.searchBarState = newState;
     this.updateState(newState);
   }
@@ -100,7 +99,6 @@ export default class AccorSearchBarAnims {
     tl.to(this.wrapper, {
       y: targetY,
       onComplete: () => {
-        console.log("callback");
         callback(floor);
         this.navbar.classList.remove("overflow-hidden");
       },

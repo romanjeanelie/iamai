@@ -65,7 +65,6 @@ function () {
   _createClass(AccorSearchBarAnims, [{
     key: "updateStateAndInvokeUpdate",
     value: function updateStateAndInvokeUpdate(newState) {
-      console.log(newState);
       this.searchBarState = newState;
       this.updateState(newState);
     }
@@ -166,7 +165,6 @@ function () {
       tl.to(this.wrapper, {
         y: targetY,
         onComplete: function onComplete() {
-          console.log("callback");
           callback(floor);
 
           _this.navbar.classList.remove("overflow-hidden");
