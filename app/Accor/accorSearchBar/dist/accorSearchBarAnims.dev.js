@@ -65,6 +65,7 @@ function () {
   _createClass(AccorSearchBarAnims, [{
     key: "updateStateAndInvokeUpdate",
     value: function updateStateAndInvokeUpdate(newState) {
+      console.log(newState);
       this.searchBarState = newState;
       this.updateState(newState);
     }
@@ -165,6 +166,7 @@ function () {
       tl.to(this.wrapper, {
         y: targetY,
         onComplete: function onComplete() {
+          console.log("callback");
           callback(floor);
 
           _this.navbar.classList.remove("overflow-hidden");
@@ -194,7 +196,9 @@ function () {
     value: function fromSecondaryBar() {
       var _this3 = this;
 
-      this.updateStateAndInvokeUpdate(this.savedState);
+      var newState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.savedState;
+      this.updateStateAndInvokeUpdate(newState);
+      this.resetPhoneBar();
       this.animateSecondaryBar(0, null, function () {
         _this3.advancedBar.classList.add("none");
 
@@ -214,8 +218,7 @@ function () {
     value: function toPhoneBar() {
       this.phoneBar.classList.remove("none");
       this.toSecondaryBar(this.searchBarState === _.STATES.ADVANCED_OPTIONS ? 2 : 1);
-      this.updateStateAndInvokeUpdate(_.STATES.CALL); // HERE INITIATE THE PHONE ANIMATION
-      // this.phoneAnimations.toProcessing();
+      this.updateStateAndInvokeUpdate(_.STATES.CALL);
     }
   }, {
     key: "resetPhoneBar",

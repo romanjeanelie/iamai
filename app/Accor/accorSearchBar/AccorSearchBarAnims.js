@@ -32,6 +32,7 @@ export default class AccorSearchBarAnims {
 
   // Helper method to update the searchBarState and call the updateState function
   updateStateAndInvokeUpdate(newState) {
+    console.log(newState);
     this.searchBarState = newState;
     this.updateState(newState);
   }
@@ -99,6 +100,7 @@ export default class AccorSearchBarAnims {
     tl.to(this.wrapper, {
       y: targetY,
       onComplete: () => {
+        console.log("callback");
         callback(floor);
         this.navbar.classList.remove("overflow-hidden");
       },
@@ -116,8 +118,9 @@ export default class AccorSearchBarAnims {
     });
   }
 
-  fromSecondaryBar() {
-    this.updateStateAndInvokeUpdate(this.savedState);
+  fromSecondaryBar(newState = this.savedState) {
+    this.updateStateAndInvokeUpdate(newState);
+    this.resetPhoneBar();
     this.animateSecondaryBar(0, null, () => {
       this.advancedBar.classList.add("none");
       this.phoneBar.classList.add("none");
@@ -135,8 +138,6 @@ export default class AccorSearchBarAnims {
     this.phoneBar.classList.remove("none");
     this.toSecondaryBar(this.searchBarState === STATES.ADVANCED_OPTIONS ? 2 : 1);
     this.updateStateAndInvokeUpdate(STATES.CALL);
-    // HERE INITIATE THE PHONE ANIMATION
-    // this.phoneAnimations.toProcessing();
   }
 
   resetPhoneBar() {

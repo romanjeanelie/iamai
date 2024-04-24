@@ -101,7 +101,7 @@ export default class AccorSearchBar {
 
   endPhoneCall() {
     this.phone.leave();
-    this.anims.fromSecondaryBar();
+    this.anims.fromSecondaryBar(STATES.MINIMIZED);
   }
 
   // Inputs
