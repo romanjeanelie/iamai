@@ -37,6 +37,7 @@ export default class AccorSearchBarAnims {
   }
 
   switchStateClass(state) {
+    if (this.searchBarState === state) return;
     this.updateStateAndInvokeUpdate(state);
     // handle action btn
     this.actionBtn.classList.remove("phone-btn");
@@ -58,8 +59,11 @@ export default class AccorSearchBarAnims {
       duration: 0.4,
       ease: "power3.out",
       absolute: isMobile() ? false : true,
+      onStart: () => {
+        gsap.to(expandBtns, { opacity: 0, duration: 0.1 });
+      },
       onComplete: () => {
-        gsap.to([".standard-input"], {
+        gsap.to([".standard-input", expandBtns], {
           opacity: 1,
         });
 
@@ -112,6 +116,7 @@ export default class AccorSearchBarAnims {
   }
 
   fromSecondaryBar() {
+    this.switchStateClass(STATES.MINIMIZED);
     this.animateSecondaryBar(0, null, () => {
       this.advancedBar.classList.add("none");
       this.phoneBar.classList.add("none");

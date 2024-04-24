@@ -73,6 +73,7 @@ function () {
     value: function switchStateClass(state) {
       var _this$wrapper$classLi;
 
+      if (this.searchBarState === state) return;
       this.updateStateAndInvokeUpdate(state); // handle action btn
 
       this.actionBtn.classList.remove("phone-btn");
@@ -101,8 +102,14 @@ function () {
         duration: 0.4,
         ease: "power3.out",
         absolute: (0, _isMobile["default"])() ? false : true,
+        onStart: function onStart() {
+          _gsap["default"].to(expandBtns, {
+            opacity: 0,
+            duration: 0.1
+          });
+        },
         onComplete: function onComplete() {
-          _gsap["default"].to([".standard-input"], {
+          _gsap["default"].to([".standard-input", expandBtns], {
             opacity: 1
           });
 
@@ -186,6 +193,7 @@ function () {
     value: function fromSecondaryBar() {
       var _this3 = this;
 
+      this.switchStateClass(_.STATES.MINIMIZED);
       this.animateSecondaryBar(0, null, function () {
         _this3.advancedBar.classList.add("none");
 
