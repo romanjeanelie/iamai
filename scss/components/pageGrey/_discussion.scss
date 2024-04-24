@@ -173,10 +173,11 @@
 
 .prev-discussion__container {
   opacity: 0;
-  transition: opacity 1200ms ease-in-out;
   visibility: visible;
+  transition: opacity 120ms ease-in-out;
 
   &.visible {
+    transition: opacity 1200ms ease-in-out;
     opacity: 1;
   }
 
