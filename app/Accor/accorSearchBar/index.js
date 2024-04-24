@@ -41,7 +41,7 @@ export default class AccorSearchBar {
     this.wrapper = document.querySelector(".accorSearchBar__wrapper");
     this.searchBar = document.querySelector(".accorSearchBar__container");
     this.writeBtn = document.querySelector(".accorSearchBar__write-btn");
-    this.expandBtn = document.querySelector(".accorSearchBar__expand-btn");
+    this.expandBtns = document.querySelectorAll(".accorSearchBar__expand-btn");
     this.callBtn = document.querySelector(".accorSearchBar__action-btn");
     this.advancedBtn = document.querySelector(".accorSearchBar__advanced-btn");
     this.standardBtn = document.querySelector(".accorSearchBar__standard-btn");
@@ -115,13 +115,16 @@ export default class AccorSearchBar {
   // Event Listeners
   addEventListener() {
     this.writeBtn.addEventListener("click", this.anims.toTextInput.bind(this.anims));
-    this.expandBtn.addEventListener("click", () => {
-      if (this.searchBarState !== STATES.STANDARD_OPTIONS) {
-        this.anims.toStandardOptions();
-      } else {
-        this.anims.toMinimized();
-      }
+    this.expandBtns.forEach((expandBtn) => {
+      expandBtn.addEventListener("click", () => {
+        if (this.searchBarState !== STATES.STANDARD_OPTIONS) {
+          this.anims.toStandardOptions();
+        } else {
+          this.anims.toMinimized();
+        }
+      });
     });
+
     this.advancedBtn.addEventListener("click", this.anims.toAdvanceOptions.bind(this.anims));
     this.standardBtn.addEventListener("click", this.anims.fromSecondaryBar.bind(this.anims));
     this.actionBtn.addEventListener("click", () => {

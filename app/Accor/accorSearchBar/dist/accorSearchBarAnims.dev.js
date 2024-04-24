@@ -13,6 +13,8 @@ var _Flip = _interopRequireDefault(require("gsap/Flip"));
 
 var _ = require(".");
 
+var _isMobile = _interopRequireDefault(require("../../utils/isMobile"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
@@ -82,9 +84,15 @@ function () {
 
       this.wrapper.classList.add(state);
 
+      var expandBtns = _gsap["default"].utils.toArray(".accorSearchBar__expand-btn");
+
       _gsap["default"].killTweensOf(".standard-input");
 
       _gsap["default"].set(".standard-input", {
+        opacity: 0
+      });
+
+      _gsap["default"].set(".accorSearchBar__standardBtns-mobile", {
         opacity: 0
       }); // Animate from the initial state to the end state
 
@@ -92,9 +100,13 @@ function () {
       _Flip["default"].from(initialState, {
         duration: 0.4,
         ease: "power3.out",
-        absolute: true,
+        absolute: (0, _isMobile["default"])() ? false : true,
         onComplete: function onComplete() {
-          _gsap["default"].to(".standard-input", {
+          _gsap["default"].to([".standard-input"], {
+            opacity: 1
+          });
+
+          if ((0, _isMobile["default"])()) _gsap["default"].to(".accorSearchBar__standardBtns-mobile", {
             opacity: 1
           });
         }

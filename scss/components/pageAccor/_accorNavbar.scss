@@ -186,8 +186,13 @@ $expandedSearchBarWidth: min(763px, 50vw);
     }
   }
 
+  // standard option on mobile
   @include media("<phone") {
     flex-direction: column;
+    .accorSearchBar__container {
+      border-radius: 12px;
+      padding: 10px 10px 16px 16px;
+    }
 
     .accorSearchBar__expand-btn {
       display: none;
@@ -197,9 +202,19 @@ $expandedSearchBarWidth: min(763px, 50vw);
       display: flex;
       justify-content: space-between;
       gap: 8px;
+      border-top: 1px solid rgba($accorMain, 0.12);
+      margin-top: 14px;
+      padding-top: 14px;
 
       .standard-input {
         display: block;
+      }
+
+      .accorSearchBar__expand-btn {
+        align-self: center;
+        display: flex;
+        position: static;
+        margin: 0;
       }
     }
   }

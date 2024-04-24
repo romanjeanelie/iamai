@@ -2,6 +2,7 @@ import gsap, { Power3 } from "gsap";
 import Flip from "gsap/Flip";
 
 import { STATES } from ".";
+import isMobile from "../../utils/isMobile";
 
 gsap.registerPlugin(Flip);
 
@@ -46,18 +47,23 @@ export default class AccorSearchBarAnims {
     this.wrapper.classList.remove(...Object.values(STATES));
     this.wrapper.classList.add(state);
 
+    const expandBtns = gsap.utils.toArray(".accorSearchBar__expand-btn");
+
     gsap.killTweensOf(".standard-input");
     gsap.set(".standard-input", { opacity: 0 });
+    gsap.set(".accorSearchBar__standardBtns-mobile", { opacity: 0 });
 
     // Animate from the initial state to the end state
     Flip.from(initialState, {
       duration: 0.4,
       ease: "power3.out",
-      absolute: true,
+      absolute: isMobile() ? false : true,
       onComplete: () => {
-        gsap.to(".standard-input", {
+        gsap.to([".standard-input"], {
           opacity: 1,
         });
+
+        if (isMobile()) gsap.to(".accorSearchBar__standardBtns-mobile", { opacity: 1 });
       },
     });
   }
