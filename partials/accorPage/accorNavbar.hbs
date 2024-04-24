@@ -14,46 +14,50 @@
   <div class="accorNavbar__item accorSearchBar__wrapper minimized">
     <div class="accorNavbar__mainBar">
       <div class="accorSearchBar__container accorSearchBar__item-container">
-        {{! MINIMIZED STATE ELEMENTS }}
-        <button class="accorSearchBar__write-btn">
-          Tell me?
-          <br />
-          <span class="hidden">Where & When</span>
-        </button>
+        <div class="accorSearchBar__mainBar-first-row">
+          {{! MINIMIZED STATE ELEMENTS }}
+          <button class="accorSearchBar__write-btn">
+            Tell me?
+            <br />
+            <span class="hidden">Where & When</span>
+          </button>
 
-        <button class="accorSearchBar__expand-btn">
-          <img src="/icons/arrow-right.svg" alt="arrow left icon" />
-          <span>Options</span>
-        </button>
+          <button class="accorSearchBar__expand-btn">
+            <img src="/icons/arrow-right.svg" alt="arrow left icon" />
+            <span>Options</span>
+          </button>
 
-        {{! TEXT-INPUT ELEMENT }}
-        <form class="accorSearchBar__text-input-container">
-          <input type="text" class="accorSearchBar__text-input" placeholder="Where & When" />
-        </form>
+          {{! TEXT-INPUT ELEMENT }}
+          <form class="accorSearchBar__text-input-container">
+            <input type="text" class="accorSearchBar__text-input" placeholder="Where & When" />
+          </form>
 
-        {{! STANDARD OPTIONS }}
-        <button class="accorSearchBar__input-btn standard-input" data-type="calendar" data-key="departureDate">
-          Check In
-          <br />
-          <span class="hidden">Add Dates</span>
-        </button>
+          {{! STANDARD OPTIONS }}
+          {{! <div class="accorSearchBar__standardBtns"> }}
+          <button class="accorSearchBar__input-btn standard-input" data-type="calendar" data-key="departureDate">
+            Check In
+            <br />
+            <span class="hidden">Add Dates</span>
+          </button>
 
-        <button class="accorSearchBar__input-btn standard-input" data-type="calendar" data-key="arrivalDate">
-          Check Out
-          <br />
-          <span class="hidden">Add Dates</span>
-        </button>
-        <button class="accorSearchBar__input-btn standard-input">
-          Guests
-          <br />
-          <span class="hidden">Add Guests</span>
-        </button>
+          <button class="accorSearchBar__input-btn standard-input" data-type="calendar" data-key="arrivalDate">
+            Check Out
+            <br />
+            <span class="hidden">Add Dates</span>
+          </button>
+          <button class="accorSearchBar__input-btn standard-input">
+            Guests
+            <br />
+            <span class="hidden">Add Guests</span>
+          </button>
+          {{! </div> }}
 
-        {{! ACTION BTN STAYS ON EVERY STATE }}
-        <button class="accorSearchBar__action-btn phone-btn">
-          <img src="/icons/phone-icon.svg" class="phone-icon" alt="phone icon" />
-          <img src="/icons/arrow-right.svg" class="arrow-icon" alt="arrow icon" />
-        </button>
+          {{! ACTION BTN STAYS ON EVERY STATE }}
+          <button class="accorSearchBar__action-btn phone-btn">
+            <img src="/icons/phone-icon.svg" class="phone-icon" alt="phone icon" />
+            <img src="/icons/arrow-right.svg" class="arrow-icon" alt="arrow icon" />
+          </button>
+        </div>
       </div>
       <button class="accorSearchBar__advanced-btn switch-btn">
         Advanced

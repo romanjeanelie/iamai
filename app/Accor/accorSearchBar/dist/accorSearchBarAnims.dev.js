@@ -48,6 +48,7 @@ function () {
     this.navbar = document.querySelector(".accorNavbar__container");
     this.wrapper = document.querySelector(".accorSearchBar__wrapper");
     this.searchBar = document.querySelector(".accorSearchBar__container");
+    this.searchBarFirstRow = document.querySelector(".accorSearchBar__mainBar-first-row");
     this.writeBtn = document.querySelector(".accorSearchBar__write-btn");
     this.advancedBtn = document.querySelector(".accorSearchBar__advanced-btn");
     this.standardBtn = document.querySelector(".accorSearchBar__standard-btn");
@@ -75,7 +76,7 @@ function () {
       this.actionBtn.classList.remove("phone-btn");
       if (this.searchBarState !== _.STATES.TEXT_INPUT) this.actionBtn.classList.add("phone-btn"); // grab state
 
-      var initialState = _Flip["default"].getState([this.searchBar, this.advancedBtn]);
+      var initialState = _Flip["default"].getState([this.searchBar, this.searchBarFirstRow, this.advancedBtn]);
 
       (_this$wrapper$classLi = this.wrapper.classList).remove.apply(_this$wrapper$classLi, _toConsumableArray(Object.values(_.STATES)));
 

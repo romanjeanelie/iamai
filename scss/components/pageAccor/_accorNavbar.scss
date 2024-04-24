@@ -82,7 +82,7 @@ $expandedSearchBarWidth: min(763px, 50vw);
 
 // MINIMIZED STATE
 .minimized {
-  .accorSearchBar__container {
+  .accorSearchBar__mainBar-first-row {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
   }
@@ -103,13 +103,17 @@ $expandedSearchBarWidth: min(763px, 50vw);
 
 // TEXT-INPUT STATE
 .text-input {
-  .accorSearchBar__container {
+  .accorSearchBar__mainBar-first-row {
     display: flex;
     gap: 8px;
-    min-width: $expandedSearchBarWidth;
+    width: $expandedSearchBarWidth;
 
     @include media("<tablet") {
-      min-width: calc(100vw - 64px);
+      width: calc(100vw - 64px);
+    }
+
+    @include media("<phone") {
+      width: 100%;
     }
   }
 
@@ -147,13 +151,17 @@ $expandedSearchBarWidth: min(763px, 50vw);
 
 // STANDARD-OPTIONS STATE
 .standard-options {
-  .accorSearchBar__container {
+  .accorSearchBar__mainBar-first-row {
     display: flex;
     justify-content: space-between;
     width: $expandedSearchBarWidth;
 
     @include media("<tablet") {
-      min-width: calc(100vw - 64px);
+      width: calc(100vw - 64px);
+    }
+
+    @include media("<phone") {
+      width: 100%;
     }
   }
 
@@ -172,10 +180,136 @@ $expandedSearchBarWidth: min(763px, 50vw);
   .standard-input {
     display: block;
     opacity: 0;
+
+    @include media("<phone") {
+      display: none;
+    }
+  }
+}
+
+// SECONDARY BARS (ADVANCED AND CALL)
+.accorBar__secondaryBar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 10px;
+  // opacity: 0.5;
+  display: flex;
+  justify-content: center;
+
+  .accorSearchBar__action-btn {
+    .arrow-icon {
+      display: none;
+    }
+
+    .phone-icon {
+      display: block;
+    }
+  }
+}
+
+// ADVANCED BAR
+.accorBar__advancedBar-wrapper {
+  display: flex;
+  gap: 16px;
+
+  @include media("<tablet") {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  &.none {
+    display: none;
+  }
+}
+
+.accorSearchBar__advancedBar {
+  position: relative;
+  background-color: white;
+  border-radius: 60px;
+  padding: 10px 10px 10px 24px;
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.08);
+  width: $expandedSearchBarWidth;
+  display: flex;
+  justify-content: space-between;
+
+  @include media("<tablet") {
+    min-width: calc(100vw - 64px);
+  }
+
+  @include media("<phone") {
+    width: 100%;
+  }
+
+  & > * {
+    align-self: center;
+  }
+
+  .advanced-input {
+    display: block;
+  }
+}
+
+// CALL BAR
+.accorSearchBar__phoneBar {
+  display: flex;
+  padding-top: 10px;
+  align-items: center;
+  gap: 8px;
+
+  &.none {
+    display: none;
+  }
+
+  &.absolute {
+    position: absolute;
+    top: 200px;
+  }
+
+  .phone-bar__container {
+    .phone__container {
+      height: 12px;
+
+      // padding: 0;
+      position: static;
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .phone__bottom {
+      margin-top: 12px;
+      overflow: auto;
+      p {
+        font-size: 12px;
+        color: $accorLight;
+        font-size: 10px;
+        font-weight: 500;
+        line-height: 12px; /* 120% */
+        letter-spacing: 0.5px;
+      }
+    }
+  }
+
+  .accorSearchBar__action-btn {
+    background-color: #fe5858;
+    transition: background-color 0.2s ease-out;
+
+    img {
+      transform: rotate(-135deg);
+    }
+
+    &:hover {
+      background-color: #ff0000;
+    }
   }
 }
 
 // Elements present on several states
+.accorSearchBar__mainBar-first-row > * {
+  align-self: center;
+}
+
 .accorSearchBar__write-btn {
   display: none;
   font-size: 16px;
@@ -297,123 +431,5 @@ $expandedSearchBarWidth: min(763px, 50vw);
     font-weight: 500;
     line-height: 16px; /* 133.333% */
     letter-spacing: 0.5px;
-  }
-}
-
-// SECONDARY BARS (ADVANCED AND CALL)
-.accorBar__secondaryBar {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 10px;
-  // opacity: 0.5;
-  display: flex;
-  justify-content: center;
-
-  .accorSearchBar__action-btn {
-    .arrow-icon {
-      display: none;
-    }
-
-    .phone-icon {
-      display: block;
-    }
-  }
-}
-
-// ADVANCED BAR
-.accorBar__advancedBar-wrapper {
-  display: flex;
-  gap: 16px;
-
-  @include media("<tablet") {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  &.none {
-    display: none;
-  }
-}
-
-.accorSearchBar__advancedBar {
-  position: relative;
-  background-color: white;
-  border-radius: 60px;
-  padding: 10px 10px 10px 24px;
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.08);
-  width: $expandedSearchBarWidth;
-  display: flex;
-  justify-content: space-between;
-
-  @include media("<tablet") {
-    min-width: calc(100vw - 64px);
-  }
-
-  @include media("<phone") {
-    width: 100%;
-  }
-
-  & > * {
-    align-self: center;
-  }
-
-  .advanced-input {
-    display: block;
-  }
-}
-
-// CALL BAR
-.accorSearchBar__phoneBar {
-  display: flex;
-  padding-top: 10px;
-  align-items: center;
-  gap: 8px;
-
-  &.none {
-    display: none;
-  }
-
-  &.absolute {
-    position: absolute;
-    top: 200px;
-  }
-
-  .phone-bar__container {
-    .phone__container {
-      height: 12px;
-
-      // padding: 0;
-      position: static;
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-    }
-
-    .phone__bottom {
-      margin-top: 12px;
-      overflow: auto;
-      p {
-        font-size: 12px;
-        color: $accorLight;
-        font-size: 10px;
-        font-weight: 500;
-        line-height: 12px; /* 120% */
-        letter-spacing: 0.5px;
-      }
-    }
-  }
-
-  .accorSearchBar__action-btn {
-    background-color: #fe5858;
-    transition: background-color 0.2s ease-out;
-
-    img {
-      transform: rotate(-135deg);
-    }
-
-    &:hover {
-      background-color: #ff0000;
-    }
   }
 }

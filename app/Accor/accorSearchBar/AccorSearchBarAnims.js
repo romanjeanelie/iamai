@@ -15,6 +15,7 @@ export default class AccorSearchBarAnims {
     this.navbar = document.querySelector(".accorNavbar__container");
     this.wrapper = document.querySelector(".accorSearchBar__wrapper");
     this.searchBar = document.querySelector(".accorSearchBar__container");
+    this.searchBarFirstRow = document.querySelector(".accorSearchBar__mainBar-first-row");
     this.writeBtn = document.querySelector(".accorSearchBar__write-btn");
     this.advancedBtn = document.querySelector(".accorSearchBar__advanced-btn");
     this.standardBtn = document.querySelector(".accorSearchBar__standard-btn");
@@ -41,7 +42,7 @@ export default class AccorSearchBarAnims {
     if (this.searchBarState !== STATES.TEXT_INPUT) this.actionBtn.classList.add("phone-btn");
 
     // grab state
-    const initialState = Flip.getState([this.searchBar, this.advancedBtn]);
+    const initialState = Flip.getState([this.searchBar, this.searchBarFirstRow, this.advancedBtn]);
     this.wrapper.classList.remove(...Object.values(STATES));
     this.wrapper.classList.add(state);
 
