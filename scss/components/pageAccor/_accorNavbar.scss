@@ -50,6 +50,11 @@ $expandedSearchBarWidth: min(763px, 50vw);
   display: flex;
   gap: 24px;
   z-index: 10;
+
+  @include media("<tablet") {
+    flex-direction: column;
+    gap: 12px;
+  }
 }
 
 .accorSearchBar__wrapper {
@@ -271,6 +276,14 @@ $expandedSearchBarWidth: min(763px, 50vw);
   &:hover {
     color: $accorMain;
   }
+
+  @include media("<tablet") {
+    font-feature-settings: "liga" off;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px; /* 133.333% */
+    letter-spacing: 0.5px;
+  }
 }
 
 // SECONDARY BARS (ADVANCED AND CALL)
@@ -298,6 +311,11 @@ $expandedSearchBarWidth: min(763px, 50vw);
 .accorBar__advancedBar-wrapper {
   display: flex;
   gap: 16px;
+
+  @include media("<tablet") {
+    flex-direction: column;
+    gap: 12px;
+  }
 
   &.none {
     display: none;
