@@ -180,6 +180,7 @@ function () {
       var _this2 = this;
 
       var floor = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      this.savedState = this.searchBarState;
       this.animateSecondaryBar(-200 * floor, floor, function (floor) {
         if (floor === 2) {
           _this2.resetPhoneBar();
@@ -193,7 +194,7 @@ function () {
     value: function fromSecondaryBar() {
       var _this3 = this;
 
-      this.switchStateClass(_.STATES.MINIMIZED);
+      this.updateStateAndInvokeUpdate(this.savedState);
       this.animateSecondaryBar(0, null, function () {
         _this3.advancedBar.classList.add("none");
 

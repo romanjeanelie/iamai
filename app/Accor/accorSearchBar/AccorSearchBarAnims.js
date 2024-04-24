@@ -107,6 +107,7 @@ export default class AccorSearchBarAnims {
   }
 
   toSecondaryBar(floor = 1) {
+    this.savedState = this.searchBarState;
     this.animateSecondaryBar(-200 * floor, floor, (floor) => {
       if (floor === 2) {
         this.resetPhoneBar();
@@ -116,7 +117,7 @@ export default class AccorSearchBarAnims {
   }
 
   fromSecondaryBar() {
-    this.switchStateClass(STATES.MINIMIZED);
+    this.updateStateAndInvokeUpdate(this.savedState);
     this.animateSecondaryBar(0, null, () => {
       this.advancedBar.classList.add("none");
       this.phoneBar.classList.add("none");
