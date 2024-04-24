@@ -161,12 +161,13 @@
 }
 
 .discussion__container {
-  min-height: calc(100vh - 82px);
+  min-height: calc(100vh - 96px);
   padding-bottom: 124px;
   padding-top: unset;
 
   @include media("<tablet") {
-    min-height: calc(100svh - 80px);
+    min-height: calc(100vh - 96px); // fallback for browsers that don't support svh units
+    min-height: calc(100svh - 96px);
     padding-bottom: 80px;
   }
 }

@@ -322,7 +322,7 @@ $taskSecondaryColor: #007aff;
   bottom: 0;
   left: 0;
   width: 100vw;
-  height: 100vh; // fallback for browsers that don't support vh units
+  height: 100vh; // fallback for browsers that don't support svh units
   height: 100svh;
 
   .task-manager__header {
