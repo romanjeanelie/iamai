@@ -55,6 +55,10 @@ $expandedSearchBarWidth: min(763px, 50vw);
     flex-direction: column;
     gap: 12px;
   }
+
+  @include media("<phone") {
+    width: 100%;
+  }
 }
 
 .accorSearchBar__wrapper {
@@ -103,6 +107,10 @@ $expandedSearchBarWidth: min(763px, 50vw);
     display: flex;
     gap: 8px;
     min-width: $expandedSearchBarWidth;
+
+    @include media("<tablet") {
+      min-width: calc(100vw - 64px);
+    }
   }
 
   .accorSearchBar__write-btn {
@@ -143,6 +151,10 @@ $expandedSearchBarWidth: min(763px, 50vw);
     display: flex;
     justify-content: space-between;
     width: $expandedSearchBarWidth;
+
+    @include media("<tablet") {
+      min-width: calc(100vw - 64px);
+    }
   }
 
   .accorSearchBar__write-btn {
@@ -272,12 +284,14 @@ $expandedSearchBarWidth: min(763px, 50vw);
   letter-spacing: 0.5px;
   color: $accorLight;
   transition: color 0.2s ease-out;
+  width: fit-content;
+  margin: 0 auto;
 
   &:hover {
     color: $accorMain;
   }
 
-  @include media("<tablet") {
+  @include media("<phone") {
     font-feature-settings: "liga" off;
     font-size: 12px;
     font-weight: 500;
@@ -331,6 +345,14 @@ $expandedSearchBarWidth: min(763px, 50vw);
   width: $expandedSearchBarWidth;
   display: flex;
   justify-content: space-between;
+
+  @include media("<tablet") {
+    min-width: calc(100vw - 64px);
+  }
+
+  @include media("<phone") {
+    width: 100%;
+  }
 
   & > * {
     align-self: center;
