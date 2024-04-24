@@ -1037,6 +1037,7 @@ async function deploy(itemid) {
 
     xhr.open("POST", HOST + "/workflows/agent");
     xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader("GOOGLE_IDTOKEN", loggedinuser.idToken);
 
     xhr.send(data);
   } else {
@@ -1089,6 +1090,7 @@ async function deploy(itemid) {
 
     xhr.open("POST", HOST + "/workflows/personal_assistant");
     xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader("GOOGLE_IDTOKEN", loggedinuser.idToken);
     xhr.send(data);
   }
 }
@@ -1104,6 +1106,7 @@ async function deactivate(itemid) {
     }
   });
   xhr.open("DELETE", HOST + "/workflows/workflow?session_id=" + assistant.AgentSessionID);
+  xhr.setRequestHeader("GOOGLE_IDTOKEN", loggedinuser.idToken);
   xhr.send();
 }
 

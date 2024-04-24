@@ -350,7 +350,7 @@ export default class Discussion {
   }
 
   async onScrollTop() {
-    const { container } = await this.history.getHistory({ uuid: this.uuid });
+    const { container } = await this.history.getHistory({ uuid: this.uuid, user:this.user });
     this.prevDiscussionContainer.prepend(container);
     this.mainEl.scrollTop = document.documentElement.scrollTop = container.offsetHeight;
   }
@@ -401,7 +401,7 @@ export default class Discussion {
     }
     this.uuid = this.Chat.deploy_ID;
 
-    await this.updateHstory({ uuid: this.uuid });
+    await this.updateHstory({ uuid: this.uuid, user:this.user });
     setTimeout(() => {
       this.scrollToBottom(false);
     }, 100);
@@ -409,9 +409,9 @@ export default class Discussion {
     this.getAiAnswer({ text: "" });
   }
 
-  async updateHstory({ uuid }) {
+  async updateHstory({ uuid, user }) {
     return new Promise(async (resolve, reject) => {
-      const { container } = await this.history.getHistory({ uuid, size: 10 });
+      const { container } = await this.history.getHistory({ uuid, user, size: 10 });
       this.prevDiscussionContainer.appendChild(container);
       resolve();
     });
@@ -504,6 +504,7 @@ export default class Discussion {
     const result = await fetcher({
       url: URL_DELETE_STATUS,
       params,
+      idToken: this.user.idToken,
       method: "DELETE",
     });
     // Remove elements

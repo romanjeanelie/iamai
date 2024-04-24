@@ -1,9 +1,12 @@
-export default async function fetcher({ url, params, method = "GET" }) {
+export default async function fetcher({ url, params, idToken, method = "GET" }) {
   try {
     let options = {
       method,
       headers: {},
     };
+
+    if(idToken)
+      options.headers["GOOGLE_IDTOKEN"] = idToken;
 
     if (method === "POST") {
       options.headers["Content-Type"] = "application/json";
@@ -12,7 +15,7 @@ export default async function fetcher({ url, params, method = "GET" }) {
       const queryParams = new URLSearchParams(params);
       url = `${url}?${queryParams}`;
     }
-
+    
     const response = await fetch(url, options);
 
     if (!response.ok) {

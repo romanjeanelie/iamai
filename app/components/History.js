@@ -123,21 +123,21 @@ export default class History {
     }
   }
 
-  async getStatusesTask({ micro_thread_id, start = 0, size = 50, order = "asc" }) {
+  async getStatusesTask({ micro_thread_id, idToken, start = 0, size = 50, order = "asc" }) {
     const params = {
       micro_thread_id,
       start,
       size,
       order,
     };
-    const { data, error } = await fetcher({ url: URL_AGENT_STATUS, params });
+    const { data, error } = await fetcher({ url: URL_AGENT_STATUS, params, idToken: idToken });
     const lastStatus = this.getTaskLastStatus(data.results);
 
     data.lastStatus = lastStatus;
     return data;
   }
 
-  async getAllElements({ uuid, start = 0, size = 10, order = "desc" }) {
+  async getAllElements({ uuid, user, start = 0, size = 10, order = "desc" }) {
     const params = {
       uuid,
       start,
@@ -145,7 +145,7 @@ export default class History {
       order,
     };
     // Get all elements
-    const { data, error } = await fetcher({ url: URL_CONVERSATION_HISTORY, params });
+    const { data, error } = await fetcher({ url: URL_CONVERSATION_HISTORY, params, idToken:user.idToken });
 
     // Remove duplicate tasks
     const uniqueMicroThreadId = [];
@@ -162,7 +162,7 @@ export default class History {
     // Get  statuses tasks
     for (const result of data?.results || []) {
       if (result.micro_thread_id !== "") {
-        const statuses = await this.getStatusesTask({ micro_thread_id: result.micro_thread_id });
+        const statuses = await this.getStatusesTask({ micro_thread_id: result.micro_thread_id, idToken:user.idToken });
         result.statuses = statuses;
       }
     }
@@ -242,10 +242,10 @@ export default class History {
     return container;
   }
 
-  async getHistory({ uuid, size = 3 }) {
+  async getHistory({ uuid, user, size = 3 }) {
     this.isFetching = true;
     // Get elements
-    const elements = await this.getAllElements({ uuid, size, start: this.newStart });
+    const elements = await this.getAllElements({ uuid, user, size, start: this.newStart });
     // Reverse the order of elements
     elements.results.reverse();
 

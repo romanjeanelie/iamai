@@ -5,11 +5,12 @@ import { getDatabase, ref, set, get, serverTimestamp } from "firebase/database";
 const PA_URL = import.meta.env.VITE_API_PA_URL || "https://api.asterizk.ai/deploy-pa";
 const LOCATION_URL = import.meta.env.VITE_API_LOCATION_URL || "https://api.asterizk.ai/location/";
 class User {
-  constructor(uuid, name, picture, email) {
+  constructor(uuid, name, picture, email, idToken) {
     this.uuid = uuid;
     this.name = name;
     this.picture = picture;
     this.email = email;
+    this.idToken = idToken;
     // console.time("getUserTimezone");
     this.timezone = this.getUserTimezone();
     // console.timeEnd("getUserTimezone");
@@ -113,17 +114,15 @@ function getCurrentUser(auth) {
 async function getUser() {
   return new Promise((resolve, reject) => {
     getCurrentUser(auth).then(async (user) => {
-      if (user) {
-        // var userstatus = await getUserDataFireDB(user);
-        // if (userstatus && userstatus.status == "active") {
-        // User is signed in
-        const loggedinuser = new User(user.uid, user.displayName, user.photoURL, user.email);
-        await loggedinuser.setuseraddress();
-        resolve(loggedinuser);
-        // } else {
-        //   console.log("here user not active");
-        //   resolve(null);
-        // }
+      if (user && user.emailVerified) {
+        user.getIdToken(true).then(async function (idToken) {
+          const loggedinuser = new User(user.uid, user.displayName, user.photoURL, user.email, idToken);
+          await loggedinuser.setuseraddress();
+          resolve(loggedinuser);
+
+        }).catch(function (error) {
+          console.log(error);
+        });
       } else {
         console.log("here not logged in");
         resolve(null);
@@ -149,6 +148,7 @@ const getsessionID = (user) =>
     });
     xhr.open("POST", PA_URL + "/getstreamname?userid=" + user.uuid + "&assistantID=pa_prompt_2023");
     xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader("GOOGLE_IDTOKEN", user.idToken);
     xhr.send(JSON.stringify(user));
   });
 
