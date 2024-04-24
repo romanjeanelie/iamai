@@ -185,6 +185,24 @@ $expandedSearchBarWidth: min(763px, 50vw);
       display: none;
     }
   }
+
+  @include media("<phone") {
+    flex-direction: column;
+
+    .accorSearchBar__expand-btn {
+      display: none;
+    }
+
+    .accorSearchBar__standardBtns-mobile {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+
+      .standard-input {
+        display: block;
+      }
+    }
+  }
 }
 
 // SECONDARY BARS (ADVANCED AND CALL)
@@ -308,6 +326,9 @@ $expandedSearchBarWidth: min(763px, 50vw);
 // Elements present on several states
 .accorSearchBar__mainBar-first-row > * {
   align-self: center;
+}
+.accorSearchBar__standardBtns-mobile {
+  display: none;
 }
 
 .accorSearchBar__write-btn {
