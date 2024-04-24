@@ -130,6 +130,7 @@ class Chat {
       if (this.sessionID && this.sessionID != "") {
         xhr.open("POST", HOST + "/workflows/conversation", true);
         xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("GOOGLE_IDTOKEN", this.user.idToken);
         if (this.sessionID.startsWith("wf-external-conversation")) {
           xhr.send(
             JSON.stringify({
@@ -149,6 +150,7 @@ class Chat {
       } else {
         xhr.open("POST", HOST + "/workflows/tasks", true);
         xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("GOOGLE_IDTOKEN", this.user.idToken);
         xhr.send(
           JSON.stringify({
             query: input_text,
@@ -663,6 +665,7 @@ class Chat {
 
     xhr.open("POST", HOST + "/workflows/message/" + suworkflowid);
     xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader("GOOGLE_IDTOKEN", this.user.idToken);
 
     xhr.send(data);
     console.timeEnd("input");
@@ -845,6 +848,7 @@ class Chat {
 
       xhr.open("POST", HOST + "/workflows/message/" + this.workflowID);
       xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.setRequestHeader("GOOGLE_IDTOKEN", this.user.idToken);
 
       xhr.send(data);
       this.agentawaiting = false;

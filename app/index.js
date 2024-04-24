@@ -231,9 +231,15 @@ class App {
   }
   addListeners() {
     onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const loggedinuser = new User(user.uid, user.displayName, user.photoURL, user.email);
-        this.checkuserwaitlist(loggedinuser);
+      console.log(user)
+      if (user && user.emailVerified) {
+        try {
+          let idToken = await user.getIdToken(true);
+          const loggedinuser = new User(user.uid, user.displayName, user.photoURL, user.email, idToken);
+          await this.checkuserwaitlist(loggedinuser);
+        } catch (error) {
+          console.log(error);
+        }
       } else {
         signInButton.style.display = "flex";
       }
