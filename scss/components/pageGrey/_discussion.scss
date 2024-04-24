@@ -175,7 +175,7 @@
 .prev-discussion__container {
   opacity: 0;
   visibility: visible;
-  transition: opacity 120ms ease-in-out;
+  transition: opacity 200ms ease-in-out;
 
   &.visible {
     transition: opacity 1200ms ease-in-out;
