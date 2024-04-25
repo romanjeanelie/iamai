@@ -168,7 +168,6 @@ export default class Discussion {
   }
 
   async addUserElement({ text, imgs, debug = false } = {}) {
-    
     //reduced the duration to save time
     await gsap.to(this.discussionContainer, { duration: 0.0005, y: -40, opacity: 0, ease: "power2.inOut" });
     this.moveChildrenToPrevContainer();
@@ -350,7 +349,7 @@ export default class Discussion {
   }
 
   async onScrollTop() {
-    const { container } = await this.history.getHistory({ uuid: this.uuid, user:this.user });
+    const { container } = await this.history.getHistory({ uuid: this.uuid, user: this.user });
     this.prevDiscussionContainer.prepend(container);
     this.mainEl.scrollTop = document.documentElement.scrollTop = container.offsetHeight;
   }
@@ -401,17 +400,15 @@ export default class Discussion {
     }
     this.uuid = this.Chat.deploy_ID;
 
-    await this.updateHstory({ uuid: this.uuid, user:this.user });
-    setTimeout(() => {
-      this.scrollToBottom(false);
-    }, 100);
+    await this.updateHistory({ uuid: this.uuid, user: this.user });
+    this.scrollToBottom(false);
     this.emitter.emit("taskManager:isHistorySet", true);
     this.getAiAnswer({ text: "" });
   }
 
-  async updateHstory({ uuid, user }) {
+  async updateHistory({ uuid, user }) {
     return new Promise(async (resolve, reject) => {
-      const { container } = await this.history.getHistory({ uuid, user, size: 10 });
+      const { container } = await this.history.getHistory({ uuid, user, size: 10, isFirstHistoryUpdate: true });
       this.prevDiscussionContainer.appendChild(container);
       resolve();
     });

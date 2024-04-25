@@ -145,7 +145,7 @@ export default class History {
       order,
     };
     // Get all elements
-    const { data, error } = await fetcher({ url: URL_CONVERSATION_HISTORY, params, idToken:user.idToken });
+    const { data, error } = await fetcher({ url: URL_CONVERSATION_HISTORY, params, idToken: user.idToken });
 
     // Remove duplicate tasks
     const uniqueMicroThreadId = [];
@@ -162,7 +162,7 @@ export default class History {
     // Get  statuses tasks
     for (const result of data?.results || []) {
       if (result.micro_thread_id !== "") {
-        const statuses = await this.getStatusesTask({ micro_thread_id: result.micro_thread_id, idToken:user.idToken });
+        const statuses = await this.getStatusesTask({ micro_thread_id: result.micro_thread_id, idToken: user.idToken });
         result.statuses = statuses;
       }
     }
@@ -179,7 +179,7 @@ export default class History {
     return data;
   }
 
-  createUIElements(elements) {
+  createUIElements(elements, isFirstHistoryUpdate) {
     const container = document.createElement("div");
 
     elements.forEach((element) => {
@@ -197,6 +197,7 @@ export default class History {
           const media = new DiscussionMedia({
             container: userContainer,
             emitter: this.emitter,
+            isFirstHistoryUpdate: isFirstHistoryUpdate,
           });
           if (element.images.user_images) media?.addUserImages(JSON.parse(element.images.user_images));
           container.appendChild(userContainer);
@@ -226,6 +227,7 @@ export default class History {
           const media = new DiscussionMedia({
             container: AIContainer,
             emitter: this.emitter,
+            isFirstHistoryUpdate: isFirstHistoryUpdate,
           });
           if (element.images.images) {
             media.initImages();
@@ -242,7 +244,7 @@ export default class History {
     return container;
   }
 
-  async getHistory({ uuid, user, size = 3 }) {
+  async getHistory({ uuid, user, size = 3, isFirstHistoryUpdate }) {
     this.isFetching = true;
     // Get elements
     const elements = await this.getAllElements({ uuid, user, size, start: this.newStart });
@@ -261,7 +263,7 @@ export default class History {
     });
 
     // Create UI elements
-    const container = this.createUIElements(elements.results);
+    const container = this.createUIElements(elements.results, isFirstHistoryUpdate);
     container.classList.add("history__container");
 
     this.isSet = true;

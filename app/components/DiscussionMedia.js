@@ -13,7 +13,12 @@ function getDomainAndFavicon(url) {
 }
 
 export default class DiscussionMedia {
-  constructor({ container, emitter }) {
+  constructor({ container, emitter, isFirstHistoryUpdate = false }) {
+    this.pageEl = document.querySelector(".page-grey");
+    this.mainEl = this.pageEl.querySelector("main");
+
+    this.isFirstHistoryUpdate = isFirstHistoryUpdate;
+
     this.container = container;
     this.emitter = emitter;
     this.imagesSkeletons = [];
@@ -120,6 +125,7 @@ export default class DiscussionMedia {
 
     this.handleImgClick(imgs);
     this.bottomWrapper.appendChild(this.imagesContainer);
+    if (this.isFirstHistoryUpdate) this.mainEl.scrollTo(0, this.mainEl.scrollHeight);
   }
 
   async addUserImages(srcs) {
@@ -135,6 +141,7 @@ export default class DiscussionMedia {
     });
 
     this.topWrapper.appendChild(imagesContainer);
+    if (this.isFirstHistoryUpdate) this.mainEl.scrollTo(0, this.mainEl.scrollHeight);
   }
 
   handleImgClick(imgs) {
