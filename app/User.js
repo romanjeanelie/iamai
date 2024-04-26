@@ -39,21 +39,30 @@ class User {
 
   getaddressdetails() {
     return new Promise(async (resolve, reject) => {
-      //   console.time("getUserLocation");
-      let location = await this.getUserLocation();
-      //   console.timeEnd("getUserLocation");
-      location = JSON.parse(location);
-      var xhr = new XMLHttpRequest();
-      xhr.addEventListener("readystatechange", function () {
-        if (this.readyState === 4) {
-          //   console.log(this.responseText);
-          resolve(JSON.parse(this.responseText));
-        }
-      });
-      let url = LOCATION_URL + "getaddress?latitude=" + location.lat + "&longitude=" + location.long;
-      //   console.log("URL:" + url);
-      xhr.open("GET", url);
-      xhr.send();
+      try {
+        //   console.time("getUserLocation");
+        let location = await this.getUserLocation();
+        //   console.timeEnd("getUserLocation");
+        location = JSON.parse(location);
+        var xhr = new XMLHttpRequest();
+        xhr.addEventListener("readystatechange", function () {
+          if (this.readyState === 4) {
+            //   console.log(this.responseText);
+            if (xhr.status === 200) {
+              resolve(JSON.parse(this.responseText));
+            } else {
+              resolve("");
+            }
+          }
+        });
+        let url = LOCATION_URL + "getaddress?latitude=" + location.lat + "&longitude=" + location.long;
+        //   console.log("URL:" + url);
+        xhr.open("GET", url);
+        xhr.send();
+      } catch (ex) {
+        console.log("err", ex)
+        resolve("");
+      }
     });
   }
 
