@@ -179,7 +179,7 @@ export default class History {
     return data;
   }
 
-  createUIElements(elements, isFirstHistoryUpdate) {
+  createUIElements(elements) {
     const container = document.createElement("div");
 
     elements.forEach((element) => {
@@ -197,7 +197,6 @@ export default class History {
           const media = new DiscussionMedia({
             container: userContainer,
             emitter: this.emitter,
-            isFirstHistoryUpdate: isFirstHistoryUpdate,
           });
           if (element.images.user_images) media?.addUserImages(JSON.parse(element.images.user_images));
           container.appendChild(userContainer);
@@ -227,7 +226,6 @@ export default class History {
           const media = new DiscussionMedia({
             container: AIContainer,
             emitter: this.emitter,
-            isFirstHistoryUpdate: isFirstHistoryUpdate,
           });
           if (element.images.images) {
             media.initImages();
@@ -244,7 +242,7 @@ export default class History {
     return container;
   }
 
-  async getHistory({ uuid, user, size = 3, isFirstHistoryUpdate }) {
+  async getHistory({ uuid, user, size = 3 }) {
     this.isFetching = true;
     // Get elements
     const elements = await this.getAllElements({ uuid, user, size, start: this.newStart });
@@ -263,7 +261,7 @@ export default class History {
     });
 
     // Create UI elements
-    const container = this.createUIElements(elements.results, isFirstHistoryUpdate);
+    const container = this.createUIElements(elements.results);
     container.classList.add("history__container");
 
     this.isSet = true;

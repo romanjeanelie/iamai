@@ -342,7 +342,7 @@ export default class Discussion {
   // Scroll
   scrollToBottom(isSmooth = true) {
     window.scrollTo({
-      top: this.mainEl.scrollHeight,
+      top: document.body.scrollHeight,
       behavior: isSmooth ? "smooth" : "auto",
       //   behavior: "smooth",
     });
@@ -407,9 +407,15 @@ export default class Discussion {
   }
 
   async updateHistory({ uuid, user }) {
-    return new Promise(async (resolve, reject) => {
-      const { container } = await this.history.getHistory({ uuid, user, size: 10, isFirstHistoryUpdate: true });
+    await new Promise(async (resolve, reject) => {
+      const { container } = await this.history.getHistory({ uuid, user, size: 10 });
       this.prevDiscussionContainer.appendChild(container);
+      const imgs = this.prevDiscussionContainer.querySelectorAll("img");
+      imgs.forEach((img) => {
+        img.addEventListener("load", () => {
+          this.scrollToBottom(false);
+        });
+      });
       resolve();
     });
   }
