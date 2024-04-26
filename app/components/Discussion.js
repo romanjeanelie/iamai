@@ -407,6 +407,7 @@ export default class Discussion {
   }
 
   async updateHistory({ uuid, user }) {
+    // hide the previous discussion container while it is loading to avoid scroll jumps
     this.discussionContainer.style.marginTop = "96px";
     this.prevDiscussionContainer.style.display = "none";
     await new Promise(async (resolve, reject) => {
