@@ -84,10 +84,6 @@ class Chat {
     if (this.autodetect) {
       var response = await this.googletranslate(input_text, this.targetlang, "");
       input_text = response.data.translations[0].translatedText;
-      //   console.log(
-      //     "response.data.translations[0].detectedSourceLanguage",
-      //     response.data.translations[0].detectedSourceLanguage
-      //   );
       if (response.data.translations[0].detectedSourceLanguage)
         this.sourcelang = response.data.translations[0].detectedSourceLanguage;
     } else if (this.sourcelang != this.targetlang) {
@@ -563,7 +559,7 @@ class Chat {
     new Promise(async (resolve, reject) => {
       var xhr = new XMLHttpRequest();
       var url = "https://translation.googleapis.com/language/translate/v2";
-      var apiKey = "AIzaSyC1I58b1AR5z5V0b32ROnw55iFUjVso5dY";
+      var apiKey = "AIzaSyBA_hE3ia77DTErB6SejtlEwDBdKN-5WFA";
 
       xhr.open("POST", `${url}?key=${apiKey}`, true);
       xhr.setRequestHeader("Content-Type", "application/json");

@@ -1,0 +1,497 @@
+[
+    {
+        "label": "Auto Detect",
+        "code": "ad",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Afrikaans",
+        "code": "af",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Arabic",
+        "code": "ar",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Armenian",
+        "code": "hy",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Azerbaijani",
+        "code": "az",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Belarusian",
+        "code": "be",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Bosnian",
+        "code": "bs",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Bulgarian",
+        "code": "bg",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Catalan",
+        "code": "ca",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Chinese",
+        "code": "zh",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Croatian",
+        "code": "hr",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Czech",
+        "code": "cs",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Danish",
+        "code": "da",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Dutch",
+        "code": "nl",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "English",
+        "code": "en",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Estonian",
+        "code": "et",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Finnish",
+        "code": "fi",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "French",
+        "code": "fr",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Galician",
+        "code": "gl",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "German",
+        "code": "de",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Greek",
+        "code": "el",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Hebrew",
+        "code": "he",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Hindi",
+        "code": "hi",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Hungarian",
+        "code": "hu",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Icelandic",
+        "code": "is",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Indonesian",
+        "code": "id",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Italian",
+        "code": "it",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Japanese",
+        "code": "ja",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Kannada",
+        "code": "kn",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Kazakh",
+        "code": "kk",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Korean",
+        "code": "ko",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Latvian",
+        "code": "lv",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Lithuanian",
+        "code": "lt",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Macedonian",
+        "code": "mk",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Malay",
+        "code": "ms",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Marathi",
+        "code": "mr",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Maori",
+        "code": "mi",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Nepali",
+        "code": "ne",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Norwegian",
+        "code": "no",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Persian",
+        "code": "fa",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Polish",
+        "code": "pl",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Portuguese",
+        "code": "pt",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Romanian",
+        "code": "ro",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Russian",
+        "code": "ru",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Serbian",
+        "code": "sr",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Slovak",
+        "code": "sk",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Slovenian",
+        "code": "sl",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Spanish",
+        "code": "es",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Swahili",
+        "code": "sw",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Swedish",
+        "code": "sv",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Tagalog",
+        "code": "tl",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Tamil",
+        "code": "ta",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Thai",
+        "code": "th",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Turkish",
+        "code": "tr",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Ukrainian",
+        "code": "uk",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Urdu",
+        "code": "ur",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Vietnamese",
+        "code": "vi",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Welsh",
+        "code": "cy",
+        "languagecode": "",
+        "provider": "elevenlabs"
+    },
+    {
+        "label": "Afrikaans",
+        "code": "af",
+        "languagecode": "af-ZA",
+        "voice": "af-ZA-Standard-A",
+        "provider": "google"
+    },
+    {
+        "label": "Bengali",
+        "code": "bn",
+        "languagecode": "bn-IN",
+        "voice": "bn-IN-Wavenet-A",
+        "provider": "google"
+    },
+    {
+        "label": "Catalan",
+        "code": "ca",
+        "languagecode": "ca-ES",
+        "voice": "ca-ES-Standard-A",
+        "provider": "google"
+    },
+    {
+        "label": "Basque",
+        "code": "eu",
+        "languagecode": "eu-ES",
+        "voice": "eu-ES-Standard-A",
+        "provider": "google"
+    },
+    {
+        "label": "Galician",
+        "code": "gl",
+        "languagecode": "gl-ES",
+        "voice": "gl-ES-Standard-A",
+        "provider": "google"
+    },
+    {
+        "label": "Gujarati",
+        "code": "gu",
+        "languagecode": "gu-IN",
+        "voice": "gu-IN-Wavenet-A",
+        "provider": "google"
+    },
+    {
+        "label": "Hebrew",
+        "code": "he",
+        "languagecode": "he-IL",
+        "voice": "he-IL-Wavenet-A",
+        "provider": "google"
+    },
+    {
+        "label": "Hungarian",
+        "code": "hu",
+        "languagecode": "hu-HU",
+        "voice": "hu-HU-Wavenet-A",
+        "provider": "google"
+    },
+    {
+        "label": "Icelandic",
+        "code": "is",
+        "languagecode": "is-IS",
+        "voice": "is-IS-Standard-A",
+        "provider": "google"
+    },
+    {
+        "label": "Kannada",
+        "code": "kn",
+        "languagecode": "kn-IN",
+        "voice": "kn-IN-Wavenet-A",
+        "provider": "google"
+    },
+    {
+        "label": "Lithuanian",
+        "code": "lt",
+        "languagecode": "lt-LT",
+        "voice": "lt-LT-Standard-A",
+        "provider": "google"
+    },
+    {
+        "label": "Latvian",
+        "code": "lv",
+        "languagecode": "lv-LV",
+        "voice": "lv-LV-Standard-A",
+        "provider": "google"
+    },
+    {
+        "label": "Malayalam",
+        "code": "ml",
+        "languagecode": "ml-IN",
+        "voice": "ml-IN-Wavenet-A",
+        "provider": "google"
+    },
+    {
+        "label": "Marathi",
+        "code": "mr",
+        "languagecode": "mr-IN",
+        "voice": "mr-IN-Wavenet-A",
+        "provider": "google"
+    },
+    {
+        "label": "Punjabi",
+        "code": "pa",
+        "languagecode": "pa-IN",
+        "voice": "pa-IN-Wavenet-A",
+        "provider": "google"
+    },
+    {
+        "label": "Russian",
+        "code": "ru",
+        "languagecode": "ru-RU",
+        "voice": "ru-RU-Wavenet-A",
+        "provider": "google"
+    },
+    {
+        "label": "Serbian",
+        "code": "sr",
+        "languagecode": "sr-RS",
+        "voice": "sr-RS-Standard-A",
+        "provider": "google"
+    },
+    {
+        "label": "Telugu",
+        "code": "te",
+        "languagecode": "te-IN",
+        "voice": "te-IN-Standard-A",
+        "provider": "google"
+    },
+    {
+        "label": "Thai",
+        "code": "th",
+        "languagecode": "th-TH",
+        "voice": "th-TH-Neural2-C",
+        "provider": "google"
+    },
+    {
+        "label": "Vietnamese",
+        "code": "vi",
+        "languagecode": "vi-VN",
+        "voice": "vi-VN-Wavenet-A",
+        "provider": "google"
+    },
+    {
+        "label": "Norwegian",
+        "code": "nb",
+        "languagecode": "nb-NO",
+        "voice": "nb-NO-Wavenet-A",
+        "provider": "google"
+    }
+]

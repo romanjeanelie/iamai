@@ -2,6 +2,7 @@ const ELEVENLABS_URL =
   import.meta.env.VITE_API_ELEVENLABS_URL ||
   "https://api.elevenlabs.io/v1/text-to-speech/ZVKjrJiWeTKF1FZwjENi/stream?optimize_streaming_latency=4";
 const ELEVENLABS_TOKEN = import.meta.env.VITE_API_ELEVENLABS_TOKEN || "bddfcabff8951ebb9e925d506452df93";
+const GOOGLE_TTS_URL = import.meta.env.VITE_API_GOOGLE_TTS_URL || "https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyBA_hE3ia77DTErB6SejtlEwDBdKN-5WFA";
 function base64ToUint8Array(base64) {
   const binaryString = atob(base64);
   const len = binaryString.length;
@@ -98,51 +99,137 @@ function getAudio(blob) {
 //     };
 //   });
 // }
-export default function textToSpeech(text, targetlang, index, attempt = 0) {
-  const headers = {
-    accept: "audio/mpeg",
-    "xi-api-key": ELEVENLABS_TOKEN,
-    "Content-Type": "application/json",
-  };
-  var model_id = "eleven_turbo_v2";
-  if (targetlang != "en") {
-    model_id = "eleven_multilingual_v2";
-  }
-  const body = JSON.stringify({
-    text: text + " ",
-    model_id: model_id,
-    voice_settings: {
-      stability: 0.5,
-      similarity_boost: 0.5,
-    },
-  });
+export default async function textToSpeech(text, targetlang, index, attempt = 0) {
+  let filteredLanguages = await getlangselected(targetlang);
+  console.log("textToSpeech filteredLanguages:", filteredLanguages)
+  if ( !filteredLanguages || filteredLanguages[0].provider == "elevenlabs") {
+    const headers = {
+      accept: "audio/mpeg",
+      "xi-api-key": ELEVENLABS_TOKEN,
+      "Content-Type": "application/json",
+    };
+    var model_id = "eleven_turbo_v2";
+    if (targetlang != "en") {
+      model_id = "eleven_multilingual_v2";
+    }
+    const body = JSON.stringify({
+      text: text + " ",
+      model_id: model_id,
+      voice_settings: {
+        stability: 0.5,
+        similarity_boost: 0.5,
+      },
+    });
 
-  return fetch(ELEVENLABS_URL, {
-    method: "POST",
-    headers: headers,
-    body: body,
-  })
-    .then((response) => response.blob())
-    .then((audioBlob) => {
-      console.log("from text to speech  : ", audioBlob, index);
-      return { audio: getAudio(audioBlob), index };
+    return fetch(ELEVENLABS_URL, {
+      method: "POST",
+      headers: headers,
+      body: body,
     })
-    .catch((error) => {
-      console.error(`Error on attempt ${attempt}:`, error);
-      if (attempt < 2) {
-        // If this was the first or second attempt, try again
-        return new Promise((resolve, reject) => {
-          // Wait for 1 second before retrying
-          console.error;
-          setTimeout(() => {
-            textToSpeech(text, targetlang, index, attempt + 1)
-              .then(resolve) // If the retry is successful, resolve this promise
-              .catch(reject); // If the retry fails, reject this promise
-          }, 1000);
-        });
-      } else {
-        // If this was the third attempt, throw the error
-        throw error;
+      .then((response) => response.blob())
+      .then((audioBlob) => {
+        console.log("from text to speech  : ", audioBlob, index);
+        return { audio: getAudio(audioBlob), index };
+      })
+      .catch((error) => {
+        console.error(`Error on attempt ${attempt}:`, error);
+        if (attempt < 2) {
+          // If this was the first or second attempt, try again
+          return new Promise((resolve, reject) => {
+            // Wait for 1 second before retrying
+            console.error;
+            setTimeout(() => {
+              textToSpeech(text, targetlang, index, attempt + 1)
+                .then(resolve) // If the retry is successful, resolve this promise
+                .catch(reject); // If the retry fails, reject this promise
+            }, 1000);
+          });
+        } else {
+          // If this was the third attempt, throw the error
+          throw error;
+        }
+      });
+  } else {
+    const body = JSON.stringify({
+      "input": {
+        "text": text + " "
+      },
+      "voice": {
+        "languageCode": filteredLanguages[0].languagecode,
+        "name": filteredLanguages[0].voice,
+        "ssmlGender": "FEMALE"
+      },
+      "audioConfig": {
+        "audioEncoding": "MP3"
       }
     });
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    return fetch(GOOGLE_TTS_URL, {
+      method: "POST",
+      headers: headers,
+      body: body,
+    })
+      .then(async (response) => {
+        const audidata = await response.text();
+        console.log("response.text()", audidata)
+        const base64 = JSON.parse(audidata).audioContent;
+        const binaryString = window.atob(base64);
+        const length = binaryString.length;
+        const bytes = new Uint8Array(length);
+
+        for (let i = 0; i < length; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        return new Blob([bytes], { type: "audio/mpeg" })
+      })
+      .then((audioBlob) => {
+        console.log("from text to speech  : ", audioBlob, index);
+        return { audio: getAudio(audioBlob), index };
+      })
+      .catch((error) => {
+        console.error(`Error on attempt ${attempt}:`, error);
+        if (attempt < 2) {
+          // If this was the first or second attempt, try again
+          return new Promise((resolve, reject) => {
+            // Wait for 1 second before retrying
+            console.error;
+            setTimeout(() => {
+              textToSpeech(text, targetlang, index, attempt + 1)
+                .then(resolve) // If the retry is successful, resolve this promise
+                .catch(reject); // If the retry fails, reject this promise
+            }, 1000);
+          });
+        } else {
+          // If this was the third attempt, throw the error
+          throw error;
+        }
+
+      });
+  }
+}
+
+async function getlangselected(targetlang) {
+  // Return the promise here
+  return new Promise((resolve, reject) => {
+    fetch('lang.json')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok: ' + response.statusText);
+        }
+        return response.json();  // Directly return JSON if the response type is known to be JSON
+      })
+      .then(data => {
+        const languagesArray = data; // Assuming data is the array
+        const filteredLanguages = languagesArray.filter((language) =>
+          language.code.toLowerCase().startsWith(targetlang.toLowerCase()));
+        console.log("getlangselected:", filteredLanguages);
+        resolve(filteredLanguages);
+      })
+      .catch(error => {
+        console.error('Fetch error:', error);
+        reject(error);
+      });
+  });
 }
