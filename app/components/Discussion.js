@@ -400,23 +400,37 @@ export default class Discussion {
     }
     this.uuid = this.Chat.deploy_ID;
 
+    this.getAiAnswer({ text: "" });
     await this.updateHistory({ uuid: this.uuid, user: this.user });
     this.scrollToBottom(false);
     this.emitter.emit("taskManager:isHistorySet", true);
-    this.getAiAnswer({ text: "" });
   }
 
   async updateHistory({ uuid, user }) {
+    this.discussionContainer.style.marginTop = "96px";
+    this.prevDiscussionContainer.style.display = "none";
     await new Promise(async (resolve, reject) => {
       const { container } = await this.history.getHistory({ uuid, user, size: 10 });
       this.prevDiscussionContainer.appendChild(container);
       const imgs = this.prevDiscussionContainer.querySelectorAll("img");
-      imgs.forEach((img) => {
-        img.addEventListener("load", () => {
+      let imgLoadedCount = 0;
+      const totalImages = imgs.length;
+
+      const handleImageLoad = () => {
+        imgLoadedCount++;
+        if (imgLoadedCount === totalImages) {
+          this.prevDiscussionContainer.style.display = "block";
+          this.discussionContainer.style.marginTop = "0px";
+
           this.scrollToBottom(false);
-        });
+          resolve();
+        }
+      };
+
+      imgs.forEach((img) => {
+        img.addEventListener("load", handleImageLoad);
+        img.addEventListener("error", handleImageLoad); // Treat errors as loaded to ensure resolution
       });
-      resolve();
     });
   }
 
