@@ -65,26 +65,30 @@ export default class AccorSearchBarCalendars {
     this.yearsContainer.classList.add("months");
     this.yearsContainer.innerText = this.currentYear;
 
-    if (this.isMobile) {
-      this.selectedDay === null
-        ? this.initDates(this.currentMonth, this.currentYear, 2)
-        : this.initDates(new Date(this.selectedDay).getMonth(), new Date(this.selectedDay).getFullYear(), 2);
-    } else {
-      for (let i = 0; i < 12; i++) {
-        const calendar = new Calendar({
-          container: this.calContainer,
-          month: i,
-          year: this.currentYear,
-          selectedDay: this.selectedDay,
-          setSelectedDay: this.handleSelectedDayChange.bind(this),
-        });
-        this.calendars.push(calendar);
+    let startMonth;
+    let endMonth;
 
-        calendar.calendarContainer.addEventListener("click", () => {
-          console.log(this.currentYear);
-          this.updateCalendarsState(CALENDARS_STATES.DATES, i, this.currentYear);
-        });
-      }
+    if (this.isMobile) {
+      startMonth = this.selectedDay ? new Date(this.selectedDay).getMonth() : this.currentMonth;
+      endMonth = startMonth + 1;
+    } else {
+      startMonth = 0;
+      endMonth = 11;
+    }
+
+    for (let i = startMonth; i <= endMonth; i++) {
+      const calendar = new Calendar({
+        container: this.calContainer,
+        month: i,
+        year: this.currentYear,
+        selectedDay: this.selectedDay,
+        setSelectedDay: this.handleSelectedDayChange.bind(this),
+      });
+      this.calendars.push(calendar);
+
+      calendar.calendarContainer.addEventListener("click", () => {
+        this.updateCalendarsState(CALENDARS_STATES.DATES, i, this.currentYear);
+      });
     }
   }
 
@@ -147,7 +151,6 @@ export default class AccorSearchBarCalendars {
     this.destroyCalendars();
     if (newState === CALENDARS_STATES.DATES) {
       const calendarCount = this.isMobile ? 1 : 2;
-
       this.initDates(month, year, calendarCount);
     } else if (newState === CALENDARS_STATES.MONTHS) {
       this.initMonths();
