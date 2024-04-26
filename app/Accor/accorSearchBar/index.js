@@ -26,6 +26,7 @@ export default class AccorSearchBar {
     this.emitter = emitter;
 
     // States
+    this.isMobile = window.innerWidth <= 640;
     this.searchBarState = STATES.MINIMIZED;
     this.inputsValues = {
       departureDate: todayTimestamp,
@@ -124,9 +125,8 @@ export default class AccorSearchBar {
         }
       });
     });
-
     this.advancedBtn.addEventListener("click", this.anims.toAdvanceOptions.bind(this.anims));
-    this.standardBtn.addEventListener("click", this.anims.fromSecondaryBar.bind(this.anims));
+    this.standardBtn.addEventListener("click", () => this.anims.fromSecondaryBar());
     this.actionBtn.addEventListener("click", () => {
       this.destroyCalendar();
       if (this.searchBarState === STATES.TEXT_INPUT) {
@@ -138,16 +138,14 @@ export default class AccorSearchBar {
     });
     this.secondaryBarPhoneBtn.addEventListener("click", this.anims.toPhoneBar.bind(this.anims));
     this.phoneCloseBtn.addEventListener("click", this.endPhoneCall.bind(this));
-
     document.addEventListener("click", (event) => {
       if (!this.wrapper.contains(event.target) && !this.calendars) {
         this.anims.toMinimized();
       }
     });
-
     this.emitter.on("closeCalendar", this.destroyCalendar.bind(this));
 
-    // handling all the inputs
+    // handling the searchbar inputs
     this.inputBtns.forEach((inputBtn) => {
       inputBtn.addEventListener("click", () => {
         const dataType = inputBtn.getAttribute("data-type");
@@ -163,6 +161,10 @@ export default class AccorSearchBar {
           });
         }
       });
+    });
+
+    window.addEventListener("resize", () => {
+      // console.log(this.searchBarState);
     });
   }
 }

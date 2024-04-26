@@ -28,6 +28,7 @@ export default class AccorSearchBarAnims {
     this.phoneBar = document.querySelector(".accorSearchBar__phoneBar");
 
     this.initSecondaryBar();
+    this.addEventListener();
   }
 
   // Helper method to update the searchBarState and call the updateState function
@@ -142,6 +143,16 @@ export default class AccorSearchBarAnims {
     this.phoneBar.classList.remove("absolute");
     gsap.set(this.wrapper, {
       y: -200,
+    });
+  }
+
+  addEventListener() {
+    window.addEventListener("resize", () => {
+      if (this.searchBarState === STATES.STANDARD_OPTIONS) {
+        gsap.to([".accorSearchBar__standardBtns-mobile"], {
+          opacity: 1,
+        });
+      }
     });
   }
 }

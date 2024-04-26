@@ -137,7 +137,6 @@ class Accor {
   displayMoreCityBreaks() {
     // Clear existing city breaks
     this.cityBreaksContainer.innerHTML = "";
-
     this.generateCityBreaks(cityBreaksData);
   }
 
