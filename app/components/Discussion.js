@@ -341,7 +341,7 @@ export default class Discussion {
 
   // Scroll
   scrollToBottom(isSmooth = true) {
-    this.mainEl.scrollTo({
+    window.scrollTo({
       top: this.mainEl.scrollHeight,
       behavior: isSmooth ? "smooth" : "auto",
       //   behavior: "smooth",

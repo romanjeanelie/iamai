@@ -49,19 +49,13 @@ $paddingTopMobile: 28px;
 html {
   overscroll-behavior: none;
   min-height: 100svh;
-  -webkit-overflow-scrolling: touch;
-
   background-color: $backgroundColorGreyPage;
 }
 
 body {
   width: 100vw;
-  //   overflow-x: hidden;
-  //   overscroll-behavior: none;
-  height: 100vh;
   -webkit-overflow-scrolling: touch;
 
-  overflow: hidden;
   color: $colorMain;
   font-family: Noto Sans;
   font-weight: 400;
@@ -139,10 +133,6 @@ button {
   min-height: 100svh;
 
   main {
-    height: 100vh;
-    -webkit-overflow-scrolling: touch;
-    overflow: hidden !important;
-    overflow-y: auto !important;
     position: relative;
     display: flex;
     align-items: center;

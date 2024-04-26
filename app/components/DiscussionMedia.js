@@ -125,7 +125,7 @@ export default class DiscussionMedia {
 
     this.handleImgClick(imgs);
     this.bottomWrapper.appendChild(this.imagesContainer);
-    if (this.isFirstHistoryUpdate) this.mainEl.scrollTo(0, this.mainEl.scrollHeight);
+    if (this.isFirstHistoryUpdate) window.scrollTo(0, this.mainEl.scrollHeight);
   }
 
   async addUserImages(srcs) {
@@ -141,7 +141,7 @@ export default class DiscussionMedia {
     });
 
     this.topWrapper.appendChild(imagesContainer);
-    if (this.isFirstHistoryUpdate) this.mainEl.scrollTo(0, this.mainEl.scrollHeight);
+    if (this.isFirstHistoryUpdate) window.scrollTo(0, this.mainEl.scrollHeight);
   }
 
   handleImgClick(imgs) {
