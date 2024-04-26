@@ -169,7 +169,7 @@ export default class AccorSearchBarCalendars {
   updateCalendars = (btn) => {
     if (this.state === CALENDARS_STATES.DATES) {
       this.calendars.forEach((calendar) => {
-        if (btn.classList.contains("back")) {
+        if (btn.target.classList.contains("back")) {
           calendar.updateCalendarMonth(-1);
         } else {
           calendar.updateCalendarMonth(1);
@@ -177,11 +177,11 @@ export default class AccorSearchBarCalendars {
       });
     } else if (this.state === CALENDARS_STATES.MONTHS) {
       this.destroyCalendars();
-      const isBack = btn.classList.contains("back");
+      const isBack = btn.target.classList.contains("back");
       this.currentYear = isBack ? this.currentYear - 1 : this.currentYear + 1;
       this.initMonths();
     } else if (this.state === CALENDARS_STATES.YEARS) {
-      const isBack = btn.classList.contains("back");
+      const isBack = btn.target.classList.contains("back");
       this.centeredYear = this.centeredYear + (isBack ? -4 : 4);
       this.destroyCalendars();
       this.initYears();
@@ -205,6 +205,16 @@ export default class AccorSearchBarCalendars {
     // Destroy all calendars
     this.destroyCalendars();
 
+    // remove all event listeners
+    this.headerBtns?.forEach((btn) => {
+      btn.removeEventListener("click", this.handleHeaderBtnClick.bind(this));
+    });
+    this.btns.forEach((btn) => {
+      btn.removeEventListener("click", this.updateCalendars.bind(this));
+    });
+    this.background.removeEventListener("click", this.closeOnClickOutside);
+    window.removeEventListener("resize", this.handleWindowResize.bind(this));
+
     // Nullify properties that could be holding large amounts of data
     this.calendars = null;
     this.surWrapper = null;
@@ -215,9 +225,11 @@ export default class AccorSearchBarCalendars {
     this.btns = null;
   };
 
+  // HANDLERS
   handleWindowResize() {
+    this.isMobile = window.innerWidth < 820;
     // only when state is DATES
-    if (this.state)
+    if (this.state === CALENDARS_STATES.DATES)
       if (!this.isMobile && this.calendars?.length === 1) {
         const newCalendar = new Calendar({
           container: this.calContainer,
@@ -227,7 +239,7 @@ export default class AccorSearchBarCalendars {
           setSelectedDay: this.handleSelectedDayChange.bind(this),
         });
         this.calendars.push(newCalendar);
-      } else if (this.isMobile && this.calendars.length === 2) {
+      } else if (this.isMobile && this.calendars?.length === 2) {
         const removedCalendar = this.calendars.pop();
         removedCalendar.destroy();
       }
@@ -238,26 +250,23 @@ export default class AccorSearchBarCalendars {
     this.destroy();
   };
 
+  handleHeaderBtnClick = (btn) => {
+    const btnState = btn.target.getAttribute("data-state");
+    if (this.state === btnState) return;
+    this.updateCalendarsState(btnState);
+  };
+
   addEventListeners = () => {
     this.headerBtns.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const btnState = btn.getAttribute("data-state");
-        if (this.state === btnState) return;
-        this.updateCalendarsState(btnState);
-      });
+      btn.addEventListener("click", this.handleHeaderBtnClick.bind(this));
     });
 
     this.btns.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        this.updateCalendars(btn);
-      });
+      btn.addEventListener("click", this.updateCalendars.bind(this));
     });
 
     this.background.addEventListener("click", this.closeOnClickOutside);
 
-    window.addEventListener("resize", () => {
-      this.isMobile = window.innerWidth < 820;
-      this.handleWindowResize();
-    });
+    window.addEventListener("resize", this.handleWindowResize.bind(this));
   };
 }
