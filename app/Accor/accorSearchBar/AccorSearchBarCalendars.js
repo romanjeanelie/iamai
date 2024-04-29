@@ -177,30 +177,46 @@ export default class AccorSearchBarCalendars {
   };
 
   // Navigate through the calendars (clicking the back and next buttons)
-  updateCalendars = (btn) => {
-    if (this.state === CALENDARS_STATES.DATES || (this.state === CALENDARS_STATES.MONTHS && this.isMobile)) {
-      this.calendars.forEach((calendar) => {
-        if (btn.target.classList.contains("back")) {
-          calendar.updateCalendarMonth(-1);
-        } else {
-          calendar.updateCalendarMonth(1);
-        }
-      });
-    } else if (this.state === CALENDARS_STATES.MONTHS) {
+  handleDatesNavigation = (btn) => {
+    this.calendars.forEach((calendar) => {
+      if (btn.target.classList.contains("back")) {
+        calendar.updateCalendarMonth(-1);
+      } else {
+        calendar.updateCalendarMonth(1);
+      }
+    });
+  };
+
+  handleMonthsNavigation = (btn) => {
+    if (this.isMobile) {
+      // on mobile, the logic is the same as for Dates
+      this.handleDatesNavigation(btn);
+    } else {
       this.destroyCalendars();
       const isBack = btn.target.classList.contains("back");
       this.currentYear = isBack ? this.currentYear - 1 : this.currentYear + 1;
       this.initMonths();
+    }
+  };
+
+  handleYearsNavigation = (btn) => {
+    const isBack = btn.target.classList.contains("back");
+    this.centeredYear = this.centeredYear + (isBack ? -4 : 4);
+    this.destroyCalendars();
+    this.initYears();
+  };
+
+  updateCalendars = (btn) => {
+    if (this.state === CALENDARS_STATES.DATES || (this.state === CALENDARS_STATES.MONTHS && this.isMobile)) {
+      this.handleDatesNavigation(btn);
+    } else if (this.state === CALENDARS_STATES.MONTHS) {
+      this.handleDatesNavigation(btn);
     } else if (this.state === CALENDARS_STATES.YEARS) {
-      const isBack = btn.target.classList.contains("back");
-      this.centeredYear = this.centeredYear + (isBack ? -4 : 4);
-      this.destroyCalendars();
-      this.initYears();
+      this.handleYearsNavigation(btn);
     }
   };
 
   destroyCalendars = () => {
-    // this.wrapper.style.display = "none";
     // Clear inner HTML of all calendar bodies
     this.calendars?.forEach((calendar) => {
       calendar.destroy();
