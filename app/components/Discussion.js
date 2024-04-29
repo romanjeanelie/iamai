@@ -442,6 +442,7 @@ export default class Discussion {
         });
       } else {
         showHistory();
+        resolve();
       }
     });
   }

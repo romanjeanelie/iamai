@@ -205,7 +205,6 @@ export default class AccorSearchBarCalendars {
 
   updateCalendars = (btn) => {
     const isBack = btn.currentTarget.dataset.direction === "back";
-
     if (this.state === CALENDARS_STATES.DATES) {
       this.handleDatesNavigation(isBack);
     } else if (this.state === CALENDARS_STATES.MONTHS) {
@@ -295,7 +294,6 @@ export default class AccorSearchBarCalendars {
     });
 
     this.btns.forEach((btn) => {
-      console.log("from addEventListeners : ", btn.dataset.direction);
       btn.addEventListener("click", (btn) => {
         this.updateCalendars(btn);
       });
