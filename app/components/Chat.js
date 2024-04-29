@@ -9,6 +9,8 @@ const HOST = import.meta.env.VITE_API_HOST || "https://api.asterizk.ai";
 const NATS_URL = import.meta.env.VITE_API_NATS_URL || "wss://nats.asterizk.ai";
 const NATS_USER = import.meta.env.VITE_API_NATS_USER || "iamplus-acc";
 const NATS_PASS = import.meta.env.VITE_API_NATS_PASS || "cis8Asto6HepremoGApI";
+const GOOGLE_TRANSLATE_URL = import.meta.env.VITE_API_GOOGLE_TRANSLATE;
+
 let ui_paramsmap = new Map();
 let steamseq = [];
 const ANSWER = "answer",
@@ -558,10 +560,8 @@ class Chat {
   googletranslate = (text, lang, sourcelang) =>
     new Promise(async (resolve, reject) => {
       var xhr = new XMLHttpRequest();
-      var url = "https://translation.googleapis.com/language/translate/v2";
-      var apiKey = "AIzaSyBA_hE3ia77DTErB6SejtlEwDBdKN-5WFA";
 
-      xhr.open("POST", `${url}?key=${apiKey}`, true);
+      xhr.open("POST", GOOGLE_TRANSLATE_URL, true);
       xhr.setRequestHeader("Content-Type", "application/json");
 
       xhr.onreadystatechange = function () {

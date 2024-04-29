@@ -12,7 +12,8 @@ let divcontainer = document.getElementById("divcontainer");
 
 const ELEVENLABS_URL = "https://api.elevenlabs.io/v1/text-to-speech/$voiceid/stream?optimize_streaming_latency=4";
 const ELEVENLABS_TOKEN = import.meta.env.VITE_API_ELEVENLABS_TOKEN || "bddfcabff8951ebb9e925d506452df93";
-const GOOGLE_TTS_URL = import.meta.env.VITE_API_GOOGLE_TTS_URL || "https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyBA_hE3ia77DTErB6SejtlEwDBdKN-5WFA";
+const GOOGLE_TTS_URL = import.meta.env.VITE_API_GOOGLE_TTS_URL;
+const GOOGLE_TRANSLATE_URL = import.meta.env.VITE_API_GOOGLE_TRANSLATE;
 
 function getAudio(blob) {
     const audioURL = URL.createObjectURL(blob);
@@ -84,10 +85,8 @@ async function onCompleteRecording(blob) {
 const googletranslate = (text, lang, sourcelang) =>
     new Promise(async (resolve, reject) => {
         var xhr = new XMLHttpRequest();
-        var url = "https://translation.googleapis.com/language/translate/v2";
-        var apiKey = "AIzaSyBA_hE3ia77DTErB6SejtlEwDBdKN-5WFA";
 
-        xhr.open("POST", `${url}?key=${apiKey}`, true);
+        xhr.open("POST", GOOGLE_TRANSLATE_URL, true);
         xhr.setRequestHeader("Content-Type", "application/json");
 
         xhr.onreadystatechange = function () {
