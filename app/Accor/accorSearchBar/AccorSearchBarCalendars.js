@@ -83,11 +83,9 @@ export default class AccorSearchBarCalendars {
         year: this.currentYear,
       });
       this.calendars.push(calendar);
-
-      calendar.calendarContainer.addEventListener("click", () => {
-        this.updateCalendarsState(CALENDARS_STATES.DATES, calendar.month, calendar.year);
-      });
     }
+
+    this.addClickListenersToCalendars();
   }
 
   initYears() {
@@ -119,6 +117,15 @@ export default class AccorSearchBarCalendars {
         this.updateCalendarsState(CALENDARS_STATES.MONTHS);
       });
       this.yearsContainer.appendChild(btn);
+    });
+  }
+
+  // used on the months state to redirect when the zoomed version of the calendar clicked on
+  addClickListenersToCalendars() {
+    this.calendars.forEach((calendar) => {
+      calendar.calendarContainer.addEventListener("click", () => {
+        this.updateCalendarsState(CALENDARS_STATES.DATES, calendar.month, calendar.year);
+      });
     });
   }
 
@@ -190,11 +197,7 @@ export default class AccorSearchBarCalendars {
       // on mobile, the logic is the same as for Dates
       this.handleDatesNavigation(isBack);
       this.yearsContainer.innerText = isBack ? this.calendars[0].year : this.calendars[1].year;
-      this.calendars.forEach((calendar) => {
-        calendar.calendarContainer.addEventListener("click", () => {
-          this.updateCalendarsState(CALENDARS_STATES.DATES, calendar.month, calendar.year);
-        });
-      });
+      this.addClickListenersToCalendars();
     } else {
       this.destroyCalendars();
       this.currentYear = isBack ? this.currentYear - 1 : this.currentYear + 1;
@@ -208,7 +211,7 @@ export default class AccorSearchBarCalendars {
     this.initYears();
   };
 
-  updateCalendars = (btn) => {
+  navigateCalendars = (btn) => {
     const isBack = btn.currentTarget.dataset.direction === "back";
     if (this.state === CALENDARS_STATES.DATES) {
       this.handleDatesNavigation(isBack);
@@ -240,7 +243,7 @@ export default class AccorSearchBarCalendars {
       btn.removeEventListener("click", this.handleHeaderBtnClick.bind(this));
     });
     this.btns?.forEach((btn) => {
-      btn.removeEventListener("click", this.updateCalendars.bind(this));
+      btn.removeEventListener("click", this.navigateCalendars.bind(this));
     });
     this.background?.removeEventListener("click", this.closeOnClickOutside);
     window.removeEventListener("resize", this.handleWindowResize.bind(this));
@@ -300,7 +303,7 @@ export default class AccorSearchBarCalendars {
 
     this.btns.forEach((btn) => {
       btn.addEventListener("click", (btn) => {
-        this.updateCalendars(btn);
+        this.navigateCalendars(btn);
       });
     });
 
