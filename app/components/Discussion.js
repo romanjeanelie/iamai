@@ -410,6 +410,7 @@ export default class Discussion {
     // hide the previous discussion container while it is loading to avoid scroll jumps
     this.discussionContainer.style.marginTop = "96px";
     this.prevDiscussionContainer.style.display = "none";
+
     await new Promise(async (resolve, reject) => {
       const { container } = await this.history.getHistory({ uuid, user, size: 10 });
       this.prevDiscussionContainer.appendChild(container);
@@ -417,21 +418,31 @@ export default class Discussion {
       let imgLoadedCount = 0;
       const totalImages = imgs.length;
 
+      console.log("total imgs in history : ", totalImages);
+
+      const showHistory = () => {
+        this.prevDiscussionContainer.style.display = "block";
+        this.discussionContainer.style.marginTop = "0px";
+      };
+
       const handleImageLoad = () => {
         imgLoadedCount++;
-        if (imgLoadedCount === totalImages) {
-          this.prevDiscussionContainer.style.display = "block";
-          this.discussionContainer.style.marginTop = "0px";
+        console.log(imgLoadedCount, totalImages);
 
-          this.scrollToBottom(false);
+        if (imgLoadedCount === totalImages) {
+          showHistory();
           resolve();
         }
       };
 
-      imgs.forEach((img) => {
-        img.addEventListener("load", handleImageLoad);
-        img.addEventListener("error", handleImageLoad); // Treat errors as loaded to ensure resolution
-      });
+      if (imgs.length) {
+        imgs.forEach((img) => {
+          img.addEventListener("load", handleImageLoad);
+          img.addEventListener("error", handleImageLoad); // Treat errors as loaded to ensure resolution
+        });
+      } else {
+        showHistory();
+      }
     });
   }
 
