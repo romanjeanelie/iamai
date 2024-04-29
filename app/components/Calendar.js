@@ -127,20 +127,19 @@ export default class Calendar {
       this.month = 0;
       this.year++;
     }
+
     this.monthDetails = getMonthDetails(this.year, this.month);
+    this.renderHeader(this.year, this.month);
+
     return {
-      year: this.year,
-      month: this.month,
       monthDetails: this.monthDetails,
     };
   };
 
   updateCalendarMonth = (offset) => {
-    let newCal;
-    newCal = this.handleHeaderChange(offset);
-    this.renderHeader(newCal.year, newCal.month);
+    let { monthDetails } = this.handleHeaderChange(offset);
     this.calendar.innerHTML = "";
-    this.renderBody(newCal.monthDetails);
+    this.renderBody(monthDetails);
   };
 
   updateSelectedDay = (date, cell) => {
