@@ -85,7 +85,7 @@ export default class AccorSearchBarCalendars {
       this.calendars.push(calendar);
 
       calendar.calendarContainer.addEventListener("click", () => {
-        this.updateCalendarsState(CALENDARS_STATES.DATES, i, this.currentYear);
+        this.updateCalendarsState(CALENDARS_STATES.DATES, calendar.month, calendar.year);
       });
     }
   }
@@ -176,7 +176,7 @@ export default class AccorSearchBarCalendars {
 
   // Navigate through the calendars (clicking the back and next buttons)
   handleDatesNavigation = (isBack) => {
-    this.calendars.forEach((calendar) => {
+    this.calendars?.forEach((calendar) => {
       if (isBack) {
         calendar.updateCalendarMonth(-1);
       } else {
@@ -190,6 +190,11 @@ export default class AccorSearchBarCalendars {
       // on mobile, the logic is the same as for Dates
       this.handleDatesNavigation(isBack);
       this.yearsContainer.innerText = isBack ? this.calendars[0].year : this.calendars[1].year;
+      this.calendars.forEach((calendar) => {
+        calendar.calendarContainer.addEventListener("click", () => {
+          this.updateCalendarsState(CALENDARS_STATES.DATES, calendar.month, calendar.year);
+        });
+      });
     } else {
       this.destroyCalendars();
       this.currentYear = isBack ? this.currentYear - 1 : this.currentYear + 1;
