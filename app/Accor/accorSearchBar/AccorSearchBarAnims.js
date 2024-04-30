@@ -123,6 +123,7 @@ export default class AccorSearchBarAnims {
     this.animateSecondaryBar(0, null, () => {
       this.advancedBar.classList.add("none");
       this.phoneBar.classList.add("none");
+      this.wrapper.style.transform = "none";
     });
   }
 
