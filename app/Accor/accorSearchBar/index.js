@@ -18,6 +18,18 @@ export const STATES = {
 
 const oneDay = 60 * 60 * 24 * 1000;
 
+function formatDate(timestamp) {
+  const date = new Date(timestamp);
+  const month = date.getMonth() + 1; // getMonth() returns a 0-based month (0 = January)
+  const day = date.getDate(); // getDate() returns the day of the month
+
+  // Pad the month and day with leading zeros if they are less than 10
+  const formattedMonth = month < 10 ? `0${month}` : month;
+  const formattedDay = day < 10 ? `0${day}` : day;
+
+  return `${formattedMonth}/${formattedDay}`;
+}
+
 let todayTimestamp = Date.now() - (Date.now() % oneDay) + new Date().getTimezoneOffset() * 1000 * 60;
 
 export default class AccorSearchBar {
@@ -80,6 +92,15 @@ export default class AccorSearchBar {
     if (this.inputsValues.hasOwnProperty(key)) {
       // Update the value of the specified key
       this.inputsValues[key] = value;
+      // find the corresponding input
+      const input = document.querySelector(`[data-key=${key}]`);
+      const span = input.querySelector("span");
+
+      if (key === "departureDate" || "arrivalDate") {
+        span.innerText = formatDate(value);
+      } else {
+        span.innerText = value;
+      }
     } else {
       console.error(`Input key ${key} does not exist.`);
     }
