@@ -1,7 +1,8 @@
 import gsap from "gsap";
 import { createNanoEvents } from "nanoevents";
-import { filtersArray, cityBreaksData } from "./accorData";
+import { filtersArray, cityBreaksData, hotelCardsData } from "./accorData";
 import SearchBar from "./accorSearchBar/index.js";
+import HotelCard from "./accorSearchBar/HotelCard.js";
 
 // TO DO
 // [X] set up the city breaks with initCityBreaks
@@ -24,6 +25,7 @@ class Accor {
 
     // DOM Elements
     this.filterContainer = document.querySelector(".accorFilters__items-container");
+    this.hotelCardsContainer = document.querySelector(".accorHotels__container");
     this.cityBreaksContainer = document.querySelector(".accorBreaks__container");
     this.filtersArrow = document.querySelector(".accorFilters__arrow");
 
@@ -31,6 +33,7 @@ class Accor {
 
     // Init
     this.initFilters();
+    this.initHotelCards();
     this.initCityBreaks();
     this.addEventListeners();
 
@@ -85,6 +88,13 @@ class Accor {
         duration: 1,
       });
     }
+  }
+
+  // ------ Hotel Cards Section ------
+  initHotelCards() {
+    hotelCardsData.forEach((data) => {
+      new HotelCard({ data, container: this.hotelCardsContainer });
+    });
   }
 
   // ------ City Breaks Section ------
