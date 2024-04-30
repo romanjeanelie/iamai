@@ -5,6 +5,12 @@
   grid-row-gap: 32px; // Vertical gap
   margin-top: 40px;
 
+  @include media("<desktop") {
+    width: fit-content;
+    grid-template-columns: repeat(2, 343px);
+    margin: 40px auto;
+  }
+
   @include media("<tablet") {
     grid-template-columns: repeat(2, 1fr);
   }
