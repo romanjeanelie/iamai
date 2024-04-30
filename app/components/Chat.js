@@ -12,6 +12,8 @@ const NATS_PASS = import.meta.env.VITE_API_NATS_PASS || "cis8Asto6HepremoGApI";
 const GOOGLE_TRANSLATE_URL = import.meta.env.VITE_API_GOOGLE_TRANSLATE;
 
 let ui_paramsmap = new Map();
+let sources_paramsmap = new Map();
+let images_paramsmap = new Map();
 let steamseq = [];
 const ANSWER = "answer",
   FOLLOWUP = "question",
@@ -43,7 +45,8 @@ const ANSWER = "answer",
   AGENT_ANSWERED = "agent_answered",
   IMAGE_GENERATION_IN_PROGRESS = "image_generation_in_progress",
   RESPONSE_FOLLOW_UP = "response_follow_up",
-  RESPONSE_GREETING = "response_greeting";
+  RESPONSE_GREETING = "response_greeting",
+  AGENT_INTERMEDIATE_ANSWER = "agent_intermediate_answer";
 let micro_thread_id = "";
 
 class Chat {
@@ -144,6 +147,7 @@ class Chat {
               uuid: this.deploy_ID,
             })
           );
+          console.time("conversation");
         }
       } else {
         xhr.open("POST", HOST + "/workflows/tasks", true);
@@ -225,12 +229,25 @@ class Chat {
 
           this.image_urls = JSON.parse(mdata.response_json.images);
 
-          this.image_urls && this.media.addImages(this.image_urls.slice(0, 8));
+
+
+          if (mdata.micro_thread_id.length == 0)
+            this.image_urls && this.media.addImages(this.image_urls.slice(0, 8));
+          else
+            images_paramsmap.set(mdata.micro_thread_id, mdata.response_json.images);
+
         } else if (mdata.type == SOURCES) {
           const media = new DiscussionMedia({ container: this.container, emitter: this.callbacks.emitter });
-
-          this.Sources = JSON.parse(mdata.response_json.sources);
-          media.addSources(this.Sources);
+          // console.log("mdata.response_json.sources.contains('):",mdata.response_json.sources.contains("'"))
+          try {
+            this.Sources = JSON.parse(mdata.response_json.sources);
+          } catch (e) {
+            this.Sources = mdata.response_json.sources;
+          }
+          if (mdata.micro_thread_id.length == 0)
+            media.addSources(this.Sources);
+          else
+            sources_paramsmap.set(mdata.micro_thread_id, mdata.response_json.sources);
         }
         //generate data
         if (mdata.status && mdata.status == STREAM_STARTED) {
@@ -345,6 +362,7 @@ class Chat {
           this.callbacks.enableInput();
           this.callbacks.emitter.emit("paEnd");
           this.callbacks.emitter.emit(PA_RESPONSE_ENDED);
+          console.timeEnd("conversation")
         } else if (mdata.status && mdata.status == AGENT_STARTED) {
           // micro_thread_id =  mdata.micro_thread_id;
           let taskname = mdata.task_name;
@@ -377,15 +395,40 @@ class Chat {
             };
             this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, null, task.workflowID);
           } else {
-            const task = {
-              key: mdata.micro_thread_id,
-              status: {
-                type: TASK_STATUSES.IN_PROGRESS,
-                title: mdata.response_json.text.split(" ")[0],
-                description: mdata.response_json.text,
-              },
-            };
-            this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status);
+            if (mdata.type == SOURCES) {
+              console.log("mdata:", mdata)
+              console.log("mdata.source:", JSON.stringify(mdata.response_json.sources))
+              const task = {
+                key: mdata.micro_thread_id,
+                status: {
+                  type: TASK_STATUSES.IN_PROGRESS,
+                  title: "SOURCES",
+                  description: mdata.response_json.sources,
+                },
+              };
+              this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status);
+            } else if (mdata.type == AGENT_INTERMEDIATE_ANSWER) {
+              const task = {
+                key: mdata.micro_thread_id,
+                status: {
+                  type: TASK_STATUSES.IN_PROGRESS,
+                  title: "AGENT INTERMEDIATE ANSWER",
+                  description: mdata.response_json.agent_intermediate_answer,
+                },
+              };
+              this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status);
+            } else {
+              const task = {
+                key: mdata.micro_thread_id,
+                status: {
+                  type: TASK_STATUSES.IN_PROGRESS,
+                  title: mdata.response_json.text.split(" ")[0],
+                  description: mdata.response_json.text,
+                },
+              };
+              this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status);
+            }
+
           }
         } else if (mdata.status && mdata.status == AGENT_ANSWERED) {
           this.callbacks.emitter.emit(AGENT_ENDED);
@@ -420,8 +463,14 @@ class Chat {
               label: taskname + " is completed",
             },
           };
+          let sourcedata = sources_paramsmap.get(mdata.micro_thread_id);
+          let divans;
+          if (sourcedata) {
+            divans = this.adduserans(mdata.response_json.text, container, sourcedata);
+            sources_paramsmap.delete(mdata.micro_thread_id);
+          } else
+            divans = this.adduserans(mdata.response_json.text, container);
 
-          const divans = this.adduserans(mdata.response_json.text, container);
           this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, divans, {
             workflowID: mdata.session_id,
           });
@@ -511,7 +560,7 @@ class Chat {
     divdiscussionuser.innerHTML = userQns;
     return divdiscussionuser;
   }
-  adduserans(userAns, container) {
+  adduserans(userAns, container, source = null) {
     const divtextcontainer = document.createElement("div");
     divtextcontainer.className = "text__container";
     const divans = document.createElement("div");
@@ -525,6 +574,10 @@ class Chat {
     spanAIword.innerText = userAns;
     divspan.appendChild(spanAIword);
     divtextcontainer.appendChild(divspan);
+    if (source) {
+      const media = new DiscussionMedia({ container: divtextcontainer, emitter: this.callbacks.emitter });
+      media.addSources(source);
+    }
     return divtextcontainer;
   }
 
@@ -665,6 +718,7 @@ class Chat {
 
     xhr.send(data);
     console.timeEnd("input");
+    console.time("conversation");
   }
 
   updateTextContainer() {

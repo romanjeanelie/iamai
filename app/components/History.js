@@ -36,6 +36,11 @@ export default class History {
         const uiResults = this.getTaskResultUI(results);
         resultsContainer.appendChild(uiResults);
       }
+      if (status.type === "sources") {
+        const sources = status.response_json.sources;
+        const media = new DiscussionMedia({ container: resultsContainer, emitter: this.emitter });
+        media.addSources(sources);
+      }
       if (status.status === API_STATUSES.ANSWERED) {
         const answerContainer = document.createElement("div");
         answerContainer.innerHTML = status.response_json.text || "";
@@ -79,16 +84,50 @@ export default class History {
 
             this.emitter.emit("taskManager:updateStatus", task.key, task.status, null, task.workflowID);
           } else {
-            const task = {
-              key: status.micro_thread_id,
-              status: {
-                type: TASK_STATUSES.IN_PROGRESS,
-                title: status.response_json.text.split(" ")[0],
-                description: status.response_json.text,
-              },
-            };
+            //   console.log("status:",status)
+            //   if(status.response_json.text && status.response_json.text.length>0){
+            //   const task = {
+            //     key: status.micro_thread_id,
+            //     status: {
+            //       type: TASK_STATUSES.IN_PROGRESS,
+            //       title: status.response_json.text.split(" ")[0],
+            //       description: status.response_json.text,
+            //     },
+            //   };
+            //   this.emitter.emit("taskManager:updateStatus", task.key, task.status);
+            // }
+            if (status.type == API_STATUSES.SOURCES) {
+              const task = {
+                key: status.micro_thread_id,
+                status: {
+                  type: TASK_STATUSES.IN_PROGRESS,
+                  title: "SOURCES",
+                  description: status.response_json.sources,
+                },
+              };
+              this.emitter.emit("taskManager:updateStatus", task.key, task.status);
+            } else if (status.type == API_STATUSES.AGENT_INTERMEDIATE_ANSWER) {
+              const task = {
+                key: status.micro_thread_id,
+                status: {
+                  type: TASK_STATUSES.IN_PROGRESS,
+                  title: "AGENT INTERMEDIATE ANSWER",
+                  description: status.response_json.agent_intermediate_answer,
+                },
+              };
+              this.emitter.emit("taskManager:updateStatus", task.key, task.status);
+            } else {
+              const task = {
+                key: status.micro_thread_id,
+                status: {
+                  type: TASK_STATUSES.IN_PROGRESS,
+                  title: status.response_json.text.split(" ")[0],
+                  description: status.response_json.text,
+                },
+              };
+              this.emitter.emit("taskManager:updateStatus", task.key, task.status);
+            }
 
-            this.emitter.emit("taskManager:updateStatus", task.key, task.status);
           }
           break;
         case API_STATUSES.ENDED:

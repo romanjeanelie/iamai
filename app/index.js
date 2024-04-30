@@ -19,10 +19,18 @@ const divlogin = document.getElementById("divlogin");
 const divinfotext = document.getElementById("divinfotext");
 
 const divwaitlist = document.getElementById("divwaitlist");
+const divwaitlistform = document.getElementById("divwaitlistform");
+const divwaitlisttext = document.getElementById("divwaitlisttext");
 const divlottieanimation = document.getElementById("divlottieanimation");
-
+const divlink = document.getElementById("divlinklogout");
 const linksignout = document.getElementById("linksignout");
 const signInButton = document.getElementById("divgoogle");
+const btnwaitlistinfosubmit = document.getElementById("btnwaitlistinfosubmit");
+const txtcompany = document.getElementById("txtcompany");
+const txttwitter = document.getElementById("txttwitter");
+const txtfacebook = document.getElementById("txtfacebook");
+const txtlinkedin = document.getElementById("txtlinkedin");
+const txtuse = document.getElementById("txtuse");
 
 class App {
   constructor() {
@@ -115,8 +123,10 @@ class App {
     deletedelay = 50,
     fulltextdelay = 1000
   ) => {
+    console.log("here to animate:", element)
     if (!element) return; // Element not found
 
+    console.log("here to animate")
     let str = textArray[index++];
     let i = 0;
     let isAdding = true;
@@ -171,6 +181,7 @@ class App {
   };
 
   toggleSignIn() {
+    sessionStorage.setItem('attemptedSignIn', 'true');
     signInButton.style.display = "none";
     divlottieanimation.style.display = "block";
     animation.play();
@@ -210,28 +221,69 @@ class App {
       });
   }
   async checkuserwaitlist(user) {
+    this.user = user;
     var userstatus = await getUserDataFireDB(user);
     if (userstatus) {
-      if (userstatus.status == "active") {
-        await user.setuseraddress();
-        this.toPageGrey({ duration: 1200 });
-        this.user = user;
-        // console.log("user", user);
-        if (this.debug) return;
-        this.initApp();
-      } else {
-        divlogin.style.display = "none";
-        divwaitlist.style.display = "flex";
-      }
-    } else {
-      await saveUserDataFireDB(user);
+      console.log("userstatus:", userstatus);
+      this.user.setstatus(userstatus.status);
+    }
+    if (sessionStorage.getItem('attemptedSignIn') === 'true') {
+      sessionStorage.removeItem('attemptedSignIn'); 
+      await this.checkuser();
+    }
+  }
+  async saveUser() {
+    console.log("saveuser");
+    if (txtuse.value.length > 0) {
+      this.user.setprofile(txtcompany.value, txttwitter.value, txtfacebook.value, txtlinkedin.value, txtuse.value);
+      await saveUserDataFireDB(this.user);
       divlogin.style.display = "none";
       divwaitlist.style.display = "flex";
+      divwaitlisttext.style.display = "flex"
+      divlink.style.display = "block";
+      divwaitlistform.style.display = "none"
+    } else {
+      txtuse.classList.add("error");
+    }
+  }
+  async checkuser()
+  {
+    if (this.user) {
+      console.log("this.user:", this.user)
+      if (this.user.status == "active") {
+        await this.user.setuseraddress();
+        this.toPageGrey({ duration: 1200 });
+        // this.user = user;
+        if (this.debug) return;
+        this.initApp();
+      } else if (this.user.status == "waitlisted") {
+        divlogin.style.display = "none";
+        divwaitlist.style.display = "flex";
+        divwaitlisttext.style.display = "flex"
+        divlink.style.display = "block";
+        divwaitlistform.style.display = "none"
+      }
+      else {
+        divlogin.style.display = "none";
+        divwaitlist.style.display = "flex";
+        divwaitlisttext.style.display = "none"
+        divlink.style.display = "none"
+        divwaitlistform.style.display = "block"
+      }
+    } else {
+      divlogin.style.display = "flex";
+      const texts = [
+        "Find a flight to Bali",
+        "Get a taxi to office",
+        "Book a Hotel",
+        "Tell me joke",
+        "What are the movies playing",
+      ];
+      this.startAnimations(texts, divinfotext);
     }
   }
   addListeners() {
     onAuthStateChanged(auth, async (user) => {
-      console.log(user)
       if (user && user.emailVerified) {
         try {
           let idToken = await user.getIdToken(true);
@@ -246,15 +298,7 @@ class App {
     });
 
     window.addEventListener("load", async () => {
-      let user = await getUser();
-
-      if (user) {
-        // this.checkuserwaitlist(user);
-        divlottieanimation.style.display = "block";
-        signInButton.style.display = "none";
-      } else {
-        divlottieanimation.style.display = "none";
-      }
+      divlottieanimation.style.display = "none";
       animation = lottie.loadAnimation({
         container: divlottieanimation,
         renderer: "svg",
@@ -263,6 +307,7 @@ class App {
         path: "../animations/asterisk_loading.json",
       });
       animation.play();
+      
 
       signInButton.addEventListener("click", this.toggleSignIn, false);
       // signInButton.style.display = "none";
@@ -278,22 +323,20 @@ class App {
         });
       }
 
+      btnwaitlistinfosubmit.addEventListener("click", async () => {
+        await this.saveUser();
+      });
+
       //load and play the animations
       divwaitlist.style.display = "none";
       divlogin.style.display = "none";
-      // animateString("hello, I am", divintrotext, "", function () {
-      divintrotext.style.display = "none";
-      // animateString("Asterizk ", divintrologo, "../images/asterizk.svg", function () {
-      divintrologo.style.display = "none";
-      divlogin.style.display = "flex";
-      const texts = [
-        "Find a flight to Bali",
-        "Get a taxi to office",
-        "Book a Hotel",
-        "Tell me joke",
-        "What are the movies playing",
-      ];
-      this.startAnimations(texts, divinfotext);
+      this.animateString(0, ["hello, I am"], divintrotext, "", () => {
+        divintrotext.style.display = "none";
+        this.animateString(0, ["CO * "], divintrologo, "", async () => {
+          divintrologo.style.display = "none";
+          await this.checkuser();
+        })
+      })
     });
     document.fonts.ready.then(() => {
       this.app.classList.remove("preload");

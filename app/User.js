@@ -11,6 +11,12 @@ class User {
     this.picture = picture;
     this.email = email;
     this.idToken = idToken;
+    this.status = "";
+    this.company = "";
+    this.twitter = "";
+    this.facebook = "";
+    this.linkedin = "";
+    this.usecase = "";
     // console.time("getUserTimezone");
     this.timezone = this.getUserTimezone();
     // console.timeEnd("getUserTimezone");
@@ -20,6 +26,13 @@ class User {
     this.iso_2d_country_code = "";
     this.administrative_area_level_1 = "";
     this.administrative_area_level_2 = "";
+  }
+  setprofile(company, twitter, facebook, linkedin, usecase) {
+    this.company = company;
+    this.twitter = twitter;
+    this.facebook = facebook;
+    this.linkedin = linkedin;
+    this.usecase = usecase;
   }
   async setuseraddress() {
     // console.time("getaddressdetails");
@@ -31,6 +44,10 @@ class User {
     this.iso_2d_country_code = address.iso_2d_country_code;
     this.administrative_area_level_1 = address.administrative_area_level_1;
     this.administrative_area_level_2 = address.administrative_area_level_2;
+  }
+
+  setstatus(usrstatus) {
+    this.status = usrstatus;
   }
 
   getUserTimezone() {
@@ -169,6 +186,11 @@ async function saveUserDataFireDB(user) {
     email: user.email,
     profile_picture: user.picture,
     status: "waitlisted",
+    company: user.company,
+    twitter: user.twitter,
+    facebook: user.facebook,
+    linkedin: user.linkedin,
+    usecase: user.usecase,
     createdAt: serverTimestamp(),
   };
   const userPath = `users/${user.uuid}/data`;
