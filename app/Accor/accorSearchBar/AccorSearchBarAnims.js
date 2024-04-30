@@ -45,7 +45,7 @@ export default class AccorSearchBarAnims {
     if (this.searchBarState !== STATES.TEXT_INPUT) this.actionBtn.classList.add("phone-btn");
 
     // grab state
-    const initialState = Flip.getState([this.searchBar, this.searchBarFirstRow, this.advancedBtn]);
+    const initialState = Flip.getState([this.searchBar, this.searchBarFirstRow]);
     this.wrapper.classList.remove(...Object.values(STATES));
     this.wrapper.classList.add(state);
 
@@ -59,7 +59,7 @@ export default class AccorSearchBarAnims {
     Flip.from(initialState, {
       duration: 0.4,
       ease: "power3.out",
-      absolute: isMobile() ? false : true,
+      // absolute: isMobile() ? false : true,
       onStart: () => {
         gsap.to(expandBtns, { opacity: 0, duration: 0.1 });
       },
@@ -109,6 +109,7 @@ export default class AccorSearchBarAnims {
 
   toSecondaryBar(floor = 1) {
     this.savedState = this.searchBarState;
+    if (isMobile()) this.toMinimized();
     this.animateSecondaryBar(-200 * floor, floor, (floor) => {
       if (floor === 2) {
         this.resetPhoneBar();
