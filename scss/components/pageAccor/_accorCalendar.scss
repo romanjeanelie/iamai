@@ -211,6 +211,10 @@
       background-color: $accorExtraExtraLight;
     }
 
+    .inactive {
+      color: rgba($accorMain, 0.24);
+    }
+
     .active {
       position: relative;
       background: $accorMain;

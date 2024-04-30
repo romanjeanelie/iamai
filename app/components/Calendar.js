@@ -101,10 +101,13 @@ export default class Calendar {
 
       div.classList.add("cell_wrapper");
       div.classList.add("cal_date");
-      monthDetails[i].month === 0 && div.classList.add("current");
-      monthDetails[i].month === 0 && this.isSelectedDay(monthDetails[i], div);
+
+      cellDate.month === 0 && div.classList.add("current");
+      cellDate.month === 0 && this.isSelectedDay(monthDetails[i], div);
+      if (cellDate.timestamp < this.selectedDay) div.classList.add("inactive");
 
       div.innerText = cellDate.date;
+      div.dataset.timestamp = cellDate.timestamp;
       this.calendar.appendChild(div);
 
       div.addEventListener("click", () => {
@@ -146,8 +149,13 @@ export default class Calendar {
     // Call the callback function to notify the parent class of the change
     this.setSelectedDay(date.timestamp);
 
-    document.querySelectorAll(".cell_wrapper").forEach((cell) => {
-      cell.classList.remove("active");
+    document.querySelectorAll(".cell_wrapper.current").forEach((cell) => {
+      cell.classList.remove("active", "inactive");
+      const timestamp = cell.dataset.timestamp;
+
+      if (timestamp < this.selectedDay) {
+        cell.classList.add("inactive");
+      }
     });
     this.isSelectedDay(date, cell);
   };
