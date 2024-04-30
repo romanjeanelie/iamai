@@ -212,10 +212,24 @@
     }
 
     .active {
+      position: relative;
       background: $accorMain;
       color: white;
       border-radius: 30px;
-      outline: 3px solid $accorMain;
+
+      &:after {
+        $outlineWidth: 2px;
+
+        content: "";
+        position: absolute;
+        top: -$outlineWidth; // border: 2px + offset: 1px
+        right: -$outlineWidth; // border: 2px + offset: 1px
+        bottom: -$outlineWidth; // border: 2px + offset: 1px
+        left: -$outlineWidth; // border: 2px + offset: 1px
+        border: $outlineWidth solid $accorMain;
+        border-radius: 30px;
+      }
+      // outline: 3px solid $accorMain;
     }
   }
 
