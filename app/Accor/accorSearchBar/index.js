@@ -105,6 +105,12 @@ export default class AccorSearchBar {
     this.anims.fromSecondaryBar(STATES.MINIMIZED);
   }
 
+  // handle
+  handleToAdvanceOptions() {
+    this.anims.toAdvanceOptions();
+    if (this.calendars) this.destroyCalendar();
+  }
+
   // Inputs
   destroyCalendar() {
     if (this.calendars) {
@@ -125,7 +131,7 @@ export default class AccorSearchBar {
         }
       });
     });
-    this.advancedBtn.addEventListener("click", this.anims.toAdvanceOptions.bind(this.anims));
+    this.advancedBtn.addEventListener("click", this.handleToAdvanceOptions.bind(this));
     this.standardBtn.addEventListener("click", () => this.anims.fromSecondaryBar());
     this.actionBtn.addEventListener("click", () => {
       this.destroyCalendar();
@@ -143,6 +149,7 @@ export default class AccorSearchBar {
         this.anims.toMinimized();
       }
     });
+
     this.emitter.on("closeCalendar", this.destroyCalendar.bind(this));
 
     // handling the searchbar inputs
