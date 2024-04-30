@@ -186,6 +186,10 @@
         background-color: $accorMain;
         color: white;
         border-radius: 12px;
+
+        &:hover {
+          color: $accorSecondary;
+        }
       }
     }
   }
