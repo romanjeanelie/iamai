@@ -418,8 +418,6 @@ export default class Discussion {
       let imgLoadedCount = 0;
       const totalImages = imgs.length;
 
-      console.log("total imgs in history : ", totalImages);
-
       const showHistory = () => {
         this.prevDiscussionContainer.style.display = "block";
         this.discussionContainer.style.marginTop = "0px";
@@ -580,7 +578,7 @@ export default class Discussion {
 
   checkIfPrevDiscussionContainerVisible() {
     let options = {
-      rootMargin: "-100px",
+      rootMargin: "-96px",
     };
 
     const observerCallback = (entries, observer) => {
