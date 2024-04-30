@@ -18,6 +18,162 @@
   height: 343px;
   background-color: $backgroundColorGreyPage;
   border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  .slider-container {
+    flex: none;
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    height: 200px;
+  }
+
+  .slider-nav {
+    position: absolute;
+    bottom: 18px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+
+    .image-nav-indicator {
+      height: 8px;
+      width: 8px;
+      border-radius: 8px;
+      background-color: white;
+      opacity: 0.6;
+      transform: translate3d(-50%, 0, 0);
+      transition: opacity ease-out 0.2s;
+
+      &.active {
+        opacity: 1;
+      }
+    }
+  }
+
+  .slider-nav-button {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    cursor: pointer;
+
+    &:last-of-type {
+      right: 20px;
+      left: auto;
+      transform: translateY(-50%) rotate(180deg);
+    }
+  }
+
+  .slider-img {
+    flex: none;
+    width: 100%;
+
+    img {
+      height: 100%;
+      object-fit: cover;
+      // opacity: 0;
+      object-position: center;
+    }
+  }
+  .content-container {
+    padding: 8px 24px 24px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    h4 {
+      color: $accorMain;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 24px; /* 133.333% */
+      letter-spacing: 0.8px;
+      margin-bottom: 4px;
+    }
+
+    .hotel-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .star-icon {
+      width: 10px;
+    }
+
+    .hotel-ratings {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 24px; /* 171.429% */
+      letter-spacing: 0.4px;
+      gap: 8px;
+
+      span {
+        font-weight: 500;
+        color: rgba($accorMain, 0.4);
+      }
+    }
+
+    .hotel-location {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      .location-icon {
+        height: 12px;
+
+        img {
+          height: 100%;
+        }
+      }
+    }
+
+    .hotel-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+
+      .hotel-price {
+        position: relative;
+
+        p {
+          font-size: 40px;
+          font-weight: 600;
+          letter-spacing: 1px;
+
+          span {
+            font-size: 16px;
+            letter-spacing: 0.8px;
+          }
+        }
+
+        .reduction {
+          position: absolute;
+          top: 0;
+          right: 12px;
+          text-decoration: line-through;
+          font-size: 10px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: 100%;
+          letter-spacing: 0.8px;
+        }
+      }
+
+      .hotel-cta {
+        padding: 12px 29px;
+        background-color: $accorMain;
+        color: white;
+        border-radius: 12px;
+      }
+    }
+  }
 }
 
 .accorHotels__more-btn {
