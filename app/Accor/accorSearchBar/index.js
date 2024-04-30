@@ -155,6 +155,7 @@ export default class AccorSearchBar {
     this.advancedBtn.addEventListener("click", this.handleToAdvanceOptions.bind(this));
     this.standardBtn.addEventListener("click", () => this.anims.fromSecondaryBar());
     this.actionBtn.addEventListener("click", () => {
+      console.log(this.searchBarState);
       this.destroyCalendar();
       if (this.searchBarState === STATES.TEXT_INPUT) {
         // TO DO - SUBMIT THE INPUT VALUE (on submit function)
@@ -163,7 +164,7 @@ export default class AccorSearchBar {
         this.startPhoneCall();
       }
     });
-    this.secondaryBarPhoneBtn.addEventListener("click", this.anims.toPhoneBar.bind(this.anims));
+    this.secondaryBarPhoneBtn.addEventListener("click", this.startPhoneCall.bind(this));
     this.phoneCloseBtn.addEventListener("click", this.endPhoneCall.bind(this));
     document.addEventListener("click", (event) => {
       if (!this.wrapper.contains(event.target) && !this.calendars) {
