@@ -277,28 +277,33 @@ $taskSecondaryColor: #007aff;
         background-color: white;
         gap: 8px;
 
+        @include media("<phone") {
+          padding: 8px 8px 8px 16px;
+        }
+
         button {
+          flex: none;
           height: 26px;
           width: 26px;
           border-radius: 100%;
           display: flex;
           justify-content: center;
           align-items: center;
-          background-color: #0000003d;
+          background-color: rgba($colorBlueText, 0.24);
 
           img {
             width: 11.23px;
           }
 
           &:hover {
-            background-color: $colorBlackForGreyPage;
+            background-color: $colorBlueText;
           }
         }
       }
 
       .task-manager__input {
         width: 100%;
-        color: $colorBlack;
+        color: $colorBlueText;
       }
 
       .task-manager__status-title {
