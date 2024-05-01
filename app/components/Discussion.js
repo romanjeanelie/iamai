@@ -453,47 +453,7 @@ export default class Discussion {
       var userContainerspan = document.createElement("span");
       userContainerspan.classList.add("discussion__userspan");
       userContainerspan.innerHTML = "who's obama ?";
-      this.userContainer.appendChild(userContainerspan);
-      // this.userContainer.innerHTML = "bonjour";
-      this.discussionContainer.appendChild(this.userContainer);
-
-      this.AIContainer = document.createElement("div");
-      this.AIContainer.classList.add("discussion__ai");
-
-      const textContainer = document.createElement("div");
-      textContainer.classList.add("text__container");
-      textContainer.innerText =
-        "Obama, or Barack Hussein Obama II, is an American politician who served as the 44th president of the United States from 2009 to 2017. He is a member of the Democratic Party and is known for being the first African-American president in U. S. history. Born on August 4, 1961, in Honolulu, Hawaii, Obama's parents were Barack H. Obama, Sr., and Stanley Ann Dunham. What do you think about Obama's presidency and its impact on the U.S.?";
-
-      this.AIContainer.appendChild(textContainer);
-      this.discussionContainer.appendChild(this.AIContainer);
-      const media = new DiscussionMedia({
-        container: this.AIContainer,
-        emitter: this.emitter,
-      });
-
-      media.initImages();
-      media.addImages([
-        "https://m.media-amazon.com/images/I/712uMZHVT2L._AC_UF1000,1000_QL80_.jpg",
-        "https://m.media-amazon.com/images/I/71cx53o2tEL._AC_UF1000,1000_QL80_.jpg",
-        "https://upload.wikimedia.org/wikipedia/commons/8/8d/President_Barack_Obama.jpg",
-        "https://upload.wikimedia.org/wikipedia/commons/e/e9/Official_portrait_of_Barack_Obama.jpg",
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/President_Barack_Obama.jpg/800px-President_Barack_Obama.jpg",
-        "https://cdn.britannica.com/43/172743-138-545C299D/overview-Barack-Obama.jpg?w=800&h=450&c=crop",
-        "https://www.whitehouse.gov/wp-content/uploads/2021/01/44_barack_obama.jpg",
-        "https://trumpwhitehouse.archives.gov/wp-content/uploads/2017/12/44_barack_obama1.jpg",
-      ]);
-
-      media.addSources([
-        "https://m.economictimes.com/news/international/us/dont-be-shocked-if-michelle-obama-joins-presidential-election-2024-writes-columnist-here-is-what-we-know-so-far/articleshow/106961021.cms",
-        "https://thehill.com/blogs/in-the-know/4395192-michelle-obama-terrified-election-2024/",
-        "https://www.obama.org/my-brothers-keeper-alliance/events/mbk-rising/celebrating-black-joy-through-art-joshua-mays/",
-        "https://en.wikipedia.org/wiki/Barack_Obama",
-        "https://www.whitehouse.gov/about-the-white-house/presidents/barack-obama/",
-        "https://www.obamalibrary.gov/obamas/president-barack-obama",
-      ]);
-
-      // tabs.createImageSkeletons();
+      this.userContainer.innerHTML = "bonjour";
     }
 
     if (!this.history.isSet || this.history.isFetching) return;
