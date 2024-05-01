@@ -1,8 +1,12 @@
+import { Remarkable } from "remarkable";
+
 import { TASK_STATUSES } from "./TaskManager/index.js";
 import { API_STATUSES } from "./constants.js";
 import fetcher from "../utils/fetcher.js";
 import DiscussionMedia from "./DiscussionMedia.js";
 import { URL_CONVERSATION_HISTORY, URL_AGENT_STATUS } from "./constants.js";
+import { get } from "firebase/database";
+import getRemarkable from "../utils/getRemarkable.js";
 
 const isEmpty = (obj) => Object.keys(obj).length === 0;
 
@@ -183,8 +187,7 @@ export default class History {
       order,
     };
     // Get all elements
-    const { data, error } = await fetcher({ url: URL_CONVERSATION_HISTORY, params, idToken: user.idToken });
-
+    const { data } = await fetcher({ url: URL_CONVERSATION_HISTORY, params, idToken: user.idToken });
     // Remove duplicate tasks
     const uniqueMicroThreadId = [];
     const removedDuplicate = data?.results.filter((item) => {
@@ -219,6 +222,7 @@ export default class History {
 
   createUIElements(elements) {
     const container = document.createElement("div");
+    const md = getRemarkable();
 
     elements.forEach((element) => {
       if (element.user.length > 0) {
@@ -226,9 +230,9 @@ export default class History {
         userContainer.classList.add("discussion__user");
         var userContainerspan = document.createElement("span");
         userContainerspan.classList.add("discussion__userspan");
+        // const userTextMarkdowned = md.renderInline(element.user);
         userContainerspan.innerHTML = element.user;
         userContainer.appendChild(userContainerspan);
-        // userContainer.innerHTML = element.user;
         container.appendChild(userContainer);
 
         if (!isEmpty(element.images)) {
@@ -254,7 +258,21 @@ export default class History {
       } else if (element.assistant.length > 0) {
         const AIContainer = document.createElement("div");
         AIContainer.classList.add("discussion__ai");
-        AIContainer.innerHTML = element.assistant;
+
+        // Need to stringify
+        const string = JSON.stringify(element.assistant);
+        console.log(string);
+
+        // Remove leading and trailing quotes
+        const textWithoutQuotes = string.slice(1, -1);
+
+        // Replace \n with <br>
+        const assistantText = textWithoutQuotes.replace(/\\n/g, "<br>");
+
+        // Render the markdown
+        const assistantTextMardowned = md.renderInline(assistantText);
+
+        AIContainer.innerHTML = assistantTextMardowned;
         container.appendChild(AIContainer);
         if (isTask(element)) {
           AIContainer.setAttribute("taskKey", element.micro_thread_id);

@@ -1,51 +1,15 @@
-import { Remarkable } from "remarkable";
+import getRemarkable from "./getRemarkable";
 
 export default function typeByWord(container, text) {
   let wordIndex = 0;
   let isStrong = false;
 
-  const md = new Remarkable();
-  md.set({
-    html: true,
-    breaks: true,
-  });
+  const md = getRemarkable();
 
   return new Promise((resolve) => {
-    // const tokens = md.parseInline(text, {
-    //   breaks: true,
-    //   HTML: true,
-    // })[0];
-
     const markdownWords = md.renderInline(text);
 
     let words = markdownWords.split(" ");
-
-    // Extract words from the tokens while preserving Markdown syntax
-    // tokens.children.forEach((token) => {
-    //   console.log(token);
-    //   switch (token.type) {
-    //     case "text":
-    //       console.log("yo");
-    //       words.push(token.content);
-    //       break;
-    //     case "softbreak":
-    //       console.log("yo");
-    //       words.push("<br>"); // Preserve line breaks
-    //       break;
-    //     // Add cases for other token types if needed
-    //     case "strong_open":
-    //       console.log("yo");
-    //       words.push("<strong>");
-    //       break;
-    //     case "strong_close":
-    //       console.log("yo");
-    //       words.push("</strong>");
-    //       break;
-    //     default:
-    //       console.log("yo");
-    //       break;
-    //   }
-    // });
 
     function type() {
       let wordSpan;

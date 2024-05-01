@@ -40,6 +40,7 @@ export default class Discussion {
     this.currentProgress = 0;
     this.nextProgress = 0;
 
+    this.isHistoryLoading = true;
     this.currentTopStatus = null;
     this.lastStatus = null;
     this.centralFinished = false;
@@ -404,6 +405,7 @@ export default class Discussion {
     this.getAiAnswer({ text: "" });
     await this.updateHistory({ uuid: this.uuid, user: this.user });
     this.scrollToBottom(false);
+    this.isHistoryLoading = false;
     this.emitter.emit("taskManager:isHistorySet", true);
   }
 
@@ -458,6 +460,20 @@ export default class Discussion {
 
       this.AIContainer = document.createElement("div");
       this.AIContainer.classList.add("discussion__ai");
+
+      this.addAIText({
+        text: `
+      **Current Stock Price of Tata Motors**
+      As of my knowledge cutoff, the current stock price of Tata Motors is **Rs. 1,008.00**, with a gain of **0. 74%**. This information is based on the most recent update available.
+      Here's a brief summary of the recent stock performance:
+      * The stock closed at **Rs. 1009.35** on the last trading day, with an open price of **Rs. 1004.15**.
+      * The 1-year return is **109. 01%**.
+      * The company's sales have risen **11. 5%** to 77, 521 units in April.
+      Please note that stock prices can fluctuate rapidly, and this information may not reflect the current market situation.
+       For the most up-to-date information, I recommend checking a reliable financial news source or the stock exchange website. Would you like to know more about Tata Motors' prospects?
+      `,
+        container: this.AIContainer,
+      });
 
       this.discussionContainer.appendChild(this.userContainer);
       this.discussionContainer.appendChild(this.AIContainer);
@@ -566,6 +582,7 @@ export default class Discussion {
     window.addEventListener("load", this.onLoad());
 
     document.addEventListener("scroll", () => {
+      if (this.isHistoryLoading) return;
       if (document.documentElement.scrollTop === 0) this.onScrollTop();
     });
 
