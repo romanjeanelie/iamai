@@ -349,6 +349,7 @@ export default class Discussion {
   }
 
   async onScrollTop() {
+    console.log("ON SCROLL TOP");
     const { container } = await this.history.getHistory({ uuid: this.uuid, user: this.user });
     this.prevDiscussionContainer.prepend(container);
     this.mainEl.scrollTop = document.documentElement.scrollTop = container.offsetHeight;
@@ -564,8 +565,8 @@ export default class Discussion {
   addListeners() {
     window.addEventListener("load", this.onLoad());
 
-    this.mainEl.addEventListener("scroll", () => {
-      if (this.mainEl.scrollTop === 0) this.onScrollTop();
+    document.addEventListener("scroll", () => {
+      if (document.documentElement.scrollTop === 0) this.onScrollTop();
     });
 
     this.checkIfPrevDiscussionContainerVisible();
