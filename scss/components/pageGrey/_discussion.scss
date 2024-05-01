@@ -67,6 +67,10 @@
       overflow-wrap: break-word;
     }
 
+    .bold {
+      font-weight: 600;
+    }
+
     @include media("<tablet") {
       font-size: 16px;
       line-height: 26px; /* 162.5% */

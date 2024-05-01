@@ -127,7 +127,6 @@ export default class History {
               };
               this.emitter.emit("taskManager:updateStatus", task.key, task.status);
             }
-
           }
           break;
         case API_STATUSES.ENDED:

@@ -454,6 +454,12 @@ export default class Discussion {
       userContainerspan.classList.add("discussion__userspan");
       userContainerspan.innerHTML = "who's obama ?";
       this.userContainer.innerHTML = "bonjour";
+
+      this.AIContainer = document.createElement("div");
+      this.AIContainer.classList.add("discussion__ai");
+
+      this.discussionContainer.appendChild(this.userContainer);
+      this.discussionContainer.appendChild(this.AIContainer);
     }
 
     if (!this.history.isSet || this.history.isFetching) return;
