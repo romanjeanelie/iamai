@@ -20,6 +20,7 @@
     "dat.gui": "^0.7.9",
     "firebase": "^10.7.1",
     "gsap": "^3.12.5",
+    "highlight.js": "^11.9.0",
     "lamejs": "^1.2.1",
     "nanoevents": "^9.0.0",
     "remarkable": "^2.0.1",

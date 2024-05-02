@@ -48,7 +48,7 @@ export default class History {
       }
       if (status.status === API_STATUSES.ANSWERED) {
         const answerContainer = document.createElement("div");
-        answerContainer.innerHTML = md.renderInline(status.response_json.text) || "";
+        answerContainer.innerHTML = md.render(status.response_json.text) || "";
         resultsContainer.append(answerContainer);
       }
     });
@@ -271,7 +271,7 @@ export default class History {
         const assistantText = textWithoutQuotes.replace(/\\n/g, "<br>");
 
         // Render the markdown
-        const assistantTextMardowned = md.renderInline(assistantText);
+        const assistantTextMardowned = md.render(assistantText);
 
         AIContainer.innerHTML = assistantTextMardowned;
         container.appendChild(AIContainer);

@@ -573,7 +573,7 @@ class Chat {
     const divspan = document.createElement("span");
     const spanAIword = document.createElement("span");
     spanAIword.className = "AIword";
-    spanAIword.innerHTML = md.renderInline(userAns);
+    spanAIword.innerHTML = md.render(userAns);
     
     divspan.appendChild(spanAIword);
     divtextcontainer.appendChild(divspan);
