@@ -305,7 +305,7 @@ export default class Discussion {
     this.typingText?.fadeOut();
     this.emitter.emit("addAIText", text, targetlang);
 
-    const textEl = document.createElement("span");
+    // const textEl = document.createElement("span");
 
     // if (type === "status") {
     //   textEl.className = "AIstatus";
@@ -315,12 +315,13 @@ export default class Discussion {
     // } else if (this.lastStatus) {
     //   this.removeStatus({ container: textContainer });
     // }
-    textContainer.appendChild(textEl);
+    // textContainer.appendChild(textEl);
 
     // text = text.replace(/<br\/?>\s*/g, "\n");
     // if (type !== "status") this.scrollToBottom();
     if (type === "images") return;
-    return typeByWord(textEl, text);
+    // return typeByWord(textEl, text);
+    return typeByWord(textContainer, text);
   }
 
   addURL({ text, label, url, container }) {

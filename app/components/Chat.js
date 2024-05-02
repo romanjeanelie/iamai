@@ -1,6 +1,7 @@
 import { connect, AckPolicy, JSONCodec } from "https://cdn.jsdelivr.net/npm/nats.ws@latest/esm/nats.js";
 import { TASK_STATUSES } from "./TaskManager/index.js";
 import DiscussionMedia from "./DiscussionMedia.js";
+import getRemarkable from "../utils/getRemarkable.js";
 // const uuid = "omega_" + crypto.randomUUID();
 // import { getUser } from "../User.js";
 // const IS_DEV_MODE = import.meta.env.MODE === "development";
@@ -11,6 +12,7 @@ const NATS_USER = import.meta.env.VITE_API_NATS_USER || "iamplus-acc";
 const NATS_PASS = import.meta.env.VITE_API_NATS_PASS || "cis8Asto6HepremoGApI";
 const GOOGLE_TRANSLATE_URL = import.meta.env.VITE_API_GOOGLE_TRANSLATE;
 
+const md = getRemarkable();
 let ui_paramsmap = new Map();
 let sources_paramsmap = new Map();
 let images_paramsmap = new Map();
@@ -571,7 +573,8 @@ class Chat {
     const divspan = document.createElement("span");
     const spanAIword = document.createElement("span");
     spanAIword.className = "AIword";
-    spanAIword.innerText = userAns;
+    spanAIword.innerHTML = md.renderInline(userAns);
+    
     divspan.appendChild(spanAIword);
     divtextcontainer.appendChild(divspan);
     if (source) {

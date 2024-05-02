@@ -9,6 +9,7 @@ import { get } from "firebase/database";
 import getRemarkable from "../utils/getRemarkable.js";
 
 const isEmpty = (obj) => Object.keys(obj).length === 0;
+const md = getRemarkable();
 
 const isTask = (el) => el.micro_thread_id !== "";
 const isTaskViewed = (el) => isTask(el) && el.statuses?.lastStatus === API_STATUSES.VIEWED;
@@ -47,7 +48,7 @@ export default class History {
       }
       if (status.status === API_STATUSES.ANSWERED) {
         const answerContainer = document.createElement("div");
-        answerContainer.innerHTML = status.response_json.text || "";
+        answerContainer.innerHTML = md.renderInline(status.response_json.text) || "";
         resultsContainer.append(answerContainer);
       }
     });
@@ -222,7 +223,7 @@ export default class History {
 
   createUIElements(elements) {
     const container = document.createElement("div");
-    const md = getRemarkable();
+    
 
     elements.forEach((element) => {
       if (element.user.length > 0) {

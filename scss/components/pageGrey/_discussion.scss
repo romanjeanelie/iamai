@@ -130,6 +130,9 @@
       opacity: 0;
       animation: fadeIn 0.2s $ease-in forwards;
     }
+    strong{
+      font-weight: 600;
+    }
 
     &.discussion__ai--task-created {
       position: relative;
