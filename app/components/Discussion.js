@@ -518,12 +518,13 @@ export default class Discussion {
       uuid: this.uuid,
     };
 
-    // const result = await fetcher({
-    //   url: URL_DELETE_STATUS,
-    //   params,
-    //   idToken: this.user.idToken,
-    //   method: "DELETE",
-    // });
+    const result = await fetcher({
+      url: URL_DELETE_STATUS,
+      params,
+      idToken: this.user.idToken,
+      method: "DELETE",
+    });
+
     // Remove elements
     const userContainer = this.discussionWrapper.querySelector(`.discussion__user[taskkey="${taskKey}"]`);
     const AIContainer = this.discussionWrapper.querySelector(`.discussion__ai[taskkey="${taskKey}"]`);
