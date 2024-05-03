@@ -101,8 +101,8 @@ function getAudio(blob) {
 // }
 export default async function textToSpeech(text, targetlang, index, attempt = 0) {
   let filteredLanguages = await getlangselected(targetlang);
-  console.log("textToSpeech filteredLanguages:", filteredLanguages)
-  if ( !filteredLanguages || filteredLanguages[0].provider == "elevenlabs") {
+  console.log("textToSpeech filteredLanguages:", filteredLanguages);
+  if (!filteredLanguages || filteredLanguages[0].provider == "elevenlabs") {
     const headers = {
       accept: "audio/mpeg",
       "xi-api-key": ELEVENLABS_TOKEN,
@@ -151,17 +151,17 @@ export default async function textToSpeech(text, targetlang, index, attempt = 0)
       });
   } else {
     const body = JSON.stringify({
-      "input": {
-        "text": text + " "
+      input: {
+        text: text + " ",
       },
-      "voice": {
-        "languageCode": filteredLanguages[0].languagecode,
-        "name": filteredLanguages[0].voice,
-        "ssmlGender": "FEMALE"
+      voice: {
+        languageCode: filteredLanguages[0].languagecode,
+        name: filteredLanguages[0].voice,
+        ssmlGender: "FEMALE",
       },
-      "audioConfig": {
-        "audioEncoding": "MP3"
-      }
+      audioConfig: {
+        audioEncoding: "MP3",
+      },
     });
     const headers = {
       "Content-Type": "application/json",
@@ -173,7 +173,7 @@ export default async function textToSpeech(text, targetlang, index, attempt = 0)
     })
       .then(async (response) => {
         const audidata = await response.text();
-        console.log("response.text()", audidata)
+        console.log("response.text()", audidata);
         const base64 = JSON.parse(audidata).audioContent;
         const binaryString = window.atob(base64);
         const length = binaryString.length;
@@ -182,7 +182,7 @@ export default async function textToSpeech(text, targetlang, index, attempt = 0)
         for (let i = 0; i < length; i++) {
           bytes[i] = binaryString.charCodeAt(i);
         }
-        return new Blob([bytes], { type: "audio/mpeg" })
+        return new Blob([bytes], { type: "audio/mpeg" });
       })
       .then((audioBlob) => {
         console.log("from text to speech  : ", audioBlob, index);
@@ -205,7 +205,6 @@ export default async function textToSpeech(text, targetlang, index, attempt = 0)
           // If this was the third attempt, throw the error
           throw error;
         }
-
       });
   }
 }
@@ -213,22 +212,23 @@ export default async function textToSpeech(text, targetlang, index, attempt = 0)
 async function getlangselected(targetlang) {
   // Return the promise here
   return new Promise((resolve, reject) => {
-    fetch('lang.json')
-      .then(response => {
+    fetch("lang.json")
+      .then((response) => {
         if (!response.ok) {
-          throw new Error('Network response was not ok: ' + response.statusText);
+          throw new Error("Network response was not ok: " + response.statusText);
         }
-        return response.json();  // Directly return JSON if the response type is known to be JSON
+        return response.json(); // Directly return JSON if the response type is known to be JSON
       })
-      .then(data => {
+      .then((data) => {
         const languagesArray = data; // Assuming data is the array
         const filteredLanguages = languagesArray.filter((language) =>
-          language.code.toLowerCase().startsWith(targetlang.toLowerCase()));
+          language.code?.toLowerCase().startsWith(targetlang ? targetlang.toLowerCase() : "en")
+        );
         console.log("getlangselected:", filteredLanguages);
         resolve(filteredLanguages);
       })
-      .catch(error => {
-        console.error('Fetch error:', error);
+      .catch((error) => {
+        console.error("Fetch error:", error);
         reject(error);
       });
   });
