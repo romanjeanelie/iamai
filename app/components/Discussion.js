@@ -429,7 +429,6 @@ export default class Discussion {
 
       const handleImageLoad = () => {
         imgLoadedCount++;
-        console.log(imgLoadedCount, totalImages);
 
         if (imgLoadedCount === totalImages) {
           showHistory();
