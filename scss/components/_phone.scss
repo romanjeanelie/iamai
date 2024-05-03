@@ -33,7 +33,7 @@ $colorTalkAI: $colorBlueText;
 .phone__container {
   //   position: absolute;
   position: fixed;
-  z-index: 2;
+  z-index: 10;
   //   top: 50%;
   backdrop-filter: blur(10px);
   @supports not (backdrop-filter: blur(10px)) {

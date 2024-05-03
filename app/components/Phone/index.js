@@ -119,7 +119,6 @@ export default class Phone {
 
   toTalkToMe() {
     if (!this.isActive) return;
-    console.log("Talk to me");
     if (!this.unbindEvent) {
       this.unbindEvent = this.emitter.on("addAIText", (html, targetlang) => this.startAITalking(html, targetlang));
     }
