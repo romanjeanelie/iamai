@@ -475,6 +475,11 @@ export default class Discussion {
         container: this.AIContainer,
       });
 
+      this.userContainer.classList.add("discussion__user--task-created");
+      this.AIContainer.classList.add("discussion__ai--task-created");
+      this.userContainer.setAttribute("taskkey", task.key);
+      this.AIContainer.setAttribute("taskkey", task.key);
+
       this.discussionContainer.appendChild(this.userContainer);
       this.discussionContainer.appendChild(this.AIContainer);
     }
@@ -485,6 +490,7 @@ export default class Discussion {
       this.userContainer.classList.add("discussion__user");
       this.discussionContainer.appendChild(this.userContainer);
     }
+
     await this.addAIText({ text: textAI, container: this.AIContainer });
     this.userContainer.classList.add("discussion__user--task-created");
     this.AIContainer.classList.add("discussion__ai--task-created");
@@ -512,15 +518,22 @@ export default class Discussion {
       uuid: this.uuid,
     };
 
-    const result = await fetcher({
-      url: URL_DELETE_STATUS,
-      params,
-      idToken: this.user.idToken,
-      method: "DELETE",
-    });
+    // const result = await fetcher({
+    //   url: URL_DELETE_STATUS,
+    //   params,
+    //   idToken: this.user.idToken,
+    //   method: "DELETE",
+    // });
     // Remove elements
     const userContainer = this.discussionWrapper.querySelector(`.discussion__user[taskkey="${taskKey}"]`);
     const AIContainer = this.discussionWrapper.querySelector(`.discussion__ai[taskkey="${taskKey}"]`);
+
+    // scroll to userContainer
+    window.scrollTo({
+      top: userContainer.offsetTop,
+      behavior: "smooth",
+    });
+
     userContainer.remove();
     AIContainer.remove();
   }

@@ -223,7 +223,6 @@ export default class History {
 
   createUIElements(elements) {
     const container = document.createElement("div");
-    
 
     elements.forEach((element) => {
       if (element.user.length > 0) {
@@ -262,7 +261,6 @@ export default class History {
 
         // Need to stringify
         const string = JSON.stringify(element.assistant);
-        console.log(string);
 
         // Remove leading and trailing quotes
         const textWithoutQuotes = string.slice(1, -1);
