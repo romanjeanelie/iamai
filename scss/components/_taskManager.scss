@@ -54,6 +54,10 @@ $taskSecondaryColor: #007aff;
     height: 439px;
   }
 
+  @include media("<phone") {
+    -webkit-overflow-scrolling: touch;
+  }
+
   .task-manager__header {
     position: sticky;
     top: 0;
@@ -88,13 +92,7 @@ $taskSecondaryColor: #007aff;
       }
 
       &:hover {
-        // background-color: rgba(0, 0, 0, 0.1);
         background-color: rgba($colorBlueText, 0.06);
-        // stroke: #fff;
-
-        // path {
-        //   fill: #fff;
-        // }
       }
 
       &.hidden {
@@ -106,12 +104,8 @@ $taskSecondaryColor: #007aff;
     .task-manager__closing-icon {
       padding: 13px;
 
-      // opacity: 60%;
       &:hover {
         background-color: rgba($colorBlueText, 0.06);
-        // rect {
-        //   fill: rgba(#fff, 1);
-        // }
       }
     }
 
@@ -326,9 +320,11 @@ $taskSecondaryColor: #007aff;
   border-radius: 0;
   bottom: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh; // fallback for browsers that don't support svh units
-  height: 100svh;
+  top: 0;
+  right: 0;
+  // width: 100vw;
+  // height: 100vh; // fallback for browsers that don't support svh units
+  // height: 100svh;
 
   .task-manager__header {
     padding: 48px 48px 24px;
