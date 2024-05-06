@@ -1,15 +1,5 @@
-@font-face {
-  font-family: "MierA Demi";
-  src: url("MierA-Demi.woff2") format("woff2");
-  font-style: normal;
-}
-@font-face {
-  font-family: "MierA Book";
-  src: url("MierA-Book.woff2") format("woff2");
-  font-style: normal;
-}
+
 html {
-  font-family: "MierA Demi";
   font-style: normal;
   font-weight: 500;
   line-height: 32px;
@@ -45,7 +35,6 @@ html {
   flex: none;
   order: 0;
   flex-grow: 0;
-  font-family: "MierA Demi";
   font-style: normal;
   font-weight: 500;
   /* line-height: 39px !important; */
@@ -116,7 +105,6 @@ html {
 }
 
 .ai {
-  font-family: "MierA Book";
   color: #000000;
   text-align: left;
   font-weight: 500;
@@ -352,21 +340,18 @@ html {
   text-align: right;
   letter-spacing: 1px;
   color: rgba(64, 66, 68, 0.6);
-  font-family: "MierA Book";
   font-weight: 500;
 }
 #diffDays {
   font-size: 14px;
   line-height: 20px;
   color: rgba(64, 66, 68, 0.6);
-  font-family: "MierA Book";
   font-weight: 500;
 }
 #stopovers {
   font-size: 14px;
   line-height: 20px;
   color: rgba(64, 66, 68, 0.6);
-  font-family: "MierA Book";
   font-weight: 500;
 }
 .left {

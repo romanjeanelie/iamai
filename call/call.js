@@ -3,6 +3,10 @@ var textph = document.getElementById("textph");
 var ddus = document.getElementById("ddus");
 var ddlang = document.getElementById("ddlang");
 var ddsol = document.getElementById("ddsol");
+var textopening = document.getElementById("textopening");
+var textprompt = document.getElementById("textprompt");
+var divprompt = document.getElementById("divprompt");
+
 var prompts;
 const DB_HOST = import.meta.env.VITE_API_DB_HOST || "https://nocodb.asterizk.ai";
 const DB_TOKEN = import.meta.env.VITE_API_DB_TOKEN || "juIbsot-ERPsSlO3TdkYHRJPznr1gqrLBIpMjWZU";
@@ -16,10 +20,11 @@ let systemPrompt =
 let userPrompt =
   "<<SYS>> Your replies should remain succinct, with a maximum of 30 words, and should have a human touch.  If the customer brings up unrelated subjects, kindly steer the conversation back to the trainers. <</SYS>>";
 let usermessage = "";
+let opening = "";
 
 window.addEventListener("load", load);
 async function load() {
-  // WARNING: For GET requests, body is set to null by browsers.
+  divprompt.style.display = "none";
 
   var xhr = new XMLHttpRequest();
   // xhr.withCredentials = true;
@@ -34,6 +39,7 @@ async function load() {
         console.log(item);
         str = str + '<option value="' + item.Id + '">' + item.Title + "</option>";
       });
+      str = str + '<option value="others">Others</option>';
       tabelrow.innerHTML = str;
     }
   });
@@ -45,11 +51,20 @@ async function load() {
   xhr.send();
 }
 
+ddus.addEventListener('change', function() {
+  if(ddus.value == "others" ){
+    divprompt.style.display = "block";
+  }else{
+    divprompt.style.display = "none";
+  }
+});
+
 btnsubmit.addEventListener("click", async function (e) {
   btnsubmit.style.display = "none";
   lang = ddlang.value;
   phonenumber = textph.value;
-  uuid = crypto.randomUUID();
+  opening = textopening.value;
+
 
   if (phonenumber == "") {
     alert("please enter a phone number");
@@ -57,15 +72,39 @@ btnsubmit.addEventListener("click", async function (e) {
     return;
   }
 
-  for (var i = 0; i < prompts.length; i++) {
-    if (prompts[i].Id == ddus.value) {
-      systemPrompt = prompts[i].systemprompt;
-      userPrompt = prompts[i].userPrompt;
-      usermessage = prompts[i].user_message;
-      break;
+  if (ddus.value != "others") {
+    for (var i = 0; i < prompts.length; i++) {
+      if (prompts[i].Id == ddus.value) {
+        systemPrompt = prompts[i].systemprompt;
+        userPrompt = prompts[i].userPrompt;
+        usermessage = prompts[i].user_message;
+        break;
+      }
+    }
+  } else {
+    if (textprompt.value == "") {
+      alert("please enter a prompt");
+      btnsubmit.style.display = "block";
+      return;
+    } else {
+      systemPrompt = textprompt.value;
     }
   }
+  if (ddsol.value == "vonage") {
+    if (opening == "") {
+      alert("please enter an opening text");
+      btnsubmit.style.display = "block";
+      return;
+    } else {
+      vonage(opening, systemPrompt, phonenumber);
+    }
+  } else {
+    pilivo(lang, systemPrompt, userPrompt, phonenumber, usermessage);
+  }
+});
 
+function pilivo(lang, systemPrompt, userPrompt, phonenumber, usermessage) {
+  uuid = crypto.randomUUID();
   if (lang == "ta") {
     languageCode = "ta-IN";
   } else if (lang == "hi") {
@@ -99,4 +138,28 @@ btnsubmit.addEventListener("click", async function (e) {
 
   xhr.setRequestHeader("Content-Type", "application/json");
   xhr.send(data);
-});
+}
+
+function vonage(opening, prompt, phone) {
+  // WARNING: For POST requests, body is set to null by browsers.
+  var data = JSON.stringify({
+    opening: opening,
+    prompt: prompt,
+    phone: phone
+  });
+
+  var xhr = new XMLHttpRequest();
+  // xhr.withCredentials = true;
+
+  xhr.addEventListener("readystatechange", function () {
+    if (this.readyState === 4) {
+      console.log(this.responseText);
+      btnsubmit.style.display = "block";
+    }
+  });
+
+  xhr.open("POST", "https://outbound.telephoney.iamplus.ngrok.app/call");
+  xhr.setRequestHeader("Content-Type", "application/json");
+
+  xhr.send(data);
+}

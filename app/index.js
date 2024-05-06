@@ -31,6 +31,7 @@ const txttwitter = document.getElementById("txttwitter");
 const txtfacebook = document.getElementById("txtfacebook");
 const txtlinkedin = document.getElementById("txtlinkedin");
 const txtuse = document.getElementById("txtuse");
+var isStopped = false;
 
 class App {
   constructor() {
@@ -172,6 +173,7 @@ class App {
   }
 
   next = (textArray, index, element, imgSrc = "") => {
+    if (isStopped) return;
     if (index < textArray.length) {
       this.animateString(index, textArray, element, imgSrc, this.next, 50, 1, 1600);
     } else {
@@ -249,6 +251,7 @@ class App {
   async checkuser()
   {
     if (this.user) {
+      isStopped = true;
       console.log("this.user:", this.user)
       if (this.user.status == "active") {
         await this.user.setuseraddress();
@@ -279,6 +282,7 @@ class App {
         "Tell me joke",
         "What are the movies playing",
       ];
+      isStopped = false;
       this.startAnimations(texts, divinfotext);
     }
   }
