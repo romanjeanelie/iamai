@@ -11,6 +11,7 @@ import TaskManager from "./components/TaskManager";
 import { auth } from "./firebaseConfig";
 import stopOverscroll from "./utils/stopOverscroll";
 import { IntroAnimation } from "./components/IntroAnimation";
+import animateString from "./utils/animateString";
 
 var animation;
 const divintrotext = document.getElementById("divintrotext");
@@ -116,57 +117,6 @@ class App {
     window.scrollTo(0, 0);
   }
 
-  animateString = (
-    index,
-    textArray,
-    element,
-    imgSrc = "",
-    callback,
-    delay = 150,
-    deletedelay = 50,
-    fulltextdelay = 1000
-  ) => {
-    if (!element) return; // Element not found
-
-    let str = textArray[index++];
-    let i = 0;
-    let isAdding = true;
-
-    function createImageElement() {
-      const img = document.createElement("img");
-      img.src = imgSrc;
-      return img;
-    }
-
-    function updateText() {
-      if (isAdding) {
-        element.textContent += str[i++];
-        if (i === str.length) {
-          isAdding = false;
-          if (imgSrc && imgSrc.length > 0) {
-            setTimeout(delay);
-            const img = createImageElement();
-            img.alt = str[i];
-            element.appendChild(img);
-          }
-          // else {
-          setTimeout(updateText, fulltextdelay);
-          // }
-        } else {
-          setTimeout(updateText, delay);
-        }
-      } else {
-        element.textContent = element.textContent.slice(0, -1);
-        if (element.textContent.length > 0) {
-          setTimeout(updateText, deletedelay);
-        } else if (callback) {
-          callback(textArray, index, element, imgSrc);
-        }
-      }
-    }
-    updateText();
-  };
-
   startAnimations(textArray, element) {
     let index = 0;
     this.next(textArray, index, element, "");
@@ -175,10 +125,10 @@ class App {
   next = (textArray, index, element, imgSrc = "") => {
     if (isStopped) return;
     if (index < textArray.length) {
-      this.animateString(index, textArray, element, imgSrc, this.next, 50, 1, 1600);
+      animateString(index, textArray, element, imgSrc, this.next, 50, 1, 1600);
     } else {
       index = 0;
-      this.animateString(index, textArray, element, imgSrc, this.next, 50, 1, 1600);
+      animateString(index, textArray, element, imgSrc, this.next, 50, 1, 1600);
     }
   };
 
@@ -273,7 +223,7 @@ class App {
         divwaitlistform.style.display = "block";
       }
     } else {
-      // divlogin.style.display = "flex";
+      divlogin.style.display = "flex";
       const texts = [
         "Find a flight to Bali",
         "Get a taxi to office",
@@ -332,10 +282,10 @@ class App {
       //load and play the animations
       divwaitlist.style.display = "none";
       divlogin.style.display = "none";
-      this.animateString(0, ["hello, I am"], divintrotext, "", () => {
-        divintrotext.style.display = "none";
-        this.animateString(0, ["CO * "], divintrologo, "", async () => {
-          divintrologo.style.display = "none";
+      animateString(0, ["hello, I am"], divintrotext, "", () => {
+        // divintrotext.style.display = "none";
+        animateString(0, ["CO * "], divintrologo, "", async () => {
+          // divintrologo.style.display = "none";
           await this.checkuser();
         });
       });
