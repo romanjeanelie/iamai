@@ -10,6 +10,7 @@ import Slider from "./components/Slider";
 import TaskManager from "./components/TaskManager";
 import { auth } from "./firebaseConfig";
 import stopOverscroll from "./utils/stopOverscroll";
+import { IntroAnimation } from "./components/IntroAnimation";
 
 var animation;
 const divintrotext = document.getElementById("divintrotext");
@@ -47,6 +48,7 @@ class App {
     this.emitter = createNanoEvents();
 
     this.debug = import.meta.env.VITE_DEBUG === "true";
+    new IntroAnimation();
     this.addListeners();
     this.resetScroll();
     stopOverscroll();
@@ -124,10 +126,8 @@ class App {
     deletedelay = 50,
     fulltextdelay = 1000
   ) => {
-    console.log("here to animate:", element)
     if (!element) return; // Element not found
 
-    console.log("here to animate")
     let str = textArray[index++];
     let i = 0;
     let isAdding = true;
@@ -183,7 +183,7 @@ class App {
   };
 
   toggleSignIn() {
-    sessionStorage.setItem('attemptedSignIn', 'true');
+    sessionStorage.setItem("attemptedSignIn", "true");
     signInButton.style.display = "none";
     divlottieanimation.style.display = "block";
     animation.play();
@@ -229,8 +229,8 @@ class App {
       console.log("userstatus:", userstatus);
       this.user.setstatus(userstatus.status);
     }
-    if (sessionStorage.getItem('attemptedSignIn') === 'true') {
-      sessionStorage.removeItem('attemptedSignIn'); 
+    if (sessionStorage.getItem("attemptedSignIn") === "true") {
+      sessionStorage.removeItem("attemptedSignIn");
       await this.checkuser();
     }
   }
@@ -241,18 +241,18 @@ class App {
       await saveUserDataFireDB(this.user);
       divlogin.style.display = "none";
       divwaitlist.style.display = "flex";
-      divwaitlisttext.style.display = "flex"
+      divwaitlisttext.style.display = "flex";
       divlink.style.display = "block";
-      divwaitlistform.style.display = "none"
+      divwaitlistform.style.display = "none";
     } else {
       txtuse.classList.add("error");
     }
   }
-  async checkuser()
-  {
+
+  async checkuser() {
     if (this.user) {
       isStopped = true;
-      console.log("this.user:", this.user)
+      console.log("this.user:", this.user);
       if (this.user.status == "active") {
         await this.user.setuseraddress();
         this.toPageGrey({ duration: 1200 });
@@ -262,19 +262,18 @@ class App {
       } else if (this.user.status == "waitlisted") {
         divlogin.style.display = "none";
         divwaitlist.style.display = "flex";
-        divwaitlisttext.style.display = "flex"
+        divwaitlisttext.style.display = "flex";
         divlink.style.display = "block";
-        divwaitlistform.style.display = "none"
-      }
-      else {
+        divwaitlistform.style.display = "none";
+      } else {
         divlogin.style.display = "none";
         divwaitlist.style.display = "flex";
-        divwaitlisttext.style.display = "none"
-        divlink.style.display = "none"
-        divwaitlistform.style.display = "block"
+        divwaitlisttext.style.display = "none";
+        divlink.style.display = "none";
+        divwaitlistform.style.display = "block";
       }
     } else {
-      divlogin.style.display = "flex";
+      // divlogin.style.display = "flex";
       const texts = [
         "Find a flight to Bali",
         "Get a taxi to office",
@@ -311,7 +310,6 @@ class App {
         path: "../animations/asterisk_loading.json",
       });
       animation.play();
-      
 
       signInButton.addEventListener("click", this.toggleSignIn, false);
       // signInButton.style.display = "none";
@@ -339,8 +337,8 @@ class App {
         this.animateString(0, ["CO * "], divintrologo, "", async () => {
           divintrologo.style.display = "none";
           await this.checkuser();
-        })
-      })
+        });
+      });
     });
     document.fonts.ready.then(() => {
       this.app.classList.remove("preload");

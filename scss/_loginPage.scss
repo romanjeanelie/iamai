@@ -57,6 +57,11 @@
 .divintroinfo {
   position: relative;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; // fallback for browsers that do not support custom properties
+  height: 100svh;
+  width: 100vw;
 }
 
 .divintrotext {
