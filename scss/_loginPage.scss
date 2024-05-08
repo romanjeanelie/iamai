@@ -55,35 +55,12 @@
 }
 
 .divintroinfo {
-  position: relative;
+  position: fixed;
   display: flex;
-  // justify-content: center;
-  // align-items: center;
-  // height: 100vh; // fallback for browsers that do not support custom properties
-  // height: 100svh;
-  // width: 100vw;
-}
-
-.divintrotext {
-  color: $colorBlack;
-  text-align: center;
-  font-feature-settings: "liga" off;
-  font-family: "SFPro";
-  font-size: 200px;
-  font-style: normal;
-  font-weight: 450;
-  line-height: 220px;
-  /* 110% */
-  letter-spacing: 1px;
-  display: flex;
-  position: relative;
-
-  // margin-bottom: 100px;
-  @include media("<tablet") {
-    font-size: 40px;
-    line-height: 48px;
-    padding-bottom: 182px;
-  }
+  background-color: $backgroundColorGreyPage;
+  justify-content: center;
+  align-items: center;
+  inset: 0;
 }
 
 .divtext {
@@ -251,6 +228,19 @@
     text-align: center;
     max-width: 330px;
     color: $colorBlack;
+  }
+}
+
+.divintrotext {
+  color: $colorBlueText;
+  font-family: "SFPro";
+  font-size: 200px;
+  font-weight: 600;
+  letter-spacing: 1px;
+
+  // margin-bottom: 100px;
+  @include media("<tablet") {
+    font-size: 80px;
   }
 }
 

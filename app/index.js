@@ -44,7 +44,7 @@ class App {
     this.emitter = createNanoEvents();
 
     this.debug = import.meta.env.VITE_DEBUG === "true";
-    new IntroAnimation();
+    this.introAnim = new IntroAnimation();
     this.addListeners();
     this.resetScroll();
     stopOverscroll();
@@ -264,13 +264,8 @@ class App {
       //load and play the animations
       divwaitlist.style.display = "none";
       divlogin.style.display = "none";
-      // animateString(0, ["hello, I am"], divintrotext, "", () => {
-      //   // divintrotext.style.display = "none";
-      //   animateString(0, ["CO * "], divintrologo, "", async () => {
-      //     // divintrologo.style.display = "none";
-      //     // await this.checkuser();
-      //   });
-      // });
+      this.introAnim.animate();
+      this.checkuser();
     });
     document.fonts.ready.then(() => {
       this.app.classList.remove("preload");
