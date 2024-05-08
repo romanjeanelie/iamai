@@ -13,17 +13,12 @@ import stopOverscroll from "./utils/stopOverscroll";
 import { IntroAnimation } from "./components/IntroAnimation";
 import animateString from "./utils/animateString";
 
-var animation;
-const divintrotext = document.getElementById("divintrotext");
-const divintrologo = document.getElementById("divintrologo");
-
 const divlogin = document.getElementById("divlogin");
 const divinfotext = document.getElementById("divinfotext");
 
 const divwaitlist = document.getElementById("divwaitlist");
 const divwaitlistform = document.getElementById("divwaitlistform");
 const divwaitlisttext = document.getElementById("divwaitlisttext");
-const divlottieanimation = document.getElementById("divlottieanimation");
 const divlink = document.getElementById("divlinklogout");
 const linksignout = document.getElementById("linksignout");
 const signInButton = document.getElementById("divgoogle");
@@ -135,8 +130,6 @@ class App {
   toggleSignIn() {
     sessionStorage.setItem("attemptedSignIn", "true");
     signInButton.style.display = "none";
-    divlottieanimation.style.display = "block";
-    animation.play();
     const provider = new GoogleAuthProvider();
     provider.addScope("profile");
     provider.addScope("email");
@@ -156,8 +149,6 @@ class App {
           alert("You have already signed up with a different auth provider for that email.");
         } else {
           signInButton.style.display = "block";
-          divlottieanimation.style.display = "none";
-          animation.stop();
         }
       });
   }
@@ -235,6 +226,7 @@ class App {
       this.startAnimations(texts, divinfotext);
     }
   }
+
   addListeners() {
     onAuthStateChanged(auth, async (user) => {
       if (user && user.emailVerified) {
@@ -251,16 +243,6 @@ class App {
     });
 
     window.addEventListener("load", async () => {
-      divlottieanimation.style.display = "none";
-      animation = lottie.loadAnimation({
-        container: divlottieanimation,
-        renderer: "svg",
-        loop: true,
-        autoplay: false,
-        path: "../animations/asterisk_loading.json",
-      });
-      animation.play();
-
       signInButton.addEventListener("click", this.toggleSignIn, false);
       // signInButton.style.display = "none";
 
@@ -282,13 +264,13 @@ class App {
       //load and play the animations
       divwaitlist.style.display = "none";
       divlogin.style.display = "none";
-      animateString(0, ["hello, I am"], divintrotext, "", () => {
-        // divintrotext.style.display = "none";
-        animateString(0, ["CO * "], divintrologo, "", async () => {
-          // divintrologo.style.display = "none";
-          await this.checkuser();
-        });
-      });
+      // animateString(0, ["hello, I am"], divintrotext, "", () => {
+      //   // divintrotext.style.display = "none";
+      //   animateString(0, ["CO * "], divintrologo, "", async () => {
+      //     // divintrologo.style.display = "none";
+      //     // await this.checkuser();
+      //   });
+      // });
     });
     document.fonts.ready.then(() => {
       this.app.classList.remove("preload");

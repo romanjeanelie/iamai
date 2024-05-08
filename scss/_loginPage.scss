@@ -86,41 +86,6 @@
   }
 }
 
-.divintrologo {
-  color: $colorBlack;
-  text-align: center;
-  font-feature-settings: "liga" off;
-  font-family: "SFPro";
-  font-size: 180px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 200px;
-  /* 111.111% */
-  letter-spacing: 0.4px;
-  display: flex;
-  position: relative;
-
-  img {
-    width: 198px;
-    height: 198px;
-    margin-left: 36px;
-  }
-
-  // margin-bottom: 100px;
-  @include media("<tablet") {
-    font-size: 36px;
-    line-height: 40px;
-    letter-spacing: 0.08px;
-    padding-bottom: 182px;
-
-    img {
-      width: 39.6px;
-      height: 39.6px;
-      margin-left: 7px;
-    }
-  }
-}
-
 .divtext {
   color: $colorBlack;
   text-align: center;
@@ -286,5 +251,54 @@
     text-align: center;
     max-width: 330px;
     color: $colorBlack;
+  }
+}
+
+.divintrologo {
+  display: none;
+  color: $colorBlueText;
+  font-feature-settings: "liga" off;
+  font-family: "SFPro";
+  font-size: 180px;
+  font-style: normal;
+  font-weight: 500;
+
+  /* 111.111% */
+  letter-spacing: 0.4px;
+  position: relative;
+
+  p {
+    text-align: start;
+    color: $colorBlueText;
+    line-height: 100%;
+
+    /* 333.333% */
+    letter-spacing: 1px;
+    font-size: 60px;
+    font-weight: 600;
+    margin: 0;
+    margin-bottom: 48px;
+  }
+
+  .co-logo {
+    display: flex;
+    gap: 26px;
+    height: 300px;
+
+    path {
+      fill: $colorBlueText;
+    }
+
+    .asterizk {
+      margin-left: 6px;
+    }
+  }
+
+  // margin-bottom: 100px;
+  @include media("<tablet") {
+    font-size: 36px;
+    line-height: 40px;
+    letter-spacing: 0.08px;
+    padding-bottom: 182px;
   }
 }
