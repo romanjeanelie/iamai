@@ -214,7 +214,7 @@ class App {
         divwaitlistform.style.display = "block";
       }
     } else {
-      divlogin.style.display = "flex";
+      divlogin.style.display = "block";
       const texts = [
         "Find a flight to Bali",
         "Get a taxi to office",

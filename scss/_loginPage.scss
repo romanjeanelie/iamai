@@ -3,16 +3,13 @@
   color: $colorMain;
   z-index: 5;
   background: $backgroundColorGreyPage;
-  height: 100vh;
-  height: 100svh;
-  width: 100vw;
-  margin: 0;
-  justify-content: center;
+  inset: 0;
   /* Aligns horizontally */
-  display: flex;
-  flex-direction: column;
+  // display: flex;
+  justify-content: center;
   align-items: center;
-  transform: translateY(0);
+  overflow-y: scroll;
+
   transition: transform 800ms ease-in-out;
 
   &.hidden {
@@ -22,6 +19,11 @@
   &.none {
     display: none;
   }
+
+  .test {
+    height: 100vh;
+    background-color: red;
+  }
 }
 
 .divgoogle {
@@ -30,10 +32,6 @@
 }
 
 .divlogin {
-  display: none;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
 }
 
 .divwaitlist {
