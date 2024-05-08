@@ -205,42 +205,18 @@ class Chat {
 
         //get UI and RAG params
         if (mdata.type == UI) {
-          // this.domain = mdata.response_json.domain;
           console.log("domain:" + this.domain);
           if (ui_paramsmap.get(mdata.micro_thread_id))
             ui_paramsmap.get(mdata.micro_thread_id).push(mdata.response_json);
           else ui_paramsmap.set(mdata.micro_thread_id, [mdata.response_json]);
-          // if (this.domain == MOVIESEARCH) {
-          //   this.MovieSearch = JSON.parse(mdata.response_json.MovieSearch);
-          //   this.MovieSearchResults = JSON.parse(mdata.response_json.MovieSearchResults);
-          // } else if (this.domain == TAXISEARCH) {
-          //   this.TaxiSearch = JSON.parse(mdata.response_json.TaxiSearch);
-          //   this.TaxiSearchResults = JSON.parse(mdata.response_json.TaxiSearchResults);
-          // } else if (this.domain == RAGCHAT) {
-          //   this.RAG_CHAT = JSON.parse(mdata.response_json.RAG_CHAT);
-          //   // console.log("domain RAG_CHAT:" + this.RAG_CHAT);
-          // } else if (this.domain == FLIGHTSEARCH) {
-          //   this.FlightSearch = JSON.parse(mdata.response_json.FlightSearch);
-          //   this.FlightSearchResults = JSON.parse(mdata.response_json.FlightSearchResults);
-          // } else if (this.domain == PRODUCTSEARCH) {
-          //   this.ProductSearch = JSON.parse(mdata.response_json.ProductSearch);
-          //   this.ProductSearchResults = JSON.parse(mdata.response_json.ProductSearchResults);
-          // }
         } else if (mdata.type == IMAGES) {
-          // this.image_urls = JSON.parse(mdata.ui_params.image_urls); // old version
-
           this.image_urls = JSON.parse(mdata.response_json.images);
-
-
-
           if (mdata.micro_thread_id.length == 0)
             this.image_urls && this.media.addImages(this.image_urls.slice(0, 8));
           else
             images_paramsmap.set(mdata.micro_thread_id, mdata.response_json.images);
-
         } else if (mdata.type == SOURCES) {
           const media = new DiscussionMedia({ container: this.container, emitter: this.callbacks.emitter });
-          // console.log("mdata.response_json.sources.contains('):",mdata.response_json.sources.contains("'"))
           try {
             this.Sources = JSON.parse(mdata.response_json.sources);
           } catch (e) {
@@ -284,7 +260,6 @@ class Chat {
           // await this.callbacks.addAIText({ text: "Please click here, to start a new session to chat or close the browser.", type: 'link', container: this.container });
           // textEl.innerHTML = 'Please click <a href="./index.html">here</a>, to start a new session to chat or close the browser.';
         } else if (mdata.awaiting && (!mdata.micro_thread_id || mdata.micro_thread_id == "NA")) {
-          // var mtext = JSON.parse(mdata.response_json).text;
           var mtext = mdata.response_json.text;
           console.log("awaiting:" + mdata.message_type);
           console.log("mtext:" + mtext);
@@ -312,38 +287,6 @@ class Chat {
             (this.domain = ""), (this.MovieSearchResults = ""), (this.MovieSearch = "");
           }
           this.callbacks.enableInput();
-
-          // } else if (mdata.status == "central finished") {
-          //   this.callbacks.emitter.emit("centralFinished")
-          //   if (this.domain == "MovieSearch") {
-          //     this.getMovies();
-          //     (this.domain = ""), (this.MovieSearchResults = ""), (this.MovieSearch = "");
-          //   } else if (this.domain == "TaxiSearch") {
-          //     this.getTaxiUI();
-          //     (this.TaxiSearchResults = ""), (this.TaxiSearch = ""), (this.domain = "");
-          //   } else if (this.domain == "FlightSearch") {
-          //     this.getFlightUI();
-          //     (this.FlightSearch = ""), (this.domain = ""), (this.FlightSearchResults = "");
-          //   } else if (this.domain == "ProductSearch") {
-          //     this.getProductUI();
-          //     (this.ProductSearch = ""), (this.domain = ""), (this.ProductSearchResults = "");
-          //   }
-          // } else if (mdata.type == STATUS) {
-          //   var mtext = mdata.response_json.text;
-          //   if (mtext != "") {
-          //     var AIAnswer = await this.toTitleCase2(mtext);
-          //     if (this.sourcelang != "en") {
-          //       var transresponse = await this.googletranslate(AIAnswer, this.sourcelang, this.targetlang);
-          //       AIAnswer = transresponse.data.translations[0].translatedText;
-          //     }
-          //     AIAnswer += "\n\n";
-          //     await this.callbacks.addAIText({
-          //       text: AIAnswer,
-          //       container: this.container,
-          //       targetlang: this.sourcelang,
-          //       type: "status",
-          //     });
-          //   }
         } else if (mdata.micro_thread_id == "NA") {
           var mtext = mdata.response_json.text;
           var AIAnswer = await this.toTitleCase2(mtext);
@@ -441,19 +384,6 @@ class Chat {
               container.appendChild(this.getUI(data));
             });
           }
-          // if (data) {
-          //   let domain = data.domain;
-
-          //   if (domain == MOVIESEARCH) {
-          //     container = this.getMovies(JSON.parse(data.MovieSearchResults));
-          //   } else if (domain == TAXISEARCH) {
-          //     container = this.getTaxiUI(JSON.parse(data.TaxiSearchResults));
-          //   } else if (domain == FLIGHTSEARCH) {
-          //     container = this.getFlightUI(JSON.parse(data.FlightSearch), JSON.parse(data.FlightSearchResults));
-          //   } else if (domain == PRODUCTSEARCH) {
-          //     container = this.getProductUI(JSON.parse(data.ProductSearchResults));
-          //   }
-          // }
           let taskname = mdata.task_name;
           console.log("taskname", taskname);
           const task = {
