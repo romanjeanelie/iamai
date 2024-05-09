@@ -215,15 +215,6 @@ class App {
       }
     } else {
       divlogin.style.display = "block";
-      const texts = [
-        "Find a flight to Bali",
-        "Get a taxi to office",
-        "Book a Hotel",
-        "Tell me joke",
-        "What are the movies playing",
-      ];
-      isStopped = false;
-      this.startAnimations(texts, divinfotext);
     }
   }
 

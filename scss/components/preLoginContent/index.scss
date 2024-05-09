@@ -1,0 +1,53 @@
+// containers
+.preLoginContent__container {
+  background-color: #333333;
+  min-height: 200vh;
+  padding: 80px 0 198px;
+  font-family: "SFPro";
+  position: relative;
+
+  @include media("<tablet") {
+    padding: 60px 0 120px;
+  }
+
+  .x-container {
+    max-width: 1232px;
+    margin: 0 auto;
+    padding: 0 120px;
+
+    @include media("<desktop") {
+      padding: 0 clamp(24px, 4vw, 120px);
+    }
+  }
+
+  h2 {
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 60px; /* 125% */
+    letter-spacing: 1px;
+
+    @include media("<tablet") {
+      font-size: 32px;
+      line-height: 40px; /* 125% */
+    }
+  }
+
+  h3 {
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 40px; /* 125% */
+    letter-spacing: 1px;
+  }
+
+  h4 {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 28px; /* 116.667% */
+    letter-spacing: 1px;
+
+    @include media("<tablet") {
+      font-size: 20px;
+      line-height: 24px; /* 120% */
+    }
+  }
+}
