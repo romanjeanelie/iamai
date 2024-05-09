@@ -44,7 +44,7 @@ export class IntroAnimation {
     });
   }
 
-  animateCards() {
+  animateRedCard() {
     // red card texts
     const realMadrid = this.redCard.querySelector(".real-madrid");
     const netflix = this.redCard.querySelector(".netflix");
@@ -87,4 +87,6 @@ export class IntroAnimation {
     redCardTl.fromTo(mozza, { y: 50 }, { y: 0, opacity: 1 }), "<";
     redCardTl.to(mozza, { x: 50, opacity: 0 }, `+=${redDelay}`);
   }
+
+  animateCards() {}
 }
