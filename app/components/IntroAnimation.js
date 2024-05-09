@@ -6,9 +6,13 @@ export class IntroAnimation {
     this.introContainer = document.querySelector(".divintroinfo");
     this.introText = document.querySelector(".divintrotext");
     this.introLogo = document.querySelector(".divintrologo");
+    // slider cards
+    this.redCard = document.querySelector(".preLoginContent__slider-content.redCard");
 
     // for debug :
     this.introContainer.style.display = "none";
+
+    this.animateCards();
   }
 
   animate() {
@@ -38,5 +42,49 @@ export class IntroAnimation {
         ease: Power3.easeIn,
       });
     });
+  }
+
+  animateCards() {
+    // red card texts
+    const realMadrid = this.redCard.querySelector(".real-madrid");
+    const netflix = this.redCard.querySelector(".netflix");
+    const musk = this.redCard.querySelector(".musk");
+    const mozza = this.redCard.querySelector(".mozza");
+    const redDelay = 0.7;
+
+    gsap.set([realMadrid, netflix, musk, mozza], {
+      opacity: 0,
+    });
+
+    const redCardTl = gsap.timeline({
+      repeat: -1,
+      defaults: {
+        ease: Power3.easeOut,
+        duration: 0.4,
+      },
+    });
+
+    redCardTl.fromTo(
+      realMadrid,
+      { x: -50 },
+      {
+        x: 0,
+        opacity: 1,
+      }
+    );
+    redCardTl.to(
+      realMadrid,
+      {
+        x: 50,
+        opacity: 0,
+      },
+      `+=${redDelay}`
+    );
+    redCardTl.fromTo(netflix, { x: -50 }, { x: 0, opacity: 1 }), "<";
+    redCardTl.to(netflix, { x: -50, opacity: 0 }, `+=${redDelay}`);
+    redCardTl.fromTo(musk, { x: 50 }, { x: 0, opacity: 1 }), "<";
+    redCardTl.to(musk, { y: -50, opacity: 0 }, `+=${redDelay}`);
+    redCardTl.fromTo(mozza, { y: 50 }, { y: 0, opacity: 1 }), "<";
+    redCardTl.to(mozza, { x: 50, opacity: 0 }, `+=${redDelay}`);
   }
 }

@@ -5,7 +5,7 @@
   $maxWidth: 1232px;
 
   background-color: $background;
-  min-height: 220vh;
+  // min-height: 220vh;
   padding: 80px 0 198px;
   font-family: "SFPro";
   position: relative;
@@ -276,7 +276,30 @@
           background-size: cover;
 
           h2 {
+            position: absolute;
             font-weight: 700;
+          }
+
+          .real-madrid {
+            left: 24px;
+            top: 32px;
+          }
+
+          .netflix {
+            bottom: 32px;
+            left: 24px;
+          }
+
+          .musk {
+            right: 24px;
+            top: 32px;
+            text-align: right;
+          }
+
+          .mozza {
+            right: 24px;
+            bottom: 32px;
+            text-align: right;
           }
         }
 
