@@ -14,7 +14,6 @@ import { IntroAnimation } from "./components/IntroAnimation";
 import animateString from "./utils/animateString";
 
 const divlogin = document.getElementById("divlogin");
-const divinfotext = document.getElementById("divinfotext");
 
 const divwaitlist = document.getElementById("divwaitlist");
 const divwaitlistform = document.getElementById("divwaitlistform");

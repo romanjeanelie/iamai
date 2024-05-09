@@ -1,5 +1,7 @@
-import gsap, { Power3 } from "gsap";
+import gsap, { Power2, Power3 } from "gsap";
 import animateString from "../utils/animateString";
+import { split } from "../utils/text";
+import { SplitText } from "../utils/splitText";
 
 export class IntroAnimation {
   constructor() {
@@ -8,6 +10,7 @@ export class IntroAnimation {
     this.introLogo = document.querySelector(".divintrologo");
     // slider cards
     this.redCard = document.querySelector(".preLoginContent__slider-content.redCard");
+    this.apesCard = document.querySelector(".preLoginContent__slider-content.apesCard");
 
     // for debug :
     this.introContainer.style.display = "none";
@@ -88,5 +91,34 @@ export class IntroAnimation {
     redCardTl.to(mozza, { x: 50, opacity: 0 }, `+=${redDelay}`);
   }
 
-  animateCards() {}
+  async animateApesCard() {
+    const text = this.apesCard.querySelector("h4");
+    const spans = gsap.utils.toArray(text.querySelectorAll("span"));
+
+    gsap.set(spans, {
+      opacity: 0,
+    });
+
+    const tl = gsap.timeline({
+      repeat: -1,
+      defaults: {
+        duration: 1,
+        ease: Power2.easeIn,
+      },
+    });
+
+    tl.to(spans, {
+      opacity: 1,
+      stagger: 0.9,
+    });
+
+    tl.to(spans, {
+      opacity: 0,
+    });
+  }
+
+  animateCards() {
+    this.animateRedCard();
+    this.animateApesCard();
+  }
 }
