@@ -1,6 +1,10 @@
 // containers
 .preLoginContent__container {
-  background-color: #333333;
+  $background: #333333;
+  $secondary: rgba(255, 255, 255, 0.72);
+  $maxWidth: 1232px;
+
+  background-color: $background;
   min-height: 200vh;
   padding: 80px 0 198px;
   font-family: "SFPro";
@@ -11,7 +15,7 @@
   }
 
   .x-container {
-    max-width: 1232px;
+    max-width: $maxWidth;
     margin: 0 auto;
     padding: 0 120px;
 
@@ -20,6 +24,7 @@
     }
   }
 
+  // text styles
   h2 {
     font-size: 48px;
     font-weight: 600;
@@ -40,6 +45,7 @@
   }
 
   h4 {
+    color: white;
     font-size: 24px;
     font-weight: 500;
     line-height: 28px; /* 116.667% */
@@ -48,6 +54,84 @@
     @include media("<tablet") {
       font-size: 20px;
       line-height: 24px; /* 120% */
+    }
+  }
+
+  // button
+  .preLoginContent__button {
+    top: 80px;
+    right: 120px;
+    padding: 10px 24px;
+    background-color: $background;
+    border-radius: 16px;
+    color: $secondary;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px; /* 125% */
+    letter-spacing: 1px;
+    transition: background-color 0.3s ease-out;
+
+    &:hover {
+      background-color: #292828;
+    }
+
+    @include media("<tablet") {
+      padding: 8px 16px;
+      font-size: 12px;
+      line-height: 16px; /* 133.333% */
+    }
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+
+  .preLoginContent__slider {
+    display: flex;
+    padding: 0 120px;
+    width: 100vw;
+    overflow-x: scroll;
+
+    @include media("<desktop") {
+      padding: 0 clamp(24px, 4vw, 120px);
+    }
+
+    // .preLoginContent__gutter {
+    //   width: calc(((100vw - $maxWidth) / 2));
+    // }
+
+    .preLoginContent__slider-card {
+      width: 400px;
+      flex: none;
+      margin-right: 16px;
+
+      &.last {
+        margin-right: 0;
+      }
+
+      .preLoginContent__slider-content {
+        height: 500px;
+        border-radius: 16px;
+        overflow: hidden;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+
+      h4 {
+        margin-top: 16px;
+        padding-left: 16px;
+      }
+
+      @include media("<phone") {
+        width: calc(100% - 8px);
+      }
     }
   }
 }
