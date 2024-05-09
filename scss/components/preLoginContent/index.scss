@@ -11,7 +11,7 @@
   position: relative;
 
   @media screen and (max-height: 800px) {
-    padding: 24px 0 120px;
+    padding: 60px 0 120px;
   }
 
   @include media("<tablet") {
@@ -109,9 +109,10 @@
     top: calc(100vh - (115px + 60px));
     left: 50%;
     transform: translate(-50%, 0);
-    display: inline-block;
     text-align: center;
     z-index: 1;
+    height: 0;
+    float: left;
 
     @include media("<tablet") {
       top: calc(100vh - (98px + 60px));
