@@ -11,6 +11,7 @@ export class IntroAnimation {
     // slider cards
     this.redCard = document.querySelector(".preLoginContent__slider-content.redCard");
     this.apesCard = document.querySelector(".preLoginContent__slider-content.apesCard");
+    this.clockCard = document.querySelector(".preLoginContent__slider-content.clockCard");
 
     // for debug :
     this.introContainer.style.display = "none";
@@ -91,7 +92,7 @@ export class IntroAnimation {
     redCardTl.to(mozza, { x: 50, opacity: 0 }, `+=${redDelay}`);
   }
 
-  async animateApesCard() {
+  animateApesCard() {
     const text = this.apesCard.querySelector("h4");
     const spans = gsap.utils.toArray(text.querySelectorAll("span"));
 
@@ -117,8 +118,42 @@ export class IntroAnimation {
     });
   }
 
+  animateClockCard() {
+    const texts = this.clockCard.querySelectorAll("h4");
+
+    gsap.set(texts, {
+      opacity: 0,
+      y: 50,
+    });
+
+    const tl = gsap.timeline({
+      repeat: -1,
+      defaults: {
+        duration: 1,
+      },
+    });
+
+    texts.forEach((text, idx) => {
+      tl.to(text, {
+        opacity: 1,
+        y: 0,
+        ease: Power3.easeOut,
+      });
+      tl.to(
+        text,
+        {
+          opacity: 0,
+          y: 50,
+          ease: Power3.easeIn,
+        },
+        "+=1"
+      );
+    });
+  }
+
   animateCards() {
     this.animateRedCard();
     this.animateApesCard();
+    this.animateClockCard();
   }
 }

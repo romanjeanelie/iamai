@@ -264,6 +264,7 @@
           padding: 0;
 
           h4 {
+            padding: 0;
             text-align: center;
             font-size: 32px;
             font-weight: 600;
@@ -327,6 +328,17 @@
           background: url("https://res.cloudinary.com/dfdqiqn98/image/upload/v1715270730/Home/ClockWork-dalle_urm51v.png")
             center no-repeat;
           background-size: cover;
+
+          h4 {
+            padding: 0;
+            position: absolute;
+            font-size: 24px;
+            font-weight: 600;
+            line-height: 28px; /* 116.667% */
+            letter-spacing: 1px;
+            bottom: 32px;
+            left: 24px;
+          }
         }
 
         &.seventh {
