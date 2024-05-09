@@ -6,6 +6,9 @@ export class IntroAnimation {
     this.introContainer = document.querySelector(".divintroinfo");
     this.introText = document.querySelector(".divintrotext");
     this.introLogo = document.querySelector(".divintrologo");
+
+    // for debug :
+    this.introContainer.style.display = "none";
   }
 
   animate() {

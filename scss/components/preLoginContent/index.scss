@@ -5,7 +5,7 @@
   $maxWidth: 1232px;
 
   background-color: $background;
-  min-height: 200vh;
+  min-height: 220vh;
   padding: 80px 0 198px;
   font-family: "SFPro";
   position: relative;
@@ -92,6 +92,86 @@
       padding: 8px 16px;
       font-size: 12px;
       line-height: 16px; /* 133.333% */
+    }
+  }
+
+  .preLoginContent__ctas-placeholder {
+    margin-top: 24px;
+    height: 115px;
+
+    @include media("<tablet") {
+      height: 98px;
+    }
+  }
+
+  .preLoginContent__ctas {
+    position: sticky;
+    top: calc(100vh - (115px + 60px));
+    left: 50%;
+    transform: translate(-50%, 0);
+    display: inline-block;
+    text-align: center;
+    z-index: 1;
+
+    @include media("<tablet") {
+      top: calc(100vh - (98px + 60px));
+    }
+
+    p {
+      padding: 10px 0;
+      color: #c6c6c6;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 20px; /* 125% */
+      letter-spacing: 1px;
+
+      @include media("<tablet") {
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 16px; /* 133.333% */
+        letter-spacing: 1px;
+      }
+    }
+
+    .divgoogle {
+      margin-top: 8px;
+      display: flex;
+      border: none;
+      background-color: black;
+      padding: 14px 42px 14px 14px;
+      gap: 16px;
+      align-items: center;
+      transition: background-color 0.3s ease-out;
+
+      &:hover {
+        background-color: #292828;
+      }
+
+      img {
+        width: 32px;
+      }
+
+      p {
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 20px; /* 125% */
+        letter-spacing: 1px;
+        text-wrap: nowrap;
+      }
+
+      @include media("<tablet") {
+        padding: 8px 24px 8px 8px;
+
+        img {
+          width: 24px;
+        }
+
+        p {
+          font-size: 12px;
+          line-height: 16px; /* 133.333% */
+        }
+      }
     }
   }
 
@@ -263,45 +343,6 @@
     flex-direction: column;
     align-items: center;
     gap: 8px;
-  }
-
-  .divgoogle {
-    display: flex;
-    border: none;
-    background-color: black;
-    padding: 14px 42px 14px 14px;
-    gap: 16px;
-    align-items: center;
-    transition: background-color 0.3s ease-out;
-
-    &:hover {
-      background-color: #292828;
-    }
-
-    img {
-      width: 32px;
-    }
-
-    p {
-      font-size: 16px;
-      font-weight: 600;
-      line-height: 20px; /* 125% */
-      letter-spacing: 1px;
-      text-wrap: nowrap;
-    }
-
-    @include media("<desktop") {
-      padding: 8px 24px 8px 8px;
-
-      img {
-        width: 24px;
-      }
-
-      p {
-        font-size: 12px;
-        line-height: 16px; /* 133.333% */
-      }
-    }
   }
 
   .preLoginContent__announcingCO-container {
