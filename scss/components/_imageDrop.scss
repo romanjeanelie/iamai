@@ -1,12 +1,9 @@
 // Image drop
 .image-dropped__container,
 .image-drop-zone--overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
+  position: fixed;
+  inset: 0;
   z-index: 10;
-  height: 100vh;
 }
 
 .image-drop-zone--overlay {

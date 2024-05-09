@@ -10,6 +10,10 @@
   font-family: "SFPro";
   position: relative;
 
+  @media screen and (max-height: 800px) {
+    padding: 24px 0 120px;
+  }
+
   @include media("<tablet") {
     padding: 60px 0 120px;
   }
@@ -17,10 +21,18 @@
   .x-container {
     max-width: $maxWidth;
     margin: 0 auto;
-    padding: 0 120px;
+
+    @include media("<large") {
+      max-width: none;
+      margin: 0 120px;
+    }
 
     @include media("<desktop") {
-      padding: 0 clamp(24px, 4vw, 120px);
+      margin: 0 clamp(48px, 8vw, 120px);
+    }
+
+    @include media("<tablet") {
+      margin: 0 clamp(24px, 4vw, 60px);
     }
   }
 
@@ -57,7 +69,7 @@
     }
   }
 
-  // button
+  // ---------- BUTTON ----------
   .preLoginContent__button {
     top: 80px;
     right: 120px;
@@ -70,6 +82,7 @@
     line-height: 20px; /* 125% */
     letter-spacing: 1px;
     transition: background-color 0.3s ease-out;
+    text-wrap: nowrap;
 
     &:hover {
       background-color: #292828;
@@ -82,18 +95,31 @@
     }
   }
 
+  // ---------- HEADER ----------
   .header {
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 32px;
   }
 
+  // ---------- SLIDER ----------
   .preLoginContent__slider {
     display: flex;
     padding: 0 120px;
     width: 100vw;
     overflow-x: scroll;
+    overflow-y: hidden;
+
+    // Hide scrollbar for Chrome, Safari and Opera
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    // Hide scrollbar for IE, Edge and Firefox
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
 
     @include media("<desktop") {
       padding: 0 clamp(24px, 4vw, 120px);
@@ -130,7 +156,116 @@
       }
 
       @include media("<phone") {
-        width: calc(100% - 8px);
+        width: 100%;
+      }
+    }
+  }
+}
+
+// ---------- FOOTER ----------
+.preLoginContent__container .preLoginContent__footer {
+  position: relative;
+
+  margin-top: 98px;
+
+  @include media("<tablet") {
+    margin-top: 48px;
+  }
+
+  @include media("<phone") {
+    margin-top: 4px;
+  }
+
+  .header {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: end;
+  }
+
+  .preLoginContent__ctas {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .divgoogle {
+    border: none;
+    background-color: black;
+    padding: 14px 42px 14px 14px;
+    gap: 16px;
+    align-items: center;
+    transition: background-color 0.3s ease-out;
+
+    &:hover {
+      background-color: #292828;
+    }
+
+    img {
+      width: 32px;
+    }
+
+    p {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 20px; /* 125% */
+      letter-spacing: 1px;
+      text-wrap: nowrap;
+    }
+
+    @include media("<desktop") {
+      padding: 8px 24px 8px 8px;
+
+      img {
+        width: 24px;
+      }
+
+      p {
+        font-size: 12px;
+        line-height: 16px; /* 133.333% */
+      }
+    }
+  }
+
+  .preLoginContent__announcingCO-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 46px 36px 26px 41px;
+    border-radius: 16px;
+
+    height: clamp(400px, 50vw, 600px);
+    background: url("https://res.cloudinary.com/dfdqiqn98/image/upload/v1715266574/Home/Announcing_CO_ojqqx0.png")
+      no-repeat center;
+    background-size: cover;
+
+    @include media("<phone") {
+      padding: 32px 28px 28px 24px;
+    }
+
+    .CO-logo {
+      display: flex;
+      justify-content: end;
+
+      img {
+        width: clamp(98.5px, 25vw, 329px);
+
+        @include media("<desktop") {
+          width: max(98.5px, 15vw);
+        }
+      }
+    }
+
+    p {
+      font-size: clamp(40px, 7vw, 96px);
+      font-weight: 700;
+      line-height: 100%; /* 41.667% */
+      letter-spacing: 1px;
+
+      @include media("<tablet") {
+        font-size: 40px;
+        font-weight: 600;
+        line-height: 40px; /* 100% */
       }
     }
   }
