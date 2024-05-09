@@ -53,6 +53,7 @@
 }
 
 .divintroinfo {
+  z-index: 10;
   position: fixed;
   display: flex;
   background-color: $backgroundColorGreyPage;
