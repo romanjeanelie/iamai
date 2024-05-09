@@ -10,7 +10,7 @@ lerna-debug.log*
 node_modules
 *.local
 
-/app/firebaseConfig.js
+app/firebaseConfig.js
 
 # Editor directories and files
 .vscode/*
