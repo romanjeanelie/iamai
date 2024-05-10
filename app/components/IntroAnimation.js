@@ -3,6 +3,7 @@ import animateString from "../utils/animateString";
 
 export class IntroAnimation {
   constructor() {
+    this.preLoginContent = document.querySelector(".divlogin");
     this.introContainer = document.querySelector(".divintroinfo");
     this.introText = document.querySelector(".divintrotext");
     this.introLogo = document.querySelector(".divintrologo");
@@ -26,6 +27,11 @@ export class IntroAnimation {
       gsap.set([logoP, logo], {
         opacity: 0,
       });
+      gsap.set(this.preLoginContent, { y: "100vh" });
+
+      gsap.set(this.loginPage, {
+        yPercent: 50,
+      });
       const tl = gsap.timeline({
         defaults: {
           ease: Power3.easeOut,
@@ -41,8 +47,17 @@ export class IntroAnimation {
       tl.to(this.introContainer, {
         yPercent: -100,
         duration: 0.7,
-        ease: Power3.easeIn,
+        ease: Power3.easeOut,
       });
+      tl.to(
+        this.preLoginContent,
+        {
+          y: 0,
+          duration: 0.7,
+          ease: Power3.easeOut,
+        },
+        "<"
+      );
     });
   }
 
