@@ -143,9 +143,11 @@ function pilivo(lang, systemPrompt, userPrompt, phonenumber, usermessage) {
 function vonage(opening, prompt, phone) {
   // WARNING: For POST requests, body is set to null by browsers.
   var data = JSON.stringify({
-    opening: opening,
-    prompt: prompt,
-    phone: phone
+    intro_text: opening,
+    system_prompt: prompt,
+    phone: phone,
+    language_code: "en-US",
+    web_hook_url:""
   });
 
   var xhr = new XMLHttpRequest();
