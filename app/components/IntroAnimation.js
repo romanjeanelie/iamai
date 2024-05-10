@@ -1,8 +1,11 @@
 import gsap, { Power2, Power3 } from "gsap";
+
+import { lock, unlock } from "tua-body-scroll-lock";
 import animateString from "../utils/animateString";
 
 export class IntroAnimation {
   constructor() {
+    this.loginPage = document.querySelector(".login-page");
     this.preLoginContent = document.querySelector(".divlogin");
     this.introContainer = document.querySelector(".divintroinfo");
     this.introText = document.querySelector(".divintrotext");
@@ -29,9 +32,6 @@ export class IntroAnimation {
       });
       gsap.set(this.preLoginContent, { y: "100vh" });
 
-      gsap.set(this.loginPage, {
-        yPercent: 50,
-      });
       const tl = gsap.timeline({
         defaults: {
           ease: Power3.easeOut,
@@ -55,6 +55,9 @@ export class IntroAnimation {
           y: 0,
           duration: 0.7,
           ease: Power3.easeOut,
+          onComplete: () => {
+            lock(this.loginPage);
+          },
         },
         "<"
       );

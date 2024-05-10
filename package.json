@@ -21,10 +21,13 @@
     "firebase": "^10.7.1",
     "gsap": "^3.12.5",
     "highlight.js": "^11.9.0",
+    "i": "^0.3.7",
     "lamejs": "^1.2.1",
     "nanoevents": "^9.0.0",
+    "npm": "^10.7.0",
     "remarkable": "^2.0.1",
     "sass": "^1.69.5",
-    "scss": "^0.2.4"
+    "scss": "^0.2.4",
+    "tua-body-scroll-lock": "^1.5.0"
   }
 }

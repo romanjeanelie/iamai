@@ -1,18 +1,19 @@
 import * as dat from "dat.gui";
 import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
 import { createNanoEvents } from "nanoevents";
-import User, { getUser, getUserDataFireDB, redirectToLogin, saveUserDataFireDB } from "./User";
+import { unlock } from "tua-body-scroll-lock";
+import User, { getUserDataFireDB, redirectToLogin, saveUserDataFireDB } from "./User";
 import Caroussel from "./components/Caroussel";
 import Discussion from "./components/Discussion";
 import Input from "./components/Input";
+import { IntroAnimation } from "./components/IntroAnimation";
 import Navbar from "./components/Navbar";
 import Slider from "./components/Slider";
 import TaskManager from "./components/TaskManager";
 import { auth } from "./firebaseConfig";
 import stopOverscroll from "./utils/stopOverscroll";
-import { IntroAnimation } from "./components/IntroAnimation";
-import animateString from "./utils/animateString";
 import IntroContent from "./IntroContent";
+import animateString from "./utils/animateString";
 
 const divlogin = document.getElementById("divlogin");
 
@@ -62,6 +63,8 @@ class App {
     this.loginPage.style.transitionDuration = duration + "ms";
     this.pageGrey.style.transitionDuration = duration + "ms";
     this.loginPage.classList.add("hidden");
+    unlock(this.loginPage);
+    console.log("unlock");
     this.pageGrey.classList.add("show");
   }
 

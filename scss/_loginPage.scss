@@ -5,10 +5,12 @@
   background: $backgroundColorGreyPage;
   inset: 0;
   /* Aligns horizontally */
-  // display: flex;
+  display: block;
   justify-content: center;
   align-items: center;
   overflow-y: scroll;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
 
   transition: transform 800ms ease-in-out;
 
@@ -31,7 +33,8 @@
   border-radius: 60px;
 }
 
-.divlogin {}
+.divlogin {
+}
 
 .divwaitlist {
   display: none;

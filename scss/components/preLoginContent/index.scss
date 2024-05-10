@@ -97,7 +97,7 @@
 
   .preLoginContent__ctas-placeholder {
     margin-top: 24px;
-    height: 115px;
+    height: 24px;
 
     @include media("<tablet") {
       height: 98px;
@@ -107,6 +107,7 @@
   .preLoginContent__ctas {
     position: sticky;
     top: calc(100vh - (115px + 60px));
+    bottom: 120px;
     left: 50%;
     transform: translate(-50%, 0);
     text-align: center;

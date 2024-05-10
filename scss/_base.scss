@@ -63,7 +63,7 @@ body {
 }
 
 #app {
-  position: relative;
+  // position: relative;
   min-height: 100vh; // in case svh is not supported by browser
   min-height: 100svh;
   transition: visibility 0s, opacity 0.1s linear;
