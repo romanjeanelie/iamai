@@ -1,7 +1,5 @@
 import gsap, { Power2, Power3 } from "gsap";
 import animateString from "../utils/animateString";
-import { split } from "../utils/text";
-import { SplitText } from "../utils/splitText";
 
 export class IntroAnimation {
   constructor() {

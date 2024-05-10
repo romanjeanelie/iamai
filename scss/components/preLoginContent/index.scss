@@ -188,7 +188,7 @@
   // ---------- SLIDER ----------
   .preLoginContent__slider {
     display: flex;
-    padding: 0 120px;
+    // padding: 0 120px;
     width: 100vw;
     overflow-x: scroll;
     scroll-snap-type: x mandatory;
@@ -203,8 +203,16 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
 
+    @include media("<large") {
+      padding: 0 120px;
+    }
+
     @include media("<desktop") {
-      padding: 0 clamp(24px, 4vw, 120px);
+      padding: 0 clamp(48px, 8vw, 120px);
+    }
+
+    @include media("<tablet") {
+      padding: 0 clamp(24px, 4vw, 60px);
     }
 
     // .preLoginContent__gutter {

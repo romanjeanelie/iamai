@@ -12,6 +12,7 @@ import { auth } from "./firebaseConfig";
 import stopOverscroll from "./utils/stopOverscroll";
 import { IntroAnimation } from "./components/IntroAnimation";
 import animateString from "./utils/animateString";
+import IntroContent from "./IntroContent";
 
 const divlogin = document.getElementById("divlogin");
 
@@ -43,6 +44,7 @@ class App {
     this.emitter = createNanoEvents();
 
     this.debug = import.meta.env.VITE_DEBUG === "true";
+    this.introContent = new IntroContent();
     this.introAnim = new IntroAnimation();
     this.addListeners();
     this.resetScroll();
