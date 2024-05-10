@@ -31,8 +31,7 @@
   border-radius: 60px;
 }
 
-.divlogin {
-}
+.divlogin {}
 
 .divwaitlist {
   display: none;
@@ -290,10 +289,23 @@
 
     @include media("<tablet") {
       height: 121.75px;
+      width: 200px;
       gap: 10px;
+
+      svg {
+        height: 121.75px;
+        width: 200px;
+      }
+
       .asterizk {
         margin-left: 2px;
         width: 43.46px;
+        height: 43.48px;
+
+        svg {
+          width: 43.46px;
+          height: 43.48px;
+        }
       }
     }
   }
