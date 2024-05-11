@@ -123,6 +123,7 @@
     p {
       padding: 10px 0;
       color: #c6c6c6;
+
       font-size: 16px;
       font-weight: 600;
       line-height: 20px; /* 125% */
@@ -134,6 +135,13 @@
         line-height: 16px; /* 133.333% */
         letter-spacing: 1px;
       }
+    }
+
+    .label {
+      background-color: $background;
+      padding: 10px 16px;
+      border-radius: 20px;
+      flex: none;
     }
 
     .divgoogle {
@@ -158,6 +166,7 @@
         color: white;
         font-size: 16px;
         font-weight: 600;
+        background-color: transparent;
         line-height: 20px; /* 125% */
         letter-spacing: 1px;
         text-wrap: nowrap;
@@ -339,12 +348,21 @@
             center no-repeat;
           background-size: cover;
 
+          .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 170px;
+            background: linear-gradient(0deg, rgba(black, 0.5) 0%, rgba(black, 0.4) 65%, rgba(black, 0) 100%);
+          }
+
           h4 {
             padding: 0;
             position: absolute;
-            font-size: 24px;
+            font-size: 32px;
             font-weight: 600;
-            line-height: 28px; /* 116.667% */
+            line-height: 40px; /* 125% */
             letter-spacing: 1px;
             bottom: 32px;
             left: 24px;

@@ -46,14 +46,14 @@ export class IntroAnimation {
       });
       tl.to(this.introContainer, {
         yPercent: -100,
-        duration: 0.7,
+        duration: 1.2,
         ease: Power3.easeOut,
       });
       tl.to(
         this.preLoginContent,
         {
           y: 0,
-          duration: 0.7,
+          duration: 1.2,
           ease: Power3.easeOut,
           onComplete: () => {
             lock(this.loginPage);
@@ -80,7 +80,7 @@ export class IntroAnimation {
       repeat: -1,
       defaults: {
         ease: Power3.easeOut,
-        duration: 0.4,
+        duration: 0.6,
       },
     });
 

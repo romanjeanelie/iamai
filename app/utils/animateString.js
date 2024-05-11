@@ -5,7 +5,7 @@ const animateString = (
   imgSrc = "",
   callback,
   delay = 150,
-  deletedelay = 50,
+  deletedelay = 75,
   fulltextdelay = 1000
 ) => {
   if (!element) return; // Element not found
