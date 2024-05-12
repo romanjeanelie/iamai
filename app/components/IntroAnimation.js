@@ -19,9 +19,10 @@ export class IntroAnimation {
     // this.introContainer.style.display = "none";
 
     this.animateCards();
+    this.blockBodyScrollWhenLoginPageOnScreen();
   }
 
-  animate() {
+  animate({ callback }) {
     animateString(0, ["Hello."], this.introText, "", () => {
       this.introText.style.display = "none";
       this.introLogo.style.display = "block";
@@ -55,9 +56,6 @@ export class IntroAnimation {
           y: 0,
           duration: 1.2,
           ease: Power3.easeOut,
-          onComplete: () => {
-            lock(this.loginPage);
-          },
         },
         "<"
       );
@@ -171,5 +169,20 @@ export class IntroAnimation {
     this.animateRedCard();
     this.animateApesCard();
     this.animateClockCard();
+  }
+
+  blockBodyScrollWhenLoginPageOnScreen() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          console.log("on screen");
+          lock(this.loginPage);
+        } else {
+          console.log("off screen");
+          unlock(this.loginPage);
+        }
+      });
+    });
+    observer.observe(this.preLoginContent);
   }
 }

@@ -1,7 +1,6 @@
 import * as dat from "dat.gui";
 import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
 import { createNanoEvents } from "nanoevents";
-import { unlock } from "tua-body-scroll-lock";
 import User, { getUserDataFireDB, redirectToLogin, saveUserDataFireDB } from "./User";
 import Caroussel from "./components/Caroussel";
 import Discussion from "./components/Discussion";
@@ -63,8 +62,6 @@ class App {
     this.loginPage.style.transitionDuration = duration + "ms";
     this.pageGrey.style.transitionDuration = duration + "ms";
     this.loginPage.classList.add("hidden");
-    unlock(this.loginPage);
-    console.log("unlock");
     this.pageGrey.classList.add("show");
   }
 
@@ -167,17 +164,18 @@ class App {
         console.error("Error signing out: ", error);
       });
   }
+
   async checkuserwaitlist(user) {
     this.user = user;
+    console.log("checkuserwaitlist : ", this.user);
     var userstatus = await getUserDataFireDB(user);
     if (userstatus) {
-      console.log("userstatus:", userstatus);
       this.user.setstatus(userstatus.status);
     }
     if (sessionStorage.getItem("attemptedSignIn") === "true") {
       sessionStorage.removeItem("attemptedSignIn");
-      await this.checkuser();
     }
+    await this.checkuser();
   }
   async saveUser() {
     console.log("saveuser");
@@ -258,9 +256,7 @@ class App {
 
       //load and play the animations
       divwaitlist.style.display = "none";
-      divlogin.style.display = "none";
-      this.introAnim.animate();
-      this.checkuser();
+      this.introAnim.animate({ callback: this.checkuser.bind(this) });
     });
     document.fonts.ready.then(() => {
       this.app.classList.remove("preload");
