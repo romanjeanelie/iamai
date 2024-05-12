@@ -4,12 +4,15 @@
   z-index: 5;
   background: $backgroundColorGreyPage;
   inset: 0;
+
   /* Aligns horizontally */
   display: block;
   justify-content: center;
   align-items: center;
-  overflow-y: scroll;
+  overflow-y: auto;
   white-space: nowrap;
+  overscroll-behavior: none;
+
   // -webkit-overflow-scrolling: touch;
 
   transition: transform 800ms ease-in-out;
@@ -20,11 +23,6 @@
 
   &.none {
     display: none;
-  }
-
-  .test {
-    height: 250vh;
-    background-color: red;
   }
 }
 

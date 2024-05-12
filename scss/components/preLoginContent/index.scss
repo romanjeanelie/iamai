@@ -3,13 +3,13 @@
   $background: #333333;
   $secondary: rgba(255, 255, 255, 0.72);
   $maxWidth: 1232px;
-  width: 100vw;
 
   background-color: $background;
   // min-height: 220vh;
   padding: 80px 0 198px;
   font-family: "SFPro";
   position: relative;
+  will-change: transform;
 
   @media screen and (max-height: 800px) {
     padding: 60px 0 120px;

@@ -1,6 +1,5 @@
 import gsap, { Power2, Power3 } from "gsap";
 
-import { lock, unlock } from "tua-body-scroll-lock";
 import animateString from "../utils/animateString";
 
 export class IntroAnimation {
@@ -16,10 +15,11 @@ export class IntroAnimation {
     this.clockCard = document.querySelector(".preLoginContent__slider-content.clockCard");
 
     // for debug :
-    // this.introContainer.style.display = "none";
+    this.introContainer.style.display = "none";
 
     this.animateCards();
-    this.blockBodyScrollWhenLoginPageOnScreen();
+    this.addEventListeners();
+    // this.blockBodyScrollWhenLoginPageOnScreen();
   }
 
   animate({ callback }) {
@@ -171,18 +171,17 @@ export class IntroAnimation {
     this.animateClockCard();
   }
 
-  blockBodyScrollWhenLoginPageOnScreen() {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          console.log("on screen");
-          lock(this.loginPage);
-        } else {
-          console.log("off screen");
-          unlock(this.loginPage);
-        }
-      });
+  // we stop the propagation on every touch event to prevent the scroll from being stuck
+  // in the fixed positionned login page
+  addEventListeners() {
+    this.loginPage.addEventListener("touchstart", (e) => {
+      e.stopPropagation();
     });
-    observer.observe(this.preLoginContent);
+    this.loginPage.addEventListener("touchmove", (e) => {
+      e.stopPropagation();
+    });
+    this.loginPage.addEventListener("touchend", (e) => {
+      e.stopPropagation();
+    });
   }
 }
