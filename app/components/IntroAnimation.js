@@ -159,7 +159,7 @@ export class IntroAnimation {
           y: 50,
           ease: Power3.easeIn,
         },
-        "+=1"
+        "+=1.5"
       );
     });
   }
