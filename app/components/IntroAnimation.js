@@ -14,8 +14,11 @@ export class IntroAnimation {
     this.apesCard = document.querySelector(".preLoginContent__slider-content.apesCard");
     this.clockCard = document.querySelector(".preLoginContent__slider-content.clockCard");
 
-    // for debug :
-    this.introContainer.style.display = "none";
+    this.debug = import.meta.env.VITE_DEBUG === "true";
+
+    if (this.debug) {
+      this.introContainer.style.display = "none";
+    }
 
     this.animateCards();
     this.addEventListeners();

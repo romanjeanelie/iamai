@@ -1,3 +1,6 @@
+@import "./components/login/preLoginContent.scss";
+@import "./components/login/waitListForm.scss";
+
 .login-page {
   position: fixed;
   color: $colorMain;
@@ -27,27 +30,6 @@
 .divgoogle {
   border: 1px solid #dedddc;
   border-radius: 60px;
-}
-
-.divlogin {
-}
-
-.divwaitlist {
-  display: none;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-.btnsave {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: rgba($colorBlack, 0.48);
-}
-
-.divloginbtn {
-  // margin-bottom: 100px;
 }
 
 .divintroinfo {
@@ -120,14 +102,6 @@
   }
 }
 
-.divwaitlistlogo {
-  margin-bottom: 132px;
-
-  @include media("<tablet") {
-    margin-bottom: 80px;
-  }
-}
-
 #divlottieanimation {
   svg path {
     fill: #003979;
@@ -152,56 +126,6 @@
     line-height: 28px;
     letter-spacing: 1px;
   }
-}
-
-.divwaitlistform {
-  color: $colorBlack;
-  // text-align: center;
-  background: #ffffff;
-  border-radius: 16px !important;
-  padding: 16px;
-  font-feature-settings: "liga" off;
-  font-family: "SFPro";
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 450;
-  line-height: 32px;
-  letter-spacing: 1px;
-  margin-bottom: 48px;
-
-  @include media("<tablet") {
-    font-size: 20px;
-    line-height: 28px;
-    letter-spacing: 1px;
-  }
-
-  input,
-  textarea {
-    display: block;
-    box-sizing: border-box;
-    border-radius: 0;
-    outline: none;
-    border: none;
-    background: $backgroundColorGreyPage;
-    border-radius: 8px;
-    color: inherit;
-    width: 350px;
-    padding: 4px 8px 4px 8px;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 400;
-    letter-spacing: 0.75px;
-    line-height: 28px;
-  }
-
-  label {
-    font-size: 28px;
-    opacity: 0.8;
-  }
-}
-
-.error {
-  border: 2px solid red !important;
 }
 
 .login__container {

@@ -15,6 +15,7 @@ import IntroContent from "./IntroContent";
 import animateString from "./utils/animateString";
 
 const divlogin = document.getElementById("divlogin");
+const divintro = document.querySelector(".divintroinfo");
 
 const divwaitlist = document.getElementById("divwaitlist");
 const divwaitlistform = document.getElementById("divwaitlistform");
@@ -52,8 +53,13 @@ class App {
 
     if (this.debug) {
       this.gui = new dat.GUI();
-      this.toPageGrey({ duration: 0 });
-      this.initApp();
+      this.gui.hide();
+      divintro.style.display = "none";
+      divlogin.style.display = "none";
+      divwaitlist.style.display = "block";
+      divwaitlisttext.style.display = "block";
+      // this.toPageGrey({ duration: 0 });
+      // this.initApp();
     }
   }
 
@@ -255,7 +261,6 @@ class App {
       });
 
       //load and play the animations
-      divwaitlist.style.display = "none";
       this.introAnim.animate({ callback: this.checkuser.bind(this) });
     });
     document.fonts.ready.then(() => {

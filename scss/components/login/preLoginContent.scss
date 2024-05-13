@@ -500,6 +500,7 @@
       @include media("<tablet") {
         max-height: 80%;
         max-width: none;
+
         height: 100%;
         position: absolute;
         inset: 0;
