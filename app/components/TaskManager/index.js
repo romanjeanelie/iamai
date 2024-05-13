@@ -338,6 +338,12 @@ export default class TaskManager {
     for (const status of order) {
       // the first status found in the tasks array will be the color of the button
       if (this.tasks.some((task) => task.status.type === status)) {
+        if (status === TASK_STATUSES.COMPLETED) {
+          this.button.classList.add("completed");
+        } else {
+          this.button.classList.remove("completed");
+        }
+
         return STATUS_COLORS[status];
       }
     }

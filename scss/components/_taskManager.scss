@@ -21,6 +21,23 @@ $taskSecondaryColor: #007aff;
     pointer-events: none;
   }
 
+  &.completed {
+    background: -webkit-linear-gradient(-33deg, #007aff 30.57%, #ad00ff 55.25%, #00bad3 78.97%);
+    background-position: 0% 0%;
+    background-size: 400% 400%;
+    animation: 2400ms ease-in-out infinite alternate gradientAnim;
+  }
+
+  @keyframes gradientAnim {
+    from {
+      background-position: 0% 0%;
+    }
+
+    to {
+      background-position: 100% 100%;
+    }
+  }
+
   @include media("<phone") {
     right: 28px;
     bottom: 110px;
