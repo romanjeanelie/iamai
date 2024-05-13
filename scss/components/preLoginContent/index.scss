@@ -434,45 +434,86 @@
   }
 
   .preLoginContent__announcingCO-container {
+    position: relative;
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
-    padding: 46px 36px 26px 41px;
+    gap: 40px;
+    padding: 46px 36px 26px 100px;
     border-radius: 16px;
-
     height: clamp(400px, 50vw, 600px);
-    background: url("https://res.cloudinary.com/dfdqiqn98/image/upload/v1715266574/Home/Announcing_CO_ojqqx0.png")
-      no-repeat center;
-    background-size: cover;
+    background-color: #eeeeee;
+    color: black;
 
-    @include media("<phone") {
-      padding: 32px 28px 28px 24px;
-    }
-
-    .CO-logo {
+    .content {
       display: flex;
-      justify-content: end;
+      flex-grow: 1;
+      flex-direction: column;
+      justify-content: center;
+      gap: 40px;
+      height: 100%;
 
-      img {
-        width: clamp(98.5px, 25vw, 329px);
+      p {
+        padding-left: 8px;
+        font-size: 48px;
+        font-weight: 600;
+        line-height: 48px; /* 100% */
+        letter-spacing: 1px;
 
-        @include media("<desktop") {
-          width: max(98.5px, 15vw);
+        @include media("<large") {
+          padding-left: 4px;
+          font-size: 40px;
+        }
+      }
+
+      .CO-logo {
+        max-height: 300px;
+        img {
+          height: 100%;
+        }
+      }
+
+      @include media("<large") {
+        gap: 24px;
+      }
+
+      @include media("<tablet") {
+        z-index: 1;
+        justify-content: space-between;
+
+        .CO-logo {
+          max-height: clamp(60px, 12vw, 100px);
+          align-self: flex-end;
+        }
+
+        p {
+          order: 1;
         }
       }
     }
 
-    p {
-      font-size: clamp(40px, 7vw, 96px);
-      font-weight: 700;
-      line-height: 100%; /* 41.667% */
-      letter-spacing: 1px;
+    .bg-image {
+      display: flex;
+      max-width: 50%;
+      justify-content: center;
+      align-items: center;
 
       @include media("<tablet") {
-        font-size: 40px;
-        font-weight: 600;
-        line-height: 40px; /* 100% */
+        max-height: 80%;
+        max-width: none;
+        height: 100%;
+        position: absolute;
+        inset: 0;
+        justify-self: center;
+        align-self: center;
+
+        img {
+          max-height: 100%;
+        }
       }
+    }
+
+    @include media("<phone") {
+      padding: 32px 28px 28px 24px;
     }
   }
 }
