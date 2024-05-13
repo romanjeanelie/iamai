@@ -13,6 +13,7 @@ import { auth } from "./firebaseConfig";
 import stopOverscroll from "./utils/stopOverscroll";
 import IntroContent from "./IntroContent";
 import animateString from "./utils/animateString";
+import WaitListForm from "./components/Login/WaitListFrom";
 
 const divlogin = document.getElementById("divlogin");
 const divintro = document.querySelector(".divintroinfo");
@@ -47,8 +48,11 @@ class App {
     this.debug = import.meta.env.VITE_DEBUG === "true";
     this.introContent = new IntroContent();
     this.introAnim = new IntroAnimation();
+    this.waitListForm = new WaitListForm();
     this.addListeners();
     this.resetScroll();
+    // stopOverscroll is a function that prevents overscrolling behavior on touch devices.
+    // to be tested on a touch device
     stopOverscroll();
 
     if (this.debug) {

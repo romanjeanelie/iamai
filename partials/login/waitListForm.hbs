@@ -1,21 +1,25 @@
 <form id="divwaitlistform" class="divwaitlistform">
   {{! first part of form }}
   <h3>Please enter your name and email address</h3>
-  <label for="first-name">First name</label>
-  <input type="text" id="first-name" placeholder="Enter here" />
-  <label for="last-name">Last name</label>
-  <input type="text" id="last-name" placeholder="Enter here" />
-  <label for="email">Email</label>
-  <input type="text" id="email" placeholder="example@gmail.com" />
+  <label id="label-first-name" for="first-name">First name</label>
+  <input type="text" id="first-name" data-label="label-first-name" placeholder="Enter here" />
+  <label id="label-last-name" for="last-name">Last name</label>
+  <input type="text" id="last-name" data-label="label-last-name" placeholder="Enter here" />
+  <label id="label-email" for="email">Email</label>
+  <input type="text" id="email" data-label="label-email" placeholder="example@gmail.com" />
 
   {{! second part of form }}
   <h3>Please enter your socials to enjoy a more <span>personalised</span> experience</h3>
-  <label for="facebook">Social Media Accounts</label>
-  <input type="text" id="facebook" placeholder="Facebook Profile" />
-  <input type="text" id="instagram" placeholder="Instagram Handle" />
-  <input type="text" id="twitter" placeholder="Twitter Handle" />
-  <label>What would you like to use CO * for?</label>
-  <textarea id="txtuse" placeholder="Example: I need an assistant to help manage my time"></textarea>
+  <label id="label-socials" for="facebook">Social Media Accounts</label>
+  <input type="text" id="facebook" data-label="label-socials" placeholder="Facebook Profile" />
+  <input type="text" id="instagram" data-label="label-socials" placeholder="Instagram Handle" />
+  <input type="text" id="twitter" data-label="label-socials" placeholder="Twitter Handle" />
+  <label id="label-txtuse">What would you like to use CO * for?</label>
+  <textarea
+    id="txtuse"
+    data-label="label-txtuse"
+    placeholder="Example: I need an assistant to help manage my time"
+  ></textarea>
 
   {{! submit button }}
   <div class="btnsave">

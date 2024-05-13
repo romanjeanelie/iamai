@@ -60,6 +60,10 @@
     line-height: 20px; /* 125% */
     letter-spacing: 0.5px;
 
+    &.active {
+      color: #007aff;
+    }
+
     &:focus {
       color: red;
     }
