@@ -5,8 +5,7 @@ export default class WaitListForm {
   }
 
   handleActive() {
-    const inputs = this.form.querySelectorAll("input");
-
+    const inputs = this.form.querySelectorAll("input, textarea");
     inputs.forEach((input) => {
       const labelId = input.dataset.label;
       const label = document.querySelector(`#${labelId}`);
