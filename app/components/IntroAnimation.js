@@ -15,7 +15,7 @@ export class IntroAnimation {
     this.clockCard = document.querySelector(".preLoginContent__slider-content.clockCard");
 
     // for debug :
-    this.introContainer.style.display = "none";
+    // this.introContainer.style.display = "none";
 
     this.animateCards();
     this.addEventListeners();
