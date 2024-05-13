@@ -13,8 +13,6 @@
   white-space: nowrap;
   overscroll-behavior: none;
 
-  // -webkit-overflow-scrolling: touch;
-
   transition: transform 800ms ease-in-out;
 
   &.hidden {
@@ -266,6 +264,19 @@
     margin: 0;
     margin-bottom: 48px;
     padding-left: 2px;
+
+    background: -webkit-linear-gradient(
+      0deg,
+      rgba($colorBlueText, 0.6) 0%,
+      rgba($colorBlueText, 0.6) 50%,
+      rgba($colorBlueText, 0) 75%,
+      rgba($colorBlueText, 0) 100%
+    );
+    background-size: 200% 200%;
+    background-position: 160% 200%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 
     @include media("<tablet") {
       font-size: 40px;

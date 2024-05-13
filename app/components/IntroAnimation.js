@@ -28,7 +28,7 @@ export class IntroAnimation {
       this.introLogo.style.display = "block";
       const logoP = this.introLogo.querySelector("p");
       const logo = this.introLogo.querySelector(".co-logo");
-      gsap.set([logoP, logo], {
+      gsap.set(logo, {
         opacity: 0,
       });
       gsap.set(this.preLoginContent, { y: "100vh" });
@@ -39,7 +39,9 @@ export class IntroAnimation {
         },
       });
       tl.to(logoP, {
-        opacity: 0.6,
+        backgroundPosition: "0% 0%",
+        ease: Power3.easeIn,
+        duration: 1,
       });
       tl.to(logo, {
         opacity: 1,
@@ -48,14 +50,12 @@ export class IntroAnimation {
       tl.to(this.introContainer, {
         yPercent: -100,
         duration: 1.2,
-        ease: Power3.easeOut,
       });
       tl.to(
         this.preLoginContent,
         {
           y: 0,
           duration: 1.2,
-          ease: Power3.easeOut,
         },
         "<"
       );
@@ -134,7 +134,6 @@ export class IntroAnimation {
 
   animateClockCard() {
     const texts = this.clockCard.querySelectorAll("h4");
-
     gsap.set(texts, {
       opacity: 0,
       y: 50,
