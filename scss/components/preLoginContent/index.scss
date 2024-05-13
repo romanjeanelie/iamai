@@ -320,6 +320,7 @@
           h2 {
             position: absolute;
             font-weight: 700;
+            line-height: 48px;
           }
 
           .real-madrid {
@@ -417,10 +418,6 @@
 
   @include media("<tablet") {
     margin-top: 48px;
-  }
-
-  @include media("<phone") {
-    margin-top: 4px;
   }
 
   .header {
