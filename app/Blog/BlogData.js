@@ -1,5 +1,5 @@
 export const heroData = [
-  "TLDR",
+  "Our expert <br class='desktop-break'/> fine-tuning <br class='mobile-break'/> of LLaMA 3 <br/>70B has created <br class='mobile-break'/> a powerful <br/>Personal AI Assistant.",
   "Introducing CO* <br /> World’s First <br /> Personal AI Assistant.",
   "Revolutionise how you <br /> get things done.",
   "CO* converses <br class='mobile-break' /> naturally and <br class='desktop-break' /> tackles real-world tasks like a <br class='desktop-break' /> human assistant.",
