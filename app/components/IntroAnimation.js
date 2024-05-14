@@ -50,10 +50,14 @@ export class IntroAnimation {
         opacity: 1,
         duration: 1,
       });
-      tl.to(this.introContainer, {
-        yPercent: -100,
-        duration: 1.2,
-      });
+      tl.to(
+        this.introContainer,
+        {
+          yPercent: -100,
+          duration: 1.2,
+        },
+        "+=0.5"
+      );
       tl.to(
         this.preLoginContent,
         {
