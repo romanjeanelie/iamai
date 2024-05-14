@@ -18,14 +18,14 @@ export class IntroAnimation {
     this.debug = import.meta.env.VITE_DEBUG === "true";
 
     if (this.debug) {
-      this.introContainer.style.display = "none";
+      // this.introContainer.style.display = "none";
     }
 
     this.animateCards();
     this.addEventListeners();
   }
 
-  animate({ callback }) {
+  animate() {
     animateString(0, ["Hello."], this.introText, "", () => {
       this.introText.style.display = "none";
       this.introLogo.style.display = "block";

@@ -22,7 +22,7 @@ const animateString = (
 
   function updateText() {
     if (isAdding) {
-      element.textContent += str[i++];
+      element.innerText += str[i++];
       if (i === str.length) {
         isAdding = false;
         if (imgSrc && imgSrc.length > 0) {
@@ -38,8 +38,8 @@ const animateString = (
         setTimeout(updateText, delay);
       }
     } else {
-      element.textContent = element.textContent.slice(0, -1);
-      if (element.textContent.length > 0) {
+      element.innerText = element.innerText.slice(0, -1);
+      if (element.innerText.length > 0) {
         setTimeout(updateText, deletedelay);
       } else if (callback) {
         callback(textArray, index, element, imgSrc);
