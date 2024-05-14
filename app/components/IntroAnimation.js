@@ -18,7 +18,7 @@ export class IntroAnimation {
     this.debug = import.meta.env.VITE_DEBUG === "true";
 
     if (this.debug) {
-      // this.introContainer.style.display = "none";
+      this.introContainer.style.display = "none";
     }
 
     this.animateCards();
@@ -141,6 +141,7 @@ export class IntroAnimation {
 
   animateClockCard() {
     const texts = this.clockCard.querySelectorAll("h4");
+    const overlay = this.clockCard.querySelector(".overlay");
     gsap.set(texts, {
       opacity: 0,
       y: 50,
@@ -150,15 +151,23 @@ export class IntroAnimation {
       repeat: -1,
       defaults: {
         duration: 1,
+        ease: Power3.easeOut,
       },
     });
 
     texts.forEach((text, idx) => {
+      const isFourLineText = text.offsetHeight >= 100;
       tl.to(text, {
         opacity: 1,
         y: 0,
-        ease: Power3.easeOut,
       });
+      tl.to(
+        overlay,
+        {
+          scaleY: isFourLineText ? 1.3 : 1,
+        },
+        "<"
+      );
       tl.to(
         text,
         {
@@ -167,6 +176,14 @@ export class IntroAnimation {
           ease: Power3.easeIn,
         },
         "+=1.5"
+      );
+      tl.to(
+        overlay,
+        {
+          scaleY: 1,
+          ease: Power3.easeIn,
+        },
+        "<"
       );
     });
   }
