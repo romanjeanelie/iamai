@@ -13,6 +13,7 @@ export class IntroAnimation {
     this.redCard = document.querySelector(".preLoginContent__slider-content.redCard");
     this.apesCard = document.querySelector(".preLoginContent__slider-content.apesCard");
     this.clockCard = document.querySelector(".preLoginContent__slider-content.clockCard");
+    this.helloCard = document.querySelector(".preLoginContent__slider-content.helloCard");
 
     this.debug = import.meta.env.VITE_DEBUG === "true";
 
@@ -166,10 +167,40 @@ export class IntroAnimation {
     });
   }
 
+  animateHelloCard() {
+    const words = this.helloCard.querySelectorAll("p");
+    const tl = gsap.timeline({
+      repeat: -1,
+      defaults: {
+        ease: Power3.easeOut,
+      },
+    });
+
+    words.forEach((word, idx) => {
+      tl.set(word, {
+        opacity: 1,
+        backgroundPosition: "100% 100%",
+      });
+      tl.to(word, {
+        backgroundPosition: "0% 0%",
+        duration: 1.6,
+      });
+      tl.to(
+        word,
+        {
+          opacity: 0,
+          duration: 1,
+        },
+        "+=1.5"
+      );
+    });
+  }
+
   animateCards() {
     this.animateRedCard();
     this.animateApesCard();
     this.animateClockCard();
+    this.animateHelloCard();
   }
 
   // we stop the propagation on every touch event to prevent the scroll from being stuck

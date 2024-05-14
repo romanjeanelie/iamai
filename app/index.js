@@ -58,10 +58,6 @@ class App {
     if (this.debug) {
       this.gui = new dat.GUI();
       this.gui.hide();
-      divintro.style.display = "none";
-      divlogin.style.display = "none";
-      divwaitlist.style.display = "block";
-      divwaitlisttext.style.display = "block";
       // this.toPageGrey({ duration: 0 });
       // this.initApp();
     }
