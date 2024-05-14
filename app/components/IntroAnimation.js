@@ -189,9 +189,9 @@ export class IntroAnimation {
         word,
         {
           opacity: 0,
-          duration: 1,
+          duration: 0.6,
         },
-        "+=1.5"
+        "+=0.8"
       );
     });
   }
