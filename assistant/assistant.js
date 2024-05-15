@@ -607,11 +607,11 @@ function getassistant() {
   xhr.open(
     "GET",
     DB_HOST +
-      "/api/v2/tables/" +
-      DB_TABLE_ASSISTANT_ID +
-      "/records?limit=25&shuffle=0&offset=0&where=(UUID%2Ceq%2C" +
-      loggedinuser.uuid +
-      ")"
+    "/api/v2/tables/" +
+    DB_TABLE_ASSISTANT_ID +
+    "/records?limit=25&shuffle=0&offset=0&where=(UUID%2Ceq%2C" +
+    loggedinuser.uuid +
+    ")"
   );
   xhr.setRequestHeader("accept", "application/json");
   xhr.setRequestHeader("xc-token", DB_TOKEN);
@@ -978,8 +978,8 @@ async function deploy(itemid) {
   let assistant = await getassistant_itemid(itemid);
   // WARNING: For POST requests, body is set to null by browsers.
   // const deploy_id = crypto.randomUUID() + "_" + assistant.UUID;
-  const deploy_id = assistant.UUID+"_"+assistant.system_assistantID;
-  
+  const deploy_id = assistant.UUID + "_" + assistant.system_assistantID;
+
   console.log("assistant.Retrieval:" + assistant.Retrieval);
   if (assistant.Retrieval == "true") {
     console.log("workflow assistant.Retrieval:" + assistant.Retrieval);
@@ -1015,31 +1015,32 @@ async function deploy(itemid) {
           : "",
       },
     });
+    loggedinuser.user.getIdToken(true).then(async (idToken) => {
+      var xhr = new XMLHttpRequest();
+      // xhr.withCredentials = true;
 
-    var xhr = new XMLHttpRequest();
-    // xhr.withCredentials = true;
+      xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === 4) {
+          // console.log(this.responseText);
+          let data = JSON.parse(this.responseText);
+          updateassistant(
+            itemid,
+            "Deployed",
+            URL + data.session_id + "&deploy_id=" + deploy_id,
+            data.session_id,
+            data.stream_id,
+            assistant.data_store_name,
+            deploy_id
+          );
+        }
+      });
 
-    xhr.addEventListener("readystatechange", function () {
-      if (this.readyState === 4) {
-        // console.log(this.responseText);
-        let data = JSON.parse(this.responseText);
-        updateassistant(
-          itemid,
-          "Deployed",
-          URL + data.session_id + "&deploy_id=" + deploy_id,
-          data.session_id,
-          data.stream_id,
-          assistant.data_store_name,
-          deploy_id
-        );
-      }
+      xhr.open("POST", HOST + "/workflows/agent");
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.setRequestHeader("GOOGLE_IDTOKEN", idToken);
+
+      xhr.send(data);
     });
-
-    xhr.open("POST", HOST + "/workflows/agent");
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.setRequestHeader("GOOGLE_IDTOKEN", loggedinuser.idToken);
-
-    xhr.send(data);
   } else {
     console.log("personal_assistant assistant.Retrieval:" + assistant.Retrieval);
     // WARNING: For POST requests, body is set to null by browsers.
@@ -1069,45 +1070,49 @@ async function deploy(itemid) {
           : "",
       },
     });
-    var xhr = new XMLHttpRequest();
-    // xhr.withCredentials = true;
+    loggedinuser.user.getIdToken(true).then(async (idToken) => {
+      var xhr = new XMLHttpRequest();
+      // xhr.withCredentials = true;
 
-    xhr.addEventListener("readystatechange", function () {
-      if (this.readyState === 4) {
-        // console.log(this.responseText);
-        let data = JSON.parse(this.responseText);
-        updateassistant(
-          itemid,
-          "Deployed",
-          URL + data.session_id + "&deploy_id=" + deploy_id,
-          data.session_id,
-          data.stream_id,
-          assistant.data_store_name,
-          deploy_id
-        );
-      }
+      xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === 4) {
+          // console.log(this.responseText);
+          let data = JSON.parse(this.responseText);
+          updateassistant(
+            itemid,
+            "Deployed",
+            URL + data.session_id + "&deploy_id=" + deploy_id,
+            data.session_id,
+            data.stream_id,
+            assistant.data_store_name,
+            deploy_id
+          );
+        }
+      });
+
+      xhr.open("POST", HOST + "/workflows/personal_assistant");
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.setRequestHeader("GOOGLE_IDTOKEN", idToken);
+      xhr.send(data);
     });
-
-    xhr.open("POST", HOST + "/workflows/personal_assistant");
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.setRequestHeader("GOOGLE_IDTOKEN", loggedinuser.idToken);
-    xhr.send(data);
   }
 }
 
 async function deactivate(itemid) {
   let assistant = await getassistant_itemid(itemid);
-  var xhr = new XMLHttpRequest();
-  // xhr.withCredentials = true;
-  xhr.addEventListener("readystatechange", function () {
-    if (this.readyState === 4) {
-      // console.log(this.responseText);
-      updateassistant(itemid, "Ready To Deploy", "", assistant.AgentSessionID, "", assistant.data_store_name);
-    }
+  loggedinuser.user.getIdToken(true).then(async (idToken) => {
+    var xhr = new XMLHttpRequest();
+    // xhr.withCredentials = true;
+    xhr.addEventListener("readystatechange", function () {
+      if (this.readyState === 4) {
+        // console.log(this.responseText);
+        updateassistant(itemid, "Ready To Deploy", "", assistant.AgentSessionID, "", assistant.data_store_name);
+      }
+    });
+    xhr.open("DELETE", HOST + "/workflows/workflow?session_id=" + assistant.AgentSessionID);
+    xhr.setRequestHeader("GOOGLE_IDTOKEN", idToken);
+    xhr.send();
   });
-  xhr.open("DELETE", HOST + "/workflows/workflow?session_id=" + assistant.AgentSessionID);
-  xhr.setRequestHeader("GOOGLE_IDTOKEN", loggedinuser.idToken);
-  xhr.send();
 }
 
 const getassistant_itemid = (itemid) =>

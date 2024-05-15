@@ -521,7 +521,7 @@ export default class Discussion {
     const result = await fetcher({
       url: URL_DELETE_STATUS,
       params,
-      idToken: this.user.idToken,
+      idToken: await this.user.user.getIdToken(true),
       method: "DELETE",
     });
 

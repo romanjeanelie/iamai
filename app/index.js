@@ -230,8 +230,8 @@ class App {
     onAuthStateChanged(auth, async (user) => {
       if (user && user.emailVerified) {
         try {
-          let idToken = await user.getIdToken(true);
-          const loggedinuser = new User(user.uid, user.displayName, user.photoURL, user.email, idToken);
+          // let idToken = await user.getIdToken(true);
+          const loggedinuser = new User(user.uid, user.displayName, user.photoURL, user.email, user);
           await this.checkuserwaitlist(loggedinuser);
         } catch (error) {
           console.log(error);

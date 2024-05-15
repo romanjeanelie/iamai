@@ -131,37 +131,41 @@ class Chat {
         this.callbacks.enableInput();
       });
       if (this.sessionID && this.sessionID != "") {
-        xhr.open("POST", HOST + "/workflows/conversation", true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.setRequestHeader("GOOGLE_IDTOKEN", this.user.idToken);
-        if (this.sessionID.startsWith("wf-external-conversation")) {
-          xhr.send(
-            JSON.stringify({
-              session_id: this.sessionID,
-              uuid: "omega_" + crypto.randomUUID() + "@iamplus.com",
-            })
-          );
-        } else {
-          xhr.send(
-            JSON.stringify({
-              session_id: this.sessionID,
-              // uuid: uuid + "@iamplus.com",
-              uuid: this.deploy_ID,
-            })
-          );
-          console.time("conversation");
-        }
+        this.user.user.getIdToken(true).then(async (idToken) => {
+          xhr.open("POST", HOST + "/workflows/conversation", true);
+          xhr.setRequestHeader("Content-Type", "application/json");
+          xhr.setRequestHeader("GOOGLE_IDTOKEN", idToken);
+          if (this.sessionID.startsWith("wf-external-conversation")) {
+            xhr.send(
+              JSON.stringify({
+                session_id: this.sessionID,
+                uuid: "omega_" + crypto.randomUUID() + "@iamplus.com",
+              })
+            );
+          } else {
+            xhr.send(
+              JSON.stringify({
+                session_id: this.sessionID,
+                // uuid: uuid + "@iamplus.com",
+                uuid: this.deploy_ID,
+              })
+            );
+            console.time("conversation");
+          }
+        });
       } else {
-        xhr.open("POST", HOST + "/workflows/tasks", true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.setRequestHeader("GOOGLE_IDTOKEN", this.user.idToken);
-        xhr.send(
-          JSON.stringify({
-            query: input_text,
-            // uuid: uuid + "@iamplus.com",
-            uuid: this.user.uuid,
-          })
-        );
+        this.user.user.getIdToken(true).then(async (idToken) => {
+          xhr.open("POST", HOST + "/workflows/tasks", true);
+          xhr.setRequestHeader("Content-Type", "application/json");
+          xhr.setRequestHeader("GOOGLE_IDTOKEN", idToken);
+          xhr.send(
+            JSON.stringify({
+              query: input_text,
+              // uuid: uuid + "@iamplus.com",
+              uuid: this.user.uuid,
+            })
+          );
+        });
       }
     }
   };
@@ -504,7 +508,7 @@ class Chat {
     const spanAIword = document.createElement("span");
     spanAIword.className = "AIword";
     spanAIword.innerHTML = md.render(userAns);
-    
+
     divspan.appendChild(spanAIword);
     divtextcontainer.appendChild(divspan);
     if (source) {
@@ -634,24 +638,25 @@ class Chat {
         },
       });
     }
+    this.user.user.getIdToken(true).then(async (idToken) => {
+      var xhr = new XMLHttpRequest();
+      // xhr.withCredentials = true;
 
-    var xhr = new XMLHttpRequest();
-    // xhr.withCredentials = true;
+      xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === 4) {
+          // console.log(this.responseText);
+          // console.time("RequestStart");
+        }
+      });
 
-    xhr.addEventListener("readystatechange", function () {
-      if (this.readyState === 4) {
-        // console.log(this.responseText);
-        // console.time("RequestStart");
-      }
+      xhr.open("POST", HOST + "/workflows/message/" + suworkflowid);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.setRequestHeader("GOOGLE_IDTOKEN", idToken);
+
+      xhr.send(data);
+      console.timeEnd("input");
+      console.time("conversation");
     });
-
-    xhr.open("POST", HOST + "/workflows/message/" + suworkflowid);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.setRequestHeader("GOOGLE_IDTOKEN", this.user.idToken);
-
-    xhr.send(data);
-    console.timeEnd("input");
-    console.time("conversation");
   }
 
   updateTextContainer() {
@@ -819,22 +824,23 @@ class Chat {
           text: texttosend,
         },
       });
+      this.user.user.getIdToken(true).then(async (idToken) => {
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
 
-      var xhr = new XMLHttpRequest();
-      xhr.withCredentials = true;
+        xhr.addEventListener("readystatechange", function () {
+          if (this.readyState === 4) {
+            console.log(this.responseText);
+          }
+        });
 
-      xhr.addEventListener("readystatechange", function () {
-        if (this.readyState === 4) {
-          console.log(this.responseText);
-        }
+        xhr.open("POST", HOST + "/workflows/message/" + this.workflowID);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("GOOGLE_IDTOKEN", idToken);
+
+        xhr.send(data);
+        this.agentawaiting = false;
       });
-
-      xhr.open("POST", HOST + "/workflows/message/" + this.workflowID);
-      xhr.setRequestHeader("Content-Type", "application/json");
-      xhr.setRequestHeader("GOOGLE_IDTOKEN", this.user.idToken);
-
-      xhr.send(data);
-      this.agentawaiting = false;
     } else {
       var texttosend =
         "book movie ticket for " +

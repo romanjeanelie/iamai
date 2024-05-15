@@ -5,12 +5,12 @@ import { getDatabase, ref, set, get, serverTimestamp } from "firebase/database";
 const PA_URL = import.meta.env.VITE_API_PA_URL || "https://api.asterizk.ai/deploy-pa";
 const LOCATION_URL = import.meta.env.VITE_API_LOCATION_URL || "https://api.asterizk.ai/location/";
 class User {
-  constructor(uuid, name, picture, email, idToken) {
+  constructor(uuid, name, picture, email, user) {
     this.uuid = uuid;
     this.name = name;
     this.picture = picture;
     this.email = email;
-    this.idToken = idToken;
+    this.user = user;
     this.status = "";
     this.company = "";
     this.twitter = "";
@@ -141,14 +141,13 @@ async function getUser() {
   return new Promise((resolve, reject) => {
     getCurrentUser(auth).then(async (user) => {
       if (user && user.emailVerified) {
-        user.getIdToken(true).then(async function (idToken) {
-          const loggedinuser = new User(user.uid, user.displayName, user.photoURL, user.email, idToken);
-          await loggedinuser.setuseraddress();
-          resolve(loggedinuser);
-
-        }).catch(function (error) {
-          console.log(error);
-        });
+        // user.getIdToken(true).then(async function (idToken) {
+        const loggedinuser = new User(user.uid, user.displayName, user.photoURL, user.email, user);
+        await loggedinuser.setuseraddress();
+        resolve(loggedinuser);
+        // }).catch(function (error) {
+        //   console.log(error);
+        // });
       } else {
         console.log("here not logged in");
         resolve(null);
@@ -163,19 +162,18 @@ function redirectToLogin() {
 
 const getsessionID = (user) =>
   new Promise(function (resolve, reject) {
-    // WARNING: For GET requests, body is set to null by browsers.
-    var xhr = new XMLHttpRequest();
-    // xhr.withCredentials = true;
-    xhr.addEventListener("readystatechange", function () {
-      if (this.readyState === 4) {
-        // console.log(this.responseText);
-        resolve(JSON.parse(this.responseText));
-      }
+    user.user.getIdToken(true).then(async (idToken) => {
+      var xhr = new XMLHttpRequest()
+      xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === 4) {
+          resolve(JSON.parse(this.responseText));
+        }
+      });
+      xhr.open("POST", PA_URL + "/getstreamname?userid=" + user.uuid + "&assistantID=pa_prompt_2023");
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.setRequestHeader("GOOGLE_IDTOKEN", idToken);
+      xhr.send(JSON.stringify(user));
     });
-    xhr.open("POST", PA_URL + "/getstreamname?userid=" + user.uuid + "&assistantID=pa_prompt_2023");
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.setRequestHeader("GOOGLE_IDTOKEN", user.idToken);
-    xhr.send(JSON.stringify(user));
   });
 
 async function saveUserDataFireDB(user) {
