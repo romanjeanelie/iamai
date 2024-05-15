@@ -570,6 +570,7 @@ export default class Discussion {
       uuid: this.uuid,
       micro_thread_id: task.key,
       session_id: this.Chat.sessionID,
+      idToken: await this.user.user.getIdToken(true),
     });
   }
 

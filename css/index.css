@@ -111,13 +111,15 @@ iframe {
 } */
 @font-face {
   font-family: "SFPro";
-  src: url("/fonts/SF_Pro/SF-Pro-Display-Medium.otf");
+  /* src: url("/fonts/SF_Pro/SF-Pro-Display-Medium.otf"); */
+  src: url("https://res.cloudinary.com/dfdqiqn98/raw/upload/v1715796389/fonts/SF-Pro-Display-Medium_heugey.otf");
   font-weight: 400;
 }
 
 @font-face {
   font-family: "SFPro";
-  src: url("/fonts/SF_Pro/SF-Pro-Display-Semibold.otf");
+  /* src: url("/fonts/SF_Pro/SF-Pro-Display-Semibold.otf"); */
+  src: url("https://res.cloudinary.com/dfdqiqn98/raw/upload/v1715796389/fonts/SF-Pro-Display-Semibold_xbwty3.otf");
   font-weight: 600;
 }
 .preload * {

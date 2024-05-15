@@ -326,7 +326,7 @@ export default class History {
     return { elements: elements.results, container };
   }
 
-  async postViewTask({ uuid, micro_thread_id, session_id }) {
+  async postViewTask({ uuid, micro_thread_id, session_id, idToken }) {
     const url = URL_AGENT_STATUS;
     const params = {
       uuid,
@@ -339,6 +339,7 @@ export default class History {
     const result = await fetcher({
       url,
       params,
+      idToken,
       method: "POST",
     });
 
