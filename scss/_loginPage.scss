@@ -120,6 +120,7 @@
   line-height: 32px;
   letter-spacing: 1px;
   margin-bottom: 48px;
+  justify-content: center;
 
   @include media("<tablet") {
     font-size: 20px;
