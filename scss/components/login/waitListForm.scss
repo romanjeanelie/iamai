@@ -1,9 +1,16 @@
 .divwaitlist {
   display: none;
   flex-direction: column;
+  justify-content: center;
+  min-height: 100vh; // backup for browsers that don't support 100vh
+  min-height: 100svh;
   color: $colorBlueText;
   background-color: white;
   padding: 60px 24px 90px;
+
+  .divlink {
+    margin: 0;
+  }
 }
 
 .divwaitlistform {
