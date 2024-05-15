@@ -219,7 +219,7 @@ class App {
         divwaitlist.style.display = "flex";
         divwaitlisttext.style.display = "none";
         divlink.style.display = "none";
-        divwaitlistform.style.display = "block";
+        divwaitlistform.style.display = "flex";
       }
     } else {
       divlogin.style.display = "block";

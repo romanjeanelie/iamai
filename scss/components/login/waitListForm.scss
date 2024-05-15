@@ -38,6 +38,7 @@
   }
 
   h3 {
+    white-space: pre-wrap;
     text-wrap: wrap;
     text-wrap: balance;
     color: $colorBlueText;
@@ -61,6 +62,7 @@
   }
 
   label {
+    white-space: pre-wrap;
     font-size: 16px;
     margin-bottom: 8px;
     font-weight: 600;
