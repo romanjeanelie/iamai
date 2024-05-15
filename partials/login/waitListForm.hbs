@@ -1,36 +1,36 @@
 <form id="divwaitlistform" class="divwaitlistform">
   {{! first part of form }}
-  <h3>Please enter your name and email address</h3>
+  {{!-- <h3>Please enter your name and email address</h3>
   <label id="label-first-name" for="first-name">First name</label>
   <input type="text" id="first-name" data-label="label-first-name" placeholder="Enter here" />
   <label id="label-last-name" for="last-name">Last name</label>
   <input type="text" id="last-name" data-label="label-last-name" placeholder="Enter here" />
   <label id="label-email" for="email">Email</label>
-  <input type="text" id="email" data-label="label-email" placeholder="example@gmail.com" />
+  <input type="text" id="email" data-label="label-email" placeholder="example@gmail.com" /> --}}
 
   {{! second part of form }}
   <h3>Please enter your socials to enjoy a more <span>personalised</span> experience</h3>
+  <label id="label-company" for="company">Company</label>
+  <input type="text" id="txtcompany" data-label="label-company" placeholder="Your Company" />
   <label id="label-socials" for="facebook">Social Media Accounts</label>
-  <input type="text" id="facebook" data-label="label-socials" placeholder="Facebook Profile" />
-  <input type="text" id="instagram" data-label="label-socials" placeholder="Instagram Handle" />
-  <input type="text" id="twitter" data-label="label-socials" placeholder="Twitter Handle" />
+  <input type="text" id="txtfacebook" data-label="label-socials" placeholder="Facebook Profile" />
+  <input type="text" id="txtinstagram" data-label="label-socials" placeholder="Instagram Handle" />
+  <input type="text" id="txttwitter" data-label="label-socials" placeholder="Twitter Handle" />
+  <input type="text" id="txtlinkedin" data-label="label-socials" placeholder="Linkedin Handle" />
   <label id="label-txtuse">What would you like to use CO * for?</label>
-  <textarea
-    id="txtuse"
-    data-label="label-txtuse"
-    placeholder="Example: I need an assistant to help manage my time"
-  ></textarea>
+  <textarea id="txtuse" data-label="label-txtuse"
+    placeholder="Example: I need an assistant to help manage my time"></textarea>
 
   {{! submit button }}
   <div class="btnsave">
     <button id="btnwaitlistinfosubmit" class="button" type="button">SEND</button>
   </div>
 </form>
-<!-- <div id="divwaitlisttext" class="divwaitlisttext">
-          Thank you for your interest,<br />
-          we’ll email you once<br />
-          approved
-        </div>
-        <div id="divlinklogout" class="divlink">
-          <a href="/blog/" target="_blank">find out more</a><br /><a href="#" id="linksignout">sign out</a>
-        </div> -->
+<div id="divwaitlisttext" class="divwaitlisttext">
+  Thank you for your interest,<br />
+  we’ll email you once<br />
+  approved
+</div>
+<div id="divlinklogout" class="divlink">
+  <a href="/blog/" target="_blank">find out more</a><br /><a href="#" id="linksignout">sign out</a>
+</div>
