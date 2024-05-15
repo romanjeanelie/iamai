@@ -13,7 +13,7 @@ import { auth } from "./firebaseConfig";
 import stopOverscroll from "./utils/stopOverscroll";
 import IntroContent from "./IntroContent";
 import animateString from "./utils/animateString";
-import WaitListForm from "./components/Login/WaitListFrom";
+import WaitListForm from "./components/Login/WaitListForm";
 
 const divlogin = document.getElementById("divlogin");
 const divintro = document.querySelector(".divintroinfo");
