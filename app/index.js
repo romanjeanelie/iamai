@@ -16,7 +16,14 @@ import animateString from "./utils/animateString";
 import WaitListForm from "./components/Login/WaitListForm";
 
 const divlogin = document.getElementById("divlogin");
-const divintro = document.querySelector(".divintroinfo");
+const preLoginContent = document.querySelector(".preLoginContent_container");
+
+// ---- DEBUG FUNCTIONS ----
+const onlyShowFormValidation = () => {
+  divlogin.style.display = "none";
+  divwaitlist.style.display = "flex";
+  // divwaitlistform.style.display = "none";
+};
 
 const divwaitlist = document.getElementById("divwaitlist");
 const divwaitlistform = document.getElementById("divwaitlistform");
@@ -58,8 +65,10 @@ class App {
     if (this.debug) {
       this.gui = new dat.GUI();
       this.gui.hide();
+      onlyShowFormValidation();
       // this.toPageGrey({ duration: 0 });
       // this.initApp();
+      return;
     }
   }
 

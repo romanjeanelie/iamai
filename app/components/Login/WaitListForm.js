@@ -5,18 +5,22 @@ export default class WaitListForm {
   }
 
   handleActive() {
-    const inputs = this.form.querySelectorAll("input, textarea");
-    inputs.forEach((input) => {
+    const inputs = this.form.querySelectorAll(".input-container");
+    inputs.forEach((container) => {
+      const input = container.querySelector("input") || container.querySelector("textarea");
+      // const optionnalLabel = container.querySelector("p");
       const labelId = input.dataset.label;
       const label = document.querySelector(`#${labelId}`);
 
       if (!label) return; // Skip if label not found
       input.addEventListener("focus", () => {
         label.classList.add("active");
+        // optionnalLabel?.classList.add("hidden");
       });
 
       input.addEventListener("blur", () => {
         label.classList.remove("active");
+        // optionnalLabel?.classList.remove("hidden");
       });
     });
   }

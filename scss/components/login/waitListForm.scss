@@ -86,7 +86,6 @@
     border-radius: 8px;
     width: 100%;
     padding: 12px 8px 12px 12px;
-    margin-bottom: 16px;
 
     font-size: 12px;
     font-weight: 500;
@@ -99,6 +98,29 @@
 
     &:focus {
       border: 1px solid #007aff;
+    }
+  }
+
+  .input-container {
+    position: relative;
+    margin-bottom: 16px;
+
+    p {
+      top: 15px;
+      position: absolute;
+      height: 100%;
+      right: 16px;
+      color: rgba($colorBlueText, 0.4);
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 100%; /* 133.333% */
+      letter-spacing: 0.5px;
+      transition: opacity ease-out 0.1s;
+
+      &.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
     }
   }
 
