@@ -57,6 +57,12 @@
     padding: 80px 43px 0;
   }
 
+  h1 span {
+    background-clip: text;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent;
+  }
+
   .herobanner__button {
     padding: 18px 62px;
     border-radius: 30px;
@@ -77,6 +83,10 @@
 .herobanner__container.dark-section {
   color: white;
   background-color: #333333;
+
+  h1 span {
+    background: linear-gradient(90deg, #0085ff 0%, #bd00ff 50%, #01f0ff 100%);
+  }
 
   .herobanner__button {
     background-color: #007aff;
