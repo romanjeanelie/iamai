@@ -16,7 +16,7 @@
 .divwaitlistform {
   display: flex;
   flex-direction: column;
-  max-width: 552px;
+  max-width: 718px;
   width: 100%;
   margin: 0 auto;
   // text-align: center;
@@ -31,6 +31,10 @@
   letter-spacing: 1px;
   margin-bottom: 48px;
 
+  @include media("<maximum") {
+    max-width: 552px;
+  }
+
   @include media("<tablet") {
     font-size: 20px;
     line-height: 28px;
@@ -42,11 +46,12 @@
     text-wrap: wrap;
     text-wrap: balance;
     color: $colorBlueText;
-    font-size: 24px;
-    font-weight: 600;
-    line-height: 28px; /* 116.667% */
+    font-size: 32px;
+    line-height: 36px; /* 112.5% */
     letter-spacing: 0.5px;
-    margin-bottom: 24px;
+
+    letter-spacing: 0.5px;
+    margin-bottom: 32px;
 
     span {
       background: linear-gradient(90deg, #007aff 0%, #ad00ff 51%, #00bad3 100%);
@@ -59,15 +64,26 @@
     &:last-of-type {
       margin-top: 16px;
     }
+
+    @include media("<maximum") {
+      font-size: 24px;
+      line-height: 28px; /* 116.667% */
+      margin-bottom: 28px;
+    }
   }
 
   label {
     white-space: pre-wrap;
-    font-size: 16px;
-    margin-bottom: 8px;
+    margin-top: 16px;
+    margin-bottom: 12px;
     font-weight: 600;
-    line-height: 20px; /* 125% */
     letter-spacing: 0.5px;
+    font-size: 20px;
+    line-height: 24px; /* 120% */
+
+    &:first-of-type {
+      margin-top: 0;
+    }
 
     &.active {
       color: #007aff;
@@ -75,6 +91,13 @@
 
     &:focus {
       color: red;
+    }
+
+    @include media("<maximum") {
+      margin-top: 0;
+      font-size: 16px;
+      line-height: 20px; /* 125% */
+      margin-bottom: 8px;
     }
   }
 
@@ -85,11 +108,11 @@
     background: rgba($colorBlueText, 0.03);
     border-radius: 8px;
     width: 100%;
-    padding: 12px 8px 12px 12px;
+    padding: 16px 25px 16px 10px;
 
-    font-size: 12px;
     font-weight: 500;
-    line-height: 16px; /* 133.333% */
+    font-size: 16px;
+    line-height: 20px; /* 125% */
     letter-spacing: 0.5px;
 
     &::placeholder {
@@ -99,6 +122,12 @@
     &:focus {
       border: 1px solid #007aff;
     }
+
+    @include media("<maximum") {
+      font-size: 12px;
+      padding: 12px 8px 12px 12px;
+      line-height: 16px; /* 133.333% */
+    }
   }
 
   .input-container {
@@ -106,20 +135,26 @@
     margin-bottom: 16px;
 
     p {
-      top: 15px;
+      top: 26px;
       position: absolute;
-      height: 100%;
-      right: 16px;
+
+      right: 25px;
       color: rgba($colorBlueText, 0.4);
       font-size: 12px;
       font-weight: 500;
       line-height: 100%; /* 133.333% */
       letter-spacing: 0.5px;
       transition: opacity ease-out 0.1s;
+      transform: translate(0, -50%);
 
       &.hidden {
         opacity: 0;
         pointer-events: none;
+      }
+
+      @include media("<maximum") {
+        top: 21px;
+        right: 16px;
       }
     }
   }
@@ -129,7 +164,7 @@
   }
 
   .btnsave {
-    margin-top: 48px;
+    margin-top: 104px;
     align-self: center;
     background-color: rgba(#007aff, 0.6);
     background-color: #007aff;
@@ -153,6 +188,10 @@
 
     &.active:hover {
       background-color: #006ee4;
+    }
+
+    @include media("<maximum") {
+      margin-top: 48px;
     }
   }
 }
