@@ -26,6 +26,12 @@
   @import "./pageAssistant/logo";
 }
 
+.page-phone {
+  @import "./pagePhone/common";
+  @import "./pagePhone/herobanners.scss";
+  @import "./pagePhone/popup.scss";
+}
+
 .page-blog {
   @import "./pageBlog/blogCommon";
   @import "./pageBlog/blogNavbar";
