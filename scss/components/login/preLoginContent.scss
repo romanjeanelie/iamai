@@ -110,6 +110,7 @@
     align-items: center;
     position: sticky;
     top: calc(100vh - (115px + 60px));
+    top: calc(100svh - (115px + 60px));
     bottom: 120px;
     left: 50%;
     transform: translate(-50%, 0);
@@ -120,6 +121,7 @@
 
     @include media("<tablet") {
       top: calc(100vh - (98px + 60px));
+      top: calc(100svh - (98px + 60px));
     }
 
     p {
@@ -509,7 +511,6 @@
       }
 
       @include media("<tablet") {
-        z-index: 1;
         justify-content: start;
         width: 100%;
 
