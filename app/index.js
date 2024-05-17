@@ -232,7 +232,7 @@ class App {
         divlogin.style.display = "none";
         divwaitlist.style.display = "flex";
         divwaitlistvalidation.style.display = "none";
-        divlink.style.display = "none";
+        divlink.style.display = "flex";
         divwaitlistform.style.display = "flex";
       }
     } else {
