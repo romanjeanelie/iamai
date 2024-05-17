@@ -16,18 +16,25 @@ import animateString from "./utils/animateString";
 import WaitListForm from "./components/Login/WaitListForm";
 
 const divlogin = document.getElementById("divlogin");
-const preLoginContent = document.querySelector(".preLoginContent_container");
 
 // ---- DEBUG FUNCTIONS ----
-const onlyShowFormValidation = () => {
+const showFormValidation = () => {
   divlogin.style.display = "none";
   divwaitlist.style.display = "flex";
-  // divwaitlistform.style.display = "none";
+  divwaitlistform.style.display = "none";
+  divwaitlistvalidation.style.display = "block";
+};
+
+const showForm = () => {
+  divlogin.style.display = "none";
+  divwaitlist.style.display = "flex";
+  divwaitlistform.style.display = "flex";
+  divwaitlistvalidation.style.display = "none";
 };
 
 const divwaitlist = document.getElementById("divwaitlist");
+const divwaitlistvalidation = document.querySelector(".waitListForm__validation-container");
 const divwaitlistform = document.getElementById("divwaitlistform");
-const divwaitlisttext = document.getElementById("divwaitlisttext");
 const divlink = document.getElementById("divlinklogout");
 const linksignout = document.getElementById("linksignout");
 const signInButton = document.getElementById("divgoogle");
@@ -65,7 +72,7 @@ class App {
     if (this.debug) {
       this.gui = new dat.GUI();
       this.gui.hide();
-      onlyShowFormValidation();
+      showForm();
       // this.toPageGrey({ duration: 0 });
       // this.initApp();
       return;
@@ -199,8 +206,7 @@ class App {
       await saveUserDataFireDB(this.user);
       divlogin.style.display = "none";
       divwaitlist.style.display = "flex";
-      divwaitlisttext.style.display = "flex";
-      divlink.style.display = "block";
+      divwaitlistvalidation.style.display = "block";
       divwaitlistform.style.display = "none";
     } else {
       txtuse.classList.add("error");
@@ -220,13 +226,12 @@ class App {
       } else if (this.user.status == "waitlisted") {
         divlogin.style.display = "none";
         divwaitlist.style.display = "flex";
-        divwaitlisttext.style.display = "flex";
-        divlink.style.display = "block";
+        divwaitlistvalidation.style.display = "block";
         divwaitlistform.style.display = "none";
       } else {
         divlogin.style.display = "none";
         divwaitlist.style.display = "flex";
-        divwaitlisttext.style.display = "none";
+        divwaitlistvalidation.style.display = "none";
         divlink.style.display = "none";
         divwaitlistform.style.display = "flex";
       }

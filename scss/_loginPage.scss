@@ -102,33 +102,6 @@
   }
 }
 
-#divlottieanimation {
-  svg path {
-    fill: #003979;
-  }
-}
-
-.divlottie,
-.divwaitlisttext {
-  color: $colorBlack;
-  text-align: center;
-  font-feature-settings: "liga" off;
-  font-family: "SFPro";
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 450;
-  line-height: 32px;
-  letter-spacing: 1px;
-  margin-bottom: 48px;
-  justify-content: center;
-
-  @include media("<tablet") {
-    font-size: 20px;
-    line-height: 28px;
-    letter-spacing: 1px;
-  }
-}
-
 .login__container {
   // margin-top: 96px;
   // max-width: 950px;

@@ -24,7 +24,7 @@
   padding: 16px;
   font-feature-settings: "liga" off;
   font-family: "SFPro";
-  font-size: 24px;
+  font-size: 24px-;
   font-style: normal;
   font-weight: 450;
   line-height: 32px;
@@ -198,4 +198,101 @@
 
 .error {
   border: 2px solid red !important;
+}
+
+// ---- VALIDATION MESSAGE ----
+.waitListForm__validation-container {
+  padding-top: 96px;
+
+  .divwaitlisttext {
+    color: $colorBlack;
+    text-align: center;
+    font-family: "SFPro";
+    font-size: clamp(20px, 5vw, 80px);
+    font-weight: 600;
+    line-height: 105%; /* 105% */
+    letter-spacing: 0.5px;
+    margin-bottom: 120px;
+
+    @include media("<desktop") {
+      margin-bottom: 48px;
+    }
+  }
+
+  .divlink {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 100%;
+    letter-spacing: 1px;
+    gap: 32px;
+
+    * {
+      padding: 18px 62px;
+    }
+
+    @include media("<tablet") {
+      font-size: 16px;
+      gap: 16px;
+    }
+
+    .blog-link {
+      --r: 30px; /* radius */
+      --b: 5px; /* border width */
+
+      background: linear-gradient(90deg, #003876 0%, #007aff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+
+      border-radius: var(--r);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      position: relative;
+      z-index: 0;
+
+      /* check lined question for the detail of the below code */
+      &::before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        inset: 0;
+        border: var(--b) solid transparent;
+        border-radius: var(--r);
+        background: inherit;
+        background-origin: border-box;
+        background-clip: border-box;
+        -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        -webkit-mask-repeat: no-repeat;
+      }
+      /**/
+      &:hover {
+        color: #fff;
+        -webkit-text-fill-color: #fff;
+        -webkit-background-clip: border-box;
+        background-clip: border-box;
+      }
+
+      &:hover::before {
+        -webkit-mask: none;
+      }
+    }
+
+    .signOut-link {
+      color: $colorBlueText;
+      border-radius: 30px;
+      transition: all ease-out 0.1s;
+
+      &:hover {
+        background-color: $colorBlueText;
+        color: white;
+      }
+    }
+  }
 }
