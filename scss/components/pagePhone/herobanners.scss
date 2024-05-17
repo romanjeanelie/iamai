@@ -3,6 +3,17 @@
   height: 100svh;
   display: flex;
   position: relative;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+
+  // Hide scrollbar for Chrome, Safari and Opera
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  // Hide scrollbar for IE, Edge and Firefox
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 
   .herobanner__scroll-indicator-container {
     position: absolute;
@@ -50,6 +61,7 @@
   justify-content: center;
   align-items: center;
   gap: 120px;
+  scroll-snap-align: center;
 
   @include media("<tablet") {
     justify-content: flex-start;
