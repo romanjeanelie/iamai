@@ -12,7 +12,7 @@
   <h3>Please enter your details to enjoy a more <span>personalised</span> experience</h3>
   <label id="label-company" for="company">Company</label>
   <div class="input-container">
-    <input type="text" id="txtcompany" data-label="label-company" placeholder="Your Company" />
+    <input type="text" id="txtcompany" data-label="label-company" placeholder="Your Company" required />
   </div>
   <label id="label-socials" for="facebook">Social Media Accounts</label>
   <div class="input-container">
@@ -32,6 +32,7 @@
   <label id="label-txtuse">What would you like to use CO * for?</label>
   <div class="input-container">
     <textarea
+      required
       id="txtuse"
       data-label="label-txtuse"
       placeholder="Example: I need an assistant to help manage my time"
@@ -39,7 +40,7 @@
   </div>
 
   {{! submit button }}
-  <div class="btnsave">
+  <div class="btnsave inactive">
     <button id="btnwaitlistinfosubmit" class="button" type="button">SEND</button>
   </div>
 </form>

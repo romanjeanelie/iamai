@@ -132,6 +132,7 @@
     margin-top: 48px;
     align-self: center;
     background-color: rgba(#007aff, 0.6);
+    background-color: #007aff;
     padding: 10px 24px;
     border-radius: 50px;
     color: white;
@@ -141,8 +142,12 @@
     letter-spacing: 0.6px;
     transition: background-color 0.3s ease-in;
 
-    &:hover {
-      background-color: #007aff;
+    &.inactive {
+      background-color: rgba(#007aff, 0.6);
+    }
+
+    &.active:hover {
+      background-color: #006ee4;
     }
   }
 }

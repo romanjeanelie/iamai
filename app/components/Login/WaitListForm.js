@@ -1,14 +1,53 @@
 export default class WaitListForm {
   constructor() {
+    // States
+    this.isRequiredValid = false;
+
+    // DOM Elements
     this.form = document.querySelector(".divwaitlistform");
+    this.inputs = document.querySelectorAll("input, textarea");
+    this.button = this.form.querySelector(".btnsave");
+
     this.handleActive();
+    this.handleValidation();
+  }
+
+  handleSubmitButton() {
+    if (this.isRequiredValid) {
+      this.button.classList.remove("inactive");
+      this.button.classList.add("active");
+    } else {
+      this.button.classList.add("inactive");
+      this.button.classList.remove("active");
+    }
+  }
+
+  handleValidation() {
+    const requiredInputs = this.form.querySelectorAll("[required]");
+    this.form.addEventListener("input", () => {
+      for (let input of requiredInputs) {
+        const value = input.value.trim();
+        // Validate the input based on its type
+        if (input.type === "text") {
+          if (value.length <= 3) {
+            this.isRequiredValid = false;
+            break;
+          }
+        } else if (input.type === "textarea") {
+          if (value.length <= 5) {
+            this.isRequiredValid = false;
+            break;
+          }
+        }
+        this.isRequiredValid = true;
+      }
+
+      this.handleSubmitButton();
+    });
   }
 
   handleActive() {
-    const inputs = this.form.querySelectorAll(".input-container");
-    inputs.forEach((container) => {
-      const input = container.querySelector("input") || container.querySelector("textarea");
-      // const optionnalLabel = container.querySelector("p");
+    this.inputs.forEach((input) => {
       const labelId = input.dataset.label;
       const label = document.querySelector(`#${labelId}`);
 
