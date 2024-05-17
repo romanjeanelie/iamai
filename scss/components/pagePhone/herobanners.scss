@@ -30,7 +30,7 @@
       opacity: 0.4;
     }
 
-    &.dark-section {
+    &.dark {
       .herobanner__scroll-indicator {
         background-color: white;
 
@@ -41,7 +41,7 @@
       }
     }
 
-    &.light-section {
+    &.light {
       .herobanner__scroll-indicator {
         background-color: $colorBlueText;
         &:last-of-type {
