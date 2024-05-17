@@ -16,7 +16,7 @@
   scrollbar-width: none; /* Firefox */
 
   .herobanner__scroll-indicator-container {
-    position: absolute;
+    position: fixed;
     bottom: 120px;
     left: 50%;
     transform: translateX(-50%);
@@ -27,11 +27,27 @@
       height: 12px;
       width: 12px;
       border-radius: 12px;
-      background-color: rgba(white, 0.4);
+      opacity: 0.4;
+    }
 
-      &.active {
+    &.dark-section {
+      .herobanner__scroll-indicator {
         background-color: white;
-        width: 36px;
+
+        &:first-of-type {
+          opacity: 1;
+          width: 36px;
+        }
+      }
+    }
+
+    &.light-section {
+      .herobanner__scroll-indicator {
+        background-color: $colorBlueText;
+        &:last-of-type {
+          opacity: 1;
+          width: 36px;
+        }
       }
     }
 
@@ -91,6 +107,7 @@
   }
 }
 
+// ---- DARK SECTION ----
 .herobanner__container.dark-section {
   color: white;
   background-color: #333333;
@@ -104,6 +121,7 @@
   }
 }
 
+// ---- LIGHT SECTION ----
 .herobanner__container.light-section {
   color: rgba($colorBlueText, 0.4);
 
