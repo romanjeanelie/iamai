@@ -155,7 +155,7 @@ class App {
         if (errorCode === "auth/account-exists-with-different-credential") {
           alert("You have already signed up with a different auth provider for that email.");
         } else {
-          signInButton.style.display = "block";
+          signInButton.style.display = "flex";
         }
       });
   }
