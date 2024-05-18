@@ -6,7 +6,7 @@
   min-height: 100svh;
   color: $colorBlueText;
   background-color: white;
-  padding: 60px 24px 90px;
+  padding: 30px 24px 90px;
 
   .divlink {
     margin: 0;
@@ -29,7 +29,7 @@
   font-weight: 450;
   line-height: 32px;
   letter-spacing: 1px;
-  margin-bottom: 48px;
+  // margin-bottom: 48px;
 
   @include media("<maximum") {
     max-width: 552px;
@@ -163,7 +163,7 @@
   }
 
   .btnsave {
-    margin-top: 104px;
+    margin-top: 40px;
     align-self: center;
     background-color: rgba(#007aff, 0.6);
     background-color: #007aff;
@@ -190,7 +190,7 @@
     }
 
     @include media("<maximum") {
-      margin-top: 48px;
+      margin-top: 20px;
     }
   }
 }
@@ -211,7 +211,7 @@
     font-weight: 600;
     line-height: 105%; /* 105% */
     letter-spacing: 0.5px;
-    margin-bottom: 120px;
+    margin-bottom: 60px;
 
     @include media("<desktop") {
       margin-bottom: 48px;
