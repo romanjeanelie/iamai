@@ -24,7 +24,7 @@
   border-radius: 35px;
   padding: 104px 32px 60px;
 
-  .phonePage__popup-input-container {
+  .phonePage__popup-form {
     min-width: 536px;
     display: flex;
     flex-direction: column;
@@ -80,7 +80,7 @@
     background-color: $background;
     color: $primaryColor;
 
-    .phonePage__popup-input-container {
+    .phonePage__popup-form {
       & > * {
         background-color: $secondaryColor;
         color: $primaryColor;
@@ -95,8 +95,8 @@
     .phonePage__popup-phone-button {
       background-color: $secondaryColor;
 
-      svg {
-        fill: rgba($primaryColor, 0.4);
+      svg path {
+        fill: $primaryColor;
       }
     }
   }
@@ -109,7 +109,7 @@
     background-color: $background;
     color: $primaryColor;
 
-    .phonePage__popup-input-container {
+    .phonePage__popup-form {
       & > * {
         background-color: $secondaryColor;
         color: $primaryColor;
@@ -118,6 +118,13 @@
       input::placeholder,
       textarea::placeholder {
         color: rgba($primaryColor, 0.4);
+      }
+    }
+    .phonePage__popup-phone-button {
+      background-color: $secondaryColor;
+
+      svg path {
+        fill: $primaryColor;
       }
     }
   }
