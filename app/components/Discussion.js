@@ -354,7 +354,10 @@ export default class Discussion {
     console.log("ON SCROLL TOP");
     const { container } = await this.history.getHistory({ uuid: this.uuid, user: this.user });
     this.prevDiscussionContainer.prepend(container);
-    this.mainEl.scrollTop = document.documentElement.scrollTop = container.offsetHeight;
+    // only if there is more history to be added, we change the scrollTop value so the user stays at the same spot
+    if (container.hasChildNodes()) {
+      this.mainEl.scrollTop = document.documentElement.scrollTop = container.offsetHeight;
+    }
   }
 
   async onLoad() {
