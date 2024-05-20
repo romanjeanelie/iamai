@@ -58,8 +58,10 @@
         padding-right: 24px;
 
         .chevron-down-icon {
+          align-self: center;
           flex: none;
           width: 12px;
+          height: 12px;
         }
 
         input {
