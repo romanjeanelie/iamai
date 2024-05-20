@@ -11,7 +11,7 @@ import Slider from "./components/Slider";
 import TaskManager from "./components/TaskManager";
 import { auth } from "./firebaseConfig";
 import stopOverscroll from "./utils/stopOverscroll";
-import IntroContent from "./IntroContent";
+import PreLoginContent from "./PreLoginContent";
 import animateString from "./utils/animateString";
 import WaitListForm from "./components/Login/WaitListForm";
 
@@ -60,7 +60,7 @@ class App {
     this.emitter = createNanoEvents();
 
     this.debug = import.meta.env.VITE_DEBUG === "true";
-    this.introContent = new IntroContent();
+    this.introContent = new PreLoginContent();
     this.introAnim = new IntroAnimation();
     this.waitListForm = new WaitListForm();
     this.addListeners();
