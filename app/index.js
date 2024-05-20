@@ -72,7 +72,7 @@ class App {
     if (this.debug) {
       this.gui = new dat.GUI();
       this.gui.hide();
-      showForm();
+      // showForm();
       // this.toPageGrey({ duration: 0 });
       // this.initApp();
       return;
