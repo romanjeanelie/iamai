@@ -673,5 +673,14 @@ export default class TaskManager {
         this.toFullscreen();
       }
     });
+    this.container.addEventListener("touchstart", (e) => {
+      e.stopPropagation();
+    });
+    this.container.addEventListener("touchmove", (e) => {
+      e.stopPropagation();
+    });
+    this.container.addEventListener("touchend", (e) => {
+      e.stopPropagation();
+    });
   }
 }
