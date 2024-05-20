@@ -212,9 +212,25 @@
     line-height: 105%; /* 105% */
     letter-spacing: 0.5px;
     margin-bottom: 60px;
+    white-space: normal;
+    text-wrap: balance;
 
     @include media("<desktop") {
       margin-bottom: 48px;
+    }
+
+    @include media("<tablet") {
+      font-size: 40px;
+      font-weight: 600;
+      line-height: 48px; /* 120% */
+
+      span {
+        margin-top: 8px;
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 24px; /* 120% */
+        letter-spacing: 0.5px;
+      }
     }
   }
 
@@ -235,6 +251,7 @@
     @include media("<tablet") {
       font-size: 16px;
       gap: 16px;
+      line-height: 20px;
     }
 
     .blog-link {
@@ -281,6 +298,10 @@
       &:hover::before {
         -webkit-mask: none;
       }
+
+      @include media("<tablet") {
+        padding: 10px 30px;
+      }
     }
 
     .signOut-link {
@@ -291,6 +312,10 @@
       &:hover {
         background-color: $colorBlueText;
         color: white;
+      }
+
+      @include media("<tablet") {
+        padding: 10px 30px;
       }
     }
   }
