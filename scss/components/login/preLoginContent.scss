@@ -95,13 +95,6 @@
     }
   }
 
-  .preLoginContent__ctas {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-  }
-
   .preLoginContent__ctas-placeholder {
     margin-top: 24px;
     height: 24px;
@@ -111,22 +104,27 @@
     }
   }
 
-  .preLoginContent__ctas {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  .preLoginContent__fixed-footer {
     position: sticky;
     top: calc(100vh - (115px + 60px));
     top: calc(100svh - (115px + 60px));
     bottom: 120px;
     left: 50%;
     transform: translate(-50%, 0);
-    text-align: center;
     z-index: 1;
     height: 0;
     float: left;
+  }
+
+  .preLoginContent__ctas {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
 
     @include media("<tablet") {
+      position: static;
       top: calc(100vh - (98px + 60px));
       top: calc(100svh - (98px + 60px));
     }
