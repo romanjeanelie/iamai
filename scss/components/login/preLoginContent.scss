@@ -23,7 +23,6 @@
     margin: 0 auto;
 
     @include media("<large") {
-      max-width: none;
       margin: 0 120px;
     }
 
