@@ -37,7 +37,8 @@ const divwaitlistvalidation = document.querySelector(".waitListForm__validation-
 const divwaitlistform = document.getElementById("divwaitlistform");
 const divlink = document.getElementById("divlinklogout");
 const linksignout = document.getElementById("linksignout");
-const signInButton = document.getElementById("divgoogle");
+const signInButtons = document.querySelectorAll(".divgoogle");
+console.log(signInButtons);
 const btnwaitlistinfosubmit = document.getElementById("btnwaitlistinfosubmit");
 const txtcompany = document.getElementById("txtcompany");
 const txttwitter = document.getElementById("txttwitter");
@@ -152,7 +153,10 @@ class App {
 
   toggleSignIn() {
     sessionStorage.setItem("attemptedSignIn", "true");
-    signInButton.style.display = "none";
+
+    for (let i = 0; i < signInButtons.length; i++) {
+      signInButtons[i].style.display = "none";
+    }
     const provider = new GoogleAuthProvider();
     provider.addScope("profile");
     provider.addScope("email");
@@ -171,7 +175,9 @@ class App {
         if (errorCode === "auth/account-exists-with-different-credential") {
           alert("You have already signed up with a different auth provider for that email.");
         } else {
-          signInButton.style.display = "flex";
+          for (let i = 0; i < signInButtons.length; i++) {
+            signInButtons[i].style.display = "flex";
+          }
         }
       });
   }
@@ -251,13 +257,14 @@ class App {
           console.log(error);
         }
       } else {
-        signInButton.style.display = "flex";
+        signInButtons.forEach((button) => (button.style.display = "flex"));
       }
     });
 
     window.addEventListener("load", async () => {
-      signInButton.addEventListener("click", this.toggleSignIn, false);
-      // signInButton.style.display = "none";
+      for (let i = 0; i < signInButtons.length; i++) {
+        signInButtons[i].addEventListener("click", this.toggleSignIn, false);
+      }
 
       // Avoid flash blue page
       document.getElementById("signOutButton").addEventListener("click", () => {
