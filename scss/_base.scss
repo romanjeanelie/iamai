@@ -52,21 +52,21 @@ html {
   overscroll-behavior: none;
   min-height: 100svh;
   background-color: $backgroundColorGreyPage;
+
+  &.no-scroll {
+    overflow: hidden;
+  }
 }
 
 body {
   width: 100vw;
   -webkit-overflow-scrolling: touch;
+  position: relative;
 
   color: $colorMain;
   font-family: Noto Sans;
   font-weight: 400;
   font-feature-settings: "liga" 0;
-
-  &.noscroll {
-    height: 100%;
-    overflow: hidden;
-  }
 }
 
 #app {
@@ -78,6 +78,11 @@ body {
   &.preload {
     visibility: hidden;
     opacity: 0;
+  }
+
+  &.no-scroll {
+    overflow: hidden;
+    height: 100vh;
   }
 }
 

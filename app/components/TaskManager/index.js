@@ -42,6 +42,7 @@ gsap.registerPlugin(Flip);
 export default class TaskManager {
   constructor({ gui, emitter }) {
     // DOM Elements
+    this.html = document.documentElement;
     this.container = document.querySelector(".task-manager__container");
     this.button = document.querySelector(".task-manager__button");
     this.closeButton = document.querySelector(".task-manager__closing-icon");
@@ -202,20 +203,18 @@ export default class TaskManager {
     this.changeState(isMobile ? STATES.FULLSCREEN : STATES.MINIMIZED);
   }
 
-  blockScroll() {
-    document.body.style.overflow = "hidden";
-    document.body.style.height = "100vh";
-  }
-
-  unblockScroll() {
-    document.body.style.overflow = "";
-    document.body.style.height = "";
-  }
-
   toFullscreen() {
     this.closeFullscreenButton.classList.remove("hidden");
     this.fullscreenButton.classList.add("hidden");
     this.changeState(STATES.FULLSCREEN);
+  }
+
+  blockScroll() {
+    this.html.classList.add("no-scroll");
+  }
+
+  unblockScroll() {
+    this.html.classList.remove("no-scroll");
   }
 
   // ---------- Handling the notification pill ----------
