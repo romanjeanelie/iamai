@@ -5,12 +5,9 @@ import History from "./History.js";
 import DiscussionMedia from "./DiscussionMedia.js";
 import fetcher from "../utils/fetcher.js";
 import { getsessionID } from "../User";
-import { asyncAnim } from "../utils/anim.js";
 import typeByWord from "../utils/typeByWord.js";
-import getStyleElement from "../utils/getStyleElement.js";
 import { URL_DELETE_STATUS } from "./constants.js";
 import { gsap } from "gsap";
-import loadImages from "../utils/loadImages.js";
 const topStatusText = ["finding", "checking", "searching", "analyzing", "scanning", "finalizing", "processing"];
 const defaultTopStatus = "searching";
 
@@ -532,11 +529,11 @@ export default class Discussion {
     const userContainer = this.discussionWrapper.querySelector(`.discussion__user[taskkey="${taskKey}"]`);
     const AIContainer = this.discussionWrapper.querySelector(`.discussion__ai[taskkey="${taskKey}"]`);
 
-    // scroll to userContainer
-    window.scrollTo({
-      top: userContainer.offsetTop,
-      behavior: "smooth",
-    });
+    // // scroll to userContainer
+    // window.scrollTo({
+    //   top: userContainer.offsetTop,
+    //   behavior: "smooth",
+    // });
 
     userContainer.remove();
     AIContainer.remove();
