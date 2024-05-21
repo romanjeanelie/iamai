@@ -1,6 +1,7 @@
 import { createNanoEvents } from "nanoevents";
 import gsap from "gsap";
 import { Flip } from "gsap/Flip";
+import PopUp from "./PopUp";
 
 gsap.registerPlugin(Flip);
 
@@ -18,8 +19,10 @@ class PhoneCallPage {
 
     // Methods
     this.handleSwitchSections();
+    this.popUp = new PopUp({ section: this.section, emitter: this.emitter });
   }
 
+  // ----- Transition between two sections -----
   animateScrollIndicators() {
     const indicators = this.scrollIndicator.querySelectorAll(".herobanner__scroll-indicator");
     const initialState = Flip.getState([indicators]);
@@ -47,6 +50,8 @@ class PhoneCallPage {
       }
     });
   }
+
+  // ----- Generating the form -----
 }
 
 new PhoneCallPage();

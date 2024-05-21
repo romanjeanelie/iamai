@@ -2,7 +2,6 @@
   background-color: transparent;
   position: fixed;
   inset: 0;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,6 +15,56 @@
   left: 0;
   background: rgba(51, 51, 51, 0.01);
   backdrop-filter: blur(10px);
+}
+
+// Mixin for theme styles
+@mixin themeStyles($background, $primaryColor, $secondaryColor) {
+  background-color: $background;
+  color: $primaryColor;
+
+  .phonePage__popup-form {
+    & > * {
+      background-color: $secondaryColor;
+      color: $primaryColor;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba($primaryColor, 0.4);
+    }
+  }
+
+  .phonePage__popup-input {
+    svg path {
+      fill: $primaryColor;
+    }
+
+    span {
+      color: rgba($primaryColor, 0.4);
+
+      &.selected {
+        color: $primaryColor;
+      }
+    }
+
+    .country__select-dropdown {
+      background-color: $secondaryColor;
+      color: $primaryColor;
+
+      & li:hover,
+      & input:checked ~ label {
+        background-color: rgba($primaryColor, 0.1);
+      }
+    }
+  }
+
+  .phonePage__popup-phone-button {
+    background-color: $secondaryColor;
+
+    svg path {
+      fill: $primaryColor;
+    }
+  }
 }
 
 // POPUP GLOBAL STYLING
@@ -54,22 +103,70 @@
       }
 
       &.country {
-        display: flex;
-        padding-right: 24px;
+        position: relative;
+        overflow: visible;
 
-        .chevron-down-icon {
-          align-self: center;
-          flex: none;
-          width: 12px;
-          height: 12px;
+        .country__select-button {
+          display: flex;
+          justify-content: space-between;
+          padding-right: 24px;
+          cursor: pointer;
+
+          .chevron-down-icon {
+            align-self: center;
+            flex: none;
+            width: 12px;
+            height: 12px;
+          }
+          span {
+            text-align: center;
+          }
+
+          .check-icon {
+            opacity: 0;
+            width: 14px;
+          }
         }
 
-        input {
-          text-align: center;
+        .country__select-dropdown {
+          position: absolute;
+          left: 0;
+          padding-right: 24px;
+          top: 100%;
+          width: 100%;
+          border-radius: 12px;
+          max-height: 224px;
+          overflow: auto;
+          opacity: 0;
+          visibility: hidden;
+          transition: 0.2s ease-out;
+
+          li {
+            display: flex;
+            justify-content: center;
+
+            input {
+              display: none;
+            }
+
+            label {
+              text-align: center;
+              width: 100%;
+              padding: 8px 10px;
+              cursor: pointer;
+            }
+          }
         }
 
-        .check-icon {
-          width: 14px;
+        &.open {
+          .chevron-down-icon {
+            transform: rotate(180deg);
+          }
+
+          .country__select-dropdown {
+            opacity: 1;
+            visibility: visible;
+          }
         }
       }
 
@@ -93,72 +190,10 @@
 
   // THEME MANAGEMENT
   &.dark {
-    $background: #222222;
-    $primaryColor: white;
-    $secondaryColor: #333333;
-
-    background-color: $background;
-    color: $primaryColor;
-
-    .phonePage__popup-form {
-      & > * {
-        background-color: $secondaryColor;
-        color: $primaryColor;
-      }
-
-      input::placeholder,
-      textarea::placeholder {
-        color: rgba($primaryColor, 0.4);
-      }
-    }
-
-    .phonePage__popup-input {
-      svg path {
-        fill: $primaryColor;
-      }
-    }
-
-    .phonePage__popup-phone-button {
-      background-color: $secondaryColor;
-
-      svg path {
-        fill: $primaryColor;
-      }
-    }
+    @include themeStyles(#222222, white, #333333);
   }
 
   &.light {
-    $background: #f1f1f1;
-    $primaryColor: #00254e;
-    $secondaryColor: white;
-
-    background-color: $background;
-    color: $primaryColor;
-
-    .phonePage__popup-form {
-      & > * {
-        background-color: $secondaryColor;
-        color: $primaryColor;
-      }
-
-      input::placeholder,
-      textarea::placeholder {
-        color: rgba($primaryColor, 0.4);
-      }
-    }
-
-    .phonePage__popup-input {
-      svg path {
-        fill: $primaryColor;
-      }
-    }
-
-    .phonePage__popup-phone-button {
-      background-color: $secondaryColor;
-
-      svg path {
-        fill: $primaryColor;
-      }
-    }
+    @include themeStyles(#f1f1f1, #00254e, white);
   }
 }
