@@ -269,10 +269,13 @@
 
     .preLoginContent__slider-card {
       scroll-snap-align: center;
-
       width: 400px;
       flex: none;
       margin-right: 16px;
+
+      @include media("<phone") {
+        width: 100%;
+      }
 
       &.last {
         margin-right: 0;
@@ -286,6 +289,10 @@
         padding: 32px 24px;
         background-image: url("https://res.cloudinary.com/dfdqiqn98/image/upload/v1715266574/Home/Announcing_CO_ojqqx0.png");
         background-size: cover;
+
+        @include media("<phone") {
+          height: 400px;
+        }
 
         &.first {
           background: black;
@@ -468,10 +475,6 @@
       h4 {
         margin-top: 16px;
         padding: 0 16px;
-      }
-
-      @include media("<phone") {
-        width: 100%;
       }
     }
   }
