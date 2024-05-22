@@ -81,7 +81,13 @@ export default class PopUp {
     };
 
     // DOM Elements
+    this.mainContainer = document.querySelector(".phonePage__popup-container");
     this.wrapper = document.querySelector(".phonePage__popup-wrapper");
+    this.popUpBg = document.querySelector(".phonePage__popup-bg");
+    // -- Button Elements
+    this.closeBtn = document.querySelector(".phonePage__popup-exit-btn");
+    this.callBtn = document.querySelector(".phonePage__popup-phone-button");
+    // -- Input elements
     this.titleInput = document.querySelector(".phonePage__popup-input.intro");
     this.promptInput = document.querySelector(".phonePage__popup-input.prompt");
     this.countryInput = document.querySelector(".phonePage__popup-input.country");
@@ -109,23 +115,7 @@ export default class PopUp {
         </li>
       `;
     });
-  }
 
-  // ----- Generating all the options for the phone prefix input -----
-  generatePhonePrefixes() {
-    const selectDropdown = document.querySelector(".phoneNb__prefix-dropdown");
-    countries.forEach((country, idx) => {
-      // if (idx > 5) return;
-      selectDropdown.innerHTML += `
-        <li role="option">
-          <input type="radio" id=${country.label} name="country" />
-          <label for=${country.label}>${country.code}</label>
-        </li>
-      `;
-    });
-  }
-
-  addEvents() {
     this.countryButton.addEventListener("click", () => {
       this.countryInput.classList.toggle("open");
     });
@@ -141,6 +131,20 @@ export default class PopUp {
         this.countryInput.classList.remove("open");
       }
     });
+  }
+
+  // ----- Generating all the options for the phone prefix input -----
+  generatePhonePrefixes() {
+    const selectDropdown = document.querySelector(".phoneNb__prefix-dropdown");
+    countries.forEach((country, idx) => {
+      // if (idx > 5) return;
+      selectDropdown.innerHTML += `
+        <li role="option">
+          <input type="radio" id=${country.label} name="country" />
+          <label for=${country.label}>${country.code}</label>
+        </li>
+      `;
+    });
 
     this.phoneNbButton.addEventListener("click", () => {
       this.phoneNbInput.classList.toggle("open");
@@ -155,5 +159,15 @@ export default class PopUp {
         this.phoneNbInput.classList.remove("open");
       }
     });
+  }
+
+  // ----- Adding events to the pop up -----
+  closePopUp() {
+    this.mainContainer.style.display = "none";
+  }
+
+  addEvents() {
+    this.closeBtn.addEventListener("click", this.closePopUp.bind(this));
+    this.popUpBg.addEventListener("click", this.closePopUp.bind(this));
   }
 }

@@ -22,6 +22,16 @@
   background-color: $background;
   color: $primaryColor;
 
+  .phonePage__popup-exit-btn {
+    &:hover {
+      background-color: rgba($primaryColor, 0.1);
+    }
+
+    rect {
+      fill: $primaryColor;
+    }
+  }
+
   .phonePage__popup-persona-preview {
     background-color: $secondaryColor;
     color: $primaryColor;
@@ -89,6 +99,7 @@
 // POPUP GLOBAL STYLING
 .phonePage__popup-wrapper {
   z-index: 1;
+  position: relative;
   border-radius: 35px;
   max-height: 95vh;
   overflow: auto;
@@ -126,6 +137,15 @@
     .phonePage__popup-input.prompt {
       display: block;
     }
+  }
+
+  .phonePage__popup-exit-btn {
+    position: absolute;
+    top: 28px;
+    right: 20px;
+    padding: 13px;
+    border-radius: 50px;
+    transition: background-color 0.2s ease-out;
   }
 
   .phonePage__popup-persona-preview {
