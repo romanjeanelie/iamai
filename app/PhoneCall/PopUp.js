@@ -68,7 +68,7 @@ const countries = [
 // [X] Make the second state pop up
 // [X] refactor
 // [X] make a good destroy function
-// [] handle going to the second state upon click on the phone btn
+// [X] handle going to the second state upon click on the phone btn
 // [] close the country and phone prefix dropdown when clicking outside
 // [] Make the pop up intro animation
 // [] make the animation towards second state
@@ -78,6 +78,7 @@ export default class PopUp {
     this.emitter = emitter;
     // States
     this.section = section;
+    this.isFormValid = false;
     this.inputs = {
       title: "",
       prompt: "",
@@ -97,6 +98,7 @@ export default class PopUp {
     this.selectCountry = this.selectCountry.bind(this);
     this.togglePhonePrefixDropdown = this.togglePhonePrefixDropdown.bind(this);
     this.selectPhonePrefix = this.selectPhonePrefix.bind(this);
+    this.handleSubmitBtn = this.handleSubmitBtn.bind(this);
 
     // DOM Elements
     this.mainContainer = document.querySelector(".phonePage__popup-container");
@@ -237,8 +239,10 @@ export default class PopUp {
     }
 
     if (isPhoneValid && isEmailValid && isCountrySelected && isIntroFilled && isPromptFilled) {
+      this.isFormValid = true;
       this.callBtn.disabled = false;
     } else {
+      this.isFormValid = false;
       this.callBtn.disabled = true;
     }
   }
@@ -271,6 +275,14 @@ export default class PopUp {
     this.validateForm();
   }
 
+  handleSubmitBtn() {
+    if (this.isFormValid) {
+      this.wrapper.classList.add("discussion");
+    } else {
+      throw new Error("Form is not valid, please complete each field.");
+    }
+  }
+
   addEvents() {
     this.closeBtn.addEventListener("click", this.closePopUp);
     this.popUpBg.addEventListener("click", this.closePopUp);
@@ -281,6 +293,9 @@ export default class PopUp {
     this.countryInput.addEventListener("input", this.handleCountryInput);
     this.phoneNbInput.addEventListener("input", this.handlePhoneInput);
     this.emailInput.addEventListener("input", this.handleEmailInput);
+
+    // -- Call button
+    this.callBtn.addEventListener("click", this.handleSubmitBtn);
   }
 
   // ----- Destroy method -----
@@ -297,6 +312,8 @@ export default class PopUp {
 
     this.countryDropdown.removeEventListener("click", this.selectCountry);
     this.phonePrefixDropdown.removeEventListener("click", this.selectPhonePrefix);
+
+    this.callBtn.removeEventListener("click", this.handleSubmitBtn);
   }
 
   resetDom() {
@@ -318,6 +335,9 @@ export default class PopUp {
     if (phonePrefixDropdownElement) phonePrefixDropdownElement.innerHTML = "";
     const phonePrefixSpan = this.phoneNbInput.querySelector(".phoneNb__prefix");
     phonePrefixSpan.innerText = "+XX";
+
+    // go back to first state : form
+    this.wrapper.classList.remove("discussion");
   }
 
   destroy() {
