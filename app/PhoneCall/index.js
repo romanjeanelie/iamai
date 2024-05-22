@@ -16,10 +16,12 @@ class PhoneCallPage {
     this.darkSection = document.querySelector(".herobanner__container.dark-section");
     this.lightSection = document.querySelector(".herobanner__container.light-section");
     this.scrollIndicator = document.querySelector(".herobanner__scroll-indicator-container");
+    this.herobannerButtons = document.querySelectorAll(".herobanner__button");
 
     // Methods
     this.handleSwitchSections();
-    this.popUp = new PopUp({ section: this.section, emitter: this.emitter });
+    this.addEvents();
+    // this.popUp = new PopUp({ section: this.section, emitter: this.emitter });
   }
 
   // ----- Transition between two sections -----
@@ -51,7 +53,13 @@ class PhoneCallPage {
     });
   }
 
-  // ----- Generating the form -----
+  addEvents() {
+    this.herobannerButtons.forEach((button) => {
+      button.addEventListener("click", (e) => {
+        new PopUp({ section: this.section, emitter: this.emitter });
+      });
+    });
+  }
 }
 
 new PhoneCallPage();
