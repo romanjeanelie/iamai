@@ -74,9 +74,12 @@ export default class PopUp {
     // DOM Elements
     this.countryInput = document.querySelector(".phonePage__popup-input.country");
     this.countryButton = this.countryInput.querySelector(".country__select-button");
+    this.phoneNbInput = document.querySelector(".phonePage__popup-input.phoneNb");
+    this.phoneNbButton = this.phoneNbInput.querySelector(".phoneNb__prefix-button");
 
     // Methods
     this.generateCountryOptions();
+    this.generatePhonePrefixes();
     this.addEvents();
   }
 
@@ -94,13 +97,27 @@ export default class PopUp {
     });
   }
 
+  // ----- Generating all the options for the phone prefix input -----
+  generatePhonePrefixes() {
+    const selectDropdown = document.querySelector(".phoneNb__prefix-dropdown");
+    countries.forEach((country, idx) => {
+      // if (idx > 5) return;
+      selectDropdown.innerHTML += `
+        <li role="option">
+          <input type="radio" id=${country.label} name="country" />
+          <label for=${country.label}>${country.code}</label>
+        </li>
+      `;
+    });
+  }
+
   addEvents() {
     this.countryButton.addEventListener("click", () => {
       this.countryInput.classList.toggle("open");
     });
 
-    const selectDropdown = document.querySelector(".country__select-dropdown");
-    selectDropdown.addEventListener("click", (e) => {
+    const countryDropdown = document.querySelector(".country__select-dropdown");
+    countryDropdown.addEventListener("click", (e) => {
       if (e.target.tagName === "LABEL") {
         const countrySpan = this.countryInput.querySelector("span");
         const checkIcon = this.countryInput.querySelector(".check-icon");
@@ -108,6 +125,20 @@ export default class PopUp {
         countrySpan.classList.add("selected");
         checkIcon.style.opacity = "1";
         this.countryInput.classList.remove("open");
+      }
+    });
+
+    this.phoneNbButton.addEventListener("click", () => {
+      this.phoneNbInput.classList.toggle("open");
+    });
+
+    const phonePrefixDropdown = document.querySelector(".phoneNb__prefix-dropdown");
+    phonePrefixDropdown.addEventListener("click", (e) => {
+      if (e.target.tagName === "LABEL") {
+        const phonePrefixSpan = this.phoneNbInput.querySelector(".phoneNb__prefix");
+        phonePrefixSpan.innerHTML = e.target.innerHTML;
+        phonePrefixSpan.classList.add("selected");
+        this.phoneNbInput.classList.remove("open");
       }
     });
   }
