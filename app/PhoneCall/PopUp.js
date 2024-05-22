@@ -1,3 +1,5 @@
+import gsap, { Power3 } from "gsap";
+
 const countries = [
   { label: "Afrikaans", code: "+27" },
   { label: "Arabic", code: "+20" },
@@ -69,8 +71,8 @@ const countries = [
 // [X] refactor
 // [X] make a good destroy function
 // [X] handle going to the second state upon click on the phone btn
-// [] close the country and phone prefix dropdown when clicking outside
 // [] Make the pop up intro animation
+// [] close the country and phone prefix dropdown when clicking outside
 // [] make the animation towards second state
 
 export default class PopUp {
@@ -131,7 +133,24 @@ export default class PopUp {
   }
 
   showingPopUp() {
+    gsap.set(this.popUpBg, {
+      opacity: 0,
+    });
+    gsap.set(this.wrapper, {
+      y: "100vh",
+    });
     this.mainContainer.style.display = "flex";
+    const tl = gsap.timeline({ defaults: { ease: Power3.easeOut } });
+    tl.to(this.popUpBg, {
+      opacity: 1,
+    });
+    tl.to(
+      this.wrapper,
+      {
+        y: 0,
+      },
+      "<"
+    );
   }
 
   // ----- Generating all the options for the country input -----
@@ -210,8 +229,18 @@ export default class PopUp {
 
   // ----- Adding events to the pop up -----
   closePopUp() {
-    this.mainContainer.style.display = "none";
-    this.destroy();
+    const tl = gsap.timeline({
+      defaults: { ease: Power3.easeOut },
+      onComplete: () => {
+        this.mainContainer.style.display = "none";
+        this.destroy();
+      },
+    });
+
+    tl.to(this.popUpBg, {
+      opacity: 0,
+    });
+    tl.to(this.wrapper, { y: "100vh" }, "<");
   }
 
   // ----- Handling form validation ------
