@@ -26,6 +26,7 @@ export default {
         lang: resolve(__dirname, "lang/index.html"),
         languages: resolve(__dirname, "languages.html"),
         accor: resolve(__dirname, "accor.html"),
+        external: resolve(__dirname, "external.html"),
       },
       output: {
         preserveModules: false,
