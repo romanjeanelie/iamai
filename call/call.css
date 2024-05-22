@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "SFPro";
+  src: url("https://res.cloudinary.com/dfdqiqn98/raw/upload/v1715796389/fonts/SF-Pro-Display-Medium_heugey.otf");
+  font-weight: 400;
+}
 
 html {
   font-style: normal;
@@ -7,7 +12,9 @@ html {
   font-size: 24px;
   overflow-x: hidden;
   margin: 0;
+  font-family: "SFPro";
 }
+
 .header {
   cursor: pointer;
   border: none;
@@ -25,6 +32,7 @@ html {
   min-height: 57.5px;
   vertical-align: bottom;
 }
+
 .headerinput {
   cursor: pointer;
   border: none;
@@ -45,9 +53,11 @@ html {
   vertical-align: top;
   padding: 0;
 }
+
 .headerinput::placeholder {
   color: #000000;
-  opacity: 0.4; /* Firefox */
+  opacity: 0.4;
+  /* Firefox */
 }
 
 :-ms-input-placeholder {
@@ -61,14 +71,17 @@ html {
   color: #000000;
   opacity: 0.4;
 }
+
 .headerinput.mic {
   /* font-size: 20px; */
   letter-spacing: 0.4px;
   color: rgba(255, 23, 78, 0.4);
 }
+
 .image-upload {
   display: inline-block;
 }
+
 .divchatinner {
   position: absolute !important;
   width: 93.5%;
@@ -83,6 +96,7 @@ html {
   width: 63%;
   opacity: 1;
 }
+
 .container {
   cursor: pointer;
   border: none;
@@ -110,6 +124,7 @@ html {
   font-weight: 500;
   padding-right: 7%;
 }
+
 .console-underscore-red {
   display: inline-block;
   position: relative;
@@ -121,14 +136,17 @@ html {
   animation-duration: 1s;
   animation-iteration-count: infinite;
 }
+
 @keyframes example {
   from {
     opacity: 1;
   }
+
   to {
     opacity: 0;
   }
 }
+
 .console-underscore {
   display: inline-block;
   position: relative;
@@ -140,17 +158,21 @@ html {
   animation-duration: 1s;
   animation-iteration-count: infinite;
 }
+
 @keyframes example {
   from {
     opacity: 1;
   }
+
   to {
     opacity: 0;
   }
 }
+
 .stopani {
   animation-iteration-count: 0;
 }
+
 .hidden {
   display: none;
 }
@@ -199,6 +221,7 @@ html {
   /* overflow-x: auto; */
   white-space: nowrap;
 }
+
 #flight {
   background: #f5f5f5;
   /* width: 30%; */
@@ -211,6 +234,7 @@ html {
   top: 464px;
   border-radius: 24px;
 }
+
 .flightsearch {
   /* Searching the web for cheaper options */
   font-size: 20px;
@@ -226,6 +250,7 @@ html {
   order: 0;
   flex-grow: 0;
 }
+
 #flightbest {
   position: absolute;
   box-sizing: border-box;
@@ -244,31 +269,42 @@ html {
 }
 
 #flightcontainer {
-  display: flex; /*establish flex container  */
+  display: flex;
+  /*establish flex container  */
   /* flex-direction: row;            default value; can be omitted */
-  flex-wrap: nowrap; /* default value; can be omitted */
-  justify-content: space-between; /* switched from default (flex-start, see below) */
+  flex-wrap: nowrap;
+  /* default value; can be omitted */
+  justify-content: space-between;
+  /* switched from default (flex-start, see below) */
   width: 100%;
   position: relative;
   align-items: center;
   height: 100%;
 }
+
 #flightcontainerint {
-  display: flex; /*establish flex container  */
+  display: flex;
+  /*establish flex container  */
   /* flex-direction: row;            default value; can be omitted */
-  flex-wrap: nowrap; /* default value; can be omitted */
-  justify-content: space-between; /* switched from default (flex-start, see below) */
+  flex-wrap: nowrap;
+  /* default value; can be omitted */
+  justify-content: space-between;
+  /* switched from default (flex-start, see below) */
   width: 100%;
   position: relative;
   align-items: center;
   height: 100%;
   /* align-items: flex-start; */
 }
+
 #flightcontainerint2 {
-  display: flex; /*establish flex container  */
+  display: flex;
+  /*establish flex container  */
   /* flex-direction: row;            default value; can be omitted */
-  flex-wrap: nowrap; /* default value; can be omitted */
-  justify-content: space-between; /* switched from default (flex-start, see below) */
+  flex-wrap: nowrap;
+  /* default value; can be omitted */
+  justify-content: space-between;
+  /* switched from default (flex-start, see below) */
   width: 100%;
   position: relative;
   align-items: center;
@@ -276,6 +312,7 @@ html {
   /* align-items: flex-start; */
   top: 4%;
 }
+
 #flightleft {
   position: absolute;
   left: 15%;
@@ -285,6 +322,7 @@ html {
   transform: translate(-50%, -50%);
   width: 25%;
 }
+
 #flightcenter {
   position: absolute;
   width: 50%;
@@ -295,6 +333,7 @@ html {
   font-size: 16px;
   margin: 0;
 }
+
 #flightright {
   position: absolute;
   left: 85%;
@@ -306,18 +345,21 @@ html {
   text-align: right;
   width: 25%;
 }
+
 #country {
   font-size: 16px;
   line-height: 20px;
   letter-spacing: 2px;
   color: #404244;
 }
+
 #time {
   font-size: 28px;
   line-height: 32px;
   letter-spacing: 1px;
   color: #404244;
 }
+
 #currency {
   font-size: 16px;
   line-height: 20px;
@@ -325,6 +367,7 @@ html {
   letter-spacing: 2px;
   color: rgba(64, 66, 68, 0.6);
 }
+
 #price {
   font-size: 28px;
   line-height: 32px;
@@ -333,6 +376,7 @@ html {
   letter-spacing: 1px;
   color: #404244;
 }
+
 #hours {
   font-size: 16px;
   line-height: 20px;
@@ -342,33 +386,39 @@ html {
   color: rgba(64, 66, 68, 0.6);
   font-weight: 500;
 }
+
 #diffDays {
   font-size: 14px;
   line-height: 20px;
   color: rgba(64, 66, 68, 0.6);
   font-weight: 500;
 }
+
 #stopovers {
   font-size: 14px;
   line-height: 20px;
   color: rgba(64, 66, 68, 0.6);
   font-weight: 500;
 }
+
 .left {
   text-align: left;
   position: relative;
   height: 67px;
 }
+
 .center {
   text-align: center;
   width: 60%;
   height: 67px;
 }
+
 .right {
   text-align: left;
   height: 67px;
   width: 20%;
 }
+
 .dot {
   height: 2px;
   width: 2px;
@@ -376,9 +426,11 @@ html {
   border-radius: 40%;
   display: inline-block;
 }
+
 .audio-recording-container {
   display: inline-block;
 }
+
 .recording-contorl-buttons-container {
   /*targeting Chrome & Safari*/
   display: -webkit-flex;
@@ -391,18 +443,22 @@ html {
   /* width: 334px; */
   /* margin-bottom: 30px; */
 }
+
 .micbtnstop {
   /* padding-bottom: 10px; */
   padding: 11px;
   /* width: 36px;  */
   /* height: 36px; */
 }
+
 .micbtnstop.hide {
   display: none;
 }
+
 .human.hide {
   display: none;
 }
+
 .hide {
   display: none;
 }
@@ -429,28 +485,35 @@ html {
     line-height: 28px;
     font-size: 20px;
   }
+
   .headerinput {
     font-size: 20px !important;
     line-height: 28px !important;
     /* width: 85%; */
   }
+
   .ai {
     line-height: 28px;
     font-size: 20px;
   }
+
   .header.active {
     width: 80% !important;
     opacity: 1;
   }
+
   .container.active {
     width: 96% !important;
   }
+
   #divhistory {
     display: none;
   }
+
   #divsettings {
     display: none;
   }
+
   .navbar {
     display: inline-block;
   }
@@ -494,4 +557,84 @@ html {
     -webkit-transform: translateY(-8px) rotate(-45deg);
     transform: translateY(-8px) rotate(-45deg);
   }
+}
+
+.callres {
+  width: 100%;
+  /* height: 95%; */
+  flex-shrink: 0;
+  background: #222;
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  /* Full height */
+  overflow: hidden;
+  /* Prevent scrolling on the container */
+}
+
+.callresinner {
+  width: 636px;
+  flex-shrink: 0;
+  border-radius: var(--16, 16px);
+  background: #333;
+  margin: 104px 32px 32px 32px;
+  overflow: scroll;
+  max-height: 80vh; 
+  overflow-y: auto;
+}
+
+.call__title {
+  color: var(--White-60, rgba(255, 255, 255, 0.60));
+  font-size: 16px;
+  font-style: normal;
+  line-height: 20px;
+  /* 125% */
+  letter-spacing: 1px;
+  padding: 24px;
+}
+
+.call__aititle {
+  color: var(--White-60, rgba(255, 255, 255, 0.60));
+  font-size: 16px;
+  font-style: normal;
+  line-height: 20px;
+  /* 125% */
+  letter-spacing: 1px;
+  padding: 24px 24px 0 24px;
+  margin: 0;
+}
+
+.call__ai {
+  color: #FFF;
+  font-size: 18px;
+  font-style: normal;
+  line-height: 28px;
+  /* 155.556% */
+  letter-spacing: 1px;
+  padding: 0 24px 24px 24px;
+  margin: 0;
+}
+
+.call__usertitle {
+  color: var(--White-60, rgba(255, 255, 255, 0.60));
+  text-align: right;
+  font-size: 16px;
+  font-style: normal;
+  line-height: 20px;
+  /* 125% */
+  letter-spacing: 1px;
+  padding: 24px 24px 0 24px;
+  margin: 0;
+}
+
+.call__user {
+  color: #FFF;
+  text-align: right;
+  font-size: 18px;
+  font-style: normal;
+  line-height: 28px;
+  /* 155.556% */
+  letter-spacing: 1px;
+  padding: 0 24px 24px 24px;
+  margin: 0;
 }
