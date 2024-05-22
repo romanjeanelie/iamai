@@ -71,9 +71,9 @@ const countries = [
 // [X] refactor
 // [X] make a good destroy function
 // [X] handle going to the second state upon click on the phone btn
-// [] Make the pop up intro animation
+// [X] Make the pop up intro animation
+// [X] make the animation towards second state
 // [] close the country and phone prefix dropdown when clicking outside
-// [] make the animation towards second state
 
 export default class PopUp {
   constructor({ section = "light", emitter }) {
@@ -306,7 +306,24 @@ export default class PopUp {
 
   handleSubmitBtn() {
     if (this.isFormValid) {
-      this.wrapper.classList.add("discussion");
+      const formElements = gsap.utils.toArray(
+        ".phonePage__popup-form, .phonePage__popup-persona-preview, .phonePage__popup-phone-button"
+      );
+      const discussionElements = gsap.utils.toArray(
+        ".phonePage__popup-discussion-ai-title, .phonePage__popup-discussion-container"
+      );
+      gsap.set(discussionElements, { opacity: 0 });
+      const tl = gsap.timeline({ defaults: { ease: Power3.easeOut, duration: 0.4 } });
+      tl.to(formElements, {
+        opacity: 0,
+        onComplete: () => {
+          this.wrapper.classList.add("discussion");
+        },
+      });
+      tl.to(discussionElements, {
+        opacity: 1,
+      });
+      tl.set(formElements, { opacity: 1 });
     } else {
       throw new Error("Form is not valid, please complete each field.");
     }
