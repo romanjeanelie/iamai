@@ -58,6 +58,13 @@ const countries = [
   { label: "Welsh", code: "+44" },
 ];
 
+// TO DO
+// [] in function of the button clicked, set the state of the pop up
+// [] in function of the state, set the class of the phonePage__popup-wrapper (to dark or light)
+// [] in function of the class, display or not the first sections
+// [] Make the pop up intro animation
+// [] Make the second state pop up
+
 export default class PopUp {
   constructor({ section, emitter }) {
     this.emitter = emitter;
