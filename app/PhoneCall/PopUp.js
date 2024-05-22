@@ -59,15 +59,16 @@ const countries = [
 ];
 
 // TO DO
-// [] in function of the button clicked, set the state of the pop up
 // [X] in function of the state, set the class of the phonePage__popup-wrapper (to dark or light)
-// [] in function of the class, display or not the first sections
+// [X] in function of the class, display or not the first sections
+// [] in function of the button clicked, set the state of the pop up
 // [] Make the pop up intro animation
 // [] Make the second state pop up
 // [] add validation to the inputs
+// [] make the popup responsive
 
 export default class PopUp {
-  constructor({ section = "dark", emitter }) {
+  constructor({ section = "light", emitter }) {
     this.emitter = emitter;
     // States
     this.section = section;
@@ -88,21 +89,12 @@ export default class PopUp {
     this.phoneNbInput = document.querySelector(".phonePage__popup-input.phoneNb");
     this.phoneNbButton = this.phoneNbInput.querySelector(".phoneNb__prefix-button");
 
+    this.wrapper.classList.remove("dark", "light");
     this.wrapper.classList.add(this.section);
 
-    // Methods
-    if (this.section === "dark") {
-      this.setDarkUi();
-    }
     this.generateCountryOptions();
     this.generatePhonePrefixes();
     this.addEvents();
-  }
-
-  // ----- Adjust the ui in function of the state -----
-  setDarkUi() {
-    this.titleInput.style.display = "none";
-    this.promptInput.style.display = "none";
   }
 
   // ----- Generating all the options for the country input -----

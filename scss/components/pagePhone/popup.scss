@@ -22,6 +22,11 @@
   background-color: $background;
   color: $primaryColor;
 
+  .phonePage__popup-persona-preview {
+    background-color: $secondaryColor;
+    color: $primaryColor;
+  }
+
   .phonePage__popup-form {
     & > * {
       background-color: $secondaryColor;
@@ -88,11 +93,77 @@
   max-height: 95vh;
   overflow: auto;
   padding: 104px 32px 60px;
+  width: 600px;
+
+  @include media("<tablet") {
+    width: 100%;
+    margin: 24px;
+  }
+
+  &.dark {
+    .phonePage__popup-persona-preview {
+      display: block;
+    }
+
+    .phonePage__popup-input.intro {
+      display: none;
+    }
+
+    .phonePage__popup-input.prompt {
+      display: none;
+    }
+  }
+
+  &.light {
+    .phonePage__popup-persona-preview {
+      display: none;
+    }
+
+    .phonePage__popup-input.intro {
+      display: block;
+    }
+
+    .phonePage__popup-input.prompt {
+      display: block;
+    }
+  }
+
+  .phonePage__popup-persona-preview {
+    padding: 24px 16px;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px; /* 125% */
+    letter-spacing: 1px;
+
+    .persona__preview-avatar-picture {
+      width: 100px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    h3 {
+      margin: 22px 0 20px;
+      font-family: "SFPro";
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 24px; /* 120% */
+      letter-spacing: 1px;
+    }
+
+    p {
+      font-family: "SFPro";
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 20px; /* 125% */
+      letter-spacing: 1px;
+    }
+  }
 
   .phonePage__popup-form {
-    min-width: 536px;
     display: flex;
     flex-direction: column;
+    margin-top: 24px;
     gap: 24px;
     position: relative;
 

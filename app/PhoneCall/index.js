@@ -9,7 +9,7 @@ class PhoneCallPage {
   constructor() {
     this.emitter = createNanoEvents();
     // States
-    this.section = "dark";
+    this.section = "light";
 
     // DOM Elements
     this.herobanners = document.querySelector(".herobanners__container");
