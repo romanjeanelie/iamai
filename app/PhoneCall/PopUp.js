@@ -66,13 +66,12 @@ const countries = [
 // [X] add validation to the inputs
 // [X] when inputs are valid -> make the call button clickable
 // [X] Make the second state pop up
-// [] refactor
-// [] make a good destroy function
-// [] close the country and phone prefix dropdown when clicking outside
+// [X] refactor
+// [X] make a good destroy function
 // [] handle going to the second state upon click on the phone btn
-// [] make the animation towards second state
-// [] in function of the button clicked, set the state of the pop up
+// [] close the country and phone prefix dropdown when clicking outside
 // [] Make the pop up intro animation
+// [] make the animation towards second state
 
 export default class PopUp {
   constructor({ section = "light", emitter }) {
@@ -86,6 +85,18 @@ export default class PopUp {
       phone: "",
       email: "",
     };
+
+    // Bind and store event listener references
+    this.handleTitleInput = this.handleTitleInput.bind(this);
+    this.handlePromptInput = this.handlePromptInput.bind(this);
+    this.handleCountryInput = this.handleCountryInput.bind(this);
+    this.handlePhoneInput = this.handlePhoneInput.bind(this);
+    this.handleEmailInput = this.handleEmailInput.bind(this);
+    this.closePopUp = this.closePopUp.bind(this);
+    this.toggleCountryDropdown = this.toggleCountryDropdown.bind(this);
+    this.selectCountry = this.selectCountry.bind(this);
+    this.togglePhonePrefixDropdown = this.togglePhonePrefixDropdown.bind(this);
+    this.selectPhonePrefix = this.selectPhonePrefix.bind(this);
 
     // DOM Elements
     this.mainContainer = document.querySelector(".phonePage__popup-container");
@@ -125,7 +136,7 @@ export default class PopUp {
   generateCountryOptions() {
     const selectDropdown = document.querySelector(".country__select-dropdown");
     countries.forEach((country, idx) => {
-      // if (idx > 5) return;
+      if (idx > 5) return;
       selectDropdown.innerHTML += `
         <li role="option">
           <input type="radio" id=${country.label} name="country" />
@@ -134,13 +145,12 @@ export default class PopUp {
       `;
     });
 
-    this.countryButton.addEventListener("click", this.toggleCountryDropdown.bind(this));
-
-    this.countryDropdown.addEventListener("click", this.selectCountry.bind(this));
+    this.countryButton.addEventListener("click", this.toggleCountryDropdown);
+    this.countryDropdown.addEventListener("click", this.selectCountry);
   }
 
   toggleCountryDropdown() {
-    this.countryInput.classList.toggle("open");
+    this.countryInput?.classList.toggle("open");
   }
 
   selectCountry(e) {
@@ -177,9 +187,8 @@ export default class PopUp {
       `;
     });
 
-    this.phoneNbButton.addEventListener("click", this.togglePhonePrefixDropdown.bind(this));
-
-    this.phonePrefixDropdown.addEventListener("click", this.selectPhonePrefix.bind(this));
+    this.phoneNbButton.addEventListener("click", this.togglePhonePrefixDropdown);
+    this.phonePrefixDropdown.addEventListener("click", this.selectPhonePrefix);
   }
 
   togglePhonePrefixDropdown() {
@@ -263,41 +272,57 @@ export default class PopUp {
   }
 
   addEvents() {
-    this.closeBtn.addEventListener("click", this.closePopUp.bind(this));
-    this.popUpBg.addEventListener("click", this.closePopUp.bind(this));
+    this.closeBtn.addEventListener("click", this.closePopUp);
+    this.popUpBg.addEventListener("click", this.closePopUp);
 
     // -- Input events
-    this.titleInput?.addEventListener("input", this.handleTitleInput.bind(this));
-    this.promptInput?.addEventListener("input", this.handlePromptInput.bind(this));
-    this.countryInput.addEventListener("input", this.handleCountryInput.bind(this));
-    this.phoneNbInput.addEventListener("input", this.handlePhoneInput.bind(this));
-    this.emailInput.addEventListener("input", this.handleEmailInput.bind(this));
+    this.titleInput?.addEventListener("input", this.handleTitleInput);
+    this.promptInput?.addEventListener("input", this.handlePromptInput);
+    this.countryInput.addEventListener("input", this.handleCountryInput);
+    this.phoneNbInput.addEventListener("input", this.handlePhoneInput);
+    this.emailInput.addEventListener("input", this.handleEmailInput);
   }
 
   // ----- Destroy method -----
-  destroy() {
-    // Remove event listeners
-    this.closeBtn.removeEventListener("click", this.closePopUp.bind(this));
-    this.popUpBg.removeEventListener("click", this.closePopUp.bind(this));
+  removeEvents() {
+    this.closeBtn.removeEventListener("click", this.closePopUp);
+    this.popUpBg.removeEventListener("click", this.closePopUp);
+    this.titleInput?.removeEventListener("input", this.handleTitleInput);
+    this.promptInput?.removeEventListener("input", this.handlePromptInput);
+    this.countryButton.removeEventListener("click", this.toggleCountryDropdown);
+    this.countryInput.removeEventListener("input", this.handleCountryInput);
+    this.phoneNbButton.removeEventListener("click", this.togglePhonePrefixDropdown);
+    this.phoneNbInput.removeEventListener("input", this.handlePhoneInput);
+    this.emailInput.removeEventListener("input", this.handleEmailInput);
 
-    this.titleInput?.removeEventListener("input", this.handleTitleInput.bind(this));
-    this.promptInput?.removeEventListener("input", this.handlePromptInput.bind(this));
-    this.countryButton.removeEventListener("click", this.toggleCountryDropdown.bind(this));
-    this.countryInput.removeEventListener("input", this.handleCountryInput.bind(this));
-    this.phoneNbButton.removeEventListener("click", this.togglePhonePrefixDropdown.bind(this));
-    this.phoneNbInput.removeEventListener("input", this.handlePhoneInput.bind(this));
-    this.emailInput.removeEventListener("input", this.handleEmailInput.bind(this));
+    this.countryDropdown.removeEventListener("click", this.selectCountry);
+    this.phonePrefixDropdown.removeEventListener("click", this.selectPhonePrefix);
+  }
 
-    this.countryDropdown.removeEventListener("click", this.selectCountry.bind(this));
-
-    this.phonePrefixDropdown.removeEventListener("click", this.selectPhonePrefix.bind(this));
+  resetDom() {
+    const inputs = this.wrapper.querySelectorAll("input, textarea");
+    inputs.forEach((input) => {
+      input.value = "";
+    });
 
     // Clear DOM elements' content if necessary
-    const selectDropdown = document.querySelector(".country__select-dropdown");
-    if (selectDropdown) selectDropdown.innerHTML = "";
+    const countryDropdownElement = document.querySelector(".country__select-dropdown");
+    if (countryDropdownElement) countryDropdownElement.innerHTML = "";
+    const countrySpan = this.countryInput.querySelector("span");
+    countrySpan.innerText = "Country";
+    countrySpan.classList.remove("selected");
+    const checkIcon = this.countryInput.querySelector(".check-icon");
+    checkIcon.style.opacity = "0";
 
     const phonePrefixDropdownElement = document.querySelector(".phoneNb__prefix-dropdown");
     if (phonePrefixDropdownElement) phonePrefixDropdownElement.innerHTML = "";
+    const phonePrefixSpan = this.phoneNbInput.querySelector(".phoneNb__prefix");
+    phonePrefixSpan.innerText = "+XX";
+  }
+
+  destroy() {
+    this.removeEvents();
+    this.resetDom();
 
     // Nullify object references
     this.mainContainer = null;
