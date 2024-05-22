@@ -63,10 +63,11 @@ const countries = [
 // [X] in function of the class, display or not the first sections
 // [X] add the cross btn and make the close popup function
 // [X] make the popup responsive
+// [] add validation to the inputs
+// [] when inputs are valid -> make the call button clickable
 // [] in function of the button clicked, set the state of the pop up
 // [] Make the pop up intro animation
 // [] Make the second state pop up
-// [] add validation to the inputs
 
 export default class PopUp {
   constructor({ section = "light", emitter }) {
@@ -74,7 +75,7 @@ export default class PopUp {
     // States
     this.section = section;
     this.inputs = {
-      intro: "",
+      title: "",
       prompt: "",
       country: "",
       phone: "",
@@ -95,6 +96,7 @@ export default class PopUp {
     this.countryButton = this.countryInput.querySelector(".country__select-button");
     this.phoneNbInput = document.querySelector(".phonePage__popup-input.phoneNb");
     this.phoneNbButton = this.phoneNbInput.querySelector(".phoneNb__prefix-button");
+    this.emailInput = document.querySelector(".phonePage__popup-input.email");
 
     this.wrapper.classList.remove("dark", "light");
     this.wrapper.classList.add(this.section);
@@ -167,8 +169,73 @@ export default class PopUp {
     this.mainContainer.style.display = "none";
   }
 
+  // ----- Handling form validation ------
+  validatePhoneNumber(phoneNumber) {
+    const phoneRegex = /^\+?\d{9,15}$/;
+    return phoneRegex.test(phoneNumber);
+  }
+
+  validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  validateForm() {
+    const isPhoneValid = this.validatePhoneNumber(this.inputs.phone);
+    const isEmailValid = this.validateEmail(this.inputs.email);
+    const isCountrySelected = this.inputs.country !== "";
+
+    let isIntroFilled = true;
+    let isPromptFilled = true;
+
+    if (this.section === "light") {
+      isIntroFilled = this.inputs.title.trim() !== "";
+      isPromptFilled = this.inputs.prompt.trim() !== "";
+    }
+
+    console.log("is intro filled : ", isIntroFilled, this.inputs.title);
+    console.log("is prompt filled : ", isPromptFilled, this.inputs.prompt);
+    console.log("is country selected : ", isCountrySelected, this.inputs.country);
+    console.log("is phone valid : ", isPhoneValid, this.inputs.phone);
+    console.log("is email valid : ", isEmailValid, this.inputs.email);
+
+    if (isPhoneValid && isEmailValid && isCountrySelected && isIntroFilled && isPromptFilled) {
+      this.callBtn.disabled = false;
+    } else {
+      this.callBtn.disabled = true;
+    }
+  }
+
   addEvents() {
     this.closeBtn.addEventListener("click", this.closePopUp.bind(this));
     this.popUpBg.addEventListener("click", this.closePopUp.bind(this));
+
+    // -- Input events
+    this.titleInput?.addEventListener("input", (e) => {
+      this.inputs.title = e.target.value;
+      this.validateForm();
+    });
+
+    this.promptInput?.addEventListener("input", (e) => {
+      this.inputs.prompt = e.target.value;
+      this.validateForm();
+    });
+
+    this.countryInput.addEventListener("input", (e) => {
+      const countrySelected = this.countryInput.querySelector("span");
+      this.inputs.country = countrySelected.innerText;
+      this.validateForm();
+    });
+
+    this.phoneNbInput.addEventListener("input", (e) => {
+      const prefix = this.phoneNbInput.querySelector(".phoneNb__prefix").innerText;
+      this.inputs.phone = prefix + e.target.value;
+      this.validateForm();
+    });
+
+    this.emailInput.addEventListener("input", (e) => {
+      this.inputs.email = e.target.value;
+      this.validateForm();
+    });
   }
 }

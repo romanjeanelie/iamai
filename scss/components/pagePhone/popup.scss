@@ -88,10 +88,18 @@
   }
 
   .phonePage__popup-phone-button {
-    background-color: $secondaryColor;
+    background-color: #007aff;
 
     svg path {
-      fill: $primaryColor;
+      fill: white;
+    }
+
+    &:disabled {
+      background-color: $secondaryColor;
+
+      svg path {
+        fill: rgba($primaryColor, 0.4);
+      }
     }
   }
 }
@@ -376,6 +384,10 @@
     svg {
       width: 24px;
       height: 24px;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
     }
   }
 
