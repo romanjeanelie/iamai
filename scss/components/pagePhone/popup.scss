@@ -32,6 +32,7 @@
     }
   }
 
+  // ----- FIRST STATE : FORM -----
   .phonePage__popup-persona-preview {
     background-color: $secondaryColor;
     color: $primaryColor;
@@ -102,6 +103,25 @@
       }
     }
   }
+
+  // ----- SECOND STATE : DISCUSSION -----
+  &.discussion {
+    .phonePage__popup-discussion-container {
+      background-color: $secondaryColor;
+    }
+
+    .phonePage__popup-discussion-wrapper {
+      color: $primaryColor;
+
+      .message-role {
+        color: rgba($primaryColor, 0.6);
+      }
+    }
+
+    .phonePage__popup-discussion-wrapper.user .message-content {
+      background-color: $background;
+    }
+  }
 }
 
 // POPUP GLOBAL STYLING
@@ -109,6 +129,7 @@
   z-index: 1;
   position: relative;
   border-radius: 35px;
+  height: 812px;
   max-height: 95vh;
   overflow: auto;
   padding: 104px 32px 60px;
@@ -116,12 +137,21 @@
 
   @include media("<tablet") {
     width: 100%;
-    // margin: 24px;
+    border-radius: 0;
     max-height: 100vh;
     height: 100vh;
     padding: 84px 24px 60px;
   }
 
+  .phonePage__popup-discussion-ai-title {
+    display: none;
+  }
+
+  .phonePage__popup-discussion-container {
+    display: none;
+  }
+
+  //  ------ FIRST STATE : FORM ------
   &.dark {
     .phonePage__popup-persona-preview {
       display: block;
@@ -166,6 +196,7 @@
     font-weight: 500;
     line-height: 20px; /* 125% */
     letter-spacing: 1px;
+    margin-bottom: 24px;
 
     .persona__preview-avatar-picture {
       width: 100px;
@@ -175,11 +206,6 @@
 
     h3 {
       margin: 24px 0 20px;
-      font-family: "SFPro";
-      font-size: 20px;
-      font-weight: 600;
-      line-height: 24px; /* 120% */
-      letter-spacing: 1px;
     }
 
     p {
@@ -194,7 +220,6 @@
   .phonePage__popup-form {
     display: flex;
     flex-direction: column;
-    margin-top: 24px;
     gap: 24px;
     position: relative;
 
@@ -388,6 +413,86 @@
 
     &:disabled {
       cursor: not-allowed;
+    }
+  }
+
+  //  ------ SECOND STATE : DISCUSSION ------
+  &.discussion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    padding: 40px 32px 32px;
+
+    @include media("<tablet") {
+      gap: 24px;
+      padding: 32px 24px 24px;
+    }
+
+    .phonePage__popup-persona-preview,
+    .phonePage__popup-form,
+    .phonePage__popup-phone-button {
+      display: none;
+    }
+
+    .phonePage__popup-discussion-ai-title {
+      display: block;
+    }
+
+    .phonePage__popup-discussion-container {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      padding: 24px 16px 24px 24px;
+      border-radius: 16px;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+
+      @include media("<tablet") {
+        padding: 16px 8px 16px 16px;
+      }
+    }
+
+    .phonePage__popup-discussion-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      font-family: "SFPro";
+      font-size: 18px;
+      font-weight: 510;
+      line-height: 28px; /* 155.556% */
+      letter-spacing: 1px;
+
+      @include media("<tablet") {
+        font-size: 16px;
+        line-height: 26px; /* 150% */
+      }
+
+      .message-role {
+        line-height: 100%;
+      }
+    }
+
+    .phonePage__popup-discussion-wrapper.user {
+      align-self: flex-end;
+
+      .message-role {
+        padding-right: 8px;
+        text-align: right;
+      }
+
+      .message-content {
+        padding: 16px;
+        border-radius: 16px;
+        margin-left: 90px;
+
+        @include media("<tablet") {
+          padding: 12px;
+          margin-left: 24px;
+        }
+      }
     }
   }
 

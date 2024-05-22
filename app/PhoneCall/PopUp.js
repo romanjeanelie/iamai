@@ -63,11 +63,13 @@ const countries = [
 // [X] in function of the class, display or not the first sections
 // [X] add the cross btn and make the close popup function
 // [X] make the popup responsive
-// [] add validation to the inputs
-// [] when inputs are valid -> make the call button clickable
+// [X] add validation to the inputs
+// [X] when inputs are valid -> make the call button clickable
+// [X] Make the second state pop up
+// [] make a good destroy function
+// [] make the animation towards second state
 // [] in function of the button clicked, set the state of the pop up
 // [] Make the pop up intro animation
-// [] Make the second state pop up
 
 export default class PopUp {
   constructor({ section = "light", emitter }) {

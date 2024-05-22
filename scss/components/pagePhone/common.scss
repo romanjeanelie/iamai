@@ -33,3 +33,24 @@ h1 {
     line-height: 48px; /* 120% */
   }
 }
+
+h2 {
+  font-family: "SFPro";
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 32px; /* 114.286% */
+  letter-spacing: 1px;
+
+  @include media("<tablet") {
+    font-size: 24px;
+    line-height: 28px; /* 116.667% */
+  }
+}
+
+h3 {
+  font-family: "SFPro";
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 24px; /* 120% */
+  letter-spacing: 1px;
+}
