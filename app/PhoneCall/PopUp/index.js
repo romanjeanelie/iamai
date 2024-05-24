@@ -1,5 +1,6 @@
 import gsap, { Power3 } from "gsap";
 import CountryInput from "./CountryInput";
+import PhoneInput from "./PhoneInput";
 
 export const countries = [
   { label: "Afrikaans", code: "+27" },
@@ -75,8 +76,8 @@ export const countries = [
 // [X] Make the pop up intro animation
 // [X] make the animation towards second state
 // [X] refactor the countryForm
-// [] rename the countryForm Language
 // [] refactor the NbPrefix form
+// [] rename the countryInput Language
 // [] refactor the handle inputs functions (fuse them into one)
 // [] close the country and phone prefix dropdown when clicking outside
 
@@ -101,8 +102,7 @@ export default class PopUp {
     this.handlePhoneInput = this.handlePhoneInput.bind(this);
     this.handleEmailInput = this.handleEmailInput.bind(this);
     this.closePopUp = this.closePopUp.bind(this);
-    this.togglePhonePrefixDropdown = this.togglePhonePrefixDropdown.bind(this);
-    this.selectPhonePrefix = this.selectPhonePrefix.bind(this);
+
     this.handleSubmitBtn = this.handleSubmitBtn.bind(this);
 
     // DOM Elements
@@ -115,19 +115,16 @@ export default class PopUp {
     // -- Input elements
     this.titleInput = document.querySelector(".phonePage__popup-input.intro");
     this.promptInput = document.querySelector(".phonePage__popup-input.prompt");
-    this.phoneNbInput = document.querySelector(".phonePage__popup-input.phoneNb");
-    this.phoneNbButton = this.phoneNbInput.querySelector(".phoneNb__prefix-button");
-    this.phonePrefixDropdown = document.querySelector(".phoneNb__prefix-dropdown");
     this.emailInput = document.querySelector(".phonePage__popup-input.email");
 
     // -- Set the class of the wrapper in function of the section
     this.wrapper.classList.remove("dark", "light");
     this.wrapper.classList.add(this.section);
 
-    this.countryForm = new CountryInput({ onCountrySelect: this.handleCountryInput });
+    this.countryInput = new CountryInput({ onCountrySelect: this.handleCountryInput });
+    this.phoneInput = new PhoneInput({ onPhoneSelect: this.handlePhoneInput });
 
     // -- Methods
-    this.generatePhonePrefixes();
     this.addEvents();
     this.showingPopUp();
   }
@@ -151,46 +148,6 @@ export default class PopUp {
       },
       "<"
     );
-  }
-
-  // ----- Generating all the options for the phone prefix input -----
-  generatePhonePrefixes() {
-    const selectDropdown = document.querySelector(".phoneNb__prefix-dropdown");
-
-    const sortedCountries = countries.sort((a, b) => {
-      // Remove the "+" sign and convert to number for comparison
-      const codeA = parseInt(a.code.replace("+", ""), 10);
-      const codeB = parseInt(b.code.replace("+", ""), 10);
-
-      return codeA - codeB;
-    });
-
-    sortedCountries.forEach((country) => {
-      selectDropdown.innerHTML += `
-        <li role="option">
-          <input type="radio" id=${country.label} name="country" />
-          <label for=${country.label}>${country.code}</label>
-        </li>
-      `;
-    });
-
-    this.phoneNbButton.addEventListener("click", this.togglePhonePrefixDropdown);
-    this.phonePrefixDropdown.addEventListener("click", this.selectPhonePrefix);
-  }
-
-  togglePhonePrefixDropdown() {
-    this.phoneNbInput.classList.toggle("open");
-  }
-
-  selectPhonePrefix(e) {
-    if (e.target.tagName === "LABEL") {
-      const phonePrefixSpan = this.phoneNbInput.querySelector(".phoneNb__prefix");
-      phonePrefixSpan.innerHTML = e.target.innerHTML;
-      phonePrefixSpan.classList.add("selected");
-      this.phoneNbInput.classList.remove("open");
-      this.inputs.phone = phonePrefixSpan.innerText + this.phoneNbInput.querySelector("input").value;
-      this.validateForm();
-    }
   }
 
   // ----- Adding events to the pop up -----
@@ -233,6 +190,8 @@ export default class PopUp {
     let isIntroFilled = true;
     let isPromptFilled = true;
 
+    console.log("phone :", this.inputs.phone, isPhoneValid);
+
     if (this.section === "light") {
       isIntroFilled = this.inputs.title.trim() !== "";
       isPromptFilled = this.inputs.prompt.trim() !== "";
@@ -261,9 +220,9 @@ export default class PopUp {
     this.validateForm();
   }
 
-  handlePhoneInput(e) {
-    const prefix = this.phoneNbInput.querySelector(".phoneNb__prefix").innerText;
-    this.inputs.phone = prefix + e.target.value;
+  handlePhoneInput(phoneNumber) {
+    console.log("triggered");
+    this.inputs.phone = phoneNumber;
     this.validateForm();
   }
 
@@ -304,7 +263,6 @@ export default class PopUp {
     // -- Input events
     this.titleInput?.addEventListener("input", this.handleTitleInput);
     this.promptInput?.addEventListener("input", this.handlePromptInput);
-    this.phoneNbInput.addEventListener("input", this.handlePhoneInput);
     this.emailInput.addEventListener("input", this.handleEmailInput);
 
     // -- Call button
@@ -317,10 +275,7 @@ export default class PopUp {
     this.popUpBg.removeEventListener("click", this.closePopUp);
     this.titleInput?.removeEventListener("input", this.handleTitleInput);
     this.promptInput?.removeEventListener("input", this.handlePromptInput);
-    this.phoneNbButton.removeEventListener("click", this.togglePhonePrefixDropdown);
-    this.phoneNbInput.removeEventListener("input", this.handlePhoneInput);
     this.emailInput.removeEventListener("input", this.handleEmailInput);
-    this.phonePrefixDropdown.removeEventListener("click", this.selectPhonePrefix);
 
     this.callBtn.removeEventListener("click", this.handleSubmitBtn);
   }
@@ -330,12 +285,7 @@ export default class PopUp {
     inputs.forEach((input) => {
       input.value = "";
     });
-
-    const phonePrefixDropdownElement = document.querySelector(".phoneNb__prefix-dropdown");
-    if (phonePrefixDropdownElement) phonePrefixDropdownElement.innerHTML = "";
-    const phonePrefixSpan = this.phoneNbInput.querySelector(".phoneNb__prefix");
-    phonePrefixSpan.innerText = "+XX";
-
+    // Reset the form validity
     this.setFormValidity(false);
     // go back to first state : form
     this.wrapper.classList.remove("discussion");
@@ -345,7 +295,8 @@ export default class PopUp {
     this.removeEvents();
     this.resetDom();
 
-    this.countryForm.destroy();
+    this.countryInput.destroy();
+    this.phoneInput.destroy();
 
     // Nullify object references
     this.mainContainer = null;
@@ -355,8 +306,6 @@ export default class PopUp {
     this.callBtn = null;
     this.titleInput = null;
     this.promptInput = null;
-    this.phoneNbInput = null;
-    this.phoneNbButton = null;
     this.emailInput = null;
   }
 }
