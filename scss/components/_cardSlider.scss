@@ -1,0 +1,81 @@
+.cardSlider__container {
+  $maxWidth: 1232px;
+
+  .cardSlider__header {
+    margin-bottom: 32px;
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 60px; /* 125% */
+    letter-spacing: 1px;
+    max-width: $maxWidth;
+    margin: 0 auto;
+
+    @include media("<large") {
+      margin: 0 120px;
+    }
+
+    @include media("<desktop") {
+      margin: 0 clamp(48px, 8vw, 120px);
+    }
+
+    @include media("<tablet") {
+      margin: 0 clamp(24px, 4vw, 60px);
+      font-size: 32px;
+      line-height: 40px; /* 125% */
+    }
+  }
+
+  .cardSlider__slider {
+    display: flex;
+    width: 100vw;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    overflow-y: hidden;
+
+    // Hide scrollbar for Chrome, Safari and Opera
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    // Hide scrollbar for IE, Edge and Firefox
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+
+    @include media("<large") {
+      padding: 0 120px !important;
+    }
+
+    @include media("<desktop") {
+      padding: 0 clamp(48px, 8vw, 120px) !important;
+    }
+
+    @include media("<tablet") {
+      padding: 0 clamp(24px, 4vw, 60px) !important;
+    }
+
+    .cardSlider__slider-card {
+      position: relative;
+      background-color: red;
+      scroll-snap-align: center;
+      border-radius: 16px;
+      overflow: hidden;
+      width: 400px;
+      height: 500px;
+      padding: 32px 24px;
+      background-image: url("https://res.cloudinary.com/dfdqiqn98/image/upload/v1715266574/Home/Announcing_CO_ojqqx0.png");
+      background-size: cover;
+      background-position: center;
+      flex: none;
+      margin-right: 16px;
+
+      @include media("<phone") {
+        width: 100%;
+        height: 400px;
+      }
+
+      &:last-of-type {
+        margin-right: 0;
+      }
+    }
+  }
+}

@@ -37,7 +37,6 @@ export default class Herobanners {
         trigger: ".page-phone__main-container",
         toggleActions: "play none none reverse",
         start: "top+=5% top",
-        markers: true,
       },
     });
   }

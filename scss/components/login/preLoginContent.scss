@@ -5,7 +5,6 @@
   $maxWidth: 1232px;
 
   background-color: $background;
-  // min-height: 220vh;
   padding: 80px 0 198px;
   font-family: "SFPro";
   position: relative;
@@ -99,7 +98,6 @@
     height: 24px;
 
     @include media("<tablet") {
-      // height: 98px;
       height: 0;
       margin-top: 0;
     }
@@ -266,10 +264,6 @@
     @include media("<tablet") {
       padding: 0 clamp(24px, 4vw, 60px) !important;
     }
-
-    // .preLoginContent__gutter {
-    //   width: calc(((100vw - $maxWidth) / 2));
-    // }
 
     .preLoginContent__slider-card {
       scroll-snap-align: center;
