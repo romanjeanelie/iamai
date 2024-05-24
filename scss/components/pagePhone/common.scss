@@ -55,10 +55,13 @@ h3 {
   letter-spacing: 1px;
 }
 
-.page-phone {
+.page-phone__main-container {
+  overflow: scroll;
+  height: 100vh;
+  position: relative;
   scroll-snap-type: y mandatory;
 
   & > section {
-    scroll-snap-align: center;
+    scroll-snap-align: start;
   }
 }

@@ -33,10 +33,11 @@ export default class Herobanners {
       duration: 0.2,
       ease: Power3.easeOut,
       scrollTrigger: {
-        trigger: this.herobanners,
+        scroller: ".page-phone__main-container",
+        trigger: ".page-phone__main-container",
         toggleActions: "play none none reverse",
-        start: "top top",
-        end: "top+=10% top",
+        start: "top+=5% top",
+        markers: true,
       },
     });
   }
