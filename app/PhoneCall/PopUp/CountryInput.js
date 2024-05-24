@@ -55,7 +55,6 @@ export default class CountryInput {
   }
 
   resetDom() {
-    console.log("reset country dom");
     this.countryDropdown.innerHTML = "";
     const countrySpan = this.countryInput.querySelector("span");
     countrySpan.innerText = "Country";
@@ -66,7 +65,6 @@ export default class CountryInput {
 
   destroy() {
     this.resetDom();
-    console.log("destroy country ");
     this.removeEvents();
     this.countryInput = null;
     this.countryButton = null;

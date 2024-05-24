@@ -188,8 +188,6 @@ export default class PopUp {
     let isIntroFilled = true;
     let isPromptFilled = true;
 
-    console.log("phone :", this.inputs.phone, isPhoneValid);
-
     if (this.section === "light") {
       isIntroFilled = this.inputs.title.trim() !== "";
       isPromptFilled = this.inputs.prompt.trim() !== "";
@@ -224,7 +222,6 @@ export default class PopUp {
   }
 
   handlePhoneInput(phoneNumber) {
-    console.log("triggered");
     this.inputs.phone = phoneNumber;
     this.validateForm();
   }
