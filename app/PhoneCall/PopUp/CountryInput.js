@@ -1,4 +1,10 @@
-import { countries } from ".";
+const languages = [
+  { name: "Bengali", code: "bn-IN" },
+  { name: "English", code: "en-US" },
+  { name: "French", code: "fr-FR" },
+  { name: "Mandarin", code: "zh-CN" },
+  { name: "Tamil", code: "ta-IN" },
+];
 
 export default class CountryInput {
   constructor({ onCountrySelect }) {
@@ -17,12 +23,11 @@ export default class CountryInput {
   }
 
   generateCountryOptions() {
-    const selectDropdown = this.countryDropdown;
-    countries.forEach((country) => {
-      selectDropdown.innerHTML += `
+    languages.forEach((language) => {
+      this.countryDropdown.innerHTML += `
         <li role="option">
-          <input type="radio" id=${country.label} name="country" />
-          <label for=${country.label}>${country.label}</label>
+          <input type="radio" id=${language.name} name="country" />
+          <label for=${language.name}>${language.name}</label>
         </li>
       `;
     });
@@ -57,7 +62,7 @@ export default class CountryInput {
   resetDom() {
     this.countryDropdown.innerHTML = "";
     const countrySpan = this.countryInput.querySelector("span");
-    countrySpan.innerText = "Country";
+    countrySpan.innerText = "Languages";
     countrySpan.classList.remove("selected");
     const checkIcon = this.countryInput.querySelector(".check-icon");
     checkIcon.style.opacity = "0";
