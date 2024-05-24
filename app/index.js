@@ -67,7 +67,7 @@ class App {
     this.resetScroll();
     // stopOverscroll is a function that prevents overscrolling behavior on touch devices.
     // to be tested on a touch device
-    stopOverscroll();
+    // stopOverscroll();
 
     if (this.debug) {
       this.gui = new dat.GUI();

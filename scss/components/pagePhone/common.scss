@@ -54,3 +54,11 @@ h3 {
   line-height: 24px; /* 120% */
   letter-spacing: 1px;
 }
+
+.page-phone {
+  scroll-snap-type: y mandatory;
+
+  & > section {
+    scroll-snap-align: center;
+  }
+}
