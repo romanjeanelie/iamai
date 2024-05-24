@@ -57,11 +57,11 @@ h3 {
 
 .page-phone__main-container {
   overflow: scroll;
-  height: 100vh;
+  // height: 100vh;
   position: relative;
-  scroll-snap-type: y mandatory;
+  // scroll-snap-type: y mandatory;
 
-  & > section {
-    scroll-snap-align: start;
-  }
+  // & > section {
+  //   scroll-snap-align: start;
+  // }
 }
