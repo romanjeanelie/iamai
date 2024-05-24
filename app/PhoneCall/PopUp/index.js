@@ -76,9 +76,7 @@ export const countries = [
 // [X] Make the pop up intro animation
 // [X] make the animation towards second state
 // [X] refactor the countryForm
-// [] refactor the NbPrefix form
-// [] rename the countryInput Language
-// [] refactor the handle inputs functions (fuse them into one)
+// [X] refactor the NbPrefix form
 // [] close the country and phone prefix dropdown when clicking outside
 
 export default class PopUp {
@@ -215,6 +213,11 @@ export default class PopUp {
     this.validateForm();
   }
 
+  handleEmailInput(e) {
+    this.inputs.email = e.target.value;
+    this.validateForm();
+  }
+
   handleCountryInput(country) {
     this.inputs.country = country;
     this.validateForm();
@@ -223,11 +226,6 @@ export default class PopUp {
   handlePhoneInput(phoneNumber) {
     console.log("triggered");
     this.inputs.phone = phoneNumber;
-    this.validateForm();
-  }
-
-  handleEmailInput(e) {
-    this.inputs.email = e.target.value;
     this.validateForm();
   }
 
