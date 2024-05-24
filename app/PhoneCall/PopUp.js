@@ -73,7 +73,85 @@ const countries = [
 // [X] handle going to the second state upon click on the phone btn
 // [X] Make the pop up intro animation
 // [X] make the animation towards second state
+// [] refactor the countryForm
+// [] rename the countryForm Language
+// [] refactor the NbPrefix form
+// [] refactor the handle inputs functions (fuse them into one)
 // [] close the country and phone prefix dropdown when clicking outside
+
+class CountryForm {
+  constructor({ onCountrySelect }) {
+    this.onCountrySelect = onCountrySelect;
+
+    this.destroy = this.destroy.bind(this);
+    this.toggleCountryDropdown = this.toggleCountryDropdown.bind(this);
+    this.selectCountry = this.selectCountry.bind(this);
+
+    this.countryInput = document.querySelector(".phonePage__popup-input.country");
+    this.countryButton = this.countryInput.querySelector(".country__select-button");
+    this.countryDropdown = document.querySelector(".country__select-dropdown");
+
+    this.generateCountryOptions();
+    this.addEvents();
+  }
+
+  generateCountryOptions() {
+    const selectDropdown = this.countryDropdown;
+    countries.forEach((country) => {
+      selectDropdown.innerHTML += `
+        <li role="option">
+          <input type="radio" id=${country.label} name="country" />
+          <label for=${country.label}>${country.label}</label>
+        </li>
+      `;
+    });
+  }
+
+  toggleCountryDropdown() {
+    this.countryInput.classList.toggle("open");
+  }
+
+  selectCountry(e) {
+    if (e.target.tagName === "LABEL") {
+      const countrySpan = this.countryInput.querySelector("span");
+      const checkIcon = this.countryInput.querySelector(".check-icon");
+      countrySpan.innerHTML = e.target.innerHTML;
+      countrySpan.classList.add("selected");
+      checkIcon.style.opacity = "1";
+      this.countryInput.classList.remove("open");
+      if (this.onCountrySelect) this.onCountrySelect(countrySpan.innerText);
+    }
+  }
+
+  addEvents() {
+    this.countryButton.addEventListener("click", this.toggleCountryDropdown);
+    this.countryDropdown.addEventListener("click", this.selectCountry);
+  }
+
+  removeEvents() {
+    this.countryButton.removeEventListener("click", this.toggleCountryDropdown);
+    this.countryDropdown.removeEventListener("click", this.selectCountry);
+  }
+
+  resetDom() {
+    console.log("reset country dom");
+    this.countryDropdown.innerHTML = "";
+    const countrySpan = this.countryInput.querySelector("span");
+    countrySpan.innerText = "Country";
+    countrySpan.classList.remove("selected");
+    const checkIcon = this.countryInput.querySelector(".check-icon");
+    checkIcon.style.opacity = "0";
+  }
+
+  destroy() {
+    this.resetDom();
+    console.log("destroy country ");
+    this.removeEvents();
+    this.countryInput = null;
+    this.countryButton = null;
+    this.countryDropdown = null;
+  }
+}
 
 export default class PopUp {
   constructor({ section = "light", emitter }) {
@@ -96,8 +174,6 @@ export default class PopUp {
     this.handlePhoneInput = this.handlePhoneInput.bind(this);
     this.handleEmailInput = this.handleEmailInput.bind(this);
     this.closePopUp = this.closePopUp.bind(this);
-    this.toggleCountryDropdown = this.toggleCountryDropdown.bind(this);
-    this.selectCountry = this.selectCountry.bind(this);
     this.togglePhonePrefixDropdown = this.togglePhonePrefixDropdown.bind(this);
     this.selectPhonePrefix = this.selectPhonePrefix.bind(this);
     this.handleSubmitBtn = this.handleSubmitBtn.bind(this);
@@ -112,10 +188,6 @@ export default class PopUp {
     // -- Input elements
     this.titleInput = document.querySelector(".phonePage__popup-input.intro");
     this.promptInput = document.querySelector(".phonePage__popup-input.prompt");
-    this.countryInput = document.querySelector(".phonePage__popup-input.country");
-    this.countryButton = this.countryInput.querySelector(".country__select-button");
-    this.countryDropdown = document.querySelector(".country__select-dropdown");
-
     this.phoneNbInput = document.querySelector(".phonePage__popup-input.phoneNb");
     this.phoneNbButton = this.phoneNbInput.querySelector(".phoneNb__prefix-button");
     this.phonePrefixDropdown = document.querySelector(".phoneNb__prefix-dropdown");
@@ -125,8 +197,9 @@ export default class PopUp {
     this.wrapper.classList.remove("dark", "light");
     this.wrapper.classList.add(this.section);
 
+    this.countryForm = new CountryForm({ onCountrySelect: this.handleCountryInput });
+
     // -- Methods
-    this.generateCountryOptions();
     this.generatePhonePrefixes();
     this.addEvents();
     this.showingPopUp();
@@ -151,40 +224,6 @@ export default class PopUp {
       },
       "<"
     );
-  }
-
-  // ----- Generating all the options for the country input -----
-  generateCountryOptions() {
-    const selectDropdown = document.querySelector(".country__select-dropdown");
-    countries.forEach((country, idx) => {
-      if (idx > 5) return;
-      selectDropdown.innerHTML += `
-        <li role="option">
-          <input type="radio" id=${country.label} name="country" />
-          <label for=${country.label}>${country.label}</label>
-        </li>
-      `;
-    });
-
-    this.countryButton.addEventListener("click", this.toggleCountryDropdown);
-    this.countryDropdown.addEventListener("click", this.selectCountry);
-  }
-
-  toggleCountryDropdown() {
-    this.countryInput?.classList.toggle("open");
-  }
-
-  selectCountry(e) {
-    if (e.target.tagName === "LABEL") {
-      const countrySpan = this.countryInput.querySelector("span");
-      const checkIcon = this.countryInput.querySelector(".check-icon");
-      countrySpan.innerHTML = e.target.innerHTML;
-      countrySpan.classList.add("selected");
-      checkIcon.style.opacity = "1";
-      this.countryInput.classList.remove("open");
-      this.inputs.country = countrySpan.innerText;
-      this.validateForm();
-    }
   }
 
   // ----- Generating all the options for the phone prefix input -----
@@ -287,9 +326,8 @@ export default class PopUp {
     this.validateForm();
   }
 
-  handleCountryInput(e) {
-    const countrySelected = this.countryInput.querySelector("span");
-    this.inputs.country = countrySelected.innerText;
+  handleCountryInput(country) {
+    this.inputs.country = country;
     this.validateForm();
   }
 
@@ -336,7 +374,6 @@ export default class PopUp {
     // -- Input events
     this.titleInput?.addEventListener("input", this.handleTitleInput);
     this.promptInput?.addEventListener("input", this.handlePromptInput);
-    this.countryInput.addEventListener("input", this.handleCountryInput);
     this.phoneNbInput.addEventListener("input", this.handlePhoneInput);
     this.emailInput.addEventListener("input", this.handleEmailInput);
 
@@ -350,13 +387,9 @@ export default class PopUp {
     this.popUpBg.removeEventListener("click", this.closePopUp);
     this.titleInput?.removeEventListener("input", this.handleTitleInput);
     this.promptInput?.removeEventListener("input", this.handlePromptInput);
-    this.countryButton.removeEventListener("click", this.toggleCountryDropdown);
-    this.countryInput.removeEventListener("input", this.handleCountryInput);
     this.phoneNbButton.removeEventListener("click", this.togglePhonePrefixDropdown);
     this.phoneNbInput.removeEventListener("input", this.handlePhoneInput);
     this.emailInput.removeEventListener("input", this.handleEmailInput);
-
-    this.countryDropdown.removeEventListener("click", this.selectCountry);
     this.phonePrefixDropdown.removeEventListener("click", this.selectPhonePrefix);
 
     this.callBtn.removeEventListener("click", this.handleSubmitBtn);
@@ -367,15 +400,6 @@ export default class PopUp {
     inputs.forEach((input) => {
       input.value = "";
     });
-
-    // Clear DOM elements' content if necessary
-    const countryDropdownElement = document.querySelector(".country__select-dropdown");
-    if (countryDropdownElement) countryDropdownElement.innerHTML = "";
-    const countrySpan = this.countryInput.querySelector("span");
-    countrySpan.innerText = "Country";
-    countrySpan.classList.remove("selected");
-    const checkIcon = this.countryInput.querySelector(".check-icon");
-    checkIcon.style.opacity = "0";
 
     const phonePrefixDropdownElement = document.querySelector(".phoneNb__prefix-dropdown");
     if (phonePrefixDropdownElement) phonePrefixDropdownElement.innerHTML = "";
@@ -390,6 +414,8 @@ export default class PopUp {
     this.removeEvents();
     this.resetDom();
 
+    this.countryForm.destroy();
+
     // Nullify object references
     this.mainContainer = null;
     this.wrapper = null;
@@ -398,8 +424,6 @@ export default class PopUp {
     this.callBtn = null;
     this.titleInput = null;
     this.promptInput = null;
-    this.countryInput = null;
-    this.countryButton = null;
     this.phoneNbInput = null;
     this.phoneNbButton = null;
     this.emailInput = null;
