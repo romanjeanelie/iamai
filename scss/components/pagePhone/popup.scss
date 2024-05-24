@@ -132,7 +132,7 @@
   height: 812px;
   max-height: 95vh;
   overflow: auto;
-  padding: 104px 32px 60px;
+  padding: 104px 32px 0;
   width: 600px;
 
   @include media("<tablet") {
