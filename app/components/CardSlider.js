@@ -1,6 +1,10 @@
+import { cardsType } from "../PhoneCall/PopUp/CardSliders";
+
 export default class CardSlider {
   constructor({ container, data, handleClick }) {
+    this.data = data;
     this.container = container;
+    this.handleClick = handleClick;
 
     // DOM Elements
     this.sliderContainer = null;
@@ -23,7 +27,7 @@ export default class CardSlider {
     // Create header
     this.header = document.createElement("h2");
     this.header.className = "cardSlider__header";
-    this.header.textContent = "Test";
+    this.header.textContent = this.data.sliderHeader;
     this.sliderContainer.appendChild(this.header);
 
     // Create slider
@@ -32,19 +36,60 @@ export default class CardSlider {
     this.sliderContainer.appendChild(this.slider);
 
     // Create slider cards
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < this.data.sliderCards.length; i++) {
       const card = document.createElement("div");
       card.className = "cardSlider__slider-card";
+      this.generateCard(this.data.sliderCards[i], card);
       this.slides.push(card);
       this.slider.appendChild(card);
     }
 
     this.gutterRight = document.createElement("div");
     this.gutterRight.className = "right-gutter";
-    this.sliderContainer.appendChild(this.gutterRight);
+    this.slider.appendChild(this.gutterRight);
 
     // Append the container to the body or another parent element
     this.container.appendChild(this.sliderContainer);
+  }
+
+  generateCard(data, card) {
+    switch (data.type) {
+      case cardsType.classic:
+        card.classList.add("classic");
+        const header = document.createElement("div");
+        header.className = "cardSlider__slider-card-header";
+
+        const title = document.createElement("h3");
+        title.textContent = data.title;
+        const subTitle = document.createElement("p");
+        subTitle.textContent = data.subTitle;
+
+        header.appendChild(title);
+        header.appendChild(subTitle);
+
+        const button = document.createElement("button");
+        button.textContent = "Try Me";
+
+        button.addEventListener("click", this.handleClick);
+
+        card.style.backgroundImage = `url(${data.imgCropped})`;
+        card.appendChild(header);
+        card.appendChild(button);
+
+        break;
+
+      case cardsType.language:
+        card.classList.add("language");
+        const languageP = document.createElement("p");
+        languageP.textContent = data.title;
+        languageP.style.background = data.gradient;
+        card.appendChild(languageP);
+        break;
+
+      default:
+        card.classList.add("empty");
+        break;
+    }
   }
 
   handleSliderGutters() {
