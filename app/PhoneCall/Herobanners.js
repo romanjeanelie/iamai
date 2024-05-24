@@ -1,8 +1,10 @@
-import gsap from "gsap";
+import gsap, { Power3 } from "gsap";
 import { Flip } from "gsap/Flip";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import PopUp from "./PopUp";
 
 gsap.registerPlugin(Flip);
+gsap.registerPlugin(ScrollTrigger);
 
 export default class Herobanners {
   constructor({ emitter }) {
@@ -20,7 +22,23 @@ export default class Herobanners {
 
     // Init methods
     this.handleSwitchSections();
+    this.hideScrollIndicatorsOnScroll();
     this.addEvents();
+  }
+
+  // ---- hide scroll indicators when scrolling ----
+  hideScrollIndicatorsOnScroll() {
+    gsap.to(this.scrollIndicator, {
+      opacity: 0,
+      duration: 0.2,
+      ease: Power3.easeOut,
+      scrollTrigger: {
+        trigger: this.herobanners,
+        toggleActions: "play none none reverse",
+        start: "top top",
+        end: "top+=10% top",
+      },
+    });
   }
 
   // ----- Transition between two sections -----
