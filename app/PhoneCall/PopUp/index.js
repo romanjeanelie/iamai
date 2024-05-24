@@ -80,8 +80,9 @@ export const countries = [
 // [] close the country and phone prefix dropdown when clicking outside
 
 export default class PopUp {
-  constructor({ section = "light", emitter }) {
+  constructor({ emitter, section = "light", data }) {
     this.emitter = emitter;
+    this.data = data;
     // States
     this.section = section;
     this.isFormValid = false;
@@ -110,6 +111,7 @@ export default class PopUp {
     // -- Button Elements
     this.closeBtn = document.querySelector(".phonePage__popup-exit-btn");
     this.callBtn = document.querySelector(".phonePage__popup-phone-button");
+    this.personaContainer = document.querySelector(".phonePage__popup-persona-preview");
     // -- Input elements
     this.titleInput = document.querySelector(".phonePage__popup-input.intro");
     this.promptInput = document.querySelector(".phonePage__popup-input.prompt");
@@ -123,6 +125,7 @@ export default class PopUp {
     this.phoneInput = new PhoneInput({ onPhoneSelect: this.handlePhoneInput });
 
     // -- Methods
+    if (this.data) this.rearrangeUi();
     this.addEvents();
     this.showingPopUp();
   }
@@ -146,6 +149,27 @@ export default class PopUp {
       },
       "<"
     );
+  }
+
+  rearrangeUi() {
+    this.personaContainer.classList.add("data");
+    this.personaContainer.style.backgroundImage = `url(${this.data.imgFull})`;
+
+    const title = this.personaContainer.querySelector("h3");
+
+    title.innerText = this.data.title;
+    const description = this.personaContainer.querySelector("p");
+    description.innerText = this.data.description;
+  }
+
+  resetUi() {
+    this.personaContainer.classList.remove("data");
+    this.personaContainer.style.backgroundImage = "";
+    const title = this.personaContainer.querySelector("h3");
+    title.innerText = "Hotel Manager";
+    const description = this.personaContainer.querySelector("p");
+    description.innerText =
+      "Robust, Male, Mid 30s, American, Highly professional, Empathising, Knowledgeable, Helpful, Fast, Able to give suggestions.";
   }
 
   // ----- Adding events to the pop up -----
@@ -287,6 +311,7 @@ export default class PopUp {
   }
 
   destroy() {
+    this.resetUi();
     this.removeEvents();
     this.resetDom();
 

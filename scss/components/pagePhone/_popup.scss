@@ -5,6 +5,7 @@
   inset: 0;
   justify-content: center;
   align-items: center;
+  z-index: 10;
 }
 
 .phonePage__popup-bg {
@@ -36,6 +37,32 @@
   .phonePage__popup-persona-preview {
     background-color: $secondaryColor;
     color: $primaryColor;
+  }
+
+  .phonePage__popup-persona-preview.data {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    height: 272px;
+
+    .persona__preview-avatar-picture {
+      display: none;
+    }
+
+    h3 {
+      font-size: 28px;
+      font-weight: 600;
+      line-height: 32px; /* 114.286% */
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+
+    p {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 20px; /* 125% */
+      letter-spacing: 1px;
+    }
   }
 
   .phonePage__popup-form {

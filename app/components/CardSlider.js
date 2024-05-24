@@ -1,10 +1,10 @@
+import PopUp from "../PhoneCall/PopUp";
 import { cardsType } from "../PhoneCall/PopUp/CardSliders";
 
 export default class CardSlider {
-  constructor({ container, data, handleClick }) {
+  constructor({ container, data }) {
     this.data = data;
     this.container = container;
-    this.handleClick = handleClick;
 
     // DOM Elements
     this.sliderContainer = null;
@@ -36,10 +36,10 @@ export default class CardSlider {
     this.sliderContainer.appendChild(this.slider);
 
     // Create slider cards
-    for (let i = 0; i < this.data.sliderCards.length; i++) {
+    for (const sliderCard of this.data.sliderCards) {
       const card = document.createElement("div");
       card.className = "cardSlider__slider-card";
-      this.generateCard(this.data.sliderCards[i], card);
+      this.generateCard(sliderCard, card);
       this.slides.push(card);
       this.slider.appendChild(card);
     }
@@ -68,9 +68,9 @@ export default class CardSlider {
         header.appendChild(subTitle);
 
         const button = document.createElement("button");
-        button.textContent = "Try Me";
+        button.textContent = data.buttonText;
 
-        button.addEventListener("click", this.handleClick);
+        button.addEventListener("click", () => new PopUp({ section: "dark", data }));
 
         card.style.backgroundImage = `url(${data.imgCropped})`;
         card.appendChild(header);
