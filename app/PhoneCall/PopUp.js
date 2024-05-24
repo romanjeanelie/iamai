@@ -73,7 +73,7 @@ const countries = [
 // [X] handle going to the second state upon click on the phone btn
 // [X] Make the pop up intro animation
 // [X] make the animation towards second state
-// [] refactor the countryForm
+// [X] refactor the countryForm
 // [] rename the countryForm Language
 // [] refactor the NbPrefix form
 // [] refactor the handle inputs functions (fuse them into one)
@@ -293,6 +293,11 @@ export default class PopUp {
     return emailRegex.test(email);
   }
 
+  setFormValidity(boolean) {
+    this.isFormValid = boolean;
+    this.callBtn.disabled = !boolean;
+  }
+
   validateForm() {
     const isPhoneValid = this.validatePhoneNumber(this.inputs.phone);
     const isEmailValid = this.validateEmail(this.inputs.email);
@@ -307,11 +312,9 @@ export default class PopUp {
     }
 
     if (isPhoneValid && isEmailValid && isCountrySelected && isIntroFilled && isPromptFilled) {
-      this.isFormValid = true;
-      this.callBtn.disabled = false;
+      this.setFormValidity(true);
     } else {
-      this.isFormValid = false;
-      this.callBtn.disabled = true;
+      this.setFormValidity(false);
     }
   }
 
@@ -406,6 +409,7 @@ export default class PopUp {
     const phonePrefixSpan = this.phoneNbInput.querySelector(".phoneNb__prefix");
     phonePrefixSpan.innerText = "+XX";
 
+    this.setFormValidity(false);
     // go back to first state : form
     this.wrapper.classList.remove("discussion");
   }
