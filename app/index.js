@@ -11,9 +11,9 @@ import Slider from "./components/Slider";
 import TaskManager from "./components/TaskManager";
 import { auth } from "./firebaseConfig";
 import stopOverscroll from "./utils/stopOverscroll";
-import PreLoginContent from "./PreLoginContent";
 import animateString from "./utils/animateString";
 import WaitListForm from "./components/Login/WaitListForm";
+import PreLoginContent from "./components/PreLoginContent";
 
 const divlogin = document.getElementById("divlogin");
 
@@ -38,7 +38,6 @@ const divwaitlistform = document.getElementById("divwaitlistform");
 const divlink = document.getElementById("divlinklogout");
 const linksignout = document.getElementById("linksignout");
 const signInButtons = document.querySelectorAll(".divgoogle");
-console.log(signInButtons);
 const btnwaitlistinfosubmit = document.getElementById("btnwaitlistinfosubmit");
 const txtcompany = document.getElementById("txtcompany");
 const txttwitter = document.getElementById("txttwitter");

@@ -5,14 +5,20 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default class PreLoginContent {
   constructor() {
-    // DOMx
+    // DOM Elements
+    this.loginPage = document.querySelector(".login-page");
+    this.introContainer = document.querySelector(".divintroinfo");
     this.container = document.querySelector(".preLoginContent__container");
     this.slider = document.querySelector(".preLoginContent__slider");
     this.slides = this.slider.querySelectorAll(".preLoginContent__slider-card");
     this.gutterRight = document.querySelector(".preLoginContent__right-gutter");
     this.scrollIndicator = document.querySelector(".preLoginContent__scroll-arrow");
 
-    // init
+    if (import.meta.env.VITE_DEBUG === "true") {
+      this.introContainer.style.display = "none";
+    }
+
+    // Init methods
     this.handleSliderGutters();
     this.handleScrollIndicatorAnimation();
     this.addEvents();
@@ -42,7 +48,7 @@ export default class PreLoginContent {
   }
 
   handleSliderGutters() {
-    if (window.innerWidth >= 1200) {
+    if (window.innerWidth >= 1280) {
       const x = (window.innerWidth - 1232) / 2;
       this.slider.style.paddingLeft = `${x}px`;
     }
@@ -55,5 +61,17 @@ export default class PreLoginContent {
   addEvents() {
     window.addEventListener("resize", this.handleSliderGutters.bind(this));
     this.scrollIndicator.addEventListener("click", this.handleClickOnScrollIndicator.bind(this));
+
+    // we stop the propagation on every touch event to prevent the scroll from being stuck
+    // in the fixed positionned login page
+    this.loginPage.addEventListener("touchstart", (e) => {
+      e.stopPropagation();
+    });
+    this.loginPage.addEventListener("touchmove", (e) => {
+      e.stopPropagation();
+    });
+    this.loginPage.addEventListener("touchend", (e) => {
+      e.stopPropagation();
+    });
   }
 }
