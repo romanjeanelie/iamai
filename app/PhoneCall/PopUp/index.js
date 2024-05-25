@@ -153,7 +153,10 @@ export default class PopUp {
 
   rearrangeUi() {
     this.personaContainer.classList.add("data");
-    this.personaContainer.style.backgroundImage = `url(${this.data.imgFull})`;
+    const bgImg = this.personaContainer.querySelector(".persona__preview-background-img").querySelector("img");
+
+    bgImg.src = this.data.imgFull;
+    bgImg.alt = this.data.title;
 
     const title = this.personaContainer.querySelector("h3");
 

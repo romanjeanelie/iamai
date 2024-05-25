@@ -37,6 +37,12 @@
   .phonePage__popup-persona-preview {
     background-color: $secondaryColor;
     color: $primaryColor;
+    overflow: hidden;
+    position: relative;
+
+    .persona__preview-background-img {
+      display: none;
+    }
   }
 
   .phonePage__popup-persona-preview.data {
@@ -49,7 +55,22 @@
       display: none;
     }
 
+    .persona__preview-background-img {
+      display: block;
+      position: absolute;
+      inset: 0;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.4;
+      object-position: center;
+
+      img {
+        width: 100%;
+      }
+    }
+
     h3 {
+      z-index: 1;
       font-size: 28px;
       font-weight: 600;
       line-height: 32px; /* 114.286% */
@@ -58,6 +79,7 @@
     }
 
     p {
+      z-index: 1;
       font-size: 16px;
       font-weight: 500;
       line-height: 20px; /* 125% */
