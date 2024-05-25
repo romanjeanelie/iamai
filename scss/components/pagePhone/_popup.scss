@@ -66,6 +66,8 @@
 
       img {
         width: 100%;
+        height: 100%;
+        object-fit: cover;
       }
     }
 
@@ -481,7 +483,7 @@
     .phonePage__popup-persona-preview,
     .phonePage__popup-form,
     .phonePage__popup-phone-button {
-      display: none;
+      display: none !important;
     }
 
     .phonePage__popup-discussion-ai-title {
