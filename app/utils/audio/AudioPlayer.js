@@ -19,8 +19,6 @@ export default class AudioPlayer {
       let arrayBuffer = await response.arrayBuffer();
       let audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
 
-      console.log("AUDIO BUFFER : ", audioBuffer);
-
       this.currentAudioPlaying = this.audioContext.createBufferSource();
       this.currentAudioPlaying.buffer = audioBuffer;
       this.currentAudioPlaying.connect(this.audioContext.destination);
@@ -39,7 +37,7 @@ export default class AudioPlayer {
         }
       };
     } catch (err) {
-      console.error(err);
+      console.error("THE ERROR COMES FROM AUDIO PLAYER", err);
     }
   }
 

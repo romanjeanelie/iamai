@@ -2,9 +2,8 @@ import sendToWispher from "../../utils/audio/sendToWhisper";
 import float32ArrayToMp3Blob from "../../utils/audio/float32ArrayToMp3Blob";
 import htmlToText from "../../utils/htmlToText";
 import textToSpeech from "../../utils/textToSpeech";
-import downloadAudio from "../../utils/audio/downloadAudio";
 import PhoneAnimations from "./PhoneAnimations";
-import playAudio from "../../utils/audio/playAudio";
+
 import unlockAudio from "../../utils/audio/unlockAudio";
 import AudioPlayer from "../../utils/audio/AudioPlayer";
 import audioFlights from "/sounds/debugFlights.mp3";
@@ -174,7 +173,6 @@ export default class Phone {
 
   async startAITalking(html, targetlang) {
     if (!this.isActive) return;
-    console.log("new AIAnswer");
     if (this.debug) {
       this.isAITalking = false;
       this.onPlay();
@@ -183,10 +181,9 @@ export default class Phone {
 
     this.currentIndexTextAI === null ? (this.currentIndexTextAI = 0) : this.currentIndexTextAI++;
     const { audio, index } = await textToSpeech(htmlToText(html), targetlang, this.currentIndexTextAI);
-
     this.audiosAI[index] = audio;
 
-    if (this.currentIndexAudioAI === null) {
+    if (this.currentIndexAudioAI === null && this.audiosAI[0] !== undefined) {
       this.audioProcessing?.stopAudio();
 
       this.currentIndexAudioAI = 0;

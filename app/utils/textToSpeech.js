@@ -102,7 +102,7 @@ function getAudio(blob) {
 export default async function textToSpeech(text, targetlang, index, attempt = 0) {
   let filteredLanguages = await getlangselected(targetlang);
   console.log("textToSpeech filteredLanguages:", filteredLanguages);
-  if (!filteredLanguages || filteredLanguages[0].provider == "elevenlabs") {
+  if (!filteredLanguages.length || filteredLanguages[0].provider == "elevenlabs") {
     const headers = {
       accept: "audio/mpeg",
       "xi-api-key": ELEVENLABS_TOKEN,
