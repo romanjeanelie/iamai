@@ -21,6 +21,8 @@ export default class PhoneInput {
 
     // Methods
     this.generatePhonePrefixes();
+    // set default value as +1
+    this.setPhonePrefix({ target: { tagName: "LABEL", innerText: "+1" } });
     this.addEvents();
   }
 

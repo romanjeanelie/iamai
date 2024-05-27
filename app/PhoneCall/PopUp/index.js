@@ -36,7 +36,7 @@ export default class PopUp {
       title: "",
       prompt: "",
       country: { name: "English", code: "en-US" }, // default value
-      phone: { label: "United States", code: "+1" }, // default value
+      phone: "+1", // default value
       email: "",
     };
 
@@ -70,7 +70,7 @@ export default class PopUp {
     this.countryInput = new CountryInput({ onCountrySelect: this.handleCountryInput });
     this.phoneInput = new PhoneInput({ onPhoneSelect: this.handlePhoneInput });
 
-    // -- Methods
+    // -- Init Methods
     if (this.data) this.rearrangeUi();
     this.addEvents();
     this.showingPopUp();
