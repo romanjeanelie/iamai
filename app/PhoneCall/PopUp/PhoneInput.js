@@ -16,6 +16,7 @@ export default class PhoneInput {
 
     // Bind methods
     this.togglePhonePrefixDropdown = this.togglePhonePrefixDropdown.bind(this);
+    this.handleClickOutside = this.handleClickOutside.bind(this);
     this.setPhonePrefix = this.setPhonePrefix.bind(this);
     this.setPhoneInput = this.setPhoneInput.bind(this);
 
@@ -49,6 +50,12 @@ export default class PhoneInput {
     this.phoneNbInput.classList.toggle("open");
   }
 
+  handleClickOutside(event) {
+    if (!this.phoneNbButton.contains(event.target) && !this.phonePrefixDropdown.contains(event.target)) {
+      this.phoneNbInput.classList.remove("open");
+    }
+  }
+
   setPhoneInput(e) {
     this.phoneNumber = e.target.value;
     const phoneValue = this.phonePrefix + this.phoneNumber;
@@ -70,6 +77,7 @@ export default class PhoneInput {
     this.phoneNbButton.addEventListener("click", this.togglePhonePrefixDropdown);
     this.phonePrefixDropdown.addEventListener("click", this.setPhonePrefix);
     this.phoneNbInput.addEventListener("input", this.setPhoneInput);
+    document.addEventListener("click", this.handleClickOutside);
   }
 
   // handle all the destroy functions
@@ -77,6 +85,7 @@ export default class PhoneInput {
     this.phoneNbButton.removeEventListener("click", this.togglePhonePrefixDropdown);
     this.phonePrefixDropdown.removeEventListener("click", this.setPhonePrefix);
     this.phoneNbInput.removeEventListener("input", this.setPhoneInput);
+    document.removeEventListener("click", this.handleClickOutside);
   }
 
   resetStates() {

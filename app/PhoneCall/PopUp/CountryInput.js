@@ -12,6 +12,7 @@ export default class CountryInput {
 
     this.destroy = this.destroy.bind(this);
     this.toggleCountryDropdown = this.toggleCountryDropdown.bind(this);
+    this.handleClickOutside = this.handleClickOutside.bind(this);
     this.selectCountry = this.selectCountry.bind(this);
 
     this.countryInput = document.querySelector(".phonePage__popup-input.country");
@@ -38,6 +39,12 @@ export default class CountryInput {
     this.countryInput.classList.toggle("open");
   }
 
+  handleClickOutside(event) {
+    if (!this.countryInput.contains(event.target)) {
+      this.countryInput.classList.remove("open");
+    }
+  }
+
   selectCountry(e) {
     if (e.target.tagName === "LABEL") {
       // update the country span with the selected country + display check icon
@@ -57,11 +64,13 @@ export default class CountryInput {
   addEvents() {
     this.countryButton.addEventListener("click", this.toggleCountryDropdown);
     this.countryDropdown.addEventListener("click", this.selectCountry);
+    document.addEventListener("click", this.handleClickOutside);
   }
 
   removeEvents() {
     this.countryButton.removeEventListener("click", this.toggleCountryDropdown);
     this.countryDropdown.removeEventListener("click", this.selectCountry);
+    document.removeEventListener("click", this.handleClickOutside);
   }
 
   resetDom() {
