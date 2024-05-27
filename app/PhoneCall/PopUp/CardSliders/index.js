@@ -11,6 +11,7 @@ const overviewCards = [
     subTitle: "Try ordering food to your room",
     description:
       "It's time to indulge in some room service. Just let me know what delicious treats you're craving from the menu, and I'll take care of placing the order for you.",
+    opening: "" ,
     buttonText: "Try Me",
     imgCropped:
       "https://res.cloudinary.com/dfdqiqn98/image/upload/v1716596004/Phone-Call/Room_service-cropped_poz359.webp",

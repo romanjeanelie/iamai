@@ -201,6 +201,8 @@ export default class PopUp {
 
   handleSubmitBtn() {
     if (this.isFormValid) {
+      const UUID = crypto.randomUUID();
+
       const formElements = gsap.utils.toArray(
         ".phonePage__popup-form, .phonePage__popup-persona-preview, .phonePage__popup-phone-button"
       );
@@ -223,6 +225,117 @@ export default class PopUp {
       throw new Error("Form is not valid, please complete each field.");
     }
   }
+
+   vonage(opening, prompt, phone,languageCode,UUID) {
+    // WARNING: For POST requests, body is set to null by browsers.
+    
+    var data = JSON.stringify({
+      intro_text: opening,
+      system_prompt: prompt,
+      phone: phone,
+      language_code: languageCode,
+      web_hook_url:"",
+      nats_session_id: UUID
+    });
+  
+    var xhr = new XMLHttpRequest();
+    // xhr.withCredentials = true;
+  
+    xhr.addEventListener("readystatechange", function () {
+      if (this.readyState === 4) {
+        console.log(this.responseText);
+        // window.open('/call/call_res.html?UUID='+UUID, '_blank',);
+      }
+    });
+  
+    xhr.open("POST", "https://outbound.telephoney.iamplus.ngrok.app/call");
+    xhr.setRequestHeader("Content-Type", "application/json");
+  
+    xhr.send(data);
+  }
+
+  getcalldata = async function (uuid) {
+    // const callres = document.getElementById("callresinner");
+
+    const uuid = getQueryParam('UUID');
+    const streamName = getHash(uuid);
+    const subject = `${streamName}.call.>`;
+    console.log("subject: ", subject);
+    let nc = await connect({
+        servers: [NATS_URL],
+        user: NATS_USER,
+        pass: NATS_PASS,
+    });
+    const jsm = await nc.jetstreamManager();
+
+    let si = await jsm.streams.add({
+        name: streamName,
+        subjects: [subject]
+    });
+    console.log("Stream add_stream =", si);
+    // Add the consumer
+    si = await jsm.consumers.add(streamName, {
+        durable_name: streamName,
+        config: {
+            durable_name: streamName
+        }
+    });
+
+    const js = nc.jetstream();
+    const c = await js.consumers.get(streamName, streamName);
+    let iter = await c.consume();
+    nc.onclose = function (e) {
+        console.log("Socket is closed. Reconnect will be attempted in 1 second.", e.reason);
+        setTimeout(async function () {
+            console.log("Socket is closed. Reconnect will be attempted in 1 second.", e.reason);
+            nc = await connect({
+                servers: [NATS_URL],
+                user: NATS_USER,
+                pass: NATS_PASS,
+            });
+        }, 1000);
+    };
+
+    nc.onerror = function (err) {
+        console.error("Socket encountered error: ", err.message, "Closing socket");
+        ws.close();
+    };
+    for await (const m of iter) {
+        var mdata = m.json();
+        console.log("mdata:", mdata);
+        m.ack();
+        if (mdata.event) {
+            if (mdata.event == PHONECALLCONNECTED || mdata.event == PHONECALLENDED) {
+                const p = document.createElement("p");
+                p.className = "call__title";
+                p.innerHTML = mdata.event;
+                callres.appendChild(p)
+            } else if (mdata.event == TRANSCRIPT) {
+                if (mdata.sender == USER) {
+                    const ptitle = document.createElement("p");
+                    ptitle.className = "call__usertitle";
+                    ptitle.innerHTML = "USER";
+                    callres.appendChild(ptitle);
+                    const p = document.createElement("p");
+                    p.className = "call__user";
+                    p.innerHTML = mdata.transcript;
+                    callres.appendChild(p);
+                } else if (mdata.sender == ASSISTANT) {
+                    const ptitle = document.createElement("p");
+                    ptitle.className = "call__aititle";
+                    ptitle.innerHTML = "AI";
+                    callres.appendChild(ptitle);
+                    const p = document.createElement("p");
+                    p.className = "call__ai";
+                    p.innerHTML = mdata.transcript;
+                    callres.appendChild(p);
+                }
+            }
+        }
+
+    }
+    nc.drain();
+};
 
   addEvents() {
     this.closeBtn.addEventListener("click", this.closePopUp);
