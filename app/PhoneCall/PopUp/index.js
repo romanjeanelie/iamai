@@ -95,7 +95,16 @@ export default class PopUp {
     this.showingPopUp();
   }
 
+  blockBodyScroll() {
+    document.documentElement.classList.add("no-scroll");
+  }
+
+  unblockBodyScroll() {
+    document.documentElement.classList.remove("no-scroll");
+  }
+
   showingPopUp() {
+    this.blockBodyScroll();
     gsap.set(this.popUpBg, {
       opacity: 0,
     });
@@ -114,6 +123,22 @@ export default class PopUp {
       },
       "<"
     );
+  }
+
+  closePopUp() {
+    const tl = gsap.timeline({
+      defaults: { ease: Power3.easeOut },
+      onComplete: () => {
+        this.mainContainer.style.display = "none";
+        this.destroy();
+        this.unblockBodyScroll();
+      },
+    });
+
+    tl.to(this.popUpBg, {
+      opacity: 0,
+    });
+    tl.to(this.wrapper, { y: "100vh" }, "<");
   }
 
   initializeWithData() {
@@ -141,22 +166,6 @@ export default class PopUp {
     const description = this.personaContainer.querySelector("p");
     description.innerText =
       "Robust, Male, Mid 30s, American, Highly professional, Empathising, Knowledgeable, Helpful, Fast, Able to give suggestions.";
-  }
-
-  // ----- Adding events to the pop up -----
-  closePopUp() {
-    const tl = gsap.timeline({
-      defaults: { ease: Power3.easeOut },
-      onComplete: () => {
-        this.mainContainer.style.display = "none";
-        this.destroy();
-      },
-    });
-
-    tl.to(this.popUpBg, {
-      opacity: 0,
-    });
-    tl.to(this.wrapper, { y: "100vh" }, "<");
   }
 
   // ----- Handling form validation ------
@@ -282,7 +291,7 @@ export default class PopUp {
     return UUID;
   }
 
-  getcalldata = async function (uuid) {
+  async getcalldata(uuid) {
     // const callres = document.getElementById("callresinner"); // container for call results
     let previousRole = "";
     let lastMessageP = null; // Keep track of the last message element
@@ -380,7 +389,7 @@ export default class PopUp {
       }
     }
     nc.drain();
-  };
+  }
 
   addEvents() {
     this.closeBtn.addEventListener("click", this.closePopUp);
@@ -393,6 +402,18 @@ export default class PopUp {
 
     // -- Call button
     this.callBtn.addEventListener("click", this.handleSubmitBtn);
+
+    // we stop the propagation on every touch event to prevent the scroll from being stuck
+    // in the fixed positionned login page
+    this.mainContainer.addEventListener("touchstart", (e) => {
+      e.stopPropagation();
+    });
+    this.mainContainer.addEventListener("touchmove", (e) => {
+      e.stopPropagation();
+    });
+    this.mainContainer.addEventListener("touchend", (e) => {
+      e.stopPropagation();
+    });
   }
 
   // ----- Destroy method -----
