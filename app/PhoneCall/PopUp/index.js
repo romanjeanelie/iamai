@@ -25,6 +25,10 @@ export const countries = [
 // [X] refactor the countryForm
 // [X] refactor the NbPrefix form
 
+const defaultOpening = "Hi ! I'm costar.";
+const defaultPrompt =
+  "Robust, Male, Mid 30s, American, Highly professional, Empathising, Knowledgeable, Helpful, Fast, Able to give suggestions.";
+
 export default class PopUp {
   constructor({ emitter, section = "light", data }) {
     this.emitter = emitter;
@@ -33,8 +37,8 @@ export default class PopUp {
     this.section = section;
     this.isFormValid = false;
     this.inputs = {
-      opening: section === "light" ? "" : "Hi ! I'm costar.",
-      prompt: "",
+      opening: section === "light" ? "" : defaultOpening,
+      prompt: section === "light" ? "" : defaultPrompt,
       country: { name: "English", code: "en-US" }, // default value
       phone: "+1", // default value
       email: "",
@@ -74,7 +78,6 @@ export default class PopUp {
     if (this.data) this.initializeWithData();
     this.addEvents();
     this.showingPopUp();
-
     console.log(this.inputs);
   }
 
@@ -101,6 +104,7 @@ export default class PopUp {
 
   initializeWithData() {
     if (this.data.opening) this.inputs.opening = this.data.opening;
+    if (this.data.prompt) this.inputs.prompt = this.data.prompt;
 
     this.personaContainer.classList.add("data");
     const bgImg = this.personaContainer.querySelector(".persona__preview-background-img").querySelector("img");
@@ -164,8 +168,6 @@ export default class PopUp {
       isPromptFilled = this.inputs.prompt.trim() !== "";
     }
 
-    console.log(this.inputs);
-
     if (isPhoneValid && isCountrySelected && isOpeningFilled && isPromptFilled) {
       this.setFormValidity(true);
     } else {
@@ -175,7 +177,6 @@ export default class PopUp {
 
   // ----- Adding events to the inputs -----
   handleIntroInput(e) {
-    console.log(this.inputs);
     this.inputs.opening = e.target.value;
     this.validateForm();
   }

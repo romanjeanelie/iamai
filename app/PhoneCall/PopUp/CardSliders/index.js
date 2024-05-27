@@ -11,6 +11,8 @@ const overviewCards = [
     subTitle: "Try ordering food to your room",
     description:
       "It's time to indulge in some room service. Just let me know what delicious treats you're craving from the menu, and I'll take care of placing the order for you.",
+    prompt:
+      "It's time to indulge in some room service. Just let me know what delicious treats you're craving from the menu, and I'll take care of placing the order for you.",
     opening: "Need something special?",
     buttonText: "Try Me",
     imgCropped:
@@ -23,6 +25,8 @@ const overviewCards = [
     subTitle: "Call in your emergency",
     description:
       "For emergency services - In a life-threatening emergency, every second matters. Dial me now for immediate police, fire, or ambulance response.",
+    prompt:
+      "For emergency services - In a life-threatening emergency, every second matters. Dial me now for immediate police, fire, or ambulance response.",
     buttonText: "Try Me",
     imgCropped:
       "https://res.cloudinary.com/dfdqiqn98/image/upload/v1716595996/Phone-Call/Emergency_Services-cropped_iyomox.webp",
@@ -34,6 +38,8 @@ const overviewCards = [
     subTitle: "Try buying items over a call",
     opening: "Need something special?",
     description:
+      "Need something special? Just call me with your shopping list, and I'll take care of finding and purchasing the items you desire. Consider it done!",
+    prompt:
       "Need something special? Just call me with your shopping list, and I'll take care of finding and purchasing the items you desire. Consider it done!",
     buttonText: "Try Me",
     imgCropped:
@@ -48,6 +54,8 @@ const overviewCards = [
     opening: "Need something special?",
     description:
       "Curious about your account or credit card balance or recent transactions? Just give me a call, and I'll provide you with the information you need in a snap.",
+    prompt:
+      "Curious about your account or credit card balance or recent transactions? Just give me a call, and I'll provide you with the information you need in a snap.",
     buttonText: "Try Me",
     imgCropped: "https://res.cloudinary.com/dfdqiqn98/image/upload/v1716595994/Phone-Call/Banking-cropped_m3bnzk.webp",
     imgFull: "https://res.cloudinary.com/dfdqiqn98/image/upload/v1716595994/Phone-Call/Banking_bldyqg.webp",
@@ -58,6 +66,8 @@ const overviewCards = [
     subTitle: "Reserve a table for dinner",
     opening: "Need something special?",
     description:
+      "Craving a night out? Just tell me your favorite restaurant and preferred time, and I'll secure your table reservation hassle-free.",
+    prompt:
       "Craving a night out? Just tell me your favorite restaurant and preferred time, and I'll secure your table reservation hassle-free.",
     buttonText: "Try Me",
     imgCropped:
@@ -71,6 +81,8 @@ const overviewCards = [
     opening: "Need something special?",
     description:
       "Need a hotel room? Just give me a call and tell me your preferences. I'll handle the rest, ensuring you get the perfect room for your stay.",
+    prompt:
+      "Need a hotel room? Just give me a call and tell me your preferences. I'll handle the rest, ensuring you get the perfect room for your stay.",
     buttonText: "Try Me",
     imgCropped:
       "https://res.cloudinary.com/dfdqiqn98/image/upload/v1716596001/Phone-Call/Room_booking-cropped_hgea4l.webp",
@@ -83,6 +95,8 @@ const overviewCards = [
     opening: "Need something special?",
     description:
       "Need a little pampering? Call me with your preferred spa and treatment, and I'll take care of booking your well-deserved relaxation. ",
+    prompt:
+      "Need a little pampering? Call me with your preferred spa and treatment, and I'll take care of booking your well-deserved relaxation. ",
     buttonText: "Try Me",
     imgCropped:
       "https://res.cloudinary.com/dfdqiqn98/image/upload/v1716596006/Phone-Call/Spa_booking-cropped_yjj6vo.webp",
@@ -94,6 +108,8 @@ const overviewCards = [
     subTitle: "Buy a Gucci",
     opening: "Need something special?",
     description:
+      "Dreaming of a new Gucci bag? Simply call me with the style you desire, and I'll guide you through the purchase process from start to finish.",
+    prompt:
       "Dreaming of a new Gucci bag? Simply call me with the style you desire, and I'll guide you through the purchase process from start to finish.",
     buttonText: "Try Me",
     imgCropped: "https://res.cloudinary.com/dfdqiqn98/image/upload/v1716596001/Phone-Call/Gucci-cropped_f8zhoq.webp",
