@@ -11,6 +11,7 @@ const PHONECALLCONNECTED = "PHONE_CALL_CONNECTED",
 import gsap, { Power3 } from "gsap";
 import CountryInput from "./CountryInput";
 import PhoneInput from "./PhoneInput";
+import typeByWord from "../../utils/typeByWord";
 
 export const countries = [
   { label: "United Kingdom", code: "+44" },
@@ -216,9 +217,8 @@ export default class PopUp {
 
   handleSubmitBtn() {
     if (this.isFormValid) {
-      // const UUID = this.vonage(this.inputs.opening, this.inputs.prompt, this.inputs.phone, this.inputs.country.code);
-
-      // this.getcalldata(UUID);
+      const UUID = this.vonage(this.inputs.opening, this.inputs.prompt, this.inputs.phone, this.inputs.country.code);
+      this.getcalldata(UUID);
 
       // -- Set the discussion title --
       if (this.data?.title) {
@@ -284,7 +284,8 @@ export default class PopUp {
 
   getcalldata = async function (uuid) {
     // const callres = document.getElementById("callresinner"); // container for call results
-
+    let previousRole = "";
+    let lastMessageP = null; // Keep track of the last message element
     const streamName = uuid;
     const subject = `${streamName}.call.>`;
     console.log("subject: ", subject);
@@ -333,33 +334,48 @@ export default class PopUp {
       m.ack();
       if (mdata.event) {
         if (mdata.event == PHONECALLCONNECTED || mdata.event == PHONECALLENDED) {
-          // setting the title of the conversation
-          console.log(mdata.event);
+          if (mdata.event == PHONECALLCONNECTED) {
+            // close the pop up ?
+          }
         } else if (mdata.event == TRANSCRIPT) {
-          const answerWrapper = document.createElement("div");
-          answerWrapper.className = "phonePage__popup-discussion-wrapper";
-
-          // setting the role and the message
-          const roleP = document.createElement("p");
-          roleP.className = "message-role";
-          const messageP = document.createElement("p");
-          messageP.className = "message-content";
-
-          // appending them to the answerWrapper
-          answerWrapper.appendChild(roleP);
-          answerWrapper.appendChild(messageP);
-
+          let currentRole = "";
           if (mdata.sender == USER) {
-            answerWrapper.classList.add("user");
-            roleP.innerText = "USER";
-            messageP.innerText = mdata.transcript;
+            currentRole = "USER";
           } else if (mdata.sender == ASSISTANT) {
-            answerWrapper.classList.add("ai");
-            roleP.innerText = "AI";
-            messageP.innerText = mdata.transcript;
+            currentRole = "AI";
           }
 
-          this.discussionContainer.appendChild(answerWrapper);
+          if (previousRole !== currentRole) {
+            previousRole = currentRole;
+            const answerWrapper = document.createElement("div");
+            answerWrapper.className = "phonePage__popup-discussion-wrapper";
+
+            // setting the role and the message
+            const roleP = document.createElement("p");
+            roleP.className = "message-role";
+            const messageP = document.createElement("p");
+            messageP.className = "message-content";
+
+            // appending them to the answerWrapper
+            answerWrapper.appendChild(roleP);
+            answerWrapper.appendChild(messageP);
+
+            if (currentRole == "USER") {
+              answerWrapper.classList.add("user");
+              roleP.innerText = "USER";
+            } else if (currentRole == "AI") {
+              answerWrapper.classList.add("ai");
+              roleP.innerText = "AI";
+            }
+
+            this.discussionContainer.appendChild(answerWrapper);
+            lastMessageP = messageP; // Update the reference to the last message element
+          }
+
+          // Append new text to the existing messageP if roles are the same
+          if (lastMessageP) {
+            typeByWord(lastMessageP, mdata.transcript, 50);
+          }
         }
       }
     }

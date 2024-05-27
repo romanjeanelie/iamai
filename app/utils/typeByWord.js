@@ -1,6 +1,6 @@
 import getRemarkable from "./getRemarkable";
 
-export default function typeByWord(container, text) {
+export default function typeByWord(container, text, timeout = 10) {
   let wordIndex = 0;
 
   let answerSpan = document.createElement("span");
@@ -21,7 +21,7 @@ export default function typeByWord(container, text) {
         answerSpan.innerHTML = markdownOutput + " ";
 
         wordIndex++; // Move to the next word
-        setTimeout(type, 10); // Call this function again after a delay to simulate typing speed
+        setTimeout(type, timeout); // Call this function again after a delay to simulate typing speed
       } else {
         wordIndex = 0; // Reset the index for the next call
         resolve(); // Resolve the Promise
