@@ -73,7 +73,10 @@ export default class Herobanners {
   addEvents() {
     this.herobannerButtons.forEach((button) => {
       button.addEventListener("click", (e) => {
-        new PopUp({ section: this.section, emitter: this.emitter });
+        new PopUp({
+          section: this.section,
+          emitter: this.emitter,
+        });
       });
     });
   }

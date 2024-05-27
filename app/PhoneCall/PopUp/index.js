@@ -79,6 +79,7 @@ export default class PopUp {
     this.emailInput = document.querySelector(".phonePage__popup-input.email");
     // -- Discussion elements
     this.discussionContainer = document.querySelector(".phonePage__popup-discussion-container");
+    this.discussionTitle = document.querySelector(".phonePage__popup-discussion-ai-title");
 
     // -- Set the class of the wrapper in function of the section
     this.wrapper.classList.remove("dark", "light");
@@ -91,7 +92,6 @@ export default class PopUp {
     if (this.data) this.initializeWithData();
     this.addEvents();
     this.showingPopUp();
-    console.log(this.inputs);
   }
 
   showingPopUp() {
@@ -216,10 +216,18 @@ export default class PopUp {
 
   handleSubmitBtn() {
     if (this.isFormValid) {
-      const UUID = this.vonage(this.inputs.opening, this.inputs.prompt, this.inputs.phone, this.inputs.country.code);
+      // const UUID = this.vonage(this.inputs.opening, this.inputs.prompt, this.inputs.phone, this.inputs.country.code);
 
-      this.getcalldata(UUID);
+      // this.getcalldata(UUID);
 
+      // -- Set the discussion title --
+      if (this.data?.title) {
+        this.discussionTitle.innerText = this.data.title;
+      } else {
+        this.discussionTitle.innerText = this.section === "light" ? "Custom Service" : "Hotel Manager";
+      }
+
+      // -- Animation to the second state
       const formElements = gsap.utils.toArray(
         ".phonePage__popup-form, .phonePage__popup-persona-preview, .phonePage__popup-phone-button"
       );
