@@ -143,11 +143,6 @@ export default class PopUp {
     return phoneRegex.test(phoneNumber);
   }
 
-  validateEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  }
-
   setFormValidity(boolean) {
     this.isFormValid = boolean;
     this.callBtn.disabled = !boolean;
@@ -155,7 +150,6 @@ export default class PopUp {
 
   validateForm() {
     const isPhoneValid = this.validatePhoneNumber(this.inputs.phone);
-    const isEmailValid = this.validateEmail(this.inputs.email);
     const isCountrySelected = this.inputs.country !== null;
 
     let isIntroFilled = true;
@@ -166,7 +160,7 @@ export default class PopUp {
       isPromptFilled = this.inputs.prompt.trim() !== "";
     }
 
-    if (isPhoneValid && isEmailValid && isCountrySelected && isIntroFilled && isPromptFilled) {
+    if (isPhoneValid && isCountrySelected && isIntroFilled && isPromptFilled) {
       this.setFormValidity(true);
     } else {
       this.setFormValidity(false);
