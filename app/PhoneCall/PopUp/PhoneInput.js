@@ -85,6 +85,7 @@ export default class PhoneInput {
   }
 
   resetDom() {
+    this.phoneNbInput.classList.remove("open");
     this.phonePrefixDropdown.innerHTML = this.phoneNumber;
     this.phonePrefixSpan.innerText = this.phonePrefix;
   }

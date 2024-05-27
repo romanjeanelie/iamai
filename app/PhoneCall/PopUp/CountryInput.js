@@ -65,6 +65,7 @@ export default class CountryInput {
   }
 
   resetDom() {
+    this.countryInput.classList.remove("open");
     this.countryDropdown.innerHTML = "";
     const countrySpan = this.countryInput.querySelector("span");
     countrySpan.innerText = "Languages";
