@@ -19,6 +19,7 @@ export default class CountryInput {
     this.countryDropdown = document.querySelector(".country__select-dropdown");
 
     this.generateCountryOptions();
+    this.selectCountry({ target: { tagName: "LABEL", innerHTML: "English" } }); // default to English
     this.addEvents();
   }
 
@@ -39,13 +40,17 @@ export default class CountryInput {
 
   selectCountry(e) {
     if (e.target.tagName === "LABEL") {
+      // update the country span with the selected country + display check icon
       const countrySpan = this.countryInput.querySelector("span");
       const checkIcon = this.countryInput.querySelector(".check-icon");
       countrySpan.innerHTML = e.target.innerHTML;
       countrySpan.classList.add("selected");
       checkIcon.style.opacity = "1";
       this.countryInput.classList.remove("open");
-      if (this.onCountrySelect) this.onCountrySelect(countrySpan.innerText);
+
+      if (!this.onCountrySelect) return;
+      const countryObject = languages.find((language) => language.name === countrySpan.innerText);
+      this.onCountrySelect(countryObject);
     }
   }
 

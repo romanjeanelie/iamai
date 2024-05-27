@@ -3,6 +3,7 @@ import CountryInput from "./CountryInput";
 import PhoneInput from "./PhoneInput";
 
 export const countries = [
+  { label: "Unisted States", code: "+1" },
   { label: "Afrikaans", code: "+27" },
   { label: "Arabic", code: "+20" },
   { label: "Armenian", code: "+374" },
@@ -77,7 +78,6 @@ export const countries = [
 // [X] make the animation towards second state
 // [X] refactor the countryForm
 // [X] refactor the NbPrefix form
-// [] close the country and phone prefix dropdown when clicking outside
 
 export default class PopUp {
   constructor({ emitter, section = "light", data }) {
@@ -89,8 +89,8 @@ export default class PopUp {
     this.inputs = {
       title: "",
       prompt: "",
-      country: "",
-      phone: "",
+      country: { name: "English", code: "en-US" }, // default value
+      phone: { label: "United States", code: "+1" }, // default value
       email: "",
     };
 
@@ -210,7 +210,7 @@ export default class PopUp {
   validateForm() {
     const isPhoneValid = this.validatePhoneNumber(this.inputs.phone);
     const isEmailValid = this.validateEmail(this.inputs.email);
-    const isCountrySelected = this.inputs.country !== "";
+    const isCountrySelected = this.inputs.country !== null;
 
     let isIntroFilled = true;
     let isPromptFilled = true;
