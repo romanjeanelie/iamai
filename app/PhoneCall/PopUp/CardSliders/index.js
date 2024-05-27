@@ -11,7 +11,7 @@ const overviewCards = [
     subTitle: "Try ordering food to your room",
     description:
       "It's time to indulge in some room service. Just let me know what delicious treats you're craving from the menu, and I'll take care of placing the order for you.",
-    opening: "" ,
+    opening: "Need something special?",
     buttonText: "Try Me",
     imgCropped:
       "https://res.cloudinary.com/dfdqiqn98/image/upload/v1716596004/Phone-Call/Room_service-cropped_poz359.webp",
@@ -32,6 +32,7 @@ const overviewCards = [
   {
     title: "E-commerce Purchase",
     subTitle: "Try buying items over a call",
+    opening: "Need something special?",
     description:
       "Need something special? Just call me with your shopping list, and I'll take care of finding and purchasing the items you desire. Consider it done!",
     buttonText: "Try Me",
@@ -44,6 +45,7 @@ const overviewCards = [
   {
     title: "Banking",
     subTitle: "Check balances",
+    opening: "Need something special?",
     description:
       "Curious about your account or credit card balance or recent transactions? Just give me a call, and I'll provide you with the information you need in a snap.",
     buttonText: "Try Me",
@@ -54,6 +56,7 @@ const overviewCards = [
   {
     title: "Table Booking",
     subTitle: "Reserve a table for dinner",
+    opening: "Need something special?",
     description:
       "Craving a night out? Just tell me your favorite restaurant and preferred time, and I'll secure your table reservation hassle-free.",
     buttonText: "Try Me",
@@ -65,6 +68,7 @@ const overviewCards = [
   {
     title: "Room Booking",
     subTitle: "Book a room to stay",
+    opening: "Need something special?",
     description:
       "Need a hotel room? Just give me a call and tell me your preferences. I'll handle the rest, ensuring you get the perfect room for your stay.",
     buttonText: "Try Me",
@@ -76,6 +80,7 @@ const overviewCards = [
   {
     title: "Spa Booking",
     subTitle: "Make a reservation",
+    opening: "Need something special?",
     description:
       "Need a little pampering? Call me with your preferred spa and treatment, and I'll take care of booking your well-deserved relaxation. ",
     buttonText: "Try Me",
@@ -87,6 +92,7 @@ const overviewCards = [
   {
     title: "Gucci",
     subTitle: "Buy a Gucci",
+    opening: "Need something special?",
     description:
       "Dreaming of a new Gucci bag? Simply call me with the style you desire, and I'll guide you through the purchase process from start to finish.",
     buttonText: "Try Me",

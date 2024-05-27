@@ -33,7 +33,7 @@ export default class PopUp {
     this.section = section;
     this.isFormValid = false;
     this.inputs = {
-      title: "",
+      opening: section === "light" ? "" : "Hi ! I'm costar.",
       prompt: "",
       country: { name: "English", code: "en-US" }, // default value
       phone: "+1", // default value
@@ -41,7 +41,7 @@ export default class PopUp {
     };
 
     // Bind and store event listener references
-    this.handleTitleInput = this.handleTitleInput.bind(this);
+    this.handleIntroInput = this.handleIntroInput.bind(this);
     this.handlePromptInput = this.handlePromptInput.bind(this);
     this.handleCountryInput = this.handleCountryInput.bind(this);
     this.handlePhoneInput = this.handlePhoneInput.bind(this);
@@ -71,9 +71,11 @@ export default class PopUp {
     this.phoneInput = new PhoneInput({ onPhoneSelect: this.handlePhoneInput });
 
     // -- Init Methods
-    if (this.data) this.rearrangeUi();
+    if (this.data) this.initializeWithData();
     this.addEvents();
     this.showingPopUp();
+
+    console.log(this.inputs);
   }
 
   showingPopUp() {
@@ -97,7 +99,9 @@ export default class PopUp {
     );
   }
 
-  rearrangeUi() {
+  initializeWithData() {
+    if (this.data.opening) this.inputs.opening = this.data.opening;
+
     this.personaContainer.classList.add("data");
     const bgImg = this.personaContainer.querySelector(".persona__preview-background-img").querySelector("img");
 
@@ -152,15 +156,17 @@ export default class PopUp {
     const isPhoneValid = this.validatePhoneNumber(this.inputs.phone);
     const isCountrySelected = this.inputs.country !== null;
 
-    let isIntroFilled = true;
+    let isOpeningFilled = true;
     let isPromptFilled = true;
 
     if (this.section === "light") {
-      isIntroFilled = this.inputs.title.trim() !== "";
+      isOpeningFilled = this.inputs.opening.trim() !== "";
       isPromptFilled = this.inputs.prompt.trim() !== "";
     }
 
-    if (isPhoneValid && isCountrySelected && isIntroFilled && isPromptFilled) {
+    console.log(this.inputs);
+
+    if (isPhoneValid && isCountrySelected && isOpeningFilled && isPromptFilled) {
       this.setFormValidity(true);
     } else {
       this.setFormValidity(false);
@@ -168,8 +174,9 @@ export default class PopUp {
   }
 
   // ----- Adding events to the inputs -----
-  handleTitleInput(e) {
-    this.inputs.title = e.target.value;
+  handleIntroInput(e) {
+    console.log(this.inputs);
+    this.inputs.opening = e.target.value;
     this.validateForm();
   }
 
@@ -336,7 +343,7 @@ export default class PopUp {
     this.popUpBg.addEventListener("click", this.closePopUp);
 
     // -- Input events
-    this.titleInput?.addEventListener("input", this.handleTitleInput);
+    this.titleInput?.addEventListener("input", this.handleIntroInput);
     this.promptInput?.addEventListener("input", this.handlePromptInput);
     this.emailInput.addEventListener("input", this.handleEmailInput);
 
@@ -348,7 +355,7 @@ export default class PopUp {
   removeEvents() {
     this.closeBtn.removeEventListener("click", this.closePopUp);
     this.popUpBg.removeEventListener("click", this.closePopUp);
-    this.titleInput?.removeEventListener("input", this.handleTitleInput);
+    this.titleInput?.removeEventListener("input", this.handleIntroInput);
     this.promptInput?.removeEventListener("input", this.handlePromptInput);
     this.emailInput.removeEventListener("input", this.handleEmailInput);
 
