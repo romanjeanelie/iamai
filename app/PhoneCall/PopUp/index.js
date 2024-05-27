@@ -1,3 +1,13 @@
+import { connect, StringCodec, AckPolicy, JSONCodec } from "https://cdn.jsdelivr.net/npm/nats.ws@latest/esm/nats.js";
+const NATS_URL = import.meta.env.VITE_API_NATS_URL || "wss://nats.asterizk.ai";
+const NATS_USER = import.meta.env.VITE_API_NATS_USER || "iamplus-acc";
+const NATS_PASS = import.meta.env.VITE_API_NATS_PASS || "cis8Asto6HepremoGApI";
+const PHONECALLCONNECTED = "PHONE_CALL_CONNECTED",
+  TRANSCRIPT = "TRANSCRIPT",
+  PHONECALLENDED = "PHONE_CALL_ENDED",
+  ASSISTANT = "Assistant",
+  USER = "User";
+
 import gsap, { Power3 } from "gsap";
 import CountryInput from "./CountryInput";
 import PhoneInput from "./PhoneInput";
@@ -5,6 +15,7 @@ import PhoneInput from "./PhoneInput";
 export const countries = [
   { label: "United Kingdom", code: "+44" },
   { label: "United States", code: "+1" },
+  { label: "France", code: "+33" }, // for test purposes
   { label: "India", code: "+91" },
   { label: "Singapore", code: "+65" },
 ];
@@ -66,6 +77,8 @@ export default class PopUp {
     this.titleInput = document.querySelector(".phonePage__popup-input.intro");
     this.promptInput = document.querySelector(".phonePage__popup-input.prompt");
     this.emailInput = document.querySelector(".phonePage__popup-input.email");
+    // -- Discussion elements
+    this.discussionContainer = document.querySelector(".phonePage__popup-discussion-container");
 
     // -- Set the class of the wrapper in function of the section
     this.wrapper.classList.remove("dark", "light");
@@ -203,7 +216,7 @@ export default class PopUp {
 
   handleSubmitBtn() {
     if (this.isFormValid) {
-      const UUID = crypto.randomUUID();
+      const UUID = this.vonage(this.inputs.opening, this.inputs.prompt, this.inputs.phone, this.inputs.country.code);
 
       this.getcalldata(UUID);
 
@@ -230,9 +243,10 @@ export default class PopUp {
     }
   }
 
-  vonage(opening, prompt, phone, languageCode, UUID) {
+  vonage(opening, prompt, phone, languageCode) {
+    console.log("vonage", opening, prompt, phone, languageCode);
     // WARNING: For POST requests, body is set to null by browsers.
-
+    const UUID = crypto.randomUUID();
     var data = JSON.stringify({
       intro_text: opening,
       system_prompt: prompt,
@@ -248,7 +262,7 @@ export default class PopUp {
     xhr.addEventListener("readystatechange", function () {
       if (this.readyState === 4) {
         console.log(this.responseText);
-        // window.open('/call/call_res.html?UUID='+UUID, '_blank',);
+        // ---- HERE WE OPEN THE SECOND STATE OF THE POPUP ----
       }
     });
 
@@ -256,12 +270,14 @@ export default class PopUp {
     xhr.setRequestHeader("Content-Type", "application/json");
 
     xhr.send(data);
+
+    return UUID;
   }
 
   getcalldata = async function (uuid) {
     // const callres = document.getElementById("callresinner"); // container for call results
 
-    const streamName = getHash(uuid);
+    const streamName = uuid;
     const subject = `${streamName}.call.>`;
     console.log("subject: ", subject);
     let nc = await connect({
@@ -309,30 +325,33 @@ export default class PopUp {
       m.ack();
       if (mdata.event) {
         if (mdata.event == PHONECALLCONNECTED || mdata.event == PHONECALLENDED) {
-          const p = document.createElement("p");
-          p.className = "call__title";
-          p.innerHTML = mdata.event;
-          callres.appendChild(p);
+          // setting the title of the conversation
+          console.log(mdata.event);
         } else if (mdata.event == TRANSCRIPT) {
+          const answerWrapper = document.createElement("div");
+          answerWrapper.className = "phonePage__popup-discussion-wrapper";
+
+          // setting the role and the message
+          const roleP = document.createElement("p");
+          roleP.className = "message-role";
+          const messageP = document.createElement("p");
+          messageP.className = "message-content";
+
+          // appending them to the answerWrapper
+          answerWrapper.appendChild(roleP);
+          answerWrapper.appendChild(messageP);
+
           if (mdata.sender == USER) {
-            const ptitle = document.createElement("p");
-            ptitle.className = "call__usertitle";
-            ptitle.innerHTML = "USER";
-            callres.appendChild(ptitle);
-            const p = document.createElement("p");
-            p.className = "call__user";
-            p.innerHTML = mdata.transcript;
-            callres.appendChild(p);
+            answerWrapper.classList.add("user");
+            roleP.innerText = "USER";
+            messageP.innerText = mdata.transcript;
           } else if (mdata.sender == ASSISTANT) {
-            const ptitle = document.createElement("p");
-            ptitle.className = "call__aititle";
-            ptitle.innerHTML = "AI";
-            callres.appendChild(ptitle);
-            const p = document.createElement("p");
-            p.className = "call__ai";
-            p.innerHTML = mdata.transcript;
-            callres.appendChild(p);
+            answerWrapper.classList.add("ai");
+            roleP.innerText = "AI";
+            messageP.innerText = mdata.transcript;
           }
+
+          this.discussionContainer.appendChild(answerWrapper);
         }
       }
     }
@@ -372,6 +391,7 @@ export default class PopUp {
     this.setFormValidity(false);
     // go back to first state : form
     this.wrapper.classList.remove("discussion");
+    this.discussionContainer.innerHTML = "";
   }
 
   destroy() {
@@ -391,5 +411,6 @@ export default class PopUp {
     this.titleInput = null;
     this.promptInput = null;
     this.emailInput = null;
+    this.discussionContainer = null;
   }
 }

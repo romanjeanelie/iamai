@@ -51,10 +51,10 @@ async function load() {
   xhr.send();
 }
 
-ddus.addEventListener('change', function() {
-  if(ddus.value == "others" ){
+ddus.addEventListener("change", function () {
+  if (ddus.value == "others") {
     divprompt.style.display = "block";
-  }else{
+  } else {
     divprompt.style.display = "none";
   }
 });
@@ -64,7 +64,6 @@ btnsubmit.addEventListener("click", async function (e) {
   lang = ddlang.value;
   phonenumber = textph.value;
   opening = textopening.value;
-
 
   if (phonenumber == "") {
     alert("please enter a phone number");
@@ -106,13 +105,12 @@ btnsubmit.addEventListener("click", async function (e) {
       vonage(opening, systemPrompt, phonenumber, languageCode);
     }
   } else {
-    pilivo(lang, languageCode,systemPrompt, userPrompt, phonenumber, usermessage);
+    pilivo(lang, languageCode, systemPrompt, userPrompt, phonenumber, usermessage);
   }
 });
 
-function pilivo(lang,languageCode, systemPrompt, userPrompt, phonenumber, usermessage) {
+function pilivo(lang, languageCode, systemPrompt, userPrompt, phonenumber, usermessage) {
   uuid = crypto.randomUUID();
-  
 
   // WARNING: For POST requests, body is set to null by browsers.
   var data = JSON.stringify({
@@ -123,7 +121,7 @@ function pilivo(lang,languageCode, systemPrompt, userPrompt, phonenumber, userme
     // "phrases": "Shiju,John Wick 4,The Flash,Barbie",
     lang: lang,
     user_message: usermessage,
-    allow_user_interruptions: true
+    allow_user_interruptions: true,
   });
 
   var xhr = new XMLHttpRequest();
@@ -141,7 +139,7 @@ function pilivo(lang,languageCode, systemPrompt, userPrompt, phonenumber, userme
   xhr.send(data);
 }
 
-function vonage(opening, prompt, phone,languageCode) {
+function vonage(opening, prompt, phone, languageCode) {
   // WARNING: For POST requests, body is set to null by browsers.
   const UUID = crypto.randomUUID();
   var data = JSON.stringify({
@@ -149,8 +147,8 @@ function vonage(opening, prompt, phone,languageCode) {
     system_prompt: prompt,
     phone: phone,
     language_code: languageCode,
-    web_hook_url:"",
-    nats_session_id: UUID
+    web_hook_url: "",
+    nats_session_id: UUID,
   });
 
   var xhr = new XMLHttpRequest();
@@ -160,7 +158,7 @@ function vonage(opening, prompt, phone,languageCode) {
     if (this.readyState === 4) {
       console.log(this.responseText);
       btnsubmit.style.display = "block";
-      window.open('/call/call_res.html?UUID='+UUID, '_blank',);
+      window.open("/call/call_res.html?UUID=" + UUID, "_blank");
     }
   });
 
