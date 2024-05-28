@@ -226,7 +226,7 @@ export default class PopUp {
 
   handleSubmitBtn() {
     if (this.isFormValid) {
-      const UUID = this.vonage(this.inputs.opening, this.inputs.prompt, this.inputs.phone, this.inputs.country.code);
+      const UUID = this.vonage(this.inputs.opening, this.inputs.prompt, this.inputs.phone, this.inputs.country.code, this.inputs.email);
       this.getcalldata(UUID);
 
       // -- Set the discussion title --
@@ -260,7 +260,7 @@ export default class PopUp {
     }
   }
 
-  vonage(opening, prompt, phone, languageCode) {
+  vonage(opening, prompt, phone, languageCode, email) {
     console.log("vonage", opening, prompt, phone, languageCode);
     // WARNING: For POST requests, body is set to null by browsers.
     const UUID = crypto.randomUUID();
@@ -268,6 +268,7 @@ export default class PopUp {
       intro_text: opening,
       system_prompt: prompt,
       phone: phone,
+      email: email,
       language_code: languageCode,
       web_hook_url: "",
       nats_session_id: UUID,

@@ -27,6 +27,7 @@ export default {
         languages: resolve(__dirname, "languages.html"),
         accor: resolve(__dirname, "accor.html"),
         external: resolve(__dirname, "external.html"),
+        callservice: resolve(__dirname, "phone-call.html"),
       },
       output: {
         preserveModules: false,
