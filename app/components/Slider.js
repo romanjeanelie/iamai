@@ -152,7 +152,7 @@ export default class Slider {
   }
 
   resetImageQuestions() {
-    this.selectedCounter.remove();
+    this.selectedCounter?.remove();
     this.questionsImgs = [];
     this.sliderContentQuestionsEl.innerHTML = "";
     this.sliderContentQuestionsWrapperEl.classList.remove("show");
