@@ -4,7 +4,6 @@ const toggleActions = "play none play reverse";
 
 // ---- anim A : Hero section animation ----
 export function heroAnimation(container, text, firstItem) {
-  const isMobile = window.innerWidth < 768;
   gsap.set(text, { opacity: 0, y: 200 });
 
   if (!firstItem) {
@@ -14,7 +13,7 @@ export function heroAnimation(container, text, firstItem) {
       scrollTrigger: {
         trigger: container,
         start: "top top",
-        end: `bottom+=${isMobile ? "200" : "500"} top`,
+        end: `bottom+=200 top`,
         scrub: 0,
         pin: true,
         pinSpacing: false,

@@ -15,17 +15,6 @@ import {
   staircaseAnimation,
 } from "./BlogAnimations";
 
-// TO DO
-// [X] block the video when scroll past it
-// [X] add the unmute/mute button to the video
-// [X] push the tryCoStart Button after the clock video
-// [X] hide the tryCoStar button when on highlight video + any of the sliders
-// [X] add a mute / unmute btn to the videos
-// [X] link it to them all
-// [] compress the too large size videos
-// [] upload them to cloudinary
-// [] manage all the videos in the blog page
-
 gsap.registerPlugin(ScrollTrigger);
 
 class Blog {
