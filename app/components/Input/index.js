@@ -91,6 +91,7 @@ export default class Input {
     // Anims
     this.anims = new InputAnimations({
       pageEl: this.pageEl,
+      emitter: this.emitter,
     });
 
     // Drop Image

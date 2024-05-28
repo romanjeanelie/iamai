@@ -68,6 +68,7 @@ export default class Discussion {
     // DEBUG
     if (this.debug) {
       this.onCreatedTask();
+      this.enableInput();
     }
     // const tempContainer = document.createElement("div");
     // tempContainer.classList.add("discussion__ai");

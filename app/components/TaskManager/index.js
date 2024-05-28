@@ -1,4 +1,4 @@
-import gsap from "gsap";
+import gsap, { Power1 } from "gsap";
 import Flip from "gsap/Flip";
 import scrollToDiv from "../../utils/scrollToDiv";
 
@@ -75,6 +75,12 @@ export default class TaskManager {
     this.emitter.on("taskManager:deleteTask", (taskKey) => this.deleteTask(taskKey));
     this.emitter.on("taskManager:isHistorySet", (bool) => (this.isHistorySet = bool));
 
+    this.emitter.on("input:collapseHeight", () => {
+      if (window.innerWidth < 820) gsap.to(this.button, { y: 0, ease: Power1.easeInOut, duration: 0.4 });
+    });
+    this.emitter.on("input:expandHeight", () => {
+      if (window.innerWidth < 820) gsap.to(this.button, { y: -25, ease: Power1.easeInOut, duration: 0.25 });
+    });
     if (this.debug) {
       console.log("Debug mode enabled");
       this.debugTask = {

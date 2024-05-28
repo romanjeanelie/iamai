@@ -2,8 +2,9 @@ import isMobile from "../../utils/isMobile";
 import anim from "../../utils/anim";
 
 export default class InputAnimations {
-  constructor({ pageEl }) {
+  constructor({ pageEl, emitter }) {
     this.pageEl = pageEl;
+    this.emitter = emitter;
     this.isPageBlue = this.pageEl.classList.contains("page-blue");
 
     this.inputEl = this.pageEl.querySelector(".input__container");
@@ -116,6 +117,7 @@ export default class InputAnimations {
   }
 
   collapseHeightInputFront({ delay = 0, duration = 400 } = {}) {
+    this.emitter.emit("input:collapseHeight");
     return anim(this.inputFrontEl, [{ height: "110px" }, { height: `${this.inputFrontHeight}px` }], {
       delay,
       duration,
@@ -125,6 +127,7 @@ export default class InputAnimations {
   }
 
   expandHeightInputFront({ delay = 0, duration = 250, heighTarget = 100 } = {}) {
+    this.emitter.emit("input:expandHeight");
     return anim(this.inputFrontEl, [{ height: `${this.inputFrontHeight}px` }, { height: `${heighTarget}px` }], {
       delay,
       duration,

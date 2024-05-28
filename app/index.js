@@ -10,7 +10,6 @@ import Navbar from "./components/Navbar";
 import Slider from "./components/Slider";
 import TaskManager from "./components/TaskManager";
 import { auth } from "./firebaseConfig";
-import stopOverscroll from "./utils/stopOverscroll";
 import animateString from "./utils/animateString";
 import WaitListForm from "./components/Login/WaitListForm";
 import PreLoginContent from "./components/PreLoginContent";
@@ -71,10 +70,9 @@ class App {
 
     if (this.debug) {
       this.gui = new dat.GUI();
-      this.gui.hide();
-      // showForm();
-      // this.toPageGrey({ duration: 0 });
-      // this.initApp();
+      this.toPageGrey({ duration: 0 });
+      this.initApp();
+      this.initTaskManager();
       return;
     }
   }
