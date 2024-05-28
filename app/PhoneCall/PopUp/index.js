@@ -1,4 +1,4 @@
-import { connect, StringCodec, AckPolicy, JSONCodec } from "https://cdn.jsdelivr.net/npm/nats.ws@latest/esm/nats.js";
+import { connect } from "https://cdn.jsdelivr.net/npm/nats.ws@latest/esm/nats.js";
 const NATS_URL = import.meta.env.VITE_API_NATS_URL || "wss://nats.asterizk.ai";
 const NATS_USER = import.meta.env.VITE_API_NATS_USER || "iamplus-acc";
 const NATS_PASS = import.meta.env.VITE_API_NATS_PASS || "cis8Asto6HepremoGApI";

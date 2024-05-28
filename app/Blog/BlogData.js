@@ -1,5 +1,5 @@
 export const heroData = [
-  "Our expert <br class='desktop-break'/> fine-tuning <br class='mobile-break'/> of LLaMA 3 <br/>70B has created <br class='mobile-break'/> a powerful <br/>Personal AI Assistant.",
+  "TLDR",
   "Introducing CO* <br /> World’s First <br /> Personal AI Assistant.",
   "Revolutionise how you <br /> get things done.",
   "CO* converses <br class='mobile-break' /> naturally and <br class='desktop-break' /> tackles real-world tasks like a <br class='desktop-break' /> human assistant.",
@@ -8,7 +8,7 @@ export const heroData = [
   "CO* effortlessly <br class='sm-mobile-break' /> juggles multiple <br class='desktop-break' /> conversations and <br class='sm-mobile-break' /> tasks <br class='desktop-break' /> maximising <br class='sm-mobile-break' />  your time <br class='desktop-break' /> and efficiency.",
   "CO* is multilingual.<br/> Speaks several languages fluently.",
   "Powered by open-source <br class='desktop-break' /> innovation.",
-  "Our expert fine-tuning <br class='sm-mobile-break' /> of LLaMA <br class='desktop-break' /> 70B  <br class='sm-mobile-break' /> model has <br /> created a powerful <br /> Personal AI Assistant.",
+  "Our expert <br class='desktop-break'/> fine-tuning <br class='mobile-break'/> of LLaMA 3 <br/>70B has created <br class='mobile-break'/> a powerful <br/>Personal AI Assistant.",
   "With <br /> Advanced planning. <br/> Advanced reasoning. <br />Task execution.",
   "CO* tackles <br class='sm-mobile-break' />  complex tasks. <br />  Breaks tasks down.<br /> Execute steps. <br /> Adapts on the fly <br class='sm-mobile-break' />  for <br class='desktop-break' /> successful completion.",
   "We all want more <br class='sm-mobile-break' />  time, less hassle.<br /> That's why we <br class='sm-mobile-break' />  created CO*",

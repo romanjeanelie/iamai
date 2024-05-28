@@ -28,4 +28,11 @@
       text-align: left;
     }
   }
+
+  .first-section h1 {
+    font-size: clamp(60px, 7vw, 80px);
+    font-weight: 700;
+    line-height: 84px;
+    letter-spacing: 0.5px;
+  }
 }
