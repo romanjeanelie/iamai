@@ -43,7 +43,7 @@ export default class PreLoginContent {
   }
 
   handleClickOnScrollIndicator() {
-    const cta = document.querySelector(".preLoginContent__ctas.mobile");
+    const cta = document.querySelector(".preLoginContent__ctas");
     cta.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 
