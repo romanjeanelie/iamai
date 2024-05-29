@@ -5,16 +5,16 @@
   $maxWidth: 1232px;
 
   background-color: $background;
-  padding: 80px 0 198px;
+  padding: 80px 0 0;
   font-family: "SFPro";
   position: relative;
 
   @media screen and (max-height: 800px) {
-    padding: 60px 0 120px;
+    padding: 60px 0 0;
   }
 
   @include media("<tablet") {
-    padding: 24px 0 120px;
+    padding: 24px 0 143px;
   }
 
   .x-container {
@@ -93,20 +93,11 @@
     }
   }
 
-  .preLoginContent__ctas-placeholder {
-    margin-top: 24px;
-    height: 24px;
-
-    @include media("<tablet") {
-      height: 0;
-      margin-top: 0;
-    }
-  }
-
   .preLoginContent__fixed-footer {
+    display: none;
     position: sticky;
-    top: calc(100vh - (115px + 60px));
-    top: calc(100svh - (115px + 60px));
+    top: calc(100vh - (16px + 40px));
+    top: calc(100svh - (16px + 40px));
     bottom: 120px;
     left: 50%;
     transform: translate(-50%, 0);
@@ -115,12 +106,7 @@
     float: left;
 
     @include media("<tablet") {
-      top: calc(100vh - (16px + 40px));
-      top: calc(100svh - (16px + 40px));
-
-      .preLoginContent__ctas {
-        display: none;
-      }
+      display: block;
     }
   }
 
@@ -128,17 +114,25 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
+    gap: 48px;
     text-align: center;
+    height: 100vh;
+    height: 100svh;
+
+    @include media("<tablet") {
+      height: auto;
+      margin-top: 64px;
+      gap: 40px;
+    }
 
     p {
-      padding: 10px 0;
       color: #c6c6c6;
-
-      font-size: 16px;
+      font-size: clamp(48px, 5vw, 72px);
       font-weight: 600;
-      line-height: 20px; /* 125% */
+      line-height: 100%;
       letter-spacing: 1px;
+      white-space: wrap;
 
       @include media("<tablet") {
         font-size: 12px;
@@ -194,15 +188,6 @@
           font-size: 12px;
           line-height: 16px; /* 133.333% */
         }
-      }
-    }
-
-    &.mobile {
-      display: none;
-
-      @include media("<tablet") {
-        display: flex;
-        margin-top: 40px;
       }
     }
   }
