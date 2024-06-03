@@ -21,7 +21,7 @@ export default class Herobanners {
     this.herobannerButtons = document.querySelectorAll(".herobanner__button");
 
     // Init methods
-    this.handleSwitchSections();
+
     this.hideScrollIndicatorsOnScroll();
     this.addEvents();
   }
@@ -53,20 +53,27 @@ export default class Herobanners {
     });
   }
 
-  handleSwitchSections() {
-    this.herobanners.addEventListener("scroll", (e) => {
-      const maxScrollLeft = e.target.scrollWidth - e.target.clientWidth;
-      const scrollValueNormalized = e.target.scrollLeft / maxScrollLeft;
+  handleSwitchSections(e) {
+    const maxScrollLeft = e.target.scrollWidth - e.target.clientWidth;
+    const scrollValueNormalized = e.target.scrollLeft / maxScrollLeft;
 
-      if (scrollValueNormalized > 0.5) {
-        if (this.section === "light") return;
-        this.section = "light";
-        this.animateScrollIndicators();
-      } else {
-        if (this.section === "dark") return;
-        this.section = "dark";
-        this.animateScrollIndicators();
-      }
+    if (scrollValueNormalized > 0.5) {
+      if (this.section === "light") return;
+      this.section = "light";
+      this.animateScrollIndicators();
+    } else {
+      if (this.section === "dark") return;
+      this.section = "dark";
+      this.animateScrollIndicators();
+    }
+  }
+
+  handleClickScrollIndicator() {
+    const scrollValue = this.section === "dark" ? this.lightSection.offsetLeft : this.darkSection.offsetLeft;
+    this.herobanners.scrollTo({
+      left: scrollValue,
+      behavior: "smooth",
+      duration: 0.1,
     });
   }
 
@@ -79,5 +86,9 @@ export default class Herobanners {
         });
       });
     });
+
+    this.scrollIndicator.addEventListener("click", this.handleClickScrollIndicator.bind(this));
+
+    this.herobanners.addEventListener("scroll", this.handleSwitchSections.bind(this));
   }
 }
