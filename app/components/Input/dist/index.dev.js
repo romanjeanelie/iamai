@@ -74,7 +74,8 @@ function () {
     this.centerBtn = this.inputFrontEl.querySelector(".center-btn");
     this.frontCameraBtn = this.inputFrontEl.querySelector(".camera-btn");
     this.frontMicBtn = this.inputFrontEl.querySelector(".mic-btn");
-    this.frontCenterBtn = this.inputFrontEl.querySelector(".center-btn"); // Image
+    this.frontCenterBtn = this.inputFrontEl.querySelector(".center-btn");
+    this.frontVideoBtn = this.inputFrontEl.querySelector(".video-btn"); // Image
 
     this.backCameraBtn = this.inputBackEl.querySelector(".camera-btn");
     this.closeInputImageBtn = this.pageEl.querySelector(".input__image--closeBtn");
@@ -103,7 +104,8 @@ function () {
     this.isPageBlue = this.pageEl.classList.contains("page-blue"); // Anims
 
     this.anims = new _InputAnimations["default"]({
-      pageEl: this.pageEl
+      pageEl: this.pageEl,
+      emitter: this.emitter
     }); // Drop Image
 
     this.inputImage = new _InputImage["default"]({
@@ -333,6 +335,7 @@ function () {
     key: "onSubmit",
     value: function onSubmit(event) {
       event.preventDefault();
+      console.log("ON SUBMIT FUNCTION : ", this.inputText.value);
       console.time("input");
 
       if (this.isPageBlue) {
@@ -445,6 +448,10 @@ function () {
 
           _this4.backMicBtnContainer.classList.remove("active");
         }
+      }); // Video
+      // TODO : Add the transition on hover for the video button on mobile
+
+      this.frontVideoBtn.addEventListener("click", function () {// on click
       }); // Image
 
       this.frontCameraBtn.addEventListener("click", function () {

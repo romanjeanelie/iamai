@@ -1,0 +1,8 @@
+.input__video--container {
+  background: $backgroundColorGreyPage;
+  position: fixed;
+  z-index: 10;
+  opacity: 0;
+  inset: 0;
+  pointer-events: none;
+}

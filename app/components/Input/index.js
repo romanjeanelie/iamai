@@ -56,6 +56,7 @@ export default class Input {
     this.frontCameraBtn = this.inputFrontEl.querySelector(".camera-btn");
     this.frontMicBtn = this.inputFrontEl.querySelector(".mic-btn");
     this.frontCenterBtn = this.inputFrontEl.querySelector(".center-btn");
+    this.frontVideoBtn = this.inputFrontEl.querySelector(".video-btn");
 
     // Image
     this.backCameraBtn = this.inputBackEl.querySelector(".camera-btn");
@@ -236,6 +237,7 @@ export default class Input {
   // Submit
   onSubmit(event) {
     event.preventDefault();
+    console.log("ON SUBMIT FUNCTION : ", this.inputText.value);
     console.time("input");
     if (this.isPageBlue) {
       this.toPageGrey({ duration: 1200 });
@@ -325,6 +327,12 @@ export default class Input {
         this.stopRecording();
         this.backMicBtnContainer.classList.remove("active");
       }
+    });
+
+    // Video
+    // TODO : Add the transition on hover for the video button on mobile
+    this.frontVideoBtn.addEventListener("click", () => {
+      // on click
     });
 
     // Image

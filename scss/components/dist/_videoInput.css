@@ -1,0 +1,6 @@
+.input__video--container {
+  background: red;
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+}
