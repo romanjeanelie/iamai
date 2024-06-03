@@ -120,6 +120,12 @@
     // initial height used for animation
     height: 48px;
 
+    .callAndVideo-wrapper {
+      position: relative;
+      display: flex;
+      // gap: 16px;
+    }
+
     .camera-btn {
       position: relative;
       .icon-upload {
@@ -138,10 +144,27 @@
     }
 
     .camera-btn,
+    .video-btn,
     .phone-btn {
       svg path,
       svg circle {
         stroke: rgba($colorBlueText, 0.6);
+      }
+    }
+
+    .video-btn svg {
+      width: 26px;
+      margin-left: 16px;
+      path {
+        fill: rgba($colorBlueText, 0.6);
+      }
+
+      @include media("<tablet") {
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin-left: 0;
+        opacity: 0;
       }
     }
 
