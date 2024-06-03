@@ -12,6 +12,7 @@ import InputAnimations from "./InputAnimations";
 import sendToWispher from "../../utils/audio/sendToWhisper";
 
 import { colorMain } from "../../../scss/variables/_colors.module.scss";
+import InputVideo from "./InputVideo";
 
 function isLetterKey(event) {
   console.log("event.key", event.key);
@@ -115,6 +116,7 @@ export default class Input {
       this.emitter
     );
 
+    this.inputVideo = new InputVideo(this.emitter);
     // Phone
     if (!this.isPageBlue) {
       this.phone = new Phone({
@@ -329,12 +331,6 @@ export default class Input {
       }
     });
 
-    // Video
-    // TODO : Add the transition on hover for the video button on mobile
-    this.frontVideoBtn.addEventListener("click", () => {
-      // on click
-    });
-
     // Image
     this.frontCameraBtn.addEventListener("click", () => {
       this.currentStatus = STATUS.UPLOAD_IMAGE;
@@ -355,6 +351,11 @@ export default class Input {
       this.currentStatus = STATUS.INITIAL;
       this.inputImage.disable();
       this.anims.leaveDragImage();
+    });
+
+    // Video
+    this.frontVideoBtn.addEventListener("click", () => {
+      this.emitter.emit("input:displayVideoInput");
     });
 
     // Prevent input hidden by keyboard on mobile

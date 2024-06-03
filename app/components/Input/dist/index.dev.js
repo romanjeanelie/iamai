@@ -23,6 +23,8 @@ var _sendToWhisper = _interopRequireDefault(require("../../utils/audio/sendToWhi
 
 var _colorsModule = require("../../../scss/variables/_colors.module.scss");
 
+var _InputVideo = _interopRequireDefault(require("./InputVideo"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -129,7 +131,8 @@ function () {
           disableInput: false
         });
       }
-    }, this.pageEl, this.emitter); // Phone
+    }, this.pageEl, this.emitter);
+    this.inputVideo = new _InputVideo["default"](this.emitter); // Phone
 
     if (!this.isPageBlue) {
       this.phone = new _Phone["default"]({
@@ -448,10 +451,6 @@ function () {
 
           _this4.backMicBtnContainer.classList.remove("active");
         }
-      }); // Video
-      // TODO : Add the transition on hover for the video button on mobile
-
-      this.frontVideoBtn.addEventListener("click", function () {// on click
       }); // Image
 
       this.frontCameraBtn.addEventListener("click", function () {
@@ -485,6 +484,10 @@ function () {
         _this4.inputImage.disable();
 
         _this4.anims.leaveDragImage();
+      }); // Video
+
+      this.frontVideoBtn.addEventListener("click", function () {
+        _this4.emitter.emit("input:displayVideoInput");
       }); // Prevent input hidden by keyboard on mobile
 
       if ((0, _isMobile["default"])()) {
