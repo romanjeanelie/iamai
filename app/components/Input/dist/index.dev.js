@@ -131,8 +131,8 @@ function () {
           disableInput: false
         });
       }
-    }, this.pageEl, this.emitter);
-    this.inputVideo = new _InputVideo["default"](this.emitter); // Phone
+    }, this.pageEl, this.emitter); // this.inputVideo = new InputVideo(this.emitter);
+    // Phone
 
     if (!this.isPageBlue) {
       this.phone = new _Phone["default"]({

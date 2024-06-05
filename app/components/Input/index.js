@@ -116,7 +116,7 @@ export default class Input {
       this.emitter
     );
 
-    this.inputVideo = new InputVideo(this.emitter);
+    // this.inputVideo = new InputVideo(this.emitter);
     // Phone
     if (!this.isPageBlue) {
       this.phone = new Phone({
