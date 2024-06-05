@@ -16,10 +16,11 @@ export default class InputVideo {
     this.addEvents();
 
     if (this.debug) {
-      this.displayVideoInput();
+      // this.displayVideoInput();
     }
   }
 
+  // PROTO VERSION OF THE FUNCTION
   linkCameraToVideo() {
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: false })
@@ -33,7 +34,6 @@ export default class InputVideo {
   }
 
   displayVideoInput() {
-    console.log("displayVideoInput");
     this.container.classList.add("visible");
   }
 
