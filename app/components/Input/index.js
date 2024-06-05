@@ -13,6 +13,7 @@ import sendToWispher from "../../utils/audio/sendToWhisper";
 
 import { colorMain } from "../../../scss/variables/_colors.module.scss";
 import InputVideo from "./InputVideo";
+import LongPress from "../../utils/longPress";
 
 function isLetterKey(event) {
   console.log("event.key", event.key);
@@ -354,6 +355,10 @@ export default class Input {
     });
 
     // Video
+    this.longPress = new LongPress(this.inputFrontEl, () => {
+      console.log("long press");
+    });
+
     this.frontVideoBtn.addEventListener("click", () => {
       this.emitter.emit("input:displayVideoInput");
     });

@@ -7,6 +7,7 @@ export default class InputAnimations {
     this.emitter = emitter;
     this.isPageBlue = this.pageEl.classList.contains("page-blue");
 
+    // Dom Elements
     this.inputEl = this.pageEl.querySelector(".input__container");
     this.inputFrontEl = this.inputEl.querySelector(".input__front");
     this.inputBackEl = this.inputEl.querySelector(".input__back");
