@@ -11,4 +11,12 @@
     opacity: 1;
     pointer-events: all;
   }
+
+  .input__video--camera {
+    height: min(60vh, 718px);
+
+    video {
+      height: 100%;
+    }
+  }
 }

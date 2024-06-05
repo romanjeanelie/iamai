@@ -7,6 +7,8 @@ export default class InputVideo {
 
     // Dom elements
     this.container = document.querySelector(".input__video--container");
+    this.video = document.querySelector(".input__video--camera video");
+
     // Bindings
     this.displayVideoInput = this.displayVideoInput.bind(this);
 
@@ -16,6 +18,18 @@ export default class InputVideo {
     if (this.debug) {
       this.displayVideoInput();
     }
+  }
+
+  linkCameraToVideo() {
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: false })
+      .then((stream) => {
+        this.video.srcObject = stream;
+        this.video.play();
+      })
+      .catch((err) => {
+        console.error(`An error occurred: ${err}`);
+      });
   }
 
   displayVideoInput() {
