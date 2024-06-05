@@ -1,7 +1,8 @@
 export default class LongPress {
-  constructor(element, callback, duration = 3000) {
+  constructor(element, callback, cancelCallback, duration = 3000) {
     this.element = element;
     this.callback = callback;
+    this.cancelCallback = cancelCallback;
     this.duration = duration;
     this.timeoutId = null;
 
@@ -11,15 +12,25 @@ export default class LongPress {
 
     // Add event listeners
     this.addEvents();
+    console.log("long press");
   }
 
   handleStartPress() {
-    this.timeoutId = setTimeout(this.callback, this.duration);
+    console.log("start press");
+    this.timeoutId = setTimeout(() => {
+      this.callback();
+      this.timeoutId = null; // Clear timeout ID after callback execution
+    }, this.duration);
   }
 
   handleCancelPress() {
-    clearTimeout(this.timeoutId);
-    this.timeoutId = null;
+    console.log("cancel press");
+    if (this.timeoutId === null) {
+      this.cancelCallback();
+    } else {
+      clearTimeout(this.timeoutId);
+      this.timeoutId = null;
+    }
   }
 
   addEvents() {

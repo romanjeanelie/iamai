@@ -403,8 +403,7 @@ function () {
       var _this4 = this;
 
       // Write
-      this.centerBtn.addEventListener("click", function () {
-        _this4.toWrite();
+      this.centerBtn.addEventListener("click", function () {// this.toWrite();
       });
       document.addEventListener("keydown", function (event) {
         if (!_this4.isActive) return;
@@ -488,9 +487,7 @@ function () {
         _this4.anims.leaveDragImage();
       }); // Video
 
-      this.longPress = new _longPress["default"](this.inputFrontEl, function () {
-        console.log("long press");
-      });
+      this.longPress = new _longPress["default"](this.inputFrontEl, this.anims.displaySwipeInfo, this.anims.removeSwipeInfo, 200);
       this.frontVideoBtn.addEventListener("click", function () {
         _this4.emitter.emit("input:displayVideoInput");
       }); // Prevent input hidden by keyboard on mobile

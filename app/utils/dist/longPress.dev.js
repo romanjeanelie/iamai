@@ -14,13 +14,14 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var LongPress =
 /*#__PURE__*/
 function () {
-  function LongPress(element, callback) {
-    var duration = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 3000;
+  function LongPress(element, callback, cancelCallback) {
+    var duration = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 3000;
 
     _classCallCheck(this, LongPress);
 
     this.element = element;
     this.callback = callback;
+    this.cancelCallback = cancelCallback;
     this.duration = duration;
     this.timeoutId = null; // Bind the event handlers
 
@@ -28,18 +29,32 @@ function () {
     this.handleCancelPress = this.handleCancelPress.bind(this); // Add event listeners
 
     this.addEvents();
+    console.log("long press");
   }
 
   _createClass(LongPress, [{
     key: "handleStartPress",
     value: function handleStartPress() {
-      this.timeoutId = setTimeout(this.callback, this.duration);
+      var _this = this;
+
+      console.log("start press");
+      this.timeoutId = setTimeout(function () {
+        _this.callback();
+
+        _this.timeoutId = null; // Clear timeout ID after callback execution
+      }, this.duration);
     }
   }, {
     key: "handleCancelPress",
     value: function handleCancelPress() {
-      clearTimeout(this.timeoutId);
-      this.timeoutId = null;
+      console.log("cancel press");
+
+      if (this.timeoutId === null) {
+        this.cancelCallback();
+      } else {
+        clearTimeout(this.timeoutId);
+        this.timeoutId = null;
+      }
     }
   }, {
     key: "addEvents",

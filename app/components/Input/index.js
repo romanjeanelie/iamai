@@ -284,7 +284,7 @@ export default class Input {
   addListeners() {
     // Write
     this.centerBtn.addEventListener("click", () => {
-      this.toWrite();
+      // this.toWrite();
     });
     document.addEventListener(
       "keydown",
@@ -355,9 +355,7 @@ export default class Input {
     });
 
     // Video
-    this.longPress = new LongPress(this.inputFrontEl, () => {
-      console.log("long press");
-    });
+    this.longPress = new LongPress(this.inputFrontEl, this.anims.displaySwipeInfo, this.anims.removeSwipeInfo, 200);
 
     this.frontVideoBtn.addEventListener("click", () => {
       this.emitter.emit("input:displayVideoInput");

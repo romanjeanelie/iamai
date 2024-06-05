@@ -71,7 +71,7 @@ class App {
     if (this.debug) {
       this.toPageGrey({ duration: 0 });
       this.initApp();
-      this.initTaskManager();
+      // this.initTaskManager();
       return;
     }
   }

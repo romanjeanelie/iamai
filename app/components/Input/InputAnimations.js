@@ -1,3 +1,4 @@
+import gsap, { Power3 } from "gsap";
 import isMobile from "../../utils/isMobile";
 import anim from "../../utils/anim";
 
@@ -7,6 +8,10 @@ export default class InputAnimations {
     this.emitter = emitter;
     this.isPageBlue = this.pageEl.classList.contains("page-blue");
 
+    // States
+    this.displaySwipeInfo = this.displaySwipeInfo.bind(this);
+    this.removeSwipeInfo = this.removeSwipeInfo.bind(this);
+
     // Dom Elements
     this.inputEl = this.pageEl.querySelector(".input__container");
     this.inputFrontEl = this.inputEl.querySelector(".input__front");
@@ -14,10 +19,9 @@ export default class InputAnimations {
 
     this.centerBtn = this.inputFrontEl.querySelector(".center-btn");
     this.frontCameraBtn = this.inputFrontEl.querySelector(".camera-btn");
-    this.frontMicBtn = this.inputFrontEl.querySelector(".mic-btn") || this.inputFrontEl.querySelector(".phone-btn");
+    this.frontMicBtn = this.inputFrontEl.querySelector(".phone-btn");
     this.frontCenterBtn = this.inputFrontEl.querySelector(".center-btn");
-
-    this.inputFrontHeight = this.inputFrontEl.offsetHeight;
+    this.frontVideoBtn = this.inputFrontHeight = this.inputFrontEl.offsetHeight;
 
     // Record
     // Front input
@@ -233,6 +237,57 @@ export default class InputAnimations {
       this.inputText.focus();
       this.inputText.setSelectionRange(this.inputText.value.length, this.inputText.value.length);
     }
+  }
+
+  /**
+   * To Swipe info
+   */
+  displaySwipeInfo() {
+    if (!isMobile()) return;
+    this.swipeInfoTl = gsap.timeline({
+      defaults: {
+        ease: Power3.easeOut,
+        duration: 0.3,
+      },
+    });
+
+    const phoneBtn = this.inputFrontEl.querySelector(".phone-btn");
+    const videoBtn = this.inputFrontEl.querySelector(".video-btn");
+    const swipeP = this.inputFrontEl.querySelector(".swipe-info-p");
+
+    this.swipeInfoTl.to([this.centerBtn, phoneBtn], {
+      opacity: 0,
+      x: -50,
+    });
+
+    this.swipeInfoTl.fromTo(
+      videoBtn,
+      {
+        x: 50,
+      },
+      {
+        opacity: 1,
+        x: -28,
+      }
+    );
+
+    this.swipeInfoTl.fromTo(
+      swipeP,
+      {
+        x: 50,
+      },
+      {
+        x: 0,
+        opacity: 1,
+      },
+      "<+=0.1"
+    );
+  }
+
+  removeSwipeInfo() {
+    if (!isMobile()) return;
+    console.log("remove Swipe Info");
+    this.swipeInfoTl.reverse();
   }
 
   /**
