@@ -84,7 +84,7 @@ class Chat {
     this.callbacks.disableInput();
   }
 
-  callsubmit = async (text, img, container) => {
+  callsubmit = async (text, img, container, live_mode=false) => {
     this.container = container;
     var input_text = text;
     var original_text = input_text;
@@ -104,9 +104,10 @@ class Chat {
         this.submituserreply(
           input_text,
           this.workflowID,
-          img.map((imgs) => imgs.src)
+          img.map((imgs) => imgs.src),
+          live_mode
         );
-      } else this.submituserreply(input_text, this.workflowID, img);
+      } else this.submituserreply(input_text, this.workflowID, img,live_mode);
     } else {
       this.workflowID = this.sessionID;
       var xhr = new XMLHttpRequest();
@@ -611,7 +612,7 @@ class Chat {
     return str && str.length > n ? str.slice(0, n - 1) + "&hellip;" : str;
   }
 
-  submituserreply(text, suworkflowid, img) {
+  submituserreply(text, suworkflowid, img, live_mode) {
     var data = "";
     if (img && img.length > 0) {
       data = JSON.stringify({
@@ -625,6 +626,7 @@ class Chat {
         user_data: {
           type: "image",
           url: img,
+          live_mode: live_mode
         },
       });
     } else {
