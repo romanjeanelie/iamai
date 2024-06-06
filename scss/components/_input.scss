@@ -182,6 +182,7 @@
       flex: 1;
 
       p {
+        // Position
         position: absolute;
         inset: 0;
         opacity: 0;
@@ -189,7 +190,28 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        color: $colorBlueText;
+        // Typography
+        font-family: "SFPro";
+        font-size: 16px;
+        font-weight: 500;
+        letter-spacing: 0.64px;
+        // Gradient
+        background: -webkit-linear-gradient(-45deg, #95a3b0 0%, #dddddd 50%, #95a3b0 100%);
+        background-size: 200% 200%;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: gradient 2s ease-out infinite;
+      }
+
+      @keyframes gradient {
+        0% {
+          background-position-x: 200%;
+        }
+
+        100% {
+          background-position-x: 0%;
+        }
       }
     }
 

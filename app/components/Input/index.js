@@ -42,6 +42,7 @@ const STATUS = {
 export default class Input {
   constructor({ pageEl, isActive, toPageGrey, discussion, emitter }) {
     this.isActive = isActive;
+    this.debug = import.meta.env.VITE_DEBUG === "true";
 
     this.toPageGrey = toPageGrey;
     this.discussion = discussion;
@@ -129,6 +130,10 @@ export default class Input {
           toStopPhoneRecording: () => this.anims.toStopPhoneRecording(),
         },
       });
+    }
+
+    if (this.debug) {
+      // this.anims.displaySwipeInfo();
     }
 
     this.addListeners();
@@ -284,7 +289,7 @@ export default class Input {
   addListeners() {
     // Write
     this.centerBtn.addEventListener("click", () => {
-      // this.toWrite();
+      this.toWrite();
     });
     document.addEventListener(
       "keydown",
@@ -356,7 +361,6 @@ export default class Input {
 
     // Video
     this.longPress = new LongPress(this.inputFrontEl, this.anims.displaySwipeInfo, this.anims.removeSwipeInfo, 200);
-
     this.frontVideoBtn.addEventListener("click", () => {
       this.emitter.emit("input:displayVideoInput");
     });

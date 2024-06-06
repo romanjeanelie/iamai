@@ -58,27 +58,26 @@ export default class InputAnimations {
 
   // Presets
   fadeInButtons(delay = 0, duration = 500) {
-    anim([this.frontMicBtn, this.frontCameraBtn, this.frontCenterBtn], [{ opacity: 0 }, { opacity: 1 }], {
-      delay,
-      duration,
-      fill: "forwards",
-      ease: "ease-in-out",
+    gsap.to([this.frontMicBtn, this.frontCameraBtn, this.frontCenterBtn], {
+      opacity: 1,
+      duration: duration / 1000,
+      ease: Power3.easeInOut,
+      delay: delay / 1000,
     });
   }
 
   fadeOutButtons(delay = 0, duration = 500) {
-    anim([this.frontMicBtn, this.frontCameraBtn, this.frontCenterBtn], [{ opacity: 1 }, { opacity: 0 }], {
-      delay,
-      duration,
-      fill: "forwards",
-      ease: "ease-in-out",
+    gsap.to([this.frontMicBtn, this.frontCameraBtn, this.frontCenterBtn], {
+      opacity: 0,
+      duration: duration / 1000,
+      ease: Power3.easeInOut,
+      delay: delay / 1000,
     });
   }
 
   fadeInCategoriesAndCaroussel(delay = 0) {
     anim([this.categoriesListEl, this.carousselEl], [{ opacity: 0 }, { opacity: 1 }], {
       delay,
-
       duration: 500,
       fill: "forwards",
       ease: "ease-in-out",
@@ -243,7 +242,9 @@ export default class InputAnimations {
    * To Swipe info
    */
   displaySwipeInfo() {
+    console.log("display Swipe Info");
     if (!isMobile()) return;
+
     this.swipeInfoTl = gsap.timeline({
       defaults: {
         ease: Power3.easeOut,
@@ -255,10 +256,14 @@ export default class InputAnimations {
     const videoBtn = this.inputFrontEl.querySelector(".video-btn");
     const swipeP = this.inputFrontEl.querySelector(".swipe-info-p");
 
-    this.swipeInfoTl.to([this.centerBtn, phoneBtn], {
-      opacity: 0,
-      x: -50,
-    });
+    this.swipeInfoTl.fromTo(
+      [this.centerBtn, phoneBtn],
+      { opacity: 1 },
+      {
+        opacity: 0,
+        x: -50,
+      }
+    );
 
     this.swipeInfoTl.fromTo(
       videoBtn,

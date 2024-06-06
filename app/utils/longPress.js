@@ -35,6 +35,7 @@ export default class LongPress {
 
   addEvents() {
     this.element.addEventListener("mousedown", this.handleStartPress);
+    this.element.addEventListener("mouseleave", this.handleCancelPress);
     this.element.addEventListener("mouseup", this.handleCancelPress);
     this.element.addEventListener("touchstart", this.handleStartPress);
     this.element.addEventListener("touchend", this.handleCancelPress);
@@ -43,6 +44,7 @@ export default class LongPress {
 
   destroy() {
     this.element.removeEventListener("mousedown", this.handleStartPress);
+    this.element.removeEventListener("mouseleave", this.handleCancelPress);
     this.element.removeEventListener("mouseup", this.handleCancelPress);
     this.element.removeEventListener("touchstart", this.handleStartPress);
     this.element.removeEventListener("touchend", this.handleCancelPress);
