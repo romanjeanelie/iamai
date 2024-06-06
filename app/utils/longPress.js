@@ -1,5 +1,3 @@
-import { set } from "firebase/database";
-
 export default class LongPress {
   constructor(element, callback, cancelCallback, duration = 3000) {
     this.element = element;
@@ -17,11 +15,9 @@ export default class LongPress {
 
     // Add event listeners
     this.addEvents();
-    console.log("long press");
   }
 
   handleStartPress() {
-    console.log("start press");
     this.timeoutId = setTimeout(() => {
       this.callback();
       this.active = true;
@@ -30,7 +26,6 @@ export default class LongPress {
   }
 
   handleCancelPress() {
-    console.log("cancel press");
     if (this.timeoutId === null) {
       this.cancelCallback();
     } else {

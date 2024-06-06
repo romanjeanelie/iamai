@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _database = require("firebase/database");
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -33,7 +31,6 @@ function () {
     this.handleCancelPress = this.handleCancelPress.bind(this); // Add event listeners
 
     this.addEvents();
-    console.log("long press");
   }
 
   _createClass(LongPress, [{
@@ -41,7 +38,6 @@ function () {
     value: function handleStartPress() {
       var _this = this;
 
-      console.log("start press");
       this.timeoutId = setTimeout(function () {
         _this.callback();
 
@@ -53,8 +49,6 @@ function () {
     key: "handleCancelPress",
     value: function handleCancelPress() {
       var _this2 = this;
-
-      console.log("cancel press");
 
       if (this.timeoutId === null) {
         this.cancelCallback();
