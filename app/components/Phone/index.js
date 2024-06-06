@@ -70,7 +70,7 @@ export default class Phone {
     this.addListeners();
 
     // Debug
-    this.debug = false;
+    this.debug = true;
     this.debugIOSAnim = false;
     this.debugFlights = false;
 

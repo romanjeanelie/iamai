@@ -17,8 +17,27 @@
 }
 
 .input__video--phone-container {
-  height: 136px;
   flex: none;
+  padding: 34px 0 16px;
+
+  .input__video--timer {
+    color: $colorBlueText;
+
+    font-family: "SFPro";
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px; /* 125% */
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .phone__container {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+  }
 
   @include media("<phone") {
     padding-top: 96px;
