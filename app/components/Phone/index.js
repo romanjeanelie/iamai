@@ -70,7 +70,7 @@ export default class Phone {
     this.addListeners();
 
     // Debug
-    this.debug = true;
+    this.debug = false;
     this.debugIOSAnim = false;
     this.debugFlights = false;
 
@@ -364,12 +364,14 @@ export default class Phone {
       phoneBtn.addEventListener("click", async () => {
         this.audioContext = unlockAudio();
         this.anims.toStartPhoneRecording();
-        if (this.debug) {
-          this.startConnecting();
-          return;
-        }
         this.startRecording();
       });
+    });
+
+    this.emitter.on("input:displayVideoInput", () => {
+      this.audioContext = unlockAudio();
+      this.anims.toStartPhoneRecording();
+      this.startRecording();
     });
 
     // Close
