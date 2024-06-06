@@ -4,8 +4,8 @@
   z-index: 10;
   opacity: 0;
   inset: 0;
-
   display: flex;
+  pointer-events: none;
   flex-direction: column;
   justify-content: space-between;
   transition: opacity 0.3s ease-out;
@@ -17,48 +17,69 @@
 }
 
 .input__video--phone-container {
-  background-color: green;
   height: 136px;
-  flex: 1;
+  flex: none;
 
   @include media("<phone") {
     padding-top: 96px;
   }
-
-  .content {
-    background-color: lightcoral;
-    height: 100%;
-  }
 }
 
 .input__video--camera {
-  background-color: blue;
-  flex-grow: 1;
+  position: relative;
+  flex-grow: 1; // Take up remaining space
+  display: flex; // Ensure it can contain the video properly
+  align-items: center; // Center the video vertically
+  justify-content: center; // Center the video horizontally
 
   video {
+    position: absolute;
     height: 100%;
-    width: 100%; // Ensuring video takes full width
+    inset: 0;
+    object-fit: cover;
   }
 }
 
 .input__video--footer {
-  flex: 1;
-  background-color: salmon;
+  flex: none;
   padding: 24px 0 46px;
 
+  @include media("<phone") {
+    padding: 24px 0 32px;
+  }
+
   .input__video--buttons-wrapper {
-    // max-width: 360px;
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     row-gap: 30px;
     column-gap: 74px;
-    background-color: green;
   }
 
   .input__video--button {
-    border: 1px solid red;
     height: 60px;
+    width: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 60px;
+    background-color: rgba($colorBlueText, 0.03);
+    transition: background-color ease-out 0.2s;
+
+    * {
+      transition: all ease-out 0.2s;
+    }
+
+    &:hover {
+      background-color: $colorBlueText;
+
+      rect,
+      path,
+      mask {
+        fill: white;
+        stroke: white;
+      }
+    }
   }
 }

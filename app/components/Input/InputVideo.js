@@ -21,6 +21,7 @@ export default class InputVideo {
     this.displayVideoInput = this.displayVideoInput.bind(this);
 
     // Init Methods
+    this.linkCameraToVideo();
     this.addEvents();
 
     if (this.debug) {
