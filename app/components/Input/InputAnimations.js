@@ -1,6 +1,7 @@
 import gsap, { Power3 } from "gsap";
 import isMobile from "../../utils/isMobile";
 import anim from "../../utils/anim";
+import SlideDetect from "../../utils/slideDetect";
 
 export default class InputAnimations {
   constructor({ pageEl, emitter }) {
@@ -8,9 +9,16 @@ export default class InputAnimations {
     this.emitter = emitter;
     this.isPageBlue = this.pageEl.classList.contains("page-blue");
 
-    // States
+    // Bindings
     this.displaySwipeInfo = this.displaySwipeInfo.bind(this);
     this.removeSwipeInfo = this.removeSwipeInfo.bind(this);
+    this.isSlideInfoVisible = false;
+    this.slideDetect = new SlideDetect({
+      rightSlideCallback: () => {
+        if (!this.isSlideInfoVisible) return;
+        alert("show video mon cul");
+      },
+    });
 
     // Dom Elements
     this.inputEl = this.pageEl.querySelector(".input__container");
@@ -242,7 +250,6 @@ export default class InputAnimations {
    * To Swipe info
    */
   displaySwipeInfo() {
-    console.log("display Swipe Info");
     if (!isMobile()) return;
 
     this.swipeInfoTl = gsap.timeline({
@@ -250,20 +257,19 @@ export default class InputAnimations {
         ease: Power3.easeOut,
         duration: 0.3,
       },
+      onComplete: () => {
+        this.isSlideInfoVisible = true;
+      },
     });
 
     const phoneBtn = this.inputFrontEl.querySelector(".phone-btn");
     const videoBtn = this.inputFrontEl.querySelector(".video-btn");
     const swipeP = this.inputFrontEl.querySelector(".swipe-info-p");
 
-    this.swipeInfoTl.fromTo(
-      [this.centerBtn, phoneBtn],
-      { opacity: 1 },
-      {
-        opacity: 0,
-        x: -50,
-      }
-    );
+    this.swipeInfoTl.to([this.centerBtn, phoneBtn], {
+      opacity: 0,
+      x: -50,
+    });
 
     this.swipeInfoTl.fromTo(
       videoBtn,
@@ -291,7 +297,7 @@ export default class InputAnimations {
 
   removeSwipeInfo() {
     if (!isMobile()) return;
-    console.log("remove Swipe Info");
+    this.swipeInfoTl.eventCallback("onReverseComplete", () => (this.isSlideInfoVisible = false));
     this.swipeInfoTl.reverse();
   }
 

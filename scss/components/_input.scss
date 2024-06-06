@@ -202,6 +202,11 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         animation: gradient 2s ease-out infinite;
+        // Avoid user selection
+        user-select: none;
+        -webkit-user-select: none; /* Safari */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
       }
 
       @keyframes gradient {
@@ -218,6 +223,10 @@
     .center-btn {
       color: rgba($colorBlueText, 0.72);
       font-size: 20px;
+      user-select: none;
+      -webkit-user-select: none; /* Safari */
+      -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
 
       @media (max-height: 780px) {
         font-size: 18px;

@@ -1,20 +1,19 @@
 // Components
-import InputImage from "./InputImage";
-import Phone from "../Phone";
 import TypingText from "../../TypingText";
+import Phone from "../Phone";
+import InputImage from "./InputImage";
 
 // Utils
-import minSecStr from "../../utils/minSecStr";
 import isMobile from "../../utils/isMobile";
+import minSecStr from "../../utils/minSecStr";
 
 import AudioRecorder from "../../AudioRecorder";
-import InputAnimations from "./InputAnimations";
 import sendToWispher from "../../utils/audio/sendToWhisper";
+import InputAnimations from "./InputAnimations";
 
 import { colorMain } from "../../../scss/variables/_colors.module.scss";
-import InputVideo from "./InputVideo";
 import LongPress from "../../utils/longPress";
-import SlideDetect from "../../utils/slideDetect";
+import InputVideo from "./InputVideo";
 
 function isLetterKey(event) {
   console.log("event.key", event.key);
@@ -363,16 +362,8 @@ export default class Input {
     });
 
     // Video
-    new SlideDetect();
 
-    this.longPress = new LongPress(
-      this.inputFrontEl,
-      this.anims.displaySwipeInfo,
-      () => {
-        this.anims.removeSwipeInfo();
-      },
-      200
-    );
+    this.longPress = new LongPress(this.inputFrontEl, this.anims.displaySwipeInfo, this.anims.removeSwipeInfo, 200);
     this.frontVideoBtn.addEventListener("click", () => {
       this.emitter.emit("input:displayVideoInput");
     });

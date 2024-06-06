@@ -1,21 +1,24 @@
 export default class SlideDetect {
-  constructor() {
-    this.xDown = null;
-    this.threshold = 5;
+  constructor({ leftSlideCallback, rightSlideCallback }) {
+    this.leftSlideCallback = leftSlideCallback;
+    this.rightSlideCallback = rightSlideCallback;
 
+    // States
+    this.xDown = null;
+    this.threshold = 0;
+
+    // Bind Methods
+    this.handleTouchStart = this.handleTouchStart.bind(this);
+    this.handleTouchMove = this.handleTouchMove.bind(this);
+    this.handleMouseStart = this.handleMouseStart.bind(this);
+    this.handleMouseUp = this.handleMouseUp.bind(this);
+
+    // Init Methods
     this.addEvents();
   }
 
-  getTouches(evt) {
-    console.log(evt);
-    return (
-      evt.touches || // browser API
-      evt.originalEvent.touches
-    ); // jQuery
-  }
-
   handleTouchStart(evt) {
-    const firstTouch = this.getTouches(evt)[0];
+    const firstTouch = evt.touches[0];
     this.xDown = firstTouch.clientX;
   }
 
@@ -23,11 +26,10 @@ export default class SlideDetect {
     if (!this.xDown) return;
     let xUp = evt.touches[0].clientX;
     let xDiff = this.xDown - xUp;
-    console.log(xDiff);
     if (Math.abs(xDiff) > this.threshold && xDiff > 0) {
-      console.log("left swipe");
+      this.leftSlideCallback();
     } else if (Math.abs(xDiff) > this.threshold && xDiff < 0) {
-      console.log("right swipe");
+      this.rightSlideCallback();
     }
     /* reset values */
     this.xDown = null;
@@ -41,19 +43,28 @@ export default class SlideDetect {
     if (!this.xDown) return;
     let xUp = evt.clientX;
     let xDiff = this.xDown - xUp;
-    if (Math.abs(xDiff) > this.threshold && xDiff > 0) {
-      console.log("left swipe");
-    } else if (Math.abs(xDiff) > this.threshold && xDiff < 0) {
-      console.log("right swipe");
+    if (xDiff > 0) {
+      this.leftSlideCallback();
+    } else if (xDiff < 0) {
+      this.rightSlideCallback();
     }
     /* reset values */
     this.xDown = null;
   }
 
   addEvents() {
-    document.addEventListener("mousedown", this.handleMouseStart.bind(this), false);
-    document.addEventListener("mouseup", this.handleMouseUp.bind(this), false);
-    document.addEventListener("touchstart", this.handleTouchStart.bind(this), false);
-    document.addEventListener("touchmove", this.handleTouchMove.bind(this), false);
+    document.addEventListener("mousedown", this.handleMouseStart, false);
+    document.addEventListener("mouseup", this.handleMouseUp, false);
+    document.addEventListener("touchstart", this.handleTouchStart, false);
+    document.addEventListener("touchmove", this.handleTouchMove, false);
+  }
+
+  destroy() {
+    console.log("destroy slide detect");
+    document.removeEventListener("mousedown", this.handleMouseStart, false);
+    document.removeEventListener("mouseup", this.handleMouseUp, false);
+    document.removeEventListener("touchstart", this.handleTouchStart, false);
+    document.removeEventListener("touchmove", this.handleTouchMove, false);
+    this.xDown = null;
   }
 }

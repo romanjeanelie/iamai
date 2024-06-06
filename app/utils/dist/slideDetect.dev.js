@@ -14,25 +14,30 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var SlideDetect =
 /*#__PURE__*/
 function () {
-  function SlideDetect() {
+  function SlideDetect(_ref) {
+    var leftSlideCallback = _ref.leftSlideCallback,
+        rightSlideCallback = _ref.rightSlideCallback;
+
     _classCallCheck(this, SlideDetect);
 
+    this.leftSlideCallback = leftSlideCallback;
+    this.rightSlideCallback = rightSlideCallback; // States
+
     this.xDown = null;
-    this.threshold = 5;
+    this.threshold = 0; // Bind Methods
+
+    this.handleTouchStart = this.handleTouchStart.bind(this);
+    this.handleTouchMove = this.handleTouchMove.bind(this);
+    this.handleMouseStart = this.handleMouseStart.bind(this);
+    this.handleMouseUp = this.handleMouseUp.bind(this); // Init Methods
+
     this.addEvents();
   }
 
   _createClass(SlideDetect, [{
-    key: "getTouches",
-    value: function getTouches(evt) {
-      console.log(evt);
-      return evt.touches || // browser API
-      evt.originalEvent.touches; // jQuery
-    }
-  }, {
     key: "handleTouchStart",
     value: function handleTouchStart(evt) {
-      var firstTouch = this.getTouches(evt)[0];
+      var firstTouch = evt.touches[0];
       this.xDown = firstTouch.clientX;
     }
   }, {
@@ -41,12 +46,11 @@ function () {
       if (!this.xDown) return;
       var xUp = evt.touches[0].clientX;
       var xDiff = this.xDown - xUp;
-      console.log(xDiff);
 
       if (Math.abs(xDiff) > this.threshold && xDiff > 0) {
-        console.log("left swipe");
+        this.leftSlideCallback();
       } else if (Math.abs(xDiff) > this.threshold && xDiff < 0) {
-        console.log("right swipe");
+        this.rightSlideCallback();
       }
       /* reset values */
 
@@ -65,10 +69,10 @@ function () {
       var xUp = evt.clientX;
       var xDiff = this.xDown - xUp;
 
-      if (Math.abs(xDiff) > this.threshold && xDiff > 0) {
-        console.log("left swipe");
-      } else if (Math.abs(xDiff) > this.threshold && xDiff < 0) {
-        console.log("right swipe");
+      if (xDiff > 0) {
+        this.leftSlideCallback();
+      } else if (xDiff < 0) {
+        this.rightSlideCallback();
       }
       /* reset values */
 
@@ -78,10 +82,20 @@ function () {
   }, {
     key: "addEvents",
     value: function addEvents() {
-      document.addEventListener("mousedown", this.handleMouseStart.bind(this), false);
-      document.addEventListener("mouseup", this.handleMouseUp.bind(this), false);
-      document.addEventListener("touchstart", this.handleTouchStart.bind(this), false);
-      document.addEventListener("touchmove", this.handleTouchMove.bind(this), false);
+      document.addEventListener("mousedown", this.handleMouseStart, false);
+      document.addEventListener("mouseup", this.handleMouseUp, false);
+      document.addEventListener("touchstart", this.handleTouchStart, false);
+      document.addEventListener("touchmove", this.handleTouchMove, false);
+    }
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      console.log("destroy slide detect");
+      document.removeEventListener("mousedown", this.handleMouseStart, false);
+      document.removeEventListener("mouseup", this.handleMouseUp, false);
+      document.removeEventListener("touchstart", this.handleTouchStart, false);
+      document.removeEventListener("touchmove", this.handleTouchMove, false);
+      this.xDown = null;
     }
   }]);
 
