@@ -485,10 +485,10 @@ function () {
 
         _this4.anims.leaveDragImage();
       }); // Video
-
-      this.frontVideoBtn.addEventListener("click", function () {
-        _this4.emitter.emit("input:displayVideoInput");
-      }); // Prevent input hidden by keyboard on mobile
+      // this.frontVideoBtn.addEventListener("click", () => {
+      //   this.emitter.emit("input:displayVideoInput");
+      // });
+      // Prevent input hidden by keyboard on mobile
 
       if ((0, _isMobile["default"])()) {
         this.inputImageEl.addEventListener("focus", function (e) {

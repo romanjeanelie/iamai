@@ -354,9 +354,9 @@ export default class Input {
     });
 
     // Video
-    this.frontVideoBtn.addEventListener("click", () => {
-      this.emitter.emit("input:displayVideoInput");
-    });
+    // this.frontVideoBtn.addEventListener("click", () => {
+    //   this.emitter.emit("input:displayVideoInput");
+    // });
 
     // Prevent input hidden by keyboard on mobile
     if (isMobile()) {
