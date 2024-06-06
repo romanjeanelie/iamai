@@ -1,6 +1,4 @@
 import anim from "../../utils/anim";
-import { isSafari } from "../../utils/detectNavigators";
-import isMobile from "../../utils/isMobile";
 
 export default class PhoneAnimations {
   constructor({ pageEl }) {

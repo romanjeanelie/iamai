@@ -362,7 +362,6 @@ export default class Input {
     });
 
     // Video
-
     this.longPress = new LongPress(this.inputFrontEl, this.anims.displaySwipeInfo, this.anims.removeSwipeInfo, 200);
     this.frontVideoBtn.addEventListener("click", () => {
       this.emitter.emit("input:displayVideoInput");

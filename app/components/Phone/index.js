@@ -76,7 +76,6 @@ export default class Phone {
 
     if (this.debug) {
       this.phoneDebugContainer.classList.add("show");
-
       this.anims.toStartPhoneRecording();
       this.startConnecting();
     }

@@ -16,7 +16,7 @@ export default class InputAnimations {
     this.slideDetect = new SlideDetect({
       rightSlideCallback: () => {
         if (!this.isSlideInfoVisible) return;
-        alert("show video mon cul");
+        this.emitter.emit("input:displayVideoInput");
       },
     });
 
