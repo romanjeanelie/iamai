@@ -4,15 +4,15 @@
 // [X] MAKE THE SWIPE EVENT HANDLER
 // [X] STUDY THE PHONE CLASS TO SEE IF WE CAN REPLICATE IT OR IF WE NEED TO MOVE IT AS IT IS IN THE VIDEO INPUT
 // [X] INTEGRATE THE VIDEO INPUT
-// [] trigger the phone process when launching video input
-// [] INTEGRATE THE PHONE ANIMATION
+// [X] trigger the phone process when launching video input
+// [X] INTEGRATE THE PHONE ANIMATION
 // [] ON START : LAUNCH THE TIMER
 // [] LINK THE CANCEL BUTTON WITH GOING BACK
 // [] LINK THE PAUSE BUTTON WITH PAUSING THE CONVERSATION
 // [] LINK THE REVERSE BUTTON WITH REVERSING THE CAMERA
 // [] LINK THE MUTE BUTTON WITH MUTING THE AI
 // [] MAKE THE VIDEO TAKE 1 PHOTO EACH SECOND
-// [] when resize the video the video-btn is still opacity: 0
+// [] when resize the video the video-btn is still opacity: 0 and translateX: 50
 
 import PhoneAnimations from "../Phone/PhoneAnimations";
 
@@ -75,6 +75,32 @@ export default class InputVideo {
   addEvents() {
     // Emitter events
     this.emitter.on("input:displayVideoInput", this.displayVideoInput);
+    this.emitter.on("phone:connected", () => {
+      this.phoneAnimations.toConnected();
+      this.phoneAnimations.newInfoText("connected");
+    });
+
+    this.emitter.on("phone:talkToMe", () => {
+      this.phoneAnimations.toTalkToMe();
+      this.phoneAnimations.newInfoText("Talk to me");
+    });
+
+    this.emitter.on("phone:listening", () => {
+      this.phoneAnimations.toListening();
+      this.phoneAnimations.newInfoText("I'm listening");
+    });
+
+    this.emitter.on("phone:processing", () => {
+      this.phoneAnimations.newInfoText("processing");
+      this.phoneAnimations.toProcessing();
+    });
+
+    this.emitter.on("phone:AItalking", () => {
+      this.phoneAnimations.newInfoText("Click to interrupt");
+      this.phoneAnimations.toAITalking();
+    });
+
+    this.emitter.on("phone:leave", this.phoneAnimations.leave.bind(this.phoneAnimations));
 
     // DOM events
     this.exitBtn.addEventListener("click", this.hideVideoInput.bind(this));

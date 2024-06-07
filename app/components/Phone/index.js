@@ -91,6 +91,8 @@ export default class Phone {
     this.phoneAnimations.toConnected();
     this.phoneAnimations.newInfoText("connected");
     console.log("connected");
+
+    this.emitter.emit("phone:connected");
     if (this.debug) return;
 
     this.audioConnected = new AudioPlayer({
@@ -113,6 +115,7 @@ export default class Phone {
     this.phoneAnimations.leave();
     this.stopRecording();
     this.stopAITalking();
+    this.emitter.emit("phone:leave");
   }
 
   toTalkToMe() {
@@ -124,6 +127,8 @@ export default class Phone {
     this.phoneAnimations.toTalkToMe();
     this.phoneAnimations.newInfoText("Talk to me");
     if (this.myvad) this.myvad.start();
+
+    this.emitter.emit("phone:talkToMe");
   }
 
   toListening() {
@@ -133,13 +138,14 @@ export default class Phone {
     this.isListening = true;
     console.log("I'm listening");
     this.phoneAnimations.newInfoText("I'm listening");
+    this.emitter.emit("phone:listening");
   }
 
   async toProcessing(audio) {
     this.phoneAnimations.newInfoText("processing");
     this.phoneAnimations.toProcessing();
     console.log("processing");
-
+    this.emitter.emit("phone:processing");
     if (this.debugIOSAnim) {
       this.discussion.addUserElement({ text: "Hi I am a test", debug: true });
       return;
@@ -165,6 +171,7 @@ export default class Phone {
     if (!this.isAITalking) {
       this.phoneAnimations.newInfoText("Click to interrupt");
       this.phoneAnimations.toAITalking();
+      this.emitter.emit("phone:AITalking");
     }
     this.isAITalking = true;
     this.onClickOutside.interrupt = true;
@@ -318,6 +325,7 @@ export default class Phone {
     this.phoneAnimations.newInfoText("Click to resume");
     this.phoneAnimations.toPause("AI");
     this.pauseBtn.classList.add("active");
+    this.emitter.emit("phone:pauseAI");
 
     this.onClickOutside.interrupt = false;
     this.onClickOutside.resumeAI = true;
@@ -330,6 +338,7 @@ export default class Phone {
     this.isAIPaused = false;
     this.phoneAnimations.toResume("AI");
     this.pauseBtn.classList.remove("active");
+    this.emitter.emit("phone:resumeAI");
     this.currentAudioAIPlaying?.resumeAudio();
 
     this.onClickOutside.resumeAI = false;
@@ -340,6 +349,7 @@ export default class Phone {
     this.phoneAnimations.toPause("user");
     this.phoneAnimations.newInfoText("Click to resume");
     console.log("mute mic");
+    this.emitter.emit("phone:muteMic");
     this.pauseBtn.classList.add("active");
 
     this.onClickOutside.unmuteMic = true;
@@ -352,6 +362,7 @@ export default class Phone {
     this.phoneAnimations.toResume("user");
     this.phoneAnimations.newInfoText("Start talking");
     this.pauseBtn.classList.remove("active");
+    this.emitter.emit("phone:unmuteMic");
 
     this.onClickOutside.unmuteMic = false;
     if (this.debug) return;

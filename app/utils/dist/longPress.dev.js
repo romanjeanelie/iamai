@@ -25,8 +25,7 @@ function () {
     this.duration = duration;
     this.timeoutId = null; // States
 
-    this.active = false;
-    console.log("LONG PRESS"); // Bind the event handlers
+    this.active = false; // Bind the event handlers
 
     this.handleStartPress = this.handleStartPress.bind(this);
     this.handleCancelPress = this.handleCancelPress.bind(this); // Add event listeners

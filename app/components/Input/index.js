@@ -132,10 +132,6 @@ export default class Input {
       });
     }
 
-    if (this.debug) {
-      // this.anims.displaySwipeInfo();
-    }
-
     this.addListeners();
 
     // Emitter
@@ -159,7 +155,6 @@ export default class Input {
 
   // Write
   toWrite({ delay = 0, animButtons = true, animLogos = true, type = null, placeholder = "", focus = true } = {}) {
-    console.log("from TOWRITE : ", this.longPress.active);
     if (this.longPress.active) return;
     if (type === "imageQuestions") {
       if (this.currentStatus !== STATUS.UPLOAD_IMAGE) {

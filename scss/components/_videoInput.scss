@@ -33,9 +33,16 @@
   .phone__container {
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 16px;
     position: relative;
     opacity: 1;
     visibility: visible;
+
+    .phone__bottom {
+      width: inherit;
+    }
   }
 
   @include media("<phone") {
