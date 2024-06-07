@@ -153,6 +153,8 @@
     }
 
     .video-btn {
+      opacity: 1;
+
       @include media("<tablet") {
         opacity: 0;
         pointer-events: none;

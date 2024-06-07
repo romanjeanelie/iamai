@@ -8,6 +8,7 @@ export default class LongPress {
 
     // States
     this.active = false;
+    console.log("LONG PRESS");
 
     // Bind the event handlers
     this.handleStartPress = this.handleStartPress.bind(this);

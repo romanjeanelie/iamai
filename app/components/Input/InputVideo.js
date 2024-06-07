@@ -12,6 +12,7 @@
 // [] LINK THE REVERSE BUTTON WITH REVERSING THE CAMERA
 // [] LINK THE MUTE BUTTON WITH MUTING THE AI
 // [] MAKE THE VIDEO TAKE 1 PHOTO EACH SECOND
+// [] when resize the video the video-btn is still opacity: 0
 
 import PhoneAnimations from "../Phone/PhoneAnimations";
 
@@ -25,6 +26,7 @@ export default class InputVideo {
     // Dom elements
     this.container = document.querySelector(".input__video--container");
     this.video = document.querySelector(".input__video--camera video");
+    this.exitBtn = document.querySelector(".input__video--button.exit-btn");
 
     // Phone Animations
     this.phoneAnimations = new PhoneAnimations({
@@ -37,7 +39,6 @@ export default class InputVideo {
     // Init Methods
     this.phoneAnimations.toConnecting();
     this.phoneAnimations.newInfoText("connecting");
-    this.linkCameraToVideo();
     this.addEvents();
 
     if (this.debug) {
@@ -60,13 +61,22 @@ export default class InputVideo {
 
   displayVideoInput() {
     this.container.classList.add("visible");
+    this.linkCameraToVideo();
   }
 
   hideVideoInput() {
+    if (this.video.srcObject) {
+      this.video.srcObject.getTracks().forEach((track) => track.stop());
+      this.video.srcObject = null;
+    }
     this.container.classList.remove("visible");
   }
 
   addEvents() {
+    // Emitter events
     this.emitter.on("input:displayVideoInput", this.displayVideoInput);
+
+    // DOM events
+    this.exitBtn.addEventListener("click", this.hideVideoInput.bind(this));
   }
 }
