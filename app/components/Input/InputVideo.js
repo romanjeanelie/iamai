@@ -6,11 +6,12 @@
 // [X] INTEGRATE THE VIDEO INPUT
 // [X] trigger the phone process when launching video input
 // [X] INTEGRATE THE PHONE ANIMATION
-// [] ON START : LAUNCH THE TIMER
 // [] LINK THE CANCEL BUTTON WITH GOING BACK
 // [] LINK THE PAUSE BUTTON WITH PAUSING THE CONVERSATION
 // [] LINK THE REVERSE BUTTON WITH REVERSING THE CAMERA
 // [] LINK THE MUTE BUTTON WITH MUTING THE AI
+// [] ON START : LAUNCH THE TIMER
+// [] FOR SLIDE EVENT : USE A LIB
 // [] MAKE THE VIDEO TAKE 1 PHOTO EACH SECOND
 // [] when resize the video the video-btn is still opacity: 0 and translateX: 50
 
@@ -26,6 +27,9 @@ export default class InputVideo {
     // Dom elements
     this.container = document.querySelector(".input__video--container");
     this.video = document.querySelector(".input__video--camera video");
+    this.pauseBtn = document.querySelector(".input__video--button.pause-btn");
+    this.reverseBtn = document.querySelector(".input__video--button.reverse-btn");
+    this.muteBtn = document.querySelector(".input__video--button.mute-btn");
     this.exitBtn = document.querySelector(".input__video--button.exit-btn");
 
     // Phone Animations

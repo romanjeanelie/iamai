@@ -106,5 +106,12 @@
         stroke: white;
       }
     }
+
+    &.reverse-btn {
+      display: none;
+      @include media("<tablet") {
+        display: flex;
+      }
+    }
   }
 }
