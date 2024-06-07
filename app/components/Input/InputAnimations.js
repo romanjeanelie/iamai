@@ -62,6 +62,8 @@ export default class InputAnimations {
     this.categoriesListEl = document.querySelector(".categories__list--container");
     this.carousselEl = document.querySelector(".caroussel__container");
     this.navbarEl = document.querySelector(".nav");
+
+    this.addEvents();
   }
 
   // Presets
@@ -268,7 +270,6 @@ export default class InputAnimations {
 
     this.swipeInfoTl.eventCallback("onReverseComplete", () => {
       this.isSlideInfoVisible = false;
-      gsap.killTweensOf(videoBtn);
     });
 
     this.swipeInfoTl.to([this.centerBtn, phoneBtn], {
@@ -598,5 +599,19 @@ export default class InputAnimations {
       step1.effect.getComputedTiming().duration + step2.effect.getComputedTiming().duration + 500,
       delay
     );
+  }
+
+  addEvents() {
+    window.addEventListener("resize", () => {
+      if (!isMobile()) {
+        // resetting the style fo the videoBtn after the animation
+        // if we don't do it, it will disappear
+        this.swipeInfoTl?.kill();
+        const videoBtn = this.inputFrontEl.querySelector(".video-btn");
+        videoBtn.style.opacity = 1;
+        videoBtn.style.transform = "";
+        gsap.killTweensOf(videoBtn);
+      }
+    });
   }
 }
