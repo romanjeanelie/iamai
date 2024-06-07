@@ -393,6 +393,11 @@ export default class Phone {
       });
     }
 
+    this.emitter.on("videoInput:leave", () => {
+      this.anims.toStopPhoneRecording();
+      this.leave();
+    });
+
     // Pause
     if (this.pauseBtn) {
       this.pauseBtn.addEventListener("click", async () => {

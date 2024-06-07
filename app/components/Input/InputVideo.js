@@ -74,6 +74,7 @@ export default class InputVideo {
       this.video.srcObject = null;
     }
     this.container.classList.remove("visible");
+    this.emitter.emit("videoInput:leave");
   }
 
   addEvents() {
