@@ -15,6 +15,7 @@
 // [] LINK THE PAUSE BUTTON WITH PAUSING THE CONVERSATION
 // [] MAKE THE VIDEO TAKE 1 PHOTO EACH SECOND
 
+import minSecStr from "../../utils/minSecStr";
 import PhoneAnimations from "../Phone/PhoneAnimations";
 
 export default class InputVideo {
@@ -28,6 +29,7 @@ export default class InputVideo {
 
     // Dom elements
     this.container = document.querySelector(".input__video--container");
+    this.timer = document.querySelector(".input__video--timer");
     this.video = document.querySelector(".input__video--camera video");
     this.pauseBtn = document.querySelector(".input__video--button.pause-btn");
     this.reverseBtn = document.querySelector(".input__video--button.reverse-btn");
@@ -68,6 +70,24 @@ export default class InputVideo {
   displayVideoInput() {
     this.container.classList.add("visible");
     this.linkCameraToVideo();
+    this.startTimer();
+  }
+
+  startTimer() {
+    let sec = 0;
+    function updateTime() {
+      sec += 1;
+      const time = minSecStr((sec / 60) | 0) + ":" + minSecStr(sec % 60);
+      this.timer.textContent = time;
+    }
+
+    // Fix bind
+    this.timeInterval = window.setInterval(updateTime.bind(this), 1000);
+  }
+
+  stopTimer() {
+    clearInterval(this.timeInterval);
+    tjhis.timer.textContent = "00:00";
   }
 
   // PAUSE / RESUME
@@ -97,6 +117,7 @@ export default class InputVideo {
       this.video.srcObject = null;
     }
     this.container.classList.remove("visible");
+    this.stopTimer();
     this.emitter.emit("videoInput:leave");
   }
 

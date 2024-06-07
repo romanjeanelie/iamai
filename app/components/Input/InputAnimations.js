@@ -266,6 +266,11 @@ export default class InputAnimations {
     const videoBtn = this.inputFrontEl.querySelector(".video-btn");
     const swipeP = this.inputFrontEl.querySelector(".swipe-info-p");
 
+    this.swipeInfoTl.eventCallback("onReverseComplete", () => {
+      this.isSlideInfoVisible = false;
+      gsap.killTweensOf(videoBtn);
+    });
+
     this.swipeInfoTl.to([this.centerBtn, phoneBtn], {
       opacity: 0,
       x: -50,
@@ -297,8 +302,7 @@ export default class InputAnimations {
 
   removeSwipeInfo() {
     if (!isMobile()) return;
-    this.swipeInfoTl.eventCallback("onReverseComplete", () => (this.isSlideInfoVisible = false));
-    this.swipeInfoTl.reverse();
+    this.swipeInfoTl?.reverse();
   }
 
   /**
