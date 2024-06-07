@@ -6,14 +6,14 @@
 // [X] INTEGRATE THE VIDEO INPUT
 // [X] trigger the phone process when launching video input
 // [X] INTEGRATE THE PHONE ANIMATION
-// [] LINK THE CANCEL BUTTON WITH GOING BACK
-// [] LINK THE PAUSE BUTTON WITH PAUSING THE CONVERSATION
-// [] LINK THE REVERSE BUTTON WITH REVERSING THE CAMERA
-// [] LINK THE MUTE BUTTON WITH MUTING THE AI
+// [X] LINK THE CANCEL BUTTON WITH GOING BACK
 // [] ON START : LAUNCH THE TIMER
 // [] FOR SLIDE EVENT : USE A LIB
-// [] MAKE THE VIDEO TAKE 1 PHOTO EACH SECOND
 // [] when resize the video the video-btn is still opacity: 0 and translateX: 50
+// [] LINK THE REVERSE BUTTON WITH REVERSING THE CAMERA
+// [] LINK THE MUTE BUTTON WITH MUTING THE AI
+// [] LINK THE PAUSE BUTTON WITH PAUSING THE CONVERSATION
+// [] MAKE THE VIDEO TAKE 1 PHOTO EACH SECOND
 
 import PhoneAnimations from "../Phone/PhoneAnimations";
 
@@ -23,6 +23,8 @@ export default class InputVideo {
 
     // States
     this.debug = import.meta.env.VITE_DEBUG === "true";
+    this.isAITalking = false;
+    this.isPaused = false;
 
     // Dom elements
     this.container = document.querySelector(".input__video--container");
@@ -50,7 +52,6 @@ export default class InputVideo {
     }
   }
 
-  // PROTO VERSION OF THE FUNCTION
   linkCameraToVideo() {
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: false })
@@ -63,11 +64,33 @@ export default class InputVideo {
       });
   }
 
+  // START
   displayVideoInput() {
     this.container.classList.add("visible");
     this.linkCameraToVideo();
   }
 
+  // PAUSE / RESUME
+  pauseVideoConversation() {
+    if (this.isAITalking) {
+      this.phoneAnimations.toListening();
+      this.phoneAnimations.newInfoText("I'm listening");
+      this.emitter.emit("videoInput:interrupt");
+      this.isAITalking = false;
+    } else {
+      if (!this.isPaused) {
+        this.phoneAnimations.toPause("AI");
+        this.isPaused = true;
+        this.emitter.emit("videoInput:mute");
+      } else {
+        this.phoneAnimations.toListening();
+        this.isPaused = false;
+        this.emitter.emit("videoInput:unmute");
+      }
+    }
+  }
+
+  // EXIT
   hideVideoInput() {
     if (this.video.srcObject) {
       this.video.srcObject.getTracks().forEach((track) => track.stop());
@@ -91,6 +114,7 @@ export default class InputVideo {
     });
 
     this.emitter.on("phone:listening", () => {
+      this.isAITalking = false;
       this.phoneAnimations.toListening();
       this.phoneAnimations.newInfoText("I'm listening");
     });
@@ -100,7 +124,8 @@ export default class InputVideo {
       this.phoneAnimations.toProcessing();
     });
 
-    this.emitter.on("phone:AItalking", () => {
+    this.emitter.on("phone:AITalking", () => {
+      this.isAITalking = true;
       this.phoneAnimations.newInfoText("Click to interrupt");
       this.phoneAnimations.toAITalking();
     });
@@ -108,6 +133,9 @@ export default class InputVideo {
     this.emitter.on("phone:leave", this.phoneAnimations.leave.bind(this.phoneAnimations));
 
     // DOM events
+    this.pauseBtn.addEventListener("click", () => {
+      this.pauseVideoConversation();
+    });
     this.exitBtn.addEventListener("click", this.hideVideoInput.bind(this));
   }
 }

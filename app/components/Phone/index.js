@@ -417,6 +417,18 @@ export default class Phone {
       });
     }
 
+    this.emitter.on("videoInput:interrupt", () => {
+      this.interrupt();
+    });
+
+    this.emitter.on("videoInput:mute", () => {
+      this.muteMic();
+    });
+
+    this.emitter.on("videoInput:unmute", () => {
+      this.unmuteMic();
+    });
+
     // Click outside
     this.pageEl.addEventListener(
       "click",
