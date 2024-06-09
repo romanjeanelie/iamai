@@ -1,5 +1,5 @@
 import * as dat from "dat.gui";
-import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
+import { GoogleAuthProvider, OAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
 import { createNanoEvents } from "nanoevents";
 import User, { getUserDataFireDB, redirectToLogin, saveUserDataFireDB } from "./User";
 import Caroussel from "./components/Caroussel";
@@ -37,6 +37,7 @@ const divwaitlistform = document.getElementById("divwaitlistform");
 const divlink = document.getElementById("divlinklogout");
 const linksignout = document.getElementById("linksignout");
 const signInButtons = document.querySelectorAll(".divgoogle");
+const microsoftsignInButtons = document.querySelectorAll(".divmicrosoft");
 const btnwaitlistinfosubmit = document.getElementById("btnwaitlistinfosubmit");
 const txtcompany = document.getElementById("txtcompany");
 const txttwitter = document.getElementById("txttwitter");
@@ -153,6 +154,10 @@ class App {
     for (let i = 0; i < signInButtons.length; i++) {
       signInButtons[i].style.display = "none";
     }
+    for (let i = 0; i < microsoftsignInButtons.length; i++) {
+      microsoftsignInButtons[i].style.display = "none";
+    }
+    
     const provider = new GoogleAuthProvider();
     provider.addScope("profile");
     provider.addScope("email");
@@ -171,8 +176,62 @@ class App {
         if (errorCode === "auth/account-exists-with-different-credential") {
           alert("You have already signed up with a different auth provider for that email.");
         } else {
+          
           for (let i = 0; i < signInButtons.length; i++) {
             signInButtons[i].style.display = "flex";
+          }
+          for (let i = 0; i < microsoftsignInButtons.length; i++) {
+            microsoftsignInButtons[i].style.display = "flex";
+          }
+        }
+      });
+  }
+
+  microsofttoggleSignIn() {
+    console.log("microsofttoggleSignIn");
+    sessionStorage.setItem("attemptedSignIn", "true");
+
+    for (let i = 0; i < signInButtons.length; i++) {
+      signInButtons[i].style.display = "none";
+    }
+    for (let i = 0; i < microsoftsignInButtons.length; i++) {
+      microsoftsignInButtons[i].style.display = "none";
+    }
+    const provider = new OAuthProvider('microsoft.com');
+    provider.addScope("profile");
+    provider.addScope("email");
+    provider.addScope("Calendars.Read");
+    provider.addScope("Calendars.Read.Shared");
+    provider.addScope("Calendars.ReadWrite");
+    provider.addScope("Calendars.ReadWrite.Shared");
+       
+    signInWithPopup(auth, provider)
+      .then(function (result) {
+        if (!result) return;
+        const user = result.user;
+        console.log('User Info:', user);
+        const credential = user.credential;
+        const accessToken = user.accessToken;
+        console.log('credential:', credential);
+        console.log('Access Token:', accessToken);
+      })
+      .catch(function (error) {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        const email = error.email;
+        const credential = error.credential;
+        console.log(errorCode)
+        console.log(errorMessage)
+        console.log(email)
+        console.log(credential)
+        if (errorCode === "auth/account-exists-with-different-credential") {
+          alert("You have already signed up with a different auth provider for that email.");
+        } else {
+          for (let i = 0; i < signInButtons.length; i++) {
+            signInButtons[i].style.display = "flex";
+          }
+          for (let i = 0; i < microsoftsignInButtons.length; i++) {
+            microsoftsignInButtons[i].style.display = "flex";
           }
         }
       });
@@ -244,7 +303,10 @@ class App {
 
   addListeners() {
     onAuthStateChanged(auth, async (user) => {
-      if (user && user.emailVerified) {
+      console.log("onAuthStateChanged auth:",auth);
+      console.log("onAuthStateChanged user:",user);
+      if (user) {
+      // if (user && user.emailVerified) {
         try {
           // let idToken = await user.getIdToken(true);
           const loggedinuser = new User(user.uid, user.displayName, user.photoURL, user.email, user);
@@ -254,12 +316,17 @@ class App {
         }
       } else {
         signInButtons.forEach((button) => (button.style.display = "flex"));
+        microsoftsignInButtons.forEach((button) => (button.style.display = "flex"));
       }
     });
 
     window.addEventListener("load", async () => {
       for (let i = 0; i < signInButtons.length; i++) {
         signInButtons[i].addEventListener("click", this.toggleSignIn, false);
+      }
+
+      for (let i = 0; i < microsoftsignInButtons.length; i++) {
+        microsoftsignInButtons[i].addEventListener("click", this.microsofttoggleSignIn, false);
       }
 
       // Avoid flash blue page

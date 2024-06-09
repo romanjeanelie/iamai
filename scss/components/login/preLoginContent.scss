@@ -38,19 +38,22 @@
   h2 {
     font-size: 48px;
     font-weight: 600;
-    line-height: 60px; /* 125% */
+    line-height: 60px;
+    /* 125% */
     letter-spacing: 1px;
 
     @include media("<tablet") {
       font-size: 32px;
-      line-height: 40px; /* 125% */
+      line-height: 40px;
+      /* 125% */
     }
   }
 
   h3 {
     font-size: 32px;
     font-weight: 600;
-    line-height: 40px; /* 125% */
+    line-height: 40px;
+    /* 125% */
     letter-spacing: 1px;
   }
 
@@ -58,12 +61,14 @@
     color: white;
     font-size: 24px;
     font-weight: 500;
-    line-height: 28px; /* 116.667% */
+    line-height: 28px;
+    /* 116.667% */
     letter-spacing: 1px;
 
     @include media("<tablet") {
       font-size: 20px;
-      line-height: 24px; /* 120% */
+      line-height: 24px;
+      /* 120% */
     }
   }
 
@@ -77,7 +82,8 @@
     color: $secondary;
     font-size: 16px;
     font-weight: 600;
-    line-height: 20px; /* 125% */
+    line-height: 20px;
+    /* 125% */
     letter-spacing: 1px;
     transition: background-color 0.3s ease-out;
     text-wrap: nowrap;
@@ -89,7 +95,8 @@
     @include media("<tablet") {
       padding: 8px 16px;
       font-size: 12px;
-      line-height: 16px; /* 133.333% */
+      line-height: 16px;
+      /* 133.333% */
     }
   }
 
@@ -174,6 +181,12 @@
       flex: none;
     }
 
+    .divmicrosoft {
+      img {
+        border-radius: 8px;
+      }
+    }
+
     .divgoogle {
       margin-top: 8px;
       display: flex;
@@ -197,7 +210,8 @@
         font-size: 16px;
         font-weight: 600;
         background-color: transparent;
-        line-height: 20px; /* 125% */
+        line-height: 20px;
+        /* 125% */
         letter-spacing: 1px;
         text-wrap: nowrap;
       }
@@ -211,7 +225,8 @@
 
         p {
           font-size: 12px;
-          line-height: 16px; /* 133.333% */
+          line-height: 16px;
+          /* 133.333% */
         }
       }
     }
@@ -257,8 +272,10 @@
     }
 
     // Hide scrollbar for IE, Edge and Firefox
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
 
     @include media("<large") {
       padding: 0 120px !important;
@@ -318,8 +335,7 @@
         }
 
         &.second {
-          background: url("https://res.cloudinary.com/dfdqiqn98/image/upload/v1715270730/Home/Multitask-illustration_u2igpr.png")
-            center no-repeat;
+          background: url("https://res.cloudinary.com/dfdqiqn98/image/upload/v1715270730/Home/Multitask-illustration_u2igpr.png") center no-repeat;
           background-size: cover;
         }
 
@@ -327,8 +343,7 @@
           display: flex;
           justify-content: center;
           align-items: center;
-          background: url("https://res.cloudinary.com/dfdqiqn98/image/upload/v1715270728/Home/Planet-of-the-apes_qjbmds.png")
-            center no-repeat;
+          background: url("https://res.cloudinary.com/dfdqiqn98/image/upload/v1715270728/Home/Planet-of-the-apes_qjbmds.png") center no-repeat;
           background-size: cover;
           padding: 0;
 
@@ -337,7 +352,8 @@
             text-align: center;
             font-size: 32px;
             font-weight: 600;
-            line-height: 125%; /* 125% */
+            line-height: 125%;
+            /* 125% */
             letter-spacing: 1px;
 
             span {
@@ -362,8 +378,7 @@
         }
 
         &.fifth {
-          background: url("https://res.cloudinary.com/dfdqiqn98/image/upload/v1715270728/Home/Red-with-texture_puila8.png")
-            center no-repeat;
+          background: url("https://res.cloudinary.com/dfdqiqn98/image/upload/v1715270728/Home/Red-with-texture_puila8.png") center no-repeat;
           background-size: cover;
 
           h2 {
@@ -400,8 +415,7 @@
         }
 
         &.sixth {
-          background: url("https://res.cloudinary.com/dfdqiqn98/image/upload/v1715270730/Home/ClockWork-dalle_urm51v.png")
-            center no-repeat;
+          background: url("https://res.cloudinary.com/dfdqiqn98/image/upload/v1715270730/Home/ClockWork-dalle_urm51v.png") center no-repeat;
           background-size: cover;
 
           .overlay {
@@ -418,7 +432,8 @@
             position: absolute;
             font-size: 32px;
             font-weight: 600;
-            line-height: 40px; /* 125% */
+            line-height: 40px;
+            /* 125% */
             letter-spacing: 1px;
             bottom: 32px;
             left: 24px;
@@ -442,7 +457,8 @@
             position: absolute;
             font-size: 72px;
             font-weight: 600;
-            line-height: 72px; /* 33.333% */
+            line-height: 72px;
+            /* 33.333% */
             letter-spacing: 1px;
             background-position: 100% 100%;
           }
@@ -454,6 +470,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
           }
+
           .bonjour {
             background: -webkit-linear-gradient(0deg, #01b2ff 0%, #7d03ff 40%, transparent 60%, transparent 100%);
             background-size: 250% 250%;
@@ -461,6 +478,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
           }
+
           .ciao {
             background: -webkit-linear-gradient(0deg, #01fd0a 0%, #017705 40%, transparent 60%, transparent 100%);
             background-size: 250% 250%;
@@ -468,6 +486,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
           }
+
           .hola {
             background: -webkit-linear-gradient(0deg, #fe9901 0%, #083bf7 40%, transparent 60%, transparent 100%);
             background-size: 250% 250%;
@@ -524,7 +543,8 @@
         padding-left: 8px;
         font-size: 48px;
         font-weight: 600;
-        line-height: 48px; /* 100% */
+        line-height: 48px;
+        /* 100% */
         letter-spacing: 1px;
 
         @include media("<large") {
@@ -535,6 +555,7 @@
 
       .CO-logo {
         max-height: 300px;
+
         img {
           height: 100%;
         }
@@ -605,25 +626,29 @@
     p {
       font-size: 24px;
       font-weight: 500;
-      line-height: 28px; /* 116.667% */
+      line-height: 28px;
+      /* 116.667% */
       letter-spacing: 1px;
       white-space: normal;
     }
 
     p:last-child {
       font-size: 16px;
-      line-height: 20px; /* 125% */
+      line-height: 20px;
+      /* 125% */
     }
 
     @include media("<tablet") {
       p {
         font-size: 20px;
-        line-height: 24px; /* 120% */
+        line-height: 24px;
+        /* 120% */
       }
 
       p:last-child {
         font-size: 16px;
-        line-height: 20px; /* 125% */
+        line-height: 20px;
+        /* 125% */
       }
     }
   }

@@ -189,6 +189,7 @@ async function saveUserDataFireDB(user) {
     facebook: user.facebook,
     linkedin: user.linkedin,
     usecase: user.usecase,
+    provider: user.user.providerData,
     createdAt: serverTimestamp(),
   };
   const userPath = `users/${user.uuid}/data`;
