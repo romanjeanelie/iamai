@@ -26,6 +26,8 @@ export default class InputVideo {
     this.debug = import.meta.env.VITE_DEBUG === "true";
     this.isAITalking = false;
     this.isPaused = false;
+    this.currentFacingMode = "user"; // Start with the front camera
+    this.stream = null;
 
     // Dom elements
     this.container = document.querySelector(".input__video--container");
@@ -53,22 +55,34 @@ export default class InputVideo {
     }
   }
 
-  linkCameraToVideo() {
-    navigator.mediaDevices
-      .getUserMedia({ video: true, audio: false })
-      .then((stream) => {
-        this.video.srcObject = stream;
-        this.video.play();
-      })
-      .catch((err) => {
-        console.error(`An error occurred: ${err}`);
+  async initCamera() {
+    try {
+      if (this.stream) {
+        this.stream.getTracks().forEach((track) => track.stop());
+      }
+      this.stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: this.currentFacingMode },
+        audio: false,
       });
+
+      // Set the new stream to the video element and start playing it
+      this.video.srcObject = this.stream;
+      await this.video.play();
+    } catch (err) {
+      console.error(`An error occurred: ${err}`);
+    }
+  }
+
+  toggleCamera() {
+    if (!isMobile()) return;
+    this.currentFacingMode = this.currentFacingMode === "user" ? "environment" : "user";
+    this.initCamera();
   }
 
   // START
   displayVideoInput() {
     this.container.classList.add("visible");
-    this.linkCameraToVideo();
+    this.initCamera();
     this.startTimer();
   }
 
@@ -121,6 +135,17 @@ export default class InputVideo {
   }
 
   addEvents() {
+    // DOM events
+    this.pauseBtn.addEventListener("click", () => {
+      this.pauseVideoConversation();
+    });
+
+    this.reverseBtn.addEventListener("click", () => {
+      this.toggleCamera();
+    });
+
+    this.exitBtn.addEventListener("click", this.hideVideoInput.bind(this));
+
     // Emitter events
     this.emitter.on("input:displayVideoInput", this.displayVideoInput);
     this.emitter.on("phone:connected", () => {
@@ -151,11 +176,5 @@ export default class InputVideo {
     });
 
     this.emitter.on("phone:leave", this.phoneAnimations.leave.bind(this.phoneAnimations));
-
-    // DOM events
-    this.pauseBtn.addEventListener("click", () => {
-      this.pauseVideoConversation();
-    });
-    this.exitBtn.addEventListener("click", this.hideVideoInput.bind(this));
   }
 }

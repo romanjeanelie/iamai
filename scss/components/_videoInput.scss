@@ -109,7 +109,7 @@
 
     &.reverse-btn {
       display: none;
-      @include media("<tablet") {
+      @include media("<desktop") {
         display: flex;
       }
     }
