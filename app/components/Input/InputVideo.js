@@ -7,9 +7,9 @@
 // [X] trigger the phone process when launching video input
 // [X] INTEGRATE THE PHONE ANIMATION
 // [X] LINK THE CANCEL BUTTON WITH GOING BACK
-// [] ON START : LAUNCH THE TIMER
+// [X] ON START : LAUNCH THE TIMER
 // [] FOR SLIDE EVENT : USE A LIB
-// [] when resize the video the video-btn is still opacity: 0 and translateX: 50
+// [X] when resize the video the video-btn is still opacity: 0 and translateX: 50
 // [] LINK THE REVERSE BUTTON WITH REVERSING THE CAMERA
 // [] LINK THE MUTE BUTTON WITH MUTING THE AI
 // [] LINK THE PAUSE BUTTON WITH PAUSING THE CONVERSATION
@@ -50,7 +50,6 @@ export default class InputVideo {
     this.addEvents();
 
     if (this.debug) {
-      this.displayVideoInput();
     }
   }
 
@@ -87,7 +86,7 @@ export default class InputVideo {
 
   stopTimer() {
     clearInterval(this.timeInterval);
-    tjhis.timer.textContent = "00:00";
+    this.timer.textContent = "00:00";
   }
 
   // PAUSE / RESUME

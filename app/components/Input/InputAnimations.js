@@ -13,17 +13,19 @@ export default class InputAnimations {
     this.displaySwipeInfo = this.displaySwipeInfo.bind(this);
     this.removeSwipeInfo = this.removeSwipeInfo.bind(this);
     this.isSlideInfoVisible = false;
-    this.slideDetect = new SlideDetect({
-      rightSlideCallback: () => {
-        if (!this.isSlideInfoVisible) return;
-        this.emitter.emit("input:displayVideoInput");
-      },
-    });
 
     // Dom Elements
     this.inputEl = this.pageEl.querySelector(".input__container");
     this.inputFrontEl = this.inputEl.querySelector(".input__front");
     this.inputBackEl = this.inputEl.querySelector(".input__back");
+
+    this.slideDetect = new SlideDetect({
+      domElement: this.inputEl,
+      rightSlideCallback: () => {
+        if (!this.isSlideInfoVisible) return;
+        this.emitter.emit("input:displayVideoInput");
+      },
+    });
 
     this.centerBtn = this.inputFrontEl.querySelector(".center-btn");
     this.frontCameraBtn = this.inputFrontEl.querySelector(".camera-btn");
@@ -259,9 +261,6 @@ export default class InputAnimations {
         ease: Power3.easeOut,
         duration: 0.3,
       },
-      onComplete: () => {
-        this.isSlideInfoVisible = true;
-      },
     });
 
     const phoneBtn = this.inputFrontEl.querySelector(".phone-btn");
@@ -269,7 +268,9 @@ export default class InputAnimations {
     const swipeP = this.inputFrontEl.querySelector(".swipe-info-p");
 
     this.swipeInfoTl.eventCallback("onReverseComplete", () => {
+      // setTimeout(() => {
       this.isSlideInfoVisible = false;
+      // }, 1000);
     });
 
     this.swipeInfoTl.to([this.centerBtn, phoneBtn], {
@@ -296,6 +297,9 @@ export default class InputAnimations {
       {
         x: 0,
         opacity: 1,
+        onComplete: () => {
+          this.isSlideInfoVisible = true;
+        },
       },
       "<+=0.1"
     );
@@ -602,13 +606,15 @@ export default class InputAnimations {
   }
 
   addEvents() {
+    console.log("ADD EVENTS");
     window.addEventListener("resize", () => {
+      console.log("resize");
       if (!isMobile()) {
         // resetting the style fo the videoBtn after the animation
         // if we don't do it, it will disappear
         this.swipeInfoTl?.kill();
         const videoBtn = this.inputFrontEl.querySelector(".video-btn");
-        videoBtn.style.opacity = 1;
+        videoBtn.style.opacity = "";
         videoBtn.style.transform = "";
         gsap.killTweensOf(videoBtn);
       }

@@ -47,9 +47,9 @@ function () {
       var xUp = evt.touches[0].clientX;
       var xDiff = this.xDown - xUp;
 
-      if (Math.abs(xDiff) > this.threshold && xDiff > 0) {
+      if (xDiff > 0) {
         this.leftSlideCallback();
-      } else if (Math.abs(xDiff) > this.threshold && xDiff < 0) {
+      } else if (xDiff < 0) {
         this.rightSlideCallback();
       }
       /* reset values */
