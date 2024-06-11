@@ -30,7 +30,8 @@ export default class InputVideo {
 
     this.captureInterval = null;
     this.photos = [];
-    this.maxPhotos = 5;
+    this.maxPhotos = 2;
+    this.currentPhotoIndex = 0;
     this.currentFacingMode = "user"; // Start with the front camera
 
     // Dom elements
@@ -84,8 +85,8 @@ export default class InputVideo {
 
   captureImage() {
     // Ensure the canvas dimensions match the video's dimensions
-    this.canvas.width = this.video.videoWidth;
-    this.canvas.height = this.video.videoHeight;
+    this.canvas.width = this.video.videoWidth / 4;
+    this.canvas.height = this.video.videoHeight / 4;
 
     // Draw the video frame to the canvas
     const ctx = this.canvas.getContext("2d");
@@ -93,16 +94,12 @@ export default class InputVideo {
 
     // Convert the canvas to an image (base64 encoded PNG)
     const imageData = this.canvas.toDataURL("image/png");
+    const imgTag = document.createElement("img");
+    imgTag.src = imageData;
 
     // Add the imageData to the photos array in a rotating manner
-    if (this.photos.length < this.maxPhotos) {
-      this.photos.push(imageData);
-    } else {
-      this.photos[this.currentPhotoIndex] = imageData;
-    }
+    this.photos[this.currentPhotoIndex] = imgTag;
     this.currentPhotoIndex = (this.currentPhotoIndex + 1) % this.maxPhotos;
-
-    console.log(this.photos); // For debugging purposes
   }
 
   stopCamera() {

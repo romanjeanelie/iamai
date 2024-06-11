@@ -125,6 +125,7 @@ export default class Input {
         pageEl: this.pageEl,
         discussion: this.discussion,
         emitter: this.emitter,
+        photos: this.inputVideo.photos,
         anims: {
           toStartPhoneRecording: () => this.anims.toStartPhoneRecording(),
           toStopPhoneRecording: () => this.anims.toStopPhoneRecording(),

@@ -8,10 +8,11 @@ import unlockAudio from "../../utils/audio/unlockAudio";
 import AudioPlayer from "../../utils/audio/AudioPlayer";
 import audioFlights from "/sounds/debugFlights.mp3";
 export default class Phone {
-  constructor({ anims, pageEl, discussion, emitter }) {
+  constructor({ anims, pageEl, photos, discussion, emitter }) {
     // Event
     this.unbindEvent = null;
     this.emitter = emitter;
+    this.photos = photos;
 
     // DOM Elements
     this.pageEl = pageEl;
@@ -172,7 +173,11 @@ export default class Phone {
     if (this.discussion.Chat.autodetect) this.textRecorded = await sendToWispher(blob);
     else this.textRecorded = await sendToWispher(blob, this.discussion.Chat.sourcelang);
 
-    this.discussion.addUserElement({ text: this.textRecorded });
+    if (this.photos.length) {
+      this.discussion.addUserElement({ text: this.textRecorded, imgs: this.photos });
+    } else {
+      this.discussion.addUserElement({ text: this.textRecorded });
+    }
   }
 
   onPlay() {
