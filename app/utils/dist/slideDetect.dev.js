@@ -48,7 +48,7 @@ function () {
       var xDiff = this.xDown - xUp;
 
       if (xDiff > 0) {
-        this.leftSlideCallback();
+        if (this.leftSlideCallback) this.leftSlideCallback();
       } else if (xDiff < 0) {
         this.rightSlideCallback();
       }
@@ -70,7 +70,7 @@ function () {
       var xDiff = this.xDown - xUp;
 
       if (xDiff > 0) {
-        this.leftSlideCallback();
+        if (this.leftSlideCallback) this.leftSlideCallback();
       } else if (xDiff < 0) {
         this.rightSlideCallback();
       }

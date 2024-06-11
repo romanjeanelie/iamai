@@ -43,6 +43,8 @@ export default class Phone {
     this.currentIndexAudioAI = null;
     this.currentIndexTextAI = null;
     this.audiosAI = [];
+
+    this.isProcessing = false;
     this.isAITalking = false;
     this.isAIPaused = false;
     this.isStreamEnded = false;
@@ -109,9 +111,12 @@ export default class Phone {
   leave() {
     console.log("leave");
     this.audioProcessing?.stopAudio();
-    this.unbindEvent();
-    this.unbindEvent = null;
+    if (this.unbindEvent) {
+      this.unbindEvent();
+      this.unbindEvent = null;
+    }
     this.isActive = false;
+
     this.phoneAnimations.leave();
     this.stopRecording();
     this.stopAITalking();
@@ -142,6 +147,9 @@ export default class Phone {
   }
 
   async toProcessing(audio) {
+    if (!this.isActive) return;
+
+    this.isProcessing = true;
     this.phoneAnimations.newInfoText("processing");
     this.phoneAnimations.toProcessing();
     console.log("processing");
@@ -169,6 +177,7 @@ export default class Phone {
 
   onPlay() {
     if (!this.isAITalking) {
+      this.isProcessing = false;
       this.phoneAnimations.newInfoText("Click to interrupt");
       this.phoneAnimations.toAITalking();
       this.emitter.emit("phone:AITalking");
@@ -224,11 +233,10 @@ export default class Phone {
       this.clearAIAudios();
       this.isAITalking = false;
       if (this.isStreamEnded) {
-        console.log("all sounds plaid", this.isStreamEnded);
+        console.log("all sounds played", this.isStreamEnded);
         // if (this.debug) return;
         this.toTalkToMe();
       } else {
-        console.log("FEELING WHEN ERROR, STOPS HERE");
         this.toProcessing();
       }
     }
@@ -354,7 +362,7 @@ export default class Phone {
 
     this.onClickOutside.unmuteMic = true;
     if (this.debug) return;
-    this.myvad.pause();
+    this.myvad?.pause();
   }
   unmuteMic() {
     this.isMicMuted = false;
@@ -399,23 +407,28 @@ export default class Phone {
     });
 
     // Pause
-    if (this.pauseBtn) {
-      this.pauseBtn.addEventListener("click", async () => {
-        if (this.isAITalking) {
-          if (!this.isAIPaused) {
-            this.pauseAI();
-          } else {
-            this.resumeAI();
-          }
+    this.pauseBtn?.addEventListener("click", async () => {
+      console.log("pause initiated");
+      if (this.isAITalking) {
+        console.log("ai talking");
+        if (!this.isAIPaused) {
+          console.log("ai not paused");
+          this.pauseAI();
         } else {
-          if (!this.isMicMuted) {
-            this.muteMic();
-          } else {
-            this.unmuteMic();
-          }
+          console.log("ai paused");
+          this.resumeAI();
         }
-      });
-    }
+      } else {
+        console.log("ai not talking");
+        if (!this.isMicMuted) {
+          console.log("mic not muted");
+          this.muteMic();
+        } else {
+          console.log("mic muted");
+          this.unmuteMic();
+        }
+      }
+    });
 
     this.emitter.on("videoInput:interrupt", () => {
       this.interrupt();

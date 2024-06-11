@@ -27,7 +27,7 @@ export default class SlideDetect {
     let xUp = evt.touches[0].clientX;
     let xDiff = this.xDown - xUp;
     if (xDiff > 0) {
-      this.leftSlideCallback();
+      if (this.leftSlideCallback) this.leftSlideCallback();
     } else if (xDiff < 0) {
       this.rightSlideCallback();
     }
@@ -44,7 +44,7 @@ export default class SlideDetect {
     let xUp = evt.clientX;
     let xDiff = this.xDown - xUp;
     if (xDiff > 0) {
-      this.leftSlideCallback();
+      if (this.leftSlideCallback) this.leftSlideCallback();
     } else if (xDiff < 0) {
       this.rightSlideCallback();
     }

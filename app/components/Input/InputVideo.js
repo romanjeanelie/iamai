@@ -13,9 +13,10 @@
 // [] LINK THE PAUSE BUTTON WITH PAUSING THE CONVERSATION
 // [] MAKE THE VIDEO TAKE 1 PHOTO EACH SECOND
 
-import minSecStr from "../../utils/minSecStr";
 import PhoneAnimations from "../Phone/PhoneAnimations";
+
 import isMobile from "../../utils/isMobile.js";
+import minSecStr from "../../utils/minSecStr";
 
 export default class InputVideo {
   constructor(emitter) {
