@@ -187,7 +187,7 @@ export default class Phone {
   }
 
   async startAITalking(html, targetlang) {
-    if (!this.isActive) return;
+    if (!this.isActive || this.isAIPaused) return;
     if (this.debug) {
       this.isAITalking = false;
       this.onPlay();
@@ -364,6 +364,7 @@ export default class Phone {
     if (this.debug) return;
     this.myvad?.pause();
   }
+
   unmuteMic() {
     this.isMicMuted = false;
     console.log("unmute mic");
@@ -419,7 +420,12 @@ export default class Phone {
           this.resumeAI();
         }
       } else {
-        console.log("ai not talking");
+        if (this.isProcessing) {
+          this.audioProcessing.stopAudio();
+          this.isAIPaused = true;
+          this.phoneAnimations.resetProcessingBar();
+        }
+
         if (!this.isMicMuted) {
           console.log("mic not muted");
           this.muteMic();

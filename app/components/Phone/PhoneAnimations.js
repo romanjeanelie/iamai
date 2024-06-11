@@ -201,8 +201,8 @@ export default class PhoneAnimations {
       this.phoneBarOne.classList.remove("active");
       // Remove AI
     } else {
-      this.expandPhoneBarAI.cancel();
-      this.phoneBarAIYoyoAnimations.cancel();
+      this.expandPhoneBarAI?.cancel();
+      this.phoneBarAIYoyoAnimations?.cancel();
       const fadeOutPhoneBarAI = this.createAnimation(this.phoneBarAI, this.keyframes.fadeOutPhoneBarAI, {
         duration: fadeOutDuration,
         ease: "ease-out",
