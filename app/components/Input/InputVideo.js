@@ -35,7 +35,6 @@ export default class InputVideo {
     this.video = document.querySelector(".input__video--camera video");
     this.pauseBtn = document.querySelector(".input__video--button.pause-btn");
     this.reverseBtn = document.querySelector(".input__video--button.reverse-btn");
-    this.muteBtn = document.querySelector(".input__video--button.mute-btn");
     this.exitBtn = document.querySelector(".input__video--button.exit-btn");
 
     // Phone Animations

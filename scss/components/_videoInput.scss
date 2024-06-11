@@ -95,8 +95,8 @@
     * {
       transition: all ease-out 0.2s;
     }
-
-    &:hover {
+    &:hover,
+    &:active {
       background-color: $colorBlueText;
 
       rect,
@@ -107,9 +107,22 @@
       }
     }
 
+    @include media(">tablet") {
+      &:hover {
+        background-color: rgba($colorBlueText, 0.03);
+
+        rect,
+        path,
+        mask {
+          fill: $colorBlueText;
+          stroke: $colorBlueText;
+        }
+      }
+    }
+
     &.reverse-btn {
       display: none;
-      @include media("<desktop") {
+      @include media("<tablet") {
         display: flex;
       }
     }
