@@ -8,15 +8,14 @@
 // [X] INTEGRATE THE PHONE ANIMATION
 // [X] LINK THE CANCEL BUTTON WITH GOING BACK
 // [X] ON START : LAUNCH THE TIMER
-// [] FOR SLIDE EVENT : USE A LIB
 // [X] when resize the video the video-btn is still opacity: 0 and translateX: 50
-// [] LINK THE REVERSE BUTTON WITH REVERSING THE CAMERA
-// [] LINK THE MUTE BUTTON WITH MUTING THE AI
+// [X] LINK THE REVERSE BUTTON WITH REVERSING THE CAMERA
 // [] LINK THE PAUSE BUTTON WITH PAUSING THE CONVERSATION
 // [] MAKE THE VIDEO TAKE 1 PHOTO EACH SECOND
 
 import minSecStr from "../../utils/minSecStr";
 import PhoneAnimations from "../Phone/PhoneAnimations";
+import isMobile from "../../utils/isMobile.js";
 
 export default class InputVideo {
   constructor(emitter) {
