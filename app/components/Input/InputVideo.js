@@ -26,13 +26,18 @@ export default class InputVideo {
     this.debug = import.meta.env.VITE_DEBUG === "true";
     this.isAITalking = false;
     this.isPaused = false;
-    this.currentFacingMode = "user"; // Start with the front camera
     this.stream = null;
+
+    this.captureInterval = null;
+    this.photos = [];
+    this.maxPhotos = 5;
+    this.currentFacingMode = "user"; // Start with the front camera
 
     // Dom elements
     this.container = document.querySelector(".input__video--container");
     this.timer = document.querySelector(".input__video--timer");
     this.video = document.querySelector(".input__video--camera video");
+    this.canvas = document.querySelector(".input__video--canvas");
     this.pauseBtn = document.querySelector(".input__video--button.pause-btn");
     this.reverseBtn = document.querySelector(".input__video--button.reverse-btn");
     this.exitBtn = document.querySelector(".input__video--button.exit-btn");
@@ -67,11 +72,46 @@ export default class InputVideo {
       // Set the new stream to the video element and start playing it
       this.video.srcObject = this.stream;
       await this.video.play();
+
+      // Set up an interval to capture image every 1 second
+      this.captureInterval = setInterval(() => {
+        this.captureImage();
+      }, 1000);
     } catch (err) {
       console.error(`An error occurred: ${err}`);
     }
   }
 
+  captureImage() {
+    // Ensure the canvas dimensions match the video's dimensions
+    this.canvas.width = this.video.videoWidth;
+    this.canvas.height = this.video.videoHeight;
+
+    // Draw the video frame to the canvas
+    const ctx = this.canvas.getContext("2d");
+    ctx.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
+
+    // Convert the canvas to an image (base64 encoded PNG)
+    const imageData = this.canvas.toDataURL("image/png");
+
+    // Add the imageData to the photos array in a rotating manner
+    if (this.photos.length < this.maxPhotos) {
+      this.photos.push(imageData);
+    } else {
+      this.photos[this.currentPhotoIndex] = imageData;
+    }
+    this.currentPhotoIndex = (this.currentPhotoIndex + 1) % this.maxPhotos;
+
+    console.log(this.photos); // For debugging purposes
+  }
+
+  stopCamera() {
+    if (this.stream) {
+      this.stream.getTracks().forEach((track) => track.stop());
+    }
+    this.photos = [];
+    if (this.captureInterval) clearInterval(this.captureInterval);
+  }
   toggleCamera() {
     if (!isMobile()) return;
     this.currentFacingMode = this.currentFacingMode === "user" ? "environment" : "user";
@@ -129,6 +169,7 @@ export default class InputVideo {
       this.video.srcObject = null;
     }
     this.container.classList.remove("visible");
+    this.stopCamera();
     this.stopTimer();
     this.emitter.emit("videoInput:leave");
   }
