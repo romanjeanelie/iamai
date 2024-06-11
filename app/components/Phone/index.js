@@ -311,8 +311,8 @@ export default class Phone {
   }
 
   stopRecording() {
-    this.myvad.pause();
-    this.myvad.stream.getTracks().forEach((track) => {
+    this.myvad?.pause();
+    this.myvad?.stream?.getTracks().forEach((track) => {
       track.stop();
     });
     this.myvad = null;
