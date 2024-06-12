@@ -35,7 +35,8 @@ export default class InputVideo {
     // States
     this.debug = import.meta.env.VITE_DEBUG === "true";
     this.isAITalking = false;
-    this.isPaused = false;
+    this.isMicMuted = false;
+    this.isAIPaused = false;
     this.stream = null;
     this.currentState = states.CONNECTED;
 
@@ -45,7 +46,7 @@ export default class InputVideo {
     // photos states
     this.captureInterval = null;
     this.photos = [];
-    this.maxPhotos = 5;
+    this.maxPhotos = 1;
     this.currentPhotoIndex = 0;
 
     // Dom elements
@@ -159,26 +160,33 @@ export default class InputVideo {
   // PAUSE / RESUME
   pauseVideoConversation() {
     // Determine the actor based on the current state
+    // const isProcessing = this.currentState === states.PROCESSING;
     const isAiTalking = this.currentState === states.AITALKING;
     const actor = this.isAITalking ? "AI" : "user";
-    this.emitter.emit("videoInput:pause", this.isPaused, actor);
+    this.emitter.emit("videoInput:pause", this.isMicMuted, isAiTalking, this.isAIPaused);
 
     // If not paused, handle pause logic
-    if (!this.isPaused) {
-      // Reset processing bar if in PROCESSING state and not AI talking
-      if (this.currentState === states.PROCESSING) {
-        this.phoneAnimations.resetProcessingBar();
+    if (this.isAITalking) {
+      if (!this.isAIPaused) {
+        this.isAIPaused = true;
+        this.phoneAnimations.newInfoText("Click to resume");
+        this.phoneAnimations.toPause("AI");
+      } else {
+        this.isAIPaused = false;
+        this.phoneAnimations.newInfoText("I'm talking");
+        this.phoneAnimations.toResume("AI");
       }
-      this.phoneAnimations.newInfoText("Click to resume");
-      this.phoneAnimations.toPause(actor);
     } else {
-      // Handle resume logic
-      const infoText = actor === "AI" ? "" : "Start talking"; // AI doesn't need a new info text on resume
-      if (infoText) this.phoneAnimations.newInfoText(infoText);
-      this.phoneAnimations.toResume(actor);
+      if (!this.isMicMuted) {
+        this.isMicMuted = true;
+        this.phoneAnimations.toPause("user");
+        this.phoneAnimations.newInfoText("Click to resume");
+      } else {
+        this.isMicMuted = false;
+        this.phoneAnimations.toResume("user");
+        this.phoneAnimations.newInfoText("Start talking");
+      }
     }
-
-    this.isPaused = !this.isPaused;
   }
 
   // EXIT

@@ -389,7 +389,7 @@ export default class Phone {
   pauseResume(
     isMicMuted = this.isMicMuted,
     isAITalking = this.isAITalking,
-    isProcessing = this.isProcessing,
+    // isProcessing = this.isProcessing,
     isAIPaused = this.isAIPaused
   ) {
     console.log("pause initiated");
@@ -403,13 +403,6 @@ export default class Phone {
         this.resumeAI();
       }
     } else {
-      if (isProcessing) {
-        console.log("processing");
-        this.audioProcessing.stopAudio();
-        this.isAIPaused = true;
-        this.phoneAnimations.resetProcessingBar();
-      }
-
       if (!isMicMuted) {
         console.log("mic not muted");
         this.muteMic();
@@ -454,8 +447,8 @@ export default class Phone {
       this.pauseResume(this.isMicMuted, this.isAITalking, this.isProcessing);
     });
 
-    this.emitter.on("videoInput:pause", (isPaused, isAITalking, isProcessing) => {
-      this.pauseResume(isPaused, isAITalking, isProcessing, isPaused);
+    this.emitter.on("videoInput:pause", (isMicMuted, isAITalking, isAIPaused) => {
+      this.pauseResume(isMicMuted, isAITalking, isAIPaused);
     });
 
     // Click outside
