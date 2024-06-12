@@ -67,6 +67,7 @@ export default class InputVideo {
     this.displayVideoInput = this.displayVideoInput.bind(this);
 
     // Init Methods
+    this.pauseBtn.setAttribute("disabled", true);
     this.phoneAnimations.toConnecting();
     this.phoneAnimations.newInfoText("connecting");
     this.addEvents();
@@ -222,6 +223,8 @@ export default class InputVideo {
     });
 
     this.emitter.on("phone:talkToMe", () => {
+      console.log("talk to me");
+      this.pauseBtn.removeAttribute("disabled");
       this.currentState = states.TALKTOME;
       this.phoneAnimations.toTalkToMe();
       this.phoneAnimations.newInfoText("Talk to me");
@@ -235,6 +238,7 @@ export default class InputVideo {
     });
 
     this.emitter.on("phone:processing", () => {
+      this.pauseBtn.setAttribute("disabled", true);
       this.currentState = states.PROCESSING;
       this.phoneAnimations.newInfoText("processing");
       this.phoneAnimations.toProcessing();

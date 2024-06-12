@@ -116,6 +116,11 @@
       }
     }
 
+    &.pause-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
     @include media(">tablet") {
       &:hover {
         background-color: rgba($colorBlueText, 0.03);
