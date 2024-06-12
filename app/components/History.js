@@ -193,6 +193,7 @@ export default class History {
       params,
       idToken: await user.user.getIdToken(true),
     });
+
     // Remove duplicate tasks
     const uniqueMicroThreadId = [];
     const removedDuplicate = data?.results.filter((item) => {
@@ -242,7 +243,10 @@ export default class History {
         userContainer.appendChild(userContainerspan);
         container.appendChild(userContainer);
 
-        if (!isEmpty(element.images)) {
+        // 1st way to figure out if an img comes from the video input
+        const isImgsComingFromVideo = element.images.user_images?.length > 40000;
+
+        if (!isEmpty(element.images) && !isImgsComingFromVideo) {
           const media = new DiscussionMedia({
             container: userContainer,
             emitter: this.emitter,
