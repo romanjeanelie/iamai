@@ -166,12 +166,12 @@ export default class Discussion {
     }, 1000);
   }
 
-  async addUserElement({ text, imgs, debug = false } = {}) {
+  async addUserElement({ text, imgs, debug = false, isFromVideo } = {}) {
     //reduced the duration to save time
     await gsap.to(this.discussionContainer, { duration: 0.0005, y: -40, opacity: 0, ease: "power2.inOut" });
     this.moveChildrenToPrevContainer();
 
-    if (imgs && imgs.length > 0) {
+    if (imgs.length > 0 && !isFromVideo) {
       const userContainer = document.createElement("div");
       userContainer.classList.add("discussion__user");
       this.discussionContainer.appendChild(userContainer);

@@ -121,7 +121,7 @@
       cursor: not-allowed;
     }
 
-    @include media(">tablet") {
+    @include media("<tablet") {
       &:hover {
         background-color: rgba($colorBlueText, 0.03);
 
@@ -134,11 +134,11 @@
       }
     }
 
-    // &.reverse-btn {
-    //   display: none;
-    //   @include media("<tablet") {
-    //     display: flex;
-    //   }
-    // }
+    &.reverse-btn {
+      display: none;
+      @include media("<tablet") {
+        display: flex;
+      }
+    }
   }
 }
