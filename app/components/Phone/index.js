@@ -174,6 +174,7 @@ export default class Phone {
     else this.textRecorded = await sendToWispher(blob, this.discussion.Chat.sourcelang);
 
     if (this.photos.length) {
+      console.log("add user element with photos");
       this.discussion.addUserElement({ text: this.textRecorded, imgs: this.photos });
     } else {
       this.discussion.addUserElement({ text: this.textRecorded });
@@ -383,6 +384,34 @@ export default class Phone {
     this.myvad.start();
   }
 
+  pauseResume() {
+    console.log("pause initiated");
+    if (this.isAITalking) {
+      console.log("ai talking");
+      if (!this.isAIPaused) {
+        console.log("ai not paused");
+        this.pauseAI();
+      } else {
+        console.log("ai paused");
+        this.resumeAI();
+      }
+    } else {
+      if (this.isProcessing) {
+        this.audioProcessing.stopAudio();
+        this.isAIPaused = true;
+        this.phoneAnimations.resetProcessingBar();
+      }
+
+      if (!this.isMicMuted) {
+        console.log("mic not muted");
+        this.muteMic();
+      } else {
+        console.log("mic muted");
+        this.unmuteMic();
+      }
+    }
+  }
+
   addListeners() {
     // Open
     this.phoneBtns.forEach((phoneBtn) => {
@@ -414,43 +443,11 @@ export default class Phone {
 
     // Pause
     this.pauseBtn?.addEventListener("click", async () => {
-      console.log("pause initiated");
-      if (this.isAITalking) {
-        console.log("ai talking");
-        if (!this.isAIPaused) {
-          console.log("ai not paused");
-          this.pauseAI();
-        } else {
-          console.log("ai paused");
-          this.resumeAI();
-        }
-      } else {
-        if (this.isProcessing) {
-          this.audioProcessing.stopAudio();
-          this.isAIPaused = true;
-          this.phoneAnimations.resetProcessingBar();
-        }
-
-        if (!this.isMicMuted) {
-          console.log("mic not muted");
-          this.muteMic();
-        } else {
-          console.log("mic muted");
-          this.unmuteMic();
-        }
-      }
+      this.pauseResume();
     });
 
-    this.emitter.on("videoInput:interrupt", () => {
-      this.interrupt();
-    });
-
-    this.emitter.on("videoInput:mute", () => {
-      this.muteMic();
-    });
-
-    this.emitter.on("videoInput:unmute", () => {
-      this.unmuteMic();
+    this.emitter.on("videoInput:pause", () => {
+      this.pauseResume();
     });
 
     // Click outside
