@@ -188,7 +188,11 @@ export default class History {
       order,
     };
     // Get all elements
-    const { data } = await fetcher({ url: URL_CONVERSATION_HISTORY, params, idToken: await user.user.getIdToken(true) });
+    const { data } = await fetcher({
+      url: URL_CONVERSATION_HISTORY,
+      params,
+      idToken: await user.user.getIdToken(true),
+    });
     // Remove duplicate tasks
     const uniqueMicroThreadId = [];
     const removedDuplicate = data?.results.filter((item) => {
@@ -204,7 +208,10 @@ export default class History {
     // Get  statuses tasks
     for (const result of data?.results || []) {
       if (result.micro_thread_id !== "") {
-        const statuses = await this.getStatusesTask({ micro_thread_id: result.micro_thread_id, idToken: await user.user.getIdToken(true)});
+        const statuses = await this.getStatusesTask({
+          micro_thread_id: result.micro_thread_id,
+          idToken: await user.user.getIdToken(true),
+        });
         result.statuses = statuses;
       }
     }

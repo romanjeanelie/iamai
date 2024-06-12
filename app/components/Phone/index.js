@@ -175,11 +175,7 @@ export default class Phone {
     if (this.discussion.Chat.autodetect) this.textRecorded = await sendToWispher(blob);
     else this.textRecorded = await sendToWispher(blob, this.discussion.Chat.sourcelang);
 
-    // if (this.photos.length > 0) {
     this.discussion.addUserElement({ text: this.textRecorded, imgs: this.photos, isFromVideo: this.photos.length > 0 });
-    // } else {
-    //   this.discussion.addUserElement({ text: this.textRecorded });
-    // }
   }
 
   onPlay() {

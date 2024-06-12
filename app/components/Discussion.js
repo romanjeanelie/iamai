@@ -126,7 +126,7 @@ export default class Discussion {
     this.inputText.focus();
   }
 
-  getAiAnswer({ text, imgs }) {
+  getAiAnswer({ text, imgs, isLiveMode = false }) {
     // this.scrollToBottom();
     this.AIContainer = document.createElement("div");
     this.AIContainer.classList.add("discussion__ai");
@@ -142,7 +142,7 @@ export default class Discussion {
 
     this.typingText.fadeIn();
     this.typingText.displayTextSkeleton();
-    this.Chat.callsubmit(text, imgs, this.AIContainer);
+    this.Chat.callsubmit(text, imgs, this.AIContainer, isLiveMode);
   }
 
   resetStatuses() {
@@ -193,7 +193,7 @@ export default class Discussion {
 
     this.discussionContainer.appendChild(this.userContainer);
     //moves this to save time
-    if (imgs && imgs.length > 0) this.getAiAnswer({ text, imgs });
+    if (imgs && imgs.length > 0) this.getAiAnswer({ text, imgs, isLiveMode: isFromVideo });
     else this.getAiAnswer({ text });
 
     gsap.fromTo(
