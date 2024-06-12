@@ -46,7 +46,7 @@ export default class InputVideo {
     // photos states
     this.captureInterval = null;
     this.photos = [];
-    this.maxPhotos = 1;
+    this.maxPhotos = 5;
     this.currentPhotoIndex = 0;
 
     // Dom elements
