@@ -243,8 +243,11 @@ export default class History {
         userContainer.appendChild(userContainerspan);
         container.appendChild(userContainer);
 
-        // 1st way to figure out if an img comes from the video input
-        const isImgsComingFromVideo = element.images.user_images?.length > 40000;
+        // 1st way to figure out if an img comes from the video input - the length
+        // const isImgsComingFromVideo = element.images.user_images?.length > 40000;
+
+        // 2nd way to figure out if an img comes from the video input - the presence of 'data:image/png;base64,'
+        const isImgsComingFromVideo = element.images.user_images?.includes("data:image/png;base64,");
 
         if (!isEmpty(element.images) && !isImgsComingFromVideo) {
           const media = new DiscussionMedia({
