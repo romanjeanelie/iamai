@@ -12,7 +12,6 @@ import sendToWispher from "../../utils/audio/sendToWhisper";
 import InputAnimations from "./InputAnimations";
 
 import { colorMain } from "../../../scss/variables/_colors.module.scss";
-import LongPress from "../../utils/longPress";
 import InputVideo from "./InputVideo";
 
 function isLetterKey(event) {
@@ -158,7 +157,6 @@ export default class Input {
 
   // Write
   toWrite({ delay = 0, animButtons = true, animLogos = true, type = null, placeholder = "", focus = true } = {}) {
-    if (this.longPress.active) return;
     if (type === "imageQuestions") {
       if (this.currentStatus !== STATUS.UPLOAD_IMAGE) {
         this.anims.toWrite({ delay, animButtons, animLogos, placeholder, focus });
@@ -360,7 +358,6 @@ export default class Input {
     });
 
     // Video
-    this.longPress = new LongPress(this.inputFrontEl, this.anims.displaySwipeInfo, this.anims.removeSwipeInfo, 200);
     this.frontVideoBtn.addEventListener("click", () => {
       this.emitter.emit("input:displayVideoInput");
     });

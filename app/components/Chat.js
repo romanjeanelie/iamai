@@ -84,7 +84,7 @@ class Chat {
     this.callbacks.disableInput();
   }
 
-  callsubmit = async (text, img, container, live_mode=false) => {
+  callsubmit = async (text, img, container, live_mode = false) => {
     this.container = container;
     var input_text = text;
     var original_text = input_text;
@@ -107,7 +107,7 @@ class Chat {
           img.map((imgs) => imgs.src),
           live_mode
         );
-      } else this.submituserreply(input_text, this.workflowID, img,live_mode);
+      } else this.submituserreply(input_text, this.workflowID, img, live_mode);
     } else {
       this.workflowID = this.sessionID;
       var xhr = new XMLHttpRequest();
@@ -216,10 +216,8 @@ class Chat {
           else ui_paramsmap.set(mdata.micro_thread_id, [mdata.response_json]);
         } else if (mdata.type == IMAGES) {
           this.image_urls = JSON.parse(mdata.response_json.images);
-          if (mdata.micro_thread_id.length == 0)
-            this.image_urls && this.media.addImages(this.image_urls.slice(0, 8));
-          else
-            images_paramsmap.set(mdata.micro_thread_id, mdata.response_json.images);
+          if (mdata.micro_thread_id.length == 0) this.image_urls && this.media.addImages(this.image_urls.slice(0, 8));
+          else images_paramsmap.set(mdata.micro_thread_id, mdata.response_json.images);
         } else if (mdata.type == SOURCES) {
           const media = new DiscussionMedia({ container: this.container, emitter: this.callbacks.emitter });
           try {
@@ -227,10 +225,8 @@ class Chat {
           } catch (e) {
             this.Sources = mdata.response_json.sources;
           }
-          if (mdata.micro_thread_id.length == 0)
-            media.addSources(this.Sources);
-          else
-            sources_paramsmap.set(mdata.micro_thread_id, mdata.response_json.sources);
+          if (mdata.micro_thread_id.length == 0) media.addSources(this.Sources);
+          else sources_paramsmap.set(mdata.micro_thread_id, mdata.response_json.sources);
         }
         //generate data
         if (mdata.status && mdata.status == STREAM_STARTED) {
@@ -312,7 +308,7 @@ class Chat {
           this.callbacks.enableInput();
           this.callbacks.emitter.emit("paEnd");
           this.callbacks.emitter.emit(PA_RESPONSE_ENDED);
-          console.timeEnd("conversation")
+          console.timeEnd("conversation");
         } else if (mdata.status && mdata.status == AGENT_STARTED) {
           // micro_thread_id =  mdata.micro_thread_id;
           let taskname = mdata.task_name;
@@ -346,8 +342,8 @@ class Chat {
             this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, null, task.workflowID);
           } else {
             if (mdata.type == SOURCES) {
-              console.log("mdata:", mdata)
-              console.log("mdata.source:", JSON.stringify(mdata.response_json.sources))
+              console.log("mdata:", mdata);
+              console.log("mdata.source:", JSON.stringify(mdata.response_json.sources));
               const task = {
                 key: mdata.micro_thread_id,
                 status: {
@@ -378,7 +374,6 @@ class Chat {
               };
               this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status);
             }
-
           }
         } else if (mdata.status && mdata.status == AGENT_ANSWERED) {
           this.callbacks.emitter.emit(AGENT_ENDED);
@@ -405,8 +400,7 @@ class Chat {
           if (sourcedata) {
             divans = this.adduserans(mdata.response_json.text, container, sourcedata);
             sources_paramsmap.delete(mdata.micro_thread_id);
-          } else
-            divans = this.adduserans(mdata.response_json.text, container);
+          } else divans = this.adduserans(mdata.response_json.text, container);
 
           this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, divans, {
             workflowID: mdata.session_id,
@@ -626,7 +620,7 @@ class Chat {
         user_data: {
           type: "image",
           url: img,
-          live_mode: live_mode
+          live_mode: live_mode,
         },
       });
     } else {

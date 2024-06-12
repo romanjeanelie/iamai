@@ -156,73 +156,11 @@
       }
     }
 
-    .video-btn {
-      opacity: 1;
-
-      @include media("<tablet") {
-        opacity: 0;
-        pointer-events: none;
-      }
-    }
     .video-btn svg {
       width: 26px;
       margin-left: 16px;
       path {
         fill: rgba($colorBlueText, 0.6);
-      }
-
-      @include media("<tablet") {
-        position: absolute;
-        top: 50%;
-        left: 0;
-        margin-left: 0;
-        transform: translate(0, -50%);
-      }
-    }
-
-    .input__front--center-wrapper {
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex: 1;
-
-      p {
-        // Position
-        position: absolute;
-        inset: 0;
-        opacity: 0;
-        pointer-events: none;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        // Typography
-        font-family: "SFPro";
-        font-size: 16px;
-        font-weight: 500;
-        letter-spacing: 0.64px;
-        // Gradient
-        background: -webkit-linear-gradient(-45deg, #95a3b0 0%, #dddddd 50%, #95a3b0 100%);
-        background-size: 200% 200%;
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: gradient 2s ease-out infinite;
-        // Avoid user selection
-        user-select: none;
-        -webkit-user-select: none; /* Safari */
-        -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-      }
-
-      @keyframes gradient {
-        0% {
-          background-position-x: 200%;
-        }
-
-        100% {
-          background-position-x: 0%;
-        }
       }
     }
 
@@ -233,6 +171,7 @@
       -webkit-user-select: none; /* Safari */
       -moz-user-select: none; /* Firefox */
       -ms-user-select: none; /* Internet Explorer/Edge */
+      transform: translateX(21px);
 
       @media (max-height: 780px) {
         font-size: 18px;
