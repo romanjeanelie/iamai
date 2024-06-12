@@ -70,6 +70,8 @@ export default class Phone {
       unmuteMic: false,
     };
 
+    this.pauseResume = this.pauseResume.bind(this);
+
     this.addListeners();
 
     // Debug
@@ -384,11 +386,16 @@ export default class Phone {
     this.myvad.start();
   }
 
-  pauseResume() {
+  pauseResume(
+    isMicMuted = this.isMicMuted,
+    isAITalking = this.isAITalking,
+    isProcessing = this.isProcessing,
+    isAIPaused = this.isAIPaused
+  ) {
     console.log("pause initiated");
-    if (this.isAITalking) {
+    if (isAITalking) {
       console.log("ai talking");
-      if (!this.isAIPaused) {
+      if (!isAIPaused) {
         console.log("ai not paused");
         this.pauseAI();
       } else {
@@ -396,13 +403,14 @@ export default class Phone {
         this.resumeAI();
       }
     } else {
-      if (this.isProcessing) {
+      if (isProcessing) {
+        console.log("processing");
         this.audioProcessing.stopAudio();
         this.isAIPaused = true;
         this.phoneAnimations.resetProcessingBar();
       }
 
-      if (!this.isMicMuted) {
+      if (!isMicMuted) {
         console.log("mic not muted");
         this.muteMic();
       } else {
@@ -443,11 +451,11 @@ export default class Phone {
 
     // Pause
     this.pauseBtn?.addEventListener("click", async () => {
-      this.pauseResume();
+      this.pauseResume(this.isMicMuted, this.isAITalking, this.isProcessing);
     });
 
-    this.emitter.on("videoInput:pause", () => {
-      this.pauseResume();
+    this.emitter.on("videoInput:pause", (isPaused, isAITalking, isProcessing) => {
+      this.pauseResume(isPaused, isAITalking, isProcessing, isPaused);
     });
 
     // Click outside

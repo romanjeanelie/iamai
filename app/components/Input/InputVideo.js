@@ -158,27 +158,27 @@ export default class InputVideo {
 
   // PAUSE / RESUME
   pauseVideoConversation() {
-    this.emitter.emit("videoInput:pause");
-    this.isPaused = !this.isPaused;
-    if (this.currentState === states.AITALKING) {
-      if (!this.isPaused) {
-        this.phoneAnimations.newInfoText("Click to resume");
-        this.phoneAnimations.toPause("AI");
-      } else {
-        this.phoneAnimations.toResume("AI");
+    // Determine the actor based on the current state
+    const isAiTalking = this.currentState === states.AITALKING;
+    const actor = this.isAITalking ? "AI" : "user";
+    this.emitter.emit("videoInput:pause", this.isPaused, actor);
+
+    // If not paused, handle pause logic
+    if (!this.isPaused) {
+      // Reset processing bar if in PROCESSING state and not AI talking
+      if (this.currentState === states.PROCESSING) {
+        this.phoneAnimations.resetProcessingBar();
       }
+      this.phoneAnimations.newInfoText("Click to resume");
+      this.phoneAnimations.toPause(actor);
     } else {
-      if (!this.isPaused) {
-        if (this.currentState === states.PROCESSING) {
-          this.phoneAnimations.resetProcessingBar();
-        }
-        this.phoneAnimations.toPause("user");
-        this.phoneAnimations.newInfoText("Click to resume");
-      } else {
-        this.phoneAnimations.toResume("user");
-        this.phoneAnimations.newInfoText("Start talking");
-      }
+      // Handle resume logic
+      const infoText = actor === "AI" ? "" : "Start talking"; // AI doesn't need a new info text on resume
+      if (infoText) this.phoneAnimations.newInfoText(infoText);
+      this.phoneAnimations.toResume(actor);
     }
+
+    this.isPaused = !this.isPaused;
   }
 
   // EXIT
