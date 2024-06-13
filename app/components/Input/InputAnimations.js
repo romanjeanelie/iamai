@@ -127,22 +127,36 @@ export default class InputAnimations {
 
   collapseHeightInputFront({ delay = 0, duration = 400 } = {}) {
     this.emitter.emit("input:collapseHeight");
-    return anim(this.inputFrontEl, [{ height: "110px" }, { height: `${this.inputFrontHeight}px` }], {
-      delay,
-      duration,
-      fill: "forwards",
-      ease: "ease-in-out",
-    });
+    return anim(
+      this.inputFrontEl,
+      [
+        { height: "110px", opacity: 1 },
+        { height: `${this.inputFrontHeight}px`, opacity: 1 },
+      ],
+      {
+        delay,
+        duration,
+        fill: "forwards",
+        ease: "ease-in-out",
+      }
+    );
   }
 
   expandHeightInputFront({ delay = 0, duration = 250, heighTarget = 100 } = {}) {
     this.emitter.emit("input:expandHeight");
-    return anim(this.inputFrontEl, [{ height: `${this.inputFrontHeight}px` }, { height: `${heighTarget}px` }], {
-      delay,
-      duration,
-      fill: "forwards",
-      ease: "ease-in-out",
-    });
+    return anim(
+      this.inputFrontEl,
+      [
+        { height: `${this.inputFrontHeight}px`, opacity: 1 },
+        { height: `${heighTarget}px`, opacity: 1 },
+      ],
+      {
+        delay,
+        duration,
+        fill: "forwards",
+        ease: "ease-in-out",
+      }
+    );
   }
   expandWidthInputFront({ delay = 0, duration = 400 } = {}) {
     return anim(this.inputFrontEl, [{ width: `${this.inputFrontHeight}px` }, { width: "100%" }], {
@@ -205,6 +219,7 @@ export default class InputAnimations {
    * Write
    */
   toWrite({ delay = 0, animButtons = true, animLogos = true, placeholder = "", focus = true } = {}) {
+    console.log("TO WRITE");
     this.inputText.placeholder = placeholder;
     this.inputFrontEl.style.pointerEvents = "none";
     this.inputBackEl.style.pointerEvents = "auto";
