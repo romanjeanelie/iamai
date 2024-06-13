@@ -183,17 +183,14 @@
     }
 
     .center-btn {
-      color: rgba($colorBlueText, 0.72);
-      font-size: 20px;
-      user-select: none;
-      -webkit-user-select: none; /* Safari */
-      -moz-user-select: none; /* Firefox */
-      -ms-user-select: none; /* Internet Explorer/Edge */
-      transform: translateX(21px);
-
-      @media (max-height: 780px) {
-        font-size: 18px;
-      }
+      color: rgba(0, 37, 78, 0.6);
+      text-align: center;
+      font-family: "SFPro", sans-serif;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 20px; /* 125% */
+      letter-spacing: 0.6px;
     }
   }
 
