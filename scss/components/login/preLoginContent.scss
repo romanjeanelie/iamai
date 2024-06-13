@@ -626,5 +626,9 @@
         line-height: 20px; /* 125% */
       }
     }
+
+    @include media("<phone") {
+      width: 285px;
+    }
   }
 }
