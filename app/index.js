@@ -258,6 +258,8 @@ class App {
     });
 
     window.addEventListener("load", async () => {
+      console.log("ADDING PRELOAD");
+      this.app.classList.add("preload");
       for (let i = 0; i < signInButtons.length; i++) {
         signInButtons[i].addEventListener("click", this.toggleSignIn, false);
       }
@@ -280,7 +282,9 @@ class App {
       //load and play the animations
       this.introAnim.animate({ callback: this.checkuser.bind(this) });
     });
-    document.fonts.ready.then(() => {
+
+    Promise.all([new Promise((resolve) => window.addEventListener("load", resolve)), document.fonts.ready]).then(() => {
+      console.log("REMOVING PRELOAD");
       this.app.classList.remove("preload");
     });
   }
