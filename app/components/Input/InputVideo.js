@@ -41,9 +41,10 @@ export default class InputVideo {
     this.currentState = states.CONNECTED;
 
     // camera facing state
-    this.currentFacingMode = "user"; // Start with the front camera (2 options : "user" , "environment")
+    this.currentFacingMode = "user"; // Start with the front camera
 
     // photos states
+    this.isEnvCam = null;
     this.captureInterval = null;
     this.photos = [];
     this.maxPhotos = 5;
@@ -67,10 +68,6 @@ export default class InputVideo {
     this.displayVideoInput = this.displayVideoInput.bind(this);
 
     // Init Methods
-    this.supports = navigator.mediaDevices.getSupportedConstraints();
-    if (this.supports["facingMode"] === true) {
-      this.reverseBtn.classList.add("hidden");
-    }
     this.pauseBtn.setAttribute("disabled", true);
     this.phoneAnimations.toConnecting();
     this.phoneAnimations.newInfoText("connecting");
@@ -84,11 +81,16 @@ export default class InputVideo {
         this.stream.getTracks().forEach((track) => track.stop());
       }
       this.stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: this.currentFacingMode,
-        },
+        video: { facingMode: this.currentFacingMode },
         audio: false,
       });
+
+      if (!this.isEnvCam) {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoInputs = devices.filter((device) => device.kind === "videoinput");
+        this.isEnvCam = videoInputs.length > 1;
+        this.reverseBtn.classList.add(this.isEnvCam ? "visible" : "hidden");
+      }
 
       // Set the new stream to the video element and start playing it
       this.video.srcObject = this.stream;
@@ -99,16 +101,11 @@ export default class InputVideo {
         this.captureImage();
       }, 1000);
     } catch (err) {
-      if (this.debug) {
-        alert("An error occurred while trying to access the camera");
-      }
       console.error(`An error occurred: ${err}`);
     }
   }
 
   toggleCamera() {
-    if (!isMobile()) return;
-
     // Clear the previous interval to avoid multiple intervals running simultaneously
     if (this.captureInterval) {
       clearInterval(this.captureInterval);
