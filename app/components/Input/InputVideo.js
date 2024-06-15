@@ -71,11 +71,9 @@ export default class InputVideo {
     this.phoneAnimations.toConnecting();
     this.phoneAnimations.newInfoText("connecting");
     this.addEvents();
-
-    if (this.debug) {
-    }
   }
 
+  // CAMERA
   async initCamera() {
     try {
       if (this.stream) {
@@ -95,8 +93,26 @@ export default class InputVideo {
         this.captureImage();
       }, 1000);
     } catch (err) {
+      if (this.debug) {
+        alert("An error occurred while trying to access the camera");
+      }
       console.error(`An error occurred: ${err}`);
     }
+  }
+
+  toggleCamera() {
+    if (!isMobile()) return;
+
+    // Clear the previous interval to avoid multiple intervals running simultaneously
+    if (this.captureInterval) {
+      clearInterval(this.captureInterval);
+      this.captureInterval = null;
+    }
+
+    this.phoneAnimations.toResume("user");
+    this.phoneAnimations.newInfoText("Start talking");
+    this.currentFacingMode = this.currentFacingMode === "user" ? "environment" : "user";
+    this.initCamera();
   }
 
   captureImage() {
@@ -126,14 +142,6 @@ export default class InputVideo {
     this.photos.splice(0, this.photos.length);
   }
 
-  toggleCamera() {
-    if (!isMobile()) return;
-    this.phoneAnimations.toResume("user");
-    this.phoneAnimations.newInfoText("Start talking");
-    this.currentFacingMode = this.currentFacingMode === "user" ? "environment" : "user";
-    this.initCamera();
-  }
-
   // START
   displayVideoInput() {
     this.container.classList.add("visible");
@@ -141,6 +149,7 @@ export default class InputVideo {
     this.startTimer();
   }
 
+  // TIMER
   startTimer() {
     let sec = 0;
     function updateTime() {
