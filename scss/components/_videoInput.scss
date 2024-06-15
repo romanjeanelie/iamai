@@ -139,11 +139,8 @@
       }
     }
 
-    &.reverse-btn {
+    &.reverse-btn.hidden {
       display: none;
-      @include media("<tablet") {
-        display: flex;
-      }
     }
   }
 }

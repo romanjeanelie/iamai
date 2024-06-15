@@ -41,7 +41,7 @@ export default class InputVideo {
     this.currentState = states.CONNECTED;
 
     // camera facing state
-    this.currentFacingMode = "user"; // Start with the front camera
+    this.currentFacingMode = "user"; // Start with the front camera (2 options : "user" , "environment")
 
     // photos states
     this.captureInterval = null;
@@ -67,6 +67,10 @@ export default class InputVideo {
     this.displayVideoInput = this.displayVideoInput.bind(this);
 
     // Init Methods
+    this.supports = navigator.mediaDevices.getSupportedConstraints();
+    if (this.supports["facingMode"] === true) {
+      this.reverseBtn.classList.add("hidden");
+    }
     this.pauseBtn.setAttribute("disabled", true);
     this.phoneAnimations.toConnecting();
     this.phoneAnimations.newInfoText("connecting");
@@ -80,7 +84,9 @@ export default class InputVideo {
         this.stream.getTracks().forEach((track) => track.stop());
       }
       this.stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: this.currentFacingMode },
+        video: {
+          facingMode: this.currentFacingMode,
+        },
         audio: false,
       });
 
