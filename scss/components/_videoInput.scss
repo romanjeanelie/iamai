@@ -52,10 +52,21 @@
 
 .input__video--camera {
   position: relative;
-  flex-grow: 1; // Take up remaining space
-  display: flex; // Ensure it can contain the video properly
-  align-items: center; // Center the video vertically
-  justify-content: center; // Center the video horizontally
+  width: 1400px;
+  margin: 0 auto;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @include media("<maximum") {
+    width: auto;
+    margin: 0 56px;
+  }
+
+  @include media("<phone") {
+    margin: 0 16px;
+  }
 
   video {
     pointer-events: none;
@@ -63,10 +74,38 @@
     height: 100%;
     inset: 0;
     object-fit: cover;
+    border-radius: 16px;
   }
 
   video::-webkit-media-controls {
     display: none !important;
+  }
+
+  .exit-btn {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 40px;
+    height: 40px;
+    background-color: rgba($colorBlueText, 0.24);
+
+    svg {
+      rect,
+      path,
+      mask {
+        fill: white;
+        stroke: white;
+      }
+    }
+
+    &:hover {
+      background-color: rgba($colorBlueText, 0.4);
+    }
+
+    @include media("<phone") {
+      top: 16px;
+      right: 16px;
+    }
   }
 }
 
@@ -95,52 +134,52 @@
     row-gap: 30px;
     column-gap: 74px;
   }
+}
 
-  .input__video--button {
-    height: 60px;
-    width: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 60px;
-    background-color: rgba($colorBlueText, 0.03);
-    transition: background-color ease-out 0.2s;
+.input__video--button {
+  height: 60px;
+  width: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 60px;
+  background-color: rgba($colorBlueText, 0.03);
+  transition: background-color ease-out 0.2s;
 
-    * {
-      transition: all ease-out 0.2s;
+  * {
+    transition: all ease-out 0.2s;
+  }
+  &:hover,
+  &:active {
+    background-color: $colorBlueText;
+
+    rect,
+    path,
+    mask {
+      fill: white;
+      stroke: white;
     }
-    &:hover,
-    &:active {
-      background-color: $colorBlueText;
+  }
+
+  &.pause-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  @include media("<tablet") {
+    &:hover {
+      background-color: rgba($colorBlueText, 0.03);
 
       rect,
       path,
       mask {
-        fill: white;
-        stroke: white;
+        fill: $colorBlueText;
+        stroke: $colorBlueText;
       }
     }
+  }
 
-    &.pause-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    @include media("<tablet") {
-      &:hover {
-        background-color: rgba($colorBlueText, 0.03);
-
-        rect,
-        path,
-        mask {
-          fill: $colorBlueText;
-          stroke: $colorBlueText;
-        }
-      }
-    }
-
-    &.reverse-btn.hidden {
-      display: none;
-    }
+  &.reverse-btn.hidden {
+    display: none;
   }
 }

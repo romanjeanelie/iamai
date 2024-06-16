@@ -58,6 +58,7 @@ export default class InputVideo {
     this.pauseBtn = document.querySelector(".input__video--button.pause-btn");
     this.reverseBtn = document.querySelector(".input__video--button.reverse-btn");
     this.exitBtn = document.querySelector(".input__video--button.exit-btn");
+    console.log(this.exitBtn);
 
     // Phone Animations
     this.phoneAnimations = new PhoneAnimations({
