@@ -52,7 +52,7 @@
 
 .input__video--camera {
   position: relative;
-  background-color: $colorBlueText;
+  // background-color: $colorBlueText;
   width: 1400px;
   margin: 0 auto;
   flex-grow: 1;
@@ -123,6 +123,28 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.input__video--camera-loader {
+  display: none;
+  width: 48px;
+  height: 48px;
+  z-index: 1;
+  border: 5px solid $colorBlueText;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .input__video--footer {

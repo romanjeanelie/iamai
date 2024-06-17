@@ -53,6 +53,7 @@ export default class InputVideo {
 
     // Dom elements
     this.container = document.querySelector(".input__video--container");
+    this.cameraLoader = document.querySelector(".input__video--camera-loader");
     this.timer = document.querySelector(".input__video--timer");
     this.video = document.querySelector(".input__video--camera video");
     this.canvas = document.querySelector(".input__video--canvas");
@@ -73,6 +74,18 @@ export default class InputVideo {
     this.phoneAnimations.toConnecting();
     this.phoneAnimations.newInfoText("connecting");
     this.addEvents();
+
+    if (this.debug) {
+      this.displayVideoInput();
+    }
+  }
+
+  toggleLoading(isLoading) {
+    if (isLoading) {
+      this.cameraLoader.style.display = "block";
+    } else {
+      this.cameraLoader.style.display = "none";
+    }
   }
 
   // CAMERA
@@ -81,23 +94,27 @@ export default class InputVideo {
       if (this.stream) {
         this.stream.getTracks().forEach((track) => track.stop());
       }
+      this.toggleLoading(true);
+
       this.stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: this.currentFacingMode },
         audio: false,
       });
 
       if (!this.isEnvCam) {
+        // Check if the device has more than one camera
         const devices = await navigator.mediaDevices.enumerateDevices();
         const videoInputs = devices.filter((device) => device.kind === "videoinput");
         this.isEnvCam = videoInputs.length > 1;
+        // if so enable the reverse button that switches between cameras
         this.reverseBtn.classList.add(this.isEnvCam ? "visible" : "hidden");
-        // this.video.classList.add(this.isEnvCam ? "visible" : "none");
-        this.intervalTime = this.isEnvCam ? 10 : 1000;
       }
 
       // Set the new stream to the video element and start playing it
       this.video.srcObject = this.stream;
       await this.video.play();
+
+      this.toggleLoading(false);
 
       // Set up an interval to capture image every 1 second
       this.captureInterval = setInterval(() => {
