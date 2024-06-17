@@ -127,6 +127,11 @@
     opacity: 0;
   }
 
+  .input-icon-btn {
+    width: 24px;
+    padding: 0 2px;
+  }
+
   .input__front {
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.12);
     border-radius: $borderRadius;
@@ -145,12 +150,6 @@
 
     // initial height used for animation
     height: 48px;
-
-    .callAndVideo-wrapper {
-      position: relative;
-      display: flex;
-      // gap: 16px;
-    }
 
     .camera-btn {
       position: relative;
@@ -173,23 +172,6 @@
       }
     }
 
-    .camera-btn,
-    .video-btn,
-    .phone-btn {
-      svg path,
-      svg circle {
-        stroke: rgba($colorBlueText, 0.6);
-      }
-    }
-
-    .video-btn svg {
-      width: 26px;
-      margin-left: 16px;
-      path {
-        fill: rgba($colorBlueText, 0.6);
-      }
-    }
-
     .center-btn {
       color: #637990;
       text-align: center;
@@ -199,6 +181,12 @@
       font-weight: 500;
       line-height: 20px; /* 125% */
       letter-spacing: 1.5px;
+    }
+
+    .callAndVideo-wrapper {
+      position: relative;
+      display: flex;
+      gap: 16px;
     }
   }
 
@@ -210,6 +198,11 @@
     overflow-wrap: anywhere;
     pointer-events: none;
     opacity: 0;
+
+    .input-icon-btn {
+      width: 32px;
+      padding: 0 2px;
+    }
   }
 
   .input-text__expand {
