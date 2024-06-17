@@ -40,6 +40,7 @@
       &:after {
         content: "";
         position: absolute;
+        border-radius: var(--r);
         z-index: -2;
         inset: 0;
         background-color: $backgroundColorGreyPage;
