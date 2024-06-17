@@ -49,8 +49,6 @@ export default class InputAnimations {
     this.categoriesListEl = document.querySelector(".categories__list--container");
     this.carousselEl = document.querySelector(".caroussel__container");
     this.navbarEl = document.querySelector(".nav");
-
-    this.addEvents();
   }
 
   // Presets
@@ -545,21 +543,5 @@ export default class InputAnimations {
       step1.effect.getComputedTiming().duration + step2.effect.getComputedTiming().duration + 500,
       delay
     );
-  }
-
-  addEvents() {
-    console.log("ADD EVENTS");
-    window.addEventListener("resize", () => {
-      console.log("resize");
-      if (!isMobile()) {
-        // resetting the style fo the videoBtn after the animation
-        // if we don't do it, it will disappear
-        this.swipeInfoTl?.kill();
-        const videoBtn = this.inputFrontEl.querySelector(".video-btn");
-        videoBtn.style.opacity = "";
-        videoBtn.style.transform = "";
-        gsap.killTweensOf(videoBtn);
-      }
-    });
   }
 }
