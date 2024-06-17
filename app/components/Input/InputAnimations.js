@@ -21,7 +21,6 @@ export default class InputAnimations {
     this.centerBtn = this.inputFrontEl.querySelector(".center-btn");
     this.frontCameraBtn = this.inputFrontEl.querySelector(".camera-btn");
     this.frontMicBtn = this.inputFrontEl.querySelector(".phone-btn");
-    this.frontCenterBtn = this.inputFrontEl.querySelector(".center-btn");
     this.frontVideoBtn = this.inputFrontHeight = this.inputFrontEl.offsetHeight;
 
     // Record
@@ -62,7 +61,7 @@ export default class InputAnimations {
   // Presets
   fadeInButtons(delay = 0, duration = 500) {
     const videoBtn = this.inputFrontEl.querySelector(".video-btn");
-    gsap.to([this.frontMicBtn, this.frontCameraBtn, videoBtn, this.frontCenterBtn], {
+    gsap.to([this.frontMicBtn, this.frontCameraBtn, videoBtn, this.centerBtn], {
       opacity: 1,
       duration: duration / 1000,
       ease: Power3.easeInOut,
@@ -72,7 +71,7 @@ export default class InputAnimations {
 
   fadeOutButtons(delay = 0, duration = 500) {
     const videoBtn = this.inputFrontEl.querySelector(".video-btn");
-    gsap.to([this.frontMicBtn, this.frontCameraBtn, videoBtn, this.frontCenterBtn], {
+    gsap.to([this.frontMicBtn, this.frontCameraBtn, videoBtn, this.centerBtn], {
       opacity: 0,
       duration: duration / 1000,
       ease: Power3.easeInOut,
@@ -256,66 +255,6 @@ export default class InputAnimations {
       this.inputText.focus();
       this.inputText.setSelectionRange(this.inputText.value.length, this.inputText.value.length);
     }
-  }
-
-  /**
-   * To Swipe info
-   */
-  displaySwipeInfo() {
-    if (!isMobile()) return;
-
-    this.swipeInfoTl = gsap.timeline({
-      defaults: {
-        ease: Power3.easeOut,
-        duration: 0.3,
-      },
-    });
-
-    const phoneBtn = this.inputFrontEl.querySelector(".phone-btn");
-    const videoBtn = this.inputFrontEl.querySelector(".video-btn");
-    const swipeP = this.inputFrontEl.querySelector(".swipe-info-p");
-
-    this.swipeInfoTl.eventCallback("onReverseComplete", () => {
-      // setTimeout(() => {
-      this.isSlideInfoVisible = false;
-      // }, 1000);
-    });
-
-    this.swipeInfoTl.to([this.centerBtn, phoneBtn], {
-      opacity: 0,
-      x: -50,
-    });
-
-    this.swipeInfoTl.fromTo(
-      videoBtn,
-      {
-        x: 50,
-      },
-      {
-        opacity: 1,
-        x: -28,
-      }
-    );
-
-    this.swipeInfoTl.fromTo(
-      swipeP,
-      {
-        x: 50,
-      },
-      {
-        x: 0,
-        opacity: 1,
-        onComplete: () => {
-          this.isSlideInfoVisible = true;
-        },
-      },
-      "<+=0.1"
-    );
-  }
-
-  removeSwipeInfo() {
-    if (!isMobile()) return;
-    this.swipeInfoTl?.reverse();
   }
 
   /**
