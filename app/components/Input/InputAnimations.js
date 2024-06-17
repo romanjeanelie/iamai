@@ -8,11 +8,6 @@ export default class InputAnimations {
     this.emitter = emitter;
     this.isPageBlue = this.pageEl.classList.contains("page-blue");
 
-    // Bindings
-    this.displaySwipeInfo = this.displaySwipeInfo.bind(this);
-    this.removeSwipeInfo = this.removeSwipeInfo.bind(this);
-    this.isSlideInfoVisible = false;
-
     // Dom Elements
     this.inputEl = this.pageEl.querySelector(".input__container");
     this.inputFrontEl = this.inputEl.querySelector(".input__front");

@@ -57,7 +57,6 @@ export default class Input {
     this.centerBtn = this.inputFrontEl.querySelector(".center-btn");
     this.frontCameraBtn = this.inputFrontEl.querySelector(".camera-btn");
     this.frontMicBtn = this.inputFrontEl.querySelector(".mic-btn");
-    this.frontCenterBtn = this.inputFrontEl.querySelector(".center-btn");
     this.frontVideoBtn = this.inputFrontEl.querySelector(".video-btn");
 
     // Image
