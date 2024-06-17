@@ -52,12 +52,15 @@
 
 .input__video--camera {
   position: relative;
+  background-color: $colorBlueText;
   width: 1400px;
   margin: 0 auto;
   flex-grow: 1;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 16px;
+  overflow: hidden;
 
   @include media("<maximum") {
     width: auto;
@@ -74,7 +77,10 @@
     height: 100%;
     inset: 0;
     object-fit: cover;
-    border-radius: 16px;
+
+    &.none {
+      display: none;
+    }
   }
 
   video::-webkit-media-controls {
@@ -88,6 +94,7 @@
     width: 40px;
     height: 40px;
     background-color: rgba($colorBlueText, 0.24);
+    backdrop-filter: blur(6px);
 
     svg {
       rect,
@@ -110,7 +117,7 @@
 }
 
 .input__video--canvas {
-  opacity: 0;
+  opacity: 0.3;
   position: absolute;
   inset: 0;
   width: 100%;

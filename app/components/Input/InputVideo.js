@@ -48,6 +48,7 @@ export default class InputVideo {
     this.captureInterval = null;
     this.photos = [];
     this.maxPhotos = 5;
+    this.intervalTime = 1000;
     this.currentPhotoIndex = 0;
 
     // Dom elements
@@ -58,7 +59,6 @@ export default class InputVideo {
     this.pauseBtn = document.querySelector(".input__video--button.pause-btn");
     this.reverseBtn = document.querySelector(".input__video--button.reverse-btn");
     this.exitBtn = document.querySelector(".input__video--button.exit-btn");
-    console.log(this.exitBtn);
 
     // Phone Animations
     this.phoneAnimations = new PhoneAnimations({
@@ -91,6 +91,8 @@ export default class InputVideo {
         const videoInputs = devices.filter((device) => device.kind === "videoinput");
         this.isEnvCam = videoInputs.length > 1;
         this.reverseBtn.classList.add(this.isEnvCam ? "visible" : "hidden");
+        // this.video.classList.add(this.isEnvCam ? "visible" : "none");
+        this.intervalTime = this.isEnvCam ? 10 : 1000;
       }
 
       // Set the new stream to the video element and start playing it
@@ -100,7 +102,7 @@ export default class InputVideo {
       // Set up an interval to capture image every 1 second
       this.captureInterval = setInterval(() => {
         this.captureImage();
-      }, 1000);
+      }, this.intervalTime);
     } catch (err) {
       console.error(`An error occurred: ${err}`);
     }
@@ -121,8 +123,8 @@ export default class InputVideo {
 
   captureImage() {
     // Ensure the canvas dimensions match the video's dimensions
-    this.canvas.width = this.video.videoWidth / 4;
-    this.canvas.height = this.video.videoHeight / 4;
+    this.canvas.width = this.video.videoWidth;
+    this.canvas.height = this.video.videoHeight;
 
     // Draw the video frame to the canvas
     const ctx = this.canvas.getContext("2d");
