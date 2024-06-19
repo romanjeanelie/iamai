@@ -151,14 +151,6 @@ export default class InputVideo {
     const imgTag = document.createElement("img");
     imgTag.src = imageData;
 
-    // Remove the prefix from the Data URL
-    const base64Data = imageData.replace(/^data:image\/png;base64,/, "");
-
-    // Calculate the size in bytes
-    const imageSizeInBytes = Math.ceil((base64Data.length * 3) / 4);
-
-    console.log("Image size in bytes:", imageSizeInBytes);
-
     // Add the imageData to the photos array in a rotating manner
     this.photos[this.currentPhotoIndex] = imgTag;
     this.currentPhotoIndex = (this.currentPhotoIndex + 1) % this.maxPhotos;
