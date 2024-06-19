@@ -171,7 +171,7 @@ export default class Discussion {
     await gsap.to(this.discussionContainer, { duration: 0.0005, y: -40, opacity: 0, ease: "power2.inOut" });
     this.moveChildrenToPrevContainer();
 
-    if (imgs.length > 0 && !isFromVideo) {
+    if (imgs?.length > 0 && !isFromVideo) {
       const userContainer = document.createElement("div");
       userContainer.classList.add("discussion__user");
       this.discussionContainer.appendChild(userContainer);
@@ -193,8 +193,10 @@ export default class Discussion {
 
     this.discussionContainer.appendChild(this.userContainer);
     //moves this to save time
-    if (imgs && imgs.length > 0) this.getAiAnswer({ text, imgs, isLiveMode: isFromVideo });
-    else this.getAiAnswer({ text });
+    if (imgs && imgs.length > 0) {
+      console.log(imgs.length);
+      this.getAiAnswer({ text, imgs, isLiveMode: isFromVideo });
+    } else this.getAiAnswer({ text });
 
     gsap.fromTo(
       this.discussionContainer,

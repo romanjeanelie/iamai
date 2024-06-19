@@ -139,8 +139,8 @@ export default class InputVideo {
 
   captureImage() {
     // Ensure the canvas dimensions match the video's dimensions
-    this.canvas.width = this.video.videoWidth;
-    this.canvas.height = this.video.videoHeight;
+    this.canvas.width = this.video.videoWidth / 4;
+    this.canvas.height = this.video.videoHeight / 4;
 
     // Draw the video frame to the canvas
     const ctx = this.canvas.getContext("2d");
@@ -150,6 +150,14 @@ export default class InputVideo {
     const imageData = this.canvas.toDataURL("image/png");
     const imgTag = document.createElement("img");
     imgTag.src = imageData;
+
+    // Remove the prefix from the Data URL
+    const base64Data = imageData.replace(/^data:image\/png;base64,/, "");
+
+    // Calculate the size in bytes
+    const imageSizeInBytes = Math.ceil((base64Data.length * 3) / 4);
+
+    console.log("Image size in bytes:", imageSizeInBytes);
 
     // Add the imageData to the photos array in a rotating manner
     this.photos[this.currentPhotoIndex] = imgTag;
