@@ -146,8 +146,8 @@ export default class InputVideo {
     const ctx = this.canvas.getContext("2d");
     ctx.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
 
-    // Convert the canvas to an image (base64 encoded PNG)
-    const imageData = this.canvas.toDataURL("image/png");
+    // Convert the canvas to an image (base64 encoded webp)
+    const imageData = this.canvas.toDataURL("image/webp");
     const imgTag = document.createElement("img");
     imgTag.src = imageData;
 
