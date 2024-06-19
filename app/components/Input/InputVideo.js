@@ -15,7 +15,6 @@
 
 import PhoneAnimations from "../Phone/PhoneAnimations";
 
-import isMobile from "../../utils/isMobile.js";
 import minSecStr from "../../utils/minSecStr";
 
 const states = {
