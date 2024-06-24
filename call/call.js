@@ -95,7 +95,12 @@ btnsubmit.addEventListener("click", async function (e) {
     languageCode = "hi-IN";
   } else if (lang == "bn") {
     languageCode = "bn-IN";
+  } else if (lang == "te") {
+    languageCode = "te-IN";
+  } else if (lang == "kn") {
+    languageCode = "kn-IN";
   }
+
   if (ddsol.value == "vonage") {
     if (opening == "") {
       alert("please enter an opening text");

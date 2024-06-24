@@ -17,6 +17,8 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-53ZK5Q9K6T"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.4/lottie.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js/styles/default.min.css">
+  <link id="favicon" href="favicon_light.ico" rel="icon">
+
 
 
   <script>
@@ -27,6 +29,26 @@
     gtag("js", new Date());
 
     gtag("config", "G-53ZK5Q9K6T");
+  </script>
+  <script>
+    // Function to set the favicon
+    function setFavicon() {
+      const favicon = document.getElementById('favicon');
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+      if (darkScheme) {
+        favicon.href = "./favicon_light.ico";
+      } else {
+        favicon.href = "./favicon.ico";
+      }
+    }
+
+    // Set the favicon initially
+    setFavicon();
+
+    // Check for changes in color scheme periodically (e.g., every 500ms)
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", setFavicon);
+    window.matchMedia("(prefers-color-scheme: light)").addEventListener("change", setFavicon);
   </script>
 </head>
 
