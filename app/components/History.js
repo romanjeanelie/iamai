@@ -1,12 +1,8 @@
-import { Remarkable } from "remarkable";
-
-import { TASK_STATUSES } from "./TaskManager/index.js";
-import { API_STATUSES } from "./constants.js";
 import fetcher from "../utils/fetcher.js";
-import DiscussionMedia from "./DiscussionMedia.js";
-import { URL_CONVERSATION_HISTORY, URL_AGENT_STATUS } from "./constants.js";
-import { get } from "firebase/database";
 import getRemarkable from "../utils/getRemarkable.js";
+import DiscussionMedia from "./DiscussionMedia.js";
+import { TASK_STATUSES } from "./TaskManager/index.js";
+import { API_STATUSES, URL_AGENT_STATUS, URL_CONVERSATION_HISTORY } from "./constants.js";
 
 const isEmpty = (obj) => Object.keys(obj).length === 0;
 const md = getRemarkable();
