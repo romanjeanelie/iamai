@@ -440,6 +440,7 @@ export default class Phone {
     
     this.emitter.on("videoInput:captureImage", (imageData) => {
       //call the part to send data
+      // this.discussion.Chat.SendPHIImages(imageData);
     });
 
     // Pause

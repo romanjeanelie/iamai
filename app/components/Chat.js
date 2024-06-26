@@ -51,6 +51,13 @@ const ANSWER = "answer",
   AGENT_INTERMEDIATE_ANSWER = "agent_intermediate_answer";
 let micro_thread_id = "";
 
+const nc = await connect({
+  servers: [NATS_URL],
+  user: NATS_USER,
+  pass: NATS_PASS,
+});
+const js = nc.jetstream();
+
 class Chat {
   constructor(callbacks) {
     this.callbacks = callbacks;
@@ -81,6 +88,9 @@ class Chat {
     this.image_urls = "";
     this.task_name = "";
     this.user = this.callbacks.user;
+    this.video_stream_name = "";
+    this.video_subject_name = "";
+    this.phi_stream_started = false;
     this.callbacks.disableInput();
   }
 
@@ -100,13 +110,18 @@ class Chat {
     // if (this.awaiting && this.workflowID != "") {
     if (this.workflowID != "") {
       if (img) {
-        // console.log("img:", img);
-        this.submituserreply(
-          input_text,
-          this.workflowID,
-          img.map((imgs) => imgs.src),
-          live_mode
-        );
+        if (live_mode) {
+          this.PushVideoData(img.map((imgs) => imgs.src), input_text);
+          // this.SendPHIQns(input_text);
+        } else {
+
+          this.submituserreply(
+            input_text,
+            this.workflowID,
+            img.map((imgs) => imgs.src),
+            live_mode
+          );
+        }
       } else this.submituserreply(input_text, this.workflowID, img, live_mode);
     } else {
       this.workflowID = this.sessionID;
@@ -117,6 +132,8 @@ class Chat {
           let text = JSON.parse(xhr.response);
           // console.log(text.stream_id);
           let stream_name = text.stream_id;
+          console.timeEnd("logged in");
+          console.time("getstreamdata");
           this.getstreamdata(stream_name);
         }
       };
@@ -170,16 +187,17 @@ class Chat {
       }
     }
   };
-  getstreamdata = async (stream_name) => {
-    let nc = await connect({
-      servers: [NATS_URL],
-      user: NATS_USER,
-      pass: NATS_PASS,
-    });
 
-    const js = nc.jetstream();
+  getstreamdata = async (stream_name) => {
+    // let nc = await connect({
+    //   servers: [NATS_URL],
+    //   user: NATS_USER,
+    //   pass: NATS_PASS,
+    // });
+
     const c = await js.consumers.get(stream_name, stream_name);
     let iter = await c.consume();
+    console.timeEnd("getstreamdata");
     nc.onclose = function (e) {
       console.log("Socket is closed. Reconnect will be attempted in 1 second.", e.reason);
       setTimeout(async function () {
@@ -304,6 +322,12 @@ class Chat {
           this.callbacks.emitter.emit(STREAM_ENDED);
         } else if (mdata.status && mdata.status == AGENT_ENDED) {
           // micro_thread_id =  mdata.micro_thread_id;
+        } else if (mdata.status.toLowerCase() == PA_RESPONSE_STARTED) {
+          if (mtext && mtext.image_stream_id) {
+            this.video_stream_name = mtext.image_stream_id;
+            this.video_subject_name = mtext.image_subject;
+            this.VideoCallStarted();
+          }
         } else if (mdata.status.toLowerCase() == PA_RESPONSE_ENDED) {
           this.callbacks.enableInput();
           this.callbacks.emitter.emit("paEnd");
@@ -312,7 +336,6 @@ class Chat {
         } else if (mdata.status && mdata.status == AGENT_STARTED) {
           // micro_thread_id =  mdata.micro_thread_id;
           let taskname = mdata.task_name;
-
           const task = {
             key: mdata.micro_thread_id,
             name: taskname,
@@ -326,6 +349,7 @@ class Chat {
           // await this.createTask(task, textAI)
           this.callbacks.emitter.emit("taskManager:createTask", task, textAI);
           this.callbacks.emitter.emit("endStream");
+
         } else if (mdata.status && mdata.status == AGENT_PROGRESSING) {
           if (mdata.awaiting) {
             let taskname = mdata.task_name;
@@ -438,20 +462,6 @@ class Chat {
             await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang });
           }
         }
-        // } else if (mtext.trim().length > 0) { //ADDED THIS FOR conversation_question and other cases.
-        //   var AIAnswer = await this.toTitleCase2(mtext);
-        //   if (this.sourcelang != "en") {
-        //     var transresponse = await this.googletranslate(
-        //       await this.toTitleCase2(mtext),
-        //       this.sourcelang,
-        //       this.targetlang
-        //     );
-        //     AIAnswer = transresponse.data.translations[0].translatedText;
-        //   }
-        //   console.log("before add")
-        //   await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang });
-        //   console.log("after add")
-        // }
         m.ack();
       }
     }
@@ -474,6 +484,7 @@ class Chat {
     }
     return container;
   }
+
   extractSubstringWithEllipsis(text) {
     if (text.length <= 40) {
       return text;
@@ -485,12 +496,14 @@ class Chat {
     }
     return text.substring(0, 40) + " ...";
   }
+
   adduserqns(userQns) {
     const divdiscussionuser = document.createElement("div");
     divdiscussionuser.className = "discussion__user";
     divdiscussionuser.innerHTML = userQns;
     return divdiscussionuser;
   }
+
   adduserans(userAns, container, source = null) {
     const divtextcontainer = document.createElement("div");
     divtextcontainer.className = "text__container";
@@ -1369,6 +1382,7 @@ class Chat {
 
     return hotelsdiv;
   }
+
   getHotelsFilterUI(HotelSearchResults, Filter) {
     const hotelcardcontainerdiv = document.createElement("div");
     hotelcardcontainerdiv.className = "hotelscard-container";
@@ -1517,6 +1531,136 @@ class Chat {
     const monthName = months[date.getMonth()];
 
     return `${dayName}, ${day} ${monthName}`;
+  }
+
+  StartVideoWorkflow() {
+    var data = JSON.stringify({
+      uuid: this.deploy_ID,
+      // model: "phi3v",
+      model: "gpt4v",
+    });
+
+    this.user.user.getIdToken(true).then(async (idToken) => {
+      var xhr = new XMLHttpRequest();
+
+      xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === 4) {
+          console.log(this.responseText);
+          var responsedata = JSON.parse(this.responseText);
+          console.log("Video data:" + responsedata);
+        }
+      });
+
+      xhr.open("POST", HOST + "/workflows/deploy_video_chat");
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.setRequestHeader("GOOGLE_IDTOKEN", idToken);
+      xhr.send(data);
+    });
+  }
+
+  async VideoCallStarted() {
+    var video_chat_started = JSON.stringify({
+      type: "control",
+      status: "video_chat_started",
+    });
+
+    await js.publish(this.video_subject_name, video_chat_started);
+
+  }
+
+  async VideoCallEnded() {
+    var video_chat_ended = JSON.stringify({
+      type: "control",
+      status: "video_chat_ended",
+    });
+
+    await js.publish(this.video_subject_name, video_chat_ended);
+    this.video_stream_name = "";
+    this.video_subject_name = "";
+    this.phi_stream_started = false;
+  }
+
+  async PushVideoData(imgs, input_text) {
+
+    console.log(imgs);
+    console.log(input_text);
+
+
+    var stream_started = JSON.stringify({
+      type: "images",
+      status: "stream_started",
+    });
+
+    var stream_ended = JSON.stringify({
+      type: "images",
+      status: "stream_ended",
+    });
+
+    console.log("before data pushed");
+    await js.publish(this.video_subject_name, stream_started);
+    imgs.forEach(async img => {
+      var imagedata = JSON.stringify({
+        type: "images",
+        status: "streaming",
+        response_json: {
+          byte64: img
+        }
+      });
+      await js.publish(this.video_subject_name, imagedata);
+    });
+    //add images data
+    await js.publish(this.video_subject_name, stream_ended);
+    var question = JSON.stringify({
+      type: "question",
+      status: "question",
+      response_json: {
+        query: input_text
+      }
+    });
+    await js.publish(this.video_subject_name, question);
+    console.log("data pushed");
+  }
+
+  async SendPHIImages(img) {
+    var stream_started = JSON.stringify({
+      type: "images",
+      status: "stream_started",
+    });
+
+    if (!this.phi_stream_started) {
+      await js.publish(this.video_subject_name, stream_started);
+      this.phi_stream_started = true;
+    }
+
+    var imagedata = JSON.stringify({
+      type: "images",
+      status: "streaming",
+      response_json: {
+        byte64: img
+      }
+    });
+    await js.publish(this.video_subject_name, imagedata);
+
+  }
+
+  async SendPHIQns(input_text) {
+
+    var stream_ended = JSON.stringify({
+      type: "images",
+      status: "stream_ended",
+    });
+
+    console.log("before data pushed");
+    await js.publish(this.video_subject_name, stream_ended);
+    var question = JSON.stringify({
+      type: "question",
+      status: "question",
+      response_json: {
+        query: input_text
+      }
+    });
+    await js.publish(this.video_subject_name, question);
+    console.log("data pushed");
   }
 }
 export { Chat as default };
