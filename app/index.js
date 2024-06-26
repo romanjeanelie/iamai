@@ -223,6 +223,7 @@ class App {
         await this.user.setuseraddress();
         this.toPageGrey({ duration: 1200 });
         // this.user = user;
+        console.time("logged in");
         if (this.debug) return;
         this.initApp();
       } else if (this.user.status == "waitlisted") {
