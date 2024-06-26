@@ -435,6 +435,11 @@ export default class Phone {
     this.emitter.on("videoInput:leave", () => {
       this.anims.toStopPhoneRecording();
       this.leave();
+      this.discussion.Chat.VideoCallEnded();
+    });
+    
+    this.emitter.on("videoInput:captureImage", (imageData) => {
+      //call the part to send data
     });
 
     // Pause

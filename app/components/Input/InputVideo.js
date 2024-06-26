@@ -154,6 +154,7 @@ export default class InputVideo {
     // Add the imageData to the photos array in a rotating manner
     this.photos[this.currentPhotoIndex] = imgTag;
     this.currentPhotoIndex = (this.currentPhotoIndex + 1) % this.maxPhotos;
+    this.emitter.emit("videoInput:captureImage",imageData);
   }
 
   stopCamera() {

@@ -73,7 +73,7 @@ export default class PhoneAnimations {
 
   newInfoText(text) {
     const activeText = this.phoneContainer.querySelector(".phone__info.active");
-    console.log(activeText);
+    // console.log(activeText);
     if (this.isIOSSafari) {
       activeText.textContent = text;
       return;

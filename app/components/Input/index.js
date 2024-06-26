@@ -359,6 +359,9 @@ export default class Input {
     // Video
     this.frontVideoBtn.addEventListener("click", () => {
       this.emitter.emit("input:displayVideoInput");
+      
+      //initailse the video workflow api
+      this.discussion.Chat.StartVideoWorkflow();
     });
 
     // Prevent input hidden by keyboard on mobile
