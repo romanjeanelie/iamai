@@ -51,12 +51,8 @@ const ANSWER = "answer",
   AGENT_INTERMEDIATE_ANSWER = "agent_intermediate_answer";
 let micro_thread_id = "";
 
-const nc = await connect({
-  servers: [NATS_URL],
-  user: NATS_USER,
-  pass: NATS_PASS,
-});
-const js = nc.jetstream();
+let nc;
+let js;
 
 class Chat {
   constructor(callbacks) {
@@ -92,6 +88,7 @@ class Chat {
     this.video_subject_name = "";
     this.phi_stream_started = false;
     this.callbacks.disableInput();
+    
   }
 
   callsubmit = async (text, img, container, live_mode = false) => {
@@ -189,11 +186,13 @@ class Chat {
   };
 
   getstreamdata = async (stream_name) => {
-    // let nc = await connect({
-    //   servers: [NATS_URL],
-    //   user: NATS_USER,
-    //   pass: NATS_PASS,
-    // });
+    nc = await connect({
+      servers: [NATS_URL],
+      user: NATS_USER,
+      pass: NATS_PASS,
+    });
+
+    js = nc.jetstream();
 
     const c = await js.consumers.get(stream_name, stream_name);
     let iter = await c.consume();
