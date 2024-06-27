@@ -88,7 +88,7 @@ class Chat {
     this.video_subject_name = "";
     this.phi_stream_started = false;
     this.callbacks.disableInput();
-    
+
   }
 
   callsubmit = async (text, img, container, live_mode = false) => {
@@ -233,6 +233,10 @@ class Chat {
           else ui_paramsmap.set(mdata.micro_thread_id, [mdata.response_json]);
         } else if (mdata.type == IMAGES) {
           this.image_urls = JSON.parse(mdata.response_json.images);
+          if (!this.media) {
+            this.media = new DiscussionMedia({ container: this.container, emitter: this.callbacks.emitter });
+            this.media.initImages();
+          }
           if (mdata.micro_thread_id.length == 0) this.image_urls && this.media.addImages(this.image_urls.slice(0, 8));
           else images_paramsmap.set(mdata.micro_thread_id, mdata.response_json.images);
         } else if (mdata.type == SOURCES) {
