@@ -44,6 +44,7 @@ export default class History {
       }
       if (status.status === API_STATUSES.ANSWERED) {
         const answerContainer = document.createElement("div");
+        const assistantText = status.response_json.text.replace(/\\n/g, "<br \>");
         answerContainer.innerHTML = md.render(status.response_json.text) || "";
         resultsContainer.append(answerContainer);
       }

@@ -33,6 +33,9 @@
   }
 
   .nav__list {
+    margin: 0;
+    padding: 0;
+    border: 0;
     .nav__icon {
       &:hover {
         path {
