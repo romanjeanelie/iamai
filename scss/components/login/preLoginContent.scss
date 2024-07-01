@@ -200,6 +200,7 @@
         line-height: 20px; /* 125% */
         letter-spacing: 1px;
         text-wrap: nowrap;
+        margin: 0;
       }
 
       @include media("<tablet") {
