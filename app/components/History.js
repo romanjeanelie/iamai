@@ -119,15 +119,17 @@ export default class History {
               };
               this.emitter.emit("taskManager:updateStatus", task.key, task.status);
             } else {
-              const task = {
-                key: status.micro_thread_id,
-                status: {
-                  type: TASK_STATUSES.IN_PROGRESS,
-                  title: status.response_json.text.split(" ")[0],
-                  description: status.response_json.text,
-                },
-              };
-              this.emitter.emit("taskManager:updateStatus", task.key, task.status);
+              if (status.response_json.domain != "Code") {
+                const task = {
+                  key: status.micro_thread_id,
+                  status: {
+                    type: TASK_STATUSES.IN_PROGRESS,
+                    title: status.response_json.text.split(" ")[0],
+                    description: status.response_json.text,
+                  },
+                };
+                this.emitter.emit("taskManager:updateStatus", task.key, task.status);
+              }
             }
           }
           break;

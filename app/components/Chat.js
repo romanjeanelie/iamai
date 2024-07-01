@@ -43,6 +43,7 @@ const ANSWER = "answer",
   FLIGHTSEARCH = "FlightSearch",
   PRODUCTSEARCH = "ProductSearch",
   HOTELSEARCH = "HotelSearch",
+  CODESEARCH = "Code",
   AGENT_PROGRESSING = "agent_progressing",
   AGENT_ANSWERED = "agent_answered",
   IMAGE_GENERATION_IN_PROGRESS = "image_generation_in_progress",
@@ -391,15 +392,17 @@ class Chat {
               };
               this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status);
             } else {
-              const task = {
-                key: mdata.micro_thread_id,
-                status: {
-                  type: TASK_STATUSES.IN_PROGRESS,
-                  title: mdata.response_json.text.split(" ")[0],
-                  description: mdata.response_json.text,
-                },
-              };
-              this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status);
+              if (mdata.response_json.domain != "Code") {
+                const task = {
+                  key: mdata.micro_thread_id,
+                  status: {
+                    type: TASK_STATUSES.IN_PROGRESS,
+                    title: mdata.response_json.text.split(" ")[0],
+                    description: mdata.response_json.text,
+                  },
+                };
+                this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status);
+              }
             }
           }
         } else if (mdata.status && mdata.status == AGENT_ANSWERED) {
@@ -484,6 +487,8 @@ class Chat {
       container = this.getProductUI(JSON.parse(data.ProductSearchResults));
     } else if (domain == HOTELSEARCH) {
       container = this.getHotelsUI(JSON.parse(data.HotelSearch), JSON.parse(data.HotelSearchResults));
+    } else if (domain == CODESEARCH) {
+      container = this.getCodeUI(data.Code, data.Language);
     }
     return container;
   }
@@ -1341,6 +1346,48 @@ class Chat {
     // scrollToDiv(element.getAttribute('data-info'));
   }
 
+  getCodeUI(Code, Language) {
+    const codediv = document.createElement("div");
+    codediv.className = "code-container";
+    const codedivfilter = document.createElement("div");
+    codedivfilter.className = "code-filter";
+
+    const codedivfiltercode = document.createElement("div");
+    codedivfiltercode.className = "codecard-filtercode active";
+    codedivfiltercode.innerHTML = "Code";
+    codedivfiltercode.addEventListener("click", (event) => this.codefilter(event, "code"));
+    codedivfilter.appendChild(codedivfiltercode);
+
+    const codedivfilterpreview = document.createElement("div");
+    codedivfilterpreview.className = "codecard-filtercode";
+    codedivfilterpreview.innerHTML = "Preview";
+    codedivfilterpreview.addEventListener("click", (event) => this.codefilter(event, "preview"));
+    codedivfilter.appendChild(codedivfilterpreview);
+
+
+    codediv.appendChild(codedivfilter);
+    const codedatadiv = document.createElement("div");
+    codedatadiv.className = "codecard-data code active";
+    codedatadiv.innerHTML = md.render(Code);
+
+    codediv.appendChild(codedatadiv);
+    if (Language.toLowerCase() == "html") {
+      const codedivfilterpreview = document.createElement("div");
+      codedivfilterpreview.className = "codecard-data preview";
+      const iframe = document.createElement("iframe");
+      iframe.className = "codecard-data previewframe";
+      console.log("code",Code.replace("```html","").replace("```",""));
+      // iframe.srcdoc = "```html<html><body><h2>Sample HTML</h2><p>This is a paragraph.</p></body></html>```".replace("```html","").replace("```","");
+      iframe.srcdoc = Code.replace("```html","").replace("```","");
+      iframe.setAttribute("sandbox", "allow-scripts allow-same-origin");
+      codedivfilterpreview.appendChild(iframe);
+      
+      codediv.appendChild(codedivfilterpreview);
+    }
+    return codediv;
+
+  }
+
   getHotelsUI(HotelSearch, HotelSearchResults) {
     const hotelsdiv = document.createElement("div");
     hotelsdiv.setAttribute("data-details", JSON.stringify(HotelSearchResults));
@@ -1498,6 +1545,26 @@ class Chat {
       prevSlide.classList.add("active");
       let prevDot = currentDot.previousElementSibling || currentDot.parentNode.lastElementChild;
       prevDot.classList.add("active");
+    }
+  }
+
+
+  codefilter(event, Filter) {
+    let targetElement = event.target;
+
+    while (targetElement && targetElement.tagName !== "DIV") {
+        targetElement = targetElement.parentElement;
+    }
+
+    if (targetElement) {
+        let allitems = targetElement.parentElement.querySelectorAll(".codecard-filtercode");
+        allitems.forEach(tab => tab.classList.remove('active'));
+        targetElement.classList.add('active');
+
+        let codeactive = targetElement.parentElement.parentElement.querySelector(".codecard-data.active");
+        let codenotactive = targetElement.parentElement.parentElement.querySelector(`.codecard-data.${Filter}`);
+        if (codeactive) codeactive.classList.remove('active');
+        if (codenotactive) codenotactive.classList.add('active');
     }
   }
 
