@@ -326,13 +326,13 @@ class Chat {
           this.callbacks.emitter.emit(STREAM_ENDED);
         } else if (mdata.status && mdata.status == AGENT_ENDED) {
           // micro_thread_id =  mdata.micro_thread_id;
-        } else if (mdata.status.toLowerCase() == PA_RESPONSE_STARTED) {
+        } else if (mdata.status && mdata.status.toLowerCase() == PA_RESPONSE_STARTED) {
           if (mtext && mtext.image_stream_id) {
             this.video_stream_name = mtext.image_stream_id;
             this.video_subject_name = mtext.image_subject;
             this.VideoCallStarted();
           }
-        } else if (mdata.status.toLowerCase() == PA_RESPONSE_ENDED) {
+        } else if (mdata.status && mdata.status.toLowerCase() == PA_RESPONSE_ENDED) {
           this.callbacks.enableInput();
           this.callbacks.emitter.emit("paEnd");
           this.callbacks.emitter.emit(PA_RESPONSE_ENDED);
