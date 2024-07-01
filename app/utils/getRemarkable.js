@@ -1,5 +1,6 @@
 import { Remarkable } from "remarkable";
 import hljs from 'highlight.js';
+import { linkify } from 'remarkable/linkify';
 
 export default function getRemarkable(options = {}) {
 
@@ -17,7 +18,6 @@ export default function getRemarkable(options = {}) {
   const md = new Remarkable({
     html: true,        // Enable HTML tags in source
     xhtmlOut: false,
-    linkify: true,
     breaks: true,      // Convert '\n' in paragraphs into <br>
     typographer: true,
     quotes: '“”‘’',
@@ -35,7 +35,7 @@ export default function getRemarkable(options = {}) {
       return ''; // use external default escaping
     }
   });
-
+  md.use(linkify)
 
   md.set({
     html: true,
