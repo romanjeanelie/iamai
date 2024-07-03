@@ -1351,38 +1351,36 @@ class Chat {
     codediv.className = "code-container";
     const codedivfilter = document.createElement("div");
     codedivfilter.className = "code-filter";
-
-    const codedivfiltercode = document.createElement("div");
-    codedivfiltercode.className = "codecard-filtercode active";
-    codedivfiltercode.innerHTML = "Code";
-    codedivfiltercode.addEventListener("click", (event) => this.codefilter(event, "code"));
-    codedivfilter.appendChild(codedivfiltercode);
-
-    const codedivfilterpreview = document.createElement("div");
-    codedivfilterpreview.className = "codecard-filtercode";
-    codedivfilterpreview.innerHTML = "Preview";
-    codedivfilterpreview.addEventListener("click", (event) => this.codefilter(event, "preview"));
-    codedivfilter.appendChild(codedivfilterpreview);
-
-
     codediv.appendChild(codedivfilter);
+
     const codedatadiv = document.createElement("div");
     codedatadiv.className = "codecard-data code active";
     codedatadiv.innerHTML = md.render(Code);
 
     codediv.appendChild(codedatadiv);
     if (Language.toLowerCase() == "html") {
+      const codedivfiltercode = document.createElement("div");
+      codedivfiltercode.className = "codecard-filtercode code active";
+      codedivfiltercode.innerHTML = "Code";
+      codedivfiltercode.addEventListener("click", (event) => this.codefilter(event, "code"));
+      codedivfilter.appendChild(codedivfiltercode);
       const codedivfilterpreview = document.createElement("div");
-      codedivfilterpreview.className = "codecard-data preview";
+      codedivfilterpreview.className = "codecard-filtercode preview";
+      codedivfilterpreview.innerHTML = "Preview";
+      codedivfilterpreview.addEventListener("click", (event) => this.codefilter(event, "preview"));
+      codedivfilter.appendChild(codedivfilterpreview);
+
+      const codedivpreview = document.createElement("div");
+      codedivpreview.className = "codecard-data preview";
       const iframe = document.createElement("iframe");
       iframe.className = "codecard-data previewframe";
-      console.log("code",Code.replace("```html","").replace("```",""));
+      console.log("code", Code.replace("```html", "").replace("```", ""));
       // iframe.srcdoc = "```html<html><body><h2>Sample HTML</h2><p>This is a paragraph.</p></body></html>```".replace("```html","").replace("```","");
-      iframe.srcdoc = Code.replace("```html","").replace("```","");
+      iframe.srcdoc = Code.replace("```html", "").replace("```", "");
       iframe.setAttribute("sandbox", "allow-scripts allow-same-origin");
-      codedivfilterpreview.appendChild(iframe);
-      
-      codediv.appendChild(codedivfilterpreview);
+      codedivpreview.appendChild(iframe);
+
+      codediv.appendChild(codedivpreview);
     }
     return codediv;
 
@@ -1553,18 +1551,18 @@ class Chat {
     let targetElement = event.target;
 
     while (targetElement && targetElement.tagName !== "DIV") {
-        targetElement = targetElement.parentElement;
+      targetElement = targetElement.parentElement;
     }
 
     if (targetElement) {
-        let allitems = targetElement.parentElement.querySelectorAll(".codecard-filtercode");
-        allitems.forEach(tab => tab.classList.remove('active'));
-        targetElement.classList.add('active');
+      let allitems = targetElement.parentElement.querySelectorAll(".codecard-filtercode");
+      allitems.forEach(tab => tab.classList.remove('active'));
+      targetElement.classList.add('active');
 
-        let codeactive = targetElement.parentElement.parentElement.querySelector(".codecard-data.active");
-        let codenotactive = targetElement.parentElement.parentElement.querySelector(`.codecard-data.${Filter}`);
-        if (codeactive) codeactive.classList.remove('active');
-        if (codenotactive) codenotactive.classList.add('active');
+      let codeactive = targetElement.parentElement.parentElement.querySelector(".codecard-data.active");
+      let codenotactive = targetElement.parentElement.parentElement.querySelector(`.codecard-data.${Filter}`);
+      if (codeactive) codeactive.classList.remove('active');
+      if (codenotactive) codenotactive.classList.add('active');
     }
   }
 

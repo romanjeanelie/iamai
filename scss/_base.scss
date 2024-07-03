@@ -70,11 +70,21 @@ body {
   font-feature-settings: "liga" 0;
 }
 
-pre, code {
-  white-space: pre-wrap; /* Preserve whitespace but allow wrapping */
-  word-wrap: break-word; /* Break long words to wrap */
-  overflow-wrap: break-word; /* Ensure long words wrap */
-  max-width: 100%; /* Ensure the code block respects the container width */
+pre,
+code {
+  white-space: pre-wrap;
+  /* Preserve whitespace but allow wrapping */
+  word-wrap: break-word;
+  /* Break long words to wrap */
+  overflow-wrap: break-word;
+  /* Ensure long words wrap */
+  max-width: 100%;
+  /* Ensure the code block respects the container width */
+  background: lightgray -161px -160px / 134.199% 127.491% no-repeat;
+}
+
+pre{
+  padding: 10px;
 }
 
 #app {
@@ -394,15 +404,27 @@ button {
 /* #######  Code  ##########*/
 .code-filter {
   display: flex;
+
 }
 
 .codecard-filtercode {
-  padding: 10px 20px;
+  padding: 10px 24px;
   border: 1px solid #ccc;
   background-color: #f9f9f9;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+.codecard-filtercode.code {
+  border-top-left-radius: var(--border-radius-top-left, 48px);
+  border-bottom-left-radius: var(--border-radius-bottom-left, 48px);
+}
 
+.codecard-filtercode.preview {
+  border-top-right-radius: var(--border-radius-top-right, 48px);
+  border-bottom-right-radius: var(--border-radius-bottom-right, 48px);
 }
 
 .codecard-filtercode:hover {
@@ -415,14 +437,15 @@ button {
   border-color: #007bff;
 }
 
-.codecard-data{
+.codecard-data {
   display: none;
 }
-.codecard-data.active{
+
+.codecard-data.active {
   display: flex;
 }
 
-.previewframe{
+.previewframe {
   position: relative;
   display: block;
   height: 100vh;
