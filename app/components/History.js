@@ -1,11 +1,13 @@
 import fetcher from "../utils/fetcher.js";
 import getRemarkable from "../utils/getRemarkable.js";
+import getMarked from "../utils/getMarked.js";
 import DiscussionMedia from "./DiscussionMedia.js";
 import { TASK_STATUSES } from "./TaskManager/index.js";
 import { API_STATUSES, URL_AGENT_STATUS, URL_CONVERSATION_HISTORY } from "./constants.js";
 
 const isEmpty = (obj) => Object.keys(obj).length === 0;
-const md = getRemarkable();
+// const md = getRemarkable();
+const md = getMarked();
 
 const isTask = (el) => el.micro_thread_id !== "";
 const isTaskViewed = (el) => isTask(el) && el.statuses?.lastStatus === API_STATUSES.VIEWED;
@@ -45,7 +47,7 @@ export default class History {
       if (status.status === API_STATUSES.ANSWERED) {
         const answerContainer = document.createElement("div");
         const assistantText = status.response_json.text.replace(/\\n/g, "<br \>");
-        answerContainer.innerHTML = md.render(status.response_json.text) || "";
+        answerContainer.innerHTML = md.parse(status.response_json.text) || "";
         resultsContainer.append(answerContainer);
       }
     });
@@ -282,7 +284,7 @@ export default class History {
         const assistantText = textWithoutQuotes.replace(/\\n/g, "<br>");
 
         // Render the markdown
-        const assistantTextMardowned = md.render(assistantText);
+        const assistantTextMardowned = md.parse(assistantText);
 
         AIContainer.innerHTML = assistantTextMardowned;
         container.appendChild(AIContainer);

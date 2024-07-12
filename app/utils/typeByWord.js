@@ -1,4 +1,5 @@
 import getRemarkable from "./getRemarkable";
+import getMarked from "./getMarked";
 
 export default function typeByWord(container, text, timeout = 10) {
   let wordIndex = 0;
@@ -7,7 +8,8 @@ export default function typeByWord(container, text, timeout = 10) {
   answerSpan.className = "AIanswer";
   container.appendChild(answerSpan);
 
-  const md = getRemarkable();
+  // const md = getRemarkable();
+  const md = getMarked();
 
   return new Promise((resolve) => {
     let words = text.split(" ");
@@ -17,7 +19,7 @@ export default function typeByWord(container, text, timeout = 10) {
         let content;
 
         content = answerSpan.innerHTML + words[wordIndex];
-        const markdownOutput = md.renderInline(content);
+        const markdownOutput = md.parseInline(content);
         answerSpan.innerHTML = markdownOutput + " ";
 
         wordIndex++; // Move to the next word

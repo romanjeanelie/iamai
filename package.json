@@ -23,6 +23,7 @@
     "highlight.js": "^11.9.0",
     "i": "^0.3.7",
     "lamejs": "^1.2.1",
+    "marked": "^13.0.2",
     "nanoevents": "^9.0.0",
     "npm": "^10.7.0",
     "remarkable": "^2.0.1",

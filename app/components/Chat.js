@@ -2,6 +2,7 @@ import { connect, AckPolicy, JSONCodec } from "https://cdn.jsdelivr.net/npm/nats
 import { TASK_STATUSES } from "./TaskManager/index.js";
 import DiscussionMedia from "./DiscussionMedia.js";
 import getRemarkable from "../utils/getRemarkable.js";
+import getMarked from "../utils/getMarked.js";
 // const uuid = "omega_" + crypto.randomUUID();
 // import { getUser } from "../User.js";
 // const IS_DEV_MODE = import.meta.env.MODE === "development";
@@ -12,7 +13,8 @@ const NATS_USER = import.meta.env.VITE_API_NATS_USER || "iamplus-acc";
 const NATS_PASS = import.meta.env.VITE_API_NATS_PASS || "cis8Asto6HepremoGApI";
 const GOOGLE_TRANSLATE_URL = import.meta.env.VITE_API_GOOGLE_TRANSLATE;
 
-const md = getRemarkable();
+// const md = getRemarkable();
+const md = getMarked();
 let ui_paramsmap = new Map();
 let sources_paramsmap = new Map();
 let images_paramsmap = new Map();
@@ -523,7 +525,7 @@ class Chat {
     const divspan = document.createElement("span");
     const spanAIword = document.createElement("span");
     spanAIword.className = "AIword";
-    spanAIword.innerHTML = md.render(userAns);
+    spanAIword.innerHTML = md.parse(userAns);
 
     divspan.appendChild(spanAIword);
     divtextcontainer.appendChild(divspan);
@@ -1355,7 +1357,7 @@ class Chat {
 
     const codedatadiv = document.createElement("div");
     codedatadiv.className = "codecard-data code active";
-    codedatadiv.innerHTML = md.render(Code);
+    codedatadiv.innerHTML = md.parse(Code);
 
     codediv.appendChild(codedatadiv);
     if (Language.toLowerCase() == "html") {
@@ -1604,6 +1606,7 @@ class Chat {
   StartVideoWorkflow() {
     var data = JSON.stringify({
       uuid: this.deploy_ID,
+      pa_session_id: this.sessionID,
       // model: "phi3v",
       model: "gpt4v",
     });
@@ -1630,6 +1633,7 @@ class Chat {
     var video_chat_started = JSON.stringify({
       type: "control",
       status: "video_chat_started",
+      pa_session_id: this.sessionID,
     });
 
     await js.publish(this.video_subject_name, video_chat_started);
@@ -1640,6 +1644,7 @@ class Chat {
     var video_chat_ended = JSON.stringify({
       type: "control",
       status: "video_chat_ended",
+      pa_session_id: this.sessionID,
     });
 
     await js.publish(this.video_subject_name, video_chat_ended);
@@ -1657,11 +1662,13 @@ class Chat {
     var stream_started = JSON.stringify({
       type: "images",
       status: "stream_started",
+      pa_session_id: this.sessionID,
     });
 
     var stream_ended = JSON.stringify({
       type: "images",
       status: "stream_ended",
+      pa_session_id: this.sessionID,
     });
 
     console.log("before data pushed");
@@ -1670,6 +1677,7 @@ class Chat {
       var imagedata = JSON.stringify({
         type: "images",
         status: "streaming",
+        pa_session_id: this.sessionID,
         response_json: {
           byte64: img
         }
@@ -1681,6 +1689,7 @@ class Chat {
     var question = JSON.stringify({
       type: "question",
       status: "question",
+      pa_session_id: this.sessionID,
       response_json: {
         query: input_text
       }
@@ -1693,6 +1702,7 @@ class Chat {
     var stream_started = JSON.stringify({
       type: "images",
       status: "stream_started",
+      pa_session_id: this.sessionID,
     });
 
     if (!this.phi_stream_started) {
@@ -1703,6 +1713,7 @@ class Chat {
     var imagedata = JSON.stringify({
       type: "images",
       status: "streaming",
+      pa_session_id: this.sessionID,
       response_json: {
         byte64: img
       }
@@ -1716,6 +1727,7 @@ class Chat {
     var stream_ended = JSON.stringify({
       type: "images",
       status: "stream_ended",
+      pa_session_id: this.sessionID,
     });
 
     console.log("before data pushed");
@@ -1723,6 +1735,7 @@ class Chat {
     var question = JSON.stringify({
       type: "question",
       status: "question",
+      pa_session_id: this.sessionID,
       response_json: {
         query: input_text
       }
