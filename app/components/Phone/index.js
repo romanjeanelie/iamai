@@ -272,6 +272,9 @@ export default class Phone {
       this.phoneAnimations.newInfoText("Click to interrupt");
       this.phoneAnimations.toAITalking();
       this.emitter.emit("phone:AITalking");
+      if (this.myvad) this.myvad.start();
+
+      this.emitter.emit("phone:talkToMe");
     }
     this.isAITalking = true;
     this.onClickOutside.interrupt = true;
@@ -372,6 +375,7 @@ export default class Phone {
 
     if (!this.myvad) {
       this.myvad = await vad.MicVAD.new({
+        positiveSpeechThreshold: 0.9,
         onFrameProcessed: (frame) => {
           if (!this.micAccessConfirmed) {
             this.micAccessConfirmed = true;
@@ -380,6 +384,7 @@ export default class Phone {
         },
         onSpeechStart: () => {
           if (!this.isConnected) return;
+          this.stopAITalking();
           this.toListening();
         },
         onSpeechEnd: (audio) => {
