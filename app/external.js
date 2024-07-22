@@ -3,12 +3,12 @@ import { backgroundColorGreyPage } from "./../scss/variables/_colors.module.scss
 import typeByWord from "./utils/typeByWord.js";
 import TypingText from "./TypingText.js";
 import { gsap } from "gsap";
+import Config from "./getConfig.js";
 
 const HOST = import.meta.env.VITE_API_HOST || "https://api.asterizk.ai";
-const NATS_URL = import.meta.env.VITE_API_NATS_URL || "wss://nats.asterizk.ai";
-const NATS_USER = import.meta.env.VITE_API_NATS_USER || "iamplus-acc";
-const NATS_PASS = import.meta.env.VITE_API_NATS_PASS || "cis8Asto6HepremoGApI";
-
+var NATS_URL = "";
+var NATS_USER = "";
+var NATS_PASS = "";
 
 const inputBackEl = document.querySelector(".input__back");
 const inputText = inputBackEl.querySelector(".input-text");
@@ -69,7 +69,19 @@ window.addEventListener("load", async () => {
     sessionID = urlParams.get("session_id");
     deploy_ID = urlParams.get("deploy_id");
     if (sessionID && sessionID != "") {
-        getAiAnswer("");
+        const config = new Config();
+        config.getWebsiteConfig().then(data => {
+            if (data) {
+                NATS_URL = data.NATS_URL;
+                NATS_USER = data.NATS_USER;
+                NATS_PASS = data.NATS_PASS;
+                getAiAnswer("");
+            } else {
+                console.log('No data available');
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+        });
     }
 });
 
@@ -104,7 +116,7 @@ async function callsubmit(text) {
                 xhr.send(
                     JSON.stringify({
                         session_id: sessionID,
-                        uuid: "omega_" + crypto.randomUUID() + "@iamplus.com",
+                        uuid: "omega_" + crypto.randomUUID() + "@costar.life",
                     })
                 );
             } else {
@@ -121,8 +133,7 @@ async function callsubmit(text) {
             xhr.send(
                 JSON.stringify({
                     query: input_text,
-                    // uuid: uuid + "@iamplus.com",
-                    uuid: "omega_" + crypto.randomUUID() + "@iamplus.com",
+                    uuid: "omega_" + crypto.randomUUID() + "@costar.life",
                 })
             );
         }

@@ -8,10 +8,9 @@ import getMarked from "../utils/getMarked.js";
 // const IS_DEV_MODE = import.meta.env.MODE === "development";
 const IS_DEV_MODE = false;
 const HOST = import.meta.env.VITE_API_HOST || "https://api.asterizk.ai";
-const NATS_URL = import.meta.env.VITE_API_NATS_URL || "wss://nats.asterizk.ai";
-const NATS_USER = import.meta.env.VITE_API_NATS_USER || "iamplus-acc";
-const NATS_PASS = import.meta.env.VITE_API_NATS_PASS || "cis8Asto6HepremoGApI";
+import Config from "../getConfig.js";
 const GOOGLE_TRANSLATE_URL = import.meta.env.VITE_API_GOOGLE_TRANSLATE;
+
 
 // const md = getRemarkable();
 const md = getMarked();
@@ -90,7 +89,23 @@ class Chat {
     this.video_stream_name = "";
     this.video_subject_name = "";
     this.phi_stream_started = false;
+    // this.NATS_URL = "";
+    // this.NATS_USER = "";
+    // this.NATS_PASS = "";
     this.callbacks.disableInput();
+    const config = new Config();
+    config.getWebsiteConfig().then(data => {
+      if (data) {
+        this.NATS_URL  = data.NATS_URL;
+        this.NATS_USER  = data.NATS_USER;
+        this.NATS_PASS  = data.NATS_PASS;
+      } else {
+        console.log('No data available');
+      }
+    }).catch(error => {
+      console.error('Error:', error);
+    });
+
 
   }
 
@@ -157,14 +172,13 @@ class Chat {
             xhr.send(
               JSON.stringify({
                 session_id: this.sessionID,
-                uuid: "omega_" + crypto.randomUUID() + "@iamplus.com",
+                uuid: "omega_" + crypto.randomUUID() + "@costar.life",
               })
             );
           } else {
             xhr.send(
               JSON.stringify({
                 session_id: this.sessionID,
-                // uuid: uuid + "@iamplus.com",
                 uuid: this.deploy_ID,
               })
             );
@@ -179,7 +193,6 @@ class Chat {
           xhr.send(
             JSON.stringify({
               query: input_text,
-              // uuid: uuid + "@iamplus.com",
               uuid: this.user.uuid,
             })
           );
@@ -190,9 +203,9 @@ class Chat {
 
   getstreamdata = async (stream_name) => {
     nc = await connect({
-      servers: [NATS_URL],
-      user: NATS_USER,
-      pass: NATS_PASS,
+      servers: [this.NATS_URL],
+      user: this.NATS_USER,
+      pass: this.NATS_PASS,
     });
 
     js = nc.jetstream();
@@ -205,9 +218,9 @@ class Chat {
       setTimeout(async function () {
         console.log("Socket is closed. Reconnect will be attempted in 1 second.", e.reason);
         nc = await connect({
-          servers: [NATS_URL],
-          user: NATS_USER,
-          pass: NATS_PASS,
+          servers: [this.NATS_URL],
+          user: this.NATS_USER,
+          pass: this.NATS_PASS,
         });
       }, 1000);
     };
@@ -230,7 +243,7 @@ class Chat {
 
         //get UI and RAG params
         if (mdata.type == UI) {
-          console.log("domain:" + this.domain);
+          // console.log("domain:" + this.domain);
           if (ui_paramsmap.get(mdata.micro_thread_id))
             ui_paramsmap.get(mdata.micro_thread_id).push(mdata.response_json);
           else ui_paramsmap.set(mdata.micro_thread_id, [mdata.response_json]);
@@ -286,8 +299,8 @@ class Chat {
           // textEl.innerHTML = 'Please click <a href="./index.html">here</a>, to start a new session to chat or close the browser.';
         } else if (mdata.awaiting && (!mdata.micro_thread_id || mdata.micro_thread_id == "NA")) {
           var mtext = mdata.response_json.text;
-          console.log("awaiting:" + mdata.message_type);
-          console.log("mtext:" + mtext);
+          // console.log("awaiting:" + mdata.message_type);
+          // console.log("mtext:" + mtext);
           this.workflowID = mdata.session_id;
           this.awaiting = true;
           var AIAnswer = await this.toTitleCase2(mtext);
@@ -304,7 +317,7 @@ class Chat {
           this.callbacks.emitter.emit(STREAM_ENDED);
 
           if (this.domain == RAGCHAT) {
-            console.log("here RAG_CHAT:" + this.RAG_CHAT);
+            // console.log("here RAG_CHAT:" + this.RAG_CHAT);
             this.getGucciUI();
             (this.domain = ""), (this.RAG_CHAT = "");
           } else if (this.domain == MOVIESEARCH) {
@@ -372,8 +385,8 @@ class Chat {
             this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, null, task.workflowID);
           } else {
             if (mdata.type == SOURCES) {
-              console.log("mdata:", mdata);
-              console.log("mdata.source:", JSON.stringify(mdata.response_json.sources));
+              // console.log("mdata:", mdata);
+              // console.log("mdata.source:", JSON.stringify(mdata.response_json.sources));
               const task = {
                 key: mdata.micro_thread_id,
                 status: {
@@ -417,7 +430,7 @@ class Chat {
             });
           }
           let taskname = mdata.task_name;
-          console.log("taskname", taskname);
+          // console.log("taskname", taskname);
           const task = {
             key: mdata.micro_thread_id,
             status: {
@@ -548,7 +561,7 @@ class Chat {
       var xhr = new XMLHttpRequest();
       xhr.addEventListener("readystatechange", function () {
         if (this.readyState === 4) {
-          console.log(this.responseText);
+          // console.log(this.responseText);
           var response = JSON.parse(this.responseText);
           resolve(response);
         }
@@ -737,7 +750,6 @@ class Chat {
       moviedetailsdatesdiv.className = "movie-details-dates";
       moviedetailsdatesdiv.setAttribute("data-details", JSON.stringify(theatre).replace(/'/g, "&#39;"));
       this.getMoviesDateShowtime(moviedetaildata.MovieTitle, theatre, theatre.DateTime[0].Date, moviedetailsdatesdiv);
-      console.log(moviedetaildata.MovieTitle);
       moviedetailscarddiv.appendChild(moviedetailsdatesdiv);
       moviedetail.appendChild(moviedetailscarddiv);
     });
@@ -869,7 +881,6 @@ class Chat {
           movie_date: Date,
           movie_time: Time,
         });
-      console.log("texttosend:" + texttosend);
       this.callsubmit(texttosend, "", this.container);
     }
   }
@@ -1376,8 +1387,6 @@ class Chat {
       codedivpreview.className = "codecard-data preview";
       const iframe = document.createElement("iframe");
       iframe.className = "codecard-data previewframe";
-      console.log("code", Code.replace("```html", "").replace("```", ""));
-      // iframe.srcdoc = "```html<html><body><h2>Sample HTML</h2><p>This is a paragraph.</p></body></html>```".replace("```html","").replace("```","");
       iframe.srcdoc = Code.replace("```html", "").replace("```", "");
       iframe.setAttribute("sandbox", "allow-scripts allow-same-origin");
       codedivpreview.appendChild(iframe);
@@ -1569,24 +1578,19 @@ class Chat {
   }
 
   hotelfilter(event, Filter) {
-    // console.log("event.target", event.target)
     let targetElement = event.target;
 
     while (targetElement.tagName !== "DIV") {
       targetElement = targetElement.parentElement;
-      // console.log("targetElement", targetElement)
     }
     let clicked = targetElement.querySelector("#border");
-    // console.log("targetElement.parentElement", targetElement.parentElement);
     let HotelSearchResults = JSON.parse(targetElement.parentElement.parentElement.getAttribute("data-details"));
     let hotelcardcontainerdiv = targetElement.parentElement.parentElement.querySelector(".hotelscard-container");
-    // console.log("HotelSearchResults", HotelSearchResults);
     let allitems = targetElement.parentElement.querySelector(".hotelfilteractive");
     allitems.parentElement.classList.remove("hotelactive");
     allitems.classList.remove("hotelfilteractive");
     clicked.parentElement.classList.add("hotelactive");
     clicked.classList.add("hotelfilteractive");
-    // hotelcardcontainerdiv.innerHTML = this.getHotelsFilterUI(HotelSearchResults, Filter).innerHTML;
     hotelcardcontainerdiv.remove();
     targetElement.parentElement.parentElement.appendChild(this.getHotelsFilterUI(HotelSearchResults, Filter));
   }
@@ -1616,9 +1620,7 @@ class Chat {
 
       xhr.addEventListener("readystatechange", function () {
         if (this.readyState === 4) {
-          console.log(this.responseText);
           var responsedata = JSON.parse(this.responseText);
-          console.log("Video data:" + responsedata);
         }
       });
 
@@ -1655,8 +1657,8 @@ class Chat {
 
   async PushVideoData(imgs, input_text) {
 
-    console.log(imgs);
-    console.log(input_text);
+    // console.log(imgs);
+    // console.log(input_text);
 
 
     var stream_started = JSON.stringify({
@@ -1671,7 +1673,7 @@ class Chat {
       pa_session_id: this.sessionID,
     });
 
-    console.log("before data pushed");
+    // console.log("before data pushed");
     await js.publish(this.video_subject_name, stream_started);
     imgs.forEach(async img => {
       var imagedata = JSON.stringify({
@@ -1695,7 +1697,7 @@ class Chat {
       }
     });
     await js.publish(this.video_subject_name, question);
-    console.log("data pushed");
+    // console.log("data pushed");
   }
 
   async SendPHIImages(img) {
@@ -1730,7 +1732,7 @@ class Chat {
       pa_session_id: this.sessionID,
     });
 
-    console.log("before data pushed");
+    // console.log("before data pushed");
     await js.publish(this.video_subject_name, stream_ended);
     var question = JSON.stringify({
       type: "question",
@@ -1741,7 +1743,7 @@ class Chat {
       }
     });
     await js.publish(this.video_subject_name, question);
-    console.log("data pushed");
+    // console.log("data pushed");
   }
 }
 export { Chat as default };
