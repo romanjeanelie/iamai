@@ -279,7 +279,7 @@ export default class InputVideo {
     this.emitter.on("phone:AITalking", () => {
       this.currentState = states.AITALKING;
       this.isAITalking = true;
-      this.phoneAnimations.newInfoText("Click to interrupt");
+      this.phoneAnimations.newInfoText("Speak to interrupt");
       this.phoneAnimations.toAITalking();
     });
 

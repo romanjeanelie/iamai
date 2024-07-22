@@ -269,7 +269,7 @@ export default class Phone {
   onPlay() {
     if (!this.isAITalking) {
       this.isProcessing = false;
-      this.phoneAnimations.newInfoText("Click to interrupt");
+      this.phoneAnimations.newInfoText("Speak to interrupt");
       this.phoneAnimations.toAITalking();
       this.emitter.emit("phone:AITalking");
       if (this.myvad) this.myvad.start();
