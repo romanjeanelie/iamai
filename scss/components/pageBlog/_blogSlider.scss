@@ -63,7 +63,7 @@ $sliderMaxWidth: 972px;
   height: $sliderHeight;
   width: calc($sliderHeight * 16 / 9);
   max-width: $sliderMaxWidth;
-  background-color: rgba(248, 246, 242, 1);
+  // background-color: rgba(248, 246, 242, 1);
   overflow: hidden;
   border-radius: 16px;
   z-index: 1; // necessary for overflow-hidden and border-radius on safari

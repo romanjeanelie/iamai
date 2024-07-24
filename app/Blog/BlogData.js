@@ -43,7 +43,7 @@ export const slider1Data = [
 export const slider2Data = [
   {
     id: 1,
-    video:"https://res.cloudinary.com/dfdqiqn98/video/upload/v1721755566/blog/videos/1._Talk_not_Search_udyxjf.mp4",
+    video:"https://res.cloudinary.com/dfdqiqn98/video/upload/v1721823292/blog/videos/Talk_not_search_redo_a0v5de.mp4",
     description:
       "Watch CO* discuss the latest airline incidents, pulling up sources and pictures,  No searching required.",
     sound: true,
@@ -51,7 +51,7 @@ export const slider2Data = [
   },
   {
     id: 2,
-    video:"https://res.cloudinary.com/dfdqiqn98/video/upload/v1721755138/blog/videos/Question_Trump.mp4",
+    video:"https://res.cloudinary.com/dfdqiqn98/video/upload/v1721823307/blog/videos/Trump_video_redone_eilhti.mp4",
     description:
       "On the go? You can still converse with CO*. Here is a conversation about the attempted assassination of Trump.",
     sound: true,
