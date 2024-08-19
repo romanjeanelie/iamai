@@ -8,7 +8,6 @@ import unlockAudio from "../../utils/audio/unlockAudio";
 import AudioPlayer from "../../utils/audio/AudioPlayer";
 import audioFlights from "/sounds/debugFlights.mp3";
 
-
 export default class Phone {
   constructor({ anims, pageEl, photos, discussion, emitter }) {
     // Event
@@ -88,6 +87,7 @@ export default class Phone {
     this.debugFlights = false;
 
     if (this.debug) {
+      console.log("debug mode");
       this.phoneDebugContainer.classList.add("show");
       this.anims.toStartPhoneRecording();
       this.startConnecting();
@@ -158,7 +158,7 @@ export default class Phone {
   }
 
   async toProcessing(audio) {
-    console.log("toProcessing")
+    console.log("toProcessing");
     if (!this.isActive) return;
 
     this.isProcessing = true;
@@ -179,8 +179,6 @@ export default class Phone {
     // });
     // this.audioProcessing.playAudio();
 
-
-
     if (!audio) return;
     const blob = float32ArrayToMp3Blob(audio, 16000);
     if (this.discussion.Chat.autodetect) this.textRecorded = await sendToWispher(blob);
@@ -192,17 +190,16 @@ export default class Phone {
     // await this.processTextAndPlayAudio();
     this.processTextAndPlayAudio(this.textRecorded); // Call immediately
     // this.timerId = setInterval(() => this.processTextAndPlayAudio(this.textRecorded, true), 5000); // Call every 5 seconds
-
   }
 
   async processTextAndPlayAudio(textRecorded) {
     try {
       if (!this.sentencesData) {
         console.log("here for stopwords");
-        const response = await fetch('stopwords.json');
+        const response = await fetch("stopwords.json");
         this.sentencesData = await response.json();
         console.log("here for stopwords:", this.sentencesData);
-        const response2 = await fetch('stopwordscon.json');
+        const response2 = await fetch("stopwordscon.json");
         this.sentencesconData = await response2.json();
         console.log("here for stopwords:", this.sentencesconData);
         // this.sentencesData = await fetch('stopwords.json').then(response => response.json());
@@ -216,7 +213,6 @@ export default class Phone {
       if (!this.stopwords) {
         const randomIndex = Math.floor(Math.random() * this.sentencesconData.sentences.length);
         stopText = this.sentencesconData.sentences[randomIndex];
-
       }
       this.stopwords = false;
       console.log("here for stopText:", stopText);
@@ -258,13 +254,10 @@ export default class Phone {
 
   async prepareNextStopWords(textRecorded) {
     if (!this.stopwords) {
-      await new Promise(r => setTimeout(r, 5000));
-      if (!this.stopwords)
-        this.processTextAndPlayAudio(textRecorded)
+      await new Promise((r) => setTimeout(r, 5000));
+      if (!this.stopwords) this.processTextAndPlayAudio(textRecorded);
     }
-
   }
-
 
   onPlay() {
     if (!this.isAITalking) {
@@ -293,8 +286,6 @@ export default class Phone {
     // console.log(audio)
     // console.log(audio?.src)
     this.audiosAI[index] = audio;
-
-
 
     if (this.currentIndexAudioAI === null && this.audiosAI[0] !== undefined) {
       this.audioProcessing?.stopAudio();
@@ -374,27 +365,33 @@ export default class Phone {
     }
 
     if (!this.myvad) {
-      this.myvad = await vad.MicVAD.new({
-        positiveSpeechThreshold: 0.9,
-        onFrameProcessed: (frame) => {
-          if (!this.micAccessConfirmed) {
-            this.micAccessConfirmed = true;
-            this.connected();
-          }
-        },
-        onSpeechStart: () => {
-          if (!this.isConnected) return;
-          this.stopAITalking();
-          this.toListening();
-        },
-        onSpeechEnd: (audio) => {
-          if (this.debugFlights) return;
-          this.isListening = false;
-          this.toProcessing(audio);
-        },
-        // Time to wait before onSpeechEnd (10 frames * X seconds)
-        redemptionFrames: 10 * 1.4,
-      });
+      try {
+        this.myvad = await vad.MicVAD.new({
+          positiveSpeechThreshold: 0.9,
+          onFrameProcessed: (frame) => {
+            if (!this.micAccessConfirmed) {
+              this.micAccessConfirmed = true;
+              this.connected();
+            }
+          },
+          onSpeechStart: () => {
+            console.log("speech start");
+            if (!this.isConnected) return;
+            this.stopAITalking();
+            this.toListening();
+          },
+          onSpeechEnd: (audio) => {
+            if (this.debugFlights) return;
+            this.isListening = false;
+            this.toProcessing(audio);
+          },
+          // Time to wait before onSpeechEnd (10 frames * X seconds)
+          redemptionFrames: 10 * 1.4,
+        });
+      } catch (err) {
+        console.log("error in vad");
+        console.log(err);
+      }
     }
 
     if (this.debugFlights) {
@@ -412,6 +409,7 @@ export default class Phone {
       return;
     }
     this.myvad.start();
+    console.log("THE VAD IS STARTING !");
   }
 
   stopRecording() {
@@ -591,6 +589,5 @@ export default class Phone {
     this.btnFinishProcessing.addEventListener("click", () => {
       this.startAITalking("Bonjour je suis un test");
     });
-
   }
 }
