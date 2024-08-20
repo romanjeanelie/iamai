@@ -40,8 +40,11 @@
       }
     }
 
-    .center-btn {
+    form {
       flex: 1;
+    }
+
+    .input-text {
       text-align: left;
       font-family: "SFPro", sans-serif;
       color: #959fb1;
@@ -50,6 +53,20 @@
       font-weight: 400;
       line-height: 20px; /* 133.333% */
       letter-spacing: -0.4px;
+      resize: none;
+      overflow: auto;
+
+      &::-webkit-resizer {
+        display: none;
+      }
+      &::placeholder {
+        background: linear-gradient(to right, #959fb1 0%, #959fe0 25%, #959fe0 50%, #95c1e0 70%, #95c1e0 100%);
+
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+      }
     }
 
     .input-icon-btn {

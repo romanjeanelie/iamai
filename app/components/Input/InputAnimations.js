@@ -1,7 +1,6 @@
 import gsap, { Power3 } from "gsap";
 import isMobile from "../../utils/isMobile";
 import anim from "../../utils/anim";
-
 export default class InputAnimations {
   constructor({ pageEl, emitter }) {
     this.pageEl = pageEl;
@@ -32,7 +31,6 @@ export default class InputAnimations {
 
     // Write
     this.inputText = this.inputBackEl.querySelector(".input-text");
-
     // Image
     this.inputImageContainer = this.inputEl.querySelector(".input__image--container");
     this.imageDroppedContainer = this.pageEl.querySelector(".image-dropped__container");
@@ -50,7 +48,6 @@ export default class InputAnimations {
     this.carousselEl = document.querySelector(".caroussel__container");
     this.navbarEl = document.querySelector(".nav");
   }
-
   // Presets
   fadeInButtons(delay = 0, duration = 500) {
     const videoBtn = this.inputFrontEl.querySelector(".video-btn");
@@ -158,7 +155,6 @@ export default class InputAnimations {
       fill: "forwards",
     });
   }
-
   fadeInInputFront({ delay = 0, duration = 400 } = {}) {
     return anim(this.inputFrontEl, [{ opacity: 0 }, { opacity: 1 }], {
       delay,
@@ -249,7 +245,6 @@ export default class InputAnimations {
       this.inputText.setSelectionRange(this.inputText.value.length, this.inputText.value.length);
     }
   }
-
   /**
    * Record audio
    */
@@ -300,7 +295,6 @@ export default class InputAnimations {
         ease: "ease-in-out",
       }
     );
-
     anim(
       [this.recordCounter, this.infoTextEl],
       [
@@ -315,7 +309,6 @@ export default class InputAnimations {
       }
     );
   }
-
   toStartRecordingGreyPage() {
     this.overlayRecordingEl.classList.add("show");
     this.inputEl.classList.add("hidden");
@@ -409,7 +402,6 @@ export default class InputAnimations {
       }
     }
   }
-
   /**
    * Phone
    */
@@ -472,7 +464,6 @@ export default class InputAnimations {
       this.fadeOutCategoriesAndCaroussel(0, 500);
     }
   }
-
   leaveDragImage({ animBottom = true } = {}) {
     this.frontCameraBtn.classList.remove("active-imagedrop");
     this.inputImageContainer.classList.remove("show");
@@ -523,7 +514,6 @@ export default class InputAnimations {
     this.toWrite({ delay: 1200, animButtons: false, animLogos: false, placeholder: "Ask a question about the image" });
     this.imageDroppedContainer.classList.add("visible");
   }
-
   toRemoveImage() {
     this.imageDroppedContainer.classList.remove("visible");
     // this.cancelBtn.classList.remove("show");
