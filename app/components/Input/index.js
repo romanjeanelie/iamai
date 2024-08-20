@@ -55,7 +55,7 @@ export default class Input {
 
     // Front input
     this.centerBtn = this.inputFrontEl.querySelector(".center-btn");
-    this.frontCameraBtn = this.inputFrontEl.querySelector(".camera-btn");
+    this.frontCameraBtn = this.inputEl.querySelector(".camera-btn");
     this.frontMicBtn = this.inputFrontEl.querySelector(".mic-btn");
     this.frontVideoBtn = this.inputFrontEl.querySelector(".video-btn");
 
@@ -359,7 +359,7 @@ export default class Input {
     // Video
     this.frontVideoBtn.addEventListener("click", () => {
       this.emitter.emit("input:displayVideoInput");
-      
+
       //initailse the video workflow api
       this.discussion.Chat.StartVideoWorkflow();
     });
