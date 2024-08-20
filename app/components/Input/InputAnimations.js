@@ -54,7 +54,7 @@ export default class InputAnimations {
   // Presets
   fadeInButtons(delay = 0, duration = 500) {
     const videoBtn = this.inputFrontEl.querySelector(".video-btn");
-    gsap.to([this.frontMicBtn, this.frontCameraBtn, videoBtn, this.centerBtn], {
+    gsap.to([this.frontCameraBtn, videoBtn, this.centerBtn], {
       opacity: 1,
       duration: duration / 1000,
       ease: Power3.easeInOut,
@@ -64,7 +64,7 @@ export default class InputAnimations {
 
   fadeOutButtons(delay = 0, duration = 500) {
     const videoBtn = this.inputFrontEl.querySelector(".video-btn");
-    gsap.to([this.frontMicBtn, this.frontCameraBtn, videoBtn, this.centerBtn], {
+    gsap.to([this.frontCameraBtn, videoBtn, this.centerBtn], {
       opacity: 0,
       duration: duration / 1000,
       ease: Power3.easeInOut,
