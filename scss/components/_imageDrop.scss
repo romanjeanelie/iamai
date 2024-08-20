@@ -52,11 +52,13 @@
 
 // Input
 .input__image--container {
+  background-color: white;
+  border-radius: 50px;
   padding: 4px 0 4px 16px;
   position: absolute;
   width: 100%;
   height: 100%;
-  right: 0;
+  right: 10px;
   top: 50%;
   transform: translate3d(0%, -50%, 0);
   display: flex;
