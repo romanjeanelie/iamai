@@ -2,4 +2,20 @@
   position: fixed;
   inset: 0;
   z-index: 2;
+  font-family: "SFPro";
+}
+
+.heroBentoGrid__grid {
+  max-width: $maxWidth;
+  padding: 160px 0 0;
+  margin: 0 auto;
+
+  h1 {
+    color: #12192b;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 125%; /* 60px */
+    letter-spacing: -0.4px;
+  }
 }
