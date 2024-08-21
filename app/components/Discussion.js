@@ -70,44 +70,7 @@ export default class Discussion {
       this.onCreatedTask();
       this.enableInput();
     }
-    // const tempContainer = document.createElement("div");
-    // tempContainer.classList.add("discussion__ai");
-    // this.discussionContainer.appendChild(tempContainer);
-    // Scroll to div
-    // const moviesCards = document.querySelectorAll(".movies-card");
-    // const movieDetails = document.querySelector("#movie-details");
-    // moviesCards.forEach((movieCard) => {
-    //   movieCard.addEventListener("click", () => {
-    //     this.scrollToDiv(movieDetails);
-    //   });
-    // });
-    // Link
-    // this.addURL({
-    //   text: "mois...",
-    //   label: "I'm searching filghthts...",
-    //   container: tempContainer,
-    //   url: "https://www.google.com",
-    // });
-
-    // Images
-    // this.addImages({
-    //   srcs: ["https://picsum.photos/300/500"],
-    //   container: tempContainer,
-    // });
   }
-
-  //   scrollToDiv(element) {
-  //     let divOffset = 0;
-  //     let currentElement = element;
-  //     while (currentElement && this.discussionContainer.contains(currentElement)) {
-  //       divOffset += currentElement.offsetTop;
-  //       currentElement = currentElement.offsetParent;
-  //     }
-  //     this.discussionContainer.scrollTo({
-  //       top: divOffset,
-  //       behavior: "smooth",
-  //     });
-  //   }
 
   disableInput() {
     this.inputText.disabled = true;
@@ -127,11 +90,9 @@ export default class Discussion {
   }
 
   getAiAnswer({ text, imgs, isLiveMode = false }) {
-    // this.scrollToBottom();
     this.AIContainer = document.createElement("div");
     this.AIContainer.classList.add("discussion__ai");
     this.discussionContainer.appendChild(this.AIContainer);
-    // this.scrollToBottom();
 
     this.typingText = new TypingText({
       text: "",
@@ -406,11 +367,12 @@ export default class Discussion {
     }
     this.uuid = this.Chat.deploy_ID;
 
-    this.getAiAnswer({ text: "" });
     await this.updateHistory({ uuid: this.uuid, user: this.user });
     this.scrollToBottom(false);
     this.isHistoryLoading = false;
     this.emitter.emit("taskManager:isHistorySet", true);
+
+    this.enableInput();
   }
 
   async updateHistory({ uuid, user }) {

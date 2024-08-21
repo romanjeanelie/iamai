@@ -120,6 +120,7 @@ class App {
     // this.inputBluePage = new Input({ pageEl: this.pageBlue, isActive: true, ...props });
     this.inputGreyPage = new Input({ pageEl: this.pageGrey, isActive: false, ...props });
   }
+
   initTaskManager() {
     this.taskManager = new TaskManager({ emitter: this.emitter, pageEl: this.pageGrey, gui: this.gui });
   }
