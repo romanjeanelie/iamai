@@ -341,9 +341,6 @@ $taskSecondaryColor: #007aff;
   left: 0;
   top: 0;
   right: 0;
-  // width: 100vw;
-  // height: 100vh; // fallback for browsers that don't support svh units
-  // height: 100svh;
 
   .task-manager__header {
     padding: 48px 48px 24px;
@@ -414,7 +411,7 @@ $taskSecondaryColor: #007aff;
 .task-manager__notification-container {
   position: fixed;
   top: 80px;
-  left: calc((100vw - $discussionMaxWidth) / 2);
+  left: calc((100vw - $maxWidth) / 2);
   display: flex;
   align-items: center;
   gap: 8px;

@@ -1,3 +1,17 @@
+.input__wrapper {
+  position: fixed;
+  z-index: 10;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 120px * 2);
+  max-width: $maxWidth;
+
+  @include media("<tablet") {
+    width: 100%;
+  }
+}
+
 .input__container {
   $borderRadius: 40px;
   position: relative;
