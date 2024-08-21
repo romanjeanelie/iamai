@@ -24,6 +24,31 @@
       mix-blend-mode: overlay;
     }
   }
+
+  h3 {
+    margin: 0;
+    color: #202543;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 20px; /* 133.333% */
+  }
+
+  h4 {
+    margin: 0;
+    color: #202543;
+    font-size: 9px;
+    font-weight: 600;
+    line-height: 14px; /* 155.556% */
+  }
+
+  p {
+    margin: 6px 0 0;
+
+    color: #676e7f;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 18px; /* 138.462% */
+  }
 }
 
 .heroBentoGrid__grid {
@@ -51,28 +76,111 @@
   }
 
   .heroBentoGrid__grid-item {
-    fill: rgba(248, 248, 248, 0.5);
+    padding: 20px 24px;
+    background-color: rgba(248, 248, 248, 0.5);
     max-height: 160px;
-    stroke-width: 0.5px;
-    background-color: red;
+    border: 0.5px solid rgba($colorLight, 0.4);
     border-radius: 20px;
-    stroke: rgba(white, 0.4);
     filter: drop-shadow(0px 10px 30px rgba(55, 69, 108, 0.04));
   }
 
+  .feature-box {
+    max-width: 215px;
+
+    p {
+      margin-top: 26px;
+    }
+  }
+
+  .feature-illustration {
+    position: relative;
+    .floating-card {
+      position: relative;
+      z-index: 1;
+      background-color: $colorLight;
+      width: 90px;
+      height: 90px;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 10px;
+
+      p {
+        color: #676e7f;
+        font-size: 9px;
+        font-weight: 400;
+        line-height: 14px;
+
+        span {
+          color: $colorMain;
+          font-weight: 600;
+        }
+      }
+    }
+
+    .floating-card__avatar-wrapper {
+      position: relative;
+      width: 30px;
+      height: 30px;
+      margin: 0 auto;
+
+      img {
+        border-radius: 30px;
+        width: 100%;
+        object-fit: cover;
+      }
+
+      .floating-card__more-button {
+        position: absolute;
+        top: 0;
+        left: 60%;
+        width: 30px;
+        height: 30px;
+        border-radius: 30px;
+        background-color: #edeef0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 10px;
+        font-weight: 500;
+        line-height: 20px; /* 200% */
+      }
+    }
+
+    .shadow-floating-card {
+      position: absolute;
+      top: 22.89px;
+      right: 32.89px;
+      transform: rotate(-15deg);
+      opacity: 0.5;
+      z-index: 0;
+      box-shadow: 0px 8px 16px 0px rgba(144, 147, 169, 0.08);
+
+      justify-content: end;
+
+      p {
+        margin-top: 0;
+      }
+    }
+  }
+
   .square-item {
-    background-color: blue;
     width: 160px;
     aspect-ratio: 1/1;
   }
 
   .wide-item {
+    display: flex;
+    justify-content: space-between;
     flex: 1;
-    background-color: green;
   }
 
   .high-item {
     height: 100%;
     max-height: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 }
