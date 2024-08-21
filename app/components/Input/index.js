@@ -368,6 +368,17 @@ export default class Input {
     );
 
     // Input text
+    this.inputText.addEventListener("input", () => {
+      // if the value is longer than the width, go to the next line and increase the height
+      this.inputText.style.height = "1px";
+      this.inputText.style.height = this.inputText.scrollHeight + "px";
+      if (this.inputText.scrollHeight > 26) {
+        this.inputFrontEl.style.borderRadius = "20px";
+      } else {
+        this.inputFrontEl.style.borderRadius = "40px";
+      }
+    });
+
     this.inputText.addEventListener("keydown", (event) => {
       if (this.inputText.value.trim().length > 0 && event.key === "Enter" && !event.shiftKey) {
         this.onSubmit(event);
