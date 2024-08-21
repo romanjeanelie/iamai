@@ -53,9 +53,6 @@ class App {
     this.pageGrey = document.querySelector(".page-grey");
     this.cancelBtn = document.querySelector(".cancel-btn");
     this.user = null;
-    // getUser().then(user => {
-    // this.user = user;
-    // });
     this.emitter = createNanoEvents();
 
     this.debug = import.meta.env.VITE_DEBUG === "true";
@@ -64,9 +61,6 @@ class App {
     this.waitListForm = new WaitListForm();
     this.addListeners();
     this.resetScroll();
-    // stopOverscroll is a function that prevents overscrolling behavior on touch devices.
-    // to be tested on a touch device
-    // stopOverscroll();
 
     if (this.debug) {
       this.toPageGrey({ duration: 0 });
@@ -117,7 +111,6 @@ class App {
       emitter: this.emitter,
     };
 
-    // this.inputBluePage = new Input({ pageEl: this.pageBlue, isActive: true, ...props });
     this.inputGreyPage = new Input({ pageEl: this.pageGrey, isActive: false, ...props });
   }
 
@@ -219,7 +212,6 @@ class App {
   async checkuser() {
     if (this.user) {
       isStopped = true;
-      console.log("this.user:", this.user);
       if (this.user.status == "active") {
         await this.user.setuseraddress();
         this.toPageGrey({ duration: 1200 });
