@@ -169,29 +169,7 @@ export default class InputAnimations {
    */
   toInitial({ delay = 0, animButtons = true, animBottom = true, animLogo = true } = {}) {
     this.inputFrontEl.style.pointerEvents = "auto";
-    this.inputBackEl.style.pointerEvents = "none";
     this.inputEl.style.overflow = "visible";
-
-    this.collapseHeightInputFront({ duration: 250 });
-
-    anim(this.inputBackEl, [{ opacity: 1 }, { opacity: 0 }], {
-      delay,
-      duration: 100,
-      fill: "forwards",
-      ease: "ease-in-out",
-    });
-
-    if (animButtons) {
-      this.fadeInButtons(delay);
-    }
-
-    if (animBottom) {
-      this.fadeInCategoriesAndCaroussel(delay);
-    }
-
-    if (animLogo) {
-      this.fadeInLogo(delay + 300);
-    }
   }
 
   fromRecordAudioToInitial() {

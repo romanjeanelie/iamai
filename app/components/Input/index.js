@@ -70,7 +70,6 @@ export default class Input {
 
     // Write
     this.inputText = this.inputEl.querySelector(".input-text");
-    console.log(this.inputText);
 
     // Other DOM elements
     this.cancelBtn = document.body.querySelector(".cancel-btn");
@@ -369,11 +368,7 @@ export default class Input {
     );
 
     // Input text
-    this.inputText.addEventListener("input", (event) => {
-      this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
-    });
     this.inputText.addEventListener("keydown", (event) => {
-      console.log(this.inputText);
       if (this.inputText.value.trim().length > 0 && event.key === "Enter" && !event.shiftKey) {
         this.onSubmit(event);
       }
