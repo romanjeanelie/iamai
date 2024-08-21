@@ -52,7 +52,6 @@ export default class Input {
     this.inputFrontEl = this.inputEl.querySelector(".input__front");
 
     // Front input
-    this.centerBtn = this.inputFrontEl.querySelector(".center-btn");
     this.frontCameraBtn = this.inputEl.querySelector(".camera-btn");
     this.frontMicBtn = this.inputFrontEl.querySelector(".mic-btn");
     this.frontVideoBtn = this.inputFrontEl.querySelector(".video-btn");
@@ -279,9 +278,6 @@ export default class Input {
   // Listeners
   addListeners() {
     // Write
-    this.centerBtn.addEventListener("click", () => {
-      this.toWrite();
-    });
     document.addEventListener(
       "keydown",
       (event) => {
@@ -377,7 +373,7 @@ export default class Input {
       this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
     });
     this.inputText.addEventListener("keydown", (event) => {
-      console.log("event", event);
+      console.log(this.inputText);
       if (this.inputText.value.trim().length > 0 && event.key === "Enter" && !event.shiftKey) {
         this.onSubmit(event);
       }

@@ -30,7 +30,7 @@ export default class InputAnimations {
     }
 
     // Write
-    this.inputText = this.inputBackEl.querySelector(".input-text");
+    this.inputText = this.inputEl.querySelector(".input-text");
     // Image
     this.inputImageContainer = this.inputEl.querySelector(".input__image--container");
     this.imageDroppedContainer = this.pageEl.querySelector(".image-dropped__container");
