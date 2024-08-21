@@ -50,7 +50,6 @@ export default class Input {
     this.pageEl = pageEl;
     this.inputEl = this.pageEl.querySelector(".input__container");
     this.inputFrontEl = this.inputEl.querySelector(".input__front");
-    this.inputBackEl = this.inputEl.querySelector(".input__back");
 
     // Front input
     this.centerBtn = this.inputFrontEl.querySelector(".center-btn");
@@ -59,7 +58,6 @@ export default class Input {
     this.frontVideoBtn = this.inputFrontEl.querySelector(".video-btn");
 
     // Image
-    this.backCameraBtn = this.inputBackEl.querySelector(".camera-btn");
     this.closeInputImageBtn = this.pageEl.querySelector(".input__image--closeBtn");
     this.currentImages = [];
     this.inputImageEl = this.pageEl.querySelector(".input__image");
@@ -70,10 +68,6 @@ export default class Input {
     });
     this.isRecordCanceled = false;
     this.recordCounter = this.pageEl.querySelector(".record-counter");
-    this.backMicBtnContainer = this.inputBackEl.querySelector(".mic-btn__container");
-    this.backMicBtn = this.backMicBtnContainer.querySelector(".mic-btn");
-    this.backMicText = this.backMicBtnContainer.querySelector("p");
-    this.isSmallRecording = false;
 
     // Write
     this.inputText = this.inputEl.querySelector(".input-text");
@@ -323,31 +317,11 @@ export default class Input {
       this.currentStatus = STATUS.INITIAL;
     });
 
-    this.backMicBtn.addEventListener("click", () => {
-      if (!this.isSmallRecording) {
-        this.isSmallRecording = true;
-        this.startRecording();
-        this.backMicBtnContainer.classList.add("active");
-      } else {
-        this.stopRecording();
-        this.backMicBtnContainer.classList.remove("active");
-      }
-    });
-
     // Image
     this.frontCameraBtn.addEventListener("click", () => {
       this.currentStatus = STATUS.UPLOAD_IMAGE;
       this.inputImage.enable();
       this.anims.toDragImage();
-    });
-
-    this.backCameraBtn.addEventListener("click", () => {
-      if (this.isSmallRecording) return;
-      this.currentStatus = STATUS.UPLOAD_IMAGE;
-      this.inputImage.enable();
-      this.anims.toInitial({ animBottom: false, animButtons: false });
-      this.anims.toDragImage({ animBottom: false, delay: 300 });
-      this.onClickOutside.animInitial = false;
     });
 
     this.closeInputImageBtn.addEventListener("click", () => {
