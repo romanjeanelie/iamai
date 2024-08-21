@@ -51,7 +51,6 @@ export default class Input {
     this.inputEl = this.pageEl.querySelector(".input__container");
     this.inputFrontEl = this.inputEl.querySelector(".input__front");
     this.inputBackEl = this.inputEl.querySelector(".input__back");
-    this.submitBtn = this.inputBackEl.querySelector(".submit");
 
     // Front input
     this.centerBtn = this.inputFrontEl.querySelector(".center-btn");
@@ -77,7 +76,8 @@ export default class Input {
     this.isSmallRecording = false;
 
     // Write
-    this.inputText = this.inputBackEl.querySelector(".input-text");
+    this.inputText = this.inputEl.querySelector(".input-text");
+    console.log(this.inputText);
 
     // Other DOM elements
     this.cancelBtn = document.body.querySelector(".cancel-btn");
@@ -399,19 +399,14 @@ export default class Input {
     );
 
     // Input text
-    this.inputText.addEventListener("focus", () => {
-      this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
-    });
-
     this.inputText.addEventListener("input", (event) => {
       this.submitBtn.disabled = !this.inputText.value.trim().length > 0;
     });
     this.inputText.addEventListener("keydown", (event) => {
+      console.log("event", event);
       if (this.inputText.value.trim().length > 0 && event.key === "Enter" && !event.shiftKey) {
         this.onSubmit(event);
       }
     });
-
-    this.submitBtn.addEventListener("click", (event) => this.onSubmit(event));
   }
 }
