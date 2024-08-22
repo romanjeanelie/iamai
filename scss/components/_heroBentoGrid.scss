@@ -2,6 +2,7 @@
   position: fixed;
   inset: 0;
   z-index: 3;
+  padding: 0 24px;
   font-family: "SFPro";
 }
 
@@ -82,7 +83,7 @@
   .high-item {
     grid-row: span 2;
     grid-column: span 13;
-    max-height: none;
+    max-height: none !important;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -204,17 +205,20 @@
   }
 
   .feature-illustration.conversation-widget {
+    margin: 0 auto;
     position: relative;
     box-sizing: content-box;
-    height: 94px;
     width: 94px;
+    aspect-ratio: 1/1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 10px;
-    border: 10px solid rgba(255, 255, 255, 0.22);
-    border-radius: 50px;
+    stroke: rgba(255, 255, 255, 0.22);
+    outline: 10px solid rgba(255, 255, 255, 0.22);
+
+    border-radius: 100px;
 
     p {
       color: $colorMain;
@@ -229,6 +233,10 @@
   }
 
   @include media("<phone") {
+    .heroBentoGrid__grid-item {
+      max-height: 148px;
+    }
+
     .multitasking-item {
       grid-row: 2;
       grid-column: span 60;
@@ -249,7 +257,11 @@
     }
 
     .talk-item {
-      grid-column: 31 / 60;
+      grid-column: 31 / 61;
+
+      p {
+        max-width: 152px;
+      }
     }
   }
 }
