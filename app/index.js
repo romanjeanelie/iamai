@@ -13,6 +13,7 @@ import { auth } from "./firebaseConfig";
 import animateString from "./utils/animateString";
 import WaitListForm from "./components/Login/WaitListForm";
 import PreLoginContent from "./components/PreLoginContent";
+import HeroBento from "./components/HeroBento";
 
 const divlogin = document.getElementById("divlogin");
 
@@ -85,6 +86,7 @@ class App {
     this.initInput();
     this.initTaskManager();
     this.initSlider();
+    this.initHeroBento();
   }
 
   initNavbar() {
@@ -102,6 +104,10 @@ class App {
       toPageGrey: this.toPageGrey.bind(this),
       user: this.user,
     });
+  }
+
+  initHeroBento() {
+    this.heroBento = new HeroBento();
   }
 
   initInput() {
