@@ -51,6 +51,9 @@ export default class Input {
     this.inputEl = this.pageEl.querySelector(".input__container");
     this.inputFrontEl = this.inputEl.querySelector(".input__front");
 
+    // State
+    this.isInputExtanded = false;
+
     // Front input
     this.frontCameraBtn = this.inputEl.querySelector(".camera-btn");
     this.frontMicBtn = this.inputFrontEl.querySelector(".mic-btn");
@@ -367,16 +370,44 @@ export default class Input {
       { capture: true }
     );
 
+    const calculateTextWidth = () => {
+      // Create a hidden div with the same styles as the textarea
+      const hiddenDiv = document.createElement("div");
+      hiddenDiv.style.position = "absolute";
+      hiddenDiv.style.whiteSpace = "pre";
+      hiddenDiv.style.visibility = "hidden";
+      hiddenDiv.style.font = getComputedStyle(this.inputText).font;
+      hiddenDiv.style.letterSpacing = getComputedStyle(this.inputText).letterSpacing;
+      hiddenDiv.style.padding = getComputedStyle(this.inputText).padding;
+
+      // Copy the text content
+      hiddenDiv.textContent = this.inputText.value;
+
+      // Append the hidden div to the body to calculate the width
+      document.body.appendChild(hiddenDiv);
+      const textWidth = hiddenDiv.clientWidth;
+
+      // Remove the hidden div after calculation
+      document.body.removeChild(hiddenDiv);
+
+      return textWidth;
+    };
+
     // Input text
     this.inputText.addEventListener("input", () => {
-      // if the value is longer than the width, go to the next line and increase the height
-      this.inputText.style.height = "1px";
-      this.inputText.style.height = this.inputText.scrollHeight + "px";
-      if (this.inputText.scrollHeight > 26) {
-        this.inputFrontEl.style.borderRadius = "20px";
-      } else {
-        this.inputFrontEl.style.borderRadius = "40px";
+      const SIZE_THRESHOLD = 82;
+      const textWidth = calculateTextWidth();
+
+      if (textWidth > this.inputText.clientWidth) {
+        this.isInputExtanded = true;
+        this.inputFrontEl.classList.add("extended");
+      } else if (this.isInputExtanded && textWidth + SIZE_THRESHOLD < this.inputText.clientWidth) {
+        this.isInputExtanded = false;
+        this.inputFrontEl.classList.remove("extended");
       }
+
+      this.inputText.style.height = "1px";
+      this.inputText.style.height = `${this.inputText.scrollHeight}px`;
     });
 
     this.inputText.addEventListener("keydown", (event) => {
