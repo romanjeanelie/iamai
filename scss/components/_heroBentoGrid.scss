@@ -203,16 +203,18 @@
       position: absolute;
       top: 24px;
       left: 0px;
+      width: min(40%, 56px);
     }
 
     .travel-picture:nth-of-type(2) {
       position: absolute;
       bottom: 0;
       left: 48px;
+      width: min(35%, 48px);
     }
 
     .travel-picture:nth-of-type(3) {
-      width: 79px;
+      width: min(50%, 79px);
     }
   }
 
