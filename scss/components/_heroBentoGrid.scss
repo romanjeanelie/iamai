@@ -12,7 +12,7 @@
 
   h1 {
     margin: 0 0 24px;
-    color: #12192b;
+    color: $colorMain;
     font-size: 48px;
     font-style: normal;
     font-weight: 400;
@@ -27,7 +27,7 @@
 
   h3 {
     margin: 0;
-    color: #202543;
+    color: $colorMain;
     font-size: 15px;
     font-weight: 500;
     line-height: 20px; /* 133.333% */
@@ -35,7 +35,7 @@
 
   h4 {
     margin: 0;
-    color: #202543;
+    color: $colorMain;
     font-size: 9px;
     font-weight: 600;
     line-height: 14px; /* 155.556% */
@@ -44,7 +44,7 @@
   p {
     margin: 6px 0 0;
 
-    color: #676e7f;
+    color: $colorGrey;
     font-size: 13px;
     font-weight: 400;
     line-height: 18px; /* 138.462% */
@@ -62,7 +62,7 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: $bentoGap;
+    gap: $bentoGap / 2;
     grid-template-columns: repeat(3, 1fr);
   }
 
@@ -84,6 +84,25 @@
     filter: drop-shadow(0px 10px 30px rgba(55, 69, 108, 0.04));
   }
 
+  .square-item {
+    width: 160px;
+    aspect-ratio: 1/1;
+  }
+
+  .wide-item {
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+  }
+
+  .high-item {
+    height: 100%;
+    max-height: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
   .wide-item.travel-item {
     padding: 16px 24px;
 
@@ -101,7 +120,7 @@
     }
   }
 
-  .feature-illustration {
+  .feature-illustration.cards {
     position: relative;
     .floating-card {
       position: relative;
@@ -116,7 +135,7 @@
       padding: 10px;
 
       p {
-        color: #676e7f;
+        color: $colorGrey;
         font-size: 9px;
         font-weight: 400;
         line-height: 14px;
@@ -197,22 +216,28 @@
     }
   }
 
-  .square-item {
-    width: 160px;
-    aspect-ratio: 1/1;
-  }
-
-  .wide-item {
-    display: flex;
-    justify-content: space-between;
-    flex: 1;
-  }
-
-  .high-item {
-    height: 100%;
-    max-height: none;
+  .feature-illustration.conversation-widget {
+    position: relative;
+    box-sizing: content-box;
+    height: 94px;
+    width: 94px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border: 10px solid rgba(255, 255, 255, 0.22);
+    border-radius: 50px;
+
+    p {
+      color: $colorMain;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 18px; /* 112.5% */
+    }
+
+    .mic-icon {
+      width: 24px;
+    }
   }
 }
