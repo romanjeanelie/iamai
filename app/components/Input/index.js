@@ -13,6 +13,7 @@ import InputAnimations from "./InputAnimations";
 
 import { colorMain } from "../../../scss/variables/_colors.module.scss";
 import InputVideo from "./InputVideo";
+import { calculateInputTextWidth } from "../../utils/calculateInputTextWidth";
 
 function isLetterKey(event) {
   console.log("event.key", event.key);
@@ -370,33 +371,10 @@ export default class Input {
       { capture: true }
     );
 
-    const calculateTextWidth = () => {
-      // Create a hidden div with the same styles as the textarea
-      const hiddenDiv = document.createElement("div");
-      hiddenDiv.style.position = "absolute";
-      hiddenDiv.style.whiteSpace = "pre";
-      hiddenDiv.style.visibility = "hidden";
-      hiddenDiv.style.font = getComputedStyle(this.inputText).font;
-      hiddenDiv.style.letterSpacing = getComputedStyle(this.inputText).letterSpacing;
-      hiddenDiv.style.padding = getComputedStyle(this.inputText).padding;
-
-      // Copy the text content
-      hiddenDiv.textContent = this.inputText.value;
-
-      // Append the hidden div to the body to calculate the width
-      document.body.appendChild(hiddenDiv);
-      const textWidth = hiddenDiv.clientWidth;
-
-      // Remove the hidden div after calculation
-      document.body.removeChild(hiddenDiv);
-
-      return textWidth;
-    };
-
     // Input text
     this.inputText.addEventListener("input", () => {
       const SIZE_THRESHOLD = 82;
-      const textWidth = calculateTextWidth();
+      const textWidth = calculateInputTextWidth(this.inputText);
 
       if (textWidth > this.inputText.clientWidth) {
         this.isInputExtanded = true;
