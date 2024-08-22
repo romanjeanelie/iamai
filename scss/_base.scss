@@ -159,6 +159,34 @@ button {
   backdrop-filter: blur(100px);
 }
 
+.page-blue {
+  display: none;
+  background: $backgroundColorBluePage;
+
+  main {
+    display: grid;
+    grid-template-rows: 1fr auto 1fr;
+    width: 100%;
+    max-width: 696px;
+
+    .top {
+      align-self: self-end;
+    }
+
+    .center {
+      justify-self: center;
+      width: 100%;
+    }
+
+    .bottom {
+    }
+  }
+
+  &.hidden {
+    transform: translateY(-100%);
+  }
+}
+
 .page-grey {
   min-height: 100vh; // in case svh is not supported by browser
   min-height: 100svh;
