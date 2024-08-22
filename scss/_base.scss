@@ -99,7 +99,6 @@ pre {
   min-height: 100vh; // in case svh is not supported by browser
   min-height: 100svh;
   transition: visibility 0s, opacity 0.1s linear;
-
   &.preload {
     visibility: hidden;
     opacity: 0;
@@ -144,44 +143,23 @@ button {
   min-height: 100svh;
   justify-content: center;
   align-items: center;
-
   transition: transform $ease-in-out-cubic;
-
+  background: url("https://res.cloudinary.com/dfdqiqn98/image/upload/v1724331559/Home/bg_image_iqmohl.png") no-repeat
+    center center fixed;
+  background-size: cover;
   main {
     z-index: 2;
   }
 }
 
-.page-blue {
-  display: none;
-  background: $backgroundColorBluePage;
-
-  main {
-    display: grid;
-    grid-template-rows: 1fr auto 1fr;
-    width: 100%;
-    max-width: 696px;
-
-    .top {
-      align-self: self-end;
-    }
-
-    .center {
-      justify-self: center;
-      width: 100%;
-    }
-
-    .bottom {
-    }
-  }
-
-  &.hidden {
-    transform: translateY(-100%);
-  }
+.blurry-layer {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.01);
+  backdrop-filter: blur(100px);
 }
 
 .page-grey {
-  background-color: $backgroundColorGreyPage;
   min-height: 100vh; // in case svh is not supported by browser
   min-height: 100svh;
 
@@ -219,7 +197,7 @@ button {
   overflow: auto;
   overflow-x: hidden;
   color: $colorBlack;
-  background-color: $colorMain;
+  background-color: $colorLight;
   font-family: "SFPro";
 }
 
