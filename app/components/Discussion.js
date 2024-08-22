@@ -101,6 +101,7 @@ export default class Discussion {
       marginLeft: 16,
     });
 
+    this.emitter.emit("pre-skeleton");
     this.typingText.fadeIn();
     this.typingText.displayTextSkeleton();
     this.Chat.callsubmit(text, imgs, this.AIContainer, isLiveMode);
@@ -251,14 +252,6 @@ export default class Discussion {
       container.appendChild(textContainer);
     }
 
-    // if (!this.media) {
-    //   this.media = new DiscussionMedia({
-    //     container: container,
-    //     emitter: this.emitter,
-
-    //   });
-    // }
-
     if (container !== this.currentAnswerContainer) {
       this.currentAnswerContainer = container;
     }
@@ -266,22 +259,7 @@ export default class Discussion {
     this.typingText?.fadeOut();
     this.emitter.emit("addAIText", text, targetlang);
 
-    // const textEl = document.createElement("span");
-
-    // if (type === "status") {
-    //   textEl.className = "AIstatus";
-    //   this.addStatus({ text, textEl, container : textContainer });
-    //   this.statusContainer.appendChild(textEl);
-    //   return typeByWord(textEl, text);
-    // } else if (this.lastStatus) {
-    //   this.removeStatus({ container: textContainer });
-    // }
-    // textContainer.appendChild(textEl);
-
-    // text = text.replace(/<br\/?>\s*/g, "\n");
-    // if (type !== "status") this.scrollToBottom();
     if (type === "images") return;
-    // return typeByWord(textEl, text);
     return typeByWord(textContainer, text);
   }
 
