@@ -84,6 +84,15 @@
     filter: drop-shadow(0px 10px 30px rgba(55, 69, 108, 0.04));
   }
 
+  .wide-item.travel-item {
+    padding: 16px 24px;
+
+    .feature-box {
+      max-width: 212px;
+      padding-top: 4px;
+    }
+  }
+
   .feature-box {
     max-width: 215px;
 
@@ -162,6 +171,29 @@
       p {
         margin-top: 0;
       }
+    }
+  }
+
+  .feature-illustration.travel-pictures {
+    position: relative;
+    display: flex;
+    justify-content: end;
+    width: 100%;
+
+    .travel-picture:first-of-type {
+      position: absolute;
+      top: 24px;
+      left: 0px;
+    }
+
+    .travel-picture:nth-of-type(2) {
+      position: absolute;
+      bottom: 0;
+      left: 48px;
+    }
+
+    .travel-picture:nth-of-type(3) {
+      width: 79px;
     }
   }
 
