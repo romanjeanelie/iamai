@@ -1,7 +1,7 @@
 .heroBentoGrid__container {
   position: fixed;
   inset: 0;
-  z-index: 20;
+  z-index: 3;
   font-family: "SFPro";
 }
 
@@ -43,7 +43,6 @@
 
   p {
     margin: 6px 0 0;
-
     color: $colorGrey;
     font-size: 13px;
     font-weight: 400;
@@ -55,25 +54,10 @@
   $bentoGap: 4px;
   $bentoWidth: 160px;
 
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(60, 1fr);
+  grid-template-rows: repeat(6, 1fr);
   gap: $bentoGap;
-
-  .heroBentoGrid__left {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: $bentoGap / 2;
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .heroBentoGrid__right {
-    width: $bentoWidth;
-  }
-
-  .heroBentoGrid__row {
-    display: flex;
-    gap: $bentoGap;
-  }
 
   .heroBentoGrid__grid-item {
     padding: 20px 24px;
@@ -85,18 +69,20 @@
   }
 
   .square-item {
-    width: 160px;
-    aspect-ratio: 1/1;
+    grid-column: span 13;
+    grid-row: span 3;
   }
 
   .wide-item {
     display: flex;
     justify-content: space-between;
-    flex: 1;
+    grid-column: span 34;
+    grid-row: span 3;
   }
 
   .high-item {
-    height: 100%;
+    grid-row: span 6;
+    grid-column: span 13;
     max-height: none;
     display: flex;
     flex-direction: column;
