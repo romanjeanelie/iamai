@@ -6,8 +6,7 @@ class HeroBento {
 
     // States
     this.isDisplayed = true;
-    console.log(this.isDisplayed);
-
+    Ò;
     // Dom Elements
     this.container = document.querySelector(".heroBentoGrid__container");
 
@@ -16,7 +15,7 @@ class HeroBento {
   }
 
   addEventListeners() {
-    this.emitter.on("pre-skeleton", () => {
+    this.emitter.on("pre-text-animation", () => {
       if (!this.isDisplayed) return;
       this.isDisplayed = false;
 

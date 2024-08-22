@@ -30,7 +30,7 @@ function () {
     this.emitter = emitter; // States
 
     this.isDisplayed = true;
-    console.log(this.isDisplayed); // Dom Elements
+    Ò; // Dom Elements
 
     this.container = document.querySelector(".heroBentoGrid__container"); // Init
 
@@ -42,7 +42,7 @@ function () {
     value: function addEventListeners() {
       var _this = this;
 
-      this.emitter.on("pre-skeleton", function () {
+      this.emitter.on("pre-text-animation", function () {
         if (!_this.isDisplayed) return;
         _this.isDisplayed = false;
 

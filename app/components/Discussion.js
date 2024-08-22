@@ -101,7 +101,7 @@ export default class Discussion {
       marginLeft: 16,
     });
 
-    this.emitter.emit("pre-skeleton");
+    this.emitter.emit("pre-text-animation");
     this.typingText.fadeIn();
     this.typingText.displayTextSkeleton();
     this.Chat.callsubmit(text, imgs, this.AIContainer, isLiveMode);
