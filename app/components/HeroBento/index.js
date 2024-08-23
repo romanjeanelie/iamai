@@ -1,7 +1,8 @@
 import gsap, { Power3 } from "gsap";
 
 class HeroBento {
-  constructor({ emitter }) {
+  constructor({ user, emitter }) {
+    this.user = user;
     this.emitter = emitter;
 
     // States
@@ -9,9 +10,15 @@ class HeroBento {
 
     // Dom Elements
     this.container = document.querySelector(".heroBentoGrid__container");
+    this.name = this.container.querySelector(".name");
 
     // Init
+    this.setName();
     this.addEventListeners();
+  }
+
+  setName() {
+    this.name.textContent = this.user.name;
   }
 
   addEventListeners() {

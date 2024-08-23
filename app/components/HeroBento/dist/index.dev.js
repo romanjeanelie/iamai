@@ -23,20 +23,29 @@ var HeroBento =
 /*#__PURE__*/
 function () {
   function HeroBento(_ref) {
-    var emitter = _ref.emitter;
+    var user = _ref.user,
+        emitter = _ref.emitter;
 
     _classCallCheck(this, HeroBento);
 
+    this.user = user;
     this.emitter = emitter; // States
 
     this.isDisplayed = true; // Dom Elements
 
-    this.container = document.querySelector(".heroBentoGrid__container"); // Init
+    this.container = document.querySelector(".heroBentoGrid__container");
+    this.name = this.container.querySelector(".name"); // Init
 
+    this.setName();
     this.addEventListeners();
   }
 
   _createClass(HeroBento, [{
+    key: "setName",
+    value: function setName() {
+      this.name.textContent = this.user.name;
+    }
+  }, {
     key: "addEventListeners",
     value: function addEventListeners() {
       var _this = this;

@@ -107,7 +107,7 @@ class App {
   }
 
   initHeroBento() {
-    this.heroBento = new HeroBento({ emitter: this.emitter });
+    this.heroBento = new HeroBento({ user: this.user, emitter: this.emitter });
   }
 
   initInput() {
