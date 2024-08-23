@@ -88,7 +88,7 @@ class App {
   }
 
   initNavbar() {
-    new Navbar();
+    new Navbar({ user: this.user });
   }
 
   initCaroussel() {

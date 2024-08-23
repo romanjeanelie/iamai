@@ -5,10 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _isMobile = _interopRequireDefault(require("../utils/isMobile"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -18,14 +14,26 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Navbar =
 /*#__PURE__*/
 function () {
-  function Navbar() {
+  function Navbar(_ref) {
+    var user = _ref.user;
+
     _classCallCheck(this, Navbar);
 
-    this.navEl = document.querySelector(".nav");
+    this.user = user;
+    this.headerNav = document.querySelector(".header-nav");
+    console.log(this.headerNav);
+    this.userPicture = this.headerNav.querySelector(".user-logo img");
+    console.log(this.userPicture);
     this.addListeners();
+    this.setUserImage();
   }
 
   _createClass(Navbar, [{
+    key: "setUserImage",
+    value: function setUserImage() {
+      this.userPicture.src = this.user.picture;
+    }
+  }, {
     key: "addListeners",
     value: function addListeners() {}
   }]);

@@ -1,8 +1,8 @@
 // Spacing
 $paddingHor: 40px;
-$paddingTop: 48px;
-$paddingHorMobile: 12px;
-$paddingTopMobile: 28px;
+$paddingTop: 52px;
+$paddingHorMobile: 20px;
+$paddingTopMobile: 48px;
 
 // Fonts
 // @font-face {
@@ -72,7 +72,7 @@ body {
   position: relative;
 
   color: $colorMain;
-  font-family: Noto Sans;
+  font-family: "SFPro";
   font-weight: 400;
   font-feature-settings: "liga" 0;
 }
