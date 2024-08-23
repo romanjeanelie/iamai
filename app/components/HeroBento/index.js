@@ -15,8 +15,7 @@ class HeroBento {
   }
 
   addEventListeners() {
-    this.emitter.on("pretextanimation", () => {
-      console.log("pre-text-animation");
+    this.emitter.on("pre-text-animation", () => {
       if (!this.isDisplayed) return;
       this.isDisplayed = false;
 

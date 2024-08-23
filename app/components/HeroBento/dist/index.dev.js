@@ -41,8 +41,7 @@ function () {
     value: function addEventListeners() {
       var _this = this;
 
-      this.emitter.on("pretextanimation", function () {
-        console.log("pre-text-animation");
+      this.emitter.on("pre-text-animation", function () {
         if (!_this.isDisplayed) return;
         _this.isDisplayed = false;
 
