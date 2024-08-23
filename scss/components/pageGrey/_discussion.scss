@@ -103,7 +103,7 @@
 
     @include media("<tablet") {
       padding-left: 48px;
-      padding-right: 24px;
+      padding-right: $paddingHorMobile;
     }
   }
 
@@ -146,7 +146,7 @@
     }
 
     @include media("<tablet") {
-      padding-left: 24px;
+      padding-left: $paddingHorMobile;
       padding-right: 48px;
       margin-right: unset;
 

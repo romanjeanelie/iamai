@@ -2,7 +2,7 @@
   position: fixed;
   inset: 0;
   z-index: 3;
-  padding: 0 24px;
+  padding: 0 $paddingHorMobile;
   font-family: "SFPro";
 }
 
@@ -70,7 +70,7 @@
   gap: $bentoGap;
 
   .heroBentoGrid__grid-item {
-    padding: 20px 24px;
+    padding: 20px $paddingHorMobile;
     background-color: rgba(248, 248, 248, 0.5);
     max-height: 160px;
     border: 0.5px solid rgba($colorLight, 0.4);
