@@ -30,6 +30,7 @@ function () {
   _createClass(Navigation, [{
     key: "setUserImage",
     value: function setUserImage() {
+      if (!this.user.picture) return;
       this.userPicture.src = this.user.picture;
     }
   }, {

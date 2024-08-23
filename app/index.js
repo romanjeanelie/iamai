@@ -1,19 +1,18 @@
-import * as dat from "dat.gui";
 import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
 import { createNanoEvents } from "nanoevents";
 import User, { getUserDataFireDB, redirectToLogin, saveUserDataFireDB } from "./User";
 import Caroussel from "./components/Caroussel";
 import Discussion from "./components/Discussion";
+import HeroBento from "./components/HeroBento";
 import Input from "./components/Input";
 import { IntroAnimation } from "./components/IntroAnimation";
-import Navbar from "./components/Navbar";
+import WaitListForm from "./components/Login/WaitListForm";
+import PreLoginContent from "./components/PreLoginContent";
 import Slider from "./components/Slider";
 import TaskManager from "./components/TaskManager";
 import { auth } from "./firebaseConfig";
 import animateString from "./utils/animateString";
-import WaitListForm from "./components/Login/WaitListForm";
-import PreLoginContent from "./components/PreLoginContent";
-import HeroBento from "./components/HeroBento";
+import Navigation from "./components/Navigation";
 
 const divlogin = document.getElementById("divlogin");
 
@@ -88,7 +87,7 @@ class App {
   }
 
   initNavbar() {
-    new Navbar({ user: this.user });
+    new Navigation({ user: this.user });
   }
 
   initCaroussel() {

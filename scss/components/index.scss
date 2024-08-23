@@ -1,4 +1,4 @@
-@import "./navBar";
+@import "./navigation";
 @import "./cancelBtn";
 @import "./imageDrop";
 @import "./input";
@@ -19,7 +19,6 @@
 }
 
 .page-grey {
-  @import "./pageGrey/logo";
   @import "./pageGrey/discussion";
   @import "./pageGrey/media";
   @import "./pageGrey/overlayRecording";

@@ -1,27 +1,26 @@
 .input__wrapper {
   position: fixed;
   z-index: 10;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: calc(100% - 120px * 2);
-  max-width: $maxWidth;
-
-  @include media("<tablet") {
-    width: 100%;
-  }
+  bottom: $paddingBottom;
+  left: 0;
+  right: 0;
 }
 
 .input__container {
   $borderRadius: 40px;
   position: relative;
-  margin-bottom: 28px;
+  max-width: $maxWidth;
+  margin: 0 auto 40px;
   border-radius: $borderRadius;
   display: flex;
   align-items: end;
   gap: 8px;
-  width: 100%;
   transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+
+  @include media("<tablet") {
+    padding: 0 $paddingHorMobile;
+    margin-bottom: 32px;
+  }
 
   .input__front {
     position: relative;
@@ -181,10 +180,6 @@
   &.hidden {
     opacity: 0;
     visibility: hidden;
-  }
-
-  @include media("<tablet") {
-    padding: 0 24px;
   }
 
   .record-counter {

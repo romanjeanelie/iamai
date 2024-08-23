@@ -1,0 +1,93 @@
+// HERE WE DEFINE THE STYLING FOR BOTH THE HEADER NAV AND THE FOOTER NAV
+
+// Shared styling
+.nav__wrapper {
+  max-width: $maxWidth;
+  margin: 0 auto;
+}
+
+.nav-item__container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-item__button {
+  color: $colorGrey;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 46px; /* 270.588% */
+}
+
+.nav__chevron {
+  border: 1px solid rgba($colorGrey, 0.45);
+  border-radius: 46px;
+  transform: rotate(180deg);
+}
+
+.nav__fixed-button {
+  position: fixed;
+  top: $paddingTop;
+  left: $paddingHor;
+  z-index: 3;
+  width: 46px;
+  height: 46px;
+  border-radius: 40px;
+  overflow: hidden;
+}
+
+@include media("<tablet") {
+  .nav-item__container {
+    justify-content: end;
+  }
+
+  .nav__fixed-button {
+    position: static;
+  }
+}
+
+// Header nav
+.header-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  padding: $paddingTop $paddingHor 0;
+
+  @include media("<tablet") {
+    padding: $paddingTopMobile $paddingHorMobile 0;
+
+    .header-nav__wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+}
+
+// Footer nav
+.footer-nav {
+  .settings-button {
+    top: auto;
+    bottom: $paddingBottom;
+  }
+
+  .nav__wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .nav__chevron {
+    transform: rotate(0deg);
+  }
+
+  @include media("<tablet") {
+    .footer-nav__wrapper {
+      padding: 0 $paddingHorMobile;
+    }
+  }
+}

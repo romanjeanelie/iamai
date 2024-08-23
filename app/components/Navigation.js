@@ -1,9 +1,8 @@
-export default class Navbar {
+export default class Navigation {
   constructor({ user }) {
     this.user = user;
 
     this.headerNav = document.querySelector(".header-nav");
-    console.log(this.headerNav);
     this.userPicture = this.headerNav.querySelector(".user-logo img");
     console.log(this.userPicture);
 
@@ -12,6 +11,7 @@ export default class Navbar {
   }
 
   setUserImage() {
+    if (!this.user.picture) return;
     this.userPicture.src = this.user.picture;
   }
 
