@@ -29,8 +29,7 @@ function () {
 
     this.emitter = emitter; // States
 
-    this.isDisplayed = true;
-    Ò; // Dom Elements
+    this.isDisplayed = true; // Dom Elements
 
     this.container = document.querySelector(".heroBentoGrid__container"); // Init
 
@@ -42,7 +41,8 @@ function () {
     value: function addEventListeners() {
       var _this = this;
 
-      this.emitter.on("pre-text-animation", function () {
+      this.emitter.on("pretextanimation", function () {
+        console.log("pre-text-animation");
         if (!_this.isDisplayed) return;
         _this.isDisplayed = false;
 
