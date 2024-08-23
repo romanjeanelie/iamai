@@ -22,30 +22,12 @@ function () {
     _classCallCheck(this, Navbar);
 
     this.navEl = document.querySelector(".nav");
-    this.navBtn = this.navEl.querySelector(".nav__btn");
-    this.navList = this.navEl.querySelector(".nav__list");
     this.addListeners();
   }
 
   _createClass(Navbar, [{
     key: "addListeners",
-    value: function addListeners() {
-      var _this = this;
-
-      this.navBtn.addEventListener("click", function () {
-        _this.navList.classList.toggle("show");
-      });
-      this.navEl.addEventListener("mouseenter", function () {
-        if ((0, _isMobile["default"])()) return;
-
-        _this.navList.classList.add("show");
-      });
-      this.navEl.addEventListener("mouseleave", function () {
-        if ((0, _isMobile["default"])()) return;
-
-        _this.navList.classList.remove("show");
-      });
-    }
+    value: function addListeners() {}
   }]);
 
   return Navbar;

@@ -4,9 +4,6 @@
   top: $paddingTop;
   right: $paddingHor;
 
-  //   transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-  //   transition-delay: 500ms;
-
   &.hidden {
     opacity: 0;
     visibility: hidden;
