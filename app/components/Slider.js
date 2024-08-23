@@ -24,7 +24,6 @@ export default class Slider {
     this.iconBadge = this.sliderEl.querySelector(".icon-badge");
     this.navbarEl = document.querySelector(".nav");
     this.inputEl = pageEl.querySelector(".input__wrapper");
-    this.inputTextEl = this.inputEl.querySelector(".input-text__expand");
     this.selectedCounter = null; // set in open questions slider
 
     this.imgs = [];
@@ -147,16 +146,11 @@ export default class Slider {
     }
   }
 
-  setMaxHeightInputText() {
-    this.inputTextEl.classList.add("height-imageQuestions");
-  }
-
   resetImageQuestions() {
     this.selectedCounter?.remove();
     this.questionsImgs = [];
     this.sliderContentQuestionsEl.innerHTML = "";
     this.sliderContentQuestionsWrapperEl.classList.remove("show");
-    this.inputTextEl.classList.remove("height-imageQuestions");
   }
 
   updateSelectedCounter() {

@@ -32,11 +32,17 @@ function animMask(mask, translateXValue, isShow) {
 
 export default class Caroussel {
   constructor() {
+    console.log("Caroussel");
     this.carousselEl = document.querySelector(".caroussel__container");
+    console.log(this.carousselEl);
     this.carousselTextEl = this.carousselEl.querySelector(".caroussel__text");
+    console.log(this.carousselTextEl);
     this.nextBtn = this.carousselEl.querySelector("#btn-next");
+    console.log(this.nextBtn);
     this.prevBtn = this.carousselEl.querySelector("#btn-prev");
+    console.log(this.prevBtn);
     this.markerEl = this.carousselEl.querySelector(".caroussel__markers");
+    console.log(this.markerEl);
   }
 
   init() {

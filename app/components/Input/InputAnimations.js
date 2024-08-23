@@ -187,42 +187,9 @@ export default class InputAnimations {
   toWrite({ delay = 0, animButtons = true, animLogos = true, placeholder = "", focus = true } = {}) {
     console.log("TO WRITE");
     this.inputText.placeholder = placeholder;
-    this.inputFrontEl.style.pointerEvents = "none";
-    this.inputBackEl.style.pointerEvents = "auto";
     // this.inputEl.style.overflow = "hidden";
-
-    if (animLogos) {
-      this.fadeOutLogo();
-    }
-
-    this.expandHeightInputFront({ delay: delay, duration: 250 });
-
-    if (animButtons) {
-      this.fadeOutButtons(delay, 100);
-      this.fadeOutCategoriesAndCaroussel(delay);
-    }
-
-    anim(this.inputBackEl, [{ opacity: 0 }, { opacity: 1 }], {
-      delay,
-      duration: 500,
-      delay: delay ? delay + 400 : 400,
-      fill: "forwards",
-      ease: "ease-in-out",
-    });
-
-    // Fix when we come back from image input to not hav break lines on input
-    setTimeout(() => {
-      this.inputText.disabled = false;
-    }, 1);
-
-    if (!focus) return;
-    if (isMobile() && !this.isPageBlue) {
-      this.inputText.click();
-    } else {
-      this.inputText.focus();
-      this.inputText.setSelectionRange(this.inputText.value.length, this.inputText.value.length);
-    }
   }
+
   /**
    * Record audio
    */
@@ -442,6 +409,7 @@ export default class InputAnimations {
       this.fadeOutCategoriesAndCaroussel(0, 500);
     }
   }
+
   leaveDragImage({ animBottom = true } = {}) {
     this.frontCameraBtn.classList.remove("active-imagedrop");
     this.inputImageContainer.classList.remove("show");
@@ -453,6 +421,7 @@ export default class InputAnimations {
   }
 
   toImageDroped() {
+    this.inputText.disabled = false;
     this.inputImageContainer.classList.remove("show");
 
     this.fadeOutButtons(0, 0);
@@ -469,7 +438,7 @@ export default class InputAnimations {
         ease: "ease-out",
       }
     );
-
+    this.fadeInButtons(1000, 500);
     this.animCircleYoyo = anim(this.inputFrontEl, [{ opacity: 1 }, { opacity: 0 }, { opacity: 1 }], {
       delay: step1.effect.getComputedTiming().duration,
       duration: 400,

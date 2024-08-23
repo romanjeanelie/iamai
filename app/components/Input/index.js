@@ -238,18 +238,13 @@ export default class Input {
   // Submit
   onSubmit(event) {
     event.preventDefault();
-    console.log("ON SUBMIT FUNCTION : ", this.inputText.value);
     console.time("input");
-    if (this.isPageBlue) {
-      this.toPageGrey({ duration: 1200 });
-    }
     if (this.currentStatus === STATUS.IMAGE_QUESTION) {
       this.emitter.emit("slider:close");
     }
     this.discussion.addUserElement({ text: this.inputText.value, imgs: this.currentImages });
     this.inputText.value = "";
     this.currentImages = [];
-    this.updateInputHeight();
     this.cancelBtn.classList.remove("show");
     this.navbarEl.classList.remove("hidden");
 

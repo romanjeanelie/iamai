@@ -50,7 +50,6 @@ class App {
   constructor() {
     this.app = document.querySelector("#app");
     this.loginPage = document.querySelector(".login-page");
-    this.pageBlue = document.querySelector(".page-blue");
     this.pageGrey = document.querySelector(".page-grey");
     this.cancelBtn = document.querySelector(".cancel-btn");
     this.user = null;
@@ -81,7 +80,6 @@ class App {
 
   initApp() {
     this.initNavbar();
-    this.initCaroussel();
     this.initDiscussion();
     this.initInput();
     this.initTaskManager();
@@ -160,8 +158,6 @@ class App {
       .then(function (result) {
         if (!result) return;
         const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential?.accessToken;
-        const user = result.user;
       })
       .catch(function (error) {
         const errorCode = error.code;
