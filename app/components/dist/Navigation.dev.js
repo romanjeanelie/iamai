@@ -34,7 +34,11 @@ function () {
     }
   }, {
     key: "addListeners",
-    value: function addListeners() {}
+    value: function addListeners() {
+      this.userPicture.addEventListener("click", function () {
+        console.log("click");
+      });
+    }
   }]);
 
   return Navigation;

@@ -14,5 +14,9 @@ export default class Navigation {
     this.userPicture.src = this.user.picture;
   }
 
-  addListeners() {}
+  addListeners() {
+    this.userPicture.addEventListener("click", () => {
+      console.log("click");
+    });
+  }
 }

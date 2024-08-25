@@ -157,7 +157,6 @@ export default class Discussion {
     this.discussionContainer.appendChild(this.userContainer);
     //moves this to save time
     if (imgs && imgs.length > 0) {
-      console.log(imgs.length);
       this.getAiAnswer({ text, imgs, isLiveMode: isFromVideo });
     } else this.getAiAnswer({ text });
 
@@ -167,7 +166,6 @@ export default class Discussion {
       { duration: 0.5, delay: 0.2, y: 0, opacity: 1, ease: "power2.inOut" }
     );
 
-    // this.scrollToBottom();
     this.disableInput();
     if (debug) {
       setTimeout(() => {
@@ -179,8 +177,6 @@ export default class Discussion {
       }, 1000);
       return;
     }
-    // if (imgs && imgs.length > 0) this.getAiAnswer({ text, imgs });
-    // else this.getAiAnswer({ text });
   }
 
   async addStatus({ text, textEl, container }) {
@@ -318,7 +314,7 @@ export default class Discussion {
     }
 
     if (sessionID && sessionID != "") {
-      this.toPageGrey();
+      // this.toPageGrey();
       this.Chat.sessionID = sessionID;
       this.Chat.deploy_ID = deploy_ID;
     } else {
@@ -431,14 +427,7 @@ export default class Discussion {
     this.Chat.submituserreply(text, task.workflowID);
   }
 
-  onStatusUpdate(taskKey, status) {
-    // if (status.type === TASK_STATUSES.COMPLETED) {
-    //   const userContainer = this.discussionWrapper.querySelector(`.discussion__user[taskkey="${taskKey}"]`);
-    //   const AIContainer = this.discussionWrapper.querySelector(`.discussion__ai[taskkey="${taskKey}"]`);
-    //   userContainer.classList.remove("discussion__user--task-created");
-    //   AIContainer.classList.remove("discussion__ai--task-created");
-    // }
-  }
+  onStatusUpdate(taskKey, status) {}
 
   async onRemoveTask(taskKey) {
     // Post delete task
