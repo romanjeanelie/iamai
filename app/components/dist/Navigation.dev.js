@@ -70,8 +70,8 @@ function () {
 
       var options = {
         root: null,
-        rootMargin: "0px",
-        threshold: 0.1
+        rootMargin: "-200px",
+        threshold: 0
       };
       var observer = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {

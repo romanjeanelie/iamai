@@ -49,14 +49,15 @@ export default class Navigation {
   setupIntersectionObserver() {
     const options = {
       root: null,
-      rootMargin: "0px",
-      threshold: 0.1,
+      rootMargin: "-200px",
+      threshold: 0,
     };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           this.currentSection = entry.target.id;
+
           this.updateButtonVisibility();
         }
       });
