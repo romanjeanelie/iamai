@@ -30,7 +30,8 @@ export default class Discussion {
     this.inputContainer = this.pageEl.querySelector("div.input__container");
     this.inputText = this.pageEl.querySelector(".input-text");
     this.discussionWrapper = document.querySelector(".discussion__wrapper");
-    this.prevDiscussionContainer = document.querySelector(".prev-discussion__container");
+    this.historyContainer = document.querySelector(".history__container");
+
     this.discussionContainer = document.querySelector(".discussion__container");
 
     this.addUserElement = this.addUserElement.bind(this);
@@ -114,17 +115,17 @@ export default class Discussion {
   }
 
   moveChildrenToPrevContainer() {
-    this.prevDiscussionContainer.classList.add("hidden");
+    this.historyContainer.classList.add("hidden");
     const children = Array.from(this.discussionContainer.childNodes);
 
     children.forEach((child) => {
-      this.prevDiscussionContainer.appendChild(child);
+      this.historyContainer.appendChild(child);
     });
     this.scrollToBottom();
 
     // Wait for scroll finish
     setTimeout(() => {
-      this.prevDiscussionContainer.classList.remove("hidden");
+      this.historyContainer.classList.remove("hidden");
     }, 1000);
   }
 
@@ -277,7 +278,6 @@ export default class Discussion {
       container.appendChild(textEL);
     }
     container.appendChild(linkEl);
-    // this.scrollToBottom();
   }
 
   // Scroll
@@ -285,14 +285,13 @@ export default class Discussion {
     window.scrollTo({
       top: document.body.scrollHeight,
       behavior: isSmooth ? "smooth" : "auto",
-      //   behavior: "smooth",
     });
   }
 
   async onScrollTop() {
     console.log("ON SCROLL TOP");
     const { container } = await this.history.getHistory({ uuid: this.uuid, user: this.user });
-    this.prevDiscussionContainer.prepend(container);
+    this.historyContainer.prepend(container);
     // only if there is more history to be added, we change the scrollTop value so the user stays at the same spot
     if (container.hasChildNodes()) {
       this.mainEl.scrollTop = document.documentElement.scrollTop = container.offsetHeight;
@@ -307,13 +306,6 @@ export default class Discussion {
     let deploy_ID = urlParams.get("deploy_id");
     this.Chat.autodetect = true;
 
-    // if (!sessionID){
-    //   this.Chat.sessionID = sessionID
-    // }
-    // if (!deploy_ID){
-    //   this.Chat.deploy_ID = deploy_ID
-    // }
-
     if (urlParams.get("location") && urlParams.get("location") != "") {
       this.Chat.location = urlParams.get("location");
     }
@@ -324,23 +316,17 @@ export default class Discussion {
         this.Chat.autodetect = false;
       }
     }
-    if (q && q != "") {
-      //   this.getAiAnswer({ text: "" });
-    }
 
     if (sessionID && sessionID != "") {
       this.toPageGrey();
       this.Chat.sessionID = sessionID;
       this.Chat.deploy_ID = deploy_ID;
-      //   this.getAiAnswer({ text: "" });
     } else {
-      // this.toPageGrey();
       var usr = await this.user;
       if (usr) {
         let data = await getsessionID(usr);
         this.Chat.sessionID = data.SessionID;
         this.Chat.deploy_ID = data.deploy_id;
-        // this.getAiAnswer({ text: "" });
       }
     }
     this.uuid = this.Chat.deploy_ID;
@@ -356,18 +342,18 @@ export default class Discussion {
   async updateHistory({ uuid, user }) {
     // hide the previous discussion container while it is loading to avoid scroll jumps
     this.discussionContainer.style.marginTop = "96px";
-    this.prevDiscussionContainer.style.display = "none";
+    this.historyContainer.style.display = "none";
 
     await new Promise(async (resolve, reject) => {
       const { container } = await this.history.getHistory({ uuid, user, size: 10 });
-      this.prevDiscussionContainer.appendChild(container);
-      const imgs = this.prevDiscussionContainer.querySelectorAll("img");
+      this.historyContainer.appendChild(container);
+      const imgs = this.historyContainer.querySelectorAll("img");
       let imgLoadedCount = 0;
       const totalImages = imgs.length;
 
       const showHistory = () => {
-        this.prevDiscussionContainer.style.display = "block";
-        this.discussionContainer.style.marginTop = "0px";
+        this.historyContainer.style.display = "block";
+        // this.discussionContainer.style.marginTop = "0px";
       };
 
       const handleImageLoad = () => {
@@ -522,18 +508,20 @@ export default class Discussion {
       rootMargin: "-96px",
     };
 
-    const observerCallback = (entries, observer) => {
+    const observerCallback = (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          this.prevDiscussionContainer.classList.add("visible");
+          this.historyContainer.classList.remove("hidden");
+          this.historyContainer.classList.add("visible");
         } else {
-          this.prevDiscussionContainer.classList.remove("visible");
+          this.historyContainer.classList.remove("visible");
+          this.historyContainer.classList.add("hidden");
         }
       });
     };
 
     let observer = new IntersectionObserver(observerCallback, options);
-    observer.observe(this.prevDiscussionContainer);
+    observer.observe(this.historyContainer);
   }
 
   addListeners() {

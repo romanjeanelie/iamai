@@ -16,7 +16,7 @@ const submitBtn = inputBackEl.querySelector(".submit");
 const inputContainer = document.querySelector("div.input__container");
 const container = document.querySelector("discussion__container");
 const discussionWrapper = document.querySelector(".discussion__wrapper");
-const prevDiscussionContainer = document.querySelector(".prev-discussion__container");
+const prevDiscussionContainer = document.querySelector(".history__container");
 const discussionContainer = document.querySelector(".discussion__container");
 const mainEl = document.querySelector("main");
 var AIContainer;
