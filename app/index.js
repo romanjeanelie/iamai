@@ -1,18 +1,18 @@
-import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
+import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from "firebase/auth";
 import { createNanoEvents } from "nanoevents";
-import User, { getUserDataFireDB, redirectToLogin, saveUserDataFireDB } from "./User";
+import User, { getUserDataFireDB, saveUserDataFireDB, signOutUser } from "./User";
 import Caroussel from "./components/Caroussel";
 import Discussion from "./components/Discussion";
 import HeroBento from "./components/HeroBento";
 import Input from "./components/Input";
 import { IntroAnimation } from "./components/IntroAnimation";
 import WaitListForm from "./components/Login/WaitListForm";
+import Navigation from "./components/Navigation";
 import PreLoginContent from "./components/PreLoginContent";
 import Slider from "./components/Slider";
 import TaskManager from "./components/TaskManager";
 import { auth } from "./firebaseConfig";
 import animateString from "./utils/animateString";
-import Navigation from "./components/Navigation";
 
 const divlogin = document.getElementById("divlogin");
 
@@ -173,17 +173,6 @@ class App {
       });
   }
 
-  signoutgoogle() {
-    signOut(auth)
-      .then(() => {
-        console.log("User signed out.");
-        redirectToLogin();
-      })
-      .catch((error) => {
-        console.error("Error signing out: ", error);
-      });
-  }
-
   async checkuserwaitlist(user) {
     this.user = user;
     console.log("checkuserwaitlist : ", this.user);
@@ -262,7 +251,7 @@ class App {
       if (linksignout) {
         linksignout.addEventListener("click", (e) => {
           // e.preventDefault();
-          this.signoutgoogle();
+          signOutUser();
         });
       }
 

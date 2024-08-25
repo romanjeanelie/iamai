@@ -1,3 +1,5 @@
+import { signOutUser } from "../User";
+
 export default class Navigation {
   constructor({ user }) {
     this.user = user;
@@ -15,8 +17,6 @@ export default class Navigation {
   }
 
   addListeners() {
-    this.userPicture.addEventListener("click", () => {
-      console.log("click");
-    });
+    this.userPicture.addEventListener("click", signOutUser);
   }
 }

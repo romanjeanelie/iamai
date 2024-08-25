@@ -1,4 +1,4 @@
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { app, auth } from "../app/firebaseConfig";
 import { getDatabase, ref, set, get, serverTimestamp } from "firebase/database";
 
@@ -77,7 +77,7 @@ class User {
         xhr.open("GET", url);
         xhr.send();
       } catch (ex) {
-        console.log("err", ex)
+        console.log("err", ex);
         resolve("");
       }
     });
@@ -124,7 +124,7 @@ class User {
   };
 }
 
-function getCurrentUser(auth) {
+export function getCurrentUser(auth) {
   return new Promise((resolve, reject) => {
     const unsubscribe = onAuthStateChanged(
       auth,
@@ -137,7 +137,7 @@ function getCurrentUser(auth) {
   });
 }
 
-async function getUser() {
+export async function getUser() {
   return new Promise((resolve, reject) => {
     getCurrentUser(auth).then(async (user) => {
       if (user && user.emailVerified) {
@@ -156,14 +156,14 @@ async function getUser() {
   });
 }
 
-function redirectToLogin() {
+export function redirectToLogin() {
   window.location.href = "./index.html";
 }
 
-const getsessionID = (user) =>
+export const getsessionID = (user) =>
   new Promise(function (resolve, reject) {
     user.user.getIdToken(true).then(async (idToken) => {
-      var xhr = new XMLHttpRequest()
+      var xhr = new XMLHttpRequest();
       xhr.addEventListener("readystatechange", function () {
         if (this.readyState === 4) {
           resolve(JSON.parse(this.responseText));
@@ -176,7 +176,7 @@ const getsessionID = (user) =>
     });
   });
 
-async function saveUserDataFireDB(user) {
+export async function saveUserDataFireDB(user) {
   const database = getDatabase(app);
   let data = {
     username: user.uuid,
@@ -195,7 +195,7 @@ async function saveUserDataFireDB(user) {
   await set(ref(database, userPath), data);
 }
 
-function getUserDataFireDB(user) {
+export function getUserDataFireDB(user) {
   return new Promise(async (resolve, reject) => {
     const database = getDatabase(app);
     try {
@@ -215,5 +215,15 @@ function getUserDataFireDB(user) {
   });
 }
 
+export function signOutUser() {
+  signOut(auth)
+    .then(() => {
+      console.log("User signed out.");
+      redirectToLogin();
+    })
+    .catch((error) => {
+      console.error("Error signing out: ", error);
+    });
+}
+
 export default User;
-export { getUser, redirectToLogin, getsessionID, saveUserDataFireDB, getUserDataFireDB };
