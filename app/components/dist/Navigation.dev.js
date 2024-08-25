@@ -22,7 +22,6 @@ function () {
     this.user = user;
     this.headerNav = document.querySelector(".header-nav");
     this.userPicture = this.headerNav.querySelector(".user-logo img");
-    console.log(this.userPicture);
     this.addListeners();
     this.setUserImage();
   }

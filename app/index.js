@@ -259,10 +259,6 @@ class App {
         signInButtons[i].addEventListener("click", this.toggleSignIn, false);
       }
 
-      // Avoid flash blue page
-      document.getElementById("signOutButton").addEventListener("click", () => {
-        this.signoutgoogle();
-      });
       if (linksignout) {
         linksignout.addEventListener("click", (e) => {
           // e.preventDefault();

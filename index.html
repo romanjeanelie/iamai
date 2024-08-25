@@ -55,7 +55,7 @@
 <body>
   <div id="app">
     <!-- Menu Navbar -->
-    {{> headerNav}}
+    {{> homePage/headerNav}}
     <!-- Cancel  btn -->
     {{> cancelBtn}}
 
@@ -105,9 +105,9 @@
       <div class="blurry-layer"></div>
 
       <!-- Overlay recording -->
-      {{> greyPage/overlayRecording}}
+      {{> homePage/overlayRecording}}
       <main>
-        {{> heroBentoGrid}}
+        {{> homePage/heroBentoGrid}}
 
         <button class="task-manager__button hidden"></button>
         <!-- Discussion -->
@@ -118,40 +118,23 @@
         <div class="main-phone__wrapper">
           <div class="input__wrapper">
             <!-- Input -->
-            {{> input labelPage="grey"}}
-
-            <footer class="footer-nav">
-              <div class="footer-nav__wrapper nav__wrapper">
-                <button class="settings-button nav__fixed-button">
-                  <img src="/icons/globe-icon.svg" alt="CO logo" />
-                </button>
-
-                <div class="footer-nav__tasks-container nav-item__container">
-                  <button class="footer-nav__tasks-button nav-item__button">Tasks</button>
-                  <button class="nav__chevron">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 48 48" fill="none">
-                      <path d="M32 27L24 19L16 27" stroke="#676E7F" stroke-width="1.5" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </footer>
+            {{> input}}
+            {{> homePage/footerNav}}
           </div>
           <!-- Phone -->
           {{> phone}}
         </div>
         <!-- Image drop -->
-        {{> imageDrop}}
+        {{> homePage/imageDrop}}
         <!--Slider -->
-        {{> slider}}
+        {{> homePage/slider}}
       </main>
       <!-- Video conversation -->
-      {{> videoInput }}
+      {{> homePage/videoInput }}
     </div>
 
     <!--Task Manager -->
-    {{> taskManager}}
+    {{> homePage/taskManager}}
   </div>
   <script src="/libAudioRecorder/WebAudioRecorder.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

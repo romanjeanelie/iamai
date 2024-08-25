@@ -77,7 +77,6 @@ export default class Input {
 
     // Other DOM elements
     this.cancelBtn = document.body.querySelector(".cancel-btn");
-    this.navbarEl = document.querySelector(".nav");
 
     this.onClickOutside = {
       stopAudio: false,
@@ -246,7 +245,6 @@ export default class Input {
     this.inputText.value = "";
     this.currentImages = [];
     this.cancelBtn.classList.remove("show");
-    this.navbarEl.classList.remove("hidden");
 
     if (this.inputImage.isEnabled) {
       this.inputImage.disable();
