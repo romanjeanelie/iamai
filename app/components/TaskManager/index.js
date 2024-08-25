@@ -44,7 +44,7 @@ export default class TaskManager {
     // DOM Elements
     this.html = document.documentElement;
     this.container = document.querySelector(".task-manager__container");
-    this.button = document.querySelector(".task-manager__button");
+    this.button = document.querySelector(".footer-nav__tasks-container");
     this.closeButton = document.querySelector(".task-manager__closing-icon");
     this.fullscreenButton = document.querySelector(".task-manager__fullscreen-icon");
     this.closeFullscreenButton = document.querySelector(".task-manager__closeFullscreen-icon");
@@ -68,19 +68,13 @@ export default class TaskManager {
 
     // Emitter
     this.emitter = emitter;
-    this.emitter.on("taskManager:createTask", (task, textAI) => this.createTask(task));
+    this.emitter.on("taskManager:createTask", (task) => this.createTask(task));
     this.emitter.on("taskManager:updateStatus", (taskKey, status, container, workflowID) =>
       this.onStatusUpdate(taskKey, status, container, workflowID)
     );
     this.emitter.on("taskManager:deleteTask", (taskKey) => this.deleteTask(taskKey));
     this.emitter.on("taskManager:isHistorySet", (bool) => (this.isHistorySet = bool));
 
-    this.emitter.on("input:collapseHeight", () => {
-      if (window.innerWidth < 820) gsap.to(this.button, { y: 0, ease: Power1.easeInOut, duration: 0.4 });
-    });
-    this.emitter.on("input:expandHeight", () => {
-      if (window.innerWidth < 820) gsap.to(this.button, { y: -25, ease: Power1.easeInOut, duration: 0.25 });
-    });
     if (this.debug) {
       console.log("Debug mode enabled");
       this.debugTask = {
@@ -333,48 +327,6 @@ export default class TaskManager {
       this.goToPanel(taskKey);
     } else {
       this.viewResults(taskKey);
-    }
-  }
-
-  // ---------- Handling the task-manager button ----------
-  getButtonColor() {
-    // order of priority for the color of the button
-    const order = [TASK_STATUSES.COMPLETED, TASK_STATUSES.INPUT_REQUIRED, TASK_STATUSES.IN_PROGRESS];
-    for (const status of order) {
-      // the first status found in the tasks array will be the color of the button
-      if (this.tasks.some((task) => task.status.type === status)) {
-        if (status === TASK_STATUSES.COMPLETED) {
-          this.button.classList.add("completed");
-        } else {
-          this.button.classList.remove("completed");
-        }
-
-        return STATUS_COLORS[status];
-      }
-    }
-  }
-
-  initializeButton() {
-    this.button.classList.remove("hidden");
-    this.updateButton();
-  }
-
-  updateButton() {
-    this.button.innerHTML = this.tasks.length;
-    this.button.style.backgroundColor = this.getButtonColor();
-  }
-
-  removeButton() {
-    this.button.classList.add("hidden");
-  }
-
-  handleButton() {
-    if (this.tasks.length === 0) {
-      this.removeButton();
-    } else if (this.tasks.length === 1) {
-      this.initializeButton();
-    } else {
-      this.updateButton();
     }
   }
 
@@ -633,13 +585,11 @@ export default class TaskManager {
   createTask(task) {
     this.tasks.push(task);
     this.addTaskUI(task);
-    this.handleButton();
   }
 
   deleteTask(taskKey) {
     this.tasks = this.tasks.filter((task) => task.key !== taskKey);
     this.deleteTaskUI(taskKey);
-    this.handleButton();
     if (this.tasks.length === 0) {
       this.closeTaskManager();
     }
@@ -651,7 +601,6 @@ export default class TaskManager {
     task.status = status;
     if (container) task.resultsContainer = container;
     task.workflowID = workflowID;
-    this.handleButton();
     this.updateTaskUI(taskKey, status);
     if (!this.isHistorySet) return;
     this.handleNotificationPill(taskKey, status);

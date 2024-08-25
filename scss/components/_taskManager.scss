@@ -3,47 +3,6 @@ $backgroundTaskManager: #f0efec;
 $taskMainColor: $colorBlueText;
 $taskSecondaryColor: #007aff;
 
-.task-manager__button {
-  z-index: 1;
-  position: fixed;
-  bottom: 120px;
-  right: 40px;
-  width: 40px;
-  height: 40px;
-  border-radius: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: opacity 0.3s $ease-out;
-
-  &.hidden {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  &.completed {
-    background: -webkit-linear-gradient(-33deg, #007aff 30.57%, #ad00ff 55.25%, #00bad3 78.97%);
-    background-position: 0% 0%;
-    background-size: 400% 400%;
-    animation: 2400ms ease-in-out infinite alternate gradientAnim;
-  }
-
-  @keyframes gradientAnim {
-    from {
-      background-position: 0% 0%;
-    }
-
-    to {
-      background-position: 100% 100%;
-    }
-  }
-
-  @include media("<phone") {
-    right: 28px;
-    bottom: 110px;
-  }
-}
-
 .task-manager__container {
   font-family: "Noto Sans", sans-serif;
   position: fixed;
@@ -203,7 +162,7 @@ $taskSecondaryColor: #007aff;
         font-size: 14px;
         padding: 5px 30px;
         border-radius: 32px;
-        color: $colorMain;
+        color: white;
         transition: background-color 0.3s $ease-out;
 
         &.clickable {
