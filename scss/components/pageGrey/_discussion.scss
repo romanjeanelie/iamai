@@ -91,6 +91,7 @@
       opacity: 0;
       animation: fadeIn 0.2s $ease-in forwards;
     }
+
     strong {
       font-weight: 600;
     }
@@ -124,6 +125,10 @@
       }
     }
   }
+}
+
+.main-content__container {
+  position: relative;
 }
 
 .discussion__container {

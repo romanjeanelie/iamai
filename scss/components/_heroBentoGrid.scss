@@ -1,23 +1,21 @@
 .heroBentoGrid__container {
-  position: fixed;
+  position: absolute;
   inset: 0;
   z-index: 3;
-  padding: 0 $paddingHorMobile;
   font-family: "SFPro";
+  padding: 20px 0;
+}
+
+@include media("<tablet") {
+  .heroBentoGrid__container {
+    padding: 20px $paddingHorMobile;
+  }
 }
 
 .heroBentoGrid__wrapper {
   max-width: $maxWidth;
-  padding: 160px 0 0;
+  padding: 0;
   margin: 0 auto;
-
-  @media screen and (max-height: 834px) {
-    padding: 94px 0 0;
-  }
-
-  @include media("<phone") {
-    padding: 60px 0 0;
-  }
 
   h1 {
     margin: 0 0 24px;
