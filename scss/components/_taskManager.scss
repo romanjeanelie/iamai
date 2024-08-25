@@ -1,4 +1,4 @@
-$zIndex: 10;
+$zIndex: 1;
 $backgroundTaskManager: #f0efec;
 $taskMainColor: $colorBlueText;
 $taskSecondaryColor: #007aff;
@@ -6,29 +6,16 @@ $taskSecondaryColor: #007aff;
 .task-manager__container {
   font-family: "Noto Sans", sans-serif;
   position: fixed;
-  bottom: 120px;
-  right: 40px;
-  border-radius: 16px;
+
+  top: 100dvh;
+  top: 100vh; // fallback
+  left: 0;
+  right: 0;
   z-index: $zIndex;
   overflow-y: scroll;
   background-color: $backgroundTaskManager;
   color: $taskMainColor;
   transition: opacity 0.3s $ease-out;
-
-  &.hidden {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  &.closed {
-    width: 0;
-    height: 0;
-  }
-
-  &.minimized {
-    width: 678px;
-    height: 439px;
-  }
 
   @include media("<phone") {
     -webkit-overflow-scrolling: touch;

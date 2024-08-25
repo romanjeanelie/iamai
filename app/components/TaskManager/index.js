@@ -1,10 +1,9 @@
-import gsap, { Power1 } from "gsap";
+import gsap, { Power3 } from "gsap";
 import Flip from "gsap/Flip";
 import scrollToDiv from "../../utils/scrollToDiv";
 
 const STATES = {
   CLOSED: "closed",
-  MINIMIZED: "minimized",
   FULLSCREEN: "fullscreen",
 };
 
@@ -46,6 +45,7 @@ export default class TaskManager {
     this.container = document.querySelector(".task-manager__container");
     this.button = document.querySelector(".footer-nav__tasks-container");
     this.closeButton = document.querySelector(".task-manager__closing-icon");
+    this.discussionContainer = document.querySelector(".discussion__wrapper");
     this.fullscreenButton = document.querySelector(".task-manager__fullscreen-icon");
     this.closeFullscreenButton = document.querySelector(".task-manager__closeFullscreen-icon");
     this.accordionContainer = document.querySelector(".task-manager__accordion-container");
@@ -169,44 +169,13 @@ export default class TaskManager {
   }
 
   // ---------- Handling the task-manager states ----------
-  changeState(newState) {
-    this.taskManagerState = newState;
-    const initialState = Flip.getState(this.container);
-
-    if (newState !== STATES.FULLSCREEN) {
-      this.unblockScroll();
-    } else {
-      this.blockScroll();
-    }
-
-    // Remove all state classes
-    this.container.classList.remove("closed", "minimized", "fullscreen");
-    // Add the new state class
-    this.container.classList.add(newState);
-
-    Flip.from(initialState, {
-      duration: 0.5,
-      ease: "power2.inOut",
-      absolute: true,
-    });
-  }
-
   closeTaskManager() {
     this.changeState(STATES.CLOSED);
-  }
-
-  toMinimized() {
-    this.closeFullscreenButton.classList.add("hidden");
-    this.fullscreenButton.classList.remove("hidden");
-    const isMobile = window.innerWidth < 820;
-    // if on mobile, we go straight to fullscreen
-    this.changeState(isMobile ? STATES.FULLSCREEN : STATES.MINIMIZED);
   }
 
   toFullscreen() {
     this.closeFullscreenButton.classList.remove("hidden");
     this.fullscreenButton.classList.add("hidden");
-    this.changeState(STATES.FULLSCREEN);
   }
 
   blockScroll() {
@@ -323,7 +292,7 @@ export default class TaskManager {
 
     if (status.type !== TASK_STATUSES.COMPLETED) {
       // open the task manager and go to the right panel
-      this.toMinimized();
+      this.toFullscreen();
       this.goToPanel(taskKey);
     } else {
       this.viewResults(taskKey);
@@ -618,15 +587,11 @@ export default class TaskManager {
   }
 
   addListeners() {
-    this.button.addEventListener("click", () => this.toMinimized());
+    this.button.addEventListener("click", () => this.toFullscreen());
     this.closeButton.addEventListener("click", () => this.closeTaskManager());
     this.fullscreenButton.addEventListener("click", () => this.toFullscreen());
-    this.closeFullscreenButton.addEventListener("click", () => this.toMinimized());
-    window.addEventListener("resize", () => {
-      if (this.taskManagerState === STATES.MINIMIZED && window.innerWidth < 820) {
-        this.toFullscreen();
-      }
-    });
+    this.closeFullscreenButton.addEventListener("click", () => this.closeTaskManager());
+
     this.container.addEventListener("touchstart", (e) => {
       e.stopPropagation();
     });
