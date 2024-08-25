@@ -76,6 +76,10 @@
     filter: drop-shadow(0px 10px 30px rgba(55, 69, 108, 0.04));
   }
 
+  .heroBentoGrid__grid-item.talk-item {
+    padding: 20px $paddingHorMobile 32px;
+  }
+
   .square-item {
     grid-column: span 13;
   }
@@ -223,7 +227,6 @@
     gap: 10px;
     stroke: rgba(255, 255, 255, 0.22);
     outline: 10px solid rgba(255, 255, 255, 0.22);
-
     border-radius: 100px;
 
     p {
