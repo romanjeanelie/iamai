@@ -46,6 +46,11 @@ function () {
       this.name.textContent = this.user.name;
     }
   }, {
+    key: "destroy",
+    value: function destroy() {
+      this.container.remove();
+    }
+  }, {
     key: "addEventListeners",
     value: function addEventListeners() {
       var _this = this;
@@ -57,7 +62,8 @@ function () {
         _gsap["default"].to(_this.container, {
           yPercent: -100,
           ease: _gsap.Power3.easeOut,
-          duration: 1
+          duration: 1,
+          onComplete: _this.destroy.bind(_this)
         });
       });
     }

@@ -21,6 +21,10 @@ class HeroBento {
     this.name.textContent = this.user.name;
   }
 
+  destroy() {
+    this.container.remove();
+  }
+
   addEventListeners() {
     this.emitter.on("pre-text-animation", () => {
       if (!this.isDisplayed) return;
@@ -30,6 +34,7 @@ class HeroBento {
         yPercent: -100,
         ease: Power3.easeOut,
         duration: 1,
+        onComplete: this.destroy.bind(this),
       });
     });
   }
