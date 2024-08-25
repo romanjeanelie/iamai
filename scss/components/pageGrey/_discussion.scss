@@ -1,33 +1,3 @@
-@mixin underline-task($position: top) {
-  &::before {
-    content: "";
-    position: absolute;
-
-    @if $position ==top {
-      top: -16px;
-    } @else {
-      bottom: -16px;
-    }
-
-    left: 0;
-    width: 100%;
-    height: 2px;
-    // background-color: #ff00ff;
-    background-color: #0e47a2;
-    transform-origin: left;
-    transform: scaleX(0);
-    transition: transform 0.5s ease-out;
-  }
-
-  &--task-created {
-    // margin-bottom: 42px;
-
-    &:before {
-      transform: scaleX(1);
-    }
-  }
-}
-
 .discussion__wrapper {
   max-width: $maxWidth;
   width: 100%;
@@ -40,18 +10,13 @@
 
 .discussion__container,
 .prev-discussion__container {
-  padding-top: 55px;
-
-  @include media("<tablet") {
-    padding-top: 76px;
-  }
+  padding-top: 21px;
 
   .discussion__user,
   .discussion__ai {
     font-family: "Noto Sans";
     position: relative;
     overflow-wrap: anywhere;
-
     margin-bottom: 24px;
     line-height: 28px;
     color: $colorBlueText !important;
@@ -87,7 +52,6 @@
   }
 
   .discussion__user {
-    // color: rgba($colorBlue, 0.72);
     color: rgba($colorBlack, 0.72);
     text-align: right;
     margin-left: auto;
@@ -139,7 +103,6 @@
         content: url("/icons/timer.svg");
         position: absolute;
         top: 50%;
-        // left: -2px;
         padding-right: 40px;
         transform: translate(-50%, -50%);
       }
@@ -155,7 +118,6 @@
         margin-left: 24px;
 
         &::before {
-          // left: 4px;
           padding-right: 40px;
           transform: translate(-50%, -50%);
         }
@@ -167,7 +129,6 @@
 .discussion__container {
   min-height: calc(100vh - 96px);
   padding-bottom: 124px;
-  padding-top: unset;
 
   @include media("<tablet") {
     min-height: calc(100vh - 96px); // fallback for browsers that don't support svh units
