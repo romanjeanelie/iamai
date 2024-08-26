@@ -7,8 +7,6 @@ exports["default"] = void 0;
 
 var _User = require("../User");
 
-var _dat = require("dat.gui");
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -38,9 +36,8 @@ function () {
 
     this.addListeners();
     this.setUserImage(); // GUI setup
-
-    this.gui = new _dat.GUI();
-    this.setupGUI();
+    // this.gui = new GUI();
+    // this.setupGUI();
   }
 
   _createClass(Navigation, [{
@@ -55,7 +52,7 @@ function () {
       var _this = this;
 
       var folder = this.gui.addFolder("Navigation Settings");
-      folder.add(this, "rootMargin", -500, 500).name("Root Margin").onChange(function (value) {
+      folder.add(this, "rootMargin").min(-500).max(500).step(10).name("Root Margin").onChange(function (value) {
         console.log(_this.rootMargin);
         _this.rootMargin = value;
 

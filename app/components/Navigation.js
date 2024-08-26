@@ -1,5 +1,4 @@
 import { signOutUser } from "../User";
-import { GUI } from "dat.gui";
 
 export default class Navigation {
   constructor({ user }) {
@@ -24,8 +23,8 @@ export default class Navigation {
     this.setUserImage();
 
     // GUI setup
-    this.gui = new GUI();
-    this.setupGUI();
+    // this.gui = new GUI();
+    // this.setupGUI();
   }
 
   setUserImage() {
@@ -36,7 +35,10 @@ export default class Navigation {
   setupGUI() {
     const folder = this.gui.addFolder("Navigation Settings");
     folder
-      .add(this, "rootMargin", -500, 500)
+      .add(this, "rootMargin")
+      .min(-500)
+      .max(500)
+      .step(10)
       .name("Root Margin")
       .onChange((value) => {
         console.log(this.rootMargin);
