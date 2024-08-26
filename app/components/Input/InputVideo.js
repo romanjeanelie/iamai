@@ -51,6 +51,7 @@ export default class InputVideo {
     this.currentPhotoIndex = 0;
 
     // Dom elements
+    this.headerNav = document.querySelector(".header-nav");
     this.container = document.querySelector(".input__video--container");
     this.cameraLoader = document.querySelector(".input__video--camera-loader");
     this.timer = document.querySelector(".input__video--timer");
@@ -168,6 +169,7 @@ export default class InputVideo {
   // START
   displayVideoInput() {
     this.container.classList.add("visible");
+    this.headerNav.classList.add("hidden");
     this.initCamera();
     this.startTimer();
   }
@@ -232,6 +234,7 @@ export default class InputVideo {
     this.stopCamera();
     this.stopTimer();
     this.emitter.emit("videoInput:leave");
+    this.headerNav.classList.remove("hidden");
   }
 
   addEvents() {

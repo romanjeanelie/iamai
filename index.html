@@ -54,7 +54,6 @@
 </head>
 
 <body id="app">
-
   <!-- Menu Navbar -->
   {{> homePage/headerNav}}
   <!-- Cancel  btn -->
@@ -103,32 +102,31 @@
   </div>
 
   <main class="page-discussion">
-    <main>
-      <!-- Discussion -->
-      <div class="discussion__wrapper">
-        <div id="history" class="history__container hidden"></div>
-        <div id="discussion" class="main-content__container">
-          <div class="discussion__container"></div>
-          {{> homePage/heroBentoGrid}}
-        </div>
+    <!-- Discussion -->
+    <div class="discussion__wrapper">
+      <div id="history" class="history__container hidden"></div>
+      <div id="discussion" class="main-content__container">
+        <div class="discussion__container"></div>
+        {{> homePage/heroBentoGrid}}
       </div>
-      <div class="main-phone__wrapper">
-        <div class="input__wrapper">
-          <!-- Input -->
-          {{> input}}
-          {{> homePage/footerNav}}
-        </div>
-        <!-- Phone -->
-        {{> phone}}
+    </div>
+    <div class="main-phone__wrapper">
+      <div class="input__wrapper">
+        <!-- Input -->
+        {{> input}}
+        {{> homePage/footerNav}}
       </div>
-      <!-- Image drop -->
-      {{> homePage/imageDrop}}
-      <!--Slider -->
-      {{> homePage/slider}}
-    </main>
+      <!-- Phone -->
+      {{> phone}}
+    </div>
+
+    <!-- Image drop -->
+    {{> homePage/imageDrop}}
+    <!--Slider -->
+    {{> homePage/slider}}
+
     <!-- Video conversation -->
     {{> homePage/videoInput }}
-    </div>
 
     <!--Task Manager -->
     {{> homePage/taskManager}}
