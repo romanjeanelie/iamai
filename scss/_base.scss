@@ -21,8 +21,15 @@ html {
   background: url("https://res.cloudinary.com/dfdqiqn98/image/upload/v1724331559/Home/bg_image_iqmohl.png") no-repeat
     center center fixed;
   background-size: cover;
-
   transition: visibility 0s, opacity 0.1s linear;
+
+  &:after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.01);
+    backdrop-filter: blur(100px);
+  }
 
   &.preload {
     visibility: hidden;
@@ -33,13 +40,6 @@ html {
     overflow: hidden;
     height: 100vh;
   }
-}
-
-.blurry-layer {
-  position: fixed;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.01);
-  backdrop-filter: blur(100px);
 }
 
 pre,
