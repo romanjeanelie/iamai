@@ -22,7 +22,6 @@ export default class Slider {
 
     // Other DOM elements
     this.iconBadge = this.sliderEl.querySelector(".icon-badge");
-    this.navbarEl = document.querySelector(".nav");
     this.inputEl = pageEl.querySelector(".input__wrapper");
     this.selectedCounter = null; // set in open questions slider
 
@@ -75,7 +74,6 @@ export default class Slider {
       this.addImg({ img, container: this.sliderContentEl });
     });
 
-    this.navbarEl.classList.add("hidden");
     this.sliderEl.classList.add("show");
     if (allPage) {
       this.sliderEl.classList.add("all-page");
@@ -210,7 +208,6 @@ export default class Slider {
 
   close() {
     this.imgs = [];
-    this.navbarEl.classList.remove("hidden");
     this.sliderEl.classList.remove("show");
     this.resetImageQuestions();
   }
