@@ -11,16 +11,9 @@
 @import "./cardSlider";
 @import "./heroBentoGrid";
 
-.page-blue {
-  @import "./pageBlue/caroussel";
-  @import "./pageBlue/logos";
-  @import "./pageBlue/categoriesList";
-  @import "./pageBlue/infoText";
-}
-
-.page-grey {
-  @import "./pageGrey/discussion";
-  @import "./pageGrey/media";
+.page-discussion {
+  @import "./pageDiscussion/discussion";
+  @import "./pageDiscussion/media";
 }
 
 .page-assistant {

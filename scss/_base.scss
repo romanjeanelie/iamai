@@ -85,9 +85,8 @@ button {
   -webkit-tap-highlight-color: transparent;
 }
 
-.page-grey {
+.page-discussion {
   min-height: 100vh; // in case svh is not supported by browser
-  min-height: 100svh;
   min-height: 100svh;
   transition: transform $ease-in-out-cubic;
 

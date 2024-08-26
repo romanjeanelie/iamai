@@ -49,7 +49,7 @@ class App {
   constructor() {
     this.app = document.querySelector("#app");
     this.loginPage = document.querySelector(".login-page");
-    this.pageGrey = document.querySelector(".page-grey");
+    this.pageEl = document.querySelector(".page-discussion");
     this.cancelBtn = document.querySelector(".cancel-btn");
     this.user = null;
     this.emitter = createNanoEvents();
@@ -72,9 +72,9 @@ class App {
   // Anim
   toPageGrey({ duration = 0 } = {}) {
     this.loginPage.style.transitionDuration = duration + "ms";
-    this.pageGrey.style.transitionDuration = duration + "ms";
+    this.pageEl.style.transitionDuration = duration + "ms";
     this.loginPage.classList.add("hidden");
-    this.pageGrey.classList.add("show");
+    this.pageEl.classList.add("show");
   }
 
   initApp() {
@@ -114,15 +114,15 @@ class App {
       emitter: this.emitter,
     };
 
-    this.inputGreyPage = new Input({ pageEl: this.pageGrey, isActive: false, ...props });
+    this.inputGreyPage = new Input({ pageEl: this.pageEl, isActive: false, ...props });
   }
 
   initTaskManager() {
-    this.taskManager = new TaskManager({ emitter: this.emitter, pageEl: this.pageGrey, gui: this.gui });
+    this.taskManager = new TaskManager({ emitter: this.emitter, pageEl: this.pageEl, gui: this.gui });
   }
 
   initSlider() {
-    this.slider = new Slider({ emitter: this.emitter, pageEl: this.pageGrey });
+    this.slider = new Slider({ emitter: this.emitter, pageEl: this.pageEl });
   }
 
   resetScroll() {

@@ -25,7 +25,7 @@ export default class Discussion {
     this.emitter = emitter;
     this.toPageGrey = toPageGrey;
     this.user = user;
-    this.pageEl = document.querySelector(".page-grey");
+    this.pageEl = document.querySelector(".page-discussion");
     this.mainEl = this.pageEl.querySelector("main");
     this.inputContainer = this.pageEl.querySelector("div.input__container");
     this.inputText = this.pageEl.querySelector(".input-text");

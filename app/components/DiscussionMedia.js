@@ -15,7 +15,7 @@ function getDomainAndFavicon(url) {
 
 export default class DiscussionMedia {
   constructor({ container, emitter }) {
-    this.pageEl = document.querySelector(".page-grey");
+    this.pageEl = document.querySelector(".page-discussion");
     this.mainEl = this.pageEl.querySelector("main");
 
     this.container = container;
