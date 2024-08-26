@@ -1,14 +1,17 @@
+import { GUI } from "dat.gui";
 import { signOutUser } from "../User";
 
 export default class Navigation {
   constructor({ user }) {
     this.user = user;
+    this.debug = import.meta.env.VITE_DEBUG === "true";
 
     // State
-    this.rootMargin = -200;
+    this.rootMargin = -100;
     this.currentSection = null; // State to track the current section
 
     // DOM Elements
+    this.pageEl = document.querySelector(".page-discussion");
     this.headerNav = document.querySelector(".header-nav");
     this.footerNav = document.querySelector(".footer-nav");
 
@@ -21,31 +24,11 @@ export default class Navigation {
     // Init Methods
     this.addListeners();
     this.setUserImage();
-
-    // GUI setup
-    // this.gui = new GUI();
-    // this.setupGUI();
   }
 
   setUserImage() {
     if (!this.user?.picture) return;
     // this.userPicture.src = this.user.picture;
-  }
-
-  setupGUI() {
-    const folder = this.gui.addFolder("Navigation Settings");
-    folder
-      .add(this, "rootMargin")
-      .min(-500)
-      .max(500)
-      .step(10)
-      .name("Root Margin")
-      .onChange((value) => {
-        console.log(this.rootMargin);
-        this.rootMargin = value;
-        this.setupIntersectionObserver(); // Re-setup observer with new rootMargin
-      });
-    folder.open();
   }
 
   scrollToHistory() {
@@ -57,7 +40,7 @@ export default class Navigation {
     });
   }
 
-  updateButtonVisibility() {
+  updateNavButtons() {
     [this.tasksButton, this.historyButton].forEach((button) => {
       button.classList.remove("hidden");
     });
@@ -73,26 +56,26 @@ export default class Navigation {
   setupIntersectionObserver() {
     const options = {
       root: null,
-      rootMargin: this.rootMargin + "px",
-      threshold: 0.1, // Added threshold for better intersection detection
+      threshold: 0,
+      rootMargin: "-100px",
     };
 
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          this.currentSection = entry.target.id;
+      let intersectingSections = entries.filter((entry) => entry.isIntersecting).map((entry) => entry.target.id);
 
-          this.updateButtonVisibility();
-        }
-      });
+      if (intersectingSections.length === 0) {
+        this.currentSection = "discussion";
+      } else {
+        this.currentSection = intersectingSections[0];
+      }
+
+      this.updateNavButtons();
     }, options);
 
     // Observe the sections
-    ["history", "discussion", "tasks"].forEach((sectionId) => {
+    ["history", "tasks"].forEach((sectionId) => {
       const section = document.getElementById(sectionId);
-      if (section) {
-        observer.observe(section);
-      }
+      observer.observe(section);
     });
   }
 
