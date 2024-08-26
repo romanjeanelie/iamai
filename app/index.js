@@ -13,6 +13,7 @@ import Slider from "./components/Slider";
 import TaskManager from "./components/TaskManager";
 import { auth } from "./firebaseConfig";
 import animateString from "./utils/animateString";
+import { GUI } from "dat.gui";
 
 const divlogin = document.getElementById("divlogin");
 
@@ -47,10 +48,11 @@ var isStopped = false;
 
 class App {
   constructor() {
+    this.gui = new GUI();
+
     this.app = document.querySelector("#app");
     this.loginPage = document.querySelector(".login-page");
     this.pageEl = document.querySelector(".page-discussion");
-    this.cancelBtn = document.querySelector(".cancel-btn");
     this.user = null;
     this.emitter = createNanoEvents();
 

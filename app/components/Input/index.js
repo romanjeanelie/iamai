@@ -57,7 +57,6 @@ export default class Input {
 
     // Front input
     this.frontCameraBtn = this.inputEl.querySelector(".camera-btn");
-    this.frontMicBtn = this.inputFrontEl.querySelector(".mic-btn");
     this.frontVideoBtn = this.inputFrontEl.querySelector(".video-btn");
 
     // Image
@@ -65,21 +64,10 @@ export default class Input {
     this.currentImages = [];
     this.inputImageEl = this.pageEl.querySelector(".input__image");
 
-    // Record
-    this.audioRecorder = new AudioRecorder({
-      onComplete: this.onCompleteRecording.bind(this),
-    });
-    this.isRecordCanceled = false;
-    this.recordCounter = this.pageEl.querySelector(".record-counter");
-
     // Write
     this.inputText = this.inputEl.querySelector(".input-text");
 
-    // Other DOM elements
-    this.cancelBtn = document.body.querySelector(".cancel-btn");
-
     this.onClickOutside = {
-      stopAudio: false,
       animInitial: false,
     };
     this.currentStatus = STATUS.INITIAL;
@@ -139,14 +127,6 @@ export default class Input {
       }
     });
     this.emitter.on("input:updateImages", this.updateImages.bind(this));
-
-    // TEMP
-    this.minTranscriptingTime = 1400; //ms
-    this.textRecorded = "text recorded";
-
-    if (this.isPageBlue) {
-      this.toPageGrey();
-    }
   }
 
   // Write
@@ -161,72 +141,6 @@ export default class Input {
     this.anims.toWrite({ delay, animButtons, animLogos, placeholder });
     this.currentStatus = STATUS.WRITE;
     this.onClickOutside.animInitial = true;
-  }
-
-  // Audio
-  startRecording() {
-    this.isRecordCanceled = false;
-    this.inputText.disabled = true;
-    this.audioRecorder.startRecording();
-    this.timecodeAudioEl = this.isSmallRecording ? this.backMicText : this.recordCounter;
-    this.audioRecorder.onUpdate((sec) => {
-      const time = minSecStr((sec / 60) | 0) + ":" + minSecStr(sec % 60);
-      this.timecodeAudioEl.textContent = time;
-    });
-  }
-
-  stopRecording() {
-    this.audioRecorder.stopRecording();
-  }
-
-  onTranscripting() {
-    this.typingText = new TypingText({
-      text: "Converting to text",
-      container: this.inputFrontEl,
-      backgroundColor: colorMain,
-      marginLeft: 16,
-    });
-    this.typingText.writing({
-      onComplete: this.typingText.fadeIn,
-    });
-  }
-
-  onCompleteTranscripting() {
-    this.inputText.disabled = false;
-    this.timecodeAudioEl.textContent = "00:00";
-
-    this.inputText.value += this.textRecorded;
-    this.updateInputHeight();
-
-    if (this.isSmallRecording) {
-      this.isSmallRecording = false;
-      this.inputText.focus();
-      this.inputText.setSelectionRange(this.inputText.value.length, this.inputText.value.length);
-      return;
-    }
-
-    if (this.typingText) this.typingText.reverse();
-    this.toWrite({ delay: 1200, animButtons: false, animLogos: false });
-  }
-
-  async onCompleteRecording(blob) {
-    if (this.isRecordCanceled) return;
-
-    if (this.discussion.Chat.autodetect) this.textRecorded = await sendToWispher(blob);
-    else this.textRecorded = await sendToWispher(blob, this.discussion.Chat.sourcelang);
-
-    this.timeoutTranscripting = setTimeout(() => {
-      this.onCompleteTranscripting();
-    }, this.minTranscriptingTime);
-  }
-
-  cancelRecord() {
-    this.isRecordCanceled = true;
-    this.onClickOutside.stopAudio = false;
-    this.stopRecording();
-
-    this.anims.toStopRecording();
-    this.anims.fromRecordAudioToInitial();
   }
 
   // Images Questions
@@ -244,7 +158,6 @@ export default class Input {
     this.discussion.addUserElement({ text: this.inputText.value, imgs: this.currentImages });
     this.inputText.value = "";
     this.currentImages = [];
-    this.cancelBtn.classList.remove("show");
 
     if (this.inputImage.isEnabled) {
       this.inputImage.disable();
@@ -286,29 +199,6 @@ export default class Input {
       { capture: true }
     );
 
-    // Record
-    if (this.frontMicBtn)
-      this.frontMicBtn.addEventListener("click", () => {
-        this.currentStatus = STATUS.RECORD_AUDIO;
-        this.startRecording();
-        this.anims.toStartRecording();
-        this.onClickOutside.stopAudio = true;
-      });
-
-    this.cancelBtn.addEventListener("click", () => {
-      if (this.currentStatus === STATUS.RECORD_AUDIO) {
-        this.cancelRecord();
-      }
-
-      if (this.currentStatus === STATUS.UPLOAD_IMAGE) {
-        this.anims.toRemoveImage();
-        this.inputImage.disable();
-        this.currentImages = [];
-      }
-
-      this.currentStatus = STATUS.INITIAL;
-    });
-
     // Image
     this.frontCameraBtn.addEventListener("click", () => {
       this.currentStatus = STATUS.UPLOAD_IMAGE;
@@ -347,14 +237,7 @@ export default class Input {
       "click",
       (event) => {
         if (this.isSmallRecording) return;
-        if (!this.inputEl.contains(event.target) && !this.cancelBtn.contains(event.target)) {
-          if (this.onClickOutside.stopAudio) {
-            this.stopRecording();
-            this.anims.toStopRecording({
-              onComplete: this.onTranscripting.bind(this),
-            });
-            this.onClickOutside.stopAudio = false;
-          }
+        if (!this.inputEl.contains(event.target)) {
           if (this.onClickOutside.animInitial) {
             if (this.inputText.value) return;
             this.goToInitial();

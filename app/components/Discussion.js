@@ -328,6 +328,7 @@ export default class Discussion {
     }
     this.uuid = this.Chat.deploy_ID;
 
+    if (this.debug) return;
     await this.updateHistory({ uuid: this.uuid, user: this.user });
     this.scrollToBottom(false);
     this.isHistoryLoading = false;
@@ -403,8 +404,8 @@ export default class Discussion {
 
       this.userContainer.classList.add("discussion__user--task-created");
       this.AIContainer.classList.add("discussion__ai--task-created");
-      this.userContainer.setAttribute("taskkey", task.key);
-      this.AIContainer.setAttribute("taskkey", task.key);
+      this.userContainer.setAttribute("taskkey", task?.key);
+      this.AIContainer.setAttribute("taskkey", task?.key);
 
       this.discussionContainer.appendChild(this.userContainer);
       this.discussionContainer.appendChild(this.AIContainer);

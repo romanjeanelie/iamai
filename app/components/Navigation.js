@@ -28,8 +28,8 @@ export default class Navigation {
   }
 
   setUserImage() {
-    if (!this.user.picture) return;
-    this.userPicture.src = this.user.picture;
+    if (!this.user?.picture) return;
+    // this.userPicture.src = this.user.picture;
   }
 
   setupGUI() {

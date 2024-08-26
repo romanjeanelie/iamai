@@ -46,7 +46,7 @@ export default class History {
       }
       if (status.status === API_STATUSES.ANSWERED) {
         const answerContainer = document.createElement("div");
-        const assistantText = status.response_json.text.replace(/\\n/g, "<br \>");
+        const assistantText = status.response_json.text.replace(/\\n/g, "<br >");
         answerContainer.innerHTML = md.parse(status.response_json.text) || "";
         resultsContainer.append(answerContainer);
       }
@@ -192,7 +192,7 @@ export default class History {
     const { data } = await fetcher({
       url: URL_CONVERSATION_HISTORY,
       params,
-      idToken: await user.user.getIdToken(true),
+      idToken: await user?.user?.getIdToken(true),
     });
 
     // Remove duplicate tasks
