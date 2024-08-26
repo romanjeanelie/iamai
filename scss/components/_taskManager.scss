@@ -7,10 +7,7 @@ $taskSecondaryColor: #007aff;
   font-family: "Noto Sans", sans-serif;
   position: fixed;
 
-  top: 100dvh;
-  top: 100vh; // fallback
-  left: 0;
-  right: 0;
+  inset: 0;
   z-index: $zIndex;
   overflow-y: scroll;
   background-color: $backgroundTaskManager;

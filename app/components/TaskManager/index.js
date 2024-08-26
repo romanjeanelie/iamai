@@ -57,9 +57,10 @@ export default class TaskManager {
     this.notificationDuration = 5000;
     this.isInputFullscreen = false;
     this.currentTask = null;
-
     this.isHistorySet = false;
 
+    // Init Methods
+    this.initTaskManager();
     this.addListeners();
 
     // Debug
@@ -201,6 +202,7 @@ export default class TaskManager {
   }
 
   handleButton() {
+    // only function to be called to deal with button
     if (this.tasks.length === 0) {
       this.removeButton();
     } else if (this.tasks.length === 1) {
@@ -211,13 +213,29 @@ export default class TaskManager {
   }
 
   // ---------- Handling the task-manager states ----------
-  closeTaskManager() {
-    this.changeState(STATES.CLOSED);
+  initTaskManager() {
+    gsap.set(this.container, {
+      yPercent: 100,
+    });
   }
 
-  toFullscreen() {
+  closeTaskManager() {
+    gsap.to(this.container, {
+      yPercent: 100,
+      duration: 0.5,
+      ease: "power2.inOut",
+    });
+  }
+
+  showTaskManager() {
     this.closeFullscreenButton.classList.remove("hidden");
     this.fullscreenButton.classList.add("hidden");
+    gsap.to(this.discussionContainer, {});
+    gsap.to(this.container, {
+      yPercent: 0,
+      duration: 0.5,
+      ease: "power2.inOut",
+    });
   }
 
   blockScroll() {
@@ -334,7 +352,7 @@ export default class TaskManager {
 
     if (status.type !== TASK_STATUSES.COMPLETED) {
       // open the task manager and go to the right panel
-      this.toFullscreen();
+      this.showTaskManager();
       this.goToPanel(taskKey);
     } else {
       this.viewResults(taskKey);
@@ -629,9 +647,9 @@ export default class TaskManager {
   }
 
   addListeners() {
-    this.navButton.addEventListener("click", () => this.toFullscreen());
+    this.navButton.addEventListener("click", () => this.showTaskManager());
     this.closeButton.addEventListener("click", () => this.closeTaskManager());
-    this.fullscreenButton.addEventListener("click", () => this.toFullscreen());
+    this.fullscreenButton.addEventListener("click", () => this.showTaskManager());
     this.closeFullscreenButton.addEventListener("click", () => this.closeTaskManager());
 
     this.container.addEventListener("touchstart", (e) => {
