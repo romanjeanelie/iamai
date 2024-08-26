@@ -1,27 +1,49 @@
 import { signOutUser } from "../User";
+import { GUI } from "dat.gui";
 
 export default class Navigation {
   constructor({ user }) {
     this.user = user;
 
+    // State
+    this.rootMargin = -200;
+    this.currentSection = null; // State to track the current section
+
+    // DOM Elements
     this.headerNav = document.querySelector(".header-nav");
     this.footerNav = document.querySelector(".footer-nav");
+
     this.historyButton = this.headerNav.querySelector(".header-nav__history-container");
     this.tasksButton = this.footerNav.querySelector(".footer-nav__tasks-container");
 
     this.historyContainer = document.querySelector(".history__container");
-
     this.userPicture = this.headerNav.querySelector(".user-logo img");
 
-    this.currentSection = null; // State to track the current section
-
+    // Init Methods
     this.addListeners();
     this.setUserImage();
+
+    // GUI setup
+    this.gui = new GUI();
+    this.setupGUI();
   }
 
   setUserImage() {
     if (!this.user.picture) return;
     this.userPicture.src = this.user.picture;
+  }
+
+  setupGUI() {
+    const folder = this.gui.addFolder("Navigation Settings");
+    folder
+      .add(this, "rootMargin", -500, 500)
+      .name("Root Margin")
+      .onChange((value) => {
+        console.log(this.rootMargin);
+        this.rootMargin = value;
+        this.setupIntersectionObserver(); // Re-setup observer with new rootMargin
+      });
+    folder.open();
   }
 
   scrollToHistory() {
@@ -49,8 +71,8 @@ export default class Navigation {
   setupIntersectionObserver() {
     const options = {
       root: null,
-      rootMargin: "-200px",
-      threshold: 0,
+      rootMargin: this.rootMargin + "px",
+      threshold: 0.1, // Added threshold for better intersection detection
     };
 
     const observer = new IntersectionObserver((entries) => {

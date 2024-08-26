@@ -7,6 +7,8 @@ exports["default"] = void 0;
 
 var _User = require("../User");
 
+var _dat = require("dat.gui");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -21,17 +23,24 @@ function () {
 
     _classCallCheck(this, Navigation);
 
-    this.user = user;
+    this.user = user; // State
+
+    this.rootMargin = -200;
+    this.currentSection = null; // State to track the current section
+    // DOM Elements
+
     this.headerNav = document.querySelector(".header-nav");
     this.footerNav = document.querySelector(".footer-nav");
     this.historyButton = this.headerNav.querySelector(".header-nav__history-container");
     this.tasksButton = this.footerNav.querySelector(".footer-nav__tasks-container");
     this.historyContainer = document.querySelector(".history__container");
-    this.userPicture = this.headerNav.querySelector(".user-logo img");
-    this.currentSection = null; // State to track the current section
+    this.userPicture = this.headerNav.querySelector(".user-logo img"); // Init Methods
 
     this.addListeners();
-    this.setUserImage();
+    this.setUserImage(); // GUI setup
+
+    this.gui = new _dat.GUI();
+    this.setupGUI();
   }
 
   _createClass(Navigation, [{
@@ -39,6 +48,21 @@ function () {
     value: function setUserImage() {
       if (!this.user.picture) return;
       this.userPicture.src = this.user.picture;
+    }
+  }, {
+    key: "setupGUI",
+    value: function setupGUI() {
+      var _this = this;
+
+      var folder = this.gui.addFolder("Navigation Settings");
+      folder.add(this, "rootMargin", -500, 500).name("Root Margin").onChange(function (value) {
+        console.log(_this.rootMargin);
+        _this.rootMargin = value;
+
+        _this.setupIntersectionObserver(); // Re-setup observer with new rootMargin
+
+      });
+      folder.open();
     }
   }, {
     key: "scrollToHistory",
@@ -66,19 +90,20 @@ function () {
   }, {
     key: "setupIntersectionObserver",
     value: function setupIntersectionObserver() {
-      var _this = this;
+      var _this2 = this;
 
       var options = {
         root: null,
-        rootMargin: "-200px",
-        threshold: 0
+        rootMargin: this.rootMargin + "px",
+        threshold: 0.1 // Added threshold for better intersection detection
+
       };
       var observer = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
-            _this.currentSection = entry.target.id;
+            _this2.currentSection = entry.target.id;
 
-            _this.updateButtonVisibility();
+            _this2.updateButtonVisibility();
           }
         });
       }, options); // Observe the sections
