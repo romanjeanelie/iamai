@@ -5,7 +5,6 @@ export default class InputAnimations {
   constructor({ pageEl, emitter }) {
     this.pageEl = pageEl;
     this.emitter = emitter;
-    this.isPageBlue = this.pageEl.classList.contains("page-blue");
 
     // Dom Elements
     this.inputEl = this.pageEl.querySelector(".input__container");
@@ -27,8 +26,6 @@ export default class InputAnimations {
     this.phoneContainer = this.pageEl.querySelector(".phone__container");
 
     // Other dom elements
-    this.pageBlue = document.querySelector(".page-blue");
-    this.pageGrey = document.querySelector(".page-grey");
     this.cancelBtn = document.querySelector(".cancel-btn");
     this.logoEl = document.querySelector(".logo__main");
     this.logoMobileEl = document.querySelector(".logo__mobile");
