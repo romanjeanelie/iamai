@@ -23,7 +23,9 @@ export default class Navigation {
     this.historyButton = this.headerNav.querySelector(".header-nav__history-container");
     this.tasksButton = this.footerNav.querySelector(".footer-nav__tasks-container");
 
+    this.discussionContainer = document.querySelector(".discussion__container");
     this.historyContainer = document.querySelector(".history__container");
+    this.tasksContainer = document.querySelector(".task-manager__container");
     this.userPicture = this.headerNav.querySelector(".user-logo img");
 
     // Init Methods
@@ -36,13 +38,17 @@ export default class Navigation {
     this.userPicture.src = this.user.picture;
   }
 
-  scrollToHistory() {
-    const containerRect = this.historyContainer.getBoundingClientRect();
-    const scrollTarget = containerRect.height - window.innerHeight + 202;
-    window.scrollTo({
-      top: scrollTarget,
-      behavior: "smooth",
-    });
+  toggleHistory() {
+    if (this.currentSection !== SECTIONS.history) {
+      const containerRect = this.historyContainer.getBoundingClientRect();
+      const scrollTarget = containerRect.height - window.innerHeight + 202;
+      window.scrollTo({
+        top: scrollTarget,
+        behavior: "smooth",
+      });
+    } else {
+      this.discussionContainer.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   }
 
   updateNavButtons() {
@@ -80,6 +86,6 @@ export default class Navigation {
   addListeners() {
     this.setupIntersectionObserver();
     this.userPicture.addEventListener("click", signOutUser);
-    this.historyButton.addEventListener("click", this.scrollToHistory.bind(this));
+    this.historyButton.addEventListener("click", this.toggleHistory.bind(this));
   }
 }

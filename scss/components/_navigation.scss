@@ -87,30 +87,9 @@
   }
 }
 
-.history {
-  .footer-nav__tasks-container {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .header-nav__history-container .nav__chevron {
-    transform: rotate(0deg);
-  }
-}
-
-.tasks {
-  .header-nav__history-container {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .footer-nav__tasks-container .nav__chevron {
-    transform: rotate(180deg);
-  }
-}
-
 // Footer nav
 .footer-nav {
+  margin-top: 40px;
   .settings-button {
     top: auto;
     bottom: $paddingBottom;
@@ -130,5 +109,28 @@
     .footer-nav__wrapper {
       padding: 0 $paddingHorMobile;
     }
+  }
+}
+
+// Navigation animation
+.history {
+  .footer-nav__tasks-container {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .header-nav__history-container .nav__chevron {
+    transform: rotate(0deg);
+  }
+}
+
+.tasks {
+  .header-nav__history-container {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .footer-nav__tasks-container .nav__chevron {
+    transform: rotate(180deg);
   }
 }
