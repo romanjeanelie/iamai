@@ -28,7 +28,7 @@ export default class Navigation {
 
   setUserImage() {
     if (!this.user?.picture) return;
-    // this.userPicture.src = this.user.picture;
+    this.userPicture.src = this.user.picture;
   }
 
   scrollToHistory() {
