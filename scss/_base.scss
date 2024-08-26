@@ -85,19 +85,14 @@ button {
   -webkit-tap-highlight-color: transparent;
 }
 
-.page {
-  min-height: 100svh;
-  transition: transform $ease-in-out-cubic;
-  main {
-    z-index: 2;
-  }
-}
-
 .page-grey {
   min-height: 100vh; // in case svh is not supported by browser
   min-height: 100svh;
+  min-height: 100svh;
+  transition: transform $ease-in-out-cubic;
 
   main {
+    z-index: 2;
     position: relative;
     display: flex;
     align-items: center;
