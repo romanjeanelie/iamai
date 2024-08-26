@@ -37,6 +37,7 @@
   border: 1px solid rgba($colorGrey, 0.45);
   border-radius: 46px;
   transform: rotate(180deg);
+  transition: transform 0.15s $ease-out-cubic;
 }
 
 .nav__fixed-button {
@@ -83,6 +84,28 @@
       justify-content: space-between;
       align-items: center;
     }
+  }
+}
+
+.history {
+  .footer-nav__tasks-container {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .header-nav__history-container .nav__chevron {
+    transform: rotate(0deg);
+  }
+}
+
+.tasks {
+  .header-nav__history-container {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .footer-nav__tasks-container .nav__chevron {
+    transform: rotate(180deg);
   }
 }
 

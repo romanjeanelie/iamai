@@ -1,5 +1,10 @@
-import { GUI } from "dat.gui";
 import { signOutUser } from "../User";
+
+const SECTIONS = {
+  history: "history",
+  tasks: "tasks",
+  discussion: "discussion",
+};
 
 export default class Navigation {
   constructor({ user }) {
@@ -8,10 +13,10 @@ export default class Navigation {
 
     // State
     this.rootMargin = -100;
-    this.currentSection = null; // State to track the current section
+    this.currentSection = SECTIONS.discussion; // State to track the current section
 
     // DOM Elements
-    this.pageEl = document.querySelector(".page-discussion");
+    this.app = document.querySelector("#app");
     this.headerNav = document.querySelector(".header-nav");
     this.footerNav = document.querySelector(".footer-nav");
 
@@ -41,16 +46,9 @@ export default class Navigation {
   }
 
   updateNavButtons() {
-    [this.tasksButton, this.historyButton].forEach((button) => {
-      button.classList.remove("hidden");
-    });
-
-    // if the currentSection is the one affiliated to the button, hide it
-    if (this.currentSection === "tasks") {
-      this.tasksButton.classList.add("hidden");
-    } else if (this.currentSection === "history") {
-      this.historyButton.classList.add("hidden");
-    }
+    // in the navigation scss file, when the parent class is changed, the animation will trigger
+    // animation = oppositin navButton disappears and currentSection chevron rotates
+    this.app.className = this.currentSection;
   }
 
   setupIntersectionObserver() {
@@ -64,7 +62,7 @@ export default class Navigation {
       let intersectingSections = entries.filter((entry) => entry.isIntersecting).map((entry) => entry.target.id);
 
       if (intersectingSections.length === 0) {
-        this.currentSection = "discussion";
+        this.currentSection = SECTIONS.discussion;
       } else {
         this.currentSection = intersectingSections[0];
       }
@@ -73,7 +71,7 @@ export default class Navigation {
     }, options);
 
     // Observe the sections
-    ["history", "tasks"].forEach((sectionId) => {
+    [SECTIONS.history, SECTIONS.tasks].forEach((sectionId) => {
       const section = document.getElementById(sectionId);
       observer.observe(section);
     });
@@ -81,7 +79,6 @@ export default class Navigation {
 
   addListeners() {
     this.setupIntersectionObserver();
-
     this.userPicture.addEventListener("click", signOutUser);
     this.historyButton.addEventListener("click", this.scrollToHistory.bind(this));
   }
