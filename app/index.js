@@ -98,6 +98,7 @@ class App {
   initDiscussion() {
     this.discussion = new Discussion({
       emitter: this.emitter,
+      pageEl: this.pageEl,
       toPageGrey: this.toPageGrey.bind(this),
       user: this.user,
     });

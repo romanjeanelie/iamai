@@ -21,11 +21,12 @@ function getTopStatus(text) {
 }
 
 export default class Discussion {
-  constructor({ toPageGrey, emitter, user }) {
+  constructor({ toPageGrey, emitter, pageEl, user }) {
     this.emitter = emitter;
     this.toPageGrey = toPageGrey;
     this.user = user;
-    this.pageEl = document.querySelector(".page-discussion");
+    this.pageEl = pageEl;
+
     this.mainEl = this.pageEl.querySelector("main");
     this.inputContainer = this.pageEl.querySelector("div.input__container");
     this.inputText = this.pageEl.querySelector(".input-text");
