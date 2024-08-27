@@ -17,6 +17,7 @@
   margin: 0 auto;
 
   h1 {
+    margin: 0;
     color: $colorMain;
     font-size: 48px;
     font-style: normal;
@@ -59,6 +60,26 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  margin: 0 0 24px;
+}
+
+.heroBentoGrid__indicators {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  .indicator {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: #cdd5eb;
+    mix-blend-mode: overlay;
+  }
+
+  .indicator.active {
+    outline: 1px solid $colorLight;
+    background-color: $colorLight;
+  }
 }
 
 .heroBentoGrid__grid {
