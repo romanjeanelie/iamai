@@ -76,8 +76,21 @@
     filter: drop-shadow(0px 10px 30px rgba(55, 69, 108, 0.04));
   }
 
-  .heroBentoGrid__grid-item.talk-item {
-    padding: 20px $paddingHorMobile 32px;
+  .heroBentoGrid__grid-item {
+    &.talk-item {
+      padding: 20px $paddingHorMobile 32px;
+    }
+
+    &.entertainment-item {
+      background-image: url("https://res.cloudinary.com/dfdqiqn98/image/upload/v1724750348/Home/mesh-gradient_rafz2c.png");
+      background-size: 110%;
+      background-position: center;
+
+      h3,
+      p {
+        color: $colorLight;
+      }
+    }
   }
 
   .square-item {
