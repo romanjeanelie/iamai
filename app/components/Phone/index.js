@@ -172,13 +172,6 @@ export default class Phone {
     }
     this.myvad.pause();
 
-    // this.audioProcessing = new AudioPlayer({
-    //   audioUrl: "/sounds/processing.mp3",
-    //   audioContext: this.audioContext,
-    //   loop: true,
-    // });
-    // this.audioProcessing.playAudio();
-
     if (!audio) return;
     const blob = float32ArrayToMp3Blob(audio, 16000);
     if (this.discussion.Chat.autodetect) this.textRecorded = await sendToWispher(blob);
@@ -187,9 +180,7 @@ export default class Phone {
     this.discussion.addUserElement({ text: this.textRecorded, imgs: this.photos, isFromVideo: this.photos.length > 0 });
 
     //play the stopword
-    // await this.processTextAndPlayAudio();
     this.processTextAndPlayAudio(this.textRecorded); // Call immediately
-    // this.timerId = setInterval(() => this.processTextAndPlayAudio(this.textRecorded, true), 5000); // Call every 5 seconds
   }
 
   async processTextAndPlayAudio(textRecorded) {
@@ -202,8 +193,6 @@ export default class Phone {
         const response2 = await fetch("stopwordscon.json");
         this.sentencesconData = await response2.json();
         console.log("here for stopwords:", this.sentencesconData);
-        // this.sentencesData = await fetch('stopwords.json').then(response => response.json());
-        // this.sentencesconData = await fetch('stopwords.json').then(response => response.json());
       }
 
       const randomIndex = Math.floor(Math.random() * this.sentencesData.sentences.length);
@@ -283,8 +272,6 @@ export default class Phone {
 
     this.currentIndexTextAI === null ? (this.currentIndexTextAI = 0) : this.currentIndexTextAI++;
     const { audio, index } = await textToSpeech(htmlToText(html), targetlang, this.currentIndexTextAI);
-    // console.log(audio)
-    // console.log(audio?.src)
     this.audiosAI[index] = audio;
 
     if (this.currentIndexAudioAI === null && this.audiosAI[0] !== undefined) {

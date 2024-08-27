@@ -1,25 +1,16 @@
 // Components
-import TypingText from "../../TypingText";
 import Phone from "../Phone";
 import InputImage from "./InputImage";
 
 // Utils
 import isMobile from "../../utils/isMobile";
-import minSecStr from "../../utils/minSecStr";
 
-import AudioRecorder from "../../AudioRecorder";
-import sendToWispher from "../../utils/audio/sendToWhisper";
 import InputAnimations from "./InputAnimations";
 
-import { colorMain } from "../../../scss/variables/_colors.module.scss";
-import InputVideo from "./InputVideo";
 import { calculateInputTextWidth } from "../../utils/calculateInputTextWidth";
+import InputVideo from "./InputVideo";
 
 function isLetterKey(event) {
-  console.log("event.key", event.key);
-  console.log("event.key.length", event.key.length);
-  const keyCode = event.keyCode;
-  // return (keyCode >= 65 && keyCode <= 90); // Key codes for A-Z
   if (
     event.key.length === 1 &&
     event.key.match(/[a-z]/i) &&
