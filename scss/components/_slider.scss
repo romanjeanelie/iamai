@@ -50,12 +50,6 @@
     overflow: hidden !important;
     overflow-x: auto !important;
     scroll-snap-type: x mandatory;
-    // Hide scrollbar
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-      display: none;
-    }
 
     .slider__img-container {
       scroll-snap-align: center;
@@ -122,14 +116,6 @@
       display: flex;
       align-items: center;
       gap: 24px;
-
-      // // Hide scrollbar
-      // -ms-overflow-style: none;
-      // scrollbar-width: none;
-
-      // &::-webkit-scrollbar {
-      //   display: none;
-      // }
 
       .slider__img-container {
         position: relative;

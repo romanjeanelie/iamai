@@ -1,6 +1,6 @@
 export function generateSlider(container) {
   const html = `
-    <div class="blogSlider__slides-container">
+    <div class="blogSlider__slides-container no-scrollbar">
     </div>
 
     <div class="blogSlider__footer"> 

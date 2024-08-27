@@ -32,7 +32,7 @@ export default class CardSlider {
 
     // Create slider
     this.slider = document.createElement("div");
-    this.slider.className = "cardSlider__slider";
+    this.slider.className = "cardSlider__slider no-scrollbar";
     this.sliderContainer.appendChild(this.slider);
 
     // Create slider cards

@@ -26,16 +26,6 @@ $sliderMaxWidth: 972px;
   scroll-snap-type: x mandatory;
   align-items: center;
   cursor: grab;
-  // Hide scrollbar
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    -webkit-appearance: none;
-    width: 0;
-    height: 0;
-    display: none;
-  }
 
   &.active {
     scroll-snap-type: none;
@@ -268,7 +258,7 @@ $sliderMaxWidth: 972px;
     gap: 4px;
   }
 
-  .blogSlider__mediaEl{
+  .blogSlider__mediaEl {
     height: 90% !important;
     display: inline-block;
   }
@@ -428,4 +418,3 @@ $sliderMaxWidth: 972px;
 //   height: 90%;
 //   // object-fit: cover; /* Ensures the media element covers the container */
 // }
-
