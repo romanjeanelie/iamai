@@ -27,15 +27,14 @@ export default class Discussion {
     this.user = user;
     this.pageEl = pageEl;
 
-    this.mainEl = this.pageEl.querySelector("main");
+    // DOM Elements
     this.inputContainer = this.pageEl.querySelector("div.input__container");
     this.inputText = this.pageEl.querySelector(".input-text");
     this.discussionWrapper = document.querySelector(".discussion__wrapper");
     this.historyContainer = document.querySelector(".history__container");
-
     this.discussionContainer = document.querySelector(".discussion__container");
 
-    this.addUserElement = this.addUserElement.bind(this);
+    // States
     this.currentProgress = 0;
     this.nextProgress = 0;
 
@@ -43,10 +42,14 @@ export default class Discussion {
     this.currentTopStatus = null;
     this.lastStatus = null;
     this.centralFinished = false;
-
     this.currentAnswerContainer = null;
-
     this.isAutoScrollActive = true;
+
+    this.debug = import.meta.env.VITE_DEBUG === "true";
+    this.layout_debug = import.meta.env.VITE_LAYOUT_DEBUG === "true";
+
+    // Init Methods
+    this.addUserElement = this.addUserElement.bind(this);
 
     this.Chat = new Chat({
       discussionContainer: this.discussionContainer,
@@ -64,9 +67,6 @@ export default class Discussion {
     });
 
     this.addListeners();
-
-    this.debug = import.meta.env.VITE_DEBUG === "true";
-    this.layout_debug = import.meta.env.VITE_LAYOUT_DEBUG === "true";
     // DEBUG
     if (this.debug) {
       this.onCreatedTask();
@@ -291,7 +291,7 @@ export default class Discussion {
     this.historyContainer.prepend(container);
     // only if there is more history to be added, we change the scrollTop value so the user stays at the same spot
     if (container.hasChildNodes()) {
-      this.mainEl.scrollTop = document.documentElement.scrollTop = container.offsetHeight;
+      this.pageEl.scrollTop = document.documentElement.scrollTop = container.offsetHeight;
     }
   }
 
@@ -518,9 +518,9 @@ export default class Discussion {
   addListeners() {
     window.addEventListener("load", this.onLoad());
 
-    document.addEventListener("scroll", () => {
+    this.pageEl.addEventListener("scroll", () => {
       if (this.isHistoryLoading) return;
-      if (document.documentElement.scrollTop === 0) this.onScrollTop();
+      if (this.pageEl.scrollTop === 0) this.onScrollTop();
     });
 
     this.checkIfPrevDiscussionContainerVisible();
