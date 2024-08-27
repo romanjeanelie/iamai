@@ -3,11 +3,11 @@
   top: 0;
   right: 50px;
   text-align: center;
-  font-size: 336px;
+  font-size: clamp(100px, 30vw, 336px);
   font-weight: 700;
   line-height: 100%; /* 4.762% */
   opacity: 0.6;
-  background: -webkit-linear-gradient(270deg, #dee2f1 0%, rgba(0, 0, 0, 0) 100%);
+  background: -webkit-linear-gradient(270deg, #dee2f1 0%, rgba(#dee2f1, 0) 100%);
 
   background-clip: text;
   -webkit-background-clip: text;

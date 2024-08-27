@@ -1,25 +1,3 @@
-* {
-  font-family: "Times New Roman", Times, serif;
-}
-
-@font-face {
-  font-family: "SFPro";
-  // src: url("/fonts/SF_Pro/SF-Pro-Display-Medium.otf");
-  src: url("https://res.cloudinary.com/dfdqiqn98/raw/upload/v1715796389/fonts/SF-Pro-Display-Medium_heugey.otf");
-  font-weight: 500;
-}
-
-@font-face {
-  font-family: "SFPro";
-  // src: url("/fonts/SF_Pro/SF-Pro-Display-Semibold.otf");
-  src: url("https://res.cloudinary.com/dfdqiqn98/raw/upload/v1715796389/fonts/SF-Pro-Display-Semibold_xbwty3.otf");
-  font-weight: 600;
-}
-
-* {
-  font-family: "SFPro";
-}
-
 h1 {
   text-align: center;
   font-family: "SFPro";
@@ -53,15 +31,4 @@ h3 {
   font-weight: 600;
   line-height: 24px; /* 120% */
   letter-spacing: 1px;
-}
-
-.page-phone__main-container {
-  overflow: scroll;
-  // height: 100vh;
-  position: relative;
-  // scroll-snap-type: y mandatory;
-
-  // & > section {
-  //   scroll-snap-align: start;
-  // }
 }
