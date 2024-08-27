@@ -339,7 +339,6 @@ export default class Discussion {
 
   async updateHistory({ uuid, user }) {
     // hide the previous discussion container while it is loading to avoid scroll jumps
-    this.discussionContainer.style.marginTop = "96px";
     this.historyContainer.style.display = "none";
 
     await new Promise(async (resolve, reject) => {
@@ -351,7 +350,7 @@ export default class Discussion {
 
       const showHistory = () => {
         this.historyContainer.style.display = "block";
-        // this.discussionContainer.style.marginTop = "0px";
+        this.scrollToBottom(false);
       };
 
       const handleImageLoad = () => {
@@ -448,12 +447,6 @@ export default class Discussion {
     // Remove elements
     const userContainer = this.discussionWrapper.querySelector(`.discussion__user[taskkey="${taskKey}"]`);
     const AIContainer = this.discussionWrapper.querySelector(`.discussion__ai[taskkey="${taskKey}"]`);
-
-    // // scroll to userContainer
-    // window.scrollTo({
-    //   top: userContainer.offsetTop,
-    //   behavior: "smooth",
-    // });
 
     userContainer.remove();
     AIContainer.remove();

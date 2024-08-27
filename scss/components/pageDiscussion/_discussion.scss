@@ -151,6 +151,7 @@
 
 .discussion__container {
   min-height: calc(100vh - 96px);
+  margin-top: 96px;
   padding-bottom: 124px;
 
   @include media("<tablet") {
@@ -161,6 +162,7 @@
 }
 
 .history__container {
+  padding-top: 0px;
   transition: opacity 200ms ease-in-out;
 
   &.visible {
