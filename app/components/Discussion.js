@@ -279,8 +279,8 @@ export default class Discussion {
 
   // Scroll
   scrollToBottom(isSmooth = true) {
-    window.scrollTo({
-      top: document.body.scrollHeight,
+    this.pageEl.scrollTo({
+      top: this.pageEl.scrollHeight,
       behavior: isSmooth ? "smooth" : "auto",
     });
   }

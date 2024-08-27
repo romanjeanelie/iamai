@@ -1,3 +1,4 @@
+import gsap from "gsap";
 import { signOutUser } from "../User";
 
 const SECTIONS = {
@@ -23,6 +24,8 @@ export default class Navigation {
     this.historyButton = this.headerNav.querySelector(".header-nav__history-container");
     this.tasksButton = this.footerNav.querySelector(".footer-nav__tasks-container");
 
+    this.pageEl = document.querySelector(".page-discussion");
+    this.discussionWrapper = document.querySelector(".discussion__wrapper");
     this.discussionContainer = document.querySelector(".discussion__container");
     this.historyContainer = document.querySelector(".history__container");
     this.tasksContainer = document.querySelector(".task-manager__container");
@@ -42,12 +45,31 @@ export default class Navigation {
     if (this.currentSection !== SECTIONS.history) {
       const containerRect = this.historyContainer.getBoundingClientRect();
       const scrollTarget = containerRect.height - window.innerHeight + 202;
-      window.scrollTo({
+      this.pageEl.scrollTo({
         top: scrollTarget,
         behavior: "smooth",
       });
     } else {
       this.discussionContainer.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+
+  toggleTasks() {
+    if (this.currentSection !== SECTIONS.tasks) {
+      gsap.to(this.discussionWrapper, { yPercent: -100 });
+      gsap.to(this.tasksContainer, {
+        yPercent: 0,
+        duration: 0.5,
+        ease: "power3.inOut",
+      });
+    } else {
+      console.log("close tasks");
+      gsap.to(this.discussionWrapper, { yPercent: 0 });
+      gsap.to(this.tasksContainer, {
+        yPercent: 100,
+        duration: 0.5,
+        ease: "power3.inOut",
+      });
     }
   }
 
@@ -87,5 +109,6 @@ export default class Navigation {
     this.setupIntersectionObserver();
     this.userPicture.addEventListener("click", signOutUser);
     this.historyButton.addEventListener("click", this.toggleHistory.bind(this));
+    this.tasksButton.addEventListener("click", this.toggleTasks.bind(this));
   }
 }

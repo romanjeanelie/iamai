@@ -86,8 +86,9 @@ button {
 }
 
 .page-discussion {
-  min-height: 100vh; // in case svh is not supported by browser
-  min-height: 100svh;
+  height: 100vh; // in case svh is not supported by browser
+  height: 100svh;
+  overflow-y: scroll;
   transition: transform $ease-in-out-cubic;
   z-index: 2;
   position: relative;

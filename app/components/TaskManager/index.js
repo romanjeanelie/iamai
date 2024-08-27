@@ -43,7 +43,6 @@ export default class TaskManager {
     // DOM Elements
     this.html = document.documentElement;
     this.container = document.querySelector(".task-manager__container");
-    this.navButton = document.querySelector(".footer-nav__tasks-container");
     this.closeButton = document.querySelector(".task-manager__closing-icon");
     this.discussionContainer = document.querySelector(".discussion__wrapper");
     this.fullscreenButton = document.querySelector(".task-manager__fullscreen-icon");
@@ -647,7 +646,6 @@ export default class TaskManager {
   }
 
   addListeners() {
-    this.navButton.addEventListener("click", () => this.showTaskManager());
     this.closeButton.addEventListener("click", () => this.closeTaskManager());
     this.fullscreenButton.addEventListener("click", () => this.showTaskManager());
     this.closeFullscreenButton.addEventListener("click", () => this.closeTaskManager());
