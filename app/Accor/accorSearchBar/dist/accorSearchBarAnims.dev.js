@@ -59,6 +59,7 @@ function () {
     this.advancedBar = document.querySelector(".accorBar__advancedBar-wrapper");
     this.phoneBar = document.querySelector(".accorSearchBar__phoneBar");
     this.initSecondaryBar();
+    this.addEventListener();
   } // Helper method to update the searchBarState and call the updateState function
 
 
@@ -79,7 +80,7 @@ function () {
       this.actionBtn.classList.remove("phone-btn");
       if (this.searchBarState !== _.STATES.TEXT_INPUT) this.actionBtn.classList.add("phone-btn"); // grab state
 
-      var initialState = _Flip["default"].getState([this.searchBar, this.searchBarFirstRow, this.advancedBtn]);
+      var initialState = _Flip["default"].getState([this.searchBar, this.searchBarFirstRow]);
 
       (_this$wrapper$classLi = this.wrapper.classList).remove.apply(_this$wrapper$classLi, _toConsumableArray(Object.values(_.STATES)));
 
@@ -101,7 +102,7 @@ function () {
       _Flip["default"].from(initialState, {
         duration: 0.4,
         ease: "power3.out",
-        absolute: (0, _isMobile["default"])() ? false : true,
+        // absolute: isMobile() ? false : true,
         onStart: function onStart() {
           _gsap["default"].to(expandBtns, {
             opacity: 0,
@@ -181,6 +182,7 @@ function () {
 
       var floor = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       this.savedState = this.searchBarState;
+      if ((0, _isMobile["default"])()) this.toMinimized();
       this.animateSecondaryBar(-200 * floor, floor, function (floor) {
         if (floor === 2) {
           _this2.resetPhoneBar();
@@ -201,6 +203,8 @@ function () {
         _this3.advancedBar.classList.add("none");
 
         _this3.phoneBar.classList.add("none");
+
+        _this3.wrapper.style.transform = "none";
       });
     }
   }, {
@@ -225,6 +229,19 @@ function () {
 
       _gsap["default"].set(this.wrapper, {
         y: -200
+      });
+    }
+  }, {
+    key: "addEventListener",
+    value: function addEventListener() {
+      var _this4 = this;
+
+      window.addEventListener("resize", function () {
+        if (_this4.searchBarState === _.STATES.STANDARD_OPTIONS) {
+          _gsap["default"].to([".accorSearchBar__standardBtns-mobile"], {
+            opacity: 1
+          });
+        }
       });
     }
   }]);

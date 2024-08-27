@@ -41,7 +41,7 @@
 }
 
 .nav__fixed-button {
-  position: fixed;
+  position: absolute;
   top: $paddingTop;
   left: $paddingHor;
   z-index: 3;
@@ -91,8 +91,8 @@
 .footer-nav {
   margin-top: 40px;
   .settings-button {
-    top: auto;
-    bottom: $paddingBottom;
+    top: unset;
+    bottom: 0;
   }
 
   .nav__wrapper {
@@ -114,8 +114,12 @@
 
 // Navigation animation
 .history {
+  .footer-nav {
+    margin-top: 0;
+  }
+
   .footer-nav__tasks-container {
-    opacity: 0;
+    display: none;
     pointer-events: none;
   }
 

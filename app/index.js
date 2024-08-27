@@ -48,8 +48,6 @@ var isStopped = false;
 
 class App {
   constructor() {
-    this.gui = new GUI();
-
     this.app = document.querySelector("#app");
     this.loginPage = document.querySelector(".login-page");
     this.pageEl = document.querySelector(".page-discussion");
@@ -64,6 +62,7 @@ class App {
     this.resetScroll();
 
     if (this.debug) {
+      this.gui = new GUI();
       this.toPageGrey({ duration: 0 });
       this.initApp();
       // this.initTaskManager();

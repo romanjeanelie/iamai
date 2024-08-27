@@ -1,11 +1,14 @@
 import gsap from "gsap";
 import { signOutUser } from "../User";
+import { Flip } from "gsap/Flip";
 
 const SECTIONS = {
   history: "history",
   tasks: "tasks",
   discussion: "discussion",
 };
+
+// gsap.registerPlugin(Flip);
 
 export default class Navigation {
   constructor({ user }) {
@@ -21,9 +24,9 @@ export default class Navigation {
     this.headerNav = document.querySelector(".header-nav");
     this.footerNav = document.querySelector(".footer-nav");
 
+    this.inputWrapper = document.querySelector(".input__wrapper");
     this.historyButton = this.headerNav.querySelector(".header-nav__history-container");
-    this.tasksButton = this.footerNav.querySelector(".footer-nav__tasks-container");
-
+    this.tasksButton = this.footerNav.querySelector(".settings-button");
     this.pageEl = document.querySelector(".page-discussion");
     this.discussionWrapper = document.querySelector(".discussion__wrapper");
     this.discussionContainer = document.querySelector(".discussion__container");
@@ -76,7 +79,14 @@ export default class Navigation {
   updateNavButtons() {
     // in the navigation scss file, when the parent class is changed, the animation will trigger
     // animation = oppositin navButton disappears and currentSection chevron rotates
+    const initialState = Flip.getState([this.tasksButton, this.inputWrapper]);
+
     this.app.className = this.currentSection;
+
+    Flip.from(initialState, {
+      duration: 0.4,
+      ease: "power3.out",
+    });
   }
 
   setupIntersectionObserver() {
