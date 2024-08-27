@@ -44,13 +44,12 @@ class HeroBento {
   }
 
   observeBentoItems() {
-    console.log("observeBentoItems");
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
+            // Get the index of the bento grid
             const index = Array.from(this.bentoGrids).indexOf(entry.target);
-            console.log(index);
             this.updateIndicators(index);
           }
         });
@@ -63,6 +62,7 @@ class HeroBento {
 
   updateIndicators(activeIndex) {
     this.indicators.forEach((indicator, index) => {
+      // Toggle the active class on the indicator
       indicator.classList.toggle("active", index === activeIndex);
     });
   }
