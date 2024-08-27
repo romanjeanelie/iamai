@@ -82,10 +82,19 @@
   }
 }
 
+.heroBentoGrid__slider {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+
 .heroBentoGrid__grid {
+  scroll-snap-align: start;
   $bentoGap: 4px;
   $bentoWidth: 160px;
-
+  flex-shrink: 0;
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(60, 1fr);
   grid-template-rows: repeat(2, 1fr);
