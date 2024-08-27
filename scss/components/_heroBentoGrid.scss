@@ -71,7 +71,9 @@
     height: 5px;
     border-radius: 50%;
     background-color: #cdd5eb;
+    outline: 1px solid transparent;
     mix-blend-mode: overlay;
+    transition: all 0.3s $ease-out;
   }
 
   .indicator.active {

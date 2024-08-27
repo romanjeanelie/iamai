@@ -12,9 +12,12 @@ class HeroBento {
     // Dom Elements
     this.container = document.querySelector(".heroBentoGrid__container");
     this.name = this.container.querySelector(".name");
+    this.bentoGrids = this.container.querySelectorAll(".heroBentoGrid__grid");
+    this.indicators = this.container.querySelectorAll(".heroBentoGrid__indicators .indicator");
 
     // Init
     this.setName();
+    this.observeBentoItems();
     this.addEventListeners();
 
     if (this.debug) {
@@ -38,6 +41,30 @@ class HeroBento {
 
   destroy() {
     this.container.remove();
+  }
+
+  observeBentoItems() {
+    console.log("observeBentoItems");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = Array.from(this.bentoGrids).indexOf(entry.target);
+            console.log(index);
+            this.updateIndicators(index);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    this.bentoGrids.forEach((item) => observer.observe(item));
+  }
+
+  updateIndicators(activeIndex) {
+    this.indicators.forEach((indicator, index) => {
+      indicator.classList.toggle("active", index === activeIndex);
+    });
   }
 
   addEventListeners() {
