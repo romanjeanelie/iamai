@@ -119,13 +119,51 @@
       }
     }
   }
-
   .phone-btn {
+    position: relative;
     width: 50px;
     padding: 15px;
     height: 50px;
+    flex-shrink: 0;
     border-radius: 50px;
-    background-color: $blue;
+    background: linear-gradient(115deg, #1400ff 0%, #1400ff 60%, #6a6aff 108.25%);
+    box-shadow: 0.5px 0.5px 0px 0px rgba(255, 255, 255, 0.2), -0.5px -0.5px 0px 0px rgba(255, 255, 255, 0.2),
+      1px 1px 1px 0px rgba(255, 255, 255, 0.16), -1px -1px 1px 0px rgba(255, 255, 255, 0.16),
+      0px 0px 10.6px 0px rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(#bd73ff, 0.7);
+
+    &:before {
+      content: "";
+      background-color: #1400ff;
+      opacity: 0.5;
+      filter: blur(14px);
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate3d(-50%, 0, 0);
+    }
+
+    svg {
+      filter: drop-shadow(0px 0px 0.719px #e2fbfe) drop-shadow(0px 0px 1.438px #d1ecfd)
+        drop-shadow(0px 0px 5.034px #a4c6fb) drop-shadow(0px 0px 10.067px #81a3f1) drop-shadow(0px 0px 17.258px #5373dd)
+        drop-shadow(0px 0px 30.202px #253192);
+      width: 6px;
+      height: 6px;
+      position: absolute;
+      top: 10px;
+      left: 27px;
+      z-index: 1;
+    }
+
+    img {
+      filter: drop-shadow(0px 0px 0.719px rgba(#e2fbfe, 0.5)) drop-shadow(0px 0px 1.438px rgba(#d1ecfd, 0.5))
+        drop-shadow(0px 0px 5.034px #a4c6fb) drop-shadow(0px 0px 10.067px #81a3f1)
+        drop-shadow(0px 0px 17.258px rgb(83, 115, 221)) drop-shadow(0px 0px 30.202px #253192);
+    }
   }
 
   .input__image--container {
