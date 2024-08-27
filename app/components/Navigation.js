@@ -26,7 +26,7 @@ export default class Navigation {
 
     this.inputWrapper = document.querySelector(".input__wrapper");
     this.historyButton = this.headerNav.querySelector(".header-nav__history-container");
-    this.tasksButton = this.footerNav.querySelector(".settings-button");
+    this.tasksButton = this.footerNav.querySelector(".footer-nav__tasks-container");
     this.pageEl = document.querySelector(".page-discussion");
     this.discussionWrapper = document.querySelector(".discussion__wrapper");
     this.discussionContainer = document.querySelector(".discussion__container");
@@ -58,7 +58,9 @@ export default class Navigation {
   }
 
   toggleTasks() {
+    console.log("toggleTasks");
     if (this.currentSection !== SECTIONS.tasks) {
+      console.log("open tasks");
       gsap.to(this.discussionWrapper, { yPercent: -100 });
       gsap.to(this.tasksContainer, {
         yPercent: 0,
