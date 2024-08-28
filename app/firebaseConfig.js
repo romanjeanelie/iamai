@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 // Optionally import the services that you want to use
 import { getAuth } from "firebase/auth";
+import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 // import { getDatabase } from "firebase/database";
 // import { getFirestore } from "firebase/firestore";
 // import { getStorage } from "firebase/storage";
@@ -21,6 +22,12 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
+const appCheck = initializeAppCheck(app, {
+  provider: new ReCaptchaV3Provider(import.meta.env.VITE_API_SITE_KEY),
+  isTokenAutoRefreshEnabled: true
+});
+
 const auth = getAuth(app);
 // const database = getDatabase(app);
 // console.log("database",database)

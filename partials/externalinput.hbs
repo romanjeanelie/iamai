@@ -1,21 +1,19 @@
 <div class="input__container {{labelPage}}">
-  <div class="input__back">
-    <div class="input-text__expand">
-      <textarea class="input-text" rows="1" autofocus
-        onInput="this.parentNode.dataset.replicatedValue = this.value"></textarea>
-    </div>
-    <div class="input__controls">
-      <div class="left">
-      </div>
-      <div class="right">
-        <button type="submit" class="submit" aria-label="Submit" disabled>
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="none">
-            <path fill="#fff" fill-rule="evenodd"
-              d="M6.997.75a.797.797 0 0 0-.563.234l-5.94 5.94a.8.8 0 0 0 1.131 1.131L6.2 3.481V16.45a.8.8 0 0 0 1.6 0V3.482l4.574 4.574a.8.8 0 1 0 1.13-1.132l-5.92-5.92A.798.798 0 0 0 6.997.75Z"
-              clip-rule="evenodd" />
-          </svg>
-        </button>
-      </div>
-    </div>
+  <div class="input__back gradient-border">
+    <form>
+        <div class="input-text__expand">
+          <textarea class="input-text" rows="1" autofocus
+            onInput="this.parentNode.dataset.replicatedValue = this.value"></textarea>
+        </div>
+        <div class="input__controls">
+          <div class="left">
+          </div>
+          <div class="right">
+            <button type="submit" class="submit" aria-label="Submit" disabled>
+              <img src="./icons/sub.svg" id="sub">
+            </button>
+          </div>
+        </div>
+    </form>
   </div>
 </div>

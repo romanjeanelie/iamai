@@ -32,7 +32,7 @@
     // border-left: 2px solid $colorBlack;
     font-weight: 500;
     letter-spacing: 0.6000000238418579px;
-    color:$colorBlueText;
+    color: $colorBlueText;
     opacity: 0.6;
 
     margin: 44px 0;
@@ -41,7 +41,8 @@
       font-size: 20px;
       margin: 40px 0;
     }
-    &:focus{
+
+    &:focus {
       opacity: 1;
     }
   }
@@ -53,6 +54,9 @@
     gap: 8px;
     padding-right: 32px;
     overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
 
     @include media("<tablet") {
       padding-right: 0;

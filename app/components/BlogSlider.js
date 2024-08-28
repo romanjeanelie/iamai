@@ -87,7 +87,7 @@ export default class BlogSlider {
         mediaEl = document.createElement("video");
         mediaEl.controls = false;
         mediaEl.playsInline = true;
-        mediaEl.preload = "none";
+        mediaEl.preload = "auto";
         mediaEl.loop = true;
         mediaEl.setAttribute("webkit-playsinline", "");
         mediaEl.muted = true;
@@ -103,6 +103,9 @@ export default class BlogSlider {
 
       mediaEl.className = "blogSlider__mediaEl";
       slide.mobileFormat && slideEl.classList.add("mobile");
+      mediaEl.addEventListener("click", function(){
+        mediaEl.controls = true;
+      });
 
       slideEl.appendChild(mediaEl);
       this.slides.push(slideEl);
@@ -143,25 +146,31 @@ export default class BlogSlider {
 
   async updateUI() {
     // Disable buttons if we are at the first or last slide
+    this.prevBtn.disabled = false;
+    this.nextBtn.disabled = false;
     if (this.currentSlide === 0) {
       this.prevBtn.disabled = true;
-    } else if (this.currentSlide === this.totalSlides - 1) {
-      this.nextBtn.disabled = true;
-    } else {
-      this.prevBtn.disabled = false;
-      this.nextBtn.disabled = false;
     }
-
+    if (this.currentSlide === this.totalSlides - 1) {
+      this.nextBtn.disabled = true;
+    }
     this.paginationCurrent.textContent = this.currentSlide + 1;
     // Add active class to the current slide (all the other slides are opaque)
+    
     this.slides.forEach((slide) => {
       const video = slide.querySelector("video");
       if (slide === this.slides[this.currentSlide] && this.isInView) {
         slide.classList.add("active");
+        console.log("active");
         video?.play();
+        if(video)
+          video.controls = false;
+        // video?.controls = false;
       } else {
         slide.classList.remove("active");
         video?.pause();
+        if(video)
+          video.controls = true;
       }
     });
 

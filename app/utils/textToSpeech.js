@@ -101,16 +101,17 @@ function getAudio(blob) {
 // }
 export default async function textToSpeech(text, targetlang, index, attempt = 0) {
   let filteredLanguages = await getlangselected(targetlang);
-  console.log("textToSpeech filteredLanguages:", filteredLanguages);
+  // console.log("textToSpeech filteredLanguages:", filteredLanguages);
   if (!filteredLanguages.length || filteredLanguages[0].provider == "elevenlabs") {
     const headers = {
       accept: "audio/mpeg",
       "xi-api-key": ELEVENLABS_TOKEN,
       "Content-Type": "application/json",
     };
-    var model_id = "eleven_turbo_v2";
+    var model_id = "eleven_turbo_v2_5";
+    // var model_id = "eleven_turbo_v2";
     if (targetlang != "en") {
-      model_id = "eleven_multilingual_v2";
+      // model_id = "eleven_multilingual_v2";
     }
     const body = JSON.stringify({
       text: text + " ",
@@ -128,7 +129,7 @@ export default async function textToSpeech(text, targetlang, index, attempt = 0)
     })
       .then((response) => response.blob())
       .then((audioBlob) => {
-        console.log("from text to speech  : ", audioBlob, index);
+        // console.log("from text to speech elevenlabs  : ", getAudio(audioBlob), index);
         return { audio: getAudio(audioBlob), index };
       })
       .catch((error) => {
@@ -185,7 +186,7 @@ export default async function textToSpeech(text, targetlang, index, attempt = 0)
         return new Blob([bytes], { type: "audio/mpeg" });
       })
       .then((audioBlob) => {
-        console.log("from text to speech  : ", audioBlob, index);
+        // console.log("from text to speech google : ", audioBlob, index);
         return { audio: getAudio(audioBlob), index };
       })
       .catch((error) => {

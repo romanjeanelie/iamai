@@ -196,7 +196,7 @@ section {
 }
 
 @include media("<tablet") {
-  video {
-    pointer-events: none;
-  }
+  // video {
+  //   pointer-events: none;
+  // }
 }

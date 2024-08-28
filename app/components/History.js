@@ -1,15 +1,13 @@
-import { Remarkable } from "remarkable";
-
-import { TASK_STATUSES } from "./TaskManager/index.js";
-import { API_STATUSES } from "./constants.js";
 import fetcher from "../utils/fetcher.js";
-import DiscussionMedia from "./DiscussionMedia.js";
-import { URL_CONVERSATION_HISTORY, URL_AGENT_STATUS } from "./constants.js";
-import { get } from "firebase/database";
 import getRemarkable from "../utils/getRemarkable.js";
+import getMarked from "../utils/getMarked.js";
+import DiscussionMedia from "./DiscussionMedia.js";
+import { TASK_STATUSES } from "./TaskManager/index.js";
+import { API_STATUSES, URL_AGENT_STATUS, URL_CONVERSATION_HISTORY } from "./constants.js";
 
 const isEmpty = (obj) => Object.keys(obj).length === 0;
-const md = getRemarkable();
+// const md = getRemarkable();
+const md = getMarked();
 
 const isTask = (el) => el.micro_thread_id !== "";
 const isTaskViewed = (el) => isTask(el) && el.statuses?.lastStatus === API_STATUSES.VIEWED;
@@ -48,7 +46,8 @@ export default class History {
       }
       if (status.status === API_STATUSES.ANSWERED) {
         const answerContainer = document.createElement("div");
-        answerContainer.innerHTML = md.render(status.response_json.text) || "";
+        const assistantText = status.response_json.text.replace(/\\n/g, "<br \>");
+        answerContainer.innerHTML = md.parse(status.response_json.text) || "";
         resultsContainer.append(answerContainer);
       }
     });
@@ -122,15 +121,17 @@ export default class History {
               };
               this.emitter.emit("taskManager:updateStatus", task.key, task.status);
             } else {
-              const task = {
-                key: status.micro_thread_id,
-                status: {
-                  type: TASK_STATUSES.IN_PROGRESS,
-                  title: status.response_json.text.split(" ")[0],
-                  description: status.response_json.text,
-                },
-              };
-              this.emitter.emit("taskManager:updateStatus", task.key, task.status);
+              if (status.response_json.domain != "Code") {
+                const task = {
+                  key: status.micro_thread_id,
+                  status: {
+                    type: TASK_STATUSES.IN_PROGRESS,
+                    title: status.response_json.text.split(" ")[0],
+                    description: status.response_json.text,
+                  },
+                };
+                this.emitter.emit("taskManager:updateStatus", task.key, task.status);
+              }
             }
           }
           break;
@@ -188,7 +189,12 @@ export default class History {
       order,
     };
     // Get all elements
-    const { data } = await fetcher({ url: URL_CONVERSATION_HISTORY, params, idToken: await user.user.getIdToken(true) });
+    const { data } = await fetcher({
+      url: URL_CONVERSATION_HISTORY,
+      params,
+      idToken: await user.user.getIdToken(true),
+    });
+
     // Remove duplicate tasks
     const uniqueMicroThreadId = [];
     const removedDuplicate = data?.results.filter((item) => {
@@ -204,7 +210,10 @@ export default class History {
     // Get  statuses tasks
     for (const result of data?.results || []) {
       if (result.micro_thread_id !== "") {
-        const statuses = await this.getStatusesTask({ micro_thread_id: result.micro_thread_id, idToken: await user.user.getIdToken(true)});
+        const statuses = await this.getStatusesTask({
+          micro_thread_id: result.micro_thread_id,
+          idToken: await user.user.getIdToken(true),
+        });
         result.statuses = statuses;
       }
     }
@@ -235,7 +244,13 @@ export default class History {
         userContainer.appendChild(userContainerspan);
         container.appendChild(userContainer);
 
-        if (!isEmpty(element.images)) {
+        // 1st way to figure out if an img comes from the video input - the length
+        // const isImgsComingFromVideo = element.images.user_images?.length > 40000;
+
+        // 2nd way to figure out if an img comes from the video input - the presence of 'data:image/png;base64,'
+        const isImgsComingFromVideo = element.images.user_images?.includes("data:image/png;base64,");
+
+        if (!isEmpty(element.images) && !isImgsComingFromVideo) {
           const media = new DiscussionMedia({
             container: userContainer,
             emitter: this.emitter,
@@ -269,7 +284,7 @@ export default class History {
         const assistantText = textWithoutQuotes.replace(/\\n/g, "<br>");
 
         // Render the markdown
-        const assistantTextMardowned = md.render(assistantText);
+        const assistantTextMardowned = md.parse(assistantText);
 
         AIContainer.innerHTML = assistantTextMardowned;
         container.appendChild(AIContainer);

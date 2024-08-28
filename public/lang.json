@@ -168,12 +168,6 @@
         "provider": "elevenlabs"
     },
     {
-        "label": "Kannada",
-        "code": "kn",
-        "languagecode": "",
-        "provider": "elevenlabs"
-    },
-    {
         "label": "Kazakh",
         "code": "kk",
         "languagecode": "",
@@ -414,7 +408,7 @@
         "label": "Kannada",
         "code": "kn",
         "languagecode": "kn-IN",
-        "voice": "kn-IN-Wavenet-A",
+        "voice": "kn-IN-Wavenet-C",
         "provider": "google"
     },
     {

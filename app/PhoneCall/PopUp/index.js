@@ -1,7 +1,8 @@
 import { connect } from "https://cdn.jsdelivr.net/npm/nats.ws@latest/esm/nats.js";
-const NATS_URL = import.meta.env.VITE_API_NATS_URL || "wss://nats.asterizk.ai";
-const NATS_USER = import.meta.env.VITE_API_NATS_USER || "iamplus-acc";
-const NATS_PASS = import.meta.env.VITE_API_NATS_PASS || "cis8Asto6HepremoGApI";
+import Config from "../../getConfig.js";
+var NATS_URL = "";
+var NATS_USER = "";
+var NATS_PASS = "";
 const PHONECALLCONNECTED = "PHONE_CALL_CONNECTED",
   TRANSCRIPT = "TRANSCRIPT",
   PHONECALLENDED = "PHONE_CALL_ENDED",
@@ -88,6 +89,19 @@ export default class PopUp {
 
     this.countryInput = new CountryInput({ onCountrySelect: this.handleCountryInput });
     this.phoneInput = new PhoneInput({ onPhoneSelect: this.handlePhoneInput });
+
+    const config = new Config();
+    config.getWebsiteConfig().then(data => {
+      if (data) {
+        NATS_URL = data.NATS_URL;
+        NATS_USER = data.NATS_USER;
+        NATS_PASS = data.NATS_PASS;
+      } else {
+        console.log('No data available');
+      }
+    }).catch(error => {
+      console.error('Error:', error);
+    });
 
     // -- Init Methods
     if (this.data) this.initializeWithData();

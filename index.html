@@ -17,6 +17,8 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-53ZK5Q9K6T"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.4/lottie.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js/styles/default.min.css">
+  <link id="favicon" href="favicon_light.ico" rel="icon">
+
 
 
   <script>
@@ -27,6 +29,26 @@
     gtag("js", new Date());
 
     gtag("config", "G-53ZK5Q9K6T");
+  </script>
+  <script>
+    // Function to set the favicon
+    function setFavicon() {
+      const favicon = document.getElementById('favicon');
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+      if (darkScheme) {
+        favicon.href = "./favicon_light.ico";
+      } else {
+        favicon.href = "./favicon.ico";
+      }
+    }
+
+    // Set the favicon initially
+    setFavicon();
+
+    // Check for changes in color scheme periodically (e.g., every 500ms)
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", setFavicon);
+    window.matchMedia("(prefers-color-scheme: light)").addEventListener("change", setFavicon);
   </script>
 </head>
 
@@ -115,20 +137,22 @@
         <div class="discussion__wrapper">
           <div class="prev-discussion__container"></div>
           <div class="discussion__container"></div>
-
         </div>
-        <div class="input__wrapper">
-          <!-- Input -->
-          {{> input labelPage="grey"}}
+        <div class="main-phone__wrapper">
+          <div class="input__wrapper">
+            <!-- Input -->
+            {{> input labelPage="grey"}}
+          </div>
+          <!-- Phone -->
+          {{> phone}}
         </div>
-        {{> videoInput }}
-        <!-- Phone -->
-        {{> phone}}
         <!-- Image drop -->
         {{> imageDrop}}
         <!--Slider -->
         {{> slider}}
       </main>
+      <!-- Video conversation -->
+      {{> videoInput }}
       <!-- Logo-->
       {{> greyPage/logo}}
     </div>
@@ -139,8 +163,8 @@
   <script src="/libAudioRecorder/WebAudioRecorder.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script type="module" src="/app/index.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@ricky0123/vad-web@0.0.7/dist/bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.18.0/dist/ort.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@ricky0123/vad-web@0.0.18/dist/bundle.min.js"></script>
 </body>
 
 </html>

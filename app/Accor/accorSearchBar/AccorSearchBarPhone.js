@@ -48,7 +48,7 @@ export default class AccorSearchBarPhone {
   }
 
   AItalking() {
-    this.phoneAnimations.newInfoText("Click to interrupt");
+    this.phoneAnimations.newInfoText("Speak to interrupt");
     this.phoneAnimations.toAITalking();
   }
 

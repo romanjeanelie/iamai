@@ -132,12 +132,13 @@ export default class DiscussionMedia {
     imagesContainer.classList.add("discussion__images-container");
 
     const successfulSrcs = await loadImages(srcs);
-    successfulSrcs.map((src) => {
+    const imgs = successfulSrcs.map((src) => {
       const img = document.createElement("img");
       img.src = src;
       imagesContainer.appendChild(img);
+      return img;
     });
-
+    this.handleImgClick(imgs);
     this.topWrapper.appendChild(imagesContainer);
   }
 

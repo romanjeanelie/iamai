@@ -152,6 +152,8 @@ $taskSecondaryColor: #007aff;
     display: flex;
     flex-direction: column;
     gap: 24px;
+    margin: 0;
+    padding-left: 16px;
   }
 
   .task-manager__accordion {

@@ -1,15 +1,15 @@
 // Components
-import InputImage from "./InputImage";
-import Phone from "../Phone";
 import TypingText from "../../TypingText";
+import Phone from "../Phone";
+import InputImage from "./InputImage";
 
 // Utils
-import minSecStr from "../../utils/minSecStr";
 import isMobile from "../../utils/isMobile";
+import minSecStr from "../../utils/minSecStr";
 
 import AudioRecorder from "../../AudioRecorder";
-import InputAnimations from "./InputAnimations";
 import sendToWispher from "../../utils/audio/sendToWhisper";
+import InputAnimations from "./InputAnimations";
 
 import { colorMain } from "../../../scss/variables/_colors.module.scss";
 import InputVideo from "./InputVideo";
@@ -41,6 +41,7 @@ const STATUS = {
 export default class Input {
   constructor({ pageEl, isActive, toPageGrey, discussion, emitter }) {
     this.isActive = isActive;
+    this.debug = import.meta.env.VITE_DEBUG === "true";
 
     this.toPageGrey = toPageGrey;
     this.discussion = discussion;
@@ -56,7 +57,6 @@ export default class Input {
     this.centerBtn = this.inputFrontEl.querySelector(".center-btn");
     this.frontCameraBtn = this.inputFrontEl.querySelector(".camera-btn");
     this.frontMicBtn = this.inputFrontEl.querySelector(".mic-btn");
-    this.frontCenterBtn = this.inputFrontEl.querySelector(".center-btn");
     this.frontVideoBtn = this.inputFrontEl.querySelector(".video-btn");
 
     // Image
@@ -116,13 +116,16 @@ export default class Input {
       this.emitter
     );
 
-    // this.inputVideo = new InputVideo(this.emitter);
+    // Video
+    this.inputVideo = new InputVideo(this.emitter);
+
     // Phone
     if (!this.isPageBlue) {
       this.phone = new Phone({
         pageEl: this.pageEl,
         discussion: this.discussion,
         emitter: this.emitter,
+        photos: this.inputVideo.photos,
         anims: {
           toStartPhoneRecording: () => this.anims.toStartPhoneRecording(),
           toStopPhoneRecording: () => this.anims.toStopPhoneRecording(),
@@ -354,9 +357,12 @@ export default class Input {
     });
 
     // Video
-    // this.frontVideoBtn.addEventListener("click", () => {
-    //   this.emitter.emit("input:displayVideoInput");
-    // });
+    this.frontVideoBtn.addEventListener("click", () => {
+      this.emitter.emit("input:displayVideoInput");
+      
+      //initailse the video workflow api
+      this.discussion.Chat.StartVideoWorkflow();
+    });
 
     // Prevent input hidden by keyboard on mobile
     if (isMobile()) {

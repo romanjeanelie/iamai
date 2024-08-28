@@ -2,17 +2,18 @@ import { connect, AckPolicy, JSONCodec } from "https://cdn.jsdelivr.net/npm/nats
 import { TASK_STATUSES } from "./TaskManager/index.js";
 import DiscussionMedia from "./DiscussionMedia.js";
 import getRemarkable from "../utils/getRemarkable.js";
+import getMarked from "../utils/getMarked.js";
 // const uuid = "omega_" + crypto.randomUUID();
 // import { getUser } from "../User.js";
 // const IS_DEV_MODE = import.meta.env.MODE === "development";
 const IS_DEV_MODE = false;
 const HOST = import.meta.env.VITE_API_HOST || "https://api.asterizk.ai";
-const NATS_URL = import.meta.env.VITE_API_NATS_URL || "wss://nats.asterizk.ai";
-const NATS_USER = import.meta.env.VITE_API_NATS_USER || "iamplus-acc";
-const NATS_PASS = import.meta.env.VITE_API_NATS_PASS || "cis8Asto6HepremoGApI";
+import Config from "../getConfig.js";
 const GOOGLE_TRANSLATE_URL = import.meta.env.VITE_API_GOOGLE_TRANSLATE;
 
-const md = getRemarkable();
+
+// const md = getRemarkable();
+const md = getMarked();
 let ui_paramsmap = new Map();
 let sources_paramsmap = new Map();
 let images_paramsmap = new Map();
@@ -43,6 +44,7 @@ const ANSWER = "answer",
   FLIGHTSEARCH = "FlightSearch",
   PRODUCTSEARCH = "ProductSearch",
   HOTELSEARCH = "HotelSearch",
+  CODESEARCH = "Code",
   AGENT_PROGRESSING = "agent_progressing",
   AGENT_ANSWERED = "agent_answered",
   IMAGE_GENERATION_IN_PROGRESS = "image_generation_in_progress",
@@ -50,6 +52,9 @@ const ANSWER = "answer",
   RESPONSE_GREETING = "response_greeting",
   AGENT_INTERMEDIATE_ANSWER = "agent_intermediate_answer";
 let micro_thread_id = "";
+
+let nc;
+let js;
 
 class Chat {
   constructor(callbacks) {
@@ -81,10 +86,30 @@ class Chat {
     this.image_urls = "";
     this.task_name = "";
     this.user = this.callbacks.user;
+    this.video_stream_name = "";
+    this.video_subject_name = "";
+    this.phi_stream_started = false;
+    // this.NATS_URL = "";
+    // this.NATS_USER = "";
+    // this.NATS_PASS = "";
     this.callbacks.disableInput();
+    const config = new Config();
+    config.getWebsiteConfig().then(data => {
+      if (data) {
+        this.NATS_URL  = data.NATS_URL;
+        this.NATS_USER  = data.NATS_USER;
+        this.NATS_PASS  = data.NATS_PASS;
+      } else {
+        console.log('No data available');
+      }
+    }).catch(error => {
+      console.error('Error:', error);
+    });
+
+
   }
 
-  callsubmit = async (text, img, container, live_mode=false) => {
+  callsubmit = async (text, img, container, live_mode = false) => {
     this.container = container;
     var input_text = text;
     var original_text = input_text;
@@ -100,14 +125,19 @@ class Chat {
     // if (this.awaiting && this.workflowID != "") {
     if (this.workflowID != "") {
       if (img) {
-        // console.log("img:", img);
-        this.submituserreply(
-          input_text,
-          this.workflowID,
-          img.map((imgs) => imgs.src),
-          live_mode
-        );
-      } else this.submituserreply(input_text, this.workflowID, img,live_mode);
+        if (live_mode) {
+          this.PushVideoData(img.map((imgs) => imgs.src), input_text);
+          // this.SendPHIQns(input_text);
+        } else {
+
+          this.submituserreply(
+            input_text,
+            this.workflowID,
+            img.map((imgs) => imgs.src),
+            live_mode
+          );
+        }
+      } else this.submituserreply(input_text, this.workflowID, img, live_mode);
     } else {
       this.workflowID = this.sessionID;
       var xhr = new XMLHttpRequest();
@@ -117,6 +147,8 @@ class Chat {
           let text = JSON.parse(xhr.response);
           // console.log(text.stream_id);
           let stream_name = text.stream_id;
+          console.timeEnd("logged in");
+          console.time("getstreamdata");
           this.getstreamdata(stream_name);
         }
       };
@@ -140,14 +172,13 @@ class Chat {
             xhr.send(
               JSON.stringify({
                 session_id: this.sessionID,
-                uuid: "omega_" + crypto.randomUUID() + "@iamplus.com",
+                uuid: "omega_" + crypto.randomUUID() + "@costar.life",
               })
             );
           } else {
             xhr.send(
               JSON.stringify({
                 session_id: this.sessionID,
-                // uuid: uuid + "@iamplus.com",
                 uuid: this.deploy_ID,
               })
             );
@@ -162,7 +193,6 @@ class Chat {
           xhr.send(
             JSON.stringify({
               query: input_text,
-              // uuid: uuid + "@iamplus.com",
               uuid: this.user.uuid,
             })
           );
@@ -170,24 +200,27 @@ class Chat {
       }
     }
   };
+
   getstreamdata = async (stream_name) => {
-    let nc = await connect({
-      servers: [NATS_URL],
-      user: NATS_USER,
-      pass: NATS_PASS,
+    nc = await connect({
+      servers: [this.NATS_URL],
+      user: this.NATS_USER,
+      pass: this.NATS_PASS,
     });
 
-    const js = nc.jetstream();
+    js = nc.jetstream();
+
     const c = await js.consumers.get(stream_name, stream_name);
     let iter = await c.consume();
+    console.timeEnd("getstreamdata");
     nc.onclose = function (e) {
       console.log("Socket is closed. Reconnect will be attempted in 1 second.", e.reason);
       setTimeout(async function () {
         console.log("Socket is closed. Reconnect will be attempted in 1 second.", e.reason);
         nc = await connect({
-          servers: [NATS_URL],
-          user: NATS_USER,
-          pass: NATS_PASS,
+          servers: [this.NATS_URL],
+          user: this.NATS_USER,
+          pass: this.NATS_PASS,
         });
       }, 1000);
     };
@@ -210,16 +243,18 @@ class Chat {
 
         //get UI and RAG params
         if (mdata.type == UI) {
-          console.log("domain:" + this.domain);
+          // console.log("domain:" + this.domain);
           if (ui_paramsmap.get(mdata.micro_thread_id))
             ui_paramsmap.get(mdata.micro_thread_id).push(mdata.response_json);
           else ui_paramsmap.set(mdata.micro_thread_id, [mdata.response_json]);
         } else if (mdata.type == IMAGES) {
           this.image_urls = JSON.parse(mdata.response_json.images);
-          if (mdata.micro_thread_id.length == 0)
-            this.image_urls && this.media.addImages(this.image_urls.slice(0, 8));
-          else
-            images_paramsmap.set(mdata.micro_thread_id, mdata.response_json.images);
+          if (!this.media) {
+            this.media = new DiscussionMedia({ container: this.container, emitter: this.callbacks.emitter });
+            this.media.initImages();
+          }
+          if (mdata.micro_thread_id.length == 0) this.image_urls && this.media.addImages(this.image_urls.slice(0, 8));
+          else images_paramsmap.set(mdata.micro_thread_id, mdata.response_json.images);
         } else if (mdata.type == SOURCES) {
           const media = new DiscussionMedia({ container: this.container, emitter: this.callbacks.emitter });
           try {
@@ -227,10 +262,8 @@ class Chat {
           } catch (e) {
             this.Sources = mdata.response_json.sources;
           }
-          if (mdata.micro_thread_id.length == 0)
-            media.addSources(this.Sources);
-          else
-            sources_paramsmap.set(mdata.micro_thread_id, mdata.response_json.sources);
+          if (mdata.micro_thread_id.length == 0) media.addSources(this.Sources);
+          else sources_paramsmap.set(mdata.micro_thread_id, mdata.response_json.sources);
         }
         //generate data
         if (mdata.status && mdata.status == STREAM_STARTED) {
@@ -266,8 +299,8 @@ class Chat {
           // textEl.innerHTML = 'Please click <a href="./index.html">here</a>, to start a new session to chat or close the browser.';
         } else if (mdata.awaiting && (!mdata.micro_thread_id || mdata.micro_thread_id == "NA")) {
           var mtext = mdata.response_json.text;
-          console.log("awaiting:" + mdata.message_type);
-          console.log("mtext:" + mtext);
+          // console.log("awaiting:" + mdata.message_type);
+          // console.log("mtext:" + mtext);
           this.workflowID = mdata.session_id;
           this.awaiting = true;
           var AIAnswer = await this.toTitleCase2(mtext);
@@ -284,7 +317,7 @@ class Chat {
           this.callbacks.emitter.emit(STREAM_ENDED);
 
           if (this.domain == RAGCHAT) {
-            console.log("here RAG_CHAT:" + this.RAG_CHAT);
+            // console.log("here RAG_CHAT:" + this.RAG_CHAT);
             this.getGucciUI();
             (this.domain = ""), (this.RAG_CHAT = "");
           } else if (this.domain == MOVIESEARCH) {
@@ -308,15 +341,20 @@ class Chat {
           this.callbacks.emitter.emit(STREAM_ENDED);
         } else if (mdata.status && mdata.status == AGENT_ENDED) {
           // micro_thread_id =  mdata.micro_thread_id;
-        } else if (mdata.status.toLowerCase() == PA_RESPONSE_ENDED) {
+        } else if (mdata.status && mdata.status.toLowerCase() == PA_RESPONSE_STARTED) {
+          if (mtext && mtext.image_stream_id) {
+            this.video_stream_name = mtext.image_stream_id;
+            this.video_subject_name = mtext.image_subject;
+            this.VideoCallStarted();
+          }
+        } else if (mdata.status && mdata.status.toLowerCase() == PA_RESPONSE_ENDED) {
           this.callbacks.enableInput();
           this.callbacks.emitter.emit("paEnd");
           this.callbacks.emitter.emit(PA_RESPONSE_ENDED);
-          console.timeEnd("conversation")
+          console.timeEnd("conversation");
         } else if (mdata.status && mdata.status == AGENT_STARTED) {
           // micro_thread_id =  mdata.micro_thread_id;
           let taskname = mdata.task_name;
-
           const task = {
             key: mdata.micro_thread_id,
             name: taskname,
@@ -330,6 +368,7 @@ class Chat {
           // await this.createTask(task, textAI)
           this.callbacks.emitter.emit("taskManager:createTask", task, textAI);
           this.callbacks.emitter.emit("endStream");
+
         } else if (mdata.status && mdata.status == AGENT_PROGRESSING) {
           if (mdata.awaiting) {
             let taskname = mdata.task_name;
@@ -346,8 +385,8 @@ class Chat {
             this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, null, task.workflowID);
           } else {
             if (mdata.type == SOURCES) {
-              console.log("mdata:", mdata)
-              console.log("mdata.source:", JSON.stringify(mdata.response_json.sources))
+              // console.log("mdata:", mdata);
+              // console.log("mdata.source:", JSON.stringify(mdata.response_json.sources));
               const task = {
                 key: mdata.micro_thread_id,
                 status: {
@@ -368,17 +407,18 @@ class Chat {
               };
               this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status);
             } else {
-              const task = {
-                key: mdata.micro_thread_id,
-                status: {
-                  type: TASK_STATUSES.IN_PROGRESS,
-                  title: mdata.response_json.text.split(" ")[0],
-                  description: mdata.response_json.text,
-                },
-              };
-              this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status);
+              if (mdata.response_json.domain != "Code") {
+                const task = {
+                  key: mdata.micro_thread_id,
+                  status: {
+                    type: TASK_STATUSES.IN_PROGRESS,
+                    title: mdata.response_json.text.split(" ")[0],
+                    description: mdata.response_json.text,
+                  },
+                };
+                this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status);
+              }
             }
-
           }
         } else if (mdata.status && mdata.status == AGENT_ANSWERED) {
           this.callbacks.emitter.emit(AGENT_ENDED);
@@ -390,7 +430,7 @@ class Chat {
             });
           }
           let taskname = mdata.task_name;
-          console.log("taskname", taskname);
+          // console.log("taskname", taskname);
           const task = {
             key: mdata.micro_thread_id,
             status: {
@@ -405,8 +445,7 @@ class Chat {
           if (sourcedata) {
             divans = this.adduserans(mdata.response_json.text, container, sourcedata);
             sources_paramsmap.delete(mdata.micro_thread_id);
-          } else
-            divans = this.adduserans(mdata.response_json.text, container);
+          } else divans = this.adduserans(mdata.response_json.text, container);
 
           this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, divans, {
             workflowID: mdata.session_id,
@@ -444,20 +483,6 @@ class Chat {
             await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang });
           }
         }
-        // } else if (mtext.trim().length > 0) { //ADDED THIS FOR conversation_question and other cases.
-        //   var AIAnswer = await this.toTitleCase2(mtext);
-        //   if (this.sourcelang != "en") {
-        //     var transresponse = await this.googletranslate(
-        //       await this.toTitleCase2(mtext),
-        //       this.sourcelang,
-        //       this.targetlang
-        //     );
-        //     AIAnswer = transresponse.data.translations[0].translatedText;
-        //   }
-        //   console.log("before add")
-        //   await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang });
-        //   console.log("after add")
-        // }
         m.ack();
       }
     }
@@ -477,9 +502,12 @@ class Chat {
       container = this.getProductUI(JSON.parse(data.ProductSearchResults));
     } else if (domain == HOTELSEARCH) {
       container = this.getHotelsUI(JSON.parse(data.HotelSearch), JSON.parse(data.HotelSearchResults));
+    } else if (domain == CODESEARCH) {
+      container = this.getCodeUI(data.Code, data.Language);
     }
     return container;
   }
+
   extractSubstringWithEllipsis(text) {
     if (text.length <= 40) {
       return text;
@@ -491,12 +519,14 @@ class Chat {
     }
     return text.substring(0, 40) + " ...";
   }
+
   adduserqns(userQns) {
     const divdiscussionuser = document.createElement("div");
     divdiscussionuser.className = "discussion__user";
     divdiscussionuser.innerHTML = userQns;
     return divdiscussionuser;
   }
+
   adduserans(userAns, container, source = null) {
     const divtextcontainer = document.createElement("div");
     divtextcontainer.className = "text__container";
@@ -508,7 +538,7 @@ class Chat {
     const divspan = document.createElement("span");
     const spanAIword = document.createElement("span");
     spanAIword.className = "AIword";
-    spanAIword.innerHTML = md.render(userAns);
+    spanAIword.innerHTML = md.parse(userAns);
 
     divspan.appendChild(spanAIword);
     divtextcontainer.appendChild(divspan);
@@ -531,7 +561,7 @@ class Chat {
       var xhr = new XMLHttpRequest();
       xhr.addEventListener("readystatechange", function () {
         if (this.readyState === 4) {
-          console.log(this.responseText);
+          // console.log(this.responseText);
           var response = JSON.parse(this.responseText);
           resolve(response);
         }
@@ -626,7 +656,7 @@ class Chat {
         user_data: {
           type: "image",
           url: img,
-          live_mode: live_mode
+          live_mode: live_mode,
         },
       });
     } else {
@@ -720,7 +750,6 @@ class Chat {
       moviedetailsdatesdiv.className = "movie-details-dates";
       moviedetailsdatesdiv.setAttribute("data-details", JSON.stringify(theatre).replace(/'/g, "&#39;"));
       this.getMoviesDateShowtime(moviedetaildata.MovieTitle, theatre, theatre.DateTime[0].Date, moviedetailsdatesdiv);
-      console.log(moviedetaildata.MovieTitle);
       moviedetailscarddiv.appendChild(moviedetailsdatesdiv);
       moviedetail.appendChild(moviedetailscarddiv);
     });
@@ -852,7 +881,6 @@ class Chat {
           movie_date: Date,
           movie_time: Time,
         });
-      console.log("texttosend:" + texttosend);
       this.callsubmit(texttosend, "", this.container);
     }
   }
@@ -1331,6 +1359,44 @@ class Chat {
     // scrollToDiv(element.getAttribute('data-info'));
   }
 
+  getCodeUI(Code, Language) {
+    const codediv = document.createElement("div");
+    codediv.className = "code-container";
+    const codedivfilter = document.createElement("div");
+    codedivfilter.className = "code-filter";
+    codediv.appendChild(codedivfilter);
+
+    const codedatadiv = document.createElement("div");
+    codedatadiv.className = "codecard-data code active";
+    codedatadiv.innerHTML = md.parse(Code);
+
+    codediv.appendChild(codedatadiv);
+    if (Language.toLowerCase() == "html") {
+      const codedivfiltercode = document.createElement("div");
+      codedivfiltercode.className = "codecard-filtercode code active";
+      codedivfiltercode.innerHTML = "Code";
+      codedivfiltercode.addEventListener("click", (event) => this.codefilter(event, "code"));
+      codedivfilter.appendChild(codedivfiltercode);
+      const codedivfilterpreview = document.createElement("div");
+      codedivfilterpreview.className = "codecard-filtercode preview";
+      codedivfilterpreview.innerHTML = "Preview";
+      codedivfilterpreview.addEventListener("click", (event) => this.codefilter(event, "preview"));
+      codedivfilter.appendChild(codedivfilterpreview);
+
+      const codedivpreview = document.createElement("div");
+      codedivpreview.className = "codecard-data preview";
+      const iframe = document.createElement("iframe");
+      iframe.className = "codecard-data previewframe";
+      iframe.srcdoc = Code.replace("```html", "").replace("```", "");
+      iframe.setAttribute("sandbox", "allow-scripts allow-same-origin");
+      codedivpreview.appendChild(iframe);
+
+      codediv.appendChild(codedivpreview);
+    }
+    return codediv;
+
+  }
+
   getHotelsUI(HotelSearch, HotelSearchResults) {
     const hotelsdiv = document.createElement("div");
     hotelsdiv.setAttribute("data-details", JSON.stringify(HotelSearchResults));
@@ -1375,6 +1441,7 @@ class Chat {
 
     return hotelsdiv;
   }
+
   getHotelsFilterUI(HotelSearchResults, Filter) {
     const hotelcardcontainerdiv = document.createElement("div");
     hotelcardcontainerdiv.className = "hotelscard-container";
@@ -1490,25 +1557,40 @@ class Chat {
     }
   }
 
+
+  codefilter(event, Filter) {
+    let targetElement = event.target;
+
+    while (targetElement && targetElement.tagName !== "DIV") {
+      targetElement = targetElement.parentElement;
+    }
+
+    if (targetElement) {
+      let allitems = targetElement.parentElement.querySelectorAll(".codecard-filtercode");
+      allitems.forEach(tab => tab.classList.remove('active'));
+      targetElement.classList.add('active');
+
+      let codeactive = targetElement.parentElement.parentElement.querySelector(".codecard-data.active");
+      let codenotactive = targetElement.parentElement.parentElement.querySelector(`.codecard-data.${Filter}`);
+      if (codeactive) codeactive.classList.remove('active');
+      if (codenotactive) codenotactive.classList.add('active');
+    }
+  }
+
   hotelfilter(event, Filter) {
-    // console.log("event.target", event.target)
     let targetElement = event.target;
 
     while (targetElement.tagName !== "DIV") {
       targetElement = targetElement.parentElement;
-      // console.log("targetElement", targetElement)
     }
     let clicked = targetElement.querySelector("#border");
-    // console.log("targetElement.parentElement", targetElement.parentElement);
     let HotelSearchResults = JSON.parse(targetElement.parentElement.parentElement.getAttribute("data-details"));
     let hotelcardcontainerdiv = targetElement.parentElement.parentElement.querySelector(".hotelscard-container");
-    // console.log("HotelSearchResults", HotelSearchResults);
     let allitems = targetElement.parentElement.querySelector(".hotelfilteractive");
     allitems.parentElement.classList.remove("hotelactive");
     allitems.classList.remove("hotelfilteractive");
     clicked.parentElement.classList.add("hotelactive");
     clicked.classList.add("hotelfilteractive");
-    // hotelcardcontainerdiv.innerHTML = this.getHotelsFilterUI(HotelSearchResults, Filter).innerHTML;
     hotelcardcontainerdiv.remove();
     targetElement.parentElement.parentElement.appendChild(this.getHotelsFilterUI(HotelSearchResults, Filter));
   }
@@ -1523,6 +1605,145 @@ class Chat {
     const monthName = months[date.getMonth()];
 
     return `${dayName}, ${day} ${monthName}`;
+  }
+
+  StartVideoWorkflow() {
+    var data = JSON.stringify({
+      uuid: this.deploy_ID,
+      pa_session_id: this.sessionID,
+      // model: "phi3v",
+      model: "gpt4v",
+    });
+
+    this.user.user.getIdToken(true).then(async (idToken) => {
+      var xhr = new XMLHttpRequest();
+
+      xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === 4) {
+          var responsedata = JSON.parse(this.responseText);
+        }
+      });
+
+      xhr.open("POST", HOST + "/workflows/deploy_video_chat");
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.setRequestHeader("GOOGLE_IDTOKEN", idToken);
+      xhr.send(data);
+    });
+  }
+
+  async VideoCallStarted() {
+    var video_chat_started = JSON.stringify({
+      type: "control",
+      status: "video_chat_started",
+      pa_session_id: this.sessionID,
+    });
+
+    await js.publish(this.video_subject_name, video_chat_started);
+
+  }
+
+  async VideoCallEnded() {
+    var video_chat_ended = JSON.stringify({
+      type: "control",
+      status: "video_chat_ended",
+      pa_session_id: this.sessionID,
+    });
+
+    await js.publish(this.video_subject_name, video_chat_ended);
+    this.video_stream_name = "";
+    this.video_subject_name = "";
+    this.phi_stream_started = false;
+  }
+
+  async PushVideoData(imgs, input_text) {
+
+    // console.log(imgs);
+    // console.log(input_text);
+
+
+    var stream_started = JSON.stringify({
+      type: "images",
+      status: "stream_started",
+      pa_session_id: this.sessionID,
+    });
+
+    var stream_ended = JSON.stringify({
+      type: "images",
+      status: "stream_ended",
+      pa_session_id: this.sessionID,
+    });
+
+    // console.log("before data pushed");
+    await js.publish(this.video_subject_name, stream_started);
+    imgs.forEach(async img => {
+      var imagedata = JSON.stringify({
+        type: "images",
+        status: "streaming",
+        pa_session_id: this.sessionID,
+        response_json: {
+          byte64: img
+        }
+      });
+      await js.publish(this.video_subject_name, imagedata);
+    });
+    //add images data
+    await js.publish(this.video_subject_name, stream_ended);
+    var question = JSON.stringify({
+      type: "question",
+      status: "question",
+      pa_session_id: this.sessionID,
+      response_json: {
+        query: input_text
+      }
+    });
+    await js.publish(this.video_subject_name, question);
+    // console.log("data pushed");
+  }
+
+  async SendPHIImages(img) {
+    var stream_started = JSON.stringify({
+      type: "images",
+      status: "stream_started",
+      pa_session_id: this.sessionID,
+    });
+
+    if (!this.phi_stream_started) {
+      await js.publish(this.video_subject_name, stream_started);
+      this.phi_stream_started = true;
+    }
+
+    var imagedata = JSON.stringify({
+      type: "images",
+      status: "streaming",
+      pa_session_id: this.sessionID,
+      response_json: {
+        byte64: img
+      }
+    });
+    await js.publish(this.video_subject_name, imagedata);
+
+  }
+
+  async SendPHIQns(input_text) {
+
+    var stream_ended = JSON.stringify({
+      type: "images",
+      status: "stream_ended",
+      pa_session_id: this.sessionID,
+    });
+
+    // console.log("before data pushed");
+    await js.publish(this.video_subject_name, stream_ended);
+    var question = JSON.stringify({
+      type: "question",
+      status: "question",
+      pa_session_id: this.sessionID,
+      response_json: {
+        query: input_text
+      }
+    });
+    await js.publish(this.video_subject_name, question);
+    // console.log("data pushed");
   }
 }
 export { Chat as default };

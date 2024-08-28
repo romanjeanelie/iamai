@@ -1,6 +1,78 @@
 <!-- Video input -->
 <div class="input__video--container">
+  <div class="input__video--phone-container">
+    <p class="input__video--timer">00:00</p>
+    <div class="phone__container">
+      <div class="phone__top">
+        <div class="phone-bar__container">
+          <div class="phone-bar__one">
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+          <div class="phone-bar__processing">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+          <div class="phone-bar__AI">
+          </div>
+          <div class="phone-bar__pause">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+        </div>
+
+      </div>
+      <div class="phone__bottom">
+        <p class="phone__info active"></p>
+        <p class="phone__info">not active</p>
+      </div>
+    </div>
+  </div>
   <div class="input__video--camera">
-    <video>Video stream not available.</video>
+    <canvas class="input__video--canvas"></canvas>
+    <video playsinline controlslist="nodownload nofullscreen noremoteplayback" disablePictureInPicture>Video stream not
+      available.</video>
+    <div class="input__video--camera-loader"></div>
+    {{! EXIT BUTTON }}
+    <button class="input__video--button exit-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <rect
+          x="0.00195312"
+          y="1.13184"
+          width="1.6"
+          height="17.6"
+          rx="0.8"
+          transform="rotate(-45 0.00195312 1.13184)"
+          fill="#00254E"
+        />
+        <rect y="12.4453" width="17.6" height="1.6" rx="0.8" transform="rotate(-45 0 12.4453)" fill="#00254E" />
+      </svg>
+    </button>
+  </div>
+  <div class="input__video--footer">
+    <div class="input__video--buttons-wrapper">
+      {{! PAUSE BUTTON }}
+      <button class="input__video--button pause-btn">
+        <svg width="12" height="16" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="3" height="16" rx="1.5" fill="#00254E" />
+          <rect x="9" width="3" height="16" rx="1.5" fill="#00254E" />
+        </svg>
+      </button>
+      {{! REVERSE BUTTON }}
+      <button class="input__video--button reverse-btn">
+        <svg width="30" height="25" viewBox="0 0 30 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M25.3275 19.0172C25.4897 18.7359 25.3966 18.3771 25.1152 18.2127C24.8337 18.0485 24.4748 18.1438 24.3107 18.4243C21.8611 22.6247 16.8662 24.6793 12.1643 23.4194C10.2621 22.9094 8.61163 21.9241 7.31043 20.6229C5.07226 18.384 3.86844 15.2106 4.19499 11.9197L5.17876 13.6684C5.33825 13.9507 5.69628 14.0513 5.97981 13.8924C6.26249 13.7325 6.36279 13.3738 6.20347 13.091L4.41108 9.90601C4.3223 9.74876 4.16642 9.64037 3.98801 9.61336C3.80925 9.58531 3.62809 9.64192 3.4963 9.76545L0.746798 12.3426C0.51006 12.5648 0.497842 12.9373 0.720129 13.1741C0.724603 13.1785 0.728732 13.1834 0.733377 13.188C0.956868 13.4115 1.31903 13.4185 1.55147 13.2009L3.02179 11.8225C2.77163 14.3922 3.35711 16.9703 4.71904 19.208C5.22314 20.0359 5.81843 20.7908 6.48942 21.4618C7.96267 22.935 9.80324 24.0038 11.8594 24.5552C14.4535 25.2499 17.1296 25.0686 19.6 24.032C21.9939 23.029 24.0266 21.2467 25.3275 19.0172ZM4.81401 7.72169C4.76962 7.69588 4.72919 7.66439 4.69427 7.62947C4.50983 7.44503 4.46493 7.15341 4.60222 6.91771C5.90273 4.68779 7.93634 2.90606 10.3292 1.90164C12.7993 0.865054 15.476 0.68406 18.07 1.37896C21.098 2.19034 23.6516 4.119 25.2597 6.80897C26.5886 9.03183 27.1548 11.5759 26.9067 14.1119L28.377 12.7324C28.61 12.5156 28.9725 12.523 29.1953 12.7458C29.2001 12.7507 29.2044 12.7556 29.2092 12.7605C29.4308 12.9965 29.4191 13.3692 29.1817 13.5911L26.432 16.168C26.3013 16.2926 26.1198 16.3485 25.9408 16.3206C25.8156 16.3014 25.7019 16.2427 25.6155 16.1563C25.5776 16.1185 25.5449 16.0762 25.5178 16.028L23.7254 12.843C23.5661 12.5602 23.6667 12.2015 23.9492 12.0418C24.2324 11.8832 24.5908 11.9835 24.7503 12.2658L25.7364 14.018C26.2639 8.80284 22.9733 3.91048 17.7655 2.51517C13.0632 1.25526 8.06762 3.30917 5.61868 7.51024C5.45455 7.79033 5.09497 7.88531 4.81401 7.72169Z"
+            fill="#00254E"
+          />
+        </svg>
+      </button>
+    </div>
   </div>
 </div>

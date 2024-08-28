@@ -72,7 +72,7 @@ class App {
     if (this.debug) {
       this.toPageGrey({ duration: 0 });
       this.initApp();
-      this.initTaskManager();
+      // this.initTaskManager();
       return;
     }
   }
@@ -282,6 +282,7 @@ class App {
         await this.user.setuseraddress();
         this.toPageGrey({ duration: 1200 });
         // this.user = user;
+        console.time("logged in");
         if (this.debug) return;
         this.initApp();
       } else if (this.user.status == "waitlisted") {
@@ -321,6 +322,8 @@ class App {
     });
 
     window.addEventListener("load", async () => {
+      console.log("ADDING PRELOAD");
+      this.app.classList.add("preload");
       for (let i = 0; i < signInButtons.length; i++) {
         signInButtons[i].addEventListener("click", this.toggleSignIn, false);
       }
@@ -347,7 +350,9 @@ class App {
       //load and play the animations
       this.introAnim.animate({ callback: this.checkuser.bind(this) });
     });
-    document.fonts.ready.then(() => {
+
+    Promise.all([new Promise((resolve) => window.addEventListener("load", resolve)), document.fonts.ready]).then(() => {
+      console.log("REMOVING PRELOAD");
       this.app.classList.remove("preload");
     });
   }

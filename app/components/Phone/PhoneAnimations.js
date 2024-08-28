@@ -1,6 +1,4 @@
 import anim from "../../utils/anim";
-import { isSafari } from "../../utils/detectNavigators";
-import isMobile from "../../utils/isMobile";
 
 export default class PhoneAnimations {
   constructor({ pageEl }) {
@@ -75,6 +73,7 @@ export default class PhoneAnimations {
 
   newInfoText(text) {
     const activeText = this.phoneContainer.querySelector(".phone__info.active");
+    // console.log(activeText);
     if (this.isIOSSafari) {
       activeText.textContent = text;
       return;
@@ -202,8 +201,8 @@ export default class PhoneAnimations {
       this.phoneBarOne.classList.remove("active");
       // Remove AI
     } else {
-      this.expandPhoneBarAI.cancel();
-      this.phoneBarAIYoyoAnimations.cancel();
+      this.expandPhoneBarAI?.cancel();
+      this.phoneBarAIYoyoAnimations?.cancel();
       const fadeOutPhoneBarAI = this.createAnimation(this.phoneBarAI, this.keyframes.fadeOutPhoneBarAI, {
         duration: fadeOutDuration,
         ease: "ease-out",

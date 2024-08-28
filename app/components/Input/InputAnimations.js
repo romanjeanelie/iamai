@@ -1,3 +1,4 @@
+import gsap, { Power3 } from "gsap";
 import isMobile from "../../utils/isMobile";
 import anim from "../../utils/anim";
 
@@ -7,16 +8,15 @@ export default class InputAnimations {
     this.emitter = emitter;
     this.isPageBlue = this.pageEl.classList.contains("page-blue");
 
+    // Dom Elements
     this.inputEl = this.pageEl.querySelector(".input__container");
     this.inputFrontEl = this.inputEl.querySelector(".input__front");
     this.inputBackEl = this.inputEl.querySelector(".input__back");
 
     this.centerBtn = this.inputFrontEl.querySelector(".center-btn");
     this.frontCameraBtn = this.inputFrontEl.querySelector(".camera-btn");
-    this.frontMicBtn = this.inputFrontEl.querySelector(".mic-btn") || this.inputFrontEl.querySelector(".phone-btn");
-    this.frontCenterBtn = this.inputFrontEl.querySelector(".center-btn");
-
-    this.inputFrontHeight = this.inputFrontEl.offsetHeight;
+    this.frontMicBtn = this.inputFrontEl.querySelector(".phone-btn");
+    this.frontVideoBtn = this.inputFrontHeight = this.inputFrontEl.offsetHeight;
 
     // Record
     // Front input
@@ -53,27 +53,28 @@ export default class InputAnimations {
 
   // Presets
   fadeInButtons(delay = 0, duration = 500) {
-    anim([this.frontMicBtn, this.frontCameraBtn, this.frontCenterBtn], [{ opacity: 0 }, { opacity: 1 }], {
-      delay,
-      duration,
-      fill: "forwards",
-      ease: "ease-in-out",
+    const videoBtn = this.inputFrontEl.querySelector(".video-btn");
+    gsap.to([this.frontMicBtn, this.frontCameraBtn, videoBtn, this.centerBtn], {
+      opacity: 1,
+      duration: duration / 1000,
+      ease: Power3.easeInOut,
+      delay: delay / 1000,
     });
   }
 
   fadeOutButtons(delay = 0, duration = 500) {
-    anim([this.frontMicBtn, this.frontCameraBtn, this.frontCenterBtn], [{ opacity: 1 }, { opacity: 0 }], {
-      delay,
-      duration,
-      fill: "forwards",
-      ease: "ease-in-out",
+    const videoBtn = this.inputFrontEl.querySelector(".video-btn");
+    gsap.to([this.frontMicBtn, this.frontCameraBtn, videoBtn, this.centerBtn], {
+      opacity: 0,
+      duration: duration / 1000,
+      ease: Power3.easeInOut,
+      delay: delay / 1000,
     });
   }
 
   fadeInCategoriesAndCaroussel(delay = 0) {
     anim([this.categoriesListEl, this.carousselEl], [{ opacity: 0 }, { opacity: 1 }], {
       delay,
-
       duration: 500,
       fill: "forwards",
       ease: "ease-in-out",
@@ -118,22 +119,36 @@ export default class InputAnimations {
 
   collapseHeightInputFront({ delay = 0, duration = 400 } = {}) {
     this.emitter.emit("input:collapseHeight");
-    return anim(this.inputFrontEl, [{ height: "110px" }, { height: `${this.inputFrontHeight}px` }], {
-      delay,
-      duration,
-      fill: "forwards",
-      ease: "ease-in-out",
-    });
+    return anim(
+      this.inputFrontEl,
+      [
+        { height: "110px", opacity: 1 },
+        { height: `${this.inputFrontHeight}px`, opacity: 1 },
+      ],
+      {
+        delay,
+        duration,
+        fill: "forwards",
+        ease: "ease-in-out",
+      }
+    );
   }
 
   expandHeightInputFront({ delay = 0, duration = 250, heighTarget = 100 } = {}) {
     this.emitter.emit("input:expandHeight");
-    return anim(this.inputFrontEl, [{ height: `${this.inputFrontHeight}px` }, { height: `${heighTarget}px` }], {
-      delay,
-      duration,
-      fill: "forwards",
-      ease: "ease-in-out",
-    });
+    return anim(
+      this.inputFrontEl,
+      [
+        { height: `${this.inputFrontHeight}px`, opacity: 1 },
+        { height: `${heighTarget}px`, opacity: 1 },
+      ],
+      {
+        delay,
+        duration,
+        fill: "forwards",
+        ease: "ease-in-out",
+      }
+    );
   }
   expandWidthInputFront({ delay = 0, duration = 400 } = {}) {
     return anim(this.inputFrontEl, [{ width: `${this.inputFrontHeight}px` }, { width: "100%" }], {
@@ -196,6 +211,7 @@ export default class InputAnimations {
    * Write
    */
   toWrite({ delay = 0, animButtons = true, animLogos = true, placeholder = "", focus = true } = {}) {
+    console.log("TO WRITE");
     this.inputText.placeholder = placeholder;
     this.inputFrontEl.style.pointerEvents = "none";
     this.inputBackEl.style.pointerEvents = "auto";

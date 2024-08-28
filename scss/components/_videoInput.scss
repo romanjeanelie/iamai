@@ -4,19 +4,218 @@
   z-index: 10;
   opacity: 0;
   inset: 0;
+  display: flex;
   pointer-events: none;
+  flex-direction: column;
+  justify-content: space-between;
   transition: opacity 0.3s ease-out;
 
   &.visible {
     opacity: 1;
     pointer-events: all;
   }
+}
 
-  .input__video--camera {
-    height: min(60vh, 718px);
+.input__video--phone-container {
+  flex: none;
+  padding: 34px 0 16px;
 
-    video {
-      height: 100%;
+  .input__video--timer {
+    color: $colorBlueText;
+    font-family: "SFPro", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px; /* 125% */
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .phone__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+
+    p{
+      margin: 0;
+      padding: 0;
+      border: 0;
     }
+
+    .phone__bottom {
+      width: inherit;
+    }
+  }
+
+  @include media("<phone") {
+    padding-top: 20px;
+  }
+}
+
+.input__video--camera {
+  position: relative;
+  // background-color: $colorBlueText;
+  width: 1400px;
+  margin: 0 auto;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  overflow: hidden;
+
+  @include media("<maximum") {
+    width: auto;
+    margin: 0 56px;
+  }
+
+  @include media("<phone") {
+    margin: 0 16px;
+  }
+
+  video {
+    border-radius: 16px;
+    pointer-events: none;
+    position: absolute;
+    height: 100%;
+    inset: 0;
+    object-fit: cover;
+
+    &.none {
+      display: none;
+    }
+  }
+
+  video::-webkit-media-controls {
+    display: none !important;
+  }
+
+  .exit-btn {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 40px;
+    height: 40px;
+    background-color: rgba($colorBlueText, 0.24);
+    backdrop-filter: blur(6px);
+
+    svg {
+      rect,
+      path,
+      mask {
+        fill: white;
+        stroke: white;
+      }
+    }
+
+    &:hover {
+      background-color: rgba($colorBlueText, 0.4);
+    }
+
+    @include media("<phone") {
+      top: 16px;
+      right: 16px;
+    }
+  }
+}
+
+.input__video--canvas {
+  opacity: 0;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.input__video--camera-loader {
+  display: none;
+  width: 48px;
+  height: 48px;
+  z-index: 1;
+  border: 5px solid $colorBlueText;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.input__video--footer {
+  flex: none;
+  padding: 24px 0 46px;
+
+  @include media("<phone") {
+    padding: 24px 0 32px;
+  }
+
+  .input__video--buttons-wrapper {
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 30px;
+    column-gap: 74px;
+  }
+}
+
+.input__video--button {
+  height: 60px;
+  width: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 60px;
+  background-color: rgba($colorBlueText, 0.03);
+  transition: background-color ease-out 0.2s;
+
+  * {
+    transition: all ease-out 0.2s;
+  }
+  &:hover,
+  &:active {
+    background-color: $colorBlueText;
+
+    rect,
+    path,
+    mask {
+      fill: white;
+      stroke: white;
+    }
+  }
+
+  &.pause-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  @include media("<tablet") {
+    &:hover {
+      background-color: rgba($colorBlueText, 0.03);
+
+      rect,
+      path,
+      mask {
+        fill: $colorBlueText;
+        stroke: $colorBlueText;
+      }
+    }
+  }
+
+  &.reverse-btn.hidden {
+    display: none;
   }
 }
