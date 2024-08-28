@@ -190,7 +190,7 @@ export default class InputAnimations {
         { topacity: 0, transform: "translateY(100%)" },
       ],
       {
-        duration: 300,
+        duration: 150,
         ease: "ease-in-out",
         fill: "forwards",
       }

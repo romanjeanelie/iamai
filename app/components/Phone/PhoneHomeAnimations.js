@@ -70,12 +70,12 @@ export default class PhoneHomeAnimations {
 
     const animations = {
       hide: [
-        { opacity: 1, transform: "translateX(-50%) translateY(0px)" },
-        { opacity: 0, transform: "translateX(-50%) translateY(-100%)" },
+        { opacity: 1, transform: "translateY(0px)" },
+        { opacity: 0, transform: "translateY(-100%)" },
       ],
       show: [
-        { opacity: 0, transform: "translateX(-50%) translateY(100%)" },
-        { opacity: 1, transform: " translateX(-50%)translateY(0px)" },
+        { opacity: 0, transform: "translateY(100%)" },
+        { opacity: 1, transform: "translateY(0px)" },
       ],
     };
 

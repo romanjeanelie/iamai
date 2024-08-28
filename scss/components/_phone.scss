@@ -235,7 +235,6 @@ $colorTalkAI: $colorBlueText;
   .phone__wrapper {
     opacity: 0;
     pointer-events: none;
-    background-color: red;
     position: absolute;
     top: 0;
     left: 0;
@@ -259,6 +258,11 @@ $colorTalkAI: $colorBlueText;
     max-width: $maxWidth;
     margin: 0 auto;
     padding: 0;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    display: flex;
+    justify-content: flex-end;
 
     @include media("<tablet") {
       padding: 0 $paddingHorMobile;
@@ -269,6 +273,45 @@ $colorTalkAI: $colorBlueText;
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
+  }
+
+  .phone__info-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 15px;
+    color: #676e7f;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 24px; /* 160% */
+    letter-spacing: 0.2px;
+
+    .phone__info:last-of-type {
+      position: absolute;
+      inset: 0;
+    }
+  }
+
+  .phone__buttons-container {
+    z-index: 1;
+    display: flex;
+    gap: 16px;
+
+    button {
+      background: rgba($colorLight, 0.54);
+      width: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 50px;
+      border-radius: 50px;
+    }
+
+    button img,
+    button svg {
+      width: 14px;
+    }
   }
 }
 
