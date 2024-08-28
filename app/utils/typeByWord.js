@@ -1,4 +1,3 @@
-import getRemarkable from "./getRemarkable";
 import getMarked from "./getMarked";
 
 export default function typeByWord(container, text, timeout = 10) {

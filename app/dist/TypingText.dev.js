@@ -137,64 +137,6 @@ function () {
         }
       }, null, this);
     }
-  }, {
-    key: "writing",
-    value: function writing() {
-      var _this2 = this;
-
-      return new Promise(function (resolve) {
-        if (_this2.blinkCursor) _this2.blinkCursor.cancel();
-        _this2.animShowtyping = (0, _anim["default"])(_this2.typingContainer, [{
-          opacity: 0,
-          visibility: "visible"
-        }, {
-          opacity: 1,
-          visibility: "visible"
-        }], {
-          duration: 700,
-          fill: "forwards",
-          ease: "ease-in-out"
-        });
-        _this2.translateCursor = (0, _anim["default"])(_this2.maskEl, [{
-          transform: "translateX(0%)"
-        }, {
-          transform: "translateX(105%)"
-        }], {
-          delay: _this2.animShowtyping.effect.getComputedTiming().duration,
-          duration: 200,
-          fill: "forwards",
-          ease: "ease-in-out"
-        });
-
-        _this2.translateCursor.onfinish = function () {
-          resolve();
-        };
-      });
-    }
-  }, {
-    key: "reverse",
-    value: function reverse() {
-      var _this3 = this;
-
-      return new Promise(function (resolve) {
-        _this3.translateCursor.reverse();
-
-        (0, _anim["default"])(_this3.typingContainer, [{
-          opacity: 1,
-          visibility: "visible"
-        }, {
-          opacity: 0,
-          visibility: "hidden"
-        }], {
-          delay: 200,
-          duration: 1,
-          fill: "forwards",
-          ease: "ease-in-out"
-        }).onfinish = function () {
-          resolve();
-        };
-      });
-    }
   }]);
 
   return TypingText;

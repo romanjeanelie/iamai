@@ -5,9 +5,10 @@ import History from "./History.js";
 import DiscussionMedia from "./DiscussionMedia.js";
 import fetcher from "../utils/fetcher.js";
 import { getsessionID } from "../User";
-import typeByWord from "../utils/typeByWord.js";
+
 import { URL_DELETE_STATUS } from "./constants.js";
 import { gsap } from "gsap";
+import fadeByWord from "../utils/fadeByWord.js";
 const topStatusText = ["finding", "checking", "searching", "analyzing", "scanning", "finalizing", "processing"];
 const defaultTopStatus = "searching";
 
@@ -258,7 +259,7 @@ export default class Discussion {
     this.emitter.emit("addAIText", text, targetlang);
 
     if (type === "images") return;
-    return typeByWord(textContainer, text);
+    return fadeByWord(textContainer, text, 100);
   }
 
   addURL({ text, label, url, container }) {
