@@ -87,7 +87,7 @@ export default class Phone {
     this.debugFlights = false;
 
     if (this.debug) {
-      this.anims.toStartPhoneRecording();
+      // this.anims.toStartPhoneRecording();
       // this.startConnecting();
     }
   }

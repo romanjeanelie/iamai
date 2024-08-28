@@ -32,16 +32,14 @@
 
   .discussion__user,
   .discussion__ai {
-    font-family: "Noto Sans";
+    font-family: "SFPro";
     position: relative;
     overflow-wrap: anywhere;
     margin-bottom: 24px;
     line-height: 28px;
-    color: $colorBlueText !important;
     font-feature-settings: "liga" off;
     font-size: 18px;
-    font-style: normal;
-    font-weight: 400;
+    font-weight: 500;
     letter-spacing: 0.75px;
 
     p {
@@ -59,7 +57,9 @@
   }
 
   .discussion__userspan {
-    background: rgba(0, 48, 100, 0.03);
+    border-radius: 16px;
+    background: rgba(244, 244, 244, 0.55);
+    box-shadow: 0px 6px 30px 0px rgba(0, 0, 0, 0.08);
     border-radius: 16px;
     padding: 16px;
     display: inline-block;
@@ -70,7 +70,7 @@
   }
 
   .discussion__user {
-    color: rgba($colorBlack, 0.72);
+    color: $colorBlack;
     text-align: right;
     margin-left: auto;
     padding-left: 112px;
@@ -90,7 +90,7 @@
   }
 
   .discussion__ai {
-    color: $colorBlack;
+    color: $colorGrey;
     // For cursor
     min-height: 24px;
     padding-right: 112px;
