@@ -23,7 +23,7 @@ export default class InputAnimations {
     this.imageDroppedContainer = this.pageEl.querySelector(".image-dropped__container");
 
     // Phone
-    this.phoneContainer = this.pageEl.querySelector(".phone__container");
+    this.phoneWrapper = this.pageEl.querySelector(".phone__wrapper");
 
     // Other dom elements
     this.cancelBtn = document.querySelector(".cancel-btn");
@@ -180,11 +180,11 @@ export default class InputAnimations {
    */
   toStartPhoneRecording() {
     this.inputEl.classList.add("hidden");
-    this.phoneContainer.classList.add("show");
+    this.phoneWrapper.classList.add("show");
   }
   toStopPhoneRecording() {
-    const fadeOutPhoneContainer = anim(
-      this.phoneContainer,
+    const fadeOutphoneWrapper = anim(
+      this.phoneWrapper,
       [
         { opacity: 1, transform: "translateY(0px)" },
         { topacity: 0, transform: "translateY(100%)" },
@@ -196,7 +196,7 @@ export default class InputAnimations {
       }
     );
 
-    fadeOutPhoneContainer.onfinish = () => {
+    fadeOutphoneWrapper.onfinish = () => {
       const fadeInIput = anim(
         this.inputEl,
         [
@@ -209,9 +209,9 @@ export default class InputAnimations {
           fill: "forwards",
         }
       );
-      fadeOutPhoneContainer.cancel();
+      fadeOutphoneWrapper.cancel();
       this.inputEl.classList.remove("hidden");
-      this.phoneContainer.classList.remove("show");
+      this.phoneWrapper.classList.remove("show");
 
       fadeInIput.onfinish = () => {
         fadeInIput.cancel();

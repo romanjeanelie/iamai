@@ -16,7 +16,6 @@ $colorTalkAI: $colorBlueText;
 
   button {
     border: 1px solid $colorBlueText;
-    // Initial syles
     background: unset;
 
     &:active,
@@ -30,14 +29,13 @@ $colorTalkAI: $colorBlueText;
   }
 }
 
+// STYLING FOR THE ACCOR AND VIDEO INPUT
 .phone__container {
   p {
     margin: 0;
     padding: 0;
     border: 0;
   }
-
-  //   position: absolute;
   position: fixed;
   z-index: 10;
   //   top: 50%;
@@ -48,10 +46,9 @@ $colorTalkAI: $colorBlueText;
   bottom: 0;
   left: 0;
   width: 100%;
-  max-width: 872px;
+
   font-size: 12px;
   max-width: 100vw;
-  //   transform: translateY(-80%);
   padding-bottom: 30px;
   opacity: 0;
   visibility: hidden;
@@ -138,11 +135,9 @@ $colorTalkAI: $colorBlueText;
         }
       }
       .phone-bar__one {
-        // border: 1px solid red;
         opacity: 0.6;
         width: 32px;
         &.active {
-          // background: $colorGrey;
           background: $colorBlueText;
         }
 
@@ -155,10 +150,8 @@ $colorTalkAI: $colorBlueText;
         .dot {
           position: absolute;
           top: 0;
-          // background: $colorGrey;
           background: $colorBlueText;
           opacity: 1;
-          // opacity: 0.4;
 
           &:nth-child(0) {
             left: 0;
@@ -234,6 +227,48 @@ $colorTalkAI: $colorBlueText;
       }
     }
     overflow: hidden;
+  }
+}
+
+// STYLING FOR THE HOME INPUT
+.input__wrapper {
+  .phone__wrapper {
+    opacity: 0;
+    pointer-events: none;
+    background-color: red;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    transform: translateY(100%);
+    transition: transform 0.3s $ease-out;
+    backdrop-filter: none;
+    @supports not (backdrop-filter: blur(10px)) {
+      background: rgba($backgroundColorGreyPage, 0.8); // Fallback for browsers that do not support backdrop-filter
+    }
+  }
+
+  .phone__wrapper.show {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .phone__container {
+    position: static;
+    max-width: $maxWidth;
+    margin: 0 auto;
+    padding: 0;
+
+    @include media("<tablet") {
+      padding: 0 $paddingHorMobile;
+    }
+  }
+
+  .phone__container.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
   }
 }
 

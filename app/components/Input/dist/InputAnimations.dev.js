@@ -50,7 +50,7 @@ function () {
     this.inputImageContainer = this.inputEl.querySelector(".input__image--container");
     this.imageDroppedContainer = this.pageEl.querySelector(".image-dropped__container"); // Phone
 
-    this.phoneContainer = this.pageEl.querySelector(".phone__container"); // Other dom elements
+    this.phoneWrapper = this.pageEl.querySelector(".phone__wrapper"); // Other dom elements
 
     this.cancelBtn = document.querySelector(".cancel-btn");
     this.logoEl = document.querySelector(".logo__main");
@@ -315,14 +315,14 @@ function () {
     key: "toStartPhoneRecording",
     value: function toStartPhoneRecording() {
       this.inputEl.classList.add("hidden");
-      this.phoneContainer.classList.add("show");
+      this.phoneWrapper.classList.add("show");
     }
   }, {
     key: "toStopPhoneRecording",
     value: function toStopPhoneRecording() {
       var _this = this;
 
-      var fadeOutPhoneContainer = (0, _anim["default"])(this.phoneContainer, [{
+      var fadeOutphoneWrapper = (0, _anim["default"])(this.phoneWrapper, [{
         opacity: 1,
         transform: "translateY(0px)"
       }, {
@@ -334,7 +334,7 @@ function () {
         fill: "forwards"
       });
 
-      fadeOutPhoneContainer.onfinish = function () {
+      fadeOutphoneWrapper.onfinish = function () {
         var fadeInIput = (0, _anim["default"])(_this.inputEl, [{
           opacity: 0,
           transform: "translateY(100%)"
@@ -346,11 +346,11 @@ function () {
           ease: "ease-in-out",
           fill: "forwards"
         });
-        fadeOutPhoneContainer.cancel();
+        fadeOutphoneWrapper.cancel();
 
         _this.inputEl.classList.remove("hidden");
 
-        _this.phoneContainer.classList.remove("show");
+        _this.phoneWrapper.classList.remove("show");
 
         fadeInIput.onfinish = function () {
           fadeInIput.cancel();

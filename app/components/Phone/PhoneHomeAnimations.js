@@ -4,7 +4,7 @@ export default class PhoneHomeAnimations {
   constructor({ pageEl }) {
     this.pageEl = pageEl;
 
-    this.phoneContainer = this.pageEl.querySelector(".phone__container");
+    this.phoneWrapper = this.pageEl.querySelector(".phone__wrapper");
 
     this.isConnected = false;
     this.colors = {
@@ -61,12 +61,12 @@ export default class PhoneHomeAnimations {
   }
 
   newInfoText(text) {
-    const activeText = this.phoneContainer.querySelector(".phone__info.active");
+    const activeText = this.phoneWrapper.querySelector(".phone__info.active");
     if (this.isIOSSafari) {
       activeText.textContent = text;
       return;
     }
-    const notActiveText = this.phoneContainer.querySelector(".phone__info:not(.active)");
+    const notActiveText = this.phoneWrapper.querySelector(".phone__info:not(.active)");
 
     const animations = {
       hide: [
@@ -167,7 +167,7 @@ export default class PhoneHomeAnimations {
   }
 
   keyframes = {
-    fadeOutPhoneContainer: [
+    fadeOutphoneWrapper: [
       { transform: "translateY(0px)", opacity: 1 },
       { transform: "translateY(-100%)", opacity: 0 },
     ],

@@ -82,14 +82,14 @@ export default class Phone {
     this.addListeners();
 
     // Debug
-    this.debug = false;
+    this.debug = import.meta.env.VITE_DEBUG === "true";
     this.debugIOSAnim = false;
     this.debugFlights = false;
 
     if (this.debug) {
-      this.phoneDebugContainer.classList.add("show");
-      this.anims.toStartPhoneRecording();
-      this.startConnecting();
+      // this.phoneDebugContainer.classList.add("show");
+      // this.anims.toStartPhoneRecording();
+      // this.startConnecting();
     }
   }
 
@@ -106,7 +106,6 @@ export default class Phone {
 
     this.emitter.emit("phone:connected");
     if (this.debug) return;
-
     this.audioConnected = new AudioPlayer({
       audioUrl: "/sounds/connected.mp3",
       audioContext: this.audioContext,
