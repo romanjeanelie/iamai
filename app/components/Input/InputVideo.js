@@ -1,19 +1,4 @@
-// TO DO
-// [X] MAKE THE GRADIENT ANIMATION ON THE MOBILE VERSION
-// [X] BLOCK THE INPUT WHEN PRESS FOR TOO LONG AND UNBLOCK IN HANDLE CANCEL PRESS
-// [X] MAKE THE SWIPE EVENT HANDLER
-// [X] STUDY THE PHONE CLASS TO SEE IF WE CAN REPLICATE IT OR IF WE NEED TO MOVE IT AS IT IS IN THE VIDEO INPUT
-// [X] INTEGRATE THE VIDEO INPUT
-// [X] trigger the phone process when launching video input
-// [X] INTEGRATE THE PHONE ANIMATION
-// [X] LINK THE CANCEL BUTTON WITH GOING BACK
-// [X] ON START : LAUNCH THE TIMER
-// [X] when resize the video the video-btn is still opacity: 0 and translateX: 50
-// [X] LINK THE REVERSE BUTTON WITH REVERSING THE CAMERA
-// [] LINK THE PAUSE BUTTON WITH PAUSING THE CONVERSATION
-// [] MAKE THE VIDEO TAKE 1 PHOTO EACH SECOND
-
-import PhoneAnimations from "../Phone/PhoneAnimations";
+import PhoneAnimations from "../Phone/PhoneDotAnimations";
 
 import minSecStr from "../../utils/minSecStr";
 

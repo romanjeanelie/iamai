@@ -1,6 +1,6 @@
 import anim from "../../utils/anim";
 
-export default class PhoneAnimations {
+export default class PhoneDotAnimations {
   constructor({ pageEl }) {
     this.pageEl = pageEl;
 

@@ -2,7 +2,7 @@ import sendToWispher from "../../utils/audio/sendToWhisper";
 import float32ArrayToMp3Blob from "../../utils/audio/float32ArrayToMp3Blob";
 import htmlToText from "../../utils/htmlToText";
 import textToSpeech from "../../utils/textToSpeech";
-import PhoneAnimations from "./PhoneAnimations";
+import PhoneAnimations from "./PhoneHomeAnimations";
 
 import unlockAudio from "../../utils/audio/unlockAudio";
 import AudioPlayer from "../../utils/audio/AudioPlayer";
@@ -19,7 +19,7 @@ export default class Phone {
     this.pageEl = pageEl;
     this.discussion = discussion;
     this.phoneContainer = this.pageEl.querySelector(".phone__container");
-    this.phoneBtns = this.pageEl.querySelectorAll(".phone-btn");
+    this.phoneBtn = this.pageEl.querySelector(".phone-btn");
     this.infoText = this.phoneContainer.querySelector(".phone__info.active");
     this.pauseBtn = this.phoneContainer.querySelector(".phone__pause");
     this.closeBtn = this.phoneContainer.querySelector(".phone__close");
@@ -87,7 +87,6 @@ export default class Phone {
     this.debugFlights = false;
 
     if (this.debug) {
-      console.log("debug mode");
       this.phoneDebugContainer.classList.add("show");
       this.anims.toStartPhoneRecording();
       this.startConnecting();
@@ -496,12 +495,10 @@ export default class Phone {
 
   addListeners() {
     // Open
-    this.phoneBtns.forEach((phoneBtn) => {
-      phoneBtn.addEventListener("click", async () => {
-        this.audioContext = unlockAudio();
-        this.anims.toStartPhoneRecording();
-        this.startRecording();
-      });
+    this.phoneBtn.addEventListener("click", async () => {
+      this.audioContext = unlockAudio();
+      this.anims.toStartPhoneRecording();
+      this.startRecording();
     });
 
     this.emitter.on("input:displayVideoInput", () => {
