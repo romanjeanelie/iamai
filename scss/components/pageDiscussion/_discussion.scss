@@ -93,7 +93,7 @@
     color: $colorGrey;
     // For cursor
     min-height: 24px;
-    padding-right: 112px;
+    // padding-right: 112px;
 
     .text-beforeLink {
       margin-right: 4px;
@@ -127,8 +127,7 @@
     }
 
     @include media("<tablet") {
-      padding-left: $paddingHorMobile;
-      padding-right: 48px;
+      padding: 0 $paddingHorMobile;
       margin-right: unset;
 
       &.discussion__ai--task-created {

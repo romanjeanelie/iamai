@@ -86,9 +86,10 @@ export default class Discussion {
     flightButton.innerHTML = "Flight";
     flightButton.addEventListener("click", () => {
       const flightCards = this.Chat.getFlightUI(flightSearchData, flightSearchResultsData);
-      this.AIContainer = document.createElement("div");
-      this.AIContainer.classList.add("discussion__ai");
-      this.discussionContainer.appendChild(flightCards);
+      const AIContainer = document.createElement("div");
+      AIContainer.classList.add("discussion__ai");
+      AIContainer.appendChild(flightCards);
+      this.discussionContainer.appendChild(AIContainer);
     });
     debugContainer.appendChild(flightButton);
     document.body.appendChild(debugContainer);
