@@ -84,3 +84,19 @@ export const getMonthDetails = (year, month) => {
 };
 
 export const getMonthStr = (month) => months[Math.max(Math.min(11, month), 0)] || "Month";
+
+export const formatDateString = (dateStr) => {
+  // Split the date string into components
+  const [day, month, year] = dateStr.split("-");
+
+  // Create a new Date object (Note: month is 0-indexed)
+  const date = new Date(year, month - 1, day);
+
+  // Format the date to "01 Oct"
+  const formattedDate = date.toLocaleDateString("en-US", {
+    day: "2-digit",
+    month: "short",
+  });
+
+  return formattedDate;
+};

@@ -3,7 +3,16 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getMonthStr = exports.getMonthDetails = exports.getDayDetails = exports.getNumberOfDays = exports.months = exports.days = void 0;
+exports.formatDateString = exports.getMonthStr = exports.getMonthDetails = exports.getDayDetails = exports.getNumberOfDays = exports.months = exports.days = void 0;
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 var days = ["S", "M", "T", "W", "T", "F", "S"];
 exports.days = days;
 var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -84,3 +93,23 @@ var getMonthStr = function getMonthStr(month) {
 };
 
 exports.getMonthStr = getMonthStr;
+
+var formatDateString = function formatDateString(dateStr) {
+  // Split the date string into components
+  var _dateStr$split = dateStr.split("-"),
+      _dateStr$split2 = _slicedToArray(_dateStr$split, 3),
+      day = _dateStr$split2[0],
+      month = _dateStr$split2[1],
+      year = _dateStr$split2[2]; // Create a new Date object (Note: month is 0-indexed)
+
+
+  var date = new Date(year, month - 1, day); // Format the date to "01 Oct"
+
+  var formattedDate = date.toLocaleDateString("en-US", {
+    day: "2-digit",
+    month: "short"
+  });
+  return formattedDate;
+};
+
+exports.formatDateString = formatDateString;

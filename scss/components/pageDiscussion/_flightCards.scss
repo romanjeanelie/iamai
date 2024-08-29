@@ -59,20 +59,66 @@
 
 .flightCard__main {
   border-radius: 20px;
-  height: 150px;
   border: 0.5px solid rgba($colorLight, 0.4);
   background: rgba(248, 248, 248, 0.5);
+  padding: 16px;
   box-shadow: 0px 10px 30px -9px rgba(55, 69, 108, 0.1);
-}
-
-.flightCard__main-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   font-size: 13px;
   font-weight: 400;
   line-height: 20px; /* 153.846% */
-  color: $colorGreyLight;
+  color: $grey-4;
+
+  & > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.flightCard__duration {
+  opacity: 0.5;
+}
+
+.flightCard__main-body {
+  margin-top: 20px;
+  color: $colorMain;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 100%;
+}
+
+.flightCard__progress-line {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  path {
+    fill: $grey-1;
+  }
+}
+
+.flightCard__progress-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 6px;
+  background-color: $grey-3;
+}
+
+.flightCard__airline-logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 32px;
+  height: 32px;
+  border-radius: 24px;
+}
+
+.flightCard__main-footer {
+  margin-top: 20px;
+  opacity: 0.5;
 }
 
 .flightCard__footer {
@@ -83,7 +129,7 @@
   font-size: 13px;
   font-weight: 400;
   line-height: 20px; /* 153.846% */
-  color: $colorGreyLight;
+  color: $grey-4;
   padding: 10px 16px 12px;
 
   .flightCard__price {
