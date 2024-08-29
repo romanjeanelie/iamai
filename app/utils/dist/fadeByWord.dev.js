@@ -25,10 +25,12 @@ function fadeByWord(container, text) {
     var markdownOutput = md.parseInline(content);
     answerSpan.innerHTML = markdownOutput;
 
-    _gsap["default"].fromTo(answerSpan.querySelectorAll(".AIword"), {
+    _gsap["default"].set(answerSpan.querySelectorAll(".AIword"), {
       opacity: 0,
       filter: "blur(1px)"
-    }, {
+    });
+
+    _gsap["default"].to(answerSpan.querySelectorAll(".AIword"), {
       filter: "blur(0px)",
       opacity: 1,
       duration: 0.25,

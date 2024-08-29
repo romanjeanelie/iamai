@@ -116,7 +116,7 @@ export default class Discussion {
   getAiAnswer({ text, imgs, isLiveMode = false }) {
     this.AIContainer = document.createElement("div");
     this.AIContainer.classList.add("discussion__ai");
-    this.discussionContainer.appendChild(this.AIContainer);
+    this.currentPair.appendChild(this.AIContainer);
 
     this.typingText = new TypingText({
       text: "",
@@ -170,14 +170,18 @@ export default class Discussion {
       this.media.addUserImages(imgs.map((img) => img.src));
     }
 
+    this.currentPair = document.createElement("div");
+    this.currentPair.classList.add("discussion__pair");
+
     this.userContainer = document.createElement("div");
     this.userContainer.classList.add("discussion__user");
-    var userContainerspan = document.createElement("span");
+    const userContainerspan = document.createElement("span");
     userContainerspan.classList.add("discussion__userspan");
     userContainerspan.innerHTML = text.replace(/\n/g, "<br>");
     this.userContainer.appendChild(userContainerspan);
 
-    this.discussionContainer.appendChild(this.userContainer);
+    this.currentPair.appendChild(this.userContainer);
+    this.discussionContainer.appendChild(this.currentPair);
     //moves this to save time
     if (imgs && imgs.length > 0) {
       this.getAiAnswer({ text, imgs, isLiveMode: isFromVideo });
@@ -202,70 +206,8 @@ export default class Discussion {
     }
   }
 
-  async addStatus({ text, textEl, container }) {
-    const topStatus = getTopStatus(text);
-
-    if (!this.lastStatus) {
-      // Init status
-      this.statusContainer = document.createElement("div");
-      this.statusContainer.className = "status-container";
-      this.topStatus = document.createElement("div");
-      this.topStatus.className = "top-status";
-      this.progressBarContainer = document.createElement("div");
-      this.progressBarContainer.className = "progress-bar-container";
-      this.progressBar = document.createElement("div");
-      this.progressBar.className = "progress-bar";
-
-      container.appendChild(this.statusContainer);
-      this.statusContainer.appendChild(this.topStatus);
-      this.statusContainer.appendChild(this.progressBarContainer);
-      this.progressBarContainer.appendChild(this.progressBar);
-    } else {
-      // Update status
-      this.statusContainer.removeChild(this.lastStatus);
-    }
-    this.lastStatus = textEl;
-
-    if (topStatus && (topStatus !== this.currentTopStatus || !this.currentTopStatus)) {
-      this.updateTopStatus({ status: text, topStatus, container: this.topStatus });
-      this.currentTopStatus = topStatus;
-    }
-
-    this.statusContainer.appendChild(textEl);
-  }
-
-  async updateTopStatus({ topStatus }) {
-    if (!this.typingStatus) {
-      this.typingStatus = new TypingText({
-        text: topStatus,
-        container: this.topStatus,
-        backgroundColor: backgroundColorGreyPage,
-      });
-      this.typingStatus.fadeIn();
-      this.typingStatus.writing();
-    } else {
-      await this.typingStatus.reverse();
-      this.typingStatus.fadeIn();
-      this.typingStatus.updateText(topStatus);
-      await this.typingStatus.writing();
-      this.typingStatus.fadeIn();
-    }
-
-    this.currentProgress = this.nextProgress;
-    const remainingProgress = 100 - this.currentProgress;
-    const portionOfRemainProgress = Math.ceil(remainingProgress / 5);
-    this.nextProgress += this.currentProgress <= 60 ? 20 : portionOfRemainProgress;
-  }
-
-  async removeStatus({ container }) {
-    if (!this.lastStatus) return;
-    this.statusContainer.style.display = "none";
-    this.resetStatuses();
-  }
-
   async addAIText({ text, container, targetlang, type = null } = {}) {
     let textContainer = container.querySelector(".text__container");
-
     if (!textContainer) {
       textContainer = document.createElement("div");
       textContainer.className = "text__container";
@@ -408,11 +350,8 @@ export default class Discussion {
 
       this.AIContainer = document.createElement("div");
       this.AIContainer.classList.add("discussion__ai");
-
       this.addAIText({
-        text: `
-        Hi ! Happy to see you here !
-      `,
+        text: "",
         container: this.AIContainer,
       });
 
@@ -532,10 +471,6 @@ export default class Discussion {
       this.centralFinished = true;
     });
 
-    this.emitter.on("paEnd", async () => {
-      this.removeStatus({ container: this.discussionContainer });
-    });
-
     this.emitter.on("taskManager:createTask", (task, textAI) => this.onCreatedTask(task, textAI));
     this.emitter.on("taskManager:updateStatus", (taskKey, status) => this.onStatusUpdate(taskKey, status));
     this.emitter.on("taskManager:inputSubmit", (text, task) => this.onUserAnswerTask(text, task));
@@ -543,7 +478,5 @@ export default class Discussion {
     this.emitter.on("taskManager:viewResults", (task, resultsContainer) =>
       this.viewTaskResults(task, resultsContainer)
     );
-
-    // window.addEventListener("load", this.onLoad.bind(this));
   }
 }

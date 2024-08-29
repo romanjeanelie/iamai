@@ -1,8 +1,6 @@
 .flight-toggle-button-container {
   display: flex;
   margin-bottom: 24px;
-  /* border-radius: 20px; */
-  /* overflow: hidden; */
   font-family: "SFPro";
   color: $colorBlueText;
 }
@@ -21,12 +19,10 @@
 }
 
 .FlightContainer {
-  display: flex;
   margin: 20px auto;
   opacity: 0;
-  // animation: fadeIn 0.3s ease-in-out forwards;
-  animation: fadeIn 0.2s ease-in-out forwards;
-  // animation-delay: 1000ms;
+  animation: fadeIn 0.3s ease-in-out forwards;
+  animation-delay: 1000ms;
 
   p {
     margin: 0;

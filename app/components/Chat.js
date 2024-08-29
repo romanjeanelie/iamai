@@ -1030,7 +1030,6 @@ class Chat {
           flightCarddiv.className = "flightCard";
           flightCarddiv.setAttribute("onclick", "window.open('" + FlightSearchResult.link_url + "', '_blank');");
           flightResultdiv.appendChild(flightCarddiv);
-          console.log(FlightSearchResult.travel.duration);
 
           const date = formatDateString(FlightSearchResult.travel_date);
           const stops = FlightSearchResult.travel.stops === 0 ? "Direct" : FlightSearchResult.travel.stops + " stop";
@@ -1098,24 +1097,21 @@ class Chat {
         });
       }
     }
-    // this.updateTextContainer();
-    // this.textContainer.append(FlightContainerdiv);
+
     return FlightContainerdiv;
   }
 
   toggleflights(event) {
     let element = event.target;
-    if (element.id == "Outbound") {
-      element.classList.add("active");
-      element.parentElement.querySelector("#Return").classList.remove("active");
-      element.parentElement.parentElement.querySelector("#flightResultOutbound").style.display = "flex";
-      element.parentElement.parentElement.querySelector("#flightResultReturn").style.display = "none";
-    } else {
-      element.classList.add("active");
-      element.parentElement.querySelector("#Outbound").classList.remove("active");
-      element.parentElement.parentElement.querySelector("#flightResultOutbound").style.display = "none";
-      element.parentElement.parentElement.querySelector("#flightResultReturn").style.display = "flex";
-    }
+    element.parentElement.querySelectorAll(".flight-toggle-button").forEach((button) => {
+      button.classList.remove("active");
+    });
+    element.classList.add("active");
+    element.parentElement.querySelector(`#${element.id}`);
+    element.parentElement.parentElement.querySelector(`#flightResult${element.id}`).style.display = "grid";
+    element.parentElement.parentElement.querySelector(
+      `#flightResult${element.id == "Outbound" ? "Return" : "Outbound"}`
+    ).style.display = "none";
   }
 
   getGucciUI() {
