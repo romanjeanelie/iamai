@@ -38,6 +38,7 @@ const divlink = document.getElementById("divlinklogout");
 const linksignout = document.getElementById("linksignout");
 const signInButtons = document.querySelectorAll(".divgoogle");
 const microsoftsignInButtons = document.querySelectorAll(".divmicrosoft");
+const emailsignInButtons = document.querySelectorAll(".divemailuser");
 const btnwaitlistinfosubmit = document.getElementById("btnwaitlistinfosubmit");
 const txtcompany = document.getElementById("txtcompany");
 const txttwitter = document.getElementById("txttwitter");
@@ -331,6 +332,12 @@ class App {
       for (let i = 0; i < microsoftsignInButtons.length; i++) {
         microsoftsignInButtons[i].addEventListener("click", this.microsofttoggleSignIn, false);
       }
+
+      for (let i = 0; i < emailsignInButtons.length; i++) {
+        emailsignInButtons[i].addEventListener("click", this.emailSignIn, false);
+      }
+
+      
 
       // Avoid flash blue page
       document.getElementById("signOutButton").addEventListener("click", () => {
