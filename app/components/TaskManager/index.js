@@ -637,7 +637,6 @@ export default class TaskManager {
   // function triggered when click on completed task or the notification pill for completed task
   viewResults(key) {
     const task = this.tasks.find((task) => task.key === key);
-    console.log("task:", task);
     this.emitter.emit("taskManager:viewResults", task, task.resultsContainer);
 
     this.closeNotificationPill();

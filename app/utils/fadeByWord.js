@@ -21,8 +21,8 @@ export default function fadeByWord(container, text, timeout = 10) {
       {
         filter: "blur(0px)",
         opacity: 1,
-        duration: 0.5,
-        stagger: 0.1,
+        duration: 0.25,
+        stagger: 0.05,
         ease: "power1.in",
         onComplete: resolve,
       }

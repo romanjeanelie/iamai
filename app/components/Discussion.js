@@ -9,6 +9,7 @@ import { getsessionID } from "../User";
 import { URL_DELETE_STATUS } from "./constants.js";
 import { gsap } from "gsap";
 import fadeByWord from "../utils/fadeByWord.js";
+import { flightSearchData, flightSearchResultsData } from "../../testData.js";
 const topStatusText = ["finding", "checking", "searching", "analyzing", "scanning", "finalizing", "processing"];
 const defaultTopStatus = "searching";
 
@@ -70,11 +71,30 @@ export default class Discussion {
     this.addListeners();
     // DEBUG
     if (this.debug) {
+      this.showDebugButtons();
       this.onCreatedTask();
       this.enableInput();
     }
   }
 
+  // DEBUG
+  showDebugButtons() {
+    const debugContainer = document.createElement("div");
+    debugContainer.className = "debug-container";
+
+    const flightButton = document.createElement("button");
+    flightButton.innerHTML = "Flight";
+    flightButton.addEventListener("click", () => {
+      const flightCards = this.Chat.getFlightUI(flightSearchData, flightSearchResultsData);
+      this.AIContainer = document.createElement("div");
+      this.AIContainer.classList.add("discussion__ai");
+      this.discussionContainer.appendChild(flightCards);
+    });
+    debugContainer.appendChild(flightButton);
+    document.body.appendChild(debugContainer);
+  }
+
+  // INPUT
   disableInput() {
     this.inputText.disabled = true;
     const childNodes = this.inputContainer.getElementsByTagName("*");

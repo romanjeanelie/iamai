@@ -1,16 +1,14 @@
-import { connect, AckPolicy, JSONCodec } from "https://cdn.jsdelivr.net/npm/nats.ws@latest/esm/nats.js";
-import { TASK_STATUSES } from "./TaskManager/index.js";
-import DiscussionMedia from "./DiscussionMedia.js";
-import getRemarkable from "../utils/getRemarkable.js";
+import { connect } from "https://cdn.jsdelivr.net/npm/nats.ws@latest/esm/nats.js";
+import Config from "../getConfig.js";
 import getMarked from "../utils/getMarked.js";
+import DiscussionMedia from "./DiscussionMedia.js";
+import { TASK_STATUSES } from "./TaskManager/index.js";
 // const uuid = "omega_" + crypto.randomUUID();
 // import { getUser } from "../User.js";
 // const IS_DEV_MODE = import.meta.env.MODE === "development";
 const IS_DEV_MODE = false;
 const HOST = import.meta.env.VITE_API_HOST || "https://api.asterizk.ai";
-import Config from "../getConfig.js";
 const GOOGLE_TRANSLATE_URL = import.meta.env.VITE_API_GOOGLE_TRANSLATE;
-
 
 // const md = getRemarkable();
 const md = getMarked();
@@ -94,19 +92,20 @@ class Chat {
     // this.NATS_PASS = "";
     this.callbacks.disableInput();
     const config = new Config();
-    config.getWebsiteConfig().then(data => {
-      if (data) {
-        this.NATS_URL  = data.NATS_URL;
-        this.NATS_USER  = data.NATS_USER;
-        this.NATS_PASS  = data.NATS_PASS;
-      } else {
-        console.log('No data available');
-      }
-    }).catch(error => {
-      console.error('Error:', error);
-    });
-
-
+    config
+      .getWebsiteConfig()
+      .then((data) => {
+        if (data) {
+          this.NATS_URL = data.NATS_URL;
+          this.NATS_USER = data.NATS_USER;
+          this.NATS_PASS = data.NATS_PASS;
+        } else {
+          console.log("No data available");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   }
 
   callsubmit = async (text, img, container, live_mode = false) => {
@@ -126,10 +125,12 @@ class Chat {
     if (this.workflowID != "") {
       if (img) {
         if (live_mode) {
-          this.PushVideoData(img.map((imgs) => imgs.src), input_text);
+          this.PushVideoData(
+            img.map((imgs) => imgs.src),
+            input_text
+          );
           // this.SendPHIQns(input_text);
         } else {
-
           this.submituserreply(
             input_text,
             this.workflowID,
@@ -364,11 +365,12 @@ class Chat {
               description: "Planning your tasks.",
             },
           };
+
+          console.log("task:", task);
           const textAI = mdata.response_json.text;
           // await this.createTask(task, textAI)
           this.callbacks.emitter.emit("taskManager:createTask", task, textAI);
           this.callbacks.emitter.emit("endStream");
-
         } else if (mdata.status && mdata.status == AGENT_PROGRESSING) {
           if (mdata.awaiting) {
             let taskname = mdata.task_name;
@@ -1394,7 +1396,6 @@ class Chat {
       codediv.appendChild(codedivpreview);
     }
     return codediv;
-
   }
 
   getHotelsUI(HotelSearch, HotelSearchResults) {
@@ -1557,7 +1558,6 @@ class Chat {
     }
   }
 
-
   codefilter(event, Filter) {
     let targetElement = event.target;
 
@@ -1567,13 +1567,13 @@ class Chat {
 
     if (targetElement) {
       let allitems = targetElement.parentElement.querySelectorAll(".codecard-filtercode");
-      allitems.forEach(tab => tab.classList.remove('active'));
-      targetElement.classList.add('active');
+      allitems.forEach((tab) => tab.classList.remove("active"));
+      targetElement.classList.add("active");
 
       let codeactive = targetElement.parentElement.parentElement.querySelector(".codecard-data.active");
       let codenotactive = targetElement.parentElement.parentElement.querySelector(`.codecard-data.${Filter}`);
-      if (codeactive) codeactive.classList.remove('active');
-      if (codenotactive) codenotactive.classList.add('active');
+      if (codeactive) codeactive.classList.remove("active");
+      if (codenotactive) codenotactive.classList.add("active");
     }
   }
 
@@ -1639,7 +1639,6 @@ class Chat {
     });
 
     await js.publish(this.video_subject_name, video_chat_started);
-
   }
 
   async VideoCallEnded() {
@@ -1656,10 +1655,8 @@ class Chat {
   }
 
   async PushVideoData(imgs, input_text) {
-
     // console.log(imgs);
     // console.log(input_text);
-
 
     var stream_started = JSON.stringify({
       type: "images",
@@ -1675,14 +1672,14 @@ class Chat {
 
     // console.log("before data pushed");
     await js.publish(this.video_subject_name, stream_started);
-    imgs.forEach(async img => {
+    imgs.forEach(async (img) => {
       var imagedata = JSON.stringify({
         type: "images",
         status: "streaming",
         pa_session_id: this.sessionID,
         response_json: {
-          byte64: img
-        }
+          byte64: img,
+        },
       });
       await js.publish(this.video_subject_name, imagedata);
     });
@@ -1693,8 +1690,8 @@ class Chat {
       status: "question",
       pa_session_id: this.sessionID,
       response_json: {
-        query: input_text
-      }
+        query: input_text,
+      },
     });
     await js.publish(this.video_subject_name, question);
     // console.log("data pushed");
@@ -1717,15 +1714,13 @@ class Chat {
       status: "streaming",
       pa_session_id: this.sessionID,
       response_json: {
-        byte64: img
-      }
+        byte64: img,
+      },
     });
     await js.publish(this.video_subject_name, imagedata);
-
   }
 
   async SendPHIQns(input_text) {
-
     var stream_ended = JSON.stringify({
       type: "images",
       status: "stream_ended",
@@ -1739,8 +1734,8 @@ class Chat {
       status: "question",
       pa_session_id: this.sessionID,
       response_json: {
-        query: input_text
-      }
+        query: input_text,
+      },
     });
     await js.publish(this.video_subject_name, question);
     // console.log("data pushed");
