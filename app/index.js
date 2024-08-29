@@ -1,5 +1,5 @@
 import * as dat from "dat.gui";
-import { GoogleAuthProvider, OAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
+import { GoogleAuthProvider, OAuthProvider, onAuthStateChanged, signInWithPopup, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { createNanoEvents } from "nanoevents";
 import User, { getUserDataFireDB, redirectToLogin, saveUserDataFireDB } from "./User";
 import Caroussel from "./components/Caroussel";
@@ -39,6 +39,15 @@ const linksignout = document.getElementById("linksignout");
 const signInButtons = document.querySelectorAll(".divgoogle");
 const microsoftsignInButtons = document.querySelectorAll(".divmicrosoft");
 const emailsignInButtons = document.querySelectorAll(".divemailuser");
+const emailform = document.getElementById("divemailform");
+const emailformclosebtn = document.getElementById("email-close-btn");
+const emailformsignup = document.getElementById("email-signup");
+const emailformsignin = document.getElementById("email-signin");
+const emailformemail = document.getElementById("email-input");
+const emailformpassword = document.getElementById("email-password");
+
+
+
 const btnwaitlistinfosubmit = document.getElementById("btnwaitlistinfosubmit");
 const txtcompany = document.getElementById("txtcompany");
 const txttwitter = document.getElementById("txttwitter");
@@ -158,7 +167,7 @@ class App {
     for (let i = 0; i < microsoftsignInButtons.length; i++) {
       microsoftsignInButtons[i].style.display = "none";
     }
-    
+
     const provider = new GoogleAuthProvider();
     provider.addScope("profile");
     provider.addScope("email");
@@ -177,7 +186,7 @@ class App {
         if (errorCode === "auth/account-exists-with-different-credential") {
           alert("You have already signed up with a different auth provider for that email.");
         } else {
-          
+
           for (let i = 0; i < signInButtons.length; i++) {
             signInButtons[i].style.display = "flex";
           }
@@ -205,7 +214,7 @@ class App {
     provider.addScope("Calendars.Read.Shared");
     provider.addScope("Calendars.ReadWrite");
     provider.addScope("Calendars.ReadWrite.Shared");
-       
+
     signInWithPopup(auth, provider)
       .then(function (result) {
         if (!result) return;
@@ -235,6 +244,51 @@ class App {
             microsoftsignInButtons[i].style.display = "flex";
           }
         }
+      });
+  }
+
+  emailSignIn() {
+    emailform.style.display = "block";
+    console.log("emailSignIn open");
+  }
+  emailSignInClose() {
+    emailform.style.display = "none";
+    console.log("emailSignInClose open");
+  }
+
+  emailformsignup(e) {
+    e.preventDefault();
+    createUserWithEmailAndPassword(auth, emailformemail.value, emailformpassword.value)
+      .then(async (userCredential) => {
+        // Signed up 
+        const user = userCredential.user;
+        console.log("email user:", user);
+        const loggedinuser = new User(user.uid, user.displayName, user.photoURL, user.email, user);
+        console.log("email loggedinuser:", loggedinuser);
+        await this.checkuserwaitlist(loggedinuser);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+      });
+  }
+
+  emailformlogin(e) {
+    e.preventDefault();
+    signInWithEmailAndPassword(auth, emailformemail.value, emailformpassword.value)
+      .then(async (userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        if (user) {
+          const loggedinuser = new User(user.uid, user.displayName, user.photoURL, user.email, user);
+          await this.checkuserwaitlist(loggedinuser);
+        }
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
       });
   }
 
@@ -305,10 +359,10 @@ class App {
 
   addListeners() {
     onAuthStateChanged(auth, async (user) => {
-      console.log("onAuthStateChanged auth:",auth);
-      console.log("onAuthStateChanged user:",user);
+      console.log("onAuthStateChanged auth:", auth);
+      console.log("onAuthStateChanged user:", user);
       if (user) {
-      // if (user && user.emailVerified) {
+        // if (user && user.emailVerified) {
         try {
           // let idToken = await user.getIdToken(true);
           const loggedinuser = new User(user.uid, user.displayName, user.photoURL, user.email, user);
@@ -336,8 +390,10 @@ class App {
       for (let i = 0; i < emailsignInButtons.length; i++) {
         emailsignInButtons[i].addEventListener("click", this.emailSignIn, false);
       }
+      emailformclosebtn.addEventListener("click", this.emailSignInClose, false);
+      emailformsignup.addEventListener("click", this.emailformsignup, false);
+      emailformsignin.addEventListener("click", this.emailformlogin, false);
 
-      
 
       // Avoid flash blue page
       document.getElementById("signOutButton").addEventListener("click", () => {

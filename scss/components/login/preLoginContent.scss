@@ -199,7 +199,7 @@
       transition: background-color 0.3s ease;
       height: 60px;
       border-radius: 60px;
-  }
+    }
 
     .divgoogle {
       margin-top: 8px;
@@ -518,6 +518,63 @@
       }
     }
   }
+
+  .divemailform {
+    display: none;
+    position: fixed;
+    top: 80%;
+    left: 42%;
+    width: 300px;
+    height: 400px;
+    // width: 100vw;
+    // height: 100vh;
+    padding: 40px;
+    background-color: white;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    color: #000;
+
+    h4 {
+      color: #000 !important;
+    }
+  }
+
+  .divemailform input[type="email"],
+  .divemailform input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .divemailform .email-submit {
+    // width: 100%;
+    display: inline-flex;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .divemailform .email-submit:hover {
+    background-color: #218838;
+  }
+
+  /* Close button */
+  .email-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: black;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+
+  }
 }
 
 // ---------- FOOTER ----------
@@ -671,4 +728,9 @@
       width: 285px;
     }
   }
+}
+
+/* Body no-scroll class */
+.no-scroll {
+  overflow: hidden;
 }
