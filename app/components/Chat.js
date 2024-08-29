@@ -1030,152 +1030,49 @@ class Chat {
           flightCarddiv.setAttribute("onclick", "window.open('" + FlightSearchResult.link_url + "', '_blank');");
           flightResultdiv.appendChild(flightCarddiv);
 
-          const rowFlightCarddiv = document.createElement("div");
-          rowFlightCarddiv.className = "rowFlightCard";
-          flightCarddiv.appendChild(rowFlightCarddiv);
-          const logoFightdiv = document.createElement("div");
-          logoFightdiv.className = "logoFight";
-          rowFlightCarddiv.appendChild(logoFightdiv);
-          const logoFightdivdiv = document.createElement("div");
-          logoFightdiv.appendChild(logoFightdivdiv);
+          const date = new Date("09-03-2024").toLocaleDateString("en-US", {
+            day: "2-digit",
+            month: "short",
+          });
+          const duration = FlightSearchResult.travel.duration;
 
-          const flightlogoimg = document.createElement("img");
-          // flightlogoimg.setAttribute("src", FlightSearchResult.travel.airlines_logo);
-          flightlogoimg.setAttribute(
-            "src",
-            FlightSearchResult.travel.airlines_logo ? FlightSearchResult.travel.airlines_logo : "./images/flight.jpg"
-          );
-          flightlogoimg.setAttribute("style", "height: 40px;mix-blend-mode: multiply;width:auto");
-          logoFightdivdiv.appendChild(flightlogoimg);
+          flightCarddiv.innerHTML = `
+            <section class="flightCard__main">
+              <div class="flightCard__main-header">
+                <p class="flightCard__departure-date">
+                  ${date}
+                </p>
 
-          const flghtCostdiv = document.createElement("div");
-          flghtCostdiv.className = "flghtCost";
-          rowFlightCarddiv.appendChild(flghtCostdiv);
+                <p class="flightCard__duration"
+                  ${FlightSearchResult.duration}                
+                </p>
 
-          const flghtCostspan = document.createElement("span");
-          flghtCostspan.className = "currency";
-          flghtCostspan.innerHTML = "USD";
-          flghtCostdiv.appendChild(flghtCostspan);
+                <p class="flightCard__arrival-date">
+                  ${date}
+                </p>
+              </div>
 
-          const flghtCostP = document.createElement("p");
-          flghtCostP.className = "big";
-          flghtCostP.innerHTML = FlightSearchResult.price.split("$")[1];
-          flghtCostdiv.appendChild(flghtCostP);
+              <div class="flightCard__main-body">
+              </div>
 
-          const rowFlightCarddiv2 = document.createElement("div");
-          rowFlightCarddiv2.className = "rowFlightCard";
-          flightCarddiv.appendChild(rowFlightCarddiv2);
+              <div class="flightCard__main-footer">
+              </div>
+            </section>
+            <section class="flightCard__footer">
+              <p class="flightCard__source">
+                  ${FlightSearchResult.website}              
+              </p>
 
-          const startdiv = document.createElement("div");
-          startdiv.className = "start";
-          rowFlightCarddiv2.appendChild(startdiv);
-
-          const flghtairportsourcespan = document.createElement("span");
-          flghtairportsourcespan.innerHTML = FlightSearchResult.airport1_code;
-          startdiv.appendChild(flghtairportsourcespan);
-
-          const flghtdurationP = document.createElement("p");
-          flghtdurationP.className = "big";
-          flghtdurationP.innerHTML =
-            FlightSearchResult.travel.start_time.split("\n")[0] +
-            (FlightSearchResult.travel.start_time.split("\n")[1]
-              ? '<span class="small">' + FlightSearchResult.travel.start_time.split("\n")[1] + "</span>"
-              : "");
-          startdiv.appendChild(flghtdurationP);
-
-          const durationdiv = document.createElement("div");
-          durationdiv.className = "duration";
-          rowFlightCarddiv2.appendChild(durationdiv);
-
-          const timeHourMinP = document.createElement("p");
-          timeHourMinP.className = "timeHourMin";
-          timeHourMinP.innerHTML =
-            FlightSearchResult.travel.duration.split("h")[0] +
-            '<span style="color: rgba(0, 0, 0, 0.40);">h</span> ' +
-            FlightSearchResult.travel.duration.substring(
-              FlightSearchResult.travel.duration.indexOf(" "),
-              FlightSearchResult.travel.duration.indexOf("m")
-            ) +
-            '<span style="color: rgba(0, 0, 0, 0.40);">m</span>';
-          durationdiv.appendChild(timeHourMinP);
-
-          const dDirectiondiv = document.createElement("div");
-          dDirectiondiv.className = "dDirection";
-          durationdiv.appendChild(dDirectiondiv);
-
-          let flightsresultsstr =
-            '<svg class="flightimg" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.053 15.5789L12 24L10 24L12.526 15.5789L7.166 15.5789L5.5 18.7368L4 18.7368L5 14L4 9.26316L5.5 9.26316L7.167 12.4211L12.527 12.4211L10 4L12 4L17.053 12.4211L22.5 12.4211C22.8978 12.4211 23.2794 12.5874 23.5607 12.8835C23.842 13.1796 24 13.5812 24 14C24 14.4188 23.842 14.8204 23.5607 15.1165C23.2794 15.4126 22.8978 15.5789 22.5 15.5789L17.053 15.5789Z" fill="#00254E" fill-opacity="0.6"/></svg>';
-          if (FlightSearchResult.travel.stops == 0) {
-            flightsresultsstr +=
-              '<svg xmlns="http://www.w3.org/2000/svg" width="152" height="28" viewBox="0 0 152 28" fill="none">';
-            flightsresultsstr +=
-              '<line x1="0.6" y1="13.4" x2="151.4" y2="13.4" stroke="black" stroke-opacity="0.4" stroke-width="1.2"';
-            flightsresultsstr += 'stroke-linecap="round" stroke-dasharray="0.1 4" />';
-            flightsresultsstr += "</svg>";
-          } else {
-            flightsresultsstr +=
-              '<svg width="136" height="28" viewBox="0 0 136 28" fill="none" xmlns="http://www.w3.org/2000/svg">';
-            flightsresultsstr +=
-              '<line x1="0.6" y1="13.4" x2="58.4" y2="13.4" stroke="black" stroke-opacity="0.4" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="0.1 4"/>';
-            flightsresultsstr += '<g clip-path="url(#clip0_10855_133720)">';
-            flightsresultsstr +=
-              '<circle cx="68" cy="14" r="3.00002" stroke="black" stroke-opacity="0.4" stroke-width="1.50001"/>';
-            flightsresultsstr += "</g>";
-            flightsresultsstr +=
-              '<line x1="77.1" y1="13.4" x2="134.9" y2="13.4" stroke="black" stroke-opacity="0.4" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="0.1 4"/>';
-            flightsresultsstr += "<defs>";
-            flightsresultsstr += '<clipPath id="clip0_10855_133720">';
-            flightsresultsstr += '<rect width="18" height="28" fill="white" transform="translate(58.5)"/>';
-            flightsresultsstr += "</clipPath>";
-            flightsresultsstr += "</defs>";
-            flightsresultsstr += "</svg>";
-          }
-          flightsresultsstr +=
-            '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20" fill="none">';
-          flightsresultsstr += '<circle cx="9.50002" cy="10.0001" r="3.75002" fill="#00254E" fill-opacity="0.6" />';
-          flightsresultsstr += "</svg>";
-          durationdiv.innerHTML = flightsresultsstr;
-
-          const directionstopsP = document.createElement("p");
-          directionstopsP.className = "dDirection";
-
-          if (FlightSearchResult.travel.stops == 0) {
-            directionstopsP.innerHTML = "Direct";
-          } else if (FlightSearchResult.travel.stops == 1) {
-            directionstopsP.innerHTML = FlightSearchResult.travel.stops + " connection";
-          } else {
-            directionstopsP.innerHTML = FlightSearchResult.travel.stops + " connections";
-          }
-          durationdiv.appendChild(directionstopsP);
-
-          const destinationdiv = document.createElement("div");
-          destinationdiv.className = "destination";
-          rowFlightCarddiv2.appendChild(destinationdiv);
-
-          const destinationdivspan = document.createElement("span");
-          destinationdivspan.innerHTML = FlightSearchResult.airport2_code;
-          destinationdiv.appendChild(destinationdivspan);
-
-          const destinationdivP = document.createElement("p");
-          destinationdivP.className = "big";
-          destinationdivP.innerHTML =
-            FlightSearchResult.travel.end_time.split("\n")[0] +
-            (FlightSearchResult.travel.end_time.split("\n")[1]
-              ? '<span class="small">' + FlightSearchResult.travel.end_time.split("\n")[1] + "</span>"
-              : "");
-          destinationdiv.appendChild(destinationdivP);
-
-          if (flightcheapest == 0) {
-            const recommanddiv = document.createElement("div");
-            recommanddiv.className = "recommand";
-            recommanddiv.innerHTML = "CHEAPEST";
-            flightCarddiv.appendChild(recommanddiv);
-          }
-          const sitediv = document.createElement("div");
-          sitediv.className = "site";
-          sitediv.innerHTML = FlightSearchResult.website;
-          flightCarddiv.appendChild(sitediv);
-          flightcheapest++;
+              <div class="flightCard__price">
+                <p>
+                  Price
+                </p>
+                <p class="flightCard__price-value">
+                  ${FlightSearchResult.price}
+                </p>
+              </div>
+            </section>
+          `;
         });
       }
     }
