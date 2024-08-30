@@ -37,6 +37,9 @@ export default class Navigation {
     // Init Methods
     this.addListeners();
     this.setUserImage();
+
+    if (this.debug) {
+    }
   }
 
   setUserImage() {
@@ -60,7 +63,6 @@ export default class Navigation {
   toggleTasks() {
     console.log("toggleTasks");
     if (this.currentSection !== SECTIONS.tasks) {
-      console.log("open tasks");
       gsap.to(this.discussionWrapper, { yPercent: -100 });
       gsap.to(this.tasksContainer, {
         yPercent: 0,

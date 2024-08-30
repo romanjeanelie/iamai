@@ -1,6 +1,5 @@
-import gsap, { Power3 } from "gsap";
+import gsap from "gsap";
 import Flip from "gsap/Flip";
-import scrollToDiv from "../../utils/scrollToDiv";
 
 const STATES = {
   CLOSED: "closed",
@@ -39,21 +38,22 @@ const defaultValues = {
 gsap.registerPlugin(Flip);
 
 export default class TaskManager {
-  constructor({ gui, emitter }) {
+  constructor({ gui, emitter, navigation }) {
+    this.gui = gui;
+    this.emitter = emitter;
+    this.navigation = navigation;
+
     // DOM Elements
     this.html = document.documentElement;
     this.container = document.querySelector(".task-manager__container");
-    this.closeButton = document.querySelector(".task-manager__closing-icon");
     this.discussionContainer = document.querySelector(".discussion__wrapper");
-    this.fullscreenButton = document.querySelector(".task-manager__fullscreen-icon");
-    this.closeFullscreenButton = document.querySelector(".task-manager__closeFullscreen-icon");
     this.accordionContainer = document.querySelector(".task-manager__accordion-container");
 
     // States
     this.tasks = [];
     this.taskManagerState = STATES.CLOSED;
     this.notificationTimeoutId = null;
-    this.notificationDuration = 5000;
+    this.notificationDuration = 1500000;
     this.isInputFullscreen = false;
     this.currentTask = null;
     this.isHistorySet = false;
@@ -64,10 +64,8 @@ export default class TaskManager {
 
     // Debug
     this.debug = import.meta.env.VITE_DEBUG === "true";
-    this.gui = gui;
 
     // Emitter
-    this.emitter = emitter;
     this.emitter.on("taskManager:createTask", (task) => this.createTask(task));
     this.emitter.on("taskManager:updateStatus", (taskKey, status, container, workflowID) =>
       this.onStatusUpdate(taskKey, status, container, workflowID)
@@ -76,40 +74,8 @@ export default class TaskManager {
     this.emitter.on("taskManager:isHistorySet", (bool) => (this.isHistorySet = bool));
 
     if (this.debug) {
-      console.log("Debug mode enabled");
-      this.debugTask = {
-        name: `Task ${this.tasks.length + 1}`,
-        key: this.tasks.length + 1,
-      };
-
-      this.taskNameController = this.gui.add(this.debugTask, "name").onChange((value) => {
-        this.debugTask.name = value;
-      });
-
-      this.gui.add(
-        {
-          addTask: (e) => {
-            const task = {
-              ...this.debugTask,
-              status: { type: TASK_STATUSES.IN_PROGRESS, ...defaultValues[TASK_STATUSES.IN_PROGRESS] },
-            };
-            const textAI =
-              "Certainly! I'm currently searching for the best flight options to Bali for you. Please give me a moment to find the most suitable flights. In the meantime, feel free to ask any other questions or make additional requests. I'll get back to you with the flight details as soon as possible";
-
-            this.addDebugTask(task);
-            this.emitter.emit("taskManager:createTask", task, textAI);
-
-            this.debugTask.name = `Task ${this.tasks.length + 1}`;
-            this.debugTask.key = this.tasks.length + 1;
-            this.taskNameController.setValue(this.debugTask.name);
-          },
-        },
-        "addTask"
-      );
-
-      this.tasks.forEach((task) => {
-        this.addDebugTask(task);
-      });
+      // this.setupDebug();
+      // this.navigation.toggleTasks();
     }
   }
 
@@ -168,6 +134,42 @@ export default class TaskManager {
     );
   }
 
+  setupDebug() {
+    this.debugTask = {
+      name: `Task ${this.tasks.length + 1}`,
+      key: this.tasks.length + 1,
+    };
+
+    this.taskNameController = this.gui.add(this.debugTask, "name").onChange((value) => {
+      this.debugTask.name = value;
+    });
+
+    this.gui.add(
+      {
+        addTask: (e) => {
+          const task = {
+            ...this.debugTask,
+            status: { type: TASK_STATUSES.IN_PROGRESS, ...defaultValues[TASK_STATUSES.IN_PROGRESS] },
+          };
+          const textAI =
+            "Certainly! I'm currently searching for the best flight options to Bali for you. Please give me a moment to find the most suitable flights. In the meantime, feel free to ask any other questions or make additional requests. I'll get back to you with the flight details as soon as possible";
+
+          this.addDebugTask(task);
+          this.emitter.emit("taskManager:createTask", task, textAI);
+
+          this.debugTask.name = `Task ${this.tasks.length + 1}`;
+          this.debugTask.key = this.tasks.length + 1;
+          this.taskNameController.setValue(this.debugTask.name);
+        },
+      },
+      "addTask"
+    );
+
+    this.tasks.forEach((task) => {
+      this.addDebugTask(task);
+    });
+  }
+
   // ---------- Handling the task-manager button ----------
   getButtonColor() {
     // order of priority for the color of the button
@@ -213,6 +215,7 @@ export default class TaskManager {
 
   // ---------- Handling the task-manager states ----------
   initTaskManager() {
+    console.log("initTaskManager");
     gsap.set(this.container, {
       yPercent: 100,
     });
@@ -227,8 +230,6 @@ export default class TaskManager {
   }
 
   showTaskManager() {
-    this.closeFullscreenButton.classList.remove("hidden");
-    this.fullscreenButton.classList.add("hidden");
     gsap.to(this.discussionContainer, {});
     gsap.to(this.container, {
       yPercent: 0,
@@ -347,58 +348,8 @@ export default class TaskManager {
       clearTimeout(this.notificationTimeoutId);
       this.notificationTimeoutId = null;
     }
-    this.closeNotificationPill();
 
-    if (status.type !== TASK_STATUSES.COMPLETED) {
-      // open the task manager and go to the right panel
-      this.showTaskManager();
-      this.goToPanel(taskKey);
-    } else {
-      this.viewResults(taskKey);
-    }
-  }
-
-  // ---------- Handling the accordion ----------
-  togglePanel(key) {
-    // Check if the clicked panel is already open
-    const isPanelOpen = this.currentTask === key;
-
-    // Close all panels
-    this.accordionPanels.forEach((panel) => (panel.style.maxHeight = "0px"));
-    this.accordionHeaders.forEach((header) => header.classList.remove("active"));
-    // If the clicked panel was not already open, open it
-    if (!isPanelOpen) {
-      this.openPanel(key);
-    } else {
-      this.currentTask = null;
-    }
-  }
-
-  selectCurrentPanel(key) {
-    const currentTask = this.accordionContainer.querySelector(`[task-key="${key}"]`);
-    currentTask.querySelector(".task-manager__accordion-header").classList.add("active");
-    return currentTask.querySelector(".task-manager__accordion-panel");
-  }
-
-  openPanel(key) {
-    const panel = this.selectCurrentPanel(key);
-    panel.style.maxHeight = panel.scrollHeight + "px";
-    this.currentTask = key;
-  }
-
-  goToPanel(key) {
-    // Close all panels
-    this.accordionPanels.forEach((panel) => (panel.style.maxHeight = "0px"));
-    this.accordionHeaders.forEach((header) => header.classList.remove("active"));
-
-    // Open the panel or if already openned update its the panel height
-    const panel = this.selectCurrentPanel(key);
-    this.openPanel(key);
-
-    // Scroll to the last status from the panel
-    const statuses = Array.from(panel.querySelectorAll(".task-manager__status-container"));
-    const lastStatus = statuses[statuses.length - 1];
-    scrollToDiv(this.container, lastStatus);
+    this.navigation.toggleTasks();
   }
 
   // ---------- Update the tasks UI  ----------
@@ -473,7 +424,7 @@ export default class TaskManager {
     li.appendChild(headerDiv);
     li.appendChild(panelDiv);
 
-    this.accordionContainer.appendChild(li);
+    // this.accordionContainer.appendChild(li);
 
     // I set the accordionHeaders and Panels up to date
     this.accordionHeaders = Array.from(document.querySelectorAll(".task-manager__accordion-header"));
@@ -530,29 +481,27 @@ export default class TaskManager {
     this.goToPanel(key);
   }
 
+  // TO DO NEW WAY
   updateTaskUI(key, status) {
-    const task = this.accordionContainer.querySelector(`[task-key="${key}"]`);
-    const header = task.querySelector(".task-manager__accordion-header");
-    const statusPill = header.querySelector(".task-manager__status-pill");
-    statusPill.innerText = status.type;
-    statusPill.style.backgroundColor = STATUS_COLORS[status.type];
-
-    const panel = task.querySelector(".task-manager__accordion-panel");
-    const statusWrapper = task.querySelector(".task-manager__status-wrapper");
-    const buttonDelete = task.querySelector(".task-manager__delete-btn");
-
-    if (status.type === TASK_STATUSES.COMPLETED) {
-      buttonDelete.classList.add("hidden");
-      this.addOnlyStatusTitle(key, statusWrapper, status);
-      this.makeStatusPillClickable(key, statusPill);
-    } else {
-      this.addStatus(key, statusWrapper, status);
-    }
+    // const task = this.accordionContainer.querySelector(`[task-key="${key}"]`);
+    // const header = task.querySelector(".task-manager__accordion-header");
+    // const statusPill = header.querySelector(".task-manager__status-pill");
+    // statusPill.innerText = status.type;
+    // statusPill.style.backgroundColor = STATUS_COLORS[status.type];
+    // const statusWrapper = task.querySelector(".task-manager__status-wrapper");
+    // const buttonDelete = task.querySelector(".task-manager__delete-btn");
+    // if (status.type === TASK_STATUSES.COMPLETED) {
+    //   buttonDelete.classList.add("hidden");
+    //   this.addOnlyStatusTitle(key, statusWrapper, status);
+    //   this.makeStatusPillClickable(key, statusPill);
+    // } else {
+    //   this.addStatus(key, statusWrapper, status);
+    // }
   }
 
   deleteTaskUI(key) {
-    const task = this.accordionContainer.querySelector(`[task-key="${key}"]`);
-    task.remove();
+    // const task = this.accordionContainer.querySelector(`[task-key="${key}"]`);
+    // task.remove();
   }
 
   makeStatusPillClickable(key, statusPill) {
@@ -645,10 +594,6 @@ export default class TaskManager {
   }
 
   addListeners() {
-    this.closeButton.addEventListener("click", () => this.closeTaskManager());
-    this.fullscreenButton.addEventListener("click", () => this.showTaskManager());
-    this.closeFullscreenButton.addEventListener("click", () => this.closeTaskManager());
-
     this.container.addEventListener("touchstart", (e) => {
       e.stopPropagation();
     });

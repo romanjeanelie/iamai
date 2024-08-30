@@ -84,13 +84,13 @@ export default class Discussion {
 
     const flightButton = document.createElement("button");
     flightButton.innerHTML = "Flight";
-    // flightButton.addEventListener("click", () => {
-    const flightCards = this.Chat.getFlightUI(flightSearchData, flightSearchResultsData);
-    const AIContainer = document.createElement("div");
-    AIContainer.classList.add("discussion__ai");
-    AIContainer.appendChild(flightCards);
-    this.discussionContainer.appendChild(AIContainer);
-    // });
+    flightButton.addEventListener("click", () => {
+      const flightCards = this.Chat.getFlightUI(flightSearchData, flightSearchResultsData);
+      const AIContainer = document.createElement("div");
+      AIContainer.classList.add("discussion__ai");
+      AIContainer.appendChild(flightCards);
+      this.discussionContainer.appendChild(AIContainer);
+    });
     debugContainer.appendChild(flightButton);
     document.body.appendChild(debugContainer);
   }

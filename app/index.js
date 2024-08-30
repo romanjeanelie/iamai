@@ -88,7 +88,7 @@ class App {
   }
 
   initNavbar() {
-    new Navigation({ user: this.user });
+    this.navigation = new Navigation({ user: this.user });
   }
 
   initCaroussel() {
@@ -120,7 +120,11 @@ class App {
   }
 
   initTaskManager() {
-    this.taskManager = new TaskManager({ emitter: this.emitter, pageEl: this.pageEl, gui: this.gui });
+    this.taskManager = new TaskManager({
+      gui: this.gui,
+      emitter: this.emitter,
+      navigation: this.navigation,
+    });
   }
 
   initSlider() {
