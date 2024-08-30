@@ -13,14 +13,15 @@ export const TASK_STATUSES = {
 };
 
 const STATUS_COLORS = {
-  [TASK_STATUSES.IN_PROGRESS]: "#00254E",
-  [TASK_STATUSES.INPUT_REQUIRED]: "rgba(224, 149, 2, 1)",
-  [TASK_STATUSES.COMPLETED]: "#007AFF",
+  [TASK_STATUSES.IN_PROGRESS]: "rgba(149, 159, 177, 0.14)",
+  [TASK_STATUSES.INPUT_REQUIRED]:
+    "linear-gradient(70deg, rgba(227, 207, 28, 0.30) -10.29%, rgba(225, 135, 30, 0.30) 105%)",
+  [TASK_STATUSES.COMPLETED]: "linear-gradient(70deg, rgba(116, 225, 30, 0.30) -10.29%, rgba(28, 204, 227, 0.30) 105%)",
 };
 
 const defaultValues = {
   [TASK_STATUSES.IN_PROGRESS]: {
-    label: "searching moving",
+    label: "In progress",
     title: "searching",
     description: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
   },
@@ -46,8 +47,8 @@ export default class TaskManager {
     // DOM Elements
     this.html = document.documentElement;
     this.container = document.querySelector(".task-manager__container");
+    this.tasksGrid = document.querySelector(".task-manager__tasks-grid");
     this.discussionContainer = document.querySelector(".discussion__wrapper");
-    this.accordionContainer = document.querySelector(".task-manager__accordion-container");
 
     // States
     this.tasks = [];
@@ -74,7 +75,7 @@ export default class TaskManager {
     this.emitter.on("taskManager:isHistorySet", (bool) => (this.isHistorySet = bool));
 
     if (this.debug) {
-      // this.setupDebug();
+      this.setupDebug();
       this.navigation.toggleTasks();
     }
   }
@@ -221,23 +222,6 @@ export default class TaskManager {
     });
   }
 
-  closeTaskManager() {
-    gsap.to(this.container, {
-      yPercent: 100,
-      duration: 0.5,
-      ease: "power2.inOut",
-    });
-  }
-
-  showTaskManager() {
-    gsap.to(this.discussionContainer, {});
-    gsap.to(this.container, {
-      yPercent: 0,
-      duration: 0.5,
-      ease: "power2.inOut",
-    });
-  }
-
   blockScroll() {
     this.html.classList.add("no-scroll");
   }
@@ -357,81 +341,41 @@ export default class TaskManager {
     // Create elements
     const li = document.createElement("li");
     li.setAttribute("task-key", data.key);
-    li.classList.add("task-manager__accordion");
+    li.classList.add("task-manager__task-card");
 
-    const headerDiv = document.createElement("div");
-    headerDiv.classList.add("task-manager__accordion-header");
+    const taskCardContent = document.createElement("div");
+    taskCardContent.classList.add("task-manager__task-card-content");
+    li.appendChild(taskCardContent);
 
-    const headerTitle = document.createElement("h4");
+    const headerTitle = document.createElement("h3");
+    headerTitle.classList.add("task-manager__task-card-title");
     headerTitle.textContent = data.name;
+    taskCardContent.appendChild(headerTitle);
 
-    const statusDiv = document.createElement("div");
+    const statusPill = document.createElement("div");
+    statusPill.classList.add("task-manager__task-status");
+    statusPill.style.background = STATUS_COLORS[data.status.type];
+    taskCardContent.appendChild(statusPill);
 
-    const statusPill = document.createElement("p");
-    statusPill.classList.add("task-manager__status-pill");
-    statusPill.style.backgroundColor = STATUS_COLORS[data.status.type];
-    statusPill.textContent = data.status.label || data.status.type;
+    const statusLabel = document.createElement("p");
+    statusLabel.classList.add("task-manager__task-status-label");
+    statusLabel.textContent = data.status.label || data.status.type;
+    statusPill.appendChild(statusLabel);
 
-    const chevronButton = document.createElement("button");
-    chevronButton.classList.add("task-manager__accordion-chevron");
+    const taskCardIllustration = document.createElement("div");
+    taskCardIllustration.classList.add("task-manager__task-illustration");
+    li.appendChild(taskCardIllustration);
 
-    chevronButton.innerHTML = `
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g clip-path="url(#clip0_9405_89899)">
-          <path d="M6 9L11.6464 14.6464C11.8417 14.8417 12.1583 14.8417 12.3536 14.6464L18 9" stroke="black" stroke-width="1.6" stroke-linecap="round"/>
-        </g>
-        <defs>
-          <clipPath id="clip0_9405_89899">
-            <path d="M12 0C18.6274 0 24 5.37258 24 12C24 18.6274 18.6274 24 12 24C5.37258 24 0 18.6274 0 12C0 5.37258 5.37258 0 12 0Z" fill="white"/>
-          </clipPath>
-        </defs>
-      </svg>
-    `;
+    const taskCardIllustrationCover = document.createElement("div");
+    taskCardIllustrationCover.classList.add("task-manager__task-card-illustration-cover");
+    taskCardIllustration.appendChild(taskCardIllustrationCover);
 
-    const panelDiv = document.createElement("div");
-    panelDiv.classList.add("task-manager__accordion-panel");
+    const taskCardIllustrationBehind = document.createElement("div");
+    taskCardIllustrationBehind.classList.add("task-manager__task-illustration-behind");
+    taskCardIllustration.append(taskCardIllustrationBehind);
 
-    const statusWrapperDiv = document.createElement("div");
-    statusWrapperDiv.classList.add("task-manager__status-wrapper");
-
-    const statusContainerDiv = document.createElement("div");
-    statusContainerDiv.classList.add("task-manager__status-container");
-
-    const statusTitleP = document.createElement("p");
-    statusTitleP.classList.add("task-manager__status-title");
-    statusTitleP.textContent = data.status.title;
-
-    const statusDescriptionP = document.createElement("p");
-    statusDescriptionP.classList.add("task-manager__status-description");
-    statusDescriptionP.textContent = data.status.description;
-
-    const deleteButton = document.createElement("button");
-    deleteButton.classList.add("task-manager__delete-btn");
-    deleteButton.textContent = "CANCEL";
-
-    // Append elements
-    headerDiv.appendChild(headerTitle);
-    statusDiv.appendChild(statusPill);
-    statusDiv.appendChild(chevronButton);
-    headerDiv.appendChild(statusDiv);
-
-    statusContainerDiv.appendChild(statusTitleP);
-    statusContainerDiv.appendChild(statusDescriptionP);
-    statusWrapperDiv.appendChild(statusContainerDiv);
-    panelDiv.appendChild(statusWrapperDiv);
-    panelDiv.appendChild(deleteButton);
-
-    li.appendChild(headerDiv);
-    li.appendChild(panelDiv);
-
-    // this.accordionContainer.appendChild(li);
-
-    // I set the accordionHeaders and Panels up to date
-    this.accordionHeaders = Array.from(document.querySelectorAll(".task-manager__accordion-header"));
-    this.accordionPanels = Array.from(document.querySelectorAll(".task-manager__accordion-panel"));
-
-    headerDiv.addEventListener("click", () => this.togglePanel(data.key));
-    deleteButton.addEventListener("click", () => this.emitter.emit("taskManager:deleteTask", data.key));
+    this.tasksGrid.appendChild(li);
+    // deleteButton.addEventListener("click", () => this.emitter.emit("taskManager:deleteTask", data.key));
   }
 
   addStatus(key, statusWrapper, status) {
