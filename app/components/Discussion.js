@@ -194,7 +194,7 @@ export default class Discussion {
     this.discussionContainer.appendChild(this.userContainer);
     //moves this to save time
     if (imgs && imgs.length > 0) {
-      console.log(imgs.length);
+      // console.log(imgs.length);
       this.getAiAnswer({ text, imgs, isLiveMode: isFromVideo });
     } else this.getAiAnswer({ text });
 
@@ -351,7 +351,7 @@ export default class Discussion {
   }
 
   async onScrollTop() {
-    console.log("ON SCROLL TOP");
+    // console.log("ON SCROLL TOP");
     const { container } = await this.history.getHistory({ uuid: this.uuid, user: this.user });
     this.prevDiscussionContainer.prepend(container);
     // only if there is more history to be added, we change the scrollTop value so the user stays at the same spot

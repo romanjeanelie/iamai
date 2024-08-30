@@ -149,7 +149,7 @@ async function getUser() {
         //   console.log(error);
         // });
       } else {
-        console.log("here not logged in");
+        // console.log("here not logged in");
         resolve(null);
       }
     });

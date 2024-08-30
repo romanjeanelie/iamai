@@ -19,7 +19,7 @@ window.onload = async function () {
   const uuid = getQueryParam("UUID");
   const streamName = getHash(uuid);
   const subject = `${streamName}.call.>`;
-  console.log("subject: ", subject);
+  // console.log("subject: ", subject);
   const config = new Config();
   config.getWebsiteConfig().then(async data => {
     if (data) {
@@ -39,7 +39,7 @@ window.onload = async function () {
         name: streamName,
         subjects: [subject],
       });
-      console.log("Stream add_stream =", si);
+      // console.log("Stream add_stream =", si);
       // Add the consumer
       si = await jsm.consumers.add(streamName, {
         durable_name: streamName,
@@ -74,7 +74,7 @@ window.onload = async function () {
       };
       for await (const m of iter) {
         var mdata = m.json();
-        console.log("mdata:", mdata);
+        // console.log("mdata:", mdata);
         m.ack();
         if (mdata.event) {
           if (mdata.event == PHONECALLCONNECTED || mdata.event == PHONECALLENDED) {

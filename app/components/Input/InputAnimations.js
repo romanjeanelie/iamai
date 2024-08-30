@@ -211,7 +211,7 @@ export default class InputAnimations {
    * Write
    */
   toWrite({ delay = 0, animButtons = true, animLogos = true, placeholder = "", focus = true } = {}) {
-    console.log("TO WRITE");
+    // console.log("TO WRITE");
     this.inputText.placeholder = placeholder;
     this.inputFrontEl.style.pointerEvents = "none";
     this.inputBackEl.style.pointerEvents = "auto";

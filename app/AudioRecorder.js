@@ -33,7 +33,7 @@ export default class AudioRecorder {
         });
 
         this.recorder.onComplete = (recorder, blob) => {
-          console.log("Encoding complete");
+          // console.log("Encoding complete");
           this.blob = blob;
           this.callbacks.onComplete(blob);
         };
@@ -46,7 +46,7 @@ export default class AudioRecorder {
         });
 
         this.recorder.startRecording();
-        console.log("Recording started");
+        // console.log("Recording started");
       })
       .catch((err) => {
         console.log(err);
@@ -71,6 +71,6 @@ export default class AudioRecorder {
     this.recorder.finishRecording();
     clearInterval(this.timeInterval);
 
-    console.log("Recording stopped");
+    // console.log("Recording stopped");
   }
 }

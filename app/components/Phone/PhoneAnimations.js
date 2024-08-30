@@ -291,7 +291,7 @@ export default class PhoneAnimations {
         fill: "forwards",
       });
 
-      console.log(this.expandPhoneBarAI);
+      // console.log(this.expandPhoneBarAI);
 
       this.phoneBarAIYoyoAnimations = this.createAnimation(this.phoneBarAI, this.keyframes.phoneBarAIYoyo, {
         delay: 300 + this.expandPhoneBarAI.effect.getComputedTiming().duration,

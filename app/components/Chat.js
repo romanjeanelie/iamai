@@ -231,7 +231,7 @@ class Chat {
     };
     for await (const m of iter) {
       var mdata = m.json();
-      console.log(mdata);
+      // console.log(mdata);
       if (steamseq.includes(m.seq) && m.redelivered) {
         // console.log("prevent duplicate");
         m.ack();
@@ -861,7 +861,7 @@ class Chat {
 
         xhr.addEventListener("readystatechange", function () {
           if (this.readyState === 4) {
-            console.log(this.responseText);
+            // console.log(this.responseText);
           }
         });
 

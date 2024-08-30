@@ -60,7 +60,7 @@ export default class SlideDetect {
   }
 
   destroy() {
-    console.log("destroy slide detect");
+    // console.log("destroy slide detect");
     document.removeEventListener("mousedown", this.handleMouseStart, false);
     document.removeEventListener("mouseup", this.handleMouseUp, false);
     document.removeEventListener("touchstart", this.handleTouchStart, false);

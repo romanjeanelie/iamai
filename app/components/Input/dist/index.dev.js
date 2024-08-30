@@ -54,8 +54,8 @@ function _createClass(Constructor, protoProps, staticProps) {
 }
 
 function isLetterKey(event) {
-  console.log("event.key", event.key);
-  console.log("event.key.length", event.key.length);
+  // console.log("event.key", event.key);
+  // console.log("event.key.length", event.key.length);
   var keyCode = event.keyCode; // return (keyCode >= 65 && keyCode <= 90); // Key codes for A-Z
 
   if (
@@ -382,7 +382,7 @@ var Input =
         key: "onSubmit",
         value: function onSubmit(event) {
           event.preventDefault();
-          console.log("ON SUBMIT FUNCTION : ", this.inputText.value);
+          // console.log("ON SUBMIT FUNCTION : ", this.inputText.value);
           console.time("input");
 
           if (this.isPageBlue) {

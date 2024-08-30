@@ -15,8 +15,8 @@ import { colorMain } from "../../../scss/variables/_colors.module.scss";
 import InputVideo from "./InputVideo";
 
 function isLetterKey(event) {
-  console.log("event.key", event.key);
-  console.log("event.key.length", event.key.length);
+  // console.log("event.key", event.key);
+  // console.log("event.key.length", event.key.length);
   const keyCode = event.keyCode;
   // return (keyCode >= 65 && keyCode <= 90); // Key codes for A-Z
   if (
@@ -242,7 +242,7 @@ export default class Input {
   // Submit
   onSubmit(event) {
     event.preventDefault();
-    console.log("ON SUBMIT FUNCTION : ", this.inputText.value);
+    // console.log("ON SUBMIT FUNCTION : ", this.inputText.value);
     console.time("input");
     if (this.isPageBlue) {
       this.toPageGrey({ duration: 1200 });

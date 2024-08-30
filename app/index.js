@@ -181,7 +181,7 @@ class App {
   signoutgoogle() {
     signOut(auth)
       .then(() => {
-        console.log("User signed out.");
+        // console.log("User signed out.");
         redirectToLogin();
       })
       .catch((error) => {
@@ -191,7 +191,7 @@ class App {
 
   async checkuserwaitlist(user) {
     this.user = user;
-    console.log("checkuserwaitlist : ", this.user);
+    // console.log("checkuserwaitlist : ", this.user);
     var userstatus = await getUserDataFireDB(user);
     if (userstatus) {
       this.user.setstatus(userstatus.status);
@@ -202,7 +202,7 @@ class App {
     await this.checkuser();
   }
   async saveUser() {
-    console.log("saveuser");
+    // console.log("saveuser");
     if (txtuse.value.length > 0) {
       this.user.setprofile(txtcompany.value, txttwitter.value, txtfacebook.value, txtlinkedin.value, txtuse.value);
       await saveUserDataFireDB(this.user);
@@ -218,7 +218,7 @@ class App {
   async checkuser() {
     if (this.user) {
       isStopped = true;
-      console.log("this.user:", this.user);
+      // console.log("this.user:", this.user);
       if (this.user.status == "active") {
         await this.user.setuseraddress();
         this.toPageGrey({ duration: 1200 });
@@ -259,7 +259,7 @@ class App {
     });
 
     window.addEventListener("load", async () => {
-      console.log("ADDING PRELOAD");
+      // console.log("ADDING PRELOAD");
       this.app.classList.add("preload");
       for (let i = 0; i < signInButtons.length; i++) {
         signInButtons[i].addEventListener("click", this.toggleSignIn, false);
@@ -285,7 +285,7 @@ class App {
     });
 
     Promise.all([new Promise((resolve) => window.addEventListener("load", resolve)), document.fonts.ready]).then(() => {
-      console.log("REMOVING PRELOAD");
+      // console.log("REMOVING PRELOAD");
       this.app.classList.remove("preload");
     });
   }

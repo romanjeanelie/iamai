@@ -980,9 +980,9 @@ async function deploy(itemid) {
   // const deploy_id = crypto.randomUUID() + "_" + assistant.UUID;
   const deploy_id = assistant.UUID + "_" + assistant.system_assistantID;
 
-  console.log("assistant.Retrieval:" + assistant.Retrieval);
+  // console.log("assistant.Retrieval:" + assistant.Retrieval);
   if (assistant.Retrieval == "true") {
-    console.log("workflow assistant.Retrieval:" + assistant.Retrieval);
+    // console.log("workflow assistant.Retrieval:" + assistant.Retrieval);
     var data = JSON.stringify({
       uuid: deploy_id,
       agent_name: assistant.Title,
@@ -1042,7 +1042,7 @@ async function deploy(itemid) {
       xhr.send(data);
     });
   } else {
-    console.log("personal_assistant assistant.Retrieval:" + assistant.Retrieval);
+    // console.log("personal_assistant assistant.Retrieval:" + assistant.Retrieval);
     // WARNING: For POST requests, body is set to null by browsers.
     var data = JSON.stringify({
       uuid: deploy_id,
@@ -1161,7 +1161,7 @@ const getsystemassistant_itemid = (itemid) =>
 
 function toggleCollapse(event) {
   let button = event.target;
-  console.log(button);
+  // console.log(button);
   // console.log(button.querySelector("img"));
   // var content = document.querySelector('.assistant-card');
   var content = button.parentElement.parentElement.parentElement.parentElement;
