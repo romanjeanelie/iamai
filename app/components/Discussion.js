@@ -116,7 +116,7 @@ export default class Discussion {
   getAiAnswer({ text, imgs, isLiveMode = false }) {
     this.AIContainer = document.createElement("div");
     this.AIContainer.classList.add("discussion__ai");
-    this.currentPair.appendChild(this.AIContainer);
+    this.discussionContainer.appendChild(this.AIContainer);
 
     this.typingText = new TypingText({
       text: "",
@@ -170,9 +170,6 @@ export default class Discussion {
       this.media.addUserImages(imgs.map((img) => img.src));
     }
 
-    this.currentPair = document.createElement("div");
-    this.currentPair.classList.add("discussion__pair");
-
     this.userContainer = document.createElement("div");
     this.userContainer.classList.add("discussion__user");
     const userContainerspan = document.createElement("span");
@@ -180,8 +177,8 @@ export default class Discussion {
     userContainerspan.innerHTML = text.replace(/\n/g, "<br>");
     this.userContainer.appendChild(userContainerspan);
 
-    this.currentPair.appendChild(this.userContainer);
-    this.discussionContainer.appendChild(this.currentPair);
+    this.discussionContainer.appendChild(this.userContainer);
+
     //moves this to save time
     if (imgs && imgs.length > 0) {
       this.getAiAnswer({ text, imgs, isLiveMode: isFromVideo });
