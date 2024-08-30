@@ -339,13 +339,13 @@ export default class TaskManager {
   // ---------- Update the tasks UI  ----------
   addTaskUI(data) {
     // Create elements
-    const li = document.createElement("li");
-    li.setAttribute("task-key", data.key);
-    li.classList.add("task-manager__task-card");
+    const cardContainer = document.createElement("li");
+    cardContainer.setAttribute("task-key", data.key);
+    cardContainer.classList.add("task-manager__task-card");
 
     const taskCardContent = document.createElement("div");
     taskCardContent.classList.add("task-manager__task-card-content");
-    li.appendChild(taskCardContent);
+    cardContainer.appendChild(taskCardContent);
 
     const headerTitle = document.createElement("h3");
     headerTitle.classList.add("task-manager__task-card-title");
@@ -364,7 +364,7 @@ export default class TaskManager {
 
     const taskCardIllustration = document.createElement("div");
     taskCardIllustration.classList.add("task-manager__task-illustration");
-    li.appendChild(taskCardIllustration);
+    cardContainer.appendChild(taskCardIllustration);
 
     const taskCardIllustrationCover = document.createElement("div");
     taskCardIllustrationCover.classList.add("task-manager__task-card-illustration-cover");
@@ -374,8 +374,23 @@ export default class TaskManager {
     taskCardIllustrationBehind.classList.add("task-manager__task-illustration-behind");
     taskCardIllustration.append(taskCardIllustrationBehind);
 
-    this.tasksGrid.appendChild(li);
-    // deleteButton.addEventListener("click", () => this.emitter.emit("taskManager:deleteTask", data.key));
+    this.tasksGrid.appendChild(cardContainer);
+    const currentTask = this.container.querySelector(".task-manager__current-task");
+
+    cardContainer.addEventListener("click", () => {
+      const tl = gsap.timeline();
+
+      // Set opacity of all items inside the card to 0
+      tl.to(cardContainer.children, { opacity: 0, duration: 0.2 });
+
+      // Add Flip animation to the timeline
+      tl.add(() => {
+        Flip.fit(cardContainer, currentTask, {
+          scale: true,
+          duration: 0.5,
+        });
+      });
+    });
   }
 
   addStatus(key, statusWrapper, status) {

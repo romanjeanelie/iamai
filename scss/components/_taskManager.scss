@@ -14,7 +14,7 @@ $zIndex: 1;
 }
 
 .task-manager__content {
-  padding: $paddingHorMobile;
+  position: relative;
   max-width: $maxWidth;
   margin: 50px auto 0;
 
@@ -27,6 +27,7 @@ $zIndex: 1;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 8px;
+  padding: 0;
 
   @include media("<tablet") {
     grid-template-columns: repeat(1, 1fr);
@@ -94,6 +95,17 @@ $zIndex: 1;
   inset: 0;
   opacity: 0.65;
   transform: rotate(-15deg);
+}
+
+.task-manager__current-task {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 80vh;
+  border: 1px solid red;
+  pointer-events: none;
 }
 
 // ------ Notification Container ------
