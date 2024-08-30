@@ -1,5 +1,6 @@
 import gsap from "gsap";
 import Flip from "gsap/Flip";
+import { flightSearchData, flightSearchResultsData } from "../../../testData";
 
 const STATES = {
   CLOSED: "closed",
@@ -39,10 +40,11 @@ const defaultValues = {
 gsap.registerPlugin(Flip);
 
 export default class TaskManager {
-  constructor({ gui, emitter, navigation }) {
+  constructor({ gui, emitter, discussion, navigation }) {
     this.gui = gui;
     this.emitter = emitter;
     this.navigation = navigation;
+    this.discussion = discussion;
 
     // DOM Elements
     this.html = document.documentElement;
@@ -80,6 +82,8 @@ export default class TaskManager {
     if (this.debug) {
       this.setupDebug();
       this.navigation.toggleTasks();
+      const flightCard = this.tasksGrid.querySelector('[task-key="1"]');
+      // this.animateCardToFullscreen(flightCard);
     }
   }
 
@@ -393,31 +397,41 @@ export default class TaskManager {
         absolute: true,
       });
     } else {
+      this.currentTask = cardContainer.getAttribute("task-key"); // we set the state of the current task
+
+      // DOM ELEMENTS
+      const cardState = cardContainer.querySelector(".card-state");
+      const fullscreenState = cardContainer.querySelector(".fullscreen-state");
+
       const state = Flip.getState(cardContainer);
       this.container.appendChild(cardContainer);
       this.fullscreenTaskContainer.appendChild(cardContainer);
-      cardContainer.classList.add("fullscreen");
-      this.currentTask = cardContainer.getAttribute("task-key") || 1;
 
-      gsap.to(cardContainer.children, {
+      gsap.to(cardState, {
         autoAlpha: 0,
         duration: 0.5,
-        stagger: 0.05,
+        stagger: 0.1,
       });
+
       Flip.from(state, {
         duration: 0.5,
         delay: 0.5,
         absolute: true,
-        delay: 0.5,
-      });
-      gsap.to(
-        this.fullscreenTaskContainer,
-        {
-          autoAlpha: 1,
-          duration: 0.5,
+        onComplete: () => {
+          cardContainer.classList.add("fullscreen");
+          cardState.style.display = "none";
+          fullscreenState.style.display = "flex";
+          gsap.to(fullscreenState, {
+            autoAlpha: 1,
+            duration: 0.2,
+          });
+          const flightCards = this.discussion.Chat.getFlightUI(flightSearchData, flightSearchResultsData);
+          const AIContainer = document.createElement("div");
+          AIContainer.classList.add("discussion__ai");
+          AIContainer.appendChild(flightCards);
+          fullscreenState.appendChild(AIContainer);
         },
-        "<"
-      );
+      });
 
       // show all the content of the card
     }

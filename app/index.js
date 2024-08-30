@@ -123,6 +123,7 @@ class App {
     this.taskManager = new TaskManager({
       gui: this.gui,
       emitter: this.emitter,
+      discussion: this.discussion,
       navigation: this.navigation,
     });
   }

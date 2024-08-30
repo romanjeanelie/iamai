@@ -26,6 +26,39 @@
   /* for Chrome, Safari, and Opera */
 }
 
+.discussion__userspan {
+  border-radius: 16px;
+  background: rgba(244, 244, 244, 0.55);
+  box-shadow: 0px 6px 30px 0px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 8px 16px;
+  display: inline-block;
+  text-align: left;
+  @include media("<tablet") {
+    padding: 12px;
+  }
+}
+
+.discussion__user {
+  color: $colorBlack;
+  text-align: right;
+  margin-left: auto;
+  padding-left: 112px;
+
+  .images__container {
+    justify-content: flex-end;
+  }
+
+  @include media("<desktop") {
+    padding-right: 16px;
+  }
+
+  @include media("<tablet") {
+    padding-left: 48px;
+    padding-right: $paddingHorMobile;
+  }
+}
+
 .discussion__container,
 .history__container {
   padding-top: 21px;
@@ -53,39 +86,6 @@
     @include media("<tablet") {
       font-size: 16px;
       line-height: 26px; /* 162.5% */
-    }
-  }
-
-  .discussion__userspan {
-    border-radius: 16px;
-    background: rgba(244, 244, 244, 0.55);
-    box-shadow: 0px 6px 30px 0px rgba(0, 0, 0, 0.08);
-    border-radius: 16px;
-    padding: 8px 16px;
-    display: inline-block;
-    text-align: left;
-    @include media("<tablet") {
-      padding: 12px;
-    }
-  }
-
-  .discussion__user {
-    color: $colorBlack;
-    text-align: right;
-    margin-left: auto;
-    padding-left: 112px;
-
-    .images__container {
-      justify-content: flex-end;
-    }
-
-    @include media("<desktop") {
-      padding-right: 16px;
-    }
-
-    @include media("<tablet") {
-      padding-left: 48px;
-      padding-right: $paddingHorMobile;
     }
   }
 
