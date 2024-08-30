@@ -75,7 +75,7 @@ export default class TaskManager {
 
     if (this.debug) {
       // this.setupDebug();
-      // this.navigation.toggleTasks();
+      this.navigation.toggleTasks();
     }
   }
 

@@ -27,7 +27,7 @@ html {
     content: "";
     position: fixed;
     inset: 0;
-    background: rgba(255, 255, 255, 0.01);
+    background: rgba($colorLight, 0.01);
     backdrop-filter: blur(100px);
   }
 

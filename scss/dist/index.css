@@ -251,6 +251,17 @@ button {
   z-index: 100 !important;
 }
 
+.debug-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
 /* #######  Movies  ##########*/
 .moviescard-container {
   display: grid;
@@ -1313,219 +1324,6 @@ button {
     /* Ensures the box doesn't exceed the container's width */
   }
 }
-/* #########################   FLIGHT ######################### */
-.flight-toggle-button-container {
-  display: flex;
-  margin-bottom: 24px;
-  /* border-radius: 20px; */
-  /* overflow: hidden; */
-  font-family: "SFPro";
-  color: #00254e;
-}
-
-.flight-toggle-button {
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-  outline: none;
-  transition: background-color 0.3s;
-}
-
-.flight-toggle-button.active {
-  border-radius: var(--24, 24px);
-  background: var(--B6-W8, rgba(0, 0, 0, 0.06));
-}
-
-.FlightContainer {
-  display: flex;
-  flex-flow: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  margin: 20px 0;
-  opacity: 0;
-  align-self: flex-start;
-  animation: fadeIn 0.3s ease-in-out forwards;
-  animation-delay: 1000ms;
-}
-@media (max-width: 819px) {
-  .FlightContainer {
-    max-width: 315px;
-  }
-}
-
-.FlightContainer:not(.Travellers-Mini) {
-  /* min-width: 900px; */
-}
-
-.flightResult {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0 1.2rem;
-}
-@media (max-width: 819px) {
-  .flightResult {
-    justify-content: center;
-  }
-}
-
-.flightCard {
-  width: 48%;
-  position: relative;
-  background-color: #ffffff;
-  box-sizing: border-box;
-  border-radius: 24px;
-  padding: 16px 16px 12px 16px;
-  margin-bottom: 2.2rem;
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  align-content: space-between;
-  gap: 10px;
-  opacity: 1;
-  font-size: 1rem;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 20px;
-  letter-spacing: 1.2px;
-  opacity: 80%;
-}
-
-.flightCard:hover {
-  cursor: pointer;
-  opacity: 100;
-}
-
-@media (max-width: 819px) {
-  .flightCard {
-    width: 100%;
-  }
-}
-.recommand {
-  position: absolute;
-  top: 0;
-  right: 0;
-  transform: translate(-35%, -50%);
-  padding: 4px 12px;
-  border-radius: 24px;
-  background-color: #007aff;
-  color: #ffffff;
-  text-align: right;
-  font-size: 0.8rem;
-  font-style: normal;
-  line-height: 16px;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-}
-
-.rowFlightCard {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  /* align-items: center; */
-}
-
-.logoFight {
-  display: flex;
-}
-
-.flghtCost {
-  text-align: right;
-}
-
-.currency {
-  font-size: 12px;
-  opacity: 0.6;
-}
-
-.big {
-  font-size: 28px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 32px;
-  letter-spacing: 0.8px;
-  margin: 0;
-}
-@media (max-width: 819px) {
-  .big {
-    font-size: 24px;
-    line-height: 28px;
-  }
-}
-
-.small {
-  opacity: 0.6;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 24px;
-  /* 171.429% */
-  letter-spacing: 1.2px;
-  margin: 0;
-}
-@media (max-width: 819px) {
-  .small {
-    font-size: 12px;
-    line-height: 20px;
-  }
-}
-
-@media (max-width: 819px) {
-  .flightimg {
-    height: 24px;
-    width: 24px;
-  }
-}
-
-.duration {
-  max-width: 50%;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
-}
-.duration .timeHourMin {
-  position: relative;
-  bottom: -6px;
-  margin-bottom: 0;
-}
-.duration .direction {
-  font-size: 0.8rem;
-  position: relative;
-  top: -6px;
-  margin-bottom: 0;
-}
-
-.dDirection {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-}
-
-.destination {
-  text-align: right;
-}
-
-.site {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  transform: translate(30%, 140%);
-  opacity: 0.6;
-  font-size: 0.8rem;
-  font-style: normal;
-  font-weight: 100;
-  line-height: 16px;
-  letter-spacing: 1.2px;
-}
-
 /* #######  SHOPPING  ##########*/
 .shopping-container {
   display: grid;
@@ -1659,6 +1457,9 @@ button {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
   /* Safari and Chrome */
+  -webkit-appearance: none;
+  width: 0;
+  height: 0;
 }
 
 .nav__wrapper {
@@ -1749,7 +1550,7 @@ button {
 }
 .footer-nav .settings-button {
   top: unset;
-  bottom: 0;
+  bottom: 40px;
 }
 .footer-nav .nav__wrapper {
   display: flex;
@@ -1927,9 +1728,10 @@ button {
 .input__wrapper {
   position: fixed;
   z-index: 10;
-  bottom: 40px;
+  bottom: 0;
   left: 0;
   right: 0;
+  padding-bottom: 40px;
 }
 
 .input__container {
@@ -1956,7 +1758,6 @@ button {
   display: flex;
   align-items: end;
   background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(40px);
   max-width: 100vw;
   border: 0.5px #fff;
   transition: border-radius 0.1s ease-in-out;
@@ -2481,11 +2282,9 @@ button {
 .phone__container {
   position: fixed;
   z-index: 10;
-  backdrop-filter: blur(10px);
   bottom: 0;
   left: 0;
   width: 100%;
-  max-width: 872px;
   font-size: 12px;
   max-width: 100vw;
   padding-bottom: 30px;
@@ -2499,11 +2298,6 @@ button {
   margin: 0;
   padding: 0;
   border: 0;
-}
-@supports not (backdrop-filter: blur(10px)) {
-  .phone__container {
-    background: rgba(217, 217, 225, 0.8);
-  }
 }
 .phone__container.show {
   opacity: 1;
@@ -2671,6 +2465,84 @@ button {
   opacity: 1;
 }
 
+.input__wrapper .phone__wrapper {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0, 0, 0.58, 1);
+  backdrop-filter: none;
+}
+@supports not (backdrop-filter: blur(10px)) {
+  .input__wrapper .phone__wrapper {
+    background: rgba(217, 217, 225, 0.8);
+  }
+}
+.input__wrapper .phone__wrapper.show {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+.input__wrapper .phone__container {
+  position: static;
+  max-width: 742px;
+  margin: 0 auto;
+  padding: 0;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  display: flex;
+  justify-content: flex-end;
+}
+@media (max-width: 819px) {
+  .input__wrapper .phone__container {
+    padding: 0 20px;
+  }
+}
+.input__wrapper .phone__container.show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+.input__wrapper .phone__info-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 15px;
+  color: #676e7f;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 24px;
+  /* 160% */
+  letter-spacing: 0.2px;
+}
+.input__wrapper .phone__info-container .phone__info:last-of-type {
+  position: absolute;
+  inset: 0;
+}
+.input__wrapper .phone__buttons-container {
+  z-index: 1;
+  display: flex;
+  gap: 16px;
+}
+.input__wrapper .phone__buttons-container button {
+  background: rgba(255, 255, 255, 0.54);
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  border-radius: 50px;
+}
+.input__wrapper .phone__buttons-container button img,
+.input__wrapper .phone__buttons-container button svg {
+  width: 14px;
+}
+
 @keyframes jump {
   0%, 40%, 100% {
     transform: translateY(0);
@@ -2685,8 +2557,6 @@ button {
   inset: 0;
   z-index: 1;
   overflow-y: scroll;
-  background-color: #f0efec;
-  color: #00254e;
   transition: opacity 0.3s cubic-bezier(0, 0, 0.58, 1);
 }
 @media (max-width: 639px) {
@@ -2694,290 +2564,39 @@ button {
     -webkit-overflow-scrolling: touch;
   }
 }
-.task-manager__container .task-manager__header {
-  position: sticky;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1;
-  padding: 8px;
-  display: flex;
-  background-color: #f0efec;
-  justify-content: space-between;
-  align-items: center;
-}
-.task-manager__container .task-manager__header h2 {
-  display: none;
-}
-.task-manager__container .task-manager__header .relative {
-  position: relative;
-}
-@media (max-width: 819px) {
-  .task-manager__container .task-manager__header .relative {
-    display: none;
-  }
-}
-.task-manager__container .task-manager__header .icon {
-  padding: 8px;
-  border-radius: 24px;
-  transition: opacity 0.3s cubic-bezier(0, 0, 0.58, 1);
-}
-.task-manager__container .task-manager__header .icon img {
-  width: 100%;
-}
-.task-manager__container .task-manager__header .icon:hover {
-  background-color: rgba(0, 37, 78, 0.06);
-}
-.task-manager__container .task-manager__header .icon.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-.task-manager__container .task-manager__header .task-manager__closing-icon {
-  padding: 13px;
-}
-.task-manager__container .task-manager__header .task-manager__closing-icon:hover {
-  background-color: rgba(0, 37, 78, 0.06);
-}
-.task-manager__container .task-manager__header .task-manager__closeFullscreen-icon {
-  position: absolute;
-  top: 0;
-  left: 0;
-  cursor: pointer;
-}
 
 .task-manager__content {
-  padding: 20px 24px;
+  padding: 20px;
+  max-width: 742px;
+  margin: 50px auto 0;
 }
-.task-manager__content h2 {
-  padding-left: 16px;
-  font-size: 24px;
-  font-weight: 500;
-  line-height: 28px;
-  letter-spacing: 0.6px;
-  margin-bottom: 40px;
+@media (max-width: 819px) {
+  .task-manager__content {
+    padding: 0 20px;
+  }
 }
-.task-manager__content .task-manager__accordion-container {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+.task-manager__content h4 {
   margin: 0;
-  padding-left: 16px;
 }
-.task-manager__content .task-manager__accordion {
-  border-radius: 16px;
-  background-color: rgba(0, 37, 78, 0.03);
-}
-.task-manager__content .task-manager__accordion .task-manager__accordion-header {
-  padding: 14px 16px;
-  font-weight: 500;
-  border-radius: 16px;
-  display: flex;
-  gap: 8px;
-  overflow: hidden;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-}
-.task-manager__content .task-manager__accordion .task-manager__accordion-header h4 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
-  letter-spacing: 0;
-  white-space: nowrap;
-}
-@media (max-width: 639px) {
-  .task-manager__content .task-manager__accordion .task-manager__accordion-header h4 {
-    font-size: 14px;
-    line-height: 18px;
-    /* 128.571% */
-  }
-}
-.task-manager__content .task-manager__accordion .task-manager__accordion-header.active .task-manager__accordion-chevron {
-  transform: rotate(180deg);
-}
-.task-manager__content .task-manager__accordion .task-manager__accordion-header div {
-  flex: none;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-.task-manager__content .task-manager__accordion .task-manager__accordion-header .task-manager__status-pill {
-  font-size: 14px;
-  padding: 5px 30px;
-  border-radius: 32px;
-  color: white;
-  transition: background-color 0.3s cubic-bezier(0, 0, 0.58, 1);
-}
-.task-manager__content .task-manager__accordion .task-manager__accordion-header .task-manager__status-pill.clickable:hover {
-  background-color: #0059bb !important;
-}
-.task-manager__content .task-manager__accordion .task-manager__accordion-header .task-manager__accordion-chevron {
-  width: 20px;
-  margin: 0 10px;
-  transition: transform 0.3s cubic-bezier(0, 0, 0.58, 1);
-}
-.task-manager__content .task-manager__accordion .task-manager__accordion-header .task-manager__accordion-chevron path {
-  stroke: rgba(0, 37, 78, 0.6);
-}
-.task-manager__content .task-manager__accordion .task-manager__accordion-header .task-manager__accordion-chevron.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-.task-manager__content .task-manager__accordion .task-manager__accordion-panel {
-  padding: 0 16px;
-  overflow: hidden;
-  font-size: 16px;
-  max-height: 0;
-  font-weight: 500;
-  line-height: 18px;
-  letter-spacing: 0.6px;
-  transition: all 0.3s ease-in-out;
-  position: relative;
-}
-.task-manager__content .task-manager__accordion .task-manager__accordion-panel .task-manager__delete-btn {
-  background: #fe5858;
-  margin-top: 12px;
-  margin-bottom: 24px;
-  border-radius: 40px;
-  padding: 6px 12px;
-  font-size: 12px;
-  color: white;
-  float: right;
-}
-.task-manager__content .task-manager__accordion .task-manager__accordion-panel .task-manager__delete-btn.hidden {
-  display: none;
-}
-.task-manager__content .task-manager__accordion .task-manager__accordion-panel .task-manager__status-container {
-  margin: 10px 0 16px;
-  line-height: 20px;
-  font-size: 16px;
-}
-.task-manager__content .task-manager__accordion .task-manager__accordion-panel .task-manager__status-container .task-manager__status-title {
-  font-weight: 600;
-  letter-spacing: 0;
-}
-.task-manager__content .task-manager__accordion .task-manager__accordion-panel .task-manager__status-container .task-manager__status-description {
-  font-weight: 500;
-  letter-spacing: 0.5px;
-}
-.task-manager__content .task-manager__accordion .task-manager__accordion-panel .task-manager__status-container:last-of-type {
-  color: #007aff;
-}
-@media (max-width: 639px) {
-  .task-manager__content .task-manager__accordion .task-manager__accordion-panel .task-manager__status-container {
-    font-size: 14px;
-    line-height: 18px;
-    /* 128.571% */
-  }
-}
-.task-manager__content .task-manager__accordion .task-manager__accordion-panel .task-manager__input-container {
-  display: flex;
-  margin-top: 40px;
-  border-radius: 24px;
-  padding: 8px 8px 8px 24px;
-  width: 100%;
-  background-color: white;
-  gap: 8px;
-}
-@media (max-width: 639px) {
-  .task-manager__content .task-manager__accordion .task-manager__accordion-panel .task-manager__input-container {
-    padding: 8px 8px 8px 16px;
-  }
-}
-.task-manager__content .task-manager__accordion .task-manager__accordion-panel .task-manager__input-container button {
-  flex: none;
-  height: 26px;
-  width: 26px;
-  border-radius: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 37, 78, 0.24);
-}
-.task-manager__content .task-manager__accordion .task-manager__accordion-panel .task-manager__input-container button img {
-  width: 11.23px;
-}
-.task-manager__content .task-manager__accordion .task-manager__accordion-panel .task-manager__input-container button:hover {
-  background-color: #00254e;
-}
-.task-manager__content .task-manager__accordion .task-manager__accordion-panel .task-manager__input {
-  width: 100%;
-  color: #00254e;
-}
-.task-manager__content .task-manager__accordion .task-manager__accordion-panel .task-manager__status-title {
-  font-size: 14px;
-  margin-bottom: 8px;
-}
-.task-manager__content .task-manager__accordion .task-manager__accordion-panel-divider {
-  height: 2px;
-  width: 100%;
-  background-color: rgba(0, 37, 78, 0.08);
-  margin: 8px 0;
+.task-manager__content p {
+  margin: 0;
 }
 
-.task-manager__container.fullscreen {
-  border-radius: 0;
-  bottom: 0;
-  left: 0;
-  top: 0;
-  right: 0;
+.task-manager__tasks-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
 }
-.task-manager__container.fullscreen .task-manager__header {
-  padding: 48px 48px 24px;
-}
-.task-manager__container.fullscreen .task-manager__content {
-  max-width: 872px;
-  margin: 0 auto;
-}
-.task-manager__container.fullscreen .task-manager__content h2 {
-  padding-left: 0;
-  font-size: 40px;
-  line-height: 48px;
-  font-weight: 500;
-  margin-bottom: 60px;
-}
-@media (max-width: 639px) {
-  .task-manager__container.fullscreen .task-manager__header h2 {
-    display: block;
-    font-size: 24px;
-    font-weight: 500;
-    line-height: 28px;
-    letter-spacing: 0.6px;
-    padding-left: 16px;
+@media (max-width: 819px) {
+  .task-manager__tasks-grid {
+    grid-template-columns: repeat(1, 1fr);
   }
 }
-@media (max-width: 639px) and (max-width: 819px) {
-  .task-manager__container.fullscreen .task-manager__header h2 {
-    padding-left: 24px;
-  }
-}
-@media (max-width: 639px) {
-  .task-manager__container.fullscreen .task-manager__content h2 {
-    display: none;
-  }
-}
-@media (max-width: 639px) {
-  .task-manager__container.fullscreen .task-manager__header {
-    padding: 44px 16px 40px;
-  }
-  .task-manager__container.fullscreen .task-manager__content .task-manager__accordion-header {
-    font-size: 14px;
-  }
-  .task-manager__container.fullscreen .task-manager__content .task-manager__accordion-header div {
-    gap: 8px;
-  }
-  .task-manager__container.fullscreen .task-manager__content .task-manager__accordion-header .task-manager__status-pill {
-    font-size: 12px;
-    padding: 4px 12px;
-    border-radius: 32px;
-    color: #202543;
-  }
-  .task-manager__container.fullscreen .task-manager__content .task-manager__accordion-panel-divider {
-    display: none;
-  }
+
+.task-manager__task {
+  border-radius: 24px;
+  background-color: #f8f8f8;
+  padding: 16px;
 }
 
 .task-manager__notification-container {
@@ -2994,7 +2613,7 @@ button {
   overflow: hidden;
   background-color: #e09502;
   cursor: pointer;
-  z-index: 1;
+  z-index: 10;
 }
 .task-manager__notification-container.hidden {
   opacity: 0;
@@ -3030,11 +2649,11 @@ button {
   position: absolute;
   height: 100%;
   white-space: nowrap;
+  text-wrap: nowrap;
   display: flex;
   align-items: center;
   top: 0px;
   left: 202%;
-  text-wrap: nowrap;
   font-size: 16px;
   font-weight: 450;
   line-height: 20px;
@@ -3111,11 +2730,6 @@ button {
   overflow: hidden !important;
   overflow-x: auto !important;
   scroll-snap-type: x mandatory;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-.slider .slider__content::-webkit-scrollbar {
-  display: none;
 }
 .slider .slider__content .slider__img-container {
   scroll-snap-align: center;
@@ -3475,13 +3089,6 @@ button {
   overflow-x: scroll;
   scroll-snap-type: x mandatory;
   overflow-y: hidden;
-  -ms-overflow-style: none;
-  /* IE and Edge */
-  scrollbar-width: none;
-  /* Firefox */
-}
-.cardSlider__container .cardSlider__slider::-webkit-scrollbar {
-  display: none;
 }
 @media (max-width: 1279px) {
   .cardSlider__container .cardSlider__slider {
@@ -3584,19 +3191,11 @@ button {
   inset: 0;
   z-index: 3;
   padding: 20px 0;
-}
-
-@media (max-width: 819px) {
-  .heroBentoGrid__container {
-    padding: 20px 20px;
-  }
-}
-.heroBentoGrid__wrapper {
   max-width: 742px;
   padding: 0;
   margin: 0 auto;
 }
-.heroBentoGrid__wrapper h1 {
+.heroBentoGrid__container h1 {
   margin: 0;
   color: #202543;
   font-size: 48px;
@@ -3606,11 +3205,11 @@ button {
   /* 60px */
   letter-spacing: -0.4px;
 }
-.heroBentoGrid__wrapper h1 .overlay {
+.heroBentoGrid__container h1 .overlay {
   font-weight: 300;
   color: #b3bdce;
 }
-.heroBentoGrid__wrapper h3 {
+.heroBentoGrid__container h3 {
   margin: 0;
   color: #202543;
   font-size: 15px;
@@ -3618,7 +3217,7 @@ button {
   line-height: 20px;
   /* 133.333% */
 }
-.heroBentoGrid__wrapper h4 {
+.heroBentoGrid__container h4 {
   margin: 0;
   color: #202543;
   font-size: 9px;
@@ -3626,7 +3225,7 @@ button {
   line-height: 14px;
   /* 155.556% */
 }
-.heroBentoGrid__wrapper p {
+.heroBentoGrid__container p {
   margin: 6px 0 0;
   color: #676e7f;
   font-size: 13px;
@@ -3635,6 +3234,11 @@ button {
   /* 138.462% */
 }
 
+@media (max-width: 819px) {
+  .heroBentoGrid__container {
+    padding: 20px 20px;
+  }
+}
 .heroBentoGrid__header {
   display: flex;
   justify-content: space-between;
@@ -3652,7 +3256,9 @@ button {
   height: 5px;
   border-radius: 50%;
   background-color: #cdd5eb;
+  outline: 1px solid transparent;
   mix-blend-mode: overlay;
+  transition: all 0.3s cubic-bezier(0, 0, 0.58, 1);
 }
 .heroBentoGrid__indicators .indicator.active {
   outline: 1px solid white;
@@ -3661,10 +3267,13 @@ button {
 
 .heroBentoGrid__slider {
   display: flex;
+  gap: 4px;
   overflow-x: auto;
+  scroll-snap-type: x mandatory;
 }
 
 .heroBentoGrid__grid {
+  scroll-snap-align: start;
   flex-shrink: 0;
   width: 100%;
   display: grid;
@@ -3893,16 +3502,14 @@ button {
 .page-discussion .discussion__container .discussion__ai,
 .page-discussion .history__container .discussion__user,
 .page-discussion .history__container .discussion__ai {
-  font-family: "Noto Sans";
+  font-family: "SFPro";
   position: relative;
   overflow-wrap: anywhere;
   margin-bottom: 24px;
   line-height: 28px;
-  color: #00254e !important;
   font-feature-settings: "liga" off;
   font-size: 18px;
-  font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: 0.75px;
 }
 .page-discussion .discussion__container .discussion__user p,
@@ -3929,9 +3536,11 @@ button {
 }
 .page-discussion .discussion__container .discussion__userspan,
 .page-discussion .history__container .discussion__userspan {
-  background: rgba(0, 48, 100, 0.03);
   border-radius: 16px;
-  padding: 16px;
+  background: rgba(244, 244, 244, 0.55);
+  box-shadow: 0px 6px 30px 0px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 8px 16px;
   display: inline-block;
   text-align: left;
 }
@@ -3943,7 +3552,7 @@ button {
 }
 .page-discussion .discussion__container .discussion__user,
 .page-discussion .history__container .discussion__user {
-  color: rgba(0, 0, 0, 0.72);
+  color: black;
   text-align: right;
   margin-left: auto;
   padding-left: 112px;
@@ -3967,9 +3576,8 @@ button {
 }
 .page-discussion .discussion__container .discussion__ai,
 .page-discussion .history__container .discussion__ai {
-  color: black;
+  color: #676e7f;
   min-height: 24px;
-  padding-right: 112px;
 }
 .page-discussion .discussion__container .discussion__ai .text-beforeLink,
 .page-discussion .history__container .discussion__ai .text-beforeLink {
@@ -3983,8 +3591,7 @@ button {
 }
 .page-discussion .discussion__container .discussion__ai .AIword,
 .page-discussion .history__container .discussion__ai .AIword {
-  opacity: 0;
-  animation: fadeIn 0.2s cubic-bezier(0.42, 0, 1, 1) forwards;
+  filter: blur(1px);
 }
 .page-discussion .discussion__container .discussion__ai strong,
 .page-discussion .history__container .discussion__ai strong {
@@ -4006,8 +3613,7 @@ button {
 @media (max-width: 819px) {
   .page-discussion .discussion__container .discussion__ai,
 .page-discussion .history__container .discussion__ai {
-    padding-left: 20px;
-    padding-right: 48px;
+    padding: 0 20px;
     margin-right: unset;
   }
   .page-discussion .discussion__container .discussion__ai.discussion__ai--task-created,
@@ -4026,6 +3632,7 @@ button {
 }
 .page-discussion .discussion__container {
   min-height: calc(100vh - 96px);
+  margin-top: 96px;
   padding-bottom: 124px;
 }
 @media (max-width: 819px) {
@@ -4036,6 +3643,7 @@ button {
   }
 }
 .page-discussion .history__container {
+  padding-top: 0px;
   transition: opacity 200ms ease-in-out;
 }
 .page-discussion .history__container.visible {
@@ -4058,7 +3666,7 @@ button {
 }
 .page-discussion .discussion__sources-header,
 .page-discussion .discussion__images-header {
-  color: #00254e;
+  color: #676e7f;
   font-size: 12px;
   font-weight: 500;
   line-height: 100%;
@@ -4070,13 +3678,12 @@ button {
 .page-discussion .discussion__top-wrapper .sources-container {
   display: flex;
   flex-wrap: wrap;
-  row-gap: 16px;
-  column-gap: 24px;
+  gap: 12px;
 }
 .page-discussion .discussion__top-wrapper .sources-container .sources-item {
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: white;
   border-radius: 50px;
-  padding: 4px 12px 4px 4px;
+  padding: 8px 12px;
   font-size: 12px;
   line-height: 20px;
   text-decoration: none;
@@ -4132,6 +3739,134 @@ button {
 }
 .page-discussion .discussion__bottom-wrapper .discussion__images-container img:hover {
   cursor: pointer;
+}
+.page-discussion .flight-toggle-button-container {
+  display: flex;
+  margin-bottom: 24px;
+  font-family: "SFPro";
+  color: #00254e;
+}
+.page-discussion .flight-toggle-button {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.3s;
+}
+.page-discussion .flight-toggle-button.active {
+  border-radius: var(--24, 24px);
+  background: var(--B6-W8, rgba(0, 0, 0, 0.06));
+}
+.page-discussion .FlightContainer {
+  margin: 20px auto;
+  opacity: 0;
+  animation: fadeIn 0.3s ease-in-out forwards;
+  animation-delay: 1000ms;
+}
+.page-discussion .FlightContainer p {
+  margin: 0;
+}
+@media (max-width: 819px) {
+  .page-discussion .FlightContainer {
+    max-width: 348px;
+  }
+}
+.page-discussion .flightResult {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  width: 100%;
+}
+@media (max-width: 819px) {
+  .page-discussion .flightResult {
+    max-width: 348px;
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+.page-discussion .flightCard {
+  position: relative;
+  border-radius: 20px;
+  background: rgba(246, 246, 248, 0.5);
+  box-shadow: 0px 10px 30px 0px rgba(183, 183, 183, 0.25);
+  gap: 10px;
+}
+.page-discussion .flightCard__main {
+  border-radius: 20px;
+  border: 0.5px solid rgba(255, 255, 255, 0.4);
+  background: rgba(248, 248, 248, 0.5);
+  padding: 16px;
+  box-shadow: 0px 10px 30px -9px rgba(55, 69, 108, 0.1);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  /* 153.846% */
+  color: #817b93;
+}
+.page-discussion .flightCard__main > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.page-discussion .flightCard__duration {
+  opacity: 0.5;
+}
+.page-discussion .flightCard__main-body {
+  margin-top: 20px;
+  color: #202543;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 100%;
+}
+.page-discussion .flightCard__progress-line {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.page-discussion .flightCard__progress-line path {
+  fill: #dadfe7;
+}
+.page-discussion .flightCard__progress-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 6px;
+  background-color: #a8b6c8;
+}
+.page-discussion .flightCard__airline-logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 24px;
+}
+.page-discussion .flightCard__main-footer {
+  margin-top: 20px;
+  opacity: 0.5;
+}
+.page-discussion .flightCard__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: right;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  /* 153.846% */
+  color: #817b93;
+  padding: 10px 16px 12px;
+}
+.page-discussion .flightCard__footer .flightCard__price {
+  display: flex;
+  gap: 8px;
+}
+.page-discussion .flightCard__footer .flightCard__price-value {
+  color: #202543;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 20px;
+  /* 117.647% */
 }
 
 .page-assistant .logo {
@@ -4195,13 +3930,6 @@ button {
   position: relative;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  -ms-overflow-style: none;
-  /* IE and Edge */
-  scrollbar-width: none;
-  /* Firefox */
-}
-.page-phone .herobanners__container::-webkit-scrollbar {
-  display: none;
 }
 .page-phone .herobanners__container .herobanner__scroll-indicator-container {
   position: fixed;
@@ -5920,14 +5648,6 @@ button {
   scroll-snap-type: x mandatory;
   align-items: center;
   cursor: grab;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-.page-blog .blogSlider__slides-container::-webkit-scrollbar {
-  -webkit-appearance: none;
-  width: 0;
-  height: 0;
-  display: none;
 }
 .page-blog .blogSlider__slides-container.active {
   scroll-snap-type: none;
@@ -8075,13 +7795,6 @@ button {
   overflow-x: scroll;
   scroll-snap-type: x mandatory;
   overflow-y: hidden;
-  -ms-overflow-style: none;
-  /* IE and Edge */
-  scrollbar-width: none;
-  /* Firefox */
-}
-.preLoginContent__container .preLoginContent__slider::-webkit-scrollbar {
-  display: none;
 }
 @media (max-width: 1279px) {
   .preLoginContent__container .preLoginContent__slider {
