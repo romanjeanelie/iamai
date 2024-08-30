@@ -398,15 +398,28 @@ export default class TaskManager {
       this.fullscreenTaskContainer.appendChild(cardContainer);
       cardContainer.classList.add("fullscreen");
       this.currentTask = cardContainer.getAttribute("task-key") || 1;
+
+      gsap.to(cardContainer.children, {
+        autoAlpha: 0,
+        duration: 0.5,
+        stagger: 0.05,
+      });
       Flip.from(state, {
         duration: 0.5,
         delay: 0.5,
         absolute: true,
+        delay: 0.5,
       });
-      gsap.to(this.fullscreenTaskContainer, {
-        autoAlpha: 1,
-        duration: 0.5,
-      });
+      gsap.to(
+        this.fullscreenTaskContainer,
+        {
+          autoAlpha: 1,
+          duration: 0.5,
+        },
+        "<"
+      );
+
+      // show all the content of the card
     }
   }
 
