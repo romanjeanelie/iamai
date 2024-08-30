@@ -48,6 +48,9 @@ export default class TaskManager {
     this.html = document.documentElement;
     this.container = document.querySelector(".task-manager__container");
     this.tasksGrid = document.querySelector(".task-manager__tasks-grid");
+    this.taskCards = document.querySelectorAll(".task-manager__task-card");
+    this.fullscreenTaskContainer = document.querySelector(".task-manager__task-fullscreen");
+
     this.discussionContainer = document.querySelector(".discussion__wrapper");
 
     // States
@@ -56,7 +59,7 @@ export default class TaskManager {
     this.notificationTimeoutId = null;
     this.notificationDuration = 1500000;
     this.isInputFullscreen = false;
-    this.currentTask = null;
+    this.currentTask = undefined;
     this.isHistorySet = false;
 
     // Init Methods
@@ -216,7 +219,6 @@ export default class TaskManager {
 
   // ---------- Handling the task-manager states ----------
   initTaskManager() {
-    console.log("initTaskManager");
     gsap.set(this.container, {
       yPercent: 100,
     });
@@ -375,22 +377,37 @@ export default class TaskManager {
     taskCardIllustration.append(taskCardIllustrationBehind);
 
     this.tasksGrid.appendChild(cardContainer);
-    const currentTask = this.container.querySelector(".task-manager__current-task");
 
     cardContainer.addEventListener("click", () => {
-      const tl = gsap.timeline();
-
-      // Set opacity of all items inside the card to 0
-      tl.to(cardContainer.children, { opacity: 0, duration: 0.2 });
-
-      // Add Flip animation to the timeline
-      tl.add(() => {
-        Flip.fit(cardContainer, currentTask, {
-          scale: true,
-          duration: 0.5,
-        });
-      });
+      this.animateCardToFullscreen(cardContainer, currentTask);
     });
+  }
+
+  animateCardToFullscreen(cardContainer) {
+    if (this.currentTask !== undefined) {
+      const state = Flip.getState(cardContainer);
+      this.taskCards[this.currentTask].appendChild(cardContainer);
+      this.currentTask = undefined;
+      Flip.from(state, {
+        duration: 0.5,
+        absolute: true,
+      });
+    } else {
+      const state = Flip.getState(cardContainer);
+      this.container.appendChild(cardContainer);
+      this.fullscreenTaskContainer.appendChild(cardContainer);
+      cardContainer.classList.add("fullscreen");
+      this.currentTask = cardContainer.getAttribute("task-key") || 1;
+      Flip.from(state, {
+        duration: 0.5,
+        delay: 0.5,
+        absolute: true,
+      });
+      gsap.to(this.fullscreenTaskContainer, {
+        autoAlpha: 1,
+        duration: 0.5,
+      });
+    }
   }
 
   addStatus(key, statusWrapper, status) {
@@ -553,6 +570,11 @@ export default class TaskManager {
   }
 
   addListeners() {
+    this.taskCards.forEach((card) => {
+      card.addEventListener("click", () => this.animateCardToFullscreen(card));
+    });
+
+    // Prevent touch event bugs
     this.container.addEventListener("touchstart", (e) => {
       e.stopPropagation();
     });
