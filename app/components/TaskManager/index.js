@@ -346,49 +346,55 @@ export default class TaskManager {
   addTaskUI(data) {
     // Create elements
     const cardContainer = document.createElement("li");
-    cardContainer.setAttribute("task-key", data.key);
-    cardContainer.classList.add("task-manager__task-card");
+    cardContainer.classList.add("task-manager__task-card-container");
 
-    const taskCardContent = document.createElement("div");
-    taskCardContent.classList.add("task-manager__task-card-content");
-    cardContainer.appendChild(taskCardContent);
+    const card = document.createElement("div");
+    card.classList.add("task-manager__task-card");
+    card.setAttribute("task-key", data.key);
+    card.setAttribute("index", this.tasks.length - 1);
 
-    const headerTitle = document.createElement("h3");
-    headerTitle.classList.add("task-manager__task-card-title");
-    headerTitle.textContent = data.name;
-    taskCardContent.appendChild(headerTitle);
+    card.innerHTML = `
+      <div class="card-state">
+        <div class="task-manager__task-card-content">
+          <h3 class="task-manager__task-card-title">
+            ${data.name}
+          </h3>
 
-    const statusPill = document.createElement("div");
-    statusPill.classList.add("task-manager__task-status");
-    statusPill.style.background = STATUS_COLORS[data.status.type];
-    taskCardContent.appendChild(statusPill);
+          <div class="task-manager__task-status">
+            <p class="task-manager__task-status-label">
+              ${data.status.label || data.status.type}
+            </p>
+          </div>
+        </div>
+        <div class="task-manager__task-illustration">
+          <div class="task-manager__task-illustration-cover">
+          </div>
+          <div class="task-manager__task-illustration-behind">
+          </div>
+        </div>
+      </div>
 
-    const statusLabel = document.createElement("p");
-    statusLabel.classList.add("task-manager__task-status-label");
-    statusLabel.textContent = data.status.label || data.status.type;
-    statusPill.appendChild(statusLabel);
+      <div class="fullscreen-state">
+        <div class="discussion__userspan">
+          ${data.name}          
+        </div>
+      </div>
+    `;
 
-    const taskCardIllustration = document.createElement("div");
-    taskCardIllustration.classList.add("task-manager__task-illustration");
-    cardContainer.appendChild(taskCardIllustration);
-
-    const taskCardIllustrationCover = document.createElement("div");
-    taskCardIllustrationCover.classList.add("task-manager__task-card-illustration-cover");
-    taskCardIllustration.appendChild(taskCardIllustrationCover);
-
-    const taskCardIllustrationBehind = document.createElement("div");
-    taskCardIllustrationBehind.classList.add("task-manager__task-illustration-behind");
-    taskCardIllustration.append(taskCardIllustrationBehind);
-
+    cardContainer.appendChild(card);
     this.tasksGrid.appendChild(cardContainer);
 
-    cardContainer.addEventListener("click", () => {
-      this.animateCardToFullscreen(cardContainer, currentTask);
+    card.addEventListener("click", () => {
+      this.animateCardToFullscreen(card);
     });
   }
 
   animateCardToFullscreen(cardContainer) {
-    this.currentTask = cardContainer.getAttribute("task-key"); // we set the state of the current task
+    this.currentTask = {
+      key: cardContainer.getAttribute("task-key"),
+      index: cardContainer.getAttribute("index"),
+    }; // we set the state of the current task
+
     const cardState = cardContainer.querySelector(".card-state");
     const fullscreenState = cardContainer.querySelector(".fullscreen-state");
 
@@ -435,7 +441,8 @@ export default class TaskManager {
   }
 
   closeFullscreen(cardContainer) {
-    this.currentTask = undefined; // we reset the state of the current task
+    // we reset the state of the current task
+    const tasks = this.tasksGrid.querySelectorAll(".task-manager__task-card-container");
     const cardState = cardContainer.querySelector(".card-state");
     const fullscreenState = cardContainer.querySelector(".fullscreen-state");
 
@@ -446,7 +453,8 @@ export default class TaskManager {
     });
     tl.add(() => {
       const state = Flip.getState(cardContainer);
-      this.tasksGrid.appendChild(cardContainer);
+      tasks[this.currentTask.index].appendChild(cardContainer);
+      this.currentTask = undefined;
       fullscreenState.style.display = "none";
       cardState.style.display = "flex";
 
