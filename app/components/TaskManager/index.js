@@ -389,37 +389,42 @@ export default class TaskManager {
 
   animateCardToFullscreen(cardContainer) {
     this.currentTask = cardContainer.getAttribute("task-key"); // we set the state of the current task
-
-    // DOM ELEMENTS
     const cardState = cardContainer.querySelector(".card-state");
     const fullscreenState = cardContainer.querySelector(".fullscreen-state");
 
-    const state = Flip.getState(cardContainer);
-    this.fullscreenTaskContainer.appendChild(cardContainer);
+    const tl = gsap.timeline();
 
-    gsap.to(cardState, {
+    tl.to(cardState, {
       opacity: 0,
       duration: 0.2,
     });
-
-    Flip.from(state, {
-      duration: 0.5,
-      delay: 0.2,
-      absolute: true,
-      onComplete: () => {
-        fullscreenState.style.display = "flex";
-        cardState.style.display = "none";
-        gsap.to(fullscreenState, {
-          autoAlpha: 1,
-          duration: 0.2,
-        });
-        const flightCards = this.discussion.Chat.getFlightUI(flightSearchData, flightSearchResultsData);
-        const AIContainer = document.createElement("div");
-        AIContainer.classList.add("discussion__ai");
-        AIContainer.appendChild(flightCards);
-        fullscreenState.appendChild(AIContainer);
-      },
+    tl.add(() => {
+      const state = Flip.getState(cardContainer);
+      this.fullscreenTaskContainer.appendChild(cardContainer);
+      fullscreenState.style.display = "flex";
+      cardState.style.display = "none";
+      Flip.from(state, {
+        duration: 0.5,
+        absolute: true,
+        onComplete: () => {
+          // FOR DEMO PURPOSES ONLY
+          const flightCards = this.discussion.Chat.getFlightUI(flightSearchData, flightSearchResultsData);
+          const AIContainer = document.createElement("div");
+          AIContainer.classList.add("discussion__ai");
+          AIContainer.appendChild(flightCards);
+          fullscreenState.appendChild(AIContainer);
+          document.addEventListener("click", handleClickOutside);
+        },
+      });
     });
+    tl.to(
+      fullscreenState,
+      {
+        autoAlpha: 1,
+        duration: 0.5,
+      },
+      "<0.5"
+    );
 
     const handleClickOutside = (event) => {
       if (!this.fullscreenTaskContainer.contains(event.target)) {
@@ -427,8 +432,6 @@ export default class TaskManager {
         document.removeEventListener("click", handleClickOutside); // Clean up the event listener
       }
     };
-
-    document.addEventListener("click", handleClickOutside);
   }
 
   closeFullscreen(cardContainer) {
@@ -440,7 +443,6 @@ export default class TaskManager {
 
     tl.to(fullscreenState, {
       opacity: 0,
-      autoAlpha: 0,
     });
     tl.add(() => {
       const state = Flip.getState(cardContainer);
