@@ -407,7 +407,7 @@ export default class TaskManager {
         duration: 0.5,
         absolute: true,
         onComplete: () => {
-          // FOR DEMO PURPOSES ONLY
+          // FOR DEMO PURPOSES ONLY (adding the flight ui manually here)
           const flightCards = this.discussion.Chat.getFlightUI(flightSearchData, flightSearchResultsData);
           const AIContainer = document.createElement("div");
           AIContainer.classList.add("discussion__ai");
