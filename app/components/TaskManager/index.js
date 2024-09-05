@@ -389,13 +389,7 @@ export default class TaskManager {
 
   animateCardToFullscreen(cardContainer) {
     if (this.currentTask !== undefined) {
-      const state = Flip.getState(cardContainer);
-      this.taskCards[this.currentTask].appendChild(cardContainer);
-      this.currentTask = undefined;
-      Flip.from(state, {
-        duration: 0.5,
-        absolute: true,
-      });
+      this.closeFullscreen();
     } else {
       this.currentTask = cardContainer.getAttribute("task-key"); // we set the state of the current task
 
@@ -404,7 +398,7 @@ export default class TaskManager {
       const fullscreenState = cardContainer.querySelector(".fullscreen-state");
 
       const state = Flip.getState(cardContainer);
-      this.container.appendChild(cardContainer);
+      // this.container.appendChild(cardContainer);
       this.fullscreenTaskContainer.appendChild(cardContainer);
 
       gsap.to(cardState, {
@@ -418,6 +412,7 @@ export default class TaskManager {
         delay: 0.5,
         absolute: true,
         onComplete: () => {
+          cardContainer.classList.remove("card-state");
           cardContainer.classList.add("fullscreen");
           cardState.style.display = "none";
           fullscreenState.style.display = "flex";
@@ -433,8 +428,48 @@ export default class TaskManager {
         },
       });
 
-      // show all the content of the card
+      const handleClickOutside = (event) => {
+        if (!this.fullscreenTaskContainer.contains(event.target)) {
+          this.closeFullscreen(cardContainer); // Call a method to close the fullscreen
+          document.removeEventListener("click", handleClickOutside); // Clean up the event listener
+        }
+      };
+
+      document.addEventListener("click", handleClickOutside);
     }
+  }
+
+  closeFullscreen(cardContainer) {
+    this.currentTask = undefined; // we reset the state of the current task
+    const cardState = cardContainer.querySelector(".card-state");
+    const fullscreenState = cardContainer.querySelector(".fullscreen-state");
+
+    const tl = gsap.timeline();
+
+    tl.to(fullscreenState, {
+      opacity: 0,
+      autoAlpha: 0,
+    });
+    tl.add(() => {
+      const state = Flip.getState(cardContainer);
+      this.tasksGrid.appendChild(cardContainer);
+      cardContainer.classList.remove("fullscreen");
+      cardContainer.classList.add("card-state");
+      fullscreenState.style.display = "none";
+      cardState.style.display = "flex";
+
+      Flip.from(state, {
+        duration: 0.5,
+        delay: 0.5,
+        onComplete: () => {
+          gsap.to(cardState, {
+            autoAlpha: 1,
+            duration: 0.5,
+            stagger: 0.1,
+          });
+        },
+      });
+    });
   }
 
   addStatus(key, statusWrapper, status) {
