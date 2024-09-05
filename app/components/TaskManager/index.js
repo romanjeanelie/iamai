@@ -388,55 +388,47 @@ export default class TaskManager {
   }
 
   animateCardToFullscreen(cardContainer) {
-    if (this.currentTask !== undefined) {
-      this.closeFullscreen();
-    } else {
-      this.currentTask = cardContainer.getAttribute("task-key"); // we set the state of the current task
+    this.currentTask = cardContainer.getAttribute("task-key"); // we set the state of the current task
 
-      // DOM ELEMENTS
-      const cardState = cardContainer.querySelector(".card-state");
-      const fullscreenState = cardContainer.querySelector(".fullscreen-state");
+    // DOM ELEMENTS
+    const cardState = cardContainer.querySelector(".card-state");
+    const fullscreenState = cardContainer.querySelector(".fullscreen-state");
 
-      const state = Flip.getState(cardContainer);
-      // this.container.appendChild(cardContainer);
-      this.fullscreenTaskContainer.appendChild(cardContainer);
+    const state = Flip.getState(cardContainer);
+    this.fullscreenTaskContainer.appendChild(cardContainer);
 
-      gsap.to(cardState, {
-        autoAlpha: 0,
-        duration: 0.5,
-        stagger: 0.1,
-      });
+    gsap.to(cardState, {
+      opacity: 0,
+      duration: 0.2,
+    });
 
-      Flip.from(state, {
-        duration: 0.5,
-        delay: 0.5,
-        absolute: true,
-        onComplete: () => {
-          cardContainer.classList.remove("card-state");
-          cardContainer.classList.add("fullscreen");
-          cardState.style.display = "none";
-          fullscreenState.style.display = "flex";
-          gsap.to(fullscreenState, {
-            autoAlpha: 1,
-            duration: 0.2,
-          });
-          const flightCards = this.discussion.Chat.getFlightUI(flightSearchData, flightSearchResultsData);
-          const AIContainer = document.createElement("div");
-          AIContainer.classList.add("discussion__ai");
-          AIContainer.appendChild(flightCards);
-          fullscreenState.appendChild(AIContainer);
-        },
-      });
+    Flip.from(state, {
+      duration: 0.5,
+      delay: 0.2,
+      absolute: true,
+      onComplete: () => {
+        fullscreenState.style.display = "flex";
+        cardState.style.display = "none";
+        gsap.to(fullscreenState, {
+          autoAlpha: 1,
+          duration: 0.2,
+        });
+        const flightCards = this.discussion.Chat.getFlightUI(flightSearchData, flightSearchResultsData);
+        const AIContainer = document.createElement("div");
+        AIContainer.classList.add("discussion__ai");
+        AIContainer.appendChild(flightCards);
+        fullscreenState.appendChild(AIContainer);
+      },
+    });
 
-      const handleClickOutside = (event) => {
-        if (!this.fullscreenTaskContainer.contains(event.target)) {
-          this.closeFullscreen(cardContainer); // Call a method to close the fullscreen
-          document.removeEventListener("click", handleClickOutside); // Clean up the event listener
-        }
-      };
+    const handleClickOutside = (event) => {
+      if (!this.fullscreenTaskContainer.contains(event.target)) {
+        this.closeFullscreen(cardContainer); // Call a method to close the fullscreen
+        document.removeEventListener("click", handleClickOutside); // Clean up the event listener
+      }
+    };
 
-      document.addEventListener("click", handleClickOutside);
-    }
+    document.addEventListener("click", handleClickOutside);
   }
 
   closeFullscreen(cardContainer) {
@@ -453,8 +445,6 @@ export default class TaskManager {
     tl.add(() => {
       const state = Flip.getState(cardContainer);
       this.tasksGrid.appendChild(cardContainer);
-      cardContainer.classList.remove("fullscreen");
-      cardContainer.classList.add("card-state");
       fullscreenState.style.display = "none";
       cardState.style.display = "flex";
 
