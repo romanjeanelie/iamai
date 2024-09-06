@@ -35,6 +35,7 @@ function () {
     this.emitter = emitter;
     this.tasksGrid = document.querySelector(".task-manager__tasks-grid");
     this.fullscreenContainer = document.querySelector(".task-manager__task-fullscreen");
+    this.handleClickOutside = this.handleClickOutside.bind(this);
     this.initUI();
     this.addEventListeners();
   }
@@ -89,7 +90,7 @@ function () {
             AIContainer.classList.add("discussion__ai");
             AIContainer.appendChild(flightCards);
             fullscreenState.appendChild(AIContainer);
-            document.addEventListener("click", _this.handleClickOutside.bind(_this));
+            document.addEventListener("click", _this.handleClickOutside);
           }
         });
       });
@@ -102,9 +103,8 @@ function () {
     key: "handleClickOutside",
     value: function handleClickOutside(event) {
       if (!this.fullscreenContainer.contains(event.target)) {
-        console.log("click outside");
         this.closeFullscreen();
-        document.removeEventListener("click", this.handleClickOutside.bind(this));
+        document.removeEventListener("click", this.handleClickOutside);
       }
     }
   }, {

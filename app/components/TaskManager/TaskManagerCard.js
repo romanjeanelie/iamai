@@ -15,6 +15,8 @@ export default class TaskManagerCard {
     this.tasksGrid = document.querySelector(".task-manager__tasks-grid");
     this.fullscreenContainer = document.querySelector(".task-manager__task-fullscreen");
 
+    this.handleClickOutside = this.handleClickOutside.bind(this);
+
     this.initUI();
     this.addEventListeners();
   }
@@ -89,7 +91,7 @@ export default class TaskManagerCard {
           AIContainer.classList.add("discussion__ai");
           AIContainer.appendChild(flightCards);
           fullscreenState.appendChild(AIContainer);
-          document.addEventListener("click", this.handleClickOutside.bind(this));
+          document.addEventListener("click", this.handleClickOutside);
         },
       });
     });
@@ -105,9 +107,8 @@ export default class TaskManagerCard {
 
   handleClickOutside(event) {
     if (!this.fullscreenContainer.contains(event.target)) {
-      console.log("click outside");
       this.closeFullscreen();
-      document.removeEventListener("click", this.handleClickOutside.bind(this));
+      document.removeEventListener("click", this.handleClickOutside);
     }
   }
 
