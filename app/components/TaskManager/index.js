@@ -1,6 +1,7 @@
 import gsap from "gsap";
 import Flip from "gsap/Flip";
-import { flightSearchData, flightSearchResultsData } from "../../../testData";
+
+import TaskManagerCard from "./TaskManagerCard";
 
 const STATES = {
   CLOSED: "closed",
@@ -49,11 +50,7 @@ export default class TaskManager {
     // DOM Elements
     this.html = document.documentElement;
     this.container = document.querySelector(".task-manager__container");
-    this.tasksGrid = document.querySelector(".task-manager__tasks-grid");
     this.taskCards = document.querySelectorAll(".task-manager__task-card");
-    this.fullscreenTaskContainer = document.querySelector(".task-manager__task-fullscreen");
-
-    this.discussionContainer = document.querySelector(".discussion__wrapper");
 
     // States
     this.tasks = [];
@@ -82,8 +79,6 @@ export default class TaskManager {
     if (this.debug) {
       this.setupDebug();
       this.navigation.toggleTasks();
-      const flightCard = this.tasksGrid.querySelector('[task-key="1"]');
-      // this.animateCardToFullscreen(flightCard);
     }
   }
 
@@ -343,135 +338,6 @@ export default class TaskManager {
   }
 
   // ---------- Update the tasks UI  ----------
-  addTaskUI(data) {
-    // Create elements
-    const cardContainer = document.createElement("li");
-    cardContainer.classList.add("task-manager__task-card-container");
-
-    const card = document.createElement("div");
-    card.classList.add("task-manager__task-card");
-    card.setAttribute("task-key", data.key);
-    card.setAttribute("index", this.tasks.length - 1);
-
-    card.innerHTML = `
-      <div class="card-state">
-        <div class="task-manager__task-card-content">
-          <h3 class="task-manager__task-card-title">
-            ${data.name}
-          </h3>
-
-          <div class="task-manager__task-status">
-            <p class="task-manager__task-status-label">
-              ${data.status.label || data.status.type}
-            </p>
-          </div>
-        </div>
-        <div class="task-manager__task-illustration">
-          <div class="task-manager__task-illustration-cover">
-          </div>
-          <div class="task-manager__task-illustration-behind">
-          </div>
-        </div>
-      </div>
-
-      <div class="fullscreen-state">
-        <div class="discussion__userspan">
-          ${data.name}          
-        </div>
-      </div>
-    `;
-
-    cardContainer.appendChild(card);
-    this.tasksGrid.appendChild(cardContainer);
-
-    card.addEventListener("click", () => {
-      this.animateCardToFullscreen(card);
-    });
-  }
-
-  animateCardToFullscreen(cardContainer) {
-    this.currentTask = {
-      key: cardContainer.getAttribute("task-key"),
-      index: cardContainer.getAttribute("index"),
-    }; // we set the state of the current task
-
-    const cardState = cardContainer.querySelector(".card-state");
-    const fullscreenState = cardContainer.querySelector(".fullscreen-state");
-
-    const tl = gsap.timeline();
-
-    tl.to(cardState, {
-      opacity: 0,
-      duration: 0.2,
-    });
-    tl.add(() => {
-      const state = Flip.getState(cardContainer);
-      this.fullscreenTaskContainer.appendChild(cardContainer);
-      fullscreenState.style.display = "flex";
-      cardState.style.display = "none";
-      Flip.from(state, {
-        duration: 0.5,
-        absolute: true,
-        onComplete: () => {
-          // FOR DEMO PURPOSES ONLY (adding the flight ui manually here)
-          const flightCards = this.discussion.Chat.getFlightUI(flightSearchData, flightSearchResultsData);
-          const AIContainer = document.createElement("div");
-          AIContainer.classList.add("discussion__ai");
-          AIContainer.appendChild(flightCards);
-          fullscreenState.appendChild(AIContainer);
-          document.addEventListener("click", handleClickOutside);
-        },
-      });
-    });
-    tl.to(
-      fullscreenState,
-      {
-        autoAlpha: 1,
-        duration: 0.5,
-      },
-      "<0.5"
-    );
-
-    const handleClickOutside = (event) => {
-      if (!this.fullscreenTaskContainer.contains(event.target)) {
-        this.closeFullscreen(cardContainer); // Call a method to close the fullscreen
-        document.removeEventListener("click", handleClickOutside); // Clean up the event listener
-      }
-    };
-  }
-
-  closeFullscreen(cardContainer) {
-    // we reset the state of the current task
-    const tasks = this.tasksGrid.querySelectorAll(".task-manager__task-card-container");
-    const cardState = cardContainer.querySelector(".card-state");
-    const fullscreenState = cardContainer.querySelector(".fullscreen-state");
-
-    const tl = gsap.timeline();
-
-    tl.to(fullscreenState, {
-      opacity: 0,
-    });
-    tl.add(() => {
-      const state = Flip.getState(cardContainer);
-      tasks[this.currentTask.index].appendChild(cardContainer);
-      this.currentTask = undefined;
-      fullscreenState.style.display = "none";
-      cardState.style.display = "flex";
-
-      Flip.from(state, {
-        duration: 0.5,
-        delay: 0.5,
-        onComplete: () => {
-          gsap.to(cardState, {
-            autoAlpha: 1,
-            duration: 0.5,
-            stagger: 0.1,
-          });
-        },
-      });
-    });
-  }
-
   addStatus(key, statusWrapper, status) {
     const divider = document.createElement("div");
     divider.classList.add("task-manager__accordion-panel-divider");
@@ -599,7 +465,8 @@ export default class TaskManager {
   // ---------- Handling the tasks ----------
   createTask(task) {
     this.tasks.push(task);
-    this.addTaskUI(task);
+    const index = this.tasks.length - 1;
+    new TaskManagerCard(task, index, this.discussion, this.emitter);
   }
 
   deleteTask(taskKey) {
