@@ -11,6 +11,8 @@ var _Flip = _interopRequireDefault(require("gsap/Flip"));
 
 var _testData = require("../../../testData");
 
+var _FlightUI = require("../UI/FlightUI");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -82,11 +84,11 @@ function () {
           absolute: true,
           onComplete: function onComplete() {
             // FOR DEMO PURPOSES ONLY (adding the flight ui manually here)
-            // const flightCards = this.discussion.Chat.getFlightUI(flightSearchData, flightSearchResultsData);
-            // const AIContainer = document.createElement("div");
-            // AIContainer.classList.add("discussion__ai");
-            // AIContainer.appendChild(flightCards);
-            // fullscreenState.appendChild(AIContainer);
+            var flightCards = new _FlightUI.FlightUI(_testData.flightSearchData, _testData.flightSearchResultsData).getElement();
+            var AIContainer = document.createElement("div");
+            AIContainer.classList.add("discussion__ai");
+            AIContainer.appendChild(flightCards);
+            fullscreenState.appendChild(AIContainer);
             document.addEventListener("click", _this.handleClickOutside.bind(_this));
           }
         });
@@ -100,6 +102,7 @@ function () {
     key: "handleClickOutside",
     value: function handleClickOutside(event) {
       if (!this.fullscreenContainer.contains(event.target)) {
+        console.log("click outside");
         this.closeFullscreen();
         document.removeEventListener("click", this.handleClickOutside.bind(this));
       }

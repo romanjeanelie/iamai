@@ -1,6 +1,7 @@
 import gsap from "gsap";
 import Flip from "gsap/Flip";
 import { flightSearchData, flightSearchResultsData } from "../../../testData";
+import { FlightUI } from "../UI/FlightUI";
 
 gsap.registerPlugin(Flip);
 
@@ -83,11 +84,11 @@ export default class TaskManagerCard {
         absolute: true,
         onComplete: () => {
           // FOR DEMO PURPOSES ONLY (adding the flight ui manually here)
-          // const flightCards = this.discussion.Chat.getFlightUI(flightSearchData, flightSearchResultsData);
-          // const AIContainer = document.createElement("div");
-          // AIContainer.classList.add("discussion__ai");
-          // AIContainer.appendChild(flightCards);
-          // fullscreenState.appendChild(AIContainer);
+          const flightCards = new FlightUI(flightSearchData, flightSearchResultsData).getElement();
+          const AIContainer = document.createElement("div");
+          AIContainer.classList.add("discussion__ai");
+          AIContainer.appendChild(flightCards);
+          fullscreenState.appendChild(AIContainer);
           document.addEventListener("click", this.handleClickOutside.bind(this));
         },
       });
@@ -104,6 +105,7 @@ export default class TaskManagerCard {
 
   handleClickOutside(event) {
     if (!this.fullscreenContainer.contains(event.target)) {
+      console.log("click outside");
       this.closeFullscreen();
       document.removeEventListener("click", this.handleClickOutside.bind(this));
     }
