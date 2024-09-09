@@ -1,6 +1,7 @@
 import gsap from "gsap";
 import Flip from "gsap/Flip";
 
+import TaskManagerButton from "./TaskManagerButton";
 import TaskManagerCard from "./TaskManagerCard";
 
 export const TASK_STATUSES = {
@@ -56,6 +57,7 @@ export default class TaskManager {
     this.isHistorySet = false;
 
     // Init Methods
+    this.button = new TaskManagerButton(this.tasks, this.emitter);
     this.initTaskManager();
     this.addListeners();
 
@@ -167,62 +169,11 @@ export default class TaskManager {
     });
   }
 
-  // ---------- Handling the task-manager button ----------
-  getButtonColor() {
-    // order of priority for the color of the button
-    const order = [TASK_STATUSES.COMPLETED, TASK_STATUSES.INPUT_REQUIRED, TASK_STATUSES.IN_PROGRESS];
-    for (const status of order) {
-      // the first status found in the tasks array will be the color of the button
-      if (this.tasks.some((task) => task.status.type === status)) {
-        if (status === TASK_STATUSES.COMPLETED) {
-          this.button.classList.add("completed");
-        } else {
-          this.button.classList.remove("completed");
-        }
-
-        return STATUS_COLORS[status];
-      }
-    }
-  }
-
-  initializeButton() {
-    this.button.classList.remove("hidden");
-    this.updateButton();
-  }
-
-  updateButton() {
-    this.button.innerHTML = this.tasks.length;
-    this.button.style.backgroundColor = this.getButtonColor();
-  }
-
-  removeButton() {
-    this.button.classList.add("hidden");
-  }
-
-  handleButton() {
-    // only function to be called to deal with button
-    if (this.tasks.length === 0) {
-      this.removeButton();
-    } else if (this.tasks.length === 1) {
-      this.initializeButton();
-    } else {
-      this.updateButton();
-    }
-  }
-
   // ---------- Handling the task-manager states ----------
   initTaskManager() {
     gsap.set(this.container, {
       yPercent: 100,
     });
-  }
-
-  blockScroll() {
-    this.html.classList.add("no-scroll");
-  }
-
-  unblockScroll() {
-    this.html.classList.remove("no-scroll");
   }
 
   // ---------- Handling the notification pill ----------
@@ -332,10 +283,7 @@ export default class TaskManager {
   }
 
   // ---------- Update the tasks UI  ----------
-  deleteTaskUI(key) {
-    // const task = this.accordionContainer.querySelector(`[task-key="${key}"]`);
-    // task.remove();
-  }
+  deleteTaskUI(key) {}
 
   // ---------- Handling the input ----------
   addInput(key, statusContainer) {
