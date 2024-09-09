@@ -28,12 +28,11 @@ _gsap["default"].registerPlugin(_Flip["default"]);
 var TaskManagerCard =
 /*#__PURE__*/
 function () {
-  function TaskManagerCard(task, index, discussion, emitter) {
+  function TaskManagerCard(task, index, emitter) {
     _classCallCheck(this, TaskManagerCard);
 
     this.task = task;
     this.index = index;
-    this.discussion = discussion;
     this.emitter = emitter;
     this.tasksGrid = document.querySelector(".task-manager__tasks-grid");
     this.fullscreenContainer = document.querySelector(".task-manager__task-fullscreen");

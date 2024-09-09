@@ -335,7 +335,7 @@ export default class TaskManager {
   createTask(task) {
     this.tasks.push(task);
     const index = this.tasks.length - 1;
-    new TaskManagerCard(task, index, this.discussion, this.emitter);
+    new TaskManagerCard(task, index, this.emitter);
   }
 
   deleteTask(taskKey) {

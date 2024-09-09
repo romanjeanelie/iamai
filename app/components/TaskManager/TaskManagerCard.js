@@ -7,10 +7,9 @@ import { STATUS_COLORS, TASK_STATUSES } from ".";
 gsap.registerPlugin(Flip);
 
 export default class TaskManagerCard {
-  constructor(task, index, discussion, emitter) {
+  constructor(task, index, emitter) {
     this.task = task;
     this.index = index;
-    this.discussion = discussion;
     this.emitter = emitter;
 
     this.tasksGrid = document.querySelector(".task-manager__tasks-grid");
