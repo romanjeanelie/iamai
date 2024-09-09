@@ -2,7 +2,7 @@ import { TASK_STATUSES, STATUS_COLORS } from "./index";
 
 export default class TaskManagerButton {
   constructor() {
-    this.button = 
+    this.button = document.querySelector(".");
   }
 
   getButtonColor() {

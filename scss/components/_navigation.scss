@@ -95,6 +95,10 @@
     bottom: $paddingBottom;
   }
 
+  .footer-nav__tasks-container {
+    position: relative;
+  }
+
   .nav__wrapper {
     display: flex;
     justify-content: space-between;

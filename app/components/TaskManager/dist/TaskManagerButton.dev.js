@@ -20,6 +20,8 @@ var TaskManagerButton =
 function () {
   function TaskManagerButton() {
     _classCallCheck(this, TaskManagerButton);
+
+    this.button = document.querySelector(".");
   }
 
   _createClass(TaskManagerButton, [{
@@ -65,7 +67,7 @@ function () {
     key: "updateButton",
     value: function updateButton() {
       this.button.innerHTML = this.tasks.length;
-      this.button.style.backgroundColor = this.getButtonColor();
+      this.button.style.background = this.getButtonColor();
     }
   }, {
     key: "removeButton",
