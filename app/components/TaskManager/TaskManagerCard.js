@@ -2,6 +2,7 @@ import gsap from "gsap";
 import Flip from "gsap/Flip";
 import { flightSearchData, flightSearchResultsData } from "../../../testData";
 import { FlightUI } from "../UI/FlightUI";
+import { STATUS_COLORS, TASK_STATUSES } from ".";
 
 gsap.registerPlugin(Flip);
 
@@ -21,6 +22,7 @@ export default class TaskManagerCard {
     this.addEventListeners();
   }
 
+  // Create the card element
   initUI() {
     this.cardContainer = document.createElement("li");
     this.cardContainer.classList.add("task-manager__task-card-container");
@@ -58,14 +60,36 @@ export default class TaskManagerCard {
       </div>
     `;
 
+    this.cardState = this.card.querySelector(".card-state");
+    this.fullscreenState = this.card.querySelector(".fullscreen-state");
+    this.statusPill = this.card.querySelector(".task-manager__task-status");
+    this.statusPillLabel = this.card.querySelector(".task-manager__task-status-label");
+
     this.cardContainer.appendChild(this.card);
     this.tasksGrid.appendChild(this.cardContainer);
   }
 
-  getElement() {
-    return this.cardContainer;
+  // Update the state
+  addStatus(key, statusWrapper, status) {
+    console.log(this.task);
   }
 
+  addResult() {
+    console.log(this.task);
+  }
+
+  updateTaskUI(key, status) {
+    this.statusPillLabel = status.type;
+    this.statusPill.backgroundColor = STATUS_COLORS[status.type];
+    if (status.type === TASK_STATUSES.COMPLETED) {
+      // ADD THE RESULT OF THE TASK SEARCH HERE
+      this.addResult();
+    } else {
+      this.addStatus();
+    }
+  }
+
+  // From card to fullscreen
   animateCardToFullscreen() {
     const cardState = this.card.querySelector(".card-state");
     const fullscreenState = this.card.querySelector(".fullscreen-state");
@@ -105,13 +129,6 @@ export default class TaskManagerCard {
     );
   }
 
-  handleClickOutside(event) {
-    if (!this.fullscreenContainer.contains(event.target)) {
-      this.closeFullscreen();
-      document.removeEventListener("click", this.handleClickOutside);
-    }
-  }
-
   closeFullscreen() {
     const tasks = this.tasksGrid.querySelectorAll(".task-manager__task-card-container");
 
@@ -143,9 +160,27 @@ export default class TaskManagerCard {
     });
   }
 
+  // Close fullscreen when clicking outside the fullscreen container
+  handleClickOutside(event) {
+    if (!this.fullscreenContainer.contains(event.target)) {
+      this.closeFullscreen();
+      document.removeEventListener("click", this.handleClickOutside);
+    }
+  }
+
   addEventListeners() {
     this.card.addEventListener("click", () => {
       this.animateCardToFullscreen();
     });
+
+    this.emitter.on("taskManager:updateStatus", (taskKey, status, container, workflowID) => {
+      if (this.task.key === taskKey) {
+        this.updateTaskUI(taskKey, status, container, workflowID);
+      }
+    });
+  }
+
+  getElement() {
+    return this.cardContainer;
   }
 }

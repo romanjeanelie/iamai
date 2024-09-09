@@ -374,8 +374,6 @@ export default class Discussion {
     this.Chat.submituserreply(text, task.workflowID);
   }
 
-  onStatusUpdate(taskKey, status) {}
-
   async onRemoveTask(taskKey) {
     // Post delete task
     const params = {
@@ -396,41 +394,6 @@ export default class Discussion {
 
     userContainer.remove();
     AIContainer.remove();
-  }
-
-  async viewTaskResults(task, resultsContainer) {
-    if (!resultsContainer) return;
-    const userContainer = this.discussionWrapper.querySelector(`.discussion__user[taskkey="${task.key}"]`);
-    const AIContainer = this.discussionWrapper.querySelector(`.discussion__ai[taskkey="${task.key}"]`);
-    if (userContainer) userContainer.style.display = "none";
-    if (AIContainer) AIContainer.style.display = "none";
-
-    // Reput user question
-    this.userContainer = document.createElement("div");
-    this.userContainer.classList.add("discussion__user");
-    var userContainerspan = document.createElement("span");
-    userContainerspan.classList.add("discussion__userspan");
-    userContainerspan.innerHTML = task.name;
-    this.userContainer.appendChild(userContainerspan);
-    // this.userContainer.innerHTML = task.name;
-
-    // Add AI results
-    this.AIContainer = document.createElement("div");
-    this.AIContainer.classList.add("discussion__ai");
-    this.AIContainer.appendChild(resultsContainer);
-
-    this.moveChildrenToPrevContainer();
-
-    this.discussionContainer.appendChild(this.userContainer);
-    this.discussionContainer.appendChild(this.AIContainer);
-
-    // Update task to viewed
-    const response = await this.history.postViewTask({
-      uuid: this.uuid,
-      micro_thread_id: task.key,
-      session_id: this.Chat.sessionID,
-      idToken: await this.user.user.getIdToken(true),
-    });
   }
 
   checkIfPrevDiscussionContainerVisible() {
@@ -469,11 +432,7 @@ export default class Discussion {
     });
 
     this.emitter.on("taskManager:createTask", (task, textAI) => this.onCreatedTask(task, textAI));
-    this.emitter.on("taskManager:updateStatus", (taskKey, status) => this.onStatusUpdate(taskKey, status));
     this.emitter.on("taskManager:inputSubmit", (text, task) => this.onUserAnswerTask(text, task));
     this.emitter.on("taskManager:deleteTask", (taskKey) => this.onRemoveTask(taskKey));
-    this.emitter.on("taskManager:viewResults", (task, resultsContainer) =>
-      this.viewTaskResults(task, resultsContainer)
-    );
   }
 }

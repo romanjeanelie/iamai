@@ -13,6 +13,8 @@ var _testData = require("../../../testData");
 
 var _FlightUI = require("../UI/FlightUI");
 
+var _ = require(".");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -38,7 +40,8 @@ function () {
     this.handleClickOutside = this.handleClickOutside.bind(this);
     this.initUI();
     this.addEventListeners();
-  }
+  } // Create the card element
+
 
   _createClass(TaskManagerCard, [{
     key: "initUI",
@@ -50,14 +53,38 @@ function () {
       this.card.setAttribute("task-key", this.task.key);
       this.card.setAttribute("index", this.index);
       this.card.innerHTML = "\n      <div class=\"card-state\">\n        <div class=\"task-manager__task-card-content\">\n          <h3 class=\"task-manager__task-card-title\">\n            ".concat(this.task.name, "\n          </h3>\n\n          <div class=\"task-manager__task-status\">\n            <p class=\"task-manager__task-status-label\">\n              ").concat(this.task.status.label || this.task.status.type, "\n            </p>\n          </div>\n        </div>\n        <div class=\"task-manager__task-illustration\">\n          <div class=\"task-manager__task-illustration-cover\">\n          </div>\n          <div class=\"task-manager__task-illustration-behind\">\n          </div>\n        </div>\n      </div>\n\n      <div class=\"fullscreen-state\">\n        <div class=\"discussion__userspan\">\n          ").concat(this.task.name, "          \n        </div>\n      </div>\n    ");
+      this.cardState = this.card.querySelector(".card-state");
+      this.fullscreenState = this.card.querySelector(".fullscreen-state");
+      this.statusPill = this.card.querySelector(".task-manager__task-status");
+      this.statusPillLabel = this.card.querySelector(".task-manager__task-status-label");
       this.cardContainer.appendChild(this.card);
       this.tasksGrid.appendChild(this.cardContainer);
+    } // Update the state
+
+  }, {
+    key: "addStatus",
+    value: function addStatus(key, statusWrapper, status) {
+      console.log(this.task);
     }
   }, {
-    key: "getElement",
-    value: function getElement() {
-      return this.cardContainer;
+    key: "addResult",
+    value: function addResult() {
+      console.log(this.task);
     }
+  }, {
+    key: "updateTaskUI",
+    value: function updateTaskUI(key, status) {
+      this.statusPillLabel = status.type;
+      this.statusPill.backgroundColor = _.STATUS_COLORS[status.type];
+
+      if (status.type === _.TASK_STATUSES.COMPLETED) {
+        // ADD THE RESULT OF THE TASK SEARCH HERE
+        this.addResult();
+      } else {
+        this.addStatus();
+      }
+    } // From card to fullscreen
+
   }, {
     key: "animateCardToFullscreen",
     value: function animateCardToFullscreen() {
@@ -100,14 +127,6 @@ function () {
       }, "<0.5");
     }
   }, {
-    key: "handleClickOutside",
-    value: function handleClickOutside(event) {
-      if (!this.fullscreenContainer.contains(event.target)) {
-        this.closeFullscreen();
-        document.removeEventListener("click", this.handleClickOutside);
-      }
-    }
-  }, {
     key: "closeFullscreen",
     value: function closeFullscreen() {
       var _this2 = this;
@@ -141,6 +160,15 @@ function () {
           }
         });
       });
+    } // Close fullscreen when clicking outside the fullscreen container
+
+  }, {
+    key: "handleClickOutside",
+    value: function handleClickOutside(event) {
+      if (!this.fullscreenContainer.contains(event.target)) {
+        this.closeFullscreen();
+        document.removeEventListener("click", this.handleClickOutside);
+      }
     }
   }, {
     key: "addEventListeners",
@@ -150,6 +178,16 @@ function () {
       this.card.addEventListener("click", function () {
         _this3.animateCardToFullscreen();
       });
+      this.emitter.on("taskManager:updateStatus", function (taskKey, status, container, workflowID) {
+        if (_this3.task.key === taskKey) {
+          _this3.updateTaskUI(taskKey, status, container, workflowID);
+        }
+      });
+    }
+  }, {
+    key: "getElement",
+    value: function getElement() {
+      return this.cardContainer;
     }
   }]);
 

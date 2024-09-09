@@ -14,7 +14,7 @@ export const TASK_STATUSES = {
   COMPLETED: "View Results",
 };
 
-const STATUS_COLORS = {
+export const STATUS_COLORS = {
   [TASK_STATUSES.IN_PROGRESS]: "rgba(149, 159, 177, 0.14)",
   [TASK_STATUSES.INPUT_REQUIRED]:
     "linear-gradient(70deg, rgba(227, 207, 28, 0.30) -10.29%, rgba(225, 135, 30, 0.30) 105%)",
@@ -338,82 +338,9 @@ export default class TaskManager {
   }
 
   // ---------- Update the tasks UI  ----------
-  addStatus(key, statusWrapper, status) {
-    const divider = document.createElement("div");
-    divider.classList.add("task-manager__accordion-panel-divider");
-
-    const statusContainerDiv = document.createElement("div");
-    statusContainerDiv.classList.add("task-manager__status-container");
-
-    const statusTitleP = document.createElement("p");
-    statusTitleP.classList.add("task-manager__status-title");
-    statusTitleP.textContent = status.title;
-
-    const statusDescriptionP = document.createElement("p");
-    statusDescriptionP.classList.add("task-manager__status-description");
-    statusDescriptionP.textContent = status.description;
-
-    statusContainerDiv.appendChild(statusTitleP);
-    statusContainerDiv.appendChild(statusDescriptionP);
-
-    if (status.type === TASK_STATUSES.INPUT_REQUIRED) {
-      this.addInput(key, statusContainerDiv);
-    }
-
-    statusWrapper.appendChild(divider);
-    statusWrapper.appendChild(statusContainerDiv);
-    if (this.currentTask === key) {
-      this.goToPanel(key);
-    }
-  }
-
-  addOnlyStatusTitle(key, statusWrapper, status) {
-    const divider = document.createElement("div");
-    divider.classList.add("task-manager__accordion-panel-divider");
-
-    const statusContainerDiv = document.createElement("div");
-    statusContainerDiv.classList.add("task-manager__status-container");
-
-    const statusTitleP = document.createElement("p");
-    statusTitleP.classList.add("task-manager__status-title");
-    statusTitleP.textContent = status.title;
-
-    statusContainerDiv.appendChild(statusTitleP);
-
-    statusWrapper.appendChild(divider);
-    statusWrapper.appendChild(statusContainerDiv);
-    this.goToPanel(key);
-  }
-
-  // TO DO NEW WAY
-  updateTaskUI(key, status) {
-    // const task = this.accordionContainer.querySelector(`[task-key="${key}"]`);
-    // const header = task.querySelector(".task-manager__accordion-header");
-    // const statusPill = header.querySelector(".task-manager__status-pill");
-    // statusPill.innerText = status.type;
-    // statusPill.style.backgroundColor = STATUS_COLORS[status.type];
-    // const statusWrapper = task.querySelector(".task-manager__status-wrapper");
-    // const buttonDelete = task.querySelector(".task-manager__delete-btn");
-    // if (status.type === TASK_STATUSES.COMPLETED) {
-    //   buttonDelete.classList.add("hidden");
-    //   this.addOnlyStatusTitle(key, statusWrapper, status);
-    //   this.makeStatusPillClickable(key, statusPill);
-    // } else {
-    //   this.addStatus(key, statusWrapper, status);
-    // }
-  }
-
   deleteTaskUI(key) {
     // const task = this.accordionContainer.querySelector(`[task-key="${key}"]`);
     // task.remove();
-  }
-
-  makeStatusPillClickable(key, statusPill) {
-    statusPill.classList.add("clickable");
-    statusPill.addEventListener("click", (e) => {
-      e.stopPropagation();
-      this.viewResults(key);
-    });
   }
 
   // ---------- Handling the input ----------
@@ -483,7 +410,7 @@ export default class TaskManager {
     task.status = status;
     if (container) task.resultsContainer = container;
     task.workflowID = workflowID;
-    this.updateTaskUI(taskKey, status);
+    // this.updateTaskUI(taskKey, status);
     if (!this.isHistorySet) return;
     this.handleNotificationPill(taskKey, status);
   }
