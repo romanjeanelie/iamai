@@ -71,8 +71,7 @@ export default class Discussion {
     this.addListeners();
     // DEBUG
     if (this.debug) {
-      this.showDebugButtons();
-      this.onCreatedTask();
+      // this.onCreatedTask();
       this.enableInput();
     }
   }

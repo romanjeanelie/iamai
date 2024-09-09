@@ -3,11 +3,6 @@ import Flip from "gsap/Flip";
 
 import TaskManagerCard from "./TaskManagerCard";
 
-const STATES = {
-  CLOSED: "closed",
-  FULLSCREEN: "fullscreen",
-};
-
 export const TASK_STATUSES = {
   IN_PROGRESS: "In Progress",
   INPUT_REQUIRED: "Input Required",
@@ -54,7 +49,6 @@ export default class TaskManager {
 
     // States
     this.tasks = [];
-    this.taskManagerState = STATES.CLOSED;
     this.notificationTimeoutId = null;
     this.notificationDuration = 1500000;
     this.isInputFullscreen = false;
@@ -78,7 +72,7 @@ export default class TaskManager {
 
     if (this.debug) {
       this.setupDebug();
-      this.navigation.toggleTasks();
+      // this.navigation.toggleTasks();
     }
   }
 
