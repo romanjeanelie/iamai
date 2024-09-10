@@ -9,9 +9,9 @@ var _gsap = _interopRequireDefault(require("gsap"));
 
 var _Flip = _interopRequireDefault(require("gsap/Flip"));
 
-var _ = require("..");
-
 var _TaskCardAnimations = _interopRequireDefault(require("./TaskCardAnimations"));
+
+var _ = require("..");
 
 var _testData = require("../../../../testData");
 
@@ -76,8 +76,8 @@ function () {
   }, {
     key: "updateTaskUI",
     value: function updateTaskUI(key, status) {
-      this.statusPillLabel = status.type;
-      this.statusPill.backgroundColor = _.STATUS_COLORS[status.type];
+      this.statusPillLabel.innerText = status.type;
+      this.statusPill.style.background = _.STATUS_COLORS[status.type];
 
       if (status.type === _.TASK_STATUSES.COMPLETED) {
         // ADD THE RESULT OF THE TASK SEARCH HERE

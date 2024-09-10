@@ -1,8 +1,8 @@
 import gsap from "gsap";
 import Flip from "gsap/Flip";
+import TaskCardAnimations from "./TaskCardAnimations";
 
 import { STATUS_COLORS, TASK_STATUSES } from "..";
-import TaskCardAnimations from "./TaskCardAnimations";
 import { flightSearchData, flightSearchResultsData } from "../../../../testData";
 import { FlightUI } from "../../UI/FlightUI";
 
@@ -82,8 +82,8 @@ export default class TaskManagerCard {
   }
 
   updateTaskUI(key, status) {
-    this.statusPillLabel = status.type;
-    this.statusPill.backgroundColor = STATUS_COLORS[status.type];
+    this.statusPillLabel.innerText = status.type;
+    this.statusPill.style.background = STATUS_COLORS[status.type];
     if (status.type === TASK_STATUSES.COMPLETED) {
       // ADD THE RESULT OF THE TASK SEARCH HERE
       this.addResult();
