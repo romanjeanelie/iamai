@@ -1,8 +1,10 @@
 import gsap from "gsap";
 import Flip from "gsap/Flip";
-import { flightSearchData, flightSearchResultsData } from "../../../testData";
-import { FlightUI } from "../UI/FlightUI";
-import { STATUS_COLORS, TASK_STATUSES } from ".";
+
+import { STATUS_COLORS, TASK_STATUSES } from "..";
+import TaskCardAnimations from "./TaskCardAnimations";
+import { flightSearchData, flightSearchResultsData } from "../../../../testData";
+import { FlightUI } from "../../UI/FlightUI";
 
 gsap.registerPlugin(Flip);
 
@@ -66,6 +68,8 @@ export default class TaskManagerCard {
 
     this.cardContainer.appendChild(this.card);
     this.tasksGrid.appendChild(this.cardContainer);
+
+    this.animations = new TaskCardAnimations(this.card, this.index);
   }
 
   // Update the state
@@ -89,74 +93,22 @@ export default class TaskManagerCard {
   }
 
   // From card to fullscreen
-  animateCardToFullscreen() {
-    const cardState = this.card.querySelector(".card-state");
-    const fullscreenState = this.card.querySelector(".fullscreen-state");
+  expandCardToFullscreen() {
+    this.animations.cardToFullScreen(() => {
+      const fullscreenState = this.card.querySelector(".fullscreen-state");
 
-    const tl = gsap.timeline();
-
-    tl.to(cardState, {
-      opacity: 0,
-      duration: 0.2,
+      // FOR DEMO PURPOSES ONLY (adding the flight ui manually here)
+      const flightCards = new FlightUI(flightSearchData, flightSearchResultsData).getElement();
+      const AIContainer = document.createElement("div");
+      AIContainer.classList.add("discussion__ai");
+      AIContainer.appendChild(flightCards);
+      fullscreenState.appendChild(AIContainer);
+      document.addEventListener("click", this.handleClickOutside);
     });
-    tl.add(() => {
-      const state = Flip.getState(this.card);
-      this.fullscreenContainer.appendChild(this.card);
-      fullscreenState.style.display = "flex";
-      cardState.style.display = "none";
-      Flip.from(state, {
-        duration: 0.5,
-        absolute: true,
-        onComplete: () => {
-          // FOR DEMO PURPOSES ONLY (adding the flight ui manually here)
-          const flightCards = new FlightUI(flightSearchData, flightSearchResultsData).getElement();
-          const AIContainer = document.createElement("div");
-          AIContainer.classList.add("discussion__ai");
-          AIContainer.appendChild(flightCards);
-          fullscreenState.appendChild(AIContainer);
-          document.addEventListener("click", this.handleClickOutside);
-        },
-      });
-    });
-    tl.to(
-      fullscreenState,
-      {
-        autoAlpha: 1,
-        duration: 0.5,
-      },
-      "<0.5"
-    );
   }
 
   closeFullscreen() {
-    const tasks = this.tasksGrid.querySelectorAll(".task-manager__task-card-container");
-
-    const cardState = this.card.querySelector(".card-state");
-    const fullscreenState = this.card.querySelector(".fullscreen-state");
-
-    const tl = gsap.timeline();
-
-    tl.to(fullscreenState, {
-      opacity: 0,
-    });
-    tl.add(() => {
-      const state = Flip.getState(this.card);
-      tasks[this.index].appendChild(this.card);
-      fullscreenState.style.display = "none";
-      cardState.style.display = "flex";
-
-      Flip.from(state, {
-        duration: 0.5,
-        delay: 0.5,
-        onComplete: () => {
-          gsap.to(cardState, {
-            autoAlpha: 1,
-            duration: 0.5,
-            stagger: 0.1,
-          });
-        },
-      });
-    });
+    this.animations.fullscreenToCard();
   }
 
   // Close fullscreen when clicking outside the fullscreen container
@@ -169,7 +121,7 @@ export default class TaskManagerCard {
 
   addEventListeners() {
     this.card.addEventListener("click", () => {
-      this.animateCardToFullscreen();
+      this.expandCardToFullscreen();
     });
 
     this.emitter.on("taskManager:updateStatus", (taskKey, status, container, workflowID) => {
