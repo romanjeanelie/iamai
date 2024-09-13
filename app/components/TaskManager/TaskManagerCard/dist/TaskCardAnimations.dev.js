@@ -28,6 +28,7 @@ function () {
     this.cardState = this.card.querySelector(".card-state");
     this.fullscreenState = this.card.querySelector(".fullscreen-state");
     this.fullscreenContainer = document.querySelector(".task-manager__task-fullscreen");
+    this.taskGrid = document.querySelector(".task-manager__tasks-grid");
   }
 
   _createClass(TaskCardAnimations, [{
@@ -39,16 +40,28 @@ function () {
       var cardState = this.card.querySelector(".card-state");
       var fullscreenState = this.card.querySelector(".fullscreen-state");
 
-      var tl = _gsap["default"].timeline();
+      var tl = _gsap["default"].timeline(); // Get the cards before and after the current card
+      // using reduce to filter out the current card
 
-      this.remainingCards = Array.from(taskCards).filter(function (card) {
-        return card.getAttribute("index") != _this.index;
-      });
-      this.beforeCards = this.remainingCards.filter(function (card) {
-        return card.getAttribute("index") < _this.index;
-      });
-      this.afterCards = this.remainingCards.filter(function (card) {
-        return card.getAttribute("index") > _this.index;
+
+      this.remainingCards = Array.from(taskCards).reduce(function (acc, card) {
+        var cardIndex = parseInt(card.getAttribute("index")); // Skip if the current card is the one we're focusing on
+
+        if (cardIndex === _this.index) return acc; // Add the card to the remaining cards
+
+        acc.all.push(card); // Categorize the card into beforeCards or afterCards
+
+        if (cardIndex < _this.index) {
+          acc.beforeCards.push(card);
+        } else {
+          acc.afterCards.push(card);
+        }
+
+        return acc;
+      }, {
+        beforeCards: [],
+        afterCards: [],
+        all: []
       });
       tl.to(cardState, {
         opacity: 0,
@@ -68,12 +81,12 @@ function () {
           onComplete: callback
         });
       });
-      tl.to(this.beforeCards, {
+      tl.to(this.remainingCards.beforeCards, {
         y: -100,
         opacity: 0,
         duration: 0.2
       }, "<");
-      tl.to(this.afterCards, {
+      tl.to(this.remainingCards.afterCards, {
         y: 100,
         opacity: 0,
         duration: 0.2
@@ -118,10 +131,10 @@ function () {
           }
         });
       });
-      tl.to(this.remainingCards, {
+      tl.to(this.remainingCards.all, {
         y: 0,
         opacity: 1,
-        duration: 0.2,
+        duration: 0.1,
         delay: 1
       });
     }

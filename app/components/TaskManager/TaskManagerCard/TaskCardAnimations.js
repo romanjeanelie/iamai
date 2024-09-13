@@ -9,17 +9,14 @@ export default class TaskCardAnimations {
     this.cardState = this.card.querySelector(".card-state");
     this.fullscreenState = this.card.querySelector(".fullscreen-state");
     this.fullscreenContainer = document.querySelector(".task-manager__task-fullscreen");
+    this.taskGrid = document.querySelector(".task-manager__tasks-grid");
   }
 
   cardToFullScreen(callback) {
-    const taskCards = document.querySelectorAll(".task-manager__task-card");
     const cardState = this.card.querySelector(".card-state");
     const fullscreenState = this.card.querySelector(".fullscreen-state");
     const tl = gsap.timeline();
-
-    this.remainingCards = Array.from(taskCards).filter((card) => card.getAttribute("index") != this.index);
-    this.beforeCards = this.remainingCards.filter((card) => card.getAttribute("index") < this.index);
-    this.afterCards = this.remainingCards.filter((card) => card.getAttribute("index") > this.index);
+    const remainingCards = this.hideRemainingCards();
 
     tl.to(cardState, {
       opacity: 0,
@@ -36,24 +33,7 @@ export default class TaskCardAnimations {
         onComplete: callback,
       });
     });
-    tl.to(
-      this.beforeCards,
-      {
-        y: -100,
-        opacity: 0,
-        duration: 0.2,
-      },
-      "<"
-    );
-    tl.to(
-      this.afterCards,
-      {
-        y: 100,
-        opacity: 0,
-        duration: 0.2,
-      },
-      "<"
-    );
+    tl.add(remainingCards, "<");
     tl.to(
       fullscreenState,
       {
@@ -95,11 +75,53 @@ export default class TaskCardAnimations {
         },
       });
     });
-    tl.to(this.remainingCards, {
+    tl.to(this.remainingCards.remainingCards, {
       y: 0,
       opacity: 1,
-      duration: 0.2,
+      duration: 0.1,
       delay: 1,
     });
   }
+
+  hideRemainingCards = () => {
+    const tl = gsap.timeline();
+    const taskCards = document.querySelectorAll(".task-manager__task-card");
+
+    // Get the cards before and after the current card
+    // using reduce to filter out the current card
+    this.remainingCards = Array.from(taskCards).reduce(
+      (acc, card) => {
+        const cardIndex = parseInt(card.getAttribute("index"));
+        // Skip if the current card is the one we're focusing on
+        if (cardIndex === this.index) return acc;
+        // Add the card to the remaining cards
+        acc.all.push(card);
+        // Categorize the card into beforeCards or afterCards
+        if (cardIndex < this.index) {
+          acc.beforeCards.push(card);
+        } else {
+          acc.afterCards.push(card);
+        }
+        return acc;
+      },
+      { beforeCards: [], afterCards: [], all: [] }
+    );
+
+    tl.to(this.remainingCards.beforeCards, {
+      y: -100,
+      opacity: 0,
+      duration: 0.2,
+    });
+    tl.to(
+      this.remainingCards.afterCards,
+      {
+        y: 100,
+        opacity: 0,
+        duration: 0.2,
+      },
+      "<"
+    );
+
+    return tl;
+  };
 }
