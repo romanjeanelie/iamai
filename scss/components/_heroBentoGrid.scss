@@ -2,7 +2,6 @@
   position: absolute;
   inset: 0;
   z-index: 3;
-  padding: 20px 0;
 
   max-width: $maxWidth;
   padding: 0;
@@ -59,6 +58,10 @@
   justify-content: space-between;
   align-items: flex-end;
   margin: 0 0 24px;
+
+  @include media("<phone") {
+    display: none;
+  }
 }
 
 .heroBentoGrid__indicators {
@@ -160,6 +163,10 @@
 
     p {
       margin-top: 26px;
+
+      @include media("<phone") {
+        margin-top: 10px;
+      }
     }
   }
 
@@ -290,12 +297,11 @@
 
   @include media("<phone") {
     .heroBentoGrid__grid-item {
-      max-height: 148px;
+      max-height: 146px;
     }
 
     .multitasking-item {
-      grid-row: 2;
-      grid-column: span 60;
+      display: none;
     }
 
     .travel-item {
@@ -304,7 +310,6 @@
     }
 
     .tagline-item {
-      grid-row: 3;
       grid-column: 1/ 31;
     }
 
