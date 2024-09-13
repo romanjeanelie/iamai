@@ -296,7 +296,9 @@ export default class TaskManager {
   }
 
   // ---------- Update the tasks UI  ----------
-  deleteTaskUI(key) {}
+  deleteTaskUI(key) {
+    // RAPPEL : Reaffect the index of the task cards
+  }
 
   // ---------- Handling the input ----------
   addInput(key, statusContainer) {
@@ -370,21 +372,7 @@ export default class TaskManager {
     this.handleNotificationPill(taskKey, status);
   }
 
-  // function triggered when click on completed task or the notification pill for completed task
-  viewResults(key) {
-    const task = this.tasks.find((task) => task.key === key);
-    this.emitter.emit("taskManager:viewResults", task, task.resultsContainer);
-
-    this.closeNotificationPill();
-    this.closeTaskManager();
-    this.deleteTask(key);
-  }
-
   addListeners() {
-    this.taskCards.forEach((card) => {
-      card.addEventListener("click", () => this.animateCardToFullscreen(card));
-    });
-
     // Prevent touch event bugs
     this.container.addEventListener("touchstart", (e) => {
       e.stopPropagation();

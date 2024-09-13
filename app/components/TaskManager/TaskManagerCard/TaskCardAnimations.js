@@ -12,9 +12,14 @@ export default class TaskCardAnimations {
   }
 
   cardToFullScreen(callback) {
+    const taskCards = document.querySelectorAll(".task-manager__task-card");
     const cardState = this.card.querySelector(".card-state");
     const fullscreenState = this.card.querySelector(".fullscreen-state");
     const tl = gsap.timeline();
+
+    this.remainingCards = Array.from(taskCards).filter((card) => card.getAttribute("index") != this.index);
+    this.beforeCards = this.remainingCards.filter((card) => card.getAttribute("index") < this.index);
+    this.afterCards = this.remainingCards.filter((card) => card.getAttribute("index") > this.index);
 
     tl.to(cardState, {
       opacity: 0,
@@ -31,6 +36,24 @@ export default class TaskCardAnimations {
         onComplete: callback,
       });
     });
+    tl.to(
+      this.beforeCards,
+      {
+        y: -100,
+        opacity: 0,
+        duration: 0.2,
+      },
+      "<"
+    );
+    tl.to(
+      this.afterCards,
+      {
+        y: 100,
+        opacity: 0,
+        duration: 0.2,
+      },
+      "<"
+    );
     tl.to(
       fullscreenState,
       {
@@ -71,6 +94,12 @@ export default class TaskCardAnimations {
           });
         },
       });
+    });
+    tl.to(this.remainingCards, {
+      y: 0,
+      opacity: 1,
+      duration: 0.2,
+      delay: 1,
     });
   }
 }

@@ -35,11 +35,21 @@ function () {
     value: function cardToFullScreen(callback) {
       var _this = this;
 
+      var taskCards = document.querySelectorAll(".task-manager__task-card");
       var cardState = this.card.querySelector(".card-state");
       var fullscreenState = this.card.querySelector(".fullscreen-state");
 
       var tl = _gsap["default"].timeline();
 
+      this.remainingCards = Array.from(taskCards).filter(function (card) {
+        return card.getAttribute("index") != _this.index;
+      });
+      this.beforeCards = this.remainingCards.filter(function (card) {
+        return card.getAttribute("index") < _this.index;
+      });
+      this.afterCards = this.remainingCards.filter(function (card) {
+        return card.getAttribute("index") > _this.index;
+      });
       tl.to(cardState, {
         opacity: 0,
         duration: 0.2
@@ -58,6 +68,16 @@ function () {
           onComplete: callback
         });
       });
+      tl.to(this.beforeCards, {
+        y: -100,
+        opacity: 0,
+        duration: 0.2
+      }, "<");
+      tl.to(this.afterCards, {
+        y: 100,
+        opacity: 0,
+        duration: 0.2
+      }, "<");
       tl.to(fullscreenState, {
         autoAlpha: 1,
         duration: 0.5
@@ -97,6 +117,12 @@ function () {
             });
           }
         });
+      });
+      tl.to(this.remainingCards, {
+        y: 0,
+        opacity: 1,
+        duration: 0.2,
+        delay: 1
       });
     }
   }]);
