@@ -78,7 +78,6 @@ $zIndex: 1;
     display: flex;
     gap: 20px;
     min-height: 160px;
-    animation: fadeIn 0.5s $ease-in-out;
   }
 
   .fullscreen-state {
@@ -260,16 +259,5 @@ $zIndex: 1;
   .task-manager__notification-label {
     position: static;
     background-color: transparent;
-  }
-}
-
-@keyframes fadeIn {
-  0% {
-    transform: translate(0, 100%);
-    opacity: 0;
-  }
-  100% {
-    transform: translate(0, 0);
-    opacity: 1;
   }
 }
