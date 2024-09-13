@@ -74,7 +74,6 @@ export default class TaskManager {
 
     if (this.debug) {
       this.setupDebug();
-      // this.navigation.toggleTasks();
     }
   }
 
@@ -163,6 +162,20 @@ export default class TaskManager {
       },
       "addTask"
     );
+
+    // Create three tasks for debugging
+    for (let i = 0; i < 3; i++) {
+      const task = {
+        name: `Task ${this.tasks.length + 1}`,
+        key: this.tasks.length + 1,
+        status: { type: TASK_STATUSES.IN_PROGRESS, ...defaultValues[TASK_STATUSES.IN_PROGRESS] },
+      };
+      const textAI =
+        "Certainly! I'm currently searching for the best flight options to Bali for you. Please give me a moment to find the most suitable flights. In the meantime, feel free to ask any other questions or make additional requests. I'll get back to you with the flight details as soon as possible";
+
+      this.addDebugTask(task);
+      this.emitter.emit("taskManager:createTask", task, textAI);
+    }
 
     this.tasks.forEach((task) => {
       this.addDebugTask(task);

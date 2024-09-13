@@ -39,6 +39,7 @@ export default class Navigation {
     this.setUserImage();
 
     if (this.debug) {
+      this.toggleTasks();
     }
   }
 
