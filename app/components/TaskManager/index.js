@@ -3,6 +3,7 @@ import Flip from "gsap/Flip";
 
 import TaskManagerButton from "./TaskManagerButton";
 import TaskManagerCard from "./TaskManagerCard";
+import TaskManagerAnimations from "./TaskManagerAnimations";
 
 export const TASK_STATUSES = {
   IN_PROGRESS: "In Progress",
@@ -58,6 +59,7 @@ export default class TaskManager {
 
     // Init Methods
     this.button = new TaskManagerButton(this.tasks, this.emitter);
+    this.animations = new TaskManagerAnimations(this.emitter);
     this.initTaskManager();
     this.addListeners();
 
@@ -348,6 +350,8 @@ export default class TaskManager {
 
   // ---------- Handling the tasks ----------
   createTask(task) {
+    // when a new task is created i'd like to update cards array of the TaskManagerAnimations class
+
     this.tasks.push(task);
     const index = this.tasks.length - 1;
     new TaskManagerCard(task, index, this.emitter);

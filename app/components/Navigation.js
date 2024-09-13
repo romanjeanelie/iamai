@@ -11,8 +11,9 @@ const SECTIONS = {
 // gsap.registerPlugin(Flip);
 
 export default class Navigation {
-  constructor({ user }) {
+  constructor({ user, emitter }) {
     this.user = user;
+    this.emitter = emitter;
     this.debug = import.meta.env.VITE_DEBUG === "true";
 
     // State
@@ -62,8 +63,8 @@ export default class Navigation {
   }
 
   toggleTasks() {
-    console.log("toggleTasks");
     if (this.currentSection !== SECTIONS.tasks) {
+      this.emitter.emit("Navigation:openTasks");
       gsap.to(this.discussionWrapper, { yPercent: -100 });
       gsap.to(this.tasksContainer, {
         yPercent: 0,
@@ -71,7 +72,7 @@ export default class Navigation {
         ease: "power3.inOut",
       });
     } else {
-      console.log("close tasks");
+      this.emitter.emit("Navigation:closeTasks");
       gsap.to(this.discussionWrapper, { yPercent: 0 });
       gsap.to(this.tasksContainer, {
         yPercent: 100,

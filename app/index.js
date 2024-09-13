@@ -88,7 +88,7 @@ class App {
   }
 
   initNavbar() {
-    this.navigation = new Navigation({ user: this.user });
+    this.navigation = new Navigation({ user: this.user, emitter: this.emitter });
   }
 
   initCaroussel() {
