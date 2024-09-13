@@ -65,6 +65,7 @@ export default class TaskCardAnimations {
 
       Flip.from(state, {
         duration: 0.5,
+        absolute: true,
         delay: 0.5,
         onComplete: () => {
           gsap.to(cardState, {
@@ -75,11 +76,13 @@ export default class TaskCardAnimations {
         },
       });
     });
-    tl.to(this.remainingCards.remainingCards, {
+    tl.to(this.remainingCards.all, {
       y: 0,
       opacity: 1,
-      duration: 0.1,
+      duration: 0.2,
+      stagger: 0.04,
       delay: 1,
+      ease: "power3.easeOut",
     });
   }
 

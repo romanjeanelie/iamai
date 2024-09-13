@@ -10,17 +10,6 @@ import { URL_DELETE_STATUS } from "./constants.js";
 import { gsap } from "gsap";
 import fadeByWord from "../utils/fadeByWord.js";
 import { flightSearchData, flightSearchResultsData } from "../../testData.js";
-const topStatusText = ["finding", "checking", "searching", "analyzing", "scanning", "finalizing", "processing"];
-const defaultTopStatus = "searching";
-
-function getTopStatus(text) {
-  for (let status of topStatusText) {
-    if (text.toLowerCase().includes(status)) {
-      return status;
-    }
-  }
-  return defaultTopStatus;
-}
 
 export default class Discussion {
   constructor({ toPageGrey, emitter, pageEl, user }) {
