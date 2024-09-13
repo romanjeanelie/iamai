@@ -14,11 +14,17 @@ export default class TaskManagerCard {
     this.index = index;
     this.emitter = emitter;
 
+    // DOM Elements
     this.tasksGrid = document.querySelector(".task-manager__tasks-grid");
     this.fullscreenContainer = document.querySelector(".task-manager__task-fullscreen");
+    this.cardContainer = null;
+    this.cardState = null;
+    this.fullscreenState = null;
 
+    // Bindings
     this.handleClickOutside = this.handleClickOutside.bind(this);
 
+    // Init Methods
     this.initUI();
     this.addEventListeners();
   }
@@ -73,20 +79,20 @@ export default class TaskManagerCard {
   }
 
   // Update the state
-  addStatus(key, statusWrapper, status) {
-    console.log(this.task);
+  addStatus() {
+    // console.log(this.task);
   }
 
   addResult() {
-    console.log(this.task);
+    this.fullscreenState.appendChild(this.task.resultsContainer);
   }
 
-  updateTaskUI(key, status) {
+  updateTaskUI(status) {
     this.statusPillLabel.innerText = status.type;
     this.statusPill.style.background = STATUS_COLORS[status.type];
+
     if (status.type === TASK_STATUSES.COMPLETED) {
-      // ADD THE RESULT OF THE TASK SEARCH HERE
-      this.addResult();
+      this.addResult(status);
     } else {
       this.addStatus();
     }
@@ -95,14 +101,6 @@ export default class TaskManagerCard {
   // From card to fullscreen
   expandCardToFullscreen() {
     this.animations.cardToFullScreen(() => {
-      const fullscreenState = this.card.querySelector(".fullscreen-state");
-
-      // FOR DEMO PURPOSES ONLY (adding the flight ui manually here)
-      const flightCards = new FlightUI(flightSearchData, flightSearchResultsData).getElement();
-      const AIContainer = document.createElement("div");
-      AIContainer.classList.add("discussion__ai");
-      AIContainer.appendChild(flightCards);
-      fullscreenState.appendChild(AIContainer);
       document.addEventListener("click", this.handleClickOutside);
     });
   }
@@ -124,9 +122,9 @@ export default class TaskManagerCard {
       this.expandCardToFullscreen();
     });
 
-    this.emitter.on("taskManager:updateStatus", (taskKey, status, container, workflowID) => {
+    this.emitter.on("taskManager:updateStatus", (taskKey, status) => {
       if (this.task.key === taskKey) {
-        this.updateTaskUI(taskKey, status, container, workflowID);
+        this.updateTaskUI(status);
       }
     });
   }

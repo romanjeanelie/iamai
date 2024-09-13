@@ -35,10 +35,16 @@ function () {
 
     this.task = task;
     this.index = index;
-    this.emitter = emitter;
+    this.emitter = emitter; // DOM Elements
+
     this.tasksGrid = document.querySelector(".task-manager__tasks-grid");
     this.fullscreenContainer = document.querySelector(".task-manager__task-fullscreen");
-    this.handleClickOutside = this.handleClickOutside.bind(this);
+    this.cardContainer = null;
+    this.cardState = null;
+    this.fullscreenState = null; // Bindings
+
+    this.handleClickOutside = this.handleClickOutside.bind(this); // Init Methods
+
     this.initUI();
     this.addEventListeners();
   } // Create the card element
@@ -65,23 +71,21 @@ function () {
 
   }, {
     key: "addStatus",
-    value: function addStatus(key, statusWrapper, status) {
-      console.log(this.task);
+    value: function addStatus() {// console.log(this.task);
     }
   }, {
     key: "addResult",
     value: function addResult() {
-      console.log(this.task);
+      this.fullscreenState.appendChild(this.task.resultsContainer);
     }
   }, {
     key: "updateTaskUI",
-    value: function updateTaskUI(key, status) {
+    value: function updateTaskUI(status) {
       this.statusPillLabel.innerText = status.type;
       this.statusPill.style.background = _.STATUS_COLORS[status.type];
 
       if (status.type === _.TASK_STATUSES.COMPLETED) {
-        // ADD THE RESULT OF THE TASK SEARCH HERE
-        this.addResult();
+        this.addResult(status);
       } else {
         this.addStatus();
       }
@@ -93,14 +97,6 @@ function () {
       var _this = this;
 
       this.animations.cardToFullScreen(function () {
-        var fullscreenState = _this.card.querySelector(".fullscreen-state"); // FOR DEMO PURPOSES ONLY (adding the flight ui manually here)
-
-
-        var flightCards = new _FlightUI.FlightUI(_testData.flightSearchData, _testData.flightSearchResultsData).getElement();
-        var AIContainer = document.createElement("div");
-        AIContainer.classList.add("discussion__ai");
-        AIContainer.appendChild(flightCards);
-        fullscreenState.appendChild(AIContainer);
         document.addEventListener("click", _this.handleClickOutside);
       });
     }
@@ -126,9 +122,9 @@ function () {
       this.card.addEventListener("click", function () {
         _this2.expandCardToFullscreen();
       });
-      this.emitter.on("taskManager:updateStatus", function (taskKey, status, container, workflowID) {
+      this.emitter.on("taskManager:updateStatus", function (taskKey, status) {
         if (_this2.task.key === taskKey) {
-          _this2.updateTaskUI(taskKey, status, container, workflowID);
+          _this2.updateTaskUI(status);
         }
       });
     }
