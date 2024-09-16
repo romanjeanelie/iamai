@@ -137,6 +137,12 @@ export default class Input {
   }
 
   // Submit
+  resetInputText() {
+    this.inputText.value = "";
+    this.inputText.style.height = "auto";
+    this.inputFrontEl.classList.remove("extended");
+  }
+
   onSubmit(event) {
     event.preventDefault();
     console.time("input");
@@ -144,7 +150,7 @@ export default class Input {
       this.emitter.emit("slider:close");
     }
     this.discussion.addUserElement({ text: this.inputText.value, imgs: this.currentImages });
-    this.inputText.value = "";
+    this.resetInputText();
     this.currentImages = [];
 
     if (this.inputImage.isEnabled) {
@@ -154,21 +160,33 @@ export default class Input {
     this.goToInitial({ disableInput: false });
   }
 
-  updateInputHeight() {
-    // Simulate input event to have split lines
-    const event = new Event("input", {
-      bubbles: true,
-      cancelable: true,
-    });
-    this.inputText.dispatchEvent(event);
-  }
-
   goToInitial({ disableInput = true } = {}) {
     this.currentStatus = STATUS.INITIAL;
     this.anims.toInitial();
     this.onClickOutside.animInitial = false;
     if (disableInput) {
       this.inputText.disabled = false;
+    }
+  }
+
+  updateInputFieldSize() {
+    this.inputText.style.height = "1px";
+    this.inputText.style.height = `${this.inputText.scrollHeight}px`;
+
+    if (!isMobile()) {
+      this.inputFrontEl.classList.remove("extended");
+      return;
+    }
+
+    const SIZE_THRESHOLD = 82;
+    const textWidth = calculateInputTextWidth(this.inputText);
+
+    if (textWidth > this.inputText.clientWidth) {
+      this.isInputExtanded = true;
+      this.inputFrontEl.classList.add("extended");
+    } else if (this.isInputExtanded && textWidth + SIZE_THRESHOLD < this.inputText.clientWidth) {
+      this.isInputExtanded = false;
+      this.inputFrontEl.classList.remove("extended");
     }
   }
 
@@ -236,26 +254,14 @@ export default class Input {
     );
 
     // Input text
-    this.inputText.addEventListener("input", () => {
-      const SIZE_THRESHOLD = 82;
-      const textWidth = calculateInputTextWidth(this.inputText);
-
-      if (textWidth > this.inputText.clientWidth) {
-        this.isInputExtanded = true;
-        this.inputFrontEl.classList.add("extended");
-      } else if (this.isInputExtanded && textWidth + SIZE_THRESHOLD < this.inputText.clientWidth) {
-        this.isInputExtanded = false;
-        this.inputFrontEl.classList.remove("extended");
-      }
-
-      this.inputText.style.height = "1px";
-      this.inputText.style.height = `${this.inputText.scrollHeight}px`;
-    });
+    this.inputText.addEventListener("input", this.updateInputFieldSize.bind(this));
 
     this.inputText.addEventListener("keydown", (event) => {
       if (this.inputText.value.trim().length > 0 && event.key === "Enter" && !event.shiftKey) {
         this.onSubmit(event);
       }
     });
+
+    window.addEventListener("resize", this.updateInputFieldSize.bind(this));
   }
 }
