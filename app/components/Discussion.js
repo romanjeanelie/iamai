@@ -355,6 +355,14 @@ export default class Discussion {
     this.AIContainer.classList.add("discussion__ai--task-created");
     this.userContainer.setAttribute("taskkey", task.key);
     this.AIContainer.setAttribute("taskkey", task.key);
+
+    // changing the status of the task to viewed
+    await this.history.postViewTask({
+      uuid: this.uuid,
+      micro_thread_id: task.key,
+      session_id: this.Chat.sessionID,
+      idToken: await this.user.user.getIdToken(true),
+    });
   }
 
   onUserAnswerTask(text, task) {
