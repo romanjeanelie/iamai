@@ -60,6 +60,7 @@ export default class History {
       switch (status.status) {
         case API_STATUSES.STARTED:
           let taskname = status.task_name;
+          console.log("task created", status);
 
           const task = {
             key: status.micro_thread_id,
@@ -85,6 +86,7 @@ export default class History {
               },
               workflowID: status.session_id,
             };
+            console.log("input required", status);
 
             this.emitter.emit("taskManager:updateStatus", task.key, task.status, null, task.workflowID);
           } else {
@@ -109,6 +111,8 @@ export default class History {
                   description: status.response_json.sources,
                 },
               };
+
+              console.log("sources", status);
               this.emitter.emit("taskManager:updateStatus", task.key, task.status);
             } else if (status.type == API_STATUSES.AGENT_INTERMEDIATE_ANSWER) {
               const task = {
@@ -119,6 +123,7 @@ export default class History {
                   description: status.response_json.agent_intermediate_answer,
                 },
               };
+              console.log("AGENT INTERMEDIATE ANSWER", status);
               this.emitter.emit("taskManager:updateStatus", task.key, task.status);
             } else {
               if (status.response_json.domain != "Code") {
@@ -130,6 +135,7 @@ export default class History {
                     description: status.response_json.text,
                   },
                 };
+                console.log("progressing", status);
                 this.emitter.emit("taskManager:updateStatus", task.key, task.status);
               }
             }
@@ -145,6 +151,7 @@ export default class History {
               label: status.task_name + " is completed",
             },
           };
+          console.log("task ended", status);
           this.emitter.emit("taskManager:updateStatus", taskEnded.key, taskEnded.status, resultsContainer);
           break;
       }
@@ -157,6 +164,7 @@ export default class History {
     if (statuses.includes(API_STATUSES.CANCELLED)) {
       return API_STATUSES.CANCELLED;
     } else if (statuses.includes(API_STATUSES.VIEWED)) {
+      console.log("viewed");
       return API_STATUSES.VIEWED;
     } else if (statuses.includes(API_STATUSES.ENDED)) {
       return API_STATUSES.ENDED;

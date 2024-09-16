@@ -207,32 +207,32 @@ export default class TaskManager {
 
   // ---------- Handling the notification pill ----------
   initNotificationPill(taskKey, status) {
-    // if (this.notificationContainer) this.disposeNotificationPill();
-    // this.notificationContainer = document.createElement("div");
-    // this.notificationContainer.classList.add("task-manager__notification-container", "hidden");
-    // this.notificationContainer.style.backgroundColor = STATUS_COLORS[status.type];
-    // const notificationLabel = document.createElement("div");
-    // notificationLabel.classList.add("task-manager__notification-label");
-    // const notificationLabelP = document.createElement("p");
-    // notificationLabelP.textContent = status.label || status.type;
-    // const notificationCloseBtn = document.createElement("button");
-    // notificationCloseBtn.classList.add("task-manager__notification-closeBtn");
-    // notificationCloseBtn.innerHTML = `
-    //   <svg width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-    //     <rect x="0.800781" y="1.47949" width="0.96" height="10.56" rx="0.48" transform="rotate(-45 0.800781 1.47949)" fill="white"/>
-    //     <rect x="0.799805" y="8.26758" width="10.56" height="0.96" rx="0.48" transform="rotate(-45 0.799805 8.26758)" fill="white"/>
-    //   </svg>
-    // `;
-    // notificationLabel.appendChild(notificationLabelP);
-    // this.notificationContainer.appendChild(notificationLabel);
-    // this.notificationContainer.appendChild(notificationCloseBtn);
-    // document.body.appendChild(this.notificationContainer);
-    // this.notificationContainer.addEventListener("click", () => this.handleClickOnNotificationPill(taskKey, status));
-    // notificationCloseBtn.addEventListener("click", (e) => {
-    //   e.stopPropagation();
-    //   this.closeNotificationPill();
-    // });
-    // this.expandNotificationPill();
+    if (this.notificationContainer) this.disposeNotificationPill();
+    this.notificationContainer = document.createElement("div");
+    this.notificationContainer.classList.add("task-manager__notification-container", "hidden");
+    this.notificationContainer.style.backgroundColor = STATUS_COLORS[status.type];
+    const notificationLabel = document.createElement("div");
+    notificationLabel.classList.add("task-manager__notification-label");
+    const notificationLabelP = document.createElement("p");
+    notificationLabelP.textContent = status.label || status.type;
+    const notificationCloseBtn = document.createElement("button");
+    notificationCloseBtn.classList.add("task-manager__notification-closeBtn");
+    notificationCloseBtn.innerHTML = `
+      <svg width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0.800781" y="1.47949" width="0.96" height="10.56" rx="0.48" transform="rotate(-45 0.800781 1.47949)" fill="white"/>
+        <rect x="0.799805" y="8.26758" width="10.56" height="0.96" rx="0.48" transform="rotate(-45 0.799805 8.26758)" fill="white"/>
+      </svg>
+    `;
+    notificationLabel.appendChild(notificationLabelP);
+    this.notificationContainer.appendChild(notificationLabel);
+    this.notificationContainer.appendChild(notificationCloseBtn);
+    document.body.appendChild(this.notificationContainer);
+    this.notificationContainer.addEventListener("click", () => this.handleClickOnNotificationPill(taskKey, status));
+    notificationCloseBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      this.closeNotificationPill();
+    });
+    this.expandNotificationPill();
   }
 
   expandNotificationPill() {
