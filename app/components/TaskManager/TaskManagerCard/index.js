@@ -3,6 +3,8 @@ import Flip from "gsap/Flip";
 import TaskCardAnimations from "./TaskCardAnimations";
 
 import { STATUS_COLORS, TASK_STATUSES } from "..";
+import { URL_AGENT_STATUS } from "../../constants";
+import fetcher from "../../../utils/fetcher";
 
 gsap.registerPlugin(Flip);
 
@@ -11,6 +13,7 @@ export default class TaskManagerCard {
     this.task = task;
     this.taskManager = taskManager;
     this.emitter = emitter;
+    console.log(this.task);
 
     // Index of the task in the tasks array
     this.index = this.taskManager.tasks.findIndex((t) => t.key === this.task.key);
@@ -127,6 +130,7 @@ export default class TaskManagerCard {
     };
 
     this.taskManager.updateTaskStatus(this.task);
+    this.emitter.emit("taskManager:taskRead", this.task.key);
   }
 
   addEventListeners() {

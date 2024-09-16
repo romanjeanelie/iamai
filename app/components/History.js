@@ -12,7 +12,7 @@ const md = getMarked();
 const isTask = (el) => el.micro_thread_id !== "";
 const isTaskViewed = (el) => isTask(el) && el.statuses?.lastStatus === API_STATUSES.VIEWED;
 const isTaskCancelled = (el) => isTask(el) && el.statuses?.lastStatus === API_STATUSES.CANCELLED;
-function getPreviousDayTimestamp() {
+export function getPreviousDayTimestamp() {
   const currentDate = new Date();
   const previousDate = new Date(currentDate);
   previousDate.setDate(currentDate.getDate() - 1);

@@ -1,12 +1,12 @@
 import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scss";
 import TypingText from "../TypingText";
 import Chat from "./Chat.js";
-import History from "./History.js";
+import History, { getPreviousDayTimestamp } from "./History.js";
 import DiscussionMedia from "./DiscussionMedia.js";
 import fetcher from "../utils/fetcher.js";
 import { getsessionID } from "../User";
 
-import { URL_DELETE_STATUS } from "./constants.js";
+import { API_STATUSES, URL_AGENT_STATUS, URL_DELETE_STATUS } from "./constants.js";
 import { gsap } from "gsap";
 import fadeByWord from "../utils/fadeByWord.js";
 import { flightSearchData, flightSearchResultsData } from "../../testData.js";
@@ -355,18 +355,34 @@ export default class Discussion {
     this.AIContainer.classList.add("discussion__ai--task-created");
     this.userContainer.setAttribute("taskkey", task.key);
     this.AIContainer.setAttribute("taskkey", task.key);
-
-    // changing the status of the task to viewed
-    await this.history.postViewTask({
-      uuid: this.uuid,
-      micro_thread_id: task.key,
-      session_id: this.Chat.sessionID,
-      idToken: await this.user.user.getIdToken(true),
-    });
   }
 
   onUserAnswerTask(text, task) {
     this.Chat.submituserreply(text, task.workflowID);
+  }
+
+  async postViewTask({ uuid, micro_thread_id, session_id, idToken }) {
+    const url = URL_AGENT_STATUS;
+    const params = {
+      uuid,
+      micro_thread_id,
+      session_id,
+      status: API_STATUSES.VIEWED,
+      time_stamp: getPreviousDayTimestamp(),
+    };
+
+    console.log(params);
+
+    const result = await fetcher({
+      url,
+      params,
+      idToken,
+      method: "POST",
+    });
+
+    console.log(result);
+
+    return result;
   }
 
   async onRemoveTask(taskKey) {
@@ -428,6 +444,14 @@ export default class Discussion {
 
     this.emitter.on("taskManager:createTask", (task, textAI) => this.onCreatedTask(task, textAI));
     this.emitter.on("taskManager:inputSubmit", (text, task) => this.onUserAnswerTask(text, task));
+    this.emitter.on("taskManager:taskRead", async (taskKey) =>
+      this.postViewTask({
+        uuid: this.uuid,
+        micro_thread_id: taskKey,
+        session_id: this.Chat.sessionID,
+        idToken: await this.user.user.getIdToken(true),
+      })
+    );
     this.emitter.on("taskManager:deleteTask", (taskKey) => this.onRemoveTask(taskKey));
   }
 }

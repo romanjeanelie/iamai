@@ -13,6 +13,10 @@ var _TaskCardAnimations = _interopRequireDefault(require("./TaskCardAnimations")
 
 var _ = require("..");
 
+var _constants = require("../../constants");
+
+var _fetcher = _interopRequireDefault(require("../../../utils/fetcher"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -39,7 +43,8 @@ function () {
 
     this.task = task;
     this.taskManager = taskManager;
-    this.emitter = emitter; // Index of the task in the tasks array
+    this.emitter = emitter;
+    console.log(this.task); // Index of the task in the tasks array
 
     this.index = this.taskManager.tasks.findIndex(function (t) {
       return t.key === _this.task.key;
@@ -130,6 +135,7 @@ function () {
         type: _.TASK_STATUSES.READ
       });
       this.taskManager.updateTaskStatus(this.task);
+      this.emitter.emit("taskManager:taskRead", this.task.key);
     }
   }, {
     key: "addEventListeners",
