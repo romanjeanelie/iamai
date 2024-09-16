@@ -1,4 +1,5 @@
 import gsap, { Power3 } from "gsap";
+import HeroBentoAnimations from "./HeroBentoAnimations";
 
 class HeroBento {
   constructor({ user, emitter }) {
@@ -16,6 +17,7 @@ class HeroBento {
     this.indicators = this.container.querySelectorAll(".heroBentoGrid__indicators .indicator");
 
     // Init
+    this.anims = new HeroBentoAnimations();
     this.setName();
     this.observeBentoItems();
     this.addEventListeners();

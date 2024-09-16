@@ -216,6 +216,7 @@ class App {
         console.time("logged in");
         if (this.debug) return;
         this.initApp();
+        this.heroBento.anims.showBentoCards();
       } else if (this.user.status == "waitlisted") {
         divlogin.style.display = "none";
         divwaitlist.style.display = "flex";
