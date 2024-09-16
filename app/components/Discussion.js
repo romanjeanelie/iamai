@@ -280,7 +280,7 @@ export default class Discussion {
     await this.updateHistory({ uuid: this.uuid, user: this.user });
     this.scrollToBottom(false);
     this.isHistoryLoading = false;
-    this.emitter.emit("taskManager:isHistorySet", true);
+    this.emitter.emit("app:initialized", true);
 
     this.enableInput();
   }

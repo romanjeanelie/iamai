@@ -78,7 +78,7 @@ export default class TaskManager {
       this.onStatusUpdate(taskKey, status, container, workflowID)
     );
     this.emitter.on("taskManager:deleteTask", (taskKey) => this.deleteTask(taskKey));
-    this.emitter.on("taskManager:isHistorySet", (bool) => (this.isHistorySet = bool));
+    this.emitter.on("app:initialized", (bool) => (this.isHistorySet = bool));
 
     if (this.debug) {
       this.setupDebug();

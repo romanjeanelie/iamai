@@ -116,7 +116,7 @@ class App {
       emitter: this.emitter,
     };
 
-    this.inputGreyPage = new Input({ pageEl: this.pageEl, isActive: false, ...props });
+    this.input = new Input({ pageEl: this.pageEl, isActive: false, ...props });
   }
 
   initTaskManager() {

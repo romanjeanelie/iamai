@@ -1,6 +1,7 @@
 import gsap from "gsap";
-import { signOutUser } from "../User";
+import { signOutUser } from "../../User";
 import { Flip } from "gsap/Flip";
+import { NavigationAnimations } from "./NavigationAnimations";
 
 const SECTIONS = {
   history: "history",
@@ -38,6 +39,7 @@ export default class Navigation {
     // Init Methods
     this.addListeners();
     this.setUserImage();
+    this.anims = new NavigationAnimations();
 
     if (this.debug) {
       this.toggleTasks();
@@ -126,5 +128,9 @@ export default class Navigation {
     this.userPicture.addEventListener("click", signOutUser);
     this.historyButton.addEventListener("click", this.toggleHistory.bind(this));
     this.tasksButton.addEventListener("click", this.toggleTasks.bind(this));
+
+    this.emitter.on("app:initialized", () => {
+      this.anims.showNav();
+    });
   }
 }

@@ -115,6 +115,8 @@ export default class Input {
       }
     });
     this.emitter.on("input:updateImages", this.updateImages.bind(this));
+
+    this.emitter.on("app:initialized", () => this.anims.showInput());
   }
 
   // Write

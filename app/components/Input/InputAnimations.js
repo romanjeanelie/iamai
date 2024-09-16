@@ -1,5 +1,4 @@
 import gsap, { Power3 } from "gsap";
-import isMobile from "../../utils/isMobile";
 import anim from "../../utils/anim";
 export default class InputAnimations {
   constructor({ pageEl, emitter }) {
@@ -32,7 +31,23 @@ export default class InputAnimations {
     this.categoriesListEl = document.querySelector(".categories__list--container");
     this.carousselEl = document.querySelector(".caroussel__container");
     this.navbarEl = document.querySelector(".nav");
+
+    // Init methods
+    this.initializeInputHidden();
   }
+
+  initializeInputHidden() {
+    gsap.set(this.inputEl, { opacity: 0 });
+  }
+
+  showInput() {
+    gsap.fromTo(
+      this.inputEl,
+      { yPercent: 200, opacity: 0 },
+      { opacity: 1, yPercent: 0, duration: 0.4, ease: Power3.easeOut }
+    );
+  }
+
   // Presets
   fadeInButtons(delay = 0, duration = 500) {
     const videoBtn = this.inputFrontEl.querySelector(".video-btn");

@@ -9,8 +9,6 @@ exports["default"] = void 0;
 
 var _gsap = _interopRequireWildcard(require("gsap"));
 
-var _isMobile = _interopRequireDefault(require("../../utils/isMobile"));
-
 var _anim = _interopRequireDefault(require("../../utils/anim"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -57,11 +55,33 @@ function () {
     this.logoMobileEl = document.querySelector(".logo__mobile");
     this.categoriesListEl = document.querySelector(".categories__list--container");
     this.carousselEl = document.querySelector(".caroussel__container");
-    this.navbarEl = document.querySelector(".nav");
-  } // Presets
+    this.navbarEl = document.querySelector(".nav"); // Init methods
 
+    this.initializeInputHidden();
+  }
 
   _createClass(InputAnimations, [{
+    key: "initializeInputHidden",
+    value: function initializeInputHidden() {
+      _gsap["default"].set(this.inputEl, {
+        opacity: 0
+      });
+    }
+  }, {
+    key: "showInput",
+    value: function showInput() {
+      _gsap["default"].fromTo(this.inputEl, {
+        yPercent: 200,
+        opacity: 0
+      }, {
+        opacity: 1,
+        yPercent: 0,
+        duration: 0.4,
+        ease: _gsap.Power3.easeOut
+      });
+    } // Presets
+
+  }, {
     key: "fadeInButtons",
     value: function fadeInButtons() {
       var delay = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
