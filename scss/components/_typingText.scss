@@ -9,7 +9,6 @@ $radiusDotTyping: 22px;
 
   align-items: center;
   visibility: hidden;
-  // overflow: hidden;
   pointer-events: none;
 }
 
@@ -32,65 +31,6 @@ $radiusDotTyping: 22px;
 
   &.hidden {
     opacity: 0;
-  }
-}
-
-.typing__skeleton-container {
-  position: static;
-  top: calc(50% + 20px);
-  width: calc(100% - 48px);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  transition: opacity 0.3s ease-in-out;
-
-  &.hidden {
-    opacity: 0;
-  }
-}
-
-.typing__skeleton {
-  background: linear-gradient(-90deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.04) 50%, rgba(0, 0, 0, 0.1) 100%);
-  background-size: 400% 400%;
-  border-radius: 2px;
-  height: 12px;
-  transform: scaleX(0);
-  transform-origin: left;
-  animation: pulse 2s ease-in infinite;
-}
-
-.typing__skeleton-0 {
-  width: 85%;
-}
-
-.typing__skeleton-1 {
-  width: 90%;
-}
-
-.typing__skeleton-2 {
-  width: 88%;
-}
-
-.typing__skeleton-3 {
-  width: 66%;
-}
-
-.typing__skeleton-container.skeleton__image {
-  flex-direction: row;
-  top: calc(100% + 12px);
-  left: 0;
-  gap: 10px;
-
-  .typing__skeleton {
-    height: 98px;
-    width: 80px;
-    border-radius: 4px;
-    transform: scaleX(1) scaleY(0);
-    transform-origin: top;
-  }
-
-  .typing__skeleton:nth-child(2n) {
-    width: 144px;
   }
 }
 

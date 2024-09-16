@@ -26,17 +26,6 @@ export default class TypingText {
     imgEl.setAttribute("src", "./images/asterizk_blue.svg");
     this.logo.appendChild(imgEl);
 
-    this.skeletonContainer = document.createElement("div");
-    this.skeletonContainer.classList.add("typing__skeleton-container");
-    this.skeletons = [];
-
-    for (let i = 0; i < 4; i++) {
-      let skeleton = document.createElement("div");
-      skeleton.classList.add("typing__skeleton");
-      skeleton.classList.add(`typing__skeleton-${i}`);
-      this.skeletons.push(skeleton);
-    }
-
     this.textEl = document.createElement("p");
 
     this.maskEl.classList.add("typing__mask");
@@ -50,8 +39,7 @@ export default class TypingText {
     this.maskEl.appendChild(this.logo);
     this.textEl.appendChild(this.maskEl);
     this.typingContainer.appendChild(this.textEl);
-    this.typingContainer.appendChild(this.skeletonContainer);
-    this.skeletons.forEach((skeleton) => this.skeletonContainer.appendChild(skeleton));
+
     textContainer.appendChild(this.typingContainer);
   }
 
@@ -63,17 +51,6 @@ export default class TypingText {
   fadeIn() {
     this.typingContainer.style.visibility = "visible";
     this.typingContainer.style.opacity = 1;
-  }
-
-  displayTextSkeleton() {
-    this.skeletons.forEach((skeleton, idx) => {
-      anim(skeleton, [{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], {
-        duration: 500,
-        delay: 50 * idx,
-        fill: "forwards",
-        ease: "ease-out",
-      });
-    });
   }
 
   async fadeOut() {

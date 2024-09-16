@@ -40,8 +40,6 @@ function () {
   _createClass(TypingText, [{
     key: "init",
     value: function init() {
-      var _this = this;
-
       var textContainer = this.container.querySelector(".text__container");
 
       if (!textContainer) {
@@ -56,17 +54,6 @@ function () {
       var imgEl = document.createElement("img");
       imgEl.setAttribute("src", "./images/asterizk_blue.svg");
       this.logo.appendChild(imgEl);
-      this.skeletonContainer = document.createElement("div");
-      this.skeletonContainer.classList.add("typing__skeleton-container");
-      this.skeletons = [];
-
-      for (var i = 0; i < 4; i++) {
-        var skeleton = document.createElement("div");
-        skeleton.classList.add("typing__skeleton");
-        skeleton.classList.add("typing__skeleton-".concat(i));
-        this.skeletons.push(skeleton);
-      }
-
       this.textEl = document.createElement("p");
       this.maskEl.classList.add("typing__mask");
       this.logo.classList.add("typing__logo");
@@ -76,10 +63,6 @@ function () {
       this.maskEl.appendChild(this.logo);
       this.textEl.appendChild(this.maskEl);
       this.typingContainer.appendChild(this.textEl);
-      this.typingContainer.appendChild(this.skeletonContainer);
-      this.skeletons.forEach(function (skeleton) {
-        return _this.skeletonContainer.appendChild(skeleton);
-      });
       textContainer.appendChild(this.typingContainer);
     }
   }, {
@@ -93,22 +76,6 @@ function () {
     value: function fadeIn() {
       this.typingContainer.style.visibility = "visible";
       this.typingContainer.style.opacity = 1;
-    }
-  }, {
-    key: "displayTextSkeleton",
-    value: function displayTextSkeleton() {
-      this.skeletons.forEach(function (skeleton, idx) {
-        (0, _anim["default"])(skeleton, [{
-          transform: "scaleX(0)"
-        }, {
-          transform: "scaleX(1)"
-        }], {
-          duration: 500,
-          delay: 50 * idx,
-          fill: "forwards",
-          ease: "ease-out"
-        });
-      });
     }
   }, {
     key: "fadeOut",
