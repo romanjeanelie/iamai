@@ -22,6 +22,7 @@ function () {
     _classCallCheck(this, HeroBentoAnimations);
 
     // DOM Elements
+    this.header = document.querySelector(".heroBentoGrid__header");
     this.bentoCards = document.querySelectorAll(".heroBentoGrid__grid-item");
     this.initHiddenBentoCards();
   }
@@ -29,22 +30,40 @@ function () {
   _createClass(HeroBentoAnimations, [{
     key: "initHiddenBentoCards",
     value: function initHiddenBentoCards() {
+      _gsap["default"].set(this.header, {
+        opacity: 0,
+        yPercent: 5
+      });
+
       _gsap["default"].set(this.bentoCards, {
-        opacity: 0
+        opacity: 0,
+        yPercent: 10
       });
     }
   }, {
     key: "showBentoCards",
     value: function showBentoCards() {
-      _gsap["default"].to(this.bentoCards, {
+      var tl = _gsap["default"].timeline({
+        defaults: {
+          ease: "power2.out",
+          duration: 0.4
+        }
+      });
+
+      tl.to(this.header, {
         opacity: 1,
+        yPercent: 0,
+        delay: 1
+      });
+      tl.to(this.bentoCards, {
+        opacity: 1,
+        yPercent: 0,
         stagger: {
-          amount: 0.5,
+          amount: 0.2,
           grid: "auto"
         },
-        duration: 0.5,
-        delay: 1.2
-      });
+        duration: 0.4
+      }, "<+=0.2");
     }
   }]);
 
