@@ -3,16 +3,17 @@ import Flip from "gsap/Flip";
 import TaskCardAnimations from "./TaskCardAnimations";
 
 import { STATUS_COLORS, TASK_STATUSES } from "..";
-import { flightSearchData, flightSearchResultsData } from "../../../../testData";
-import { FlightUI } from "../../UI/FlightUI";
 
 gsap.registerPlugin(Flip);
 
 export default class TaskManagerCard {
-  constructor(task, index, emitter) {
+  constructor(task, taskManager, emitter) {
     this.task = task;
-    this.index = index;
+    this.taskManager = taskManager;
     this.emitter = emitter;
+
+    // Index of the task in the tasks array
+    this.index = this.taskManager.tasks.findIndex((t) => t.key === this.task.key);
 
     // DOM Elements
     this.tasksGrid = document.querySelector(".task-manager__tasks-grid");
@@ -117,9 +118,21 @@ export default class TaskManagerCard {
     }
   }
 
+  markAsRead() {
+    if (this.task.status.type !== TASK_STATUSES.COMPLETED) return;
+
+    this.task.status = {
+      ...this.task.status,
+      type: TASK_STATUSES.READ,
+    };
+
+    this.taskManager.updateTaskStatus(this.task);
+  }
+
   addEventListeners() {
     this.card.addEventListener("click", () => {
       this.expandCardToFullscreen();
+      this.markAsRead();
     });
 
     this.emitter.on("taskManager:updateStatus", (taskKey, status) => {

@@ -13,11 +13,13 @@ var _TaskCardAnimations = _interopRequireDefault(require("./TaskCardAnimations")
 
 var _ = require("..");
 
-var _testData = require("../../../../testData");
-
-var _FlightUI = require("../../UI/FlightUI");
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -30,12 +32,18 @@ _gsap["default"].registerPlugin(_Flip["default"]);
 var TaskManagerCard =
 /*#__PURE__*/
 function () {
-  function TaskManagerCard(task, index, emitter) {
+  function TaskManagerCard(task, taskManager, emitter) {
+    var _this = this;
+
     _classCallCheck(this, TaskManagerCard);
 
     this.task = task;
-    this.index = index;
-    this.emitter = emitter; // DOM Elements
+    this.taskManager = taskManager;
+    this.emitter = emitter; // Index of the task in the tasks array
+
+    this.index = this.taskManager.tasks.findIndex(function (t) {
+      return t.key === _this.task.key;
+    }); // DOM Elements
 
     this.tasksGrid = document.querySelector(".task-manager__tasks-grid");
     this.fullscreenContainer = document.querySelector(".task-manager__task-fullscreen");
@@ -94,10 +102,10 @@ function () {
   }, {
     key: "expandCardToFullscreen",
     value: function expandCardToFullscreen() {
-      var _this = this;
+      var _this2 = this;
 
       this.animations.cardToFullScreen(function () {
-        document.addEventListener("click", _this.handleClickOutside);
+        document.addEventListener("click", _this2.handleClickOutside);
       });
     }
   }, {
@@ -115,16 +123,27 @@ function () {
       }
     }
   }, {
+    key: "markAsRead",
+    value: function markAsRead() {
+      if (this.task.status.type !== _.TASK_STATUSES.COMPLETED) return;
+      this.task.status = _objectSpread({}, this.task.status, {
+        type: _.TASK_STATUSES.READ
+      });
+      this.taskManager.updateTaskStatus(this.task);
+    }
+  }, {
     key: "addEventListeners",
     value: function addEventListeners() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.card.addEventListener("click", function () {
-        _this2.expandCardToFullscreen();
+        _this3.expandCardToFullscreen();
+
+        _this3.markAsRead();
       });
       this.emitter.on("taskManager:updateStatus", function (taskKey, status) {
-        if (_this2.task.key === taskKey) {
-          _this2.updateTaskUI(status);
+        if (_this3.task.key === taskKey) {
+          _this3.updateTaskUI(status);
         }
       });
     }
