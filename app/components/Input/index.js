@@ -62,7 +62,6 @@ export default class Input {
       animInitial: false,
     };
     this.currentStatus = STATUS.INITIAL;
-    this.isPageBlue = this.pageEl.classList.contains("page-blue");
 
     // Anims
     this.anims = new InputAnimations({
