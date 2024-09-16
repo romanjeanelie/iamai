@@ -51,7 +51,7 @@ function () {
       }
 
       this.typingContainer = document.createElement("div");
-      this.maskEl = document.createElement("div");
+      this.typingContainer.classList.add("typing__container");
       this.logo = document.createElement("div");
       var imgEl = document.createElement("img");
       imgEl.setAttribute("src", "./images/asterizk_blue.svg");
@@ -68,22 +68,16 @@ function () {
       }
 
       this.textEl = document.createElement("p");
-      this.typingContainer.classList.add("typing__container");
-      this.maskEl.classList.add("typing__mask");
       this.logo.classList.add("typing__logo");
       this.textEl.classList.add("typing__text");
       this.textEl.textContent = this.text;
-      this.maskEl.style.backgroundColor = this.backgroundColor;
       this.typingContainer.style.left = "".concat(this.marginLeft, "px");
-      this.maskEl.appendChild(this.logo);
-      this.textEl.appendChild(this.maskEl);
       this.typingContainer.appendChild(this.textEl);
       this.typingContainer.appendChild(this.skeletonContainer);
       this.skeletons.forEach(function (skeleton) {
         return _this.skeletonContainer.appendChild(skeleton);
       });
       textContainer.appendChild(this.typingContainer);
-      this.translateCursor = null;
     }
   }, {
     key: "updateText",

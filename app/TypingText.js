@@ -19,7 +19,8 @@ export default class TypingText {
     }
 
     this.typingContainer = document.createElement("div");
-    this.maskEl = document.createElement("div");
+    this.typingContainer.classList.add("typing__container");
+
     this.logo = document.createElement("div");
     const imgEl = document.createElement("img");
     imgEl.setAttribute("src", "./images/asterizk_blue.svg");
@@ -37,23 +38,18 @@ export default class TypingText {
     }
 
     this.textEl = document.createElement("p");
-    this.typingContainer.classList.add("typing__container");
-    this.maskEl.classList.add("typing__mask");
+
     this.logo.classList.add("typing__logo");
     this.textEl.classList.add("typing__text");
 
     this.textEl.textContent = this.text;
-    this.maskEl.style.backgroundColor = this.backgroundColor;
+
     this.typingContainer.style.left = `${this.marginLeft}px`;
 
-    this.maskEl.appendChild(this.logo);
-    this.textEl.appendChild(this.maskEl);
     this.typingContainer.appendChild(this.textEl);
     this.typingContainer.appendChild(this.skeletonContainer);
     this.skeletons.forEach((skeleton) => this.skeletonContainer.appendChild(skeleton));
     textContainer.appendChild(this.typingContainer);
-
-    this.translateCursor = null;
   }
 
   updateText(text) {
