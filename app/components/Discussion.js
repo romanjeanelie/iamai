@@ -115,7 +115,6 @@ export default class Discussion {
 
     this.emitter.emit("pre-text-animation");
     this.typingText.fadeIn();
-
     this.Chat.callsubmit(text, imgs, this.AIContainer, isLiveMode);
   }
 

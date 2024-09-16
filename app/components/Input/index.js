@@ -94,18 +94,16 @@ export default class Input {
     this.inputVideo = new InputVideo(this.emitter);
 
     // Phone
-    if (!this.isPageBlue) {
-      this.phone = new Phone({
-        pageEl: this.pageEl,
-        discussion: this.discussion,
-        emitter: this.emitter,
-        photos: this.inputVideo.photos,
-        anims: {
-          toStartPhoneRecording: () => this.anims.toStartPhoneRecording(),
-          toStopPhoneRecording: () => this.anims.toStopPhoneRecording(),
-        },
-      });
-    }
+    this.phone = new Phone({
+      pageEl: this.pageEl,
+      discussion: this.discussion,
+      emitter: this.emitter,
+      photos: this.inputVideo.photos,
+      anims: {
+        toStartPhoneRecording: () => this.anims.toStartPhoneRecording(),
+        toStopPhoneRecording: () => this.anims.toStopPhoneRecording(),
+      },
+    });
 
     this.addListeners();
 
