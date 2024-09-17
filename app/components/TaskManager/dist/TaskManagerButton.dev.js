@@ -33,8 +33,8 @@ function () {
       }).length;
     }
   }, {
-    key: "toggleButton",
-    value: function toggleButton() {
+    key: "handleTaskButton",
+    value: function handleTaskButton() {
       if (this.countCompletedTasks() > 0) {
         this.button.classList.remove("hidden");
       } else {
@@ -54,7 +54,7 @@ function () {
       var _this = this;
 
       this.emitter.on("taskManager:updateStatus", function () {
-        _this.toggleButton();
+        _this.handleTaskButton();
       });
     }
   }]);

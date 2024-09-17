@@ -357,7 +357,6 @@ export default class TaskManager {
 
   // ---------- Handling the tasks ----------
   createTask(task) {
-    console.log("Task created", task);
     // when a new task is created i'd like to update cards array of the TaskManagerAnimations class
     this.tasks.push(task);
     new TaskManagerCard(task, this, this.emitter);
@@ -375,7 +374,7 @@ export default class TaskManager {
     const task = this.tasks.find((task) => task.key === taskKey);
     if (!task) return;
     task.status = status;
-    this.button.toggleButton();
+    this.button.handleTaskButton();
     if (container) task.resultsContainer = container;
     task.workflowID = workflowID;
     // this.updateTaskUI(taskKey, status);

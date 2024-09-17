@@ -13,7 +13,7 @@ export default class TaskManagerButton {
     return this.tasks.filter((task) => task.status.type === TASK_STATUSES.COMPLETED).length;
   }
 
-  toggleButton() {
+  handleTaskButton() {
     if (this.countCompletedTasks() > 0) {
       this.button.classList.remove("hidden");
     } else {
@@ -28,7 +28,7 @@ export default class TaskManagerButton {
 
   addEventListeners() {
     this.emitter.on("taskManager:updateStatus", () => {
-      this.toggleButton();
+      this.handleTaskButton();
     });
   }
 }
