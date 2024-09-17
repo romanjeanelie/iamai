@@ -311,8 +311,6 @@ export default class History {
       // Get results container
       const resultsContainer = this.getResultsUI(statuses);
       element.resultsContainer = resultsContainer;
-      // Add statuses
-      // if (isTaskViewed(element)) return;
       this.addStatuses(statuses, resultsContainer);
     });
 

@@ -323,40 +323,6 @@ export default class Discussion {
   }
 
   // Tasks
-  async onCreatedTask(task, textAI) {
-    if (this.debug) {
-      this.userContainer = document.createElement("div");
-      this.userContainer.classList.add("discussion__user");
-      var userContainerspan = document.createElement("span");
-      userContainerspan.classList.add("discussion__userspan");
-      userContainerspan.innerHTML = "who's obama ?";
-      this.userContainer.innerHTML = "bonjour";
-
-      this.AIContainer = document.createElement("div");
-      this.AIContainer.classList.add("discussion__ai");
-      this.addAIText({
-        text: "",
-        container: this.AIContainer,
-      });
-
-      this.discussionContainer.appendChild(this.userContainer);
-      this.discussionContainer.appendChild(this.AIContainer);
-    }
-
-    if (!this.history.isSet || this.history.isFetching) return;
-    if (!this.userContainer) {
-      this.userContainer = document.createElement("div");
-      this.userContainer.classList.add("discussion__user");
-      this.discussionContainer.appendChild(this.userContainer);
-    }
-
-    await this.addAIText({ text: textAI, container: this.AIContainer });
-    this.userContainer.classList.add("discussion__user--task-created");
-    this.AIContainer.classList.add("discussion__ai--task-created");
-    this.userContainer.setAttribute("taskkey", task.key);
-    this.AIContainer.setAttribute("taskkey", task.key);
-  }
-
   onUserAnswerTask(text, task) {
     this.Chat.submituserreply(text, task.workflowID);
   }
@@ -371,16 +337,12 @@ export default class Discussion {
       time_stamp: getPreviousDayTimestamp(),
     };
 
-    console.log(params);
-
     const result = await fetcher({
       url,
       params,
       idToken,
       method: "POST",
     });
-
-    console.log(result);
 
     return result;
   }
@@ -442,7 +404,6 @@ export default class Discussion {
       this.centralFinished = true;
     });
 
-    this.emitter.on("taskManager:createTask", (task, textAI) => this.onCreatedTask(task, textAI));
     this.emitter.on("taskManager:inputSubmit", (text, task) => this.onUserAnswerTask(text, task));
     this.emitter.on("taskManager:taskRead", async (taskKey) =>
       this.postViewTask({
