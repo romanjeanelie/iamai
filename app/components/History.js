@@ -60,7 +60,6 @@ export default class History {
       switch (status.status) {
         case API_STATUSES.STARTED:
           let taskname = status.task_name;
-          console.log("task created", status);
 
           const task = {
             key: status.micro_thread_id,
@@ -135,6 +134,18 @@ export default class History {
             },
           };
           this.emitter.emit("taskManager:updateStatus", taskEnded.key, taskEnded.status, resultsContainer);
+          break;
+        case API_STATUSES.VIEWED:
+          const taskViewed = {
+            key: status.micro_thread_id,
+            status: {
+              type: TASK_STATUSES.VIEWED,
+              title: "Completed",
+              description: status.response_json.text,
+              label: status.task_name + " is viewed",
+            },
+          };
+          this.emitter.emit("taskManager:updateStatus", taskViewed.key, taskViewed.status, resultsContainer);
           break;
       }
     });

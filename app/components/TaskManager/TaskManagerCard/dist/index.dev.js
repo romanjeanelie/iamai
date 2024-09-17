@@ -13,10 +13,6 @@ var _TaskCardAnimations = _interopRequireDefault(require("./TaskCardAnimations")
 
 var _ = require("..");
 
-var _constants = require("../../constants");
-
-var _fetcher = _interopRequireDefault(require("../../../utils/fetcher"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -43,8 +39,7 @@ function () {
 
     this.task = task;
     this.taskManager = taskManager;
-    this.emitter = emitter;
-    console.log(this.task); // Index of the task in the tasks array
+    this.emitter = emitter; // Index of the task in the tasks array
 
     this.index = this.taskManager.tasks.findIndex(function (t) {
       return t.key === _this.task.key;
@@ -72,7 +67,7 @@ function () {
       this.card.classList.add("task-manager__task-card");
       this.card.setAttribute("task-key", this.task.key);
       this.card.setAttribute("index", this.index);
-      this.card.innerHTML = "\n      <div class=\"card-state\">\n        <div class=\"task-manager__task-card-content\">\n          <h3 class=\"task-manager__task-card-title\">\n            ".concat(this.task.name, "\n          </h3>\n\n          <div class=\"task-manager__task-status\">\n            <p class=\"task-manager__task-status-label\">\n              ").concat(this.task.status.label || this.task.status.type, "\n            </p>\n          </div>\n        </div>\n        <div class=\"task-manager__task-illustration\">\n          <div class=\"task-manager__task-illustration-cover\">\n          </div>\n          <div class=\"task-manager__task-illustration-behind\">\n          </div>\n        </div>\n      </div>\n\n      <div class=\"fullscreen-state\">\n        <div class=\"discussion__userspan\">\n          ").concat(this.task.name, "          \n        </div>\n      </div>\n    ");
+      this.card.innerHTML = "\n      <div class=\"card-state\">\n        <div class=\"task-manager__task-card-content\">\n          <h3 class=\"task-manager__task-card-title\">\n            ".concat(this.task.name, "\n          </h3>\n\n          <div class=\"task-manager__task-status\">\n            <p class=\"task-manager__task-status-label\">\n              ").concat(this.task.status.label || this.task.status.type, "\n            </p>\n          </div>\n        </div>\n        <div class=\"task-manager__task-illustration\">\n          <div class=\"task-manager__task-illustration-cover\">\n          </div>\n          <div class=\"task-manager__task-illustration-behind\">\n          </div>\n        </div>\n        <div class=\"task-manager__task-completed-notification task-manager__button\"> \n        1\n        </div> \n      </div>\n\n      <div class=\"fullscreen-state\">\n        <div class=\"discussion__userspan\">\n          ").concat(this.task.name, "          \n        </div>\n      </div>\n    ");
       this.cardState = this.card.querySelector(".card-state");
       this.fullscreenState = this.card.querySelector(".fullscreen-state");
       this.statusPill = this.card.querySelector(".task-manager__task-status");
@@ -94,11 +89,18 @@ function () {
   }, {
     key: "updateTaskUI",
     value: function updateTaskUI(status) {
+      if (this.index === 0) {
+        console.log(status);
+      }
+
       this.statusPillLabel.innerText = status.type;
       this.statusPill.style.background = _.STATUS_COLORS[status.type];
 
       if (status.type === _.TASK_STATUSES.COMPLETED) {
         this.addResult(status);
+        this.card.classList.add("completed");
+      } else if (status.type === _.TASK_STATUSES.VIEWED) {
+        this.card.classList.remove("completed");
       } else {
         this.addStatus();
       }
@@ -132,7 +134,7 @@ function () {
     value: function markAsRead() {
       if (this.task.status.type !== _.TASK_STATUSES.COMPLETED) return;
       this.task.status = _objectSpread({}, this.task.status, {
-        type: _.TASK_STATUSES.READ
+        type: _.TASK_STATUSES.VIEWED
       });
       this.taskManager.updateTaskStatus(this.task);
       this.emitter.emit("taskManager:taskRead", this.task.key);

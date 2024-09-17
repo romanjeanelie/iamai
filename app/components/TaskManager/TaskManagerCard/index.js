@@ -3,8 +3,6 @@ import Flip from "gsap/Flip";
 import TaskCardAnimations from "./TaskCardAnimations";
 
 import { STATUS_COLORS, TASK_STATUSES } from "..";
-import { URL_AGENT_STATUS } from "../../constants";
-import fetcher from "../../../utils/fetcher";
 
 gsap.registerPlugin(Flip);
 
@@ -13,7 +11,6 @@ export default class TaskManagerCard {
     this.task = task;
     this.taskManager = taskManager;
     this.emitter = emitter;
-    console.log(this.task);
 
     // Index of the task in the tasks array
     this.index = this.taskManager.tasks.findIndex((t) => t.key === this.task.key);
@@ -62,6 +59,9 @@ export default class TaskManagerCard {
           <div class="task-manager__task-illustration-behind">
           </div>
         </div>
+        <div class="task-manager__task-completed-notification task-manager__button"> 
+        1
+        </div> 
       </div>
 
       <div class="fullscreen-state">
@@ -92,11 +92,18 @@ export default class TaskManagerCard {
   }
 
   updateTaskUI(status) {
+    if (this.index === 0) {
+      console.log(status);
+    }
+
     this.statusPillLabel.innerText = status.type;
     this.statusPill.style.background = STATUS_COLORS[status.type];
 
     if (status.type === TASK_STATUSES.COMPLETED) {
       this.addResult(status);
+      this.card.classList.add("completed");
+    } else if (status.type === TASK_STATUSES.VIEWED) {
+      this.card.classList.remove("completed");
     } else {
       this.addStatus();
     }
@@ -126,7 +133,7 @@ export default class TaskManagerCard {
 
     this.task.status = {
       ...this.task.status,
-      type: TASK_STATUSES.READ,
+      type: TASK_STATUSES.VIEWED,
     };
 
     this.taskManager.updateTaskStatus(this.task);

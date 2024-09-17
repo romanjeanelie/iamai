@@ -9,7 +9,7 @@ export const TASK_STATUSES = {
   IN_PROGRESS: "In Progress",
   INPUT_REQUIRED: "Input Required",
   COMPLETED: "View Results",
-  READ: "Read",
+  VIEWED: "Viewed",
 };
 
 export const STATUS_COLORS = {
@@ -17,7 +17,7 @@ export const STATUS_COLORS = {
   [TASK_STATUSES.INPUT_REQUIRED]:
     "linear-gradient(70deg, rgba(227, 207, 28, 0.30) -10.29%, rgba(225, 135, 30, 0.30) 105%)",
   [TASK_STATUSES.COMPLETED]: "linear-gradient(70deg, rgba(116, 225, 30, 0.30) -10.29%, rgba(28, 204, 227, 0.30) 105%)",
-  [TASK_STATUSES.READ]: "linear-gradient(70deg, rgba(116, 225, 30, 0.30) -10.29%, rgba(28, 204, 227, 0.30) 105%)",
+  [TASK_STATUSES.VIEWED]: "linear-gradient(70deg, rgba(116, 225, 30, 0.30) -10.29%, rgba(28, 204, 227, 0.30) 105%)",
 };
 
 const defaultValues = {
@@ -35,7 +35,7 @@ const defaultValues = {
     title: "results",
     description: "Here's your flights to Bali!",
   },
-  [TASK_STATUSES.READ]: {
+  [TASK_STATUSES.VIEWED]: {
     title: "results",
     description: "Here's your flights to Bali!",
   },
@@ -379,7 +379,6 @@ export default class TaskManager {
     task.workflowID = workflowID;
     // this.updateTaskUI(taskKey, status);
     if (!this.isHistorySet) return;
-    this.handleNotificationPill(taskKey, status);
   }
 
   addListeners() {

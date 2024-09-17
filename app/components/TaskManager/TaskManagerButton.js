@@ -10,7 +10,8 @@ export default class TaskManagerButton {
   }
 
   countCompletedTasks() {
-    return this.tasks.filter((task) => task.status.type === TASK_STATUSES.COMPLETED).length;
+    const completedTasks = this.tasks.filter((task) => task.status.type === TASK_STATUSES.COMPLETED);
+    return completedTasks.length;
   }
 
   handleTaskButton() {

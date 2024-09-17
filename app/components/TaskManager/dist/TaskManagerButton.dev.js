@@ -28,9 +28,10 @@ function () {
   _createClass(TaskManagerButton, [{
     key: "countCompletedTasks",
     value: function countCompletedTasks() {
-      return this.tasks.filter(function (task) {
+      var completedTasks = this.tasks.filter(function (task) {
         return task.status.type === _.TASK_STATUSES.COMPLETED;
-      }).length;
+      });
+      return completedTasks.length;
     }
   }, {
     key: "handleTaskButton",
