@@ -157,7 +157,6 @@ export default class History {
     if (statuses.includes(API_STATUSES.CANCELLED)) {
       return API_STATUSES.CANCELLED;
     } else if (statuses.includes(API_STATUSES.VIEWED)) {
-      console.log("viewed");
       return API_STATUSES.VIEWED;
     } else if (statuses.includes(API_STATUSES.ENDED)) {
       return API_STATUSES.ENDED;

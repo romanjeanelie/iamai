@@ -337,6 +337,8 @@ export default class Discussion {
       time_stamp: getPreviousDayTimestamp(),
     };
 
+    console.log(params);
+
     const result = await fetcher({
       url,
       params,
@@ -405,14 +407,16 @@ export default class Discussion {
     });
 
     this.emitter.on("taskManager:inputSubmit", (text, task) => this.onUserAnswerTask(text, task));
-    this.emitter.on("taskManager:taskRead", async (taskKey) =>
-      this.postViewTask({
+    this.emitter.on("taskManager:taskRead", async (taskKey) => {
+      const taskRead = await this.postViewTask({
         uuid: this.uuid,
         micro_thread_id: taskKey,
         session_id: this.Chat.sessionID,
         idToken: await this.user.user.getIdToken(true),
-      })
-    );
+      });
+
+      console.log(taskRead);
+    });
     this.emitter.on("taskManager:deleteTask", (taskKey) => this.onRemoveTask(taskKey));
   }
 }

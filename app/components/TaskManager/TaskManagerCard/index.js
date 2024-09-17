@@ -92,10 +92,6 @@ export default class TaskManagerCard {
   }
 
   updateTaskUI(status) {
-    if (this.index === 0) {
-      console.log(status);
-    }
-
     this.statusPillLabel.innerText = status.type;
     this.statusPill.style.background = STATUS_COLORS[status.type];
 

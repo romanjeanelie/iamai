@@ -89,10 +89,6 @@ function () {
   }, {
     key: "updateTaskUI",
     value: function updateTaskUI(status) {
-      if (this.index === 0) {
-        console.log(status);
-      }
-
       this.statusPillLabel.innerText = status.type;
       this.statusPill.style.background = _.STATUS_COLORS[status.type];
 
