@@ -86,22 +86,9 @@ export default class History {
               },
               workflowID: status.session_id,
             };
-            console.log("input required", status);
 
             this.emitter.emit("taskManager:updateStatus", task.key, task.status, null, task.workflowID);
           } else {
-            //   console.log("status:",status)
-            //   if(status.response_json.text && status.response_json.text.length>0){
-            //   const task = {
-            //     key: status.micro_thread_id,
-            //     status: {
-            //       type: TASK_STATUSES.IN_PROGRESS,
-            //       title: status.response_json.text.split(" ")[0],
-            //       description: status.response_json.text,
-            //     },
-            //   };
-            //   this.emitter.emit("taskManager:updateStatus", task.key, task.status);
-            // }
             if (status.type == API_STATUSES.SOURCES) {
               const task = {
                 key: status.micro_thread_id,
@@ -111,8 +98,6 @@ export default class History {
                   description: status.response_json.sources,
                 },
               };
-
-              console.log("sources", status);
               this.emitter.emit("taskManager:updateStatus", task.key, task.status);
             } else if (status.type == API_STATUSES.AGENT_INTERMEDIATE_ANSWER) {
               const task = {
@@ -123,7 +108,6 @@ export default class History {
                   description: status.response_json.agent_intermediate_answer,
                 },
               };
-              console.log("AGENT INTERMEDIATE ANSWER", status);
               this.emitter.emit("taskManager:updateStatus", task.key, task.status);
             } else {
               if (status.response_json.domain != "Code") {
@@ -135,7 +119,6 @@ export default class History {
                     description: status.response_json.text,
                   },
                 };
-                console.log("progressing", status);
                 this.emitter.emit("taskManager:updateStatus", task.key, task.status);
               }
             }
@@ -151,7 +134,6 @@ export default class History {
               label: status.task_name + " is completed",
             },
           };
-          console.log("task ended", status);
           this.emitter.emit("taskManager:updateStatus", taskEnded.key, taskEnded.status, resultsContainer);
           break;
       }
@@ -270,15 +252,11 @@ export default class History {
         if (isTask(element) && !isTaskViewed(element)) {
           userContainer.setAttribute("taskKey", element.micro_thread_id);
           userContainer.classList.add("discussion__user--task-created");
+          userContainer.innerText += "TASK CREATED";
         }
       }
 
-      if (isTaskViewed(element) && element.resultsContainer) {
-        const AIContainer = document.createElement("div");
-        AIContainer.classList.add("discussion__ai");
-        AIContainer.appendChild(element.resultsContainer);
-        container.appendChild(AIContainer);
-      } else if (element.assistant.length > 0) {
+      if (element.assistant.length > 0) {
         const AIContainer = document.createElement("div");
         AIContainer.classList.add("discussion__ai");
 
@@ -334,7 +312,7 @@ export default class History {
       const resultsContainer = this.getResultsUI(statuses);
       element.resultsContainer = resultsContainer;
       // Add statuses
-      if (isTaskViewed(element)) return;
+      // if (isTaskViewed(element)) return;
       this.addStatuses(statuses, resultsContainer);
     });
 
@@ -347,25 +325,5 @@ export default class History {
     this.newStart += size;
 
     return { elements: elements.results, container };
-  }
-
-  async postViewTask({ uuid, micro_thread_id, session_id, idToken }) {
-    const url = URL_AGENT_STATUS;
-    const params = {
-      uuid,
-      micro_thread_id,
-      session_id,
-      status: API_STATUSES.VIEWED,
-      time_stamp: getPreviousDayTimestamp(),
-    };
-
-    const result = await fetcher({
-      url,
-      params,
-      idToken,
-      method: "POST",
-    });
-
-    return result;
   }
 }
