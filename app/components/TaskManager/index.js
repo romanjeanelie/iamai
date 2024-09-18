@@ -6,6 +6,7 @@ import TaskManagerCard from "./TaskManagerCard";
 import TaskManagerAnimations from "./TaskManagerAnimations";
 import { API_STATUSES, URL_DELETE_STATUS } from "../constants";
 import fetcher from "../../utils/fetcher";
+import { store } from "../store";
 
 export const STATUS_COLORS = {
   [API_STATUSES.PROGRESSING]: "rgba(149, 159, 177, 0.14)",

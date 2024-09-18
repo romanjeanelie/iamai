@@ -10,6 +10,7 @@ import { API_STATUSES, URL_AGENT_STATUS, URL_DELETE_STATUS } from "./constants.j
 import { gsap } from "gsap";
 import fadeByWord from "../utils/fadeByWord.js";
 import { flightSearchData, flightSearchResultsData } from "../../testData.js";
+import { store } from "./store.js";
 
 export default class Discussion {
   constructor({ toPageGrey, emitter, pageEl, user }) {
@@ -275,6 +276,7 @@ export default class Discussion {
       }
     }
     this.uuid = this.Chat.deploy_ID;
+    store.set("chatId", this.uuid);
 
     if (this.debug) return;
     await this.updateHistory({ uuid: this.uuid, user: this.user });
