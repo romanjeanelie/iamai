@@ -47,10 +47,10 @@ export default class TaskManager {
     // DOM Elements
     this.html = document.documentElement;
     this.container = document.querySelector(".task-manager__container");
-    this.taskCards = document.querySelectorAll(".task-manager__task-card");
 
     // States
     this.tasks = [];
+    this.tasksUI = [];
     this.notificationTimeoutId = null;
     this.notificationDuration = 1500000;
     this.isInputFullscreen = false;
@@ -191,14 +191,6 @@ export default class TaskManager {
     gsap.set(this.container, {
       yPercent: 100,
     });
-  }
-
-  updateTaskStatus(updatedTask) {
-    const taskIndex = this.tasks.findIndex((task) => task.key === updatedTask.key);
-    if (taskIndex !== -1) {
-      this.tasks[taskIndex].status = updatedTask.status;
-      this.onStatusUpdate(updatedTask.key, updatedTask.status);
-    }
   }
 
   // ---------- Handling the notification pill ----------
@@ -355,7 +347,8 @@ export default class TaskManager {
   createTask(task) {
     // when a new task is created i'd like to update cards array of the TaskManagerAnimations class
     this.tasks.push(task);
-    new TaskManagerCard(task, this, this.emitter);
+    const taskCard = new TaskManagerCard(task, this, this.emitter);
+    this.tasksUI.push(taskCard);
   }
 
   deleteTask(taskKey) {
@@ -367,14 +360,23 @@ export default class TaskManager {
   }
 
   onStatusUpdate(taskKey, status, container, workflowID) {
-    const task = this.tasks.find((task) => task.key === taskKey);
-    if (!task) return;
-    task.status = status;
+    const taskIndex = this.tasks.findIndex((task) => task.key === taskKey);
+    if (taskIndex === -1) return;
+
+    // update in the tasks array
+    this.tasks[taskIndex].status = status;
     this.button.handleTaskButton();
-    if (container) task.resultsContainer = container;
-    task.workflowID = workflowID;
-    // this.updateTaskUI(taskKey, status);
-    if (!this.isHistorySet) return;
+
+    if (container) this.tasks[taskIndex].resultsContainer = container;
+    this.tasks[taskIndex].workflowID = workflowID;
+    this.notifyChildToUpdate(taskKey, status);
+  }
+
+  notifyChildToUpdate(taskKey, newStatus) {
+    const taskCard = this.tasksUI?.find((card) => card.task.key === taskKey);
+    if (taskCard) {
+      taskCard.updateTaskUI(newStatus);
+    }
   }
 
   addListeners() {

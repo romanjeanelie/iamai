@@ -11,6 +11,7 @@ export default class TaskManagerCard {
 
     // Index of the task in the tasks array
     this.index = this.taskManager.tasks.findIndex((t) => t.key === this.task.key);
+    console.log(this.index);
 
     // DOM Elements
     this.container = document.querySelector(".task-manager__container");
@@ -135,7 +136,6 @@ export default class TaskManagerCard {
       type: API_STATUSES.VIEWED,
     };
     this.updateTaskUI(this.task.status);
-    this.taskManager.updateTaskStatus(this.task);
     this.emitter.emit("taskManager:taskRead", this.task.key);
   }
 
