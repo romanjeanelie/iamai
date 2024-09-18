@@ -42,7 +42,7 @@ export default class TaskManagerCard {
       <div class="card-state">
         <div class="task-manager__task-card-content">
           <h3 class="task-manager__task-card-title">
-            ${this.task.name}
+            ${this.task.name} 
           </h3>
 
           <div class="task-manager__task-status">
@@ -86,7 +86,12 @@ export default class TaskManagerCard {
   }
 
   addResult() {
-    this.fullscreenState?.appendChild(this.task.resultsContainer);
+    if (this.task.resultsContainer instanceof Node) {
+      this.fullscreenState?.appendChild(this.task.resultsContainer);
+      console.log("RESULT CONTAINER IS A VALID DOM NODE THIS TIME");
+    } else {
+      console.error("resultsContainer is not a valid DOM Node", this.task.resultsContainer);
+    }
   }
 
   updateTaskUI(status) {
