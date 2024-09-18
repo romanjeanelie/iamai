@@ -134,6 +134,7 @@ function () {
       this.task.status = _objectSpread({}, this.task.status, {
         type: _constants.API_STATUSES.VIEWED
       });
+      this.updateTaskUI(this.task.status);
       this.taskManager.updateTaskStatus(this.task);
       this.emitter.emit("taskManager:taskRead", this.task.key);
     }

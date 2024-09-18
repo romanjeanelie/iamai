@@ -132,6 +132,7 @@ export default class TaskManagerCard {
       ...this.task.status,
       type: API_STATUSES.VIEWED,
     };
+    this.updateTaskUI(this.task.status);
 
     this.taskManager.updateTaskStatus(this.task);
     this.emitter.emit("taskManager:taskRead", this.task.key);
