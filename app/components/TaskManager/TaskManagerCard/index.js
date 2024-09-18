@@ -86,7 +86,7 @@ export default class TaskManagerCard {
   }
 
   addResult() {
-    this.fullscreenState.appendChild(this.task.resultsContainer);
+    this.fullscreenState?.appendChild(this.task.resultsContainer);
   }
 
   updateTaskUI(status) {
