@@ -266,7 +266,6 @@ export default class History {
         if (isTask(element) && !isTaskViewed(element)) {
           userContainer.setAttribute("taskKey", element.micro_thread_id);
           userContainer.classList.add("discussion__user--task-created");
-          userContainer.innerText += "TASK CREATED";
         }
       }
 
