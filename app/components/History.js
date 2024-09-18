@@ -94,6 +94,7 @@ export default class History {
                   type: API_STATUSES.PROGRESSING,
                   title: "SOURCES",
                   description: status.response_json.sources,
+                  label: "In Progress",
                 },
               };
               this.emitter.emit("taskManager:updateStatus", task.key, task.status);
@@ -104,6 +105,7 @@ export default class History {
                   type: API_STATUSES.AGENT_INTERMEDIATE_ANSWER,
                   title: "AGENT INTERMEDIATE ANSWER",
                   description: status.response_json.agent_intermediate_answer,
+                  label: "In Progress",
                 },
               };
               this.emitter.emit("taskManager:updateStatus", task.key, task.status);
@@ -115,6 +117,7 @@ export default class History {
                     type: API_STATUSES.PROGRESSING,
                     title: status.response_json.text.split(" ")[0],
                     description: status.response_json.text,
+                    label: "In Progress",
                   },
                 };
                 this.emitter.emit("taskManager:updateStatus", task.key, task.status);

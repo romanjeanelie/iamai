@@ -364,6 +364,7 @@ class Chat {
               type: API_STATUSES.PROGRESSING,
               title: "Planning",
               description: "Planning your tasks.",
+              label: "In Progress",
             },
           };
 
@@ -379,7 +380,7 @@ class Chat {
               key: mdata.micro_thread_id,
               status: {
                 type: API_STATUSES.INPUT_REQUIRED,
-                label: taskname,
+                label: "Input Required",
                 title: taskname,
                 description: mdata.response_json.text,
               },
@@ -396,6 +397,7 @@ class Chat {
                   type: API_STATUSES.PROGRESSING,
                   title: "SOURCES",
                   description: mdata.response_json.sources,
+                  label: "In Progress",
                 },
               };
               this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status);
@@ -406,6 +408,7 @@ class Chat {
                   type: API_STATUSES.PROGRESSING,
                   title: "AGENT INTERMEDIATE ANSWER",
                   description: mdata.response_json.agent_intermediate_answer,
+                  label: "In Progress",
                 },
               };
               this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status);
@@ -417,6 +420,7 @@ class Chat {
                     type: API_STATUSES.PROGRESSING,
                     title: mdata.response_json.text.split(" ")[0],
                     description: mdata.response_json.text,
+                    label: "In Progress",
                   },
                 };
                 this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status);
@@ -440,7 +444,7 @@ class Chat {
               type: API_STATUSES.ENDED,
               title: "Completed",
               description: mdata.response_json.text,
-              label: taskname + " is completed",
+              label: "View Results",
             },
           };
           let sourcedata = sources_paramsmap.get(mdata.micro_thread_id);
