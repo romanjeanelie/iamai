@@ -74,7 +74,6 @@ export default class TaskManager {
     this.emitter.on("taskManager:deleteTask", (taskKey) => this.deleteTask(taskKey));
     this.emitter.on("app:initialized", (bool) => {
       this.isHistorySet = bool;
-      console.log(this.tasks);
     });
 
     if (this.debug) {

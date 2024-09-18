@@ -10,6 +10,7 @@ export default class TaskCardAnimations {
     this.card = card;
     this.index = index;
 
+    this.container = document.querySelector(".task-manager__container");
     this.cardState = this.card.querySelector(".card-state");
     this.fullscreenState = this.card.querySelector(".fullscreen-state");
     this.fullscreenContainer = document.querySelector(".task-manager__task-fullscreen");
@@ -43,8 +44,8 @@ export default class TaskCardAnimations {
       this.container,
       {
         scrollTo: { y: 0 },
-        duration: 0.2, // Duration in seconds
-        ease: "power2.inOut", // Easing function
+        duration: 0.4, // Duration in seconds
+        ease: "power2.Out", // Easing function
       },
       "<"
     );

@@ -7,8 +7,6 @@ exports["default"] = void 0;
 
 var _gsap = _interopRequireDefault(require("gsap"));
 
-var _ScrollTrigger = require("gsap/ScrollTrigger");
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
