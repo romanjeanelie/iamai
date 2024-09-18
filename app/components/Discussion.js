@@ -349,28 +349,6 @@ export default class Discussion {
     return result;
   }
 
-  async onRemoveTask(taskKey) {
-    // Post delete task
-    const params = {
-      micro_thread_id: taskKey,
-      uuid: this.uuid,
-    };
-
-    const result = await fetcher({
-      url: URL_DELETE_STATUS,
-      params,
-      idToken: await this.user.user.getIdToken(true),
-      method: "DELETE",
-    });
-
-    // Remove elements
-    const userContainer = this.discussionWrapper.querySelector(`.discussion__user[taskkey="${taskKey}"]`);
-    const AIContainer = this.discussionWrapper.querySelector(`.discussion__ai[taskkey="${taskKey}"]`);
-
-    userContainer.remove();
-    AIContainer.remove();
-  }
-
   checkIfPrevDiscussionContainerVisible() {
     let options = {
       rootMargin: "-96px",
@@ -417,6 +395,5 @@ export default class Discussion {
 
       console.log(taskRead);
     });
-    this.emitter.on("taskManager:deleteTask", (taskKey) => this.onRemoveTask(taskKey));
   }
 }

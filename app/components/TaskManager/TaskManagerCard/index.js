@@ -11,7 +11,6 @@ export default class TaskManagerCard {
 
     // Index of the task in the tasks array
     this.index = this.taskManager.tasks.findIndex((t) => t.key === this.task.key);
-    console.log(this.index);
 
     // DOM Elements
     this.container = document.querySelector(".task-manager__container");
@@ -20,6 +19,7 @@ export default class TaskManagerCard {
     this.cardContainer = null;
     this.cardState = null;
     this.fullscreenState = null;
+    this.deleteBtn = null;
 
     // Bindings
     this.handleClickOutside = this.handleClickOutside.bind(this);
@@ -50,7 +50,8 @@ export default class TaskManagerCard {
             <p class="task-manager__task-status-label">
               ${this.task.status.label || this.task.status.type}
             </p>
-          </div>
+            </div>
+            <button class="task-card__delete-btn">delete</button>
         </div>
         <div class="task-manager__task-illustration">
           <div class="task-manager__task-illustration-cover">
@@ -74,11 +75,17 @@ export default class TaskManagerCard {
     this.fullscreenState = this.card.querySelector(".fullscreen-state");
     this.statusPill = this.card.querySelector(".task-manager__task-status");
     this.statusPillLabel = this.card.querySelector(".task-manager__task-status-label");
+    this.deleteBtn = this.card.querySelector(".task-card__delete-btn");
 
     this.cardContainer.appendChild(this.card);
     this.tasksGrid.appendChild(this.cardContainer);
 
     this.animations = new TaskCardAnimations(this.card, this.index);
+
+    this.deleteBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      this.emitter.emit("taskManager:deleteTask", this.task.key);
+    });
   }
 
   // Update the state
@@ -89,7 +96,6 @@ export default class TaskManagerCard {
   addResult() {
     if (this.task.resultsContainer instanceof Node) {
       this.fullscreenState?.appendChild(this.task.resultsContainer);
-      console.log("RESULT CONTAINER IS A VALID DOM NODE THIS TIME");
     } else {
       console.error("resultsContainer is not a valid DOM Node", this.task.resultsContainer);
     }
@@ -107,6 +113,10 @@ export default class TaskManagerCard {
     } else {
       this.addStatus();
     }
+  }
+
+  removeTaskUI() {
+    this.cardContainer.remove();
   }
 
   // From card to fullscreen

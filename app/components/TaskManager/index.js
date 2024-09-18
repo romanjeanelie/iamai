@@ -4,7 +4,8 @@ import Flip from "gsap/Flip";
 import TaskManagerButton from "./TaskManagerButton";
 import TaskManagerCard from "./TaskManagerCard";
 import TaskManagerAnimations from "./TaskManagerAnimations";
-import { API_STATUSES } from "../constants";
+import { API_STATUSES, URL_DELETE_STATUS } from "../constants";
+import fetcher from "../../utils/fetcher";
 
 export const STATUS_COLORS = {
   [API_STATUSES.PROGRESSING]: "rgba(149, 159, 177, 0.14)",
@@ -292,11 +293,6 @@ export default class TaskManager {
     this.navigation.toggleTasks();
   }
 
-  // ---------- Update the tasks UI  ----------
-  deleteTaskUI(key) {
-    // RAPPEL : Reaffect the index of the task cards
-  }
-
   // ---------- Handling the input ----------
   addInput(key, statusContainer) {
     const statusInputContainer = document.createElement("form");
@@ -339,7 +335,6 @@ export default class TaskManager {
   }
 
   closeInput(container) {
-    this.closeTaskManager();
     container.style.display = "none";
   }
 
@@ -351,12 +346,31 @@ export default class TaskManager {
     this.tasksUI.push(taskCard);
   }
 
-  deleteTask(taskKey) {
-    this.tasks = this.tasks.filter((task) => task.key !== taskKey);
-    this.deleteTaskUI(taskKey);
-    if (this.tasks.length === 0) {
-      this.closeTaskManager();
+  async deleteTask(taskKey) {
+    // Find and remove task from tasks array
+    this.tasks = this.tasks.filter((t) => t.key !== taskKey);
+
+    // Find and remove the corresponding task card from taskCards array
+    const taskCardIndex = this.tasksUI.findIndex((card) => card.task.key === taskKey);
+    if (taskCardIndex !== -1) {
+      const taskUI = this.tasksUI[taskCardIndex];
+      taskUI.removeTaskUI(); // Remove the task card's UI from the DOM
+      this.tasksUI.splice(taskCardIndex, 1); // Remove the card from the array
     }
+
+    // Find and remove the task from the db
+    // Post delete task - API ENDPOINT - DELETE - TBD
+    // const params = {
+    //   micro_thread_id: taskKey,
+    //   uuid: this.uuid,
+    // };
+
+    // const result = await fetcher({
+    //   url: URL_DELETE_STATUS,
+    //   params,
+    //   idToken: await this.user.user.getIdToken(true),
+    //   method: "DELETE",
+    // });
   }
 
   onStatusUpdate(taskKey, status, container, workflowID) {
@@ -364,6 +378,7 @@ export default class TaskManager {
     if (taskIndex === -1) return;
 
     // update in the tasks array
+    if (this.tasks[taskIndex].status.type === API_STATUSES.ENDED && status.type !== API_STATUSES.VIEWED) return;
     this.tasks[taskIndex].status = status;
     this.button.handleTaskButton();
 
@@ -390,5 +405,7 @@ export default class TaskManager {
     this.container.addEventListener("touchend", (e) => {
       e.stopPropagation();
     });
+
+    this.emitter.on("taskManager:deleteTask", (taskKey) => this.deleteTask(taskKey));
   }
 }
