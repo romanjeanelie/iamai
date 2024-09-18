@@ -146,6 +146,8 @@ function () {
       this.emitter.on("taskManager:updateStatus", function (taskKey, status) {
         if (_this3.task.key === taskKey) {
           _this3.updateTaskUI(status);
+
+          console.log(_this3.task);
         }
       });
     }

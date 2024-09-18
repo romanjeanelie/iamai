@@ -67,6 +67,7 @@ export default class History {
               title: "Planning",
               description: "Planning your tasks.",
               label: "In Progress",
+              createdAt: status.time_stamp,
             },
           };
           const textAI = status.response_json.text;

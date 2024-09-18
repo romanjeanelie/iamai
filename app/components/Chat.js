@@ -357,6 +357,7 @@ class Chat {
         } else if (mdata.status && mdata.status == AGENT_STARTED) {
           // micro_thread_id =  mdata.micro_thread_id;
           let taskname = mdata.task_name;
+          console.log("CREATING A TASK", mdata);
           const task = {
             key: mdata.micro_thread_id,
             name: taskname,
@@ -368,7 +369,6 @@ class Chat {
             },
           };
 
-          console.log("task:", task);
           const textAI = mdata.response_json.text;
           // await this.createTask(task, textAI)
           this.callbacks.emitter.emit("taskManager:createTask", task, textAI);
@@ -376,6 +376,7 @@ class Chat {
         } else if (mdata.status && mdata.status == AGENT_PROGRESSING) {
           if (mdata.awaiting) {
             let taskname = mdata.task_name;
+            console.log("TASK IN PROGRESS", mdata);
             const task = {
               key: mdata.micro_thread_id,
               status: {
