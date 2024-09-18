@@ -5,10 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _gsap = _interopRequireDefault(require("gsap"));
-
-var _Flip = _interopRequireDefault(require("gsap/Flip"));
-
 var _TaskCardAnimations = _interopRequireDefault(require("./TaskCardAnimations"));
 
 var _ = require("..");
@@ -29,8 +25,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-_gsap["default"].registerPlugin(_Flip["default"]);
-
 var TaskManagerCard =
 /*#__PURE__*/
 function () {
@@ -47,6 +41,7 @@ function () {
       return t.key === _this.task.key;
     }); // DOM Elements
 
+    this.container = document.querySelector(".task-manager__container");
     this.tasksGrid = document.querySelector(".task-manager__tasks-grid");
     this.fullscreenContainer = document.querySelector(".task-manager__task-fullscreen");
     this.cardContainer = null;

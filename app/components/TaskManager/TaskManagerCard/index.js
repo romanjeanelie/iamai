@@ -1,11 +1,7 @@
-import gsap from "gsap";
-import Flip from "gsap/Flip";
 import TaskCardAnimations from "./TaskCardAnimations";
 
 import { STATUS_COLORS } from "..";
 import { API_STATUSES } from "../../constants";
-
-gsap.registerPlugin(Flip);
 
 export default class TaskManagerCard {
   constructor(task, taskManager, emitter) {
@@ -17,6 +13,7 @@ export default class TaskManagerCard {
     this.index = this.taskManager.tasks.findIndex((t) => t.key === this.task.key);
 
     // DOM Elements
+    this.container = document.querySelector(".task-manager__container");
     this.tasksGrid = document.querySelector(".task-manager__tasks-grid");
     this.fullscreenContainer = document.querySelector(".task-manager__task-fullscreen");
     this.cardContainer = null;
@@ -133,7 +130,6 @@ export default class TaskManagerCard {
       type: API_STATUSES.VIEWED,
     };
     this.updateTaskUI(this.task.status);
-
     this.taskManager.updateTaskStatus(this.task);
     this.emitter.emit("taskManager:taskRead", this.task.key);
   }

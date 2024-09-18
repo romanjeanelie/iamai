@@ -1,5 +1,9 @@
 import gsap from "gsap";
 import { Flip } from "gsap/Flip";
+import ScrollToPlugin from "gsap/ScrollToPlugin";
+
+gsap.registerPlugin(Flip);
+gsap.registerPlugin(ScrollToPlugin);
 
 export default class TaskCardAnimations {
   constructor(card, index) {
@@ -22,6 +26,7 @@ export default class TaskCardAnimations {
       opacity: 0,
       duration: 0.2,
     });
+
     tl.add(() => {
       const state = Flip.getState(this.card);
       this.fullscreenContainer.appendChild(this.card);
@@ -33,6 +38,16 @@ export default class TaskCardAnimations {
         onComplete: callback,
       });
     });
+
+    tl.to(
+      this.container,
+      {
+        scrollTo: { y: 0 },
+        duration: 0.2, // Duration in seconds
+        ease: "power2.inOut", // Easing function
+      },
+      "<"
+    );
     tl.add(remainingCards, "<");
     tl.to(
       fullscreenState,
