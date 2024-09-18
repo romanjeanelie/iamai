@@ -1,4 +1,4 @@
-import { TASK_STATUSES } from ".";
+import { API_STATUSES } from "../constants";
 
 export default class TaskManagerButton {
   constructor(tasks, emitter) {
@@ -10,7 +10,7 @@ export default class TaskManagerButton {
   }
 
   countCompletedTasks() {
-    const completedTasks = this.tasks.filter((task) => task.status.type === TASK_STATUSES.COMPLETED);
+    const completedTasks = this.tasks.filter((task) => task.status.type === API_STATUSES.ENDED);
     return completedTasks.length;
   }
 

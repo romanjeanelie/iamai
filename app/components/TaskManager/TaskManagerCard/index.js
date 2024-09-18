@@ -2,7 +2,8 @@ import gsap from "gsap";
 import Flip from "gsap/Flip";
 import TaskCardAnimations from "./TaskCardAnimations";
 
-import { STATUS_COLORS, TASK_STATUSES } from "..";
+import { STATUS_COLORS } from "..";
+import { API_STATUSES } from "../../constants";
 
 gsap.registerPlugin(Flip);
 
@@ -92,13 +93,13 @@ export default class TaskManagerCard {
   }
 
   updateTaskUI(status) {
-    this.statusPillLabel.innerText = status.type;
+    this.statusPillLabel.innerText = status.label;
     this.statusPill.style.background = STATUS_COLORS[status.type];
 
-    if (status.type === TASK_STATUSES.COMPLETED) {
+    if (status.type === API_STATUSES.ENDED) {
       this.addResult(status);
       this.card.classList.add("completed");
-    } else if (status.type === TASK_STATUSES.VIEWED) {
+    } else if (status.type === API_STATUSES.VIEWED) {
       this.card.classList.remove("completed");
     } else {
       this.addStatus();
@@ -125,11 +126,11 @@ export default class TaskManagerCard {
   }
 
   markAsRead() {
-    if (this.task.status.type !== TASK_STATUSES.COMPLETED) return;
+    if (this.task.status.type !== API_STATUSES.ENDED) return;
 
     this.task.status = {
       ...this.task.status,
-      type: TASK_STATUSES.VIEWED,
+      type: API_STATUSES.VIEWED,
     };
 
     this.taskManager.updateTaskStatus(this.task);

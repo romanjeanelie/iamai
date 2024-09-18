@@ -5,8 +5,9 @@ export const API_STATUSES = {
   ANSWERED: "agent_answered",
   VIEWED: "user_viewed",
   CANCELLED: "agent_cancelled",
-  SOURCES : "sources",
-  AGENT_INTERMEDIATE_ANSWER : "agent_intermediate_answer",
+  SOURCES: "sources",
+  INPUT_REQUIRED: "agent_input_required",
+  AGENT_INTERMEDIATE_ANSWER: "agent_intermediate_answer",
 };
 const BASE_URL = import.meta.env.VITE_API_HOST || "https://api.asterizk.ai";
 export const URL_CONVERSATION_HISTORY = `${BASE_URL}/search/conversation_history`;

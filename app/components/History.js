@@ -1,8 +1,6 @@
 import fetcher from "../utils/fetcher.js";
-import getRemarkable from "../utils/getRemarkable.js";
 import getMarked from "../utils/getMarked.js";
 import DiscussionMedia from "./DiscussionMedia.js";
-import { TASK_STATUSES } from "./TaskManager/index.js";
 import { API_STATUSES, URL_AGENT_STATUS, URL_CONVERSATION_HISTORY } from "./constants.js";
 
 const isEmpty = (obj) => Object.keys(obj).length === 0;
@@ -65,9 +63,10 @@ export default class History {
             key: status.micro_thread_id,
             name: taskname,
             status: {
-              type: TASK_STATUSES.IN_PROGRESS,
+              type: API_STATUSES.PROGRESSING,
               title: "Planning",
               description: "Planning your tasks.",
+              label: "In Progress",
             },
           };
           const textAI = status.response_json.text;
@@ -78,8 +77,8 @@ export default class History {
             const task = {
               key: status.micro_thread_id,
               status: {
-                type: TASK_STATUSES.INPUT_REQUIRED,
-                label: taskname,
+                type: API_STATUSES.INPUT_REQUIRED,
+                label: "Input Required",
                 title: taskname,
                 description: status.response_json.text,
               },
@@ -92,7 +91,7 @@ export default class History {
               const task = {
                 key: status.micro_thread_id,
                 status: {
-                  type: TASK_STATUSES.IN_PROGRESS,
+                  type: API_STATUSES.PROGRESSING,
                   title: "SOURCES",
                   description: status.response_json.sources,
                 },
@@ -102,7 +101,7 @@ export default class History {
               const task = {
                 key: status.micro_thread_id,
                 status: {
-                  type: TASK_STATUSES.IN_PROGRESS,
+                  type: API_STATUSES.AGENT_INTERMEDIATE_ANSWER,
                   title: "AGENT INTERMEDIATE ANSWER",
                   description: status.response_json.agent_intermediate_answer,
                 },
@@ -113,7 +112,7 @@ export default class History {
                 const task = {
                   key: status.micro_thread_id,
                   status: {
-                    type: TASK_STATUSES.IN_PROGRESS,
+                    type: API_STATUSES.PROGRESSING,
                     title: status.response_json.text.split(" ")[0],
                     description: status.response_json.text,
                   },
@@ -127,10 +126,10 @@ export default class History {
           const taskEnded = {
             key: status.micro_thread_id,
             status: {
-              type: TASK_STATUSES.COMPLETED,
+              type: API_STATUSES.ENDED,
               title: "Completed",
               description: status.response_json.text,
-              label: status.task_name + " is completed",
+              label: "View results",
             },
           };
           this.emitter.emit("taskManager:updateStatus", taskEnded.key, taskEnded.status, resultsContainer);
@@ -139,12 +138,13 @@ export default class History {
           const taskViewed = {
             key: status.micro_thread_id,
             status: {
-              type: TASK_STATUSES.VIEWED,
-              title: "Completed",
+              type: API_STATUSES.VIEWED,
+              title: "Viewed",
               description: status.response_json.text,
-              label: status.task_name + " is viewed",
+              label: "View results",
             },
           };
+
           this.emitter.emit("taskManager:updateStatus", taskViewed.key, taskViewed.status, resultsContainer);
           break;
       }
@@ -153,7 +153,6 @@ export default class History {
 
   getTaskLastStatus(data) {
     const statuses = data.map((obj) => obj.status);
-
     if (statuses.includes(API_STATUSES.CANCELLED)) {
       return API_STATUSES.CANCELLED;
     } else if (statuses.includes(API_STATUSES.VIEWED)) {
@@ -188,6 +187,7 @@ export default class History {
       size,
       order,
     };
+
     // Get all elements
     const { data } = await fetcher({
       url: URL_CONVERSATION_HISTORY,

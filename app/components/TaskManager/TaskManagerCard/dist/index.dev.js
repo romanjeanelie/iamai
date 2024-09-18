@@ -13,6 +13,8 @@ var _TaskCardAnimations = _interopRequireDefault(require("./TaskCardAnimations")
 
 var _ = require("..");
 
+var _constants = require("../../constants");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -89,13 +91,13 @@ function () {
   }, {
     key: "updateTaskUI",
     value: function updateTaskUI(status) {
-      this.statusPillLabel.innerText = status.type;
+      this.statusPillLabel.innerText = status.label;
       this.statusPill.style.background = _.STATUS_COLORS[status.type];
 
-      if (status.type === _.TASK_STATUSES.COMPLETED) {
+      if (status.type === _constants.API_STATUSES.ENDED) {
         this.addResult(status);
         this.card.classList.add("completed");
-      } else if (status.type === _.TASK_STATUSES.VIEWED) {
+      } else if (status.type === _constants.API_STATUSES.VIEWED) {
         this.card.classList.remove("completed");
       } else {
         this.addStatus();
@@ -128,9 +130,9 @@ function () {
   }, {
     key: "markAsRead",
     value: function markAsRead() {
-      if (this.task.status.type !== _.TASK_STATUSES.COMPLETED) return;
+      if (this.task.status.type !== _constants.API_STATUSES.ENDED) return;
       this.task.status = _objectSpread({}, this.task.status, {
-        type: _.TASK_STATUSES.VIEWED
+        type: _constants.API_STATUSES.VIEWED
       });
       this.taskManager.updateTaskStatus(this.task);
       this.emitter.emit("taskManager:taskRead", this.task.key);

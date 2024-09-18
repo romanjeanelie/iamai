@@ -2,9 +2,8 @@ import { connect } from "https://cdn.jsdelivr.net/npm/nats.ws@latest/esm/nats.js
 import Config from "../getConfig.js";
 import getMarked from "../utils/getMarked.js";
 import DiscussionMedia from "./DiscussionMedia.js";
-import { TASK_STATUSES } from "./TaskManager/index.js";
-import { formatDateString } from "../utils/dateUtils.js";
 import { FlightUI } from "./UI/FlightUI.js";
+import { API_STATUSES } from "./constants.js";
 // const uuid = "omega_" + crypto.randomUUID();
 // import { getUser } from "../User.js";
 // const IS_DEV_MODE = import.meta.env.MODE === "development";
@@ -362,7 +361,7 @@ class Chat {
             key: mdata.micro_thread_id,
             name: taskname,
             status: {
-              type: TASK_STATUSES.IN_PROGRESS,
+              type: API_STATUSES.PROGRESSING,
               title: "Planning",
               description: "Planning your tasks.",
             },
@@ -379,7 +378,7 @@ class Chat {
             const task = {
               key: mdata.micro_thread_id,
               status: {
-                type: TASK_STATUSES.INPUT_REQUIRED,
+                type: API_STATUSES.INPUT_REQUIRED,
                 label: taskname,
                 title: taskname,
                 description: mdata.response_json.text,
@@ -394,7 +393,7 @@ class Chat {
               const task = {
                 key: mdata.micro_thread_id,
                 status: {
-                  type: TASK_STATUSES.IN_PROGRESS,
+                  type: API_STATUSES.PROGRESSING,
                   title: "SOURCES",
                   description: mdata.response_json.sources,
                 },
@@ -404,7 +403,7 @@ class Chat {
               const task = {
                 key: mdata.micro_thread_id,
                 status: {
-                  type: TASK_STATUSES.IN_PROGRESS,
+                  type: API_STATUSES.PROGRESSING,
                   title: "AGENT INTERMEDIATE ANSWER",
                   description: mdata.response_json.agent_intermediate_answer,
                 },
@@ -415,7 +414,7 @@ class Chat {
                 const task = {
                   key: mdata.micro_thread_id,
                   status: {
-                    type: TASK_STATUSES.IN_PROGRESS,
+                    type: API_STATUSES.PROGRESSING,
                     title: mdata.response_json.text.split(" ")[0],
                     description: mdata.response_json.text,
                   },
@@ -438,7 +437,7 @@ class Chat {
           const task = {
             key: mdata.micro_thread_id,
             status: {
-              type: TASK_STATUSES.COMPLETED,
+              type: API_STATUSES.ENDED,
               title: "Completed",
               description: mdata.response_json.text,
               label: taskname + " is completed",

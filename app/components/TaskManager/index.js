@@ -4,38 +4,32 @@ import Flip from "gsap/Flip";
 import TaskManagerButton from "./TaskManagerButton";
 import TaskManagerCard from "./TaskManagerCard";
 import TaskManagerAnimations from "./TaskManagerAnimations";
-
-export const TASK_STATUSES = {
-  IN_PROGRESS: "In Progress",
-  INPUT_REQUIRED: "Input Required",
-  COMPLETED: "View Results",
-  VIEWED: "Viewed",
-};
+import { API_STATUSES } from "../constants";
 
 export const STATUS_COLORS = {
-  [TASK_STATUSES.IN_PROGRESS]: "rgba(149, 159, 177, 0.14)",
-  [TASK_STATUSES.INPUT_REQUIRED]:
+  [API_STATUSES.PROGRESSING]: "rgba(149, 159, 177, 0.14)",
+  [API_STATUSES.INPUT_REQUIRED]:
     "linear-gradient(70deg, rgba(227, 207, 28, 0.30) -10.29%, rgba(225, 135, 30, 0.30) 105%)",
-  [TASK_STATUSES.COMPLETED]: "linear-gradient(70deg, rgba(116, 225, 30, 0.30) -10.29%, rgba(28, 204, 227, 0.30) 105%)",
-  [TASK_STATUSES.VIEWED]: "linear-gradient(70deg, rgba(116, 225, 30, 0.30) -10.29%, rgba(28, 204, 227, 0.30) 105%)",
+  [API_STATUSES.ENDED]: "linear-gradient(70deg, rgba(116, 225, 30, 0.30) -10.29%, rgba(28, 204, 227, 0.30) 105%)",
+  [API_STATUSES.VIEWED]: "linear-gradient(70deg, rgba(116, 225, 30, 0.30) -10.29%, rgba(28, 204, 227, 0.30) 105%)",
 };
 
 const defaultValues = {
-  [TASK_STATUSES.IN_PROGRESS]: {
+  [API_STATUSES.PROGRESSING]: {
     label: "In progress",
     title: "searching",
     description: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
   },
-  [TASK_STATUSES.INPUT_REQUIRED]: {
+  [API_STATUSES.INPUT_REQUIRED]: {
     label: "Name your city",
     title: "question",
     description: "Flight for 18th Mar are all fully booked. Is there any other dates you would like to try for?",
   },
-  [TASK_STATUSES.COMPLETED]: {
+  [API_STATUSES.ENDED]: {
     title: "results",
     description: "Here's your flights to Bali!",
   },
-  [TASK_STATUSES.VIEWED]: {
+  [API_STATUSES.VIEWED]: {
     title: "results",
     description: "Here's your flights to Bali!",
   },
@@ -78,7 +72,10 @@ export default class TaskManager {
       this.onStatusUpdate(taskKey, status, container, workflowID)
     );
     this.emitter.on("taskManager:deleteTask", (taskKey) => this.deleteTask(taskKey));
-    this.emitter.on("app:initialized", (bool) => (this.isHistorySet = bool));
+    this.emitter.on("app:initialized", (bool) => {
+      this.isHistorySet = bool;
+      console.log(this.tasks);
+    });
 
     if (this.debug) {
       this.setupDebug();
@@ -88,15 +85,15 @@ export default class TaskManager {
   addDebugTask(task) {
     const folder = this.gui.addFolder(task.name);
     folder.open();
-    folder.add(task.status, "type", TASK_STATUSES).onChange((value) => {
+    folder.add(task.status, "type", API_STATUSES).onChange((value) => {
       const status = { type: value, ...defaultValues[value] };
       titleController.setValue(task.status.title);
       descriptionController.setValue(task.status.description);
-      if (value === TASK_STATUSES.COMPLETED) {
+      if (value === API_STATUSES.ENDED) {
         const container = document.createElement("div");
         container.innerHTML = "Here's your flights to Bamako!";
         this.emitter.emit("taskManager:updateStatus", task.key, status, container);
-      } else if (value === TASK_STATUSES.INPUT_REQUIRED) {
+      } else if (value === API_STATUSES.INPUT_REQUIRED) {
         const workflowID = "1234";
         this.emitter.emit("taskManager:updateStatus", task.key, status, null, workflowID);
       } else {
@@ -155,7 +152,7 @@ export default class TaskManager {
         addTask: (e) => {
           const task = {
             ...this.debugTask,
-            status: { type: TASK_STATUSES.IN_PROGRESS, ...defaultValues[TASK_STATUSES.IN_PROGRESS] },
+            status: { type: API_STATUSES.PROGRESSING, ...defaultValues[API_STATUSES.PROGRESSING] },
           };
           const textAI =
             "Certainly! I'm currently searching for the best flight options to Bali for you. Please give me a moment to find the most suitable flights. In the meantime, feel free to ask any other questions or make additional requests. I'll get back to you with the flight details as soon as possible";
@@ -176,7 +173,7 @@ export default class TaskManager {
       const task = {
         name: `Task ${this.tasks.length + 1}`,
         key: this.tasks.length + 1,
-        status: { type: TASK_STATUSES.IN_PROGRESS, ...defaultValues[TASK_STATUSES.IN_PROGRESS] },
+        status: { type: API_STATUSES.PROGRESSING, ...defaultValues[API_STATUSES.PROGRESSING] },
       };
       const textAI =
         "Certainly! I'm currently searching for the best flight options to Bali for you. Please give me a moment to find the most suitable flights. In the meantime, feel free to ask any other questions or make additional requests. I'll get back to you with the flight details as soon as possible";
@@ -288,7 +285,7 @@ export default class TaskManager {
   }
 
   handleNotificationPill(taskKey, status) {
-    if (status.type === TASK_STATUSES.INPUT_REQUIRED || status.type === TASK_STATUSES.COMPLETED) {
+    if (status.type === API_STATUSES.INPUT_REQUIRED || status.type === API_STATUSES.ENDED) {
       this.initNotificationPill(taskKey, status);
     } else {
       this.notificationContainer?.classList.add("hidden");
@@ -344,7 +341,7 @@ export default class TaskManager {
     this.closeInput(container);
 
     this.onStatusUpdate(key, {
-      type: TASK_STATUSES.IN_PROGRESS,
+      type: API_STATUSES.PROGRESSING,
       title: "answer : ",
       description: value,
     });

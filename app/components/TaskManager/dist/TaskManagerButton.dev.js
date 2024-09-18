@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _ = require(".");
+var _constants = require("../constants");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -29,7 +29,7 @@ function () {
     key: "countCompletedTasks",
     value: function countCompletedTasks() {
       var completedTasks = this.tasks.filter(function (task) {
-        return task.status.type === _.TASK_STATUSES.COMPLETED;
+        return task.status.type === _constants.API_STATUSES.ENDED;
       });
       return completedTasks.length;
     }
