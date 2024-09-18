@@ -263,6 +263,7 @@ export default class History {
           container.appendChild(userContainer);
         }
 
+        // >>>>> the element below will need to be removed eventually <<<<<
         if (isTask(element) && !isTaskViewed(element)) {
           userContainer.setAttribute("taskKey", element.micro_thread_id);
           userContainer.classList.add("discussion__user--task-created");
