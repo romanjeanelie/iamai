@@ -1,7 +1,7 @@
 // store.js
 const state = {
   chatId: null,
-  userId: null,
+  user: null,
   isLoggedIn: false,
   theme: "light",
   // add more variables as needed

@@ -58,6 +58,8 @@ export default class Discussion {
       emitter: this.emitter,
     });
 
+    store.set("user", this.user);
+
     this.addListeners();
     // DEBUG
     if (this.debug) {

@@ -359,19 +359,22 @@ export default class TaskManager {
       this.tasksUI.splice(taskCardIndex, 1); // Remove the card from the array
     }
 
-    // Find and remove the task from the db
-    // Post delete task - API ENDPOINT - DELETE - TBD
-    // const params = {
-    //   micro_thread_id: taskKey,
-    //   uuid: this.uuid,
-    // };
+    const chatId = store.getState().chatId;
+    const idToken = await store.getState().user.user.getIdToken(true);
 
-    // const result = await fetcher({
-    //   url: URL_DELETE_STATUS,
-    //   params,
-    //   idToken: await this.user.user.getIdToken(true),
-    //   method: "DELETE",
-    // });
+    // Find and remove the task from the db
+    const params = {
+      micro_thread_id: taskKey,
+      uuid: chatId,
+    };
+
+    const result = await fetcher({
+      url: URL_DELETE_STATUS,
+      params,
+      idToken,
+      method: "DELETE",
+    });
+    console.log(result);
   }
 
   onStatusUpdate(taskKey, status, container, workflowID) {
