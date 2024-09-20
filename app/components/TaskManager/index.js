@@ -341,8 +341,6 @@ export default class TaskManager {
 
   // ---------- Handling the tasks ----------
   createTask(task) {
-    // when a new task is created i'd like to update cards array of the TaskManagerAnimations class
-    this.tasks.push(task);
     const taskCard = new TaskManagerCard(task, this, this.emitter);
     this.tasksUI.push(taskCard);
   }

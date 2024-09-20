@@ -52,7 +52,7 @@ export default class History {
     return resultsContainer;
   }
 
-  addStatuses(status, resultsContainer) {
+  addTasksUI(status, resultsContainer) {
     console.log(status);
     // initialize the task
     const firstStatus = status.results.find((result) => result.status === "agent_started"); // Use the 'agent_answered' status
@@ -319,7 +319,6 @@ export default class History {
     // Get elements
     const elements = await this.getAllElements({ uuid, user, size, start: this.newStart });
     // Reverse the order of elements
-    elements.results.reverse();
 
     elements.results.forEach((element) => {
       if (!isTask(element)) return;
@@ -327,8 +326,10 @@ export default class History {
       // Get results container
       const resultsContainer = this.getResultsUI(statuses);
       element.resultsContainer = resultsContainer;
-      this.addStatuses(statuses, resultsContainer);
+      this.addTasksUI(statuses, resultsContainer);
     });
+
+    elements.results.reverse();
 
     // Create UI elements
     const container = this.createUIElements(elements.results);
