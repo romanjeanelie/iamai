@@ -19,7 +19,6 @@ export default class TaskManagerCard {
     this.cardContainer = null;
     this.cardState = null;
     this.fullscreenState = null;
-    this.deleteBtn = null;
 
     // Bindings
     this.handleClickOutside = this.handleClickOutside.bind(this);
@@ -51,7 +50,6 @@ export default class TaskManagerCard {
               ${this.task.status.label || this.task.status.type}
             </p>
             </div>
-            <button class="task-card__delete-btn">delete</button>
         </div>
         <div class="task-manager__task-illustration">
           <div class="task-manager__task-illustration-cover">
@@ -75,17 +73,11 @@ export default class TaskManagerCard {
     this.fullscreenState = this.card.querySelector(".fullscreen-state");
     this.statusPill = this.card.querySelector(".task-manager__task-status");
     this.statusPillLabel = this.card.querySelector(".task-manager__task-status-label");
-    this.deleteBtn = this.card.querySelector(".task-card__delete-btn");
 
     this.cardContainer.appendChild(this.card);
     this.tasksGrid.appendChild(this.cardContainer);
 
     this.animations = new TaskCardAnimations(this.card, this.index);
-
-    this.deleteBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      this.emitter.emit("taskManager:deleteTask", this.task.key);
-    });
   }
 
   // Update the state
