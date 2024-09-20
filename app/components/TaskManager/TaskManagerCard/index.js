@@ -6,7 +6,6 @@ import { API_STATUSES } from "../../constants";
 export default class TaskManagerCard {
   constructor(task, taskManager, emitter) {
     this.task = task;
-    console.log(this.task.status);
     this.taskManager = taskManager;
     this.emitter = emitter;
 
@@ -33,7 +32,6 @@ export default class TaskManagerCard {
   initUI() {
     this.cardContainer = document.createElement("li");
     this.cardContainer.classList.add("task-manager__task-card-container");
-    this.cardContainer.setAttribute("data-flip-id", this.task.key);
 
     this.card = document.createElement("div");
     this.card.classList.add("task-manager__task-card");
