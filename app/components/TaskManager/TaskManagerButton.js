@@ -31,5 +31,7 @@ export default class TaskManagerButton {
     this.emitter.on("taskManager:updateStatus", () => {
       this.handleTaskButton();
     });
+
+    this.emitter.on("taskManager:taskRead", this.handleTaskButton.bind(this));
   }
 }

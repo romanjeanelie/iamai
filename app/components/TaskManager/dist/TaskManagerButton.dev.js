@@ -57,6 +57,7 @@ function () {
       this.emitter.on("taskManager:updateStatus", function () {
         _this.handleTaskButton();
       });
+      this.emitter.on("taskManager:taskRead", this.handleTaskButton.bind(this));
     }
   }]);
 
