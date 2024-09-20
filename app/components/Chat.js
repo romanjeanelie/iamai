@@ -243,6 +243,36 @@ class Chat {
         this.task_name = mdata.task_name;
         var mtext = mdata.response_json;
 
+        if (mdata.status == AGENT_ENDED) {
+          this.callbacks.emitter.emit(AGENT_ENDED);
+
+          const resultContainer = document.createElement("div");
+          let datas = ui_paramsmap.get(mdata.micro_thread_id);
+          if (datas) {
+            datas.forEach((data) => {
+              const uiElement = this.getUI(data);
+              resultContainer.appendChild(uiElement);
+            });
+          }
+
+          // console.log("taskname", taskname);
+          const task = {
+            key: mdata.micro_thread_id,
+            status: {
+              type: API_STATUSES.ENDED,
+              title: "Completed",
+              description: mdata.response_json.text,
+              label: "View Results",
+            },
+          };
+
+          this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, resultContainer, {
+            workflowID: mdata.session_id,
+          });
+          // this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, divans, { workflowID: 1234 });
+          ui_paramsmap.delete(mdata.micro_thread_id);
+        }
+
         //get UI and RAG params
         if (mdata.type == UI) {
           // console.log("domain:" + this.domain);
@@ -428,38 +458,7 @@ class Chat {
               }
             }
           }
-        } else if (mdata.status && mdata.status == AGENT_ANSWERED) {
-          this.callbacks.emitter.emit(AGENT_ENDED);
-          const container = document.createElement("div");
-          let datas = ui_paramsmap.get(mdata.micro_thread_id);
-          if (datas) {
-            datas.forEach((data) => {
-              container.appendChild(this.getUI(data));
-            });
-          }
-          let taskname = mdata.task_name;
-          // console.log("taskname", taskname);
-          const task = {
-            key: mdata.micro_thread_id,
-            status: {
-              type: API_STATUSES.ENDED,
-              title: "Completed",
-              description: mdata.response_json.text,
-              label: "View Results",
-            },
-          };
-          let sourcedata = sources_paramsmap.get(mdata.micro_thread_id);
-          let divans;
-          if (sourcedata) {
-            divans = this.adduserans(mdata.response_json.text, container, sourcedata);
-            sources_paramsmap.delete(mdata.micro_thread_id);
-          } else divans = this.adduserans(mdata.response_json.text, container);
-
-          this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, divans, {
-            workflowID: mdata.session_id,
-          });
-          // this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, divans, { workflowID: 1234 });
-          ui_paramsmap.delete(mdata.micro_thread_id);
+        } else if (mdata.status == AGENT_ENDED) {
         } else if (mdata.status && mdata.status == RESPONSE_FOLLOW_UP) {
           var mtext = mdata.response_json.text;
           var AIAnswer = await this.toTitleCase2(mtext);

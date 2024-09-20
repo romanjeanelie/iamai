@@ -250,14 +250,16 @@ export default class TaskManager {
     console.log(result);
   }
 
-  onStatusUpdate(taskKey, status, container, workflowID) {
+  onStatusUpdate(taskKey, status, resultContainer, workflowID) {
     const taskIndex = this.tasks.findIndex((task) => task.key === taskKey);
     if (taskIndex === -1) return;
+
+    if (this.tasks[taskIndex].status.type === API_STATUSES.ENDED) return;
 
     this.tasks[taskIndex].status = status;
     this.button.handleTaskButton();
 
-    if (container) this.tasks[taskIndex].resultsContainer = container;
+    if (resultContainer) this.tasks[taskIndex].resultsContainer = resultContainer;
     this.tasks[taskIndex].workflowID = workflowID;
 
     this.notifyChildToUpdate(taskKey, taskIndex);
