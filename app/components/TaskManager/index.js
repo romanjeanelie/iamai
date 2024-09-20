@@ -124,9 +124,12 @@ export default class TaskManager {
 
   // ---------- Handling the tasks ----------
   createTask(task) {
-    this.tasks.push(task);
-    const taskCard = new TaskManagerCard(task, this, this.emitter);
-    this.tasksUI.push(taskCard);
+    this.tasks.unshift(task);
+    this.tasksUI.forEach((card) => {
+      card.dispose();
+    });
+
+    this.tasksUI = this.tasks.map((task) => new TaskManagerCard(task, this, this.emitter));
   }
 
   async deleteTask(taskKey) {

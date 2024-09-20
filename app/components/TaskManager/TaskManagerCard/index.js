@@ -6,6 +6,7 @@ import { API_STATUSES } from "../../constants";
 export default class TaskManagerCard {
   constructor(task, taskManager, emitter) {
     this.task = task;
+    console.log(this.task.status);
     this.taskManager = taskManager;
     this.emitter = emitter;
 
@@ -47,7 +48,7 @@ export default class TaskManagerCard {
 
           <div class="task-manager__task-status">
             <p class="task-manager__task-status-label">
-              ${this.task.status.label || this.task.status.type}
+              ${this.task.status.label}
             </p>
             </div>
         </div>
@@ -72,6 +73,8 @@ export default class TaskManagerCard {
     this.cardState = this.card.querySelector(".card-state");
     this.fullscreenState = this.card.querySelector(".fullscreen-state");
     this.statusPill = this.card.querySelector(".task-manager__task-status");
+    this.statusPill.style.background = STATUS_COLORS[this.task.status.type];
+
     this.statusPillLabel = this.card.querySelector(".task-manager__task-status-label");
 
     this.cardContainer.appendChild(this.card);
@@ -93,8 +96,8 @@ export default class TaskManagerCard {
     }
   }
 
-  updateTaskUI(taskData) {
-    this.task = taskData;
+  updateTaskUI(taskData = null) {
+    if (taskData) this.task = taskData;
 
     if (this.task.status?.label) this.statusPillLabel.innerText = this.task.status.label;
     if (this.task.status?.type) this.statusPill.style.background = STATUS_COLORS[this.task.status.type];
@@ -152,5 +155,10 @@ export default class TaskManagerCard {
 
   getElement() {
     return this.cardContainer;
+  }
+
+  dispose() {
+    this.card.removeEventListener("click", this.expandCardToFullscreen);
+    this.cardContainer.remove();
   }
 }
