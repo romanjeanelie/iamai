@@ -1,5 +1,3 @@
-import { NotificationPillAnimations } from "./NotificationPillAnimations";
-
 export class NotificationPill {
   constructor(taskKey, status, duration = 1500000) {
     this.taskKey = taskKey;
@@ -7,8 +5,6 @@ export class NotificationPill {
     this.duration = duration;
     this.notificationTimeoutId = null;
     this.notificationContainer = null;
-
-    this.anims = new NotificationPillAnimations();
 
     this.initNotificationPill();
   }
