@@ -290,7 +290,6 @@ export default class History {
         container.appendChild(AIContainer);
         if (isTask(element)) {
           AIContainer.setAttribute("taskKey", element.micro_thread_id);
-          AIContainer.classList.add("discussion__ai--task-created");
         }
         if (!isEmpty(element.sources) || !isEmpty(element.images)) {
           const media = new DiscussionMedia({
