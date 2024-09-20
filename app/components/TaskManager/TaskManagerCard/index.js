@@ -33,6 +33,7 @@ export default class TaskManagerCard {
   initUI() {
     this.cardContainer = document.createElement("li");
     this.cardContainer.classList.add("task-manager__task-card-container");
+    this.cardContainer.setAttribute("data-flip-id", this.task.key);
 
     this.card = document.createElement("div");
     this.card.classList.add("task-manager__task-card");
@@ -78,7 +79,7 @@ export default class TaskManagerCard {
     this.statusPillLabel = this.card.querySelector(".task-manager__task-status-label");
 
     this.cardContainer.appendChild(this.card);
-    this.tasksGrid.appendChild(this.cardContainer);
+    this.tasksGrid.prepend(this.cardContainer);
 
     this.animations = new TaskCardAnimations(this.card, this.index);
   }
