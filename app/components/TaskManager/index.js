@@ -341,6 +341,7 @@ export default class TaskManager {
 
   // ---------- Handling the tasks ----------
   createTask(task) {
+    this.tasks.push(task);
     const taskCard = new TaskManagerCard(task, this, this.emitter);
     this.tasksUI.push(taskCard);
   }
