@@ -124,32 +124,9 @@ export default class TaskManager {
 
   // ---------- Handling the tasks ----------
   createTask(task) {
-    this.tasks.unshift(task);
-    const initialState = Flip.getState(".task-manager__task-card-container");
-
-    const newCardUI = new TaskManagerCard(task, this, this.emitter);
-
-    Flip.from(initialState, {
-      duration: 0.3,
-      ease: "power1.inOut",
-      onStart: () => {
-        return gsap.fromTo(
-          newCardUI.cardContainer,
-          {
-            opacity: 0,
-            scale: 0.9,
-          },
-          {
-            opacity: 1,
-            scale: 1,
-            delay: 0.2,
-            duration: 0.3,
-          }
-        );
-      },
-    });
-
-    this.tasksUI.unshift(newCardUI);
+    this.tasks.push(task);
+    const taskCard = new TaskManagerCard(task, this, this.emitter);
+    this.tasksUI.push(taskCard);
   }
 
   async deleteTask(taskKey) {
