@@ -1,4 +1,4 @@
-import gsap, { Power3 } from "gsap";
+import gsap, { Power2, Power3 } from "gsap";
 import anim from "../../utils/anim";
 export default class InputAnimations {
   constructor({ pageEl, emitter }) {
@@ -44,8 +44,12 @@ export default class InputAnimations {
     gsap.fromTo(
       this.inputEl,
       { yPercent: 200, opacity: 0 },
-      { opacity: 1, yPercent: 0, duration: 0.4, ease: Power3.easeOut }
+      { opacity: 1, yPercent: 0, duration: 0.75, ease: Power3.easeOut }
     );
+  }
+
+  hideInput() {
+    gsap.to(this.inputEl, { opacity: 0, yPercent: 100, duration: 0.5, ease: Power3.easeOut });
   }
 
   // Presets

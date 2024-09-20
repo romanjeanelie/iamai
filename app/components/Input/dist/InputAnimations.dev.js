@@ -76,7 +76,17 @@ function () {
       }, {
         opacity: 1,
         yPercent: 0,
-        duration: 0.4,
+        duration: 0.75,
+        ease: _gsap.Power3.easeOut
+      });
+    }
+  }, {
+    key: "hideInput",
+    value: function hideInput() {
+      _gsap["default"].to(this.inputEl, {
+        opacity: 0,
+        yPercent: 100,
+        duration: 0.5,
         ease: _gsap.Power3.easeOut
       });
     } // Presets
