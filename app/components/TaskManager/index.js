@@ -7,6 +7,7 @@ import TaskManagerAnimations from "./TaskManagerAnimations";
 import { API_STATUSES, URL_DELETE_STATUS } from "../constants";
 import fetcher from "../../utils/fetcher";
 import { store } from "../store";
+import TaskManagerDebug from "./TaskManagerCard/TaskManagerDebug";
 
 export const STATUS_COLORS = {
   [API_STATUSES.PROGRESSING]: "rgba(149, 159, 177, 0.14)",
@@ -14,27 +15,6 @@ export const STATUS_COLORS = {
     "linear-gradient(70deg, rgba(227, 207, 28, 0.30) -10.29%, rgba(225, 135, 30, 0.30) 105%)",
   [API_STATUSES.ENDED]: "linear-gradient(70deg, rgba(116, 225, 30, 0.30) -10.29%, rgba(28, 204, 227, 0.30) 105%)",
   [API_STATUSES.VIEWED]: "linear-gradient(70deg, rgba(116, 225, 30, 0.30) -10.29%, rgba(28, 204, 227, 0.30) 105%)",
-};
-
-const defaultValues = {
-  [API_STATUSES.PROGRESSING]: {
-    label: "In progress",
-    title: "searching",
-    description: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
-  },
-  [API_STATUSES.INPUT_REQUIRED]: {
-    label: "Name your city",
-    title: "question",
-    description: "Flight for 18th Mar are all fully booked. Is there any other dates you would like to try for?",
-  },
-  [API_STATUSES.ENDED]: {
-    title: "results",
-    description: "Here's your flights to Bali!",
-  },
-  [API_STATUSES.VIEWED]: {
-    title: "results",
-    description: "Here's your flights to Bali!",
-  },
 };
 
 gsap.registerPlugin(Flip);
@@ -67,6 +47,9 @@ export default class TaskManager {
 
     // Debug
     this.debug = import.meta.env.VITE_DEBUG === "true";
+    if (this.debug) {
+      this.debugger = new TaskManagerDebug(this);
+    }
 
     // Emitter
     this.emitter.on("taskManager:createTask", (task) => this.createTask(task));
@@ -76,115 +59,6 @@ export default class TaskManager {
     this.emitter.on("taskManager:deleteTask", (taskKey) => this.deleteTask(taskKey));
     this.emitter.on("app:initialized", (bool) => {
       this.isHistorySet = bool;
-    });
-
-    if (this.debug) {
-      this.setupDebug();
-    }
-  }
-
-  addDebugTask(task) {
-    const folder = this.gui.addFolder(task.name);
-    folder.open();
-    folder.add(task.status, "type", API_STATUSES).onChange((value) => {
-      const status = { type: value, ...defaultValues[value] };
-      titleController.setValue(task.status.title);
-      descriptionController.setValue(task.status.description);
-      if (value === API_STATUSES.ENDED) {
-        const container = document.createElement("div");
-        container.innerHTML = "Here's your flights to Bamako!";
-        this.emitter.emit("taskManager:updateStatus", task.key, status, container);
-      } else if (value === API_STATUSES.INPUT_REQUIRED) {
-        const workflowID = "1234";
-        this.emitter.emit("taskManager:updateStatus", task.key, status, null, workflowID);
-      } else {
-        this.emitter.emit("taskManager:updateStatus", task.key, status);
-      }
-    });
-
-    const titleController = folder
-      .add(task.status, "title")
-      .onChange((value) => {
-        task.status.title = value;
-      })
-      .name("status title");
-
-    const descriptionController = folder
-      .add(task.status, "description")
-      .onChange((value) => {
-        task.status.description = value;
-      })
-      .name("status desc");
-
-    folder.add(
-      {
-        updateStatus: () => {
-          this.emitter.emit("taskManager:updateStatus", task.key, task.status);
-        },
-      },
-      "updateStatus"
-    );
-    folder.add(
-      {
-        deleteTask: () => {
-          this.emitter.emit("taskManager:deleteTask", task.key);
-          this.debugTask.name = `Task ${this.tasks.length + 1}`;
-          this.debugTask.key = this.tasks.length + 1;
-          this.taskNameController.setValue(this.debugTask.name);
-          this.gui.removeFolder(folder);
-        },
-      },
-      "deleteTask"
-    );
-  }
-
-  setupDebug() {
-    this.debugTask = {
-      name: `Task ${this.tasks.length + 1}`,
-      key: this.tasks.length + 1,
-    };
-
-    this.taskNameController = this.gui.add(this.debugTask, "name").onChange((value) => {
-      this.debugTask.name = value;
-    });
-
-    this.gui.add(
-      {
-        addTask: (e) => {
-          const task = {
-            ...this.debugTask,
-            status: { type: API_STATUSES.PROGRESSING, ...defaultValues[API_STATUSES.PROGRESSING] },
-          };
-          const textAI =
-            "Certainly! I'm currently searching for the best flight options to Bali for you. Please give me a moment to find the most suitable flights. In the meantime, feel free to ask any other questions or make additional requests. I'll get back to you with the flight details as soon as possible";
-
-          this.addDebugTask(task);
-          this.emitter.emit("taskManager:createTask", task, textAI);
-
-          this.debugTask.name = `Task ${this.tasks.length + 1}`;
-          this.debugTask.key = this.tasks.length + 1;
-          this.taskNameController.setValue(this.debugTask.name);
-        },
-      },
-      "addTask"
-    );
-
-    // Create three tasks for debugging
-    for (let i = 0; i < 3; i++) {
-      const task = {
-        name: `Task ${this.tasks.length + 1}`,
-        key: this.tasks.length + 1,
-        status: { type: API_STATUSES.PROGRESSING, ...defaultValues[API_STATUSES.PROGRESSING] },
-      };
-      const textAI =
-        "Certainly! I'm currently searching for the best flight options to Bali for you. Please give me a moment to find the most suitable flights. In the meantime, feel free to ask any other questions or make additional requests. I'll get back to you with the flight details as soon as possible";
-
-      this.addDebugTask(task);
-      this.emitter.emit("taskManager:createTask", task, textAI);
-    }
-
-    this.tasks.forEach((task) => {
-      this.addDebugTask(task);
     });
   }
 
@@ -380,8 +254,6 @@ export default class TaskManager {
     const taskIndex = this.tasks.findIndex((task) => task.key === taskKey);
     if (taskIndex === -1) return;
 
-    // update in the tasks array
-    if (this.tasks[taskIndex].status.type === API_STATUSES.ENDED && status.type !== API_STATUSES.VIEWED) return;
     this.tasks[taskIndex].status = status;
     this.button.handleTaskButton();
 

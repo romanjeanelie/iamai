@@ -53,7 +53,6 @@ export default class History {
   }
 
   addTasksUI(status, resultsContainer) {
-    console.log(status);
     // initialize the task
     const firstStatus = status.results.find((result) => result.status === "agent_started"); // Use the 'agent_answered' status
     const initialTask = {
