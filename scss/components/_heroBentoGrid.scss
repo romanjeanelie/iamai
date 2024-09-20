@@ -120,8 +120,9 @@
 
     &.entertainment-item {
       background-image: url("https://res.cloudinary.com/dfdqiqn98/image/upload/v1724750348/Home/mesh-gradient_rafz2c.png");
-      background-size: 110%;
+      background-size: cover;
       background-position: center;
+      background-repeat: no-repeat;
 
       h3,
       p {
