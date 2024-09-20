@@ -93,14 +93,17 @@ export default class TaskManagerCard {
     }
   }
 
-  updateTaskUI(status) {
-    this.statusPillLabel.innerText = status.label;
-    this.statusPill.style.background = STATUS_COLORS[status.type];
+  updateTaskUI(taskData) {
+    this.task = taskData;
 
-    if (status.type === API_STATUSES.ENDED) {
-      this.addResult(status);
+    if (this.task.status?.label) this.statusPillLabel.innerText = this.task.status.label;
+    if (this.task.status?.type) this.statusPill.style.background = STATUS_COLORS[this.task.status.type];
+
+    if (this.task.status?.type === API_STATUSES.ENDED) {
+      this.addResult();
       this.card.classList.add("completed");
-    } else if (status.type === API_STATUSES.VIEWED) {
+    } else if (this.task.status?.type === API_STATUSES.VIEWED) {
+      this.addResult();
       this.card.classList.remove("completed");
     } else {
       this.addStatus();
@@ -131,13 +134,12 @@ export default class TaskManagerCard {
   }
 
   markAsRead() {
-    if (this.task.status.type !== API_STATUSES.ENDED) return;
-
+    if (this.task.status?.type !== API_STATUSES.ENDED) return;
     this.task.status = {
       ...this.task.status,
       type: API_STATUSES.VIEWED,
     };
-    this.updateTaskUI(this.task.status);
+    this.updateTaskUI(this.task);
     this.emitter.emit("taskManager:taskRead", this.task.key);
   }
 

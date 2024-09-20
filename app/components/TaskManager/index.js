@@ -388,13 +388,15 @@ export default class TaskManager {
 
     if (container) this.tasks[taskIndex].resultsContainer = container;
     this.tasks[taskIndex].workflowID = workflowID;
-    this.notifyChildToUpdate(taskKey, status);
+
+    this.notifyChildToUpdate(taskKey, taskIndex);
   }
 
-  notifyChildToUpdate(taskKey, newStatus) {
+  notifyChildToUpdate(taskKey, taskIndex) {
     const taskCard = this.tasksUI?.find((card) => card.task.key === taskKey);
+    const taskData = this.tasks[taskIndex];
     if (taskCard) {
-      taskCard.updateTaskUI(newStatus);
+      taskCard.updateTaskUI(taskData);
     }
   }
 
