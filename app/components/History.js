@@ -31,7 +31,7 @@ export default class History {
   getResultsUI(statuses) {
     const resultsContainer = document.createElement("div");
 
-    statuses.forEach((status) => {
+    statuses.results.forEach((status) => {
       if (status.type === "ui") {
         const results = status.response_json;
         const uiResults = this.getTaskResultUI(results);
@@ -44,7 +44,6 @@ export default class History {
       }
       if (status.status === API_STATUSES.ANSWERED) {
         const answerContainer = document.createElement("div");
-        const assistantText = status.response_json.text.replace(/\\n/g, "<br >");
         answerContainer.innerHTML = md.parse(status.response_json.text) || "";
         resultsContainer.append(answerContainer);
       }
@@ -53,106 +52,110 @@ export default class History {
     return resultsContainer;
   }
 
-  addStatuses(statuses, resultsContainer) {
-    statuses.forEach((status) => {
-      switch (status.status) {
-        case API_STATUSES.STARTED:
-          let taskname = status.task_name;
+  addStatuses(status, resultsContainer) {
+    console.log(status);
+    // initialize the task
+    const firstStatus = status.results.find((result) => result.status === "agent_started"); // Use the 'agent_answered' status
+    const initialTask = {
+      key: firstStatus.micro_thread_id,
+      name: firstStatus.task_name,
+      workflowID: firstStatus.session_id,
+      createdAt: firstStatus.time_stamp,
+      status: {
+        type: API_STATUSES.PROGRESSING,
+        title: "Planning",
+        description: "Planning your tasks.",
+        label: "In Progress",
+      },
+    };
 
+    const textAI = firstStatus.response_json.text;
+    this.emitter.emit("taskManager:createTask", initialTask, textAI);
+
+    const lastStatusResult = status.results.find((result) => result.status === status.lastStatus);
+
+    // then update it in function of its last status
+    switch (status.lastStatus) {
+      case API_STATUSES.PROGRESSING:
+        if (lastStatusResult.awaiting) {
+          let taskname = lastStatusResult.task_name;
           const task = {
-            key: status.micro_thread_id,
-            name: taskname,
+            ...initialTask,
             status: {
-              type: API_STATUSES.PROGRESSING,
-              title: "Planning",
-              description: "Planning your tasks.",
-              label: "In Progress",
-              createdAt: status.time_stamp,
+              type: API_STATUSES.INPUT_REQUIRED,
+              label: "Input Required",
+              title: taskname,
+              description: status.response_json.text,
             },
           };
-          const textAI = status.response_json.text;
-          this.emitter.emit("taskManager:createTask", task, textAI);
-        case API_STATUSES.PROGRESSING:
-          if (status.awaiting) {
-            let taskname = status.task_name;
-            const task = {
-              key: status.micro_thread_id,
-              status: {
-                type: API_STATUSES.INPUT_REQUIRED,
-                label: "Input Required",
-                title: taskname,
-                description: status.response_json.text,
-              },
-              workflowID: status.session_id,
-            };
 
-            this.emitter.emit("taskManager:updateStatus", task.key, task.status, null, task.workflowID);
+          this.emitter.emit("taskManager:updateStatus", task.key, task.status, null, task.workflowID);
+        } else {
+          if (lastStatusResult.type == API_STATUSES.SOURCES) {
+            const task = {
+              ...initialTask,
+              status: {
+                type: API_STATUSES.PROGRESSING,
+                title: "SOURCES",
+                description: lastStatusResult.response_json.sources,
+                label: "In Progress",
+              },
+            };
+            this.emitter.emit("taskManager:updateStatus", task.key, task.status);
+          } else if (lastStatusResult.type == API_STATUSES.AGENT_INTERMEDIATE_ANSWER) {
+            const task = {
+              ...initialTask,
+              status: {
+                type: API_STATUSES.AGENT_INTERMEDIATE_ANSWER,
+                title: "AGENT INTERMEDIATE ANSWER",
+                description: lastStatusResult.response_json.agent_intermediate_answer,
+                label: "In Progress",
+              },
+            };
+            this.emitter.emit("taskManager:updateStatus", task.key, task.status);
           } else {
-            if (status.type == API_STATUSES.SOURCES) {
+            if (lastStatusResult.response_json.domain != "Code") {
               const task = {
-                key: status.micro_thread_id,
+                ...initialTask,
                 status: {
                   type: API_STATUSES.PROGRESSING,
-                  title: "SOURCES",
-                  description: status.response_json.sources,
+                  title: lastStatusResult.response_json.text.split(" ")[0],
+                  description: lastStatusResult.response_json.text,
                   label: "In Progress",
                 },
               };
               this.emitter.emit("taskManager:updateStatus", task.key, task.status);
-            } else if (status.type == API_STATUSES.AGENT_INTERMEDIATE_ANSWER) {
-              const task = {
-                key: status.micro_thread_id,
-                status: {
-                  type: API_STATUSES.AGENT_INTERMEDIATE_ANSWER,
-                  title: "AGENT INTERMEDIATE ANSWER",
-                  description: status.response_json.agent_intermediate_answer,
-                  label: "In Progress",
-                },
-              };
-              this.emitter.emit("taskManager:updateStatus", task.key, task.status);
-            } else {
-              if (status.response_json.domain != "Code") {
-                const task = {
-                  key: status.micro_thread_id,
-                  status: {
-                    type: API_STATUSES.PROGRESSING,
-                    title: status.response_json.text.split(" ")[0],
-                    description: status.response_json.text,
-                    label: "In Progress",
-                  },
-                };
-                this.emitter.emit("taskManager:updateStatus", task.key, task.status);
-              }
             }
           }
-          break;
-        case API_STATUSES.ENDED:
-          const taskEnded = {
-            key: status.micro_thread_id,
-            status: {
-              type: API_STATUSES.ENDED,
-              title: "Completed",
-              description: status.response_json.text,
-              label: "View results",
-            },
-          };
-          this.emitter.emit("taskManager:updateStatus", taskEnded.key, taskEnded.status, resultsContainer);
-          break;
-        case API_STATUSES.VIEWED:
-          const taskViewed = {
-            key: status.micro_thread_id,
-            status: {
-              type: API_STATUSES.VIEWED,
-              title: "Viewed",
-              description: status.response_json.text,
-              label: "View results",
-            },
-          };
+        }
+        break;
+      case API_STATUSES.ENDED:
+        const taskEnded = {
+          ...initialTask,
+          status: {
+            type: API_STATUSES.ENDED,
+            title: "Completed",
+            description: lastStatusResult.response_json.text,
+            label: "View results",
+          },
+        };
+        this.emitter.emit("taskManager:updateStatus", taskEnded.key, taskEnded.status, resultsContainer);
+        break;
+      case API_STATUSES.VIEWED:
+        const agentAnsweredResult = status.results.find((result) => result.status === "agent_answered"); // Use the 'agent_answered' status
+        const taskViewed = {
+          ...initialTask,
+          status: {
+            type: API_STATUSES.VIEWED,
+            title: "Viewed",
+            description: agentAnsweredResult.response_json.text,
+            label: "View results",
+          },
+        };
 
-          this.emitter.emit("taskManager:updateStatus", taskViewed.key, taskViewed.status, resultsContainer);
-          break;
-      }
-    });
+        this.emitter.emit("taskManager:updateStatus", taskViewed.key, taskViewed.status, resultsContainer);
+        break;
+    }
   }
 
   getTaskLastStatus(data) {
@@ -314,13 +317,13 @@ export default class History {
   async getHistory({ uuid, user, size = 3 }) {
     this.isFetching = true;
     // Get elements
-    const elements = await this.getAllElements({ uuid, user, size, start: this.newStart });
+    const elements = await this.getAllElements({ uuid, user, size: 3, start: this.newStart });
     // Reverse the order of elements
     elements.results.reverse();
 
     elements.results.forEach((element) => {
       if (!isTask(element)) return;
-      const statuses = element.statuses.results;
+      const statuses = element.statuses;
       // Get results container
       const resultsContainer = this.getResultsUI(statuses);
       element.resultsContainer = resultsContainer;
