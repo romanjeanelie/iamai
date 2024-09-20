@@ -12,12 +12,12 @@ export class NavigationAnimations {
 
   initializeNavHidden() {
     gsap.set(this.headerNav, { opacity: 0, yPercent: -100 });
-    gsap.set(this.footerNav, { opacity: 0, yPercent: 100 });
+    gsap.set(this.footerNav, { opacity: 0 });
   }
 
   showNav() {
     const tl = gsap.timeline({ defaults: { duration: 0.3, delay: 0.2, ease: Power3.easeOut } });
     tl.to(this.headerNav, { opacity: 1, yPercent: 0, duration: 0.5 });
-    tl.to(this.footerNav, { opacity: 1, yPercent: 0, duration: 0.5 }, "<+=0.1");
+    tl.to(this.footerNav, { opacity: 1, duration: 0.5 }, "<+=0.1");
   }
 }

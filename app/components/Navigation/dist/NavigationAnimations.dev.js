@@ -41,8 +41,7 @@ function () {
       });
 
       _gsap["default"].set(this.footerNav, {
-        opacity: 0,
-        yPercent: 100
+        opacity: 0
       });
     }
   }, {
@@ -63,7 +62,6 @@ function () {
       });
       tl.to(this.footerNav, {
         opacity: 1,
-        yPercent: 0,
         duration: 0.5
       }, "<+=0.1");
     }
