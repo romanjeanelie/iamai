@@ -146,12 +146,6 @@ export default class TaskManagerCard {
       this.expandCardToFullscreen();
       this.markAsRead();
     });
-
-    this.emitter.on("taskManager:updateStatus", (taskKey, status) => {
-      if (this.task.key === taskKey) {
-        this.updateTaskUI(status);
-      }
-    });
   }
 
   getElement() {
