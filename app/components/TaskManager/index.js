@@ -50,6 +50,11 @@ export default class TaskManager {
     this.debug = import.meta.env.VITE_DEBUG === "true";
     if (this.debug) {
       this.debugger = new TaskManagerDebug(this);
+      setTimeout(() => {
+        for (let i = 0; i < 3; i++) {
+          this.debugger.addDebugTask();
+        }
+      }, 500);
     }
 
     // Emitter
@@ -124,9 +129,10 @@ export default class TaskManager {
 
   // ---------- Handling the tasks ----------
   createTask(task) {
-    this.tasks.push(task);
+    console.log("createTask", task);
+    this.tasks.unshift(task);
     const taskCard = new TaskManagerCard(task, this, this.emitter);
-    this.tasksUI.push(taskCard);
+    this.tasksUI.unshift(taskCard);
   }
 
   async deleteTask(taskKey) {

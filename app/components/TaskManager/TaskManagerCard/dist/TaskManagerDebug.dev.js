@@ -59,8 +59,7 @@ function () {
       addTask: function addTask() {
         return _this.addDebugTask();
       }
-    }, "addTask"); // Create initial debug tasks
-    // this.initializeDebugTasks();
+    }, "addTask");
   }
 
   _createClass(TaskManagerDebug, [{

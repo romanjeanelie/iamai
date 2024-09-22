@@ -41,9 +41,6 @@ export default class TaskManagerDebug {
       },
       "addTask"
     );
-
-    // Create initial debug tasks
-    // this.initializeDebugTasks();
   }
 
   addDebugTask(task = null) {
