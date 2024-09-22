@@ -150,7 +150,7 @@
 .discussion__container {
   min-height: calc(100vh - 96px);
   margin-top: 96px;
-  padding-bottom: 124px;
+  padding-bottom: 200px;
 
   @include media("<tablet") {
     min-height: calc(100vh - 96px); // fallback for browsers that don't support svh units

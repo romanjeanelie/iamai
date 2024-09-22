@@ -34,10 +34,7 @@ export default class TaskManager {
     // States
     this.tasks = [];
     this.tasksUI = [];
-    this.notificationTimeoutId = null;
-    this.notificationDuration = 1500000;
-    this.isInputFullscreen = false;
-    this.currentTask = undefined;
+    this.currentDay = null;
     this.isHistorySet = false;
 
     // Init Methods
@@ -126,6 +123,8 @@ export default class TaskManager {
     this.tasksUI.unshift(newCardUI);
     this.updateTasksIndex();
   }
+
+  updateTheDate(timestamp) {}
 
   updateTasksIndex() {
     this.tasksUI.forEach((taskCard) => {
