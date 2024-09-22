@@ -318,6 +318,7 @@ export default class History {
     // Get elements
     const elements = await this.getAllElements({ uuid, user, size, start: this.newStart });
     // Reverse the order of elements
+    elements.results.reverse();
 
     elements.results.forEach((element) => {
       if (!isTask(element)) return;
@@ -327,8 +328,6 @@ export default class History {
       element.resultsContainer = resultsContainer;
       this.addTasksUI(statuses, resultsContainer);
     });
-
-    elements.results.reverse();
 
     // Create UI elements
     const container = this.createUIElements(elements.results);
