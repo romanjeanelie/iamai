@@ -59,10 +59,10 @@ export default class TaskManagerDebug {
       titleController.setValue(task.status.title);
       descriptionController.setValue(task.status.description);
 
+      // Update the status of the task UI
       if (value === API_STATUSES.ENDED) {
         const container = document.createElement("div");
         container.innerHTML = "Here's your flights to Bamako!";
-        console.log(container);
         this.emitter.emit("taskManager:updateStatus", task.key, status, container);
       } else if (value === API_STATUSES.INPUT_REQUIRED) {
         const workflowID = "1234";
@@ -72,6 +72,7 @@ export default class TaskManagerDebug {
       }
     });
 
+    // Generate the new folders in the gui for the new task
     const titleController = folder
       .add(task.status, "title")
       .onChange((value) => {

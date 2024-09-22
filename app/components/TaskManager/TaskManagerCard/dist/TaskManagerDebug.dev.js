@@ -85,12 +85,11 @@ function () {
         }, defaultValues[value]);
 
         titleController.setValue(task.status.title);
-        descriptionController.setValue(task.status.description);
+        descriptionController.setValue(task.status.description); // Update the status of the task UI
 
         if (value === _constants.API_STATUSES.ENDED) {
           var container = document.createElement("div");
           container.innerHTML = "Here's your flights to Bamako!";
-          console.log(container);
 
           _this2.emitter.emit("taskManager:updateStatus", task.key, status, container);
         } else if (value === _constants.API_STATUSES.INPUT_REQUIRED) {
@@ -100,7 +99,8 @@ function () {
         } else {
           _this2.emitter.emit("taskManager:updateStatus", task.key, status);
         }
-      });
+      }); // Generate the new folders in the gui for the new task
+
       var titleController = folder.add(task.status, "title").onChange(function (value) {
         task.status.title = value;
       }).name("status title");
@@ -114,6 +114,8 @@ function () {
       }, "updateStatus");
       folder.add({
         deleteTask: function deleteTask() {
+          console.log("deleting task", task.key);
+
           _this2.emitter.emit("taskManager:deleteTask", task.key);
 
           _this2.debugTask.name = "Task ".concat(_this2.taskManager.tasks.length + 1);

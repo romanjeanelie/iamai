@@ -7,6 +7,8 @@ exports["default"] = void 0;
 
 var _gsap = _interopRequireDefault(require("gsap"));
 
+var _Flip = require("gsap/Flip");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -65,6 +67,25 @@ function () {
         duration: 0.2,
         stagger: 0.05,
         delay: 0.3
+      });
+    }
+  }, {
+    key: "cardInOutAnimation",
+    value: function cardInOutAnimation(newCard, initialState) {
+      _Flip.Flip.from(initialState, {
+        duration: 0.3,
+        ease: "power1.inOut",
+        onStart: function onStart() {
+          return _gsap["default"].fromTo(newCard.cardContainer, {
+            opacity: 0,
+            scale: 0.9
+          }, {
+            opacity: 1,
+            scale: 1,
+            delay: 0.2,
+            duration: 0.3
+          });
+        }
       });
     }
   }, {

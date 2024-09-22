@@ -56,16 +56,6 @@ export default class TaskManager {
         }
       }, 500);
     }
-
-    // Emitter
-    this.emitter.on("taskManager:createTask", (task) => this.createTask(task));
-    this.emitter.on("taskManager:updateStatus", (taskKey, status, container, workflowID) =>
-      this.onStatusUpdate(taskKey, status, container, workflowID)
-    );
-    this.emitter.on("taskManager:deleteTask", (taskKey) => this.deleteTask(taskKey));
-    this.emitter.on("app:initialized", (bool) => {
-      this.isHistorySet = bool;
-    });
   }
 
   // ---------- Handling the task-manager states ----------
@@ -130,9 +120,10 @@ export default class TaskManager {
   // ---------- Handling the tasks ----------
   createTask(task) {
     this.tasks.unshift(task);
-    const taskCard = new TaskManagerCard(task, this, this.emitter);
-    this.tasksUI.unshift(taskCard);
-
+    const initialState = Flip.getState(".task-manager__task-card-container");
+    const newCardUI = new TaskManagerCard(task, this, this.emitter);
+    this.animations.cardInOutAnimation(newCardUI, initialState);
+    this.tasksUI.unshift(newCardUI);
     this.updateTasksIndex();
   }
 
@@ -149,22 +140,28 @@ export default class TaskManager {
 
     // Find and remove the corresponding task card from taskCards array
     const taskCardIndex = this.tasksUI.findIndex((card) => card.task.key === taskKey);
-    if (taskCardIndex !== -1) {
-      const taskUI = this.tasksUI[taskCardIndex];
-      taskUI.removeTaskUI(); // Remove the task card's UI from the DOM
-      this.tasksUI.splice(taskCardIndex, 1); // Remove the card from the array
+
+    if (taskCardIndex === -1) {
+      console.log("Task not found in the UI");
+      return;
     }
 
+    const initialState = Flip.getState(".task-manager__task-card-container");
+    const taskUI = this.tasksUI[taskCardIndex];
+    taskUI.removeTaskUI(); // Remove the task card's UI from the DOM
+    this.animations.cardInOutAnimation(taskUI, initialState); // Animate the card out
+    this.tasksUI.splice(taskCardIndex, 1); // Remove the card from the array
+
+    // ---- Delete the task from the db ----
     const chatId = store.getState().chatId;
     const idToken = await store.getState().user.user.getIdToken(true);
 
-    // Find and remove the task from the db
     const params = {
       micro_thread_id: taskKey,
       uuid: chatId,
     };
 
-    const result = await fetcher({
+    await fetcher({
       url: URL_DELETE_STATUS,
       params,
       idToken,
@@ -209,6 +206,14 @@ export default class TaskManager {
       e.stopPropagation();
     });
 
+    // Emitter
+    this.emitter.on("taskManager:createTask", (task) => this.createTask(task));
+    this.emitter.on("taskManager:updateStatus", (taskKey, status, container, workflowID) =>
+      this.onStatusUpdate(taskKey, status, container, workflowID)
+    );
     this.emitter.on("taskManager:deleteTask", (taskKey) => this.deleteTask(taskKey));
+    this.emitter.on("app:initialized", (bool) => {
+      this.isHistorySet = bool;
+    });
   }
 }

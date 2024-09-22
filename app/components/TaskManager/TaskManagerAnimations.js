@@ -1,4 +1,5 @@
 import gsap from "gsap";
+import { Flip } from "gsap/Flip";
 
 export default class TaskManagerAnimations {
   constructor(emitter) {
@@ -33,6 +34,28 @@ export default class TaskManagerAnimations {
       duration: 0.2,
       stagger: 0.05,
       delay: 0.3,
+    });
+  }
+
+  cardInOutAnimation(newCard, initialState) {
+    Flip.from(initialState, {
+      duration: 0.3,
+      ease: "power1.inOut",
+      onStart: () => {
+        return gsap.fromTo(
+          newCard.cardContainer,
+          {
+            opacity: 0,
+            scale: 0.9,
+          },
+          {
+            opacity: 1,
+            scale: 1,
+            delay: 0.2,
+            duration: 0.3,
+          }
+        );
+      },
     });
   }
 

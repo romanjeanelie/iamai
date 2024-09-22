@@ -104,14 +104,12 @@ export default class TaskCardAnimations {
   hideRemainingCards = (index) => {
     const tl = gsap.timeline();
     const taskCards = document.querySelectorAll(".task-manager__task-card");
-    console.log(index);
 
     // Get the cards before and after the current card
     // using reduce to filter out the current card
     this.remainingCards = Array.from(taskCards).reduce(
       (acc, card) => {
         const cardIndex = parseInt(card.getAttribute("index"));
-        console.log(cardIndex);
         // Skip if the current card is the one we're focusing on
         if (cardIndex === index) return acc;
         // Add the card to the remaining cards
