@@ -6,9 +6,8 @@ gsap.registerPlugin(Flip);
 gsap.registerPlugin(ScrollToPlugin);
 
 export default class TaskCardAnimations {
-  constructor(card, index) {
+  constructor(card) {
     this.card = card;
-    this.index = index;
 
     this.container = document.querySelector(".task-manager__container");
     this.cardState = this.card.querySelector(".card-state");
@@ -17,11 +16,11 @@ export default class TaskCardAnimations {
     this.taskGrid = document.querySelector(".task-manager__tasks-grid");
   }
 
-  cardToFullScreen(callback) {
+  cardToFullScreen(index, callback) {
     const cardState = this.card.querySelector(".card-state");
     const fullscreenState = this.card.querySelector(".fullscreen-state");
     const tl = gsap.timeline();
-    const remainingCards = this.hideRemainingCards();
+    const remainingCards = this.hideRemainingCards(index);
 
     tl.to(cardState, {
       opacity: 0,
@@ -62,7 +61,7 @@ export default class TaskCardAnimations {
     return tl;
   }
 
-  fullscreenToCard() {
+  fullscreenToCard(index) {
     const tasks = document.querySelectorAll(".task-manager__task-card-container");
 
     const cardState = this.card.querySelector(".card-state");
@@ -75,7 +74,7 @@ export default class TaskCardAnimations {
     });
     tl.add(() => {
       const state = Flip.getState(this.card);
-      tasks[this.index].appendChild(this.card);
+      tasks[index].appendChild(this.card);
       fullscreenState.style.display = "none";
       cardState.style.display = "flex";
 
@@ -102,21 +101,23 @@ export default class TaskCardAnimations {
     });
   }
 
-  hideRemainingCards = () => {
+  hideRemainingCards = (index) => {
     const tl = gsap.timeline();
     const taskCards = document.querySelectorAll(".task-manager__task-card");
+    console.log(index);
 
     // Get the cards before and after the current card
     // using reduce to filter out the current card
     this.remainingCards = Array.from(taskCards).reduce(
       (acc, card) => {
         const cardIndex = parseInt(card.getAttribute("index"));
+        console.log(cardIndex);
         // Skip if the current card is the one we're focusing on
-        if (cardIndex === this.index) return acc;
+        if (cardIndex === index) return acc;
         // Add the card to the remaining cards
         acc.all.push(card);
         // Categorize the card into beforeCards or afterCards
-        if (cardIndex < this.index) {
+        if (cardIndex < index) {
           acc.beforeCards.push(card);
         } else {
           acc.afterCards.push(card);

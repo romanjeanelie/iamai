@@ -129,10 +129,18 @@ export default class TaskManager {
 
   // ---------- Handling the tasks ----------
   createTask(task) {
-    console.log("createTask", task);
     this.tasks.unshift(task);
     const taskCard = new TaskManagerCard(task, this, this.emitter);
     this.tasksUI.unshift(taskCard);
+
+    this.updateTasksIndex();
+  }
+
+  updateTasksIndex() {
+    this.tasksUI.forEach((taskCard) => {
+      const index = this.tasks.findIndex((task) => task.key === taskCard.task.key);
+      taskCard.updateIndex(index);
+    });
   }
 
   async deleteTask(taskKey) {
@@ -162,7 +170,8 @@ export default class TaskManager {
       idToken,
       method: "DELETE",
     });
-    console.log(result);
+
+    this.updateTasksIndex();
   }
 
   onStatusUpdate(taskKey, status, resultContainer, workflowID) {

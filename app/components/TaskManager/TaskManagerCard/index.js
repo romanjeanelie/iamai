@@ -10,7 +10,7 @@ export default class TaskManagerCard {
     this.emitter = emitter;
 
     // Index of the task in the tasks array
-    this.index = this.taskManager.tasks.findIndex((t) => t.key === this.task.key);
+    this.index = this.taskManager.tasks.findIndex((t) => t.key == this.task.key);
 
     // DOM Elements
     this.container = document.querySelector(".task-manager__container");
@@ -36,7 +36,6 @@ export default class TaskManagerCard {
     this.card = document.createElement("div");
     this.card.classList.add("task-manager__task-card");
     this.card.setAttribute("task-key", this.task.key);
-    this.card.setAttribute("index", this.index);
 
     this.card.innerHTML = `
       <div class="card-state">
@@ -77,9 +76,14 @@ export default class TaskManagerCard {
     this.statusPillLabel = this.card.querySelector(".task-manager__task-status-label");
 
     this.cardContainer.appendChild(this.card);
-    this.tasksGrid.appendChild(this.cardContainer);
+    this.tasksGrid.prepend(this.cardContainer);
 
-    this.animations = new TaskCardAnimations(this.card, this.index);
+    this.animations = new TaskCardAnimations(this.card);
+  }
+
+  updateIndex(index) {
+    this.index = index;
+    this.card.setAttribute("index", index);
   }
 
   // Update the state
@@ -118,13 +122,13 @@ export default class TaskManagerCard {
 
   // From card to fullscreen
   expandCardToFullscreen() {
-    this.animations.cardToFullScreen(() => {
+    this.animations.cardToFullScreen(this.index, () => {
       document.addEventListener("click", this.handleClickOutside);
     });
   }
 
   closeFullscreen() {
-    this.animations.fullscreenToCard();
+    this.animations.fullscreenToCard(this.index);
   }
 
   // Close fullscreen when clicking outside the fullscreen container
