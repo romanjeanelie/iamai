@@ -262,9 +262,9 @@ export default class TaskManager {
 
     // Emitter
     this.emitter.on("taskManager:createTask", (task) => this.createTask(task));
-    this.emitter.on("taskManager:updateStatus", (taskKey, status, container, workflowID) =>
-      this.onStatusUpdate(taskKey, status, container, workflowID)
-    );
+    this.emitter.on("taskManager:updateStatus", (taskKey, status, container, workflowID) => {
+      this.onStatusUpdate(taskKey, status, container, workflowID);
+    });
     this.emitter.on("taskManager:deleteTask", (taskKey) => this.deleteTask(taskKey));
     this.emitter.on("app:initialized", (bool) => {
       this.isHistorySet = bool;

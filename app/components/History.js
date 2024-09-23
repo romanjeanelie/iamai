@@ -52,9 +52,9 @@ export default class History {
     return resultsContainer;
   }
 
-  addTasksUI(status, resultsContainer) {
+  addTasksUI(statuses, resultsContainer) {
     // Initialize the task
-    const firstStatus = status.results.find((result) => result.status === "agent_started");
+    const firstStatus = statuses.results.find((result) => result.status === "agent_started");
     const initialTask = this.createInitialTask(firstStatus);
     const textAI = firstStatus.response_json.text;
 
@@ -62,8 +62,14 @@ export default class History {
     this.emitter.emit("taskManager:createTask", initialTask, textAI);
 
     // Handle the task status update if needed
-    if ([API_STATUSES.ENDED, API_STATUSES.VIEWED].includes(status.lastStatus)) {
-      this.updateTaskStatus(status, initialTask, resultsContainer);
+    const lastStatus = statuses.results.find((result) => result.status === statuses.lastStatus);
+
+    if ([API_STATUSES.ENDED, API_STATUSES.VIEWED].includes(statuses.lastStatus)) {
+      this.updateTaskStatus(lastStatus, initialTask, resultsContainer, statuses);
+    } else {
+      statuses.results.forEach((result) => {
+        this.updateTaskStatus(result, initialTask, resultsContainer);
+      });
     }
   }
 
@@ -82,32 +88,30 @@ export default class History {
     };
   }
 
-  updateTaskStatus(status, initialTask, resultsContainer) {
-    const lastStatusResult = status.results.find((result) => result.status === status.lastStatus);
-
-    switch (status.lastStatus) {
+  updateTaskStatus(status, initialTask, resultsContainer, statuses = null) {
+    switch (status.status) {
       case API_STATUSES.PROGRESSING:
-        this.handleProgressingStatus(initialTask, lastStatusResult);
+        this.handleProgressingStatus(initialTask, status);
         break;
 
       case API_STATUSES.ENDED:
-        this.handleEndedStatus(initialTask, lastStatusResult, resultsContainer);
+        this.handleEndedStatus(initialTask, status, resultsContainer);
         break;
 
       case API_STATUSES.VIEWED:
-        const agentAnsweredResult = status.results.find((result) => result.status === "agent_answered");
+        const agentAnsweredResult = statuses.results.find((result) => result.status === "agent_answered");
         this.handleViewedStatus(initialTask, agentAnsweredResult, resultsContainer);
         break;
     }
   }
 
-  handleEndedStatus(initialTask, lastStatusResult, resultsContainer) {
+  handleEndedStatus(initialTask, status, resultsContainer) {
     const taskEnded = {
       ...initialTask,
       status: {
         type: API_STATUSES.ENDED,
         title: "Completed",
-        description: lastStatusResult.response_json.text,
+        description: status.response_json.text,
         label: "View results",
       },
     };
@@ -128,29 +132,29 @@ export default class History {
     this.emitter.emit("taskManager:updateStatus", taskViewed.key, taskViewed.status, resultsContainer);
   }
 
-  handleProgressingStatus(initialTask, lastStatusResult) {
-    if (lastStatusResult.awaiting) {
-      const taskname = lastStatusResult.task_name;
+  handleProgressingStatus(initialTask, status) {
+    if (status?.awaiting) {
+      const taskname = status.task_name;
       const task = {
         ...initialTask,
         status: {
           type: API_STATUSES.INPUT_REQUIRED,
           label: "Input Required",
           title: taskname,
-          description: lastStatusResult.response_json.text,
+          description: status.response_json.text,
         },
       };
       this.emitter.emit("taskManager:updateStatus", task.key, task.status, null, task.workflowID);
     } else {
       let task;
-      switch (lastStatusResult.type) {
+      switch (status?.type) {
         case API_STATUSES.SOURCES:
           task = {
             ...initialTask,
             status: {
               type: API_STATUSES.PROGRESSING,
               title: "SOURCES",
-              description: lastStatusResult.response_json.sources,
+              description: status.response_json.sources,
               label: "In Progress",
             },
           };
@@ -162,20 +166,20 @@ export default class History {
             status: {
               type: API_STATUSES.AGENT_INTERMEDIATE_ANSWER,
               title: "AGENT INTERMEDIATE ANSWER",
-              description: lastStatusResult.response_json.agent_intermediate_answer,
+              description: status.response_json.agent_intermediate_answer,
               label: "In Progress",
             },
           };
           break;
 
         default:
-          if (lastStatusResult.response_json.domain !== "Code") {
+          if (status?.response_json.domain !== "Code") {
             task = {
               ...initialTask,
               status: {
                 type: API_STATUSES.PROGRESSING,
-                title: lastStatusResult.response_json.text.split(" ")[0],
-                description: lastStatusResult.response_json.text,
+                title: status.response_json.text.split(" ")[0],
+                description: status.response_json.text,
                 label: "In Progress",
               },
             };
