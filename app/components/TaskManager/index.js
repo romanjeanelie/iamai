@@ -125,11 +125,10 @@ export default class TaskManager {
     const newCardUI = new TaskManagerCard(task, this, this.emitter);
     this.animations.cardInOutAnimation(newCardUI, initialState);
     this.tasksUI.unshift(newCardUI);
-    console.log(this.tasks);
 
     // Handling the Date
     const taskDate = new Date(task.createdAt);
-    const taskDay = taskDate?.toISOString().split("T")[0];
+    const taskDay = taskDate?.toDateString();
     this.currentDay = taskDate;
     this.removePreviousDates(taskDay);
     this.addDate();
@@ -142,13 +141,11 @@ export default class TaskManager {
     const divDate = document.createElement("div");
     divDate.classList.add("task-manager__date");
     const dayMonthYear = this.currentDay.toDateString();
-    divDate.setAttribute("data-date", this.currentDay.toISOString().split("T")[0]);
+    divDate.setAttribute("data-date", this.currentDay.toDateString());
 
     if (dayMonthYear === new Date().toDateString()) {
       divDate.innerHTML = "Today";
     } else {
-      // divDate.innerHTML = this.currentDay.toDateString();
-      // only show the day
       divDate.innerHTML = this.currentDay.toLocaleDateString("en-US", {
         weekday: "long",
       });
@@ -183,11 +180,11 @@ export default class TaskManager {
 
     // Check if there is other tasks with the same date
     const taskDate = new Date(task.createdAt);
-    const taskDay = taskDate?.toISOString().split("T")[0];
+    const taskDay = taskDate?.toDateString();
     // if there si no other tasks with the same date, remove the date from the UI
     const isDatePresent = this.tasks.some((t) => {
       const tDate = new Date(t.createdAt);
-      return tDate?.toISOString().split("T")[0] === taskDay;
+      return tDate?.toDateString() === taskDay;
     });
 
     if (!isDatePresent) {
