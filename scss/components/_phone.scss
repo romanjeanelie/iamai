@@ -235,6 +235,7 @@ $colorTalkAI: $colorBlueText;
     left: 0;
     right: 0;
     transform: translateY(100%);
+    pointer-events: none;
     transition: transform 0.3s $ease-out;
     backdrop-filter: none;
     @supports not (backdrop-filter: blur(10px)) {
@@ -246,6 +247,12 @@ $colorTalkAI: $colorBlueText;
     transform: translateY(0);
     opacity: 1;
     pointer-events: auto;
+
+    .phone__container {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
   }
 
   .phone__container {
@@ -255,19 +262,13 @@ $colorTalkAI: $colorBlueText;
     padding: 0;
     opacity: 1;
     visibility: visible;
-    pointer-events: auto;
+    pointer-events: none;
     display: flex;
     justify-content: flex-end;
 
     @include media("<tablet") {
       padding: 0 $paddingHorMobile;
     }
-  }
-
-  .phone__container.show {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
   }
 
   .phone__info-container {
