@@ -141,13 +141,19 @@ export default class TaskManager {
   addDate() {
     const divDate = document.createElement("div");
     divDate.classList.add("task-manager__date");
+    const dayMonthYear = this.currentDay.toDateString();
     divDate.setAttribute("data-date", this.currentDay.toISOString().split("T")[0]);
 
-    // display Today if the date is today
-    const today = new Date();
-    // if (this.currentDay.toDateString() === today.toDateString()) {
-    divDate.innerHTML = "Today";
-    // }
+    if (dayMonthYear === new Date().toDateString()) {
+      divDate.innerHTML = "Today";
+    } else {
+      // divDate.innerHTML = this.currentDay.toDateString();
+      // only show the day
+      divDate.innerHTML = this.currentDay.toLocaleDateString("en-US", {
+        weekday: "long",
+      });
+    }
+
     this.tasksGrid.prepend(divDate);
   }
 
