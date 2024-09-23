@@ -53,9 +53,22 @@ export default class History {
   }
 
   addTasksUI(status, resultsContainer) {
-    // initialize the task
-    const firstStatus = status.results.find((result) => result.status === "agent_started"); // Use the 'agent_answered' status
-    const initialTask = {
+    // Initialize the task
+    const firstStatus = status.results.find((result) => result.status === "agent_started");
+    const initialTask = this.createInitialTask(firstStatus);
+    const textAI = firstStatus.response_json.text;
+
+    // Emit the task creation
+    this.emitter.emit("taskManager:createTask", initialTask, textAI);
+
+    // Handle the task status update if needed
+    if ([API_STATUSES.ENDED, API_STATUSES.VIEWED].includes(status.lastStatus)) {
+      this.updateTaskStatus(status, initialTask, resultsContainer);
+    }
+  }
+
+  createInitialTask(firstStatus) {
+    return {
       key: firstStatus.micro_thread_id,
       name: firstStatus.task_name,
       workflowID: firstStatus.session_id,
@@ -67,93 +80,109 @@ export default class History {
         label: "In Progress",
       },
     };
+  }
 
-    const textAI = firstStatus.response_json.text;
-    this.emitter.emit("taskManager:createTask", initialTask, textAI);
-
+  updateTaskStatus(status, initialTask, resultsContainer) {
     const lastStatusResult = status.results.find((result) => result.status === status.lastStatus);
 
-    // then update it in function of its last status
     switch (status.lastStatus) {
       case API_STATUSES.PROGRESSING:
-        if (lastStatusResult.awaiting) {
-          let taskname = lastStatusResult.task_name;
-          const task = {
+        this.handleProgressingStatus(initialTask, lastStatusResult);
+        break;
+
+      case API_STATUSES.ENDED:
+        this.handleEndedStatus(initialTask, lastStatusResult, resultsContainer);
+        break;
+
+      case API_STATUSES.VIEWED:
+        const agentAnsweredResult = status.results.find((result) => result.status === "agent_answered");
+        this.handleViewedStatus(initialTask, agentAnsweredResult, resultsContainer);
+        break;
+    }
+  }
+
+  handleEndedStatus(initialTask, lastStatusResult, resultsContainer) {
+    const taskEnded = {
+      ...initialTask,
+      status: {
+        type: API_STATUSES.ENDED,
+        title: "Completed",
+        description: lastStatusResult.response_json.text,
+        label: "View results",
+      },
+    };
+    this.emitter.emit("taskManager:updateStatus", taskEnded.key, taskEnded.status, resultsContainer);
+  }
+
+  handleViewedStatus(initialTask, status, resultsContainer) {
+    const taskViewed = {
+      ...initialTask,
+      status: {
+        type: API_STATUSES.VIEWED,
+        title: "Viewed",
+        description: status?.response_json.text || "No agent response.",
+        label: "View results",
+      },
+    };
+
+    this.emitter.emit("taskManager:updateStatus", taskViewed.key, taskViewed.status, resultsContainer);
+  }
+
+  handleProgressingStatus(initialTask, lastStatusResult) {
+    if (lastStatusResult.awaiting) {
+      const taskname = lastStatusResult.task_name;
+      const task = {
+        ...initialTask,
+        status: {
+          type: API_STATUSES.INPUT_REQUIRED,
+          label: "Input Required",
+          title: taskname,
+          description: lastStatusResult.response_json.text,
+        },
+      };
+      this.emitter.emit("taskManager:updateStatus", task.key, task.status, null, task.workflowID);
+    } else {
+      let task;
+      switch (lastStatusResult.type) {
+        case API_STATUSES.SOURCES:
+          task = {
             ...initialTask,
             status: {
-              type: API_STATUSES.INPUT_REQUIRED,
-              label: "Input Required",
-              title: taskname,
-              description: status.response_json.text,
+              type: API_STATUSES.PROGRESSING,
+              title: "SOURCES",
+              description: lastStatusResult.response_json.sources,
+              label: "In Progress",
             },
           };
+          break;
 
-          this.emitter.emit("taskManager:updateStatus", task.key, task.status, null, task.workflowID);
-        } else {
-          if (lastStatusResult.type == API_STATUSES.SOURCES) {
-            const task = {
+        case API_STATUSES.AGENT_INTERMEDIATE_ANSWER:
+          task = {
+            ...initialTask,
+            status: {
+              type: API_STATUSES.AGENT_INTERMEDIATE_ANSWER,
+              title: "AGENT INTERMEDIATE ANSWER",
+              description: lastStatusResult.response_json.agent_intermediate_answer,
+              label: "In Progress",
+            },
+          };
+          break;
+
+        default:
+          if (lastStatusResult.response_json.domain !== "Code") {
+            task = {
               ...initialTask,
               status: {
                 type: API_STATUSES.PROGRESSING,
-                title: "SOURCES",
-                description: lastStatusResult.response_json.sources,
+                title: lastStatusResult.response_json.text.split(" ")[0],
+                description: lastStatusResult.response_json.text,
                 label: "In Progress",
               },
             };
-            this.emitter.emit("taskManager:updateStatus", task.key, task.status);
-          } else if (lastStatusResult.type == API_STATUSES.AGENT_INTERMEDIATE_ANSWER) {
-            const task = {
-              ...initialTask,
-              status: {
-                type: API_STATUSES.AGENT_INTERMEDIATE_ANSWER,
-                title: "AGENT INTERMEDIATE ANSWER",
-                description: lastStatusResult.response_json.agent_intermediate_answer,
-                label: "In Progress",
-              },
-            };
-            this.emitter.emit("taskManager:updateStatus", task.key, task.status);
-          } else {
-            if (lastStatusResult.response_json.domain != "Code") {
-              const task = {
-                ...initialTask,
-                status: {
-                  type: API_STATUSES.PROGRESSING,
-                  title: lastStatusResult.response_json.text.split(" ")[0],
-                  description: lastStatusResult.response_json.text,
-                  label: "In Progress",
-                },
-              };
-              this.emitter.emit("taskManager:updateStatus", task.key, task.status);
-            }
           }
-        }
-        break;
-      case API_STATUSES.ENDED:
-        const taskEnded = {
-          ...initialTask,
-          status: {
-            type: API_STATUSES.ENDED,
-            title: "Completed",
-            description: lastStatusResult.response_json.text,
-            label: "View results",
-          },
-        };
-        this.emitter.emit("taskManager:updateStatus", taskEnded.key, taskEnded.status, resultsContainer);
-        break;
-      case API_STATUSES.VIEWED:
-        const agentAnsweredResult = status.results.find((result) => result.status === "agent_answered"); // Use the 'agent_answered' status
-        const taskViewed = {
-          ...initialTask,
-          status: {
-            type: API_STATUSES.VIEWED,
-            title: "Viewed",
-            description: agentAnsweredResult.response_json.text,
-            label: "View results",
-          },
-        };
-
-        this.emitter.emit("taskManager:updateStatus", taskViewed.key, taskViewed.status, resultsContainer);
-        break;
+          break;
+      }
+      if (task) this.emitter.emit("taskManager:updateStatus", task.key, task.status);
     }
   }
 

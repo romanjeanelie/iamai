@@ -88,11 +88,24 @@ export default class TaskManagerCard {
 
   // Update the state
   addStatus() {
-    // console.log(this.task);
+    // okay so i need to add the title and the description of each statuses inside of the fullscreenState
+    if (!this.statusesContainer) {
+      this.statusesContainer = document.createElement("div");
+      this.statusesContainer.classList.add("statuses-container");
+      this.fullscreenState.appendChild(this.statusesContainer);
+    }
+    const div = document.createElement("div");
+    div.classList.add("status-container");
+    div.innerHTML = `
+      <h3 class="status-title">${this.task.status.label}</h3>
+      <p class="status-description">${this.task.status.description}</p>
+    `;
+    this.statusesContainer.appendChild(div);
   }
 
   addResult() {
     if (this.task.resultsContainer instanceof Node) {
+      this.statusesContainer?.remove();
       this.fullscreenState?.appendChild(this.task.resultsContainer);
     } else {
       console.error("resultsContainer is not a valid DOM Node", this.task.resultsContainer);
