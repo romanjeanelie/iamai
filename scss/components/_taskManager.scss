@@ -67,7 +67,19 @@ $zIndex: 1;
 // ------ Task Card : CARD VIEW------
 .task-manager__date {
   grid-column: span 2;
-  background-color: red;
+  color: #9fb7cb;
+  font-size: 48px;
+  font-weight: 300;
+  padding: 74px 0 24px;
+
+  &:first-of-type {
+    padding-top: 0;
+  }
+
+  @include media("<tablet") {
+    grid-column: span 1;
+    padding: 20px 0 4px;
+  }
 }
 
 .task-manager__task-card {

@@ -143,7 +143,11 @@ export default class TaskManager {
     divDate.classList.add("task-manager__date");
     divDate.setAttribute("data-date", this.currentDay.toISOString().split("T")[0]);
 
-    divDate.innerHTML = this.currentDay.toDateString();
+    // display Today if the date is today
+    const today = new Date();
+    // if (this.currentDay.toDateString() === today.toDateString()) {
+    divDate.innerHTML = "Today";
+    // }
     this.tasksGrid.prepend(divDate);
   }
 

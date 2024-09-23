@@ -11,9 +11,6 @@ export default class TaskManagerCard {
 
     // Index of the task in the tasks array
     this.index = this.taskManager.tasks.findIndex((t) => t.key == this.task.key);
-    if (this.task.key === "wf-agent-4ebc4f11-d676-4120-a019-22e03ce94fb4") {
-      console.log(this.index);
-    }
 
     // DOM Elements
     this.container = document.querySelector(".task-manager__container");
