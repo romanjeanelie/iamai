@@ -2,7 +2,7 @@ import TaskCardAnimations from "./TaskCardAnimations";
 
 import { STATUS_COLORS } from "..";
 import { API_STATUSES } from "../../constants";
-import { initInputUI } from "./TaskCardInput";
+import { TaskCardInput } from "./TaskCardInput";
 
 export default class TaskManagerCard {
   constructor(task, taskManager, emitter) {
@@ -114,8 +114,7 @@ export default class TaskManagerCard {
     this.statusesContainer.appendChild(div);
 
     if (this.task.status.type === API_STATUSES.INPUT_REQUIRED) {
-      const input = initInputUI();
-      this.statusesContainer.prepend(input);
+      this.input = new TaskCardInput({ taskContainer: this.fullscreenState });
     }
   }
 
