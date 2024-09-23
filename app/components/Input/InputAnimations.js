@@ -44,12 +44,30 @@ export default class InputAnimations {
     gsap.fromTo(
       this.inputEl,
       { yPercent: 200, opacity: 0 },
-      { opacity: 1, yPercent: 0, duration: 0.75, ease: Power3.easeOut }
+      {
+        opacity: 1,
+        yPercent: 0,
+        duration: 0.75,
+        ease: Power3.easeOut,
+        onComplete: () => {
+          this.inputEl.style.height = "auto";
+          this.inputEl.style.pointerEvents = "auto";
+        },
+      }
     );
   }
 
   hideInput() {
-    gsap.to(this.inputEl, { opacity: 0, yPercent: 100, duration: 0.5, ease: Power3.easeOut });
+    gsap.to(this.inputEl, {
+      opacity: 0,
+      yPercent: 100,
+      duration: 0.5,
+      ease: Power3.easeOut,
+      onComplete: () => {
+        this.inputEl.style.height = "0px";
+        this.inputEl.style.pointerEvents = "none";
+      },
+    });
   }
 
   // Presets

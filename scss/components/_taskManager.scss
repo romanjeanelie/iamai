@@ -249,6 +249,15 @@ $zIndex: 1;
   }
 }
 
+// ------ Task Card : INPUT ------
+.task-manager__input-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 16px 26px;
+}
+
 // ------ Notification Container ------
 .task-manager__notification-container {
   position: fixed;

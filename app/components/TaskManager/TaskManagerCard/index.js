@@ -2,6 +2,7 @@ import TaskCardAnimations from "./TaskCardAnimations";
 
 import { STATUS_COLORS } from "..";
 import { API_STATUSES } from "../../constants";
+import { initInputUI } from "./TaskCardInput";
 
 export default class TaskManagerCard {
   constructor(task, taskManager, emitter) {
@@ -88,12 +89,12 @@ export default class TaskManagerCard {
 
   // Update the state
   addStatus() {
-    // okay so i need to add the title and the description of each statuses inside of the fullscreenState
     if (!this.statusesContainer) {
       this.statusesContainer = document.createElement("div");
       this.statusesContainer.classList.add("statuses-container");
       this.fullscreenState.appendChild(this.statusesContainer);
     }
+
     const div = document.createElement("div");
     div.classList.add("status-container");
     div.innerHTML = `
@@ -102,6 +103,11 @@ export default class TaskManagerCard {
     `;
 
     this.statusesContainer.appendChild(div);
+
+    if (this.task.status.type === API_STATUSES.INPUT_REQUIRED) {
+      const input = initInputUI();
+      this.statusesContainer.prepend(input);
+    }
   }
 
   addResult() {

@@ -70,6 +70,8 @@ function () {
   }, {
     key: "showInput",
     value: function showInput() {
+      var _this = this;
+
       _gsap["default"].fromTo(this.inputEl, {
         yPercent: 200,
         opacity: 0
@@ -77,17 +79,27 @@ function () {
         opacity: 1,
         yPercent: 0,
         duration: 0.75,
-        ease: _gsap.Power3.easeOut
+        ease: _gsap.Power3.easeOut,
+        onComplete: function onComplete() {
+          _this.inputEl.style.height = "auto";
+          _this.inputEl.style.pointerEvents = "auto";
+        }
       });
     }
   }, {
     key: "hideInput",
     value: function hideInput() {
+      var _this2 = this;
+
       _gsap["default"].to(this.inputEl, {
         opacity: 0,
         yPercent: 100,
         duration: 0.5,
-        ease: _gsap.Power3.easeOut
+        ease: _gsap.Power3.easeOut,
+        onComplete: function onComplete() {
+          _this2.inputEl.style.height = "0px";
+          _this2.inputEl.style.pointerEvents = "none";
+        }
       });
     } // Presets
 
@@ -350,7 +362,7 @@ function () {
   }, {
     key: "toStopPhoneRecording",
     value: function toStopPhoneRecording() {
-      var _this = this;
+      var _this3 = this;
 
       var fadeOutphoneWrapper = (0, _anim["default"])(this.phoneWrapper, [{
         opacity: 1,
@@ -365,7 +377,7 @@ function () {
       });
 
       fadeOutphoneWrapper.onfinish = function () {
-        var fadeInIput = (0, _anim["default"])(_this.inputEl, [{
+        var fadeInIput = (0, _anim["default"])(_this3.inputEl, [{
           opacity: 0,
           transform: "translateY(100%)"
         }, {
@@ -378,9 +390,9 @@ function () {
         });
         fadeOutphoneWrapper.cancel();
 
-        _this.inputEl.classList.remove("hidden");
+        _this3.inputEl.classList.remove("hidden");
 
-        _this.phoneWrapper.classList.remove("show");
+        _this3.phoneWrapper.classList.remove("show");
 
         fadeInIput.onfinish = function () {
           fadeInIput.cancel();
@@ -394,7 +406,7 @@ function () {
   }, {
     key: "toDragImage",
     value: function toDragImage() {
-      var _this2 = this;
+      var _this4 = this;
 
       var _ref8 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
           _ref8$animBottom = _ref8.animBottom,
@@ -406,9 +418,9 @@ function () {
       this.inputText.disabled = true;
       this.imageDroppedContainer.classList.remove("visible");
       setTimeout(function () {
-        _this2.frontCameraBtn.classList.add("active-imagedrop");
+        _this4.frontCameraBtn.classList.add("active-imagedrop");
 
-        _this2.inputImageContainer.classList.add("show");
+        _this4.inputImageContainer.classList.add("show");
       }, delay);
 
       if (animBottom) {
