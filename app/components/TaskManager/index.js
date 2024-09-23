@@ -123,8 +123,6 @@ export default class TaskManager {
     // Handling the UI
     const initialState = Flip.getState(".task-manager__task-card-container");
     const newCardUI = new TaskManagerCard(task, this, this.emitter);
-    this.animations.cardInOutAnimation(newCardUI, initialState);
-    this.tasksUI.unshift(newCardUI);
 
     // Handling the Date
     const taskDate = new Date(task.createdAt);
@@ -132,6 +130,9 @@ export default class TaskManager {
     this.currentDay = taskDate;
     this.removePreviousDates(taskDay);
     this.addDate();
+
+    this.animations.cardInOutAnimation(newCardUI, initialState);
+    this.tasksUI.unshift(newCardUI);
 
     // Handling the Index
     this.updateTasksIndex();
