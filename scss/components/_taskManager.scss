@@ -200,6 +200,53 @@ $zIndex: 1;
     align-self: flex-end;
     max-width: 65%;
   }
+
+  .statuses-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .sources-container {
+    order: 0;
+  }
+
+  .status-container {
+    order: 1;
+
+    .status-title {
+      font-size: 15px;
+      font-weight: 500;
+      padding-bottom: 4px;
+    }
+
+    .status-description {
+      font-size: 13px;
+      font-weight: 400;
+      color: $colorGrey;
+    }
+  }
+
+  .status-container,
+  .sources-container {
+    position: relative;
+    padding-bottom: 24px;
+
+    &::after {
+      content: "";
+      position: absolute;
+      display: block;
+      width: 100%;
+      height: 1px;
+      bottom: 0;
+      left: 0;
+      background-color: $colorLight;
+    }
+
+    &:last-of-type::after {
+      display: none;
+    }
+  }
 }
 
 // ------ Notification Container ------

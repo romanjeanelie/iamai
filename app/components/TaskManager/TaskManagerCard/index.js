@@ -100,6 +100,7 @@ export default class TaskManagerCard {
       <h3 class="status-title">${this.task.status.label}</h3>
       <p class="status-description">${this.task.status.description}</p>
     `;
+
     this.statusesContainer.appendChild(div);
   }
 
