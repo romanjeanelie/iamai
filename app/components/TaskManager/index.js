@@ -166,8 +166,23 @@ export default class TaskManager {
   }
 
   async deleteTask(taskKey) {
+    const task = this.tasks.find((t) => t.key === taskKey);
+
     // Find and remove task from tasks array
     this.tasks = this.tasks.filter((t) => t.key !== taskKey);
+
+    // Check if there is other tasks with the same date
+    const taskDate = new Date(task.createdAt);
+    const taskDay = taskDate?.toISOString().split("T")[0];
+    // if there si no other tasks with the same date, remove the date from the UI
+    const isDatePresent = this.tasks.some((t) => {
+      const tDate = new Date(t.createdAt);
+      return tDate?.toISOString().split("T")[0] === taskDay;
+    });
+
+    if (!isDatePresent) {
+      this.removePreviousDates(taskDay);
+    }
 
     // Find and remove the corresponding task card from taskCards array
     const taskCardIndex = this.tasksUI.findIndex((card) => card.task.key === taskKey);

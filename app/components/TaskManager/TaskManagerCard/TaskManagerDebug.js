@@ -72,8 +72,6 @@ export default class TaskManagerDebug {
       };
     }
 
-    console.log(this.debugTask.createdAt);
-
     const folder = this.gui.addFolder(task.name);
     folder.open();
 

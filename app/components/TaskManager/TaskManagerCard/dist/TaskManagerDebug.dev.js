@@ -99,7 +99,6 @@ function () {
         });
       }
 
-      console.log(this.debugTask.createdAt);
       var folder = this.gui.addFolder(task.name);
       folder.open();
       folder.add(task.status, "type", _constants.API_STATUSES).onChange(function (value) {
