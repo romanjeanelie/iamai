@@ -30,6 +30,7 @@ export default class TaskManager {
     // DOM Elements
     this.html = document.documentElement;
     this.container = document.querySelector(".task-manager__container");
+    this.tasksGrid = document.querySelector(".task-manager__tasks-grid");
 
     // States
     this.tasks = [];
@@ -116,26 +117,46 @@ export default class TaskManager {
 
   // ---------- Handling the tasks ----------
   createTask(task) {
-    console.log(task);
-    // Handling the Status
+    // Handling the Data
     this.tasks.unshift(task);
+
+    // Handling the UI
     const initialState = Flip.getState(".task-manager__task-card-container");
     const newCardUI = new TaskManagerCard(task, this, this.emitter);
     this.animations.cardInOutAnimation(newCardUI, initialState);
     this.tasksUI.unshift(newCardUI);
+    console.log(this.tasks);
 
     // Handling the Date
-    // const taskDate = new Date(task.createdAt);
-    // const taskDay = taskDate.toISOString().split("T")[0];
-    // if (taskDay !== this.currentDay?.toISOString().split("T")[0]) {
-    //   this.currentDay = taskDate;
-    // }
+    const taskDate = new Date(task.createdAt);
+    const taskDay = taskDate?.toISOString().split("T")[0];
+    this.currentDay = taskDate;
+    this.removePreviousDates(taskDay);
+    this.addDate();
 
     // Handling the Index
     this.updateTasksIndex();
   }
 
-  updateTheDate(timestamp) {}
+  addDate() {
+    const divDate = document.createElement("div");
+    divDate.classList.add("task-manager__date");
+    divDate.setAttribute("data-date", this.currentDay.toISOString().split("T")[0]);
+
+    divDate.innerHTML = this.currentDay.toDateString();
+    this.tasksGrid.prepend(divDate);
+  }
+
+  removePreviousDates(day) {
+    // Remove the dom nodes
+    const existingDates = this.tasksGrid.querySelectorAll(".task-manager__date");
+
+    existingDates?.forEach((dateElement) => {
+      if (dateElement.dataset.date === day) {
+        dateElement.remove();
+      }
+    });
+  }
 
   updateTasksIndex() {
     this.tasksUI.forEach((taskCard) => {

@@ -387,10 +387,10 @@ class Chat {
         } else if (mdata.status && mdata.status == AGENT_STARTED) {
           // micro_thread_id =  mdata.micro_thread_id;
           let taskname = mdata.task_name;
-          console.log("CREATING A TASK", mdata);
           const task = {
             key: mdata.micro_thread_id,
             name: taskname,
+            createdAt: mdata.time_stamp,
             status: {
               type: API_STATUSES.PROGRESSING,
               title: "Planning",

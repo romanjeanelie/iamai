@@ -51,7 +51,7 @@ function () {
     this.debugTask = {
       name: "Task ".concat(this.taskManager.tasks.length + 1),
       key: this.taskManager.tasks.length + 1,
-      createdAt: new Date()
+      createdAt: "2024-09-23T17:45:35.000Z"
     };
     this.taskNameController = this.gui.add(this.debugTask, "name").onChange(function (value) {
       _this.debugTask.name = value;
@@ -60,10 +60,27 @@ function () {
       addTask: function addTask() {
         return _this.addDebugTask();
       }
-    }, "addTask");
-  }
+    }, "addTask"); // Adding button to increment the creation date by one day
+
+    this.gui.add({
+      incrementDate: function incrementDate() {
+        return _this.incrementTaskDate();
+      }
+    }, "incrementDate");
+  } // Method to increment the date of the task by one day
+
 
   _createClass(TaskManagerDebug, [{
+    key: "incrementTaskDate",
+    value: function incrementTaskDate() {
+      var currentDate = new Date(this.debugTask.createdAt);
+      currentDate.setDate(currentDate.getDate() + 1); // Increment the day by 1
+
+      this.debugTask.createdAt = currentDate.toISOString(); // Update the task date
+
+      console.log("New Task Date: ".concat(this.debugTask.createdAt)); // Debugging the new date
+    }
+  }, {
     key: "addDebugTask",
     value: function addDebugTask() {
       var _this2 = this;
@@ -71,6 +88,10 @@ function () {
       var task = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
       if (!task) {
+        if (this.taskManager.tasks.length === 2) {
+          this.debugTask.createdAt = "2024-09-24T17:45:35.000Z";
+        }
+
         task = _objectSpread({}, this.debugTask, {
           status: _objectSpread({
             type: _constants.API_STATUSES.PROGRESSING
@@ -78,6 +99,7 @@ function () {
         });
       }
 
+      console.log(this.debugTask.createdAt);
       var folder = this.gui.addFolder(task.name);
       folder.open();
       folder.add(task.status, "type", _constants.API_STATUSES).onChange(function (value) {
