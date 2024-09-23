@@ -77,8 +77,6 @@ function () {
       currentDate.setDate(currentDate.getDate() + 1); // Increment the day by 1
 
       this.debugTask.createdAt = currentDate.toISOString(); // Update the task date
-
-      console.log("New Task Date: ".concat(this.debugTask.createdAt)); // Debugging the new date
     }
   }, {
     key: "addDebugTask",

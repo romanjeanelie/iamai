@@ -19,18 +19,9 @@ export function initInputUI() {
           class="input-text"
           rows="1"
           placeholder="How can I help you?"
-          autofocus
   
         ></textarea>
       </form>
-      <div class="buttons-container">
-        <button class="camera-btn input-icon-btn" type="button">
-          <img alt="camera-icon" src="/icons/image-icon.svg" />
-        </button>
-        <button class="video-btn input-icon-btn" type="button">
-          <img alt="video-icon" src="/icons/camera-video.svg" />
-        </button>
-      </div>
     </div>
 
     <button class="phone-btn" type="button">
@@ -45,6 +36,12 @@ export function initInputUI() {
       <img alt="phone-icon" src="/icons/phone-icon.svg" />
     </button>
   `;
+
+  const textarea = inputContainer.querySelector(".input-text");
+
+  textarea.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
 
   return inputContainer;
 }

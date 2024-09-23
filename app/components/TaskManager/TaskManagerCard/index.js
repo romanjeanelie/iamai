@@ -11,6 +11,7 @@ export default class TaskManagerCard {
     this.emitter = emitter;
 
     // Index of the task in the tasks array
+    this.debug = import.meta.env.VITE_DEBUG === "true";
     this.index = this.taskManager.tasks.findIndex((t) => t.key == this.task.key);
 
     // DOM Elements
@@ -27,6 +28,14 @@ export default class TaskManagerCard {
     // Init Methods
     this.initUI();
     this.addEventListeners();
+
+    if (this.debug) {
+      if (this.task.key === 3) {
+        setTimeout(() => {
+          this.expandCardToFullscreen();
+        }, 500);
+      }
+    }
   }
 
   // Create the card element

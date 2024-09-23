@@ -57,7 +57,6 @@ export default class TaskManagerDebug {
     const currentDate = new Date(this.debugTask.createdAt);
     currentDate.setDate(currentDate.getDate() + 1); // Increment the day by 1
     this.debugTask.createdAt = currentDate.toISOString(); // Update the task date
-    console.log(`New Task Date: ${this.debugTask.createdAt}`); // Debugging the new date
   }
 
   addDebugTask(task = null) {

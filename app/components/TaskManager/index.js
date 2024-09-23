@@ -52,6 +52,12 @@ export default class TaskManager {
         for (let i = 0; i < 3; i++) {
           this.debugger.addDebugTask();
         }
+
+        this.onStatusUpdate(this.tasks[0].key, {
+          type: API_STATUSES.INPUT_REQUIRED,
+          title: "answer : ",
+          description: "This is a test description",
+        });
       }, 500);
     }
   }
@@ -99,7 +105,7 @@ export default class TaskManager {
 
     this.onStatusUpdate(key, {
       type: API_STATUSES.PROGRESSING,
-      title: "answer : ",
+      label: "YOW",
       description: value,
     });
   }
