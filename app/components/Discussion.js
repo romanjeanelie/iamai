@@ -1,15 +1,15 @@
 import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scss";
 import TypingText from "../TypingText";
-import Chat from "./Chat.js";
-import History, { getPreviousDayTimestamp } from "./History.js";
-import DiscussionMedia from "./DiscussionMedia.js";
-import fetcher from "../utils/fetcher.js";
 import { getsessionID } from "../User";
+import fetcher from "../utils/fetcher.js";
+import Chat from "./Chat.js";
+import DiscussionMedia from "./DiscussionMedia.js";
+import History, { getPreviousDayTimestamp } from "./History.js";
 
-import { API_STATUSES, URL_AGENT_STATUS, URL_DELETE_STATUS } from "./constants.js";
 import { gsap } from "gsap";
+import { flightSearchData, flightSearchResultsData } from "../../testData.jsx";
 import fadeByWord from "../utils/fadeByWord.js";
-import { flightSearchData, flightSearchResultsData } from "../../testData.js";
+import { API_STATUSES, URL_AGENT_STATUS } from "./constants.js";
 import { store } from "./store.js";
 
 export default class Discussion {

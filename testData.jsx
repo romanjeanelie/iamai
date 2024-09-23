@@ -20,11 +20,10 @@ export const flightSearchData = {
   round_trip: "True",
   preferred_airline: null,
 };
-
 export const flightSearchResultsData = {
+  website: "kayak",
   Outbound: [
     {
-      website: "kayak",
       currency: "USD",
       price: "$108",
       airport1_code: "CDG",
