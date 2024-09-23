@@ -50,7 +50,8 @@ function () {
     this.emitter = taskManager.emitter;
     this.debugTask = {
       name: "Task ".concat(this.taskManager.tasks.length + 1),
-      key: this.taskManager.tasks.length + 1
+      key: this.taskManager.tasks.length + 1,
+      createdAt: new Date()
     };
     this.taskNameController = this.gui.add(this.debugTask, "name").onChange(function (value) {
       _this.debugTask.name = value;
@@ -114,8 +115,6 @@ function () {
       }, "updateStatus");
       folder.add({
         deleteTask: function deleteTask() {
-          console.log("deleting task", task.key);
-
           _this2.emitter.emit("taskManager:deleteTask", task.key);
 
           _this2.debugTask.name = "Task ".concat(_this2.taskManager.tasks.length + 1);

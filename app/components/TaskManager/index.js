@@ -116,11 +116,22 @@ export default class TaskManager {
 
   // ---------- Handling the tasks ----------
   createTask(task) {
+    console.log(task);
+    // Handling the Status
     this.tasks.unshift(task);
     const initialState = Flip.getState(".task-manager__task-card-container");
     const newCardUI = new TaskManagerCard(task, this, this.emitter);
     this.animations.cardInOutAnimation(newCardUI, initialState);
     this.tasksUI.unshift(newCardUI);
+
+    // Handling the Date
+    // const taskDate = new Date(task.createdAt);
+    // const taskDay = taskDate.toISOString().split("T")[0];
+    // if (taskDay !== this.currentDay?.toISOString().split("T")[0]) {
+    //   this.currentDay = taskDate;
+    // }
+
+    // Handling the Index
     this.updateTasksIndex();
   }
 
