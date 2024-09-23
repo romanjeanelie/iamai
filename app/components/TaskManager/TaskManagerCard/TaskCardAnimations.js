@@ -20,7 +20,8 @@ export default class TaskCardAnimations {
     const cardState = this.card.querySelector(".card-state");
     const fullscreenState = this.card.querySelector(".fullscreen-state");
     const tl = gsap.timeline();
-    const remainingCards = this.hideRemainingCards(index);
+    const hideDatesTl = this.hideDates();
+    const hideRemainingCardsTl = this.hideRemainingCards(index);
 
     tl.to(cardState, {
       opacity: 0,
@@ -48,7 +49,8 @@ export default class TaskCardAnimations {
       },
       "<"
     );
-    tl.add(remainingCards, "<");
+    tl.add(hideDatesTl, "<");
+    tl.add(hideRemainingCardsTl, "<");
     tl.to(
       fullscreenState,
       {
@@ -63,7 +65,6 @@ export default class TaskCardAnimations {
 
   fullscreenToCard(index) {
     const tasks = document.querySelectorAll(".task-manager__task-card-container");
-
     const cardState = this.card.querySelector(".card-state");
     const fullscreenState = this.card.querySelector(".fullscreen-state");
 
@@ -98,6 +99,23 @@ export default class TaskCardAnimations {
       stagger: 0.04,
       delay: 1,
       ease: "power3.easeOut",
+    });
+    tl.to(this.dates, {
+      opacity: 1,
+      yPercent: 0,
+      stagger: 0.1,
+    });
+  }
+
+  hideDates() {
+    this.dates = this.container.querySelectorAll(".task-manager__date");
+    const tl = gsap.timeline();
+
+    tl.to(this.dates, {
+      opacity: 0,
+      duration: 0.2,
+      yPercent: 10,
+      stagger: 0.1,
     });
   }
 
