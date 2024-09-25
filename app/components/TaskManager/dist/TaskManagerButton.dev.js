@@ -50,6 +50,16 @@ function () {
       this.button.innerHTML = this.countRelevantTasks();
     }
   }, {
+    key: "hideButton",
+    value: function hideButton() {
+      this.button.classList.add("hidden");
+    }
+  }, {
+    key: "showButton",
+    value: function showButton() {
+      this.button.classList.remove("hidden");
+    }
+  }, {
     key: "addEventListeners",
     value: function addEventListeners() {
       var _this = this;
@@ -58,6 +68,8 @@ function () {
         _this.handleTaskButton();
       });
       this.emitter.on("taskManager:taskRead", this.handleTaskButton.bind(this));
+      this.emitter.on("Navigation:openTasks", this.hideButton.bind(this));
+      this.emitter.on("Navigation:closeTasks", this.showButton.bind(this));
     }
   }]);
 

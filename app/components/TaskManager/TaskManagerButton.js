@@ -29,11 +29,22 @@ export default class TaskManagerButton {
     this.button.innerHTML = this.countRelevantTasks();
   }
 
+  hideButton() {
+    this.button.classList.add("hidden");
+  }
+
+  showButton() {
+    this.button.classList.remove("hidden");
+  }
+
   addEventListeners() {
     this.emitter.on("taskManager:updateStatus", () => {
       this.handleTaskButton();
     });
 
     this.emitter.on("taskManager:taskRead", this.handleTaskButton.bind(this));
+
+    this.emitter.on("Navigation:openTasks", this.hideButton.bind(this));
+    this.emitter.on("Navigation:closeTasks", this.showButton.bind(this));
   }
 }
