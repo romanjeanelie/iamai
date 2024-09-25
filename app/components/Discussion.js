@@ -7,10 +7,11 @@ import DiscussionMedia from "./DiscussionMedia.js";
 import History, { getPreviousDayTimestamp } from "./History.js";
 
 import { gsap } from "gsap";
-import { flightSearchData, flightSearchResultsData } from "../../testData.jsx";
+import { flightSearchData, flightSearchResultsData, hotelSearchData, hotelSearchResultsData } from "../../testData.jsx";
 import fadeByWord from "../utils/fadeByWord.js";
 import { API_STATUSES, URL_AGENT_STATUS } from "./constants.js";
 import { store } from "./store.js";
+import { FlightUI } from "./UI/FlightUI.js";
 
 export default class Discussion {
   constructor({ user, pageEl, navigation, emitter }) {
@@ -63,8 +64,8 @@ export default class Discussion {
     this.addListeners();
     // DEBUG
     if (this.debug) {
-      // this.onCreatedTask();
-      this.enableInput();
+      this.addUserElement({ text: "Hello" });
+      this.showDebugButtons();
     }
   }
 
@@ -73,16 +74,16 @@ export default class Discussion {
     const debugContainer = document.createElement("div");
     debugContainer.className = "debug-container";
 
-    const flightButton = document.createElement("button");
-    flightButton.innerHTML = "Flight";
-    flightButton.addEventListener("click", () => {
-      const flightCards = this.Chat.getFlightUI(flightSearchData, flightSearchResultsData);
+    const hotelButton = document.createElement("button");
+    hotelButton.innerHTML = "Hotels";
+    hotelButton.addEventListener("click", () => {
+      const flightCards = this.Chat.getHotelsUI(hotelSearchData, hotelSearchResultsData);
       const AIContainer = document.createElement("div");
       AIContainer.classList.add("discussion__ai");
       AIContainer.appendChild(flightCards);
       this.discussionContainer.appendChild(AIContainer);
     });
-    debugContainer.appendChild(flightButton);
+    debugContainer.appendChild(hotelButton);
     document.body.appendChild(debugContainer);
   }
 

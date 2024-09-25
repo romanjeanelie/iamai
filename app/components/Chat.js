@@ -508,6 +508,10 @@ class Chat {
     } else if (domain == PRODUCTSEARCH) {
       container = this.getProductUI(JSON.parse(data.ProductSearchResults));
     } else if (domain == HOTELSEARCH) {
+      console.log(data);
+      const resultArray = JSON.parse(data.HotelSearchResults);
+      const tenFirstEls = resultArray.all.slice(0, 10);
+      // console.log(JSON.stringify(tenFirstEls));
       container = this.getHotelsUI(JSON.parse(data.HotelSearch), JSON.parse(data.HotelSearchResults));
     } else if (domain == CODESEARCH) {
       container = this.getCodeUI(data.Code, data.Language);

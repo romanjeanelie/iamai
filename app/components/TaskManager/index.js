@@ -47,18 +47,17 @@ export default class TaskManager {
     // Debug
     this.debug = import.meta.env.VITE_DEBUG === "true";
     if (this.debug) {
-      this.debugger = new TaskManagerDebug(this);
-      setTimeout(() => {
-        for (let i = 0; i < 3; i++) {
-          this.debugger.addDebugTask();
-        }
-
-        this.onStatusUpdate(this.tasks[0].key, {
-          type: API_STATUSES.INPUT_REQUIRED,
-          title: "answer : ",
-          description: "This is a test description",
-        });
-      }, 500);
+      // this.debugger = new TaskManagerDebug(this);
+      // setTimeout(() => {
+      //   for (let i = 0; i < 3; i++) {
+      //     this.debugger.addDebugTask();
+      //   }
+      //   this.onStatusUpdate(this.tasks[0].key, {
+      //     type: API_STATUSES.INPUT_REQUIRED,
+      //     title: "answer : ",
+      //     description: "This is a test description",
+      //   });
+      // }, 500);
     }
   }
 
