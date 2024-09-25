@@ -116,8 +116,11 @@ class Chat {
     if (this.autodetect) {
       var response = await this.googletranslate(input_text, this.targetlang, "");
       input_text = response.data.translations[0].translatedText;
-      if (response.data.translations[0].detectedSourceLanguage)
+      
+      if (response.data.translations[0].detectedSourceLanguage && response.data.translations[0].detectedSourceLanguage != "und")
         this.sourcelang = response.data.translations[0].detectedSourceLanguage;
+      else
+        this.sourcelang = "en";
     } else if (this.sourcelang != this.targetlang) {
       var response = await this.googletranslate(input_text, this.targetlang, this.sourcelang);
       input_text = response.data.translations[0].translatedText;
