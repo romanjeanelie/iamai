@@ -13,11 +13,11 @@ import { API_STATUSES, URL_AGENT_STATUS } from "./constants.js";
 import { store } from "./store.js";
 
 export default class Discussion {
-  constructor({ toPageGrey, emitter, pageEl, user }) {
-    this.emitter = emitter;
-    this.toPageGrey = toPageGrey;
+  constructor({ user, pageEl, navigation, emitter }) {
     this.user = user;
     this.pageEl = pageEl;
+    this.navigation = navigation;
+    this.emitter = emitter;
 
     // DOM Elements
     this.inputContainer = this.pageEl.querySelector("div.input__container");
@@ -237,13 +237,14 @@ export default class Discussion {
   }
 
   async onScrollTop() {
-    console.log("ON SCROLL TOP");
     const { container } = await this.history.getHistory({ uuid: this.uuid, user: this.user });
     this.historyContainer.prepend(container);
     // only if there is more history to be added, we change the scrollTop value so the user stays at the same spot
-    if (container.hasChildNodes()) {
+    if (container.hasChildNodes() && !this.navigation.isHistoryButtonClicked) {
       this.pageEl.scrollTop = document.documentElement.scrollTop = container.offsetHeight;
     }
+
+    this.navigation.isHistoryButtonClicked = false;
   }
 
   async onLoad() {
@@ -266,7 +267,6 @@ export default class Discussion {
     }
 
     if (sessionID && sessionID != "") {
-      // this.toPageGrey();
       this.Chat.sessionID = sessionID;
       this.Chat.deploy_ID = deploy_ID;
     } else {

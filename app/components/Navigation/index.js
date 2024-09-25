@@ -2,6 +2,7 @@ import gsap from "gsap";
 import { signOutUser } from "../../User";
 import { Flip } from "gsap/Flip";
 import { NavigationAnimations } from "./NavigationAnimations";
+import ScrollToPlugin from "gsap/ScrollToPlugin";
 
 const SECTIONS = {
   history: "history",
@@ -9,7 +10,7 @@ const SECTIONS = {
   discussion: "discussion",
 };
 
-// gsap.registerPlugin(Flip);
+gsap.registerPlugin(ScrollToPlugin);
 
 export default class Navigation {
   constructor({ user, emitter }) {
@@ -58,8 +59,10 @@ export default class Navigation {
       this.pageEl.scrollTo({
         top: scrollTarget,
         behavior: "smooth",
+        duration: 5,
       });
     } else {
+      this.isHistoryButtonClicked = true;
       this.discussionContainer.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }
