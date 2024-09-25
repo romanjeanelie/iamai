@@ -187,6 +187,7 @@ $zIndex: 1;
   width: 100%;
   border-radius: 20px;
   pointer-events: auto;
+  padding-bottom: 100px;
 
   .fullscreen-state {
     width: 100%;
@@ -203,6 +204,7 @@ $zIndex: 1;
 
   .statuses-container {
     display: flex;
+    flex: 1;
     flex-direction: column;
     gap: 16px;
   }
@@ -256,6 +258,11 @@ $zIndex: 1;
   right: 0;
   bottom: 0;
   padding: 0 16px 26px;
+
+  &.updated-position {
+    bottom: unset;
+    transform: translate3d(0, 100%, 0);
+  }
 }
 
 // ------ Notification Container ------

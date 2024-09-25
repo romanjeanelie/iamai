@@ -1,13 +1,15 @@
 import { API_STATUSES } from "../../constants";
 
 export class TaskCardInput {
-  constructor({ taskContainer, taskManager, task, emitter }) {
-    this.task = task;
+  constructor({ taskCard, emitter }) {
     this.emitter = emitter;
-    this.taskManager = taskManager;
+    this.taskCard = taskCard;
+    this.taskData = this.taskCard.task;
+    this.taskManager = this.taskCard.taskManager;
 
     // DOM Elements
-    this.taskContainer = taskContainer;
+    this.fullscreenContainer = document.querySelector(".task-manager__task-fullscreen");
+    this.taskContainer = this.taskCard.fullscreenState;
     this.inputContainer = null;
     this.textarea = null;
 
@@ -50,10 +52,17 @@ export class TaskCardInput {
     this.taskContainer.appendChild(this.inputContainer);
   }
 
-  stopPropagation(e) {
-    e.stopPropagation();
+  // Update the input position
+  updatePosition() {
+    const { height } = this.taskContainer.getBoundingClientRect();
+
+    if (height < this.fullscreenContainer.clientHeight) return;
+    this.inputContainer.style.bottom = "unset";
+    this.inputContainer.style.top = `${height}px`;
+    this.inputContainer.classList.add("updated-position");
   }
 
+  // Handle Submit
   handleEnterPressed(e) {
     if (this.textarea.value.trim().length > 0 && event.key === "Enter" && !event.shiftKey) {
       e.preventDefault();
@@ -67,9 +76,9 @@ export class TaskCardInput {
     this.textarea.value = "";
 
     // Send the value to Chat.js
-    this.emitter.emit("taskManager:inputSubmit", value, this.task);
+    this.emitter.emit("taskManager:inputSubmit", value, this.taskData);
 
-    this.taskManager.onStatusUpdate(this.task.key, {
+    this.taskManager.onStatusUpdate(this.taskData.key, {
       type: API_STATUSES.PROGRESSING,
       title: "Answer :",
       label: "In Progress",
@@ -84,6 +93,10 @@ export class TaskCardInput {
     this.inputContainer.classList.add("none");
   }
 
+  stopPropagation(e) {
+    e.stopPropagation();
+  }
+
   addListeners() {
     this.textarea.addEventListener("click", this.stopPropagation.bind(this));
     this.textarea.addEventListener("keydown", this.handleEnterPressed.bind(this));
@@ -93,5 +106,6 @@ export class TaskCardInput {
     this.inputContainer.remove();
     this.textarea.removeEventListener("click", this.stopPropagation.bind(this));
     this.removeEventListener("keydown", this.handleEnterPressed.bind(this));
+    this.taskData;
   }
 }

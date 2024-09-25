@@ -113,12 +113,10 @@ export default class TaskManagerCard {
 
     this.statusesContainer.appendChild(div);
 
-    if (this.task.status.type === API_STATUSES.INPUT_REQUIRED) {
+    if (this.task.status.type === API_STATUSES.INPUT_REQUIRED && !this.input) {
       this.input = new TaskCardInput({
-        taskContainer: this.fullscreenState,
-        taskManager: this.taskManager,
+        taskCard: this,
         emitter: this.emitter,
-        task: this.task,
       });
     }
   }
@@ -157,6 +155,7 @@ export default class TaskManagerCard {
   expandCardToFullscreen() {
     this.animations.cardToFullScreen(this.index, () => {
       document.addEventListener("click", this.handleClickOutside);
+      this.input?.updatePosition();
     });
   }
 
