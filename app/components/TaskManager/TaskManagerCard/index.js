@@ -107,14 +107,19 @@ export default class TaskManagerCard {
     const div = document.createElement("div");
     div.classList.add("status-container");
     div.innerHTML = `
-      <h3 class="status-title">${this.task.status.label}</h3>
+      <h3 class="status-title">${this.task.status.title}</h3>
       <p class="status-description">${this.task.status.description}</p>
     `;
 
     this.statusesContainer.appendChild(div);
 
     if (this.task.status.type === API_STATUSES.INPUT_REQUIRED) {
-      this.input = new TaskCardInput({ taskContainer: this.fullscreenState });
+      this.input = new TaskCardInput({
+        taskContainer: this.fullscreenState,
+        taskManager: this.taskManager,
+        emitter: this.emitter,
+        task: this.task,
+      });
     }
   }
 

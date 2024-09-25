@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.TaskCardInput = void 0;
 
+var _constants = require("../../constants");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -15,11 +17,17 @@ var TaskCardInput =
 /*#__PURE__*/
 function () {
   function TaskCardInput(_ref) {
-    var taskContainer = _ref.taskContainer;
+    var taskContainer = _ref.taskContainer,
+        taskManager = _ref.taskManager,
+        task = _ref.task,
+        emitter = _ref.emitter;
 
     _classCallCheck(this, TaskCardInput);
 
-    // DOM Elements
+    this.task = task;
+    this.emitter = emitter;
+    this.taskManager = taskManager; // DOM Elements
+
     this.taskContainer = taskContainer;
     this.inputContainer = null;
     this.textarea = null; // Init Methods
@@ -43,15 +51,47 @@ function () {
       e.stopPropagation();
     }
   }, {
+    key: "handleEnterPressed",
+    value: function handleEnterPressed(e) {
+      if (this.textarea.value.trim().length > 0 && event.key === "Enter" && !event.shiftKey) {
+        e.preventDefault();
+        this.onSubmit();
+      }
+    }
+  }, {
+    key: "onSubmit",
+    value: function onSubmit() {
+      var value = this.textarea.value.trim(); // Clear the textarea
+
+      this.textarea.value = ""; // Send the value to Chat.js
+
+      this.emitter.emit("taskManager:inputSubmit", value, this.task);
+      this.taskManager.onStatusUpdate(this.task.key, {
+        type: _constants.API_STATUSES.PROGRESSING,
+        title: "Answer :",
+        label: "In Progress",
+        description: value
+      }); // Hide back the input
+
+      this.closeInput();
+    }
+  }, {
+    key: "closeInput",
+    value: function closeInput() {
+      this.inputContainer.classList.add("none");
+    }
+  }, {
     key: "addListeners",
     value: function addListeners() {
       this.textarea.addEventListener("click", this.stopPropagation.bind(this));
+      this.textarea.addEventListener("keydown", this.handleEnterPressed.bind(this));
     }
   }, {
     key: "dispose",
     value: function dispose() {
       this.inputContainer.remove();
       this.textarea.removeEventListener("click", this.stopPropagation.bind(this));
+      this.removeEventListener("keydown", this.handleEnterPressed.bind(this));
     }
   }]);
 

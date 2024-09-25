@@ -1,5 +1,11 @@
+import { API_STATUSES } from "../../constants";
+
 export class TaskCardInput {
-  constructor({ taskContainer }) {
+  constructor({ taskContainer, taskManager, task, emitter }) {
+    this.task = task;
+    this.emitter = emitter;
+    this.taskManager = taskManager;
+
     // DOM Elements
     this.taskContainer = taskContainer;
     this.inputContainer = null;
@@ -48,12 +54,44 @@ export class TaskCardInput {
     e.stopPropagation();
   }
 
+  handleEnterPressed(e) {
+    if (this.textarea.value.trim().length > 0 && event.key === "Enter" && !event.shiftKey) {
+      e.preventDefault();
+      this.onSubmit();
+    }
+  }
+
+  onSubmit() {
+    const value = this.textarea.value.trim();
+    // Clear the textarea
+    this.textarea.value = "";
+
+    // Send the value to Chat.js
+    this.emitter.emit("taskManager:inputSubmit", value, this.task);
+
+    this.taskManager.onStatusUpdate(this.task.key, {
+      type: API_STATUSES.PROGRESSING,
+      title: "Answer :",
+      label: "In Progress",
+      description: value,
+    });
+
+    // Hide back the input
+    this.closeInput();
+  }
+
+  closeInput() {
+    this.inputContainer.classList.add("none");
+  }
+
   addListeners() {
     this.textarea.addEventListener("click", this.stopPropagation.bind(this));
+    this.textarea.addEventListener("keydown", this.handleEnterPressed.bind(this));
   }
 
   dispose() {
     this.inputContainer.remove();
     this.textarea.removeEventListener("click", this.stopPropagation.bind(this));
+    this.removeEventListener("keydown", this.handleEnterPressed.bind(this));
   }
 }

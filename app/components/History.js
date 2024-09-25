@@ -77,7 +77,6 @@ export default class History {
     return {
       key: firstStatus.micro_thread_id,
       name: firstStatus.task_name,
-      workflowID: firstStatus.session_id,
       createdAt: firstStatus.time_stamp,
       status: {
         type: API_STATUSES.PROGRESSING,
@@ -137,6 +136,7 @@ export default class History {
       const taskname = status.task_name;
       const task = {
         ...initialTask,
+        workflowID: status.session_id,
         status: {
           type: API_STATUSES.INPUT_REQUIRED,
           label: "Input Required",
