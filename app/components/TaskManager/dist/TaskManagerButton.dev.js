@@ -26,17 +26,17 @@ function () {
   }
 
   _createClass(TaskManagerButton, [{
-    key: "countCompletedTasks",
-    value: function countCompletedTasks() {
-      var completedTasks = this.tasks.filter(function (task) {
-        return task.status.type === _constants.API_STATUSES.ENDED;
+    key: "countRelevantTasks",
+    value: function countRelevantTasks() {
+      var relevantTasks = this.tasks.filter(function (task) {
+        return task.status.type === _constants.API_STATUSES.ENDED || task.status.type === _constants.API_STATUSES.INPUT_REQUIRED;
       });
-      return completedTasks.length;
+      return relevantTasks.length;
     }
   }, {
     key: "handleTaskButton",
     value: function handleTaskButton() {
-      if (this.countCompletedTasks() > 0) {
+      if (this.countRelevantTasks() > 0) {
         this.button.classList.remove("hidden");
       } else {
         this.button.classList.add("hidden");
@@ -47,7 +47,7 @@ function () {
   }, {
     key: "updateButton",
     value: function updateButton() {
-      this.button.innerHTML = this.countCompletedTasks();
+      this.button.innerHTML = this.countRelevantTasks();
     }
   }, {
     key: "addEventListeners",

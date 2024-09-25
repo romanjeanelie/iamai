@@ -106,7 +106,12 @@ $zIndex: 1;
   &.completed {
     .task-manager__task-completed-notification {
       opacity: 1;
+      background: linear-gradient(70deg, rgba(227, 207, 28, 0.3) -10.29%, rgba(225, 135, 30, 0.3) 105%);
     }
+  }
+  &.input-required .task-manager__task-completed-notification {
+    opacity: 1;
+    background: linear-gradient(70deg, rgba(227, 207, 28, 0.3) -10.29%, rgba(225, 135, 30, 0.3) 105%);
   }
 }
 

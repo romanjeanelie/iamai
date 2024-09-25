@@ -84,13 +84,6 @@ export class TaskCardInput {
       label: "In Progress",
       description: value,
     });
-
-    // Hide back the input
-    this.closeInput();
-  }
-
-  closeInput() {
-    this.inputContainer.classList.add("none");
   }
 
   stopPropagation(e) {
@@ -105,7 +98,6 @@ export class TaskCardInput {
   dispose() {
     this.inputContainer.remove();
     this.textarea.removeEventListener("click", this.stopPropagation.bind(this));
-    this.removeEventListener("keydown", this.handleEnterPressed.bind(this));
-    this.taskData;
+    this.textarea.removeEventListener("keydown", this.handleEnterPressed.bind(this));
   }
 }

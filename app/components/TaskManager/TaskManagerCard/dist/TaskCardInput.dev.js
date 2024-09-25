@@ -79,14 +79,7 @@ function () {
         title: "Answer :",
         label: "In Progress",
         description: value
-      }); // Hide back the input
-
-      this.closeInput();
-    }
-  }, {
-    key: "closeInput",
-    value: function closeInput() {
-      this.inputContainer.classList.add("none");
+      });
     }
   }, {
     key: "stopPropagation",
@@ -104,8 +97,7 @@ function () {
     value: function dispose() {
       this.inputContainer.remove();
       this.textarea.removeEventListener("click", this.stopPropagation.bind(this));
-      this.removeEventListener("keydown", this.handleEnterPressed.bind(this));
-      this.taskData;
+      this.textarea.removeEventListener("keydown", this.handleEnterPressed.bind(this));
     }
   }]);
 

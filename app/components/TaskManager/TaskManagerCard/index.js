@@ -118,6 +118,9 @@ export default class TaskManagerCard {
         taskCard: this,
         emitter: this.emitter,
       });
+    } else if (this.task.status.type !== API_STATUSES.INPUT_REQUIRED && this.input) {
+      this.input.dispose();
+      this.input = null;
     }
   }
 
@@ -142,7 +145,11 @@ export default class TaskManagerCard {
     } else if (this.task.status?.type === API_STATUSES.VIEWED) {
       this.addResult();
       this.card.classList.remove("completed");
+    } else if (this.task.status?.type === API_STATUSES.INPUT_REQUIRED) {
+      this.card.classList.add("input-required");
+      this.addStatus();
     } else {
+      this.card.classList.remove("input-required");
       this.addStatus();
     }
   }

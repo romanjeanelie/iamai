@@ -9,13 +9,15 @@ export default class TaskManagerButton {
     this.addEventListeners();
   }
 
-  countCompletedTasks() {
-    const completedTasks = this.tasks.filter((task) => task.status.type === API_STATUSES.ENDED);
-    return completedTasks.length;
+  countRelevantTasks() {
+    const relevantTasks = this.tasks.filter(
+      (task) => task.status.type === API_STATUSES.ENDED || task.status.type === API_STATUSES.INPUT_REQUIRED
+    );
+    return relevantTasks.length;
   }
 
   handleTaskButton() {
-    if (this.countCompletedTasks() > 0) {
+    if (this.countRelevantTasks() > 0) {
       this.button.classList.remove("hidden");
     } else {
       this.button.classList.add("hidden");
@@ -24,7 +26,7 @@ export default class TaskManagerButton {
   }
 
   updateButton() {
-    this.button.innerHTML = this.countCompletedTasks();
+    this.button.innerHTML = this.countRelevantTasks();
   }
 
   addEventListeners() {
