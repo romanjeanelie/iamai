@@ -81,8 +81,7 @@ function () {
         duration: 0.75,
         ease: _gsap.Power3.easeOut,
         onComplete: function onComplete() {
-          _this.inputEl.style.height = "auto";
-          _this.inputEl.style.pointerEvents = "auto";
+          _this.inputEl.classList.remove("hidden");
         }
       });
     }
@@ -97,8 +96,7 @@ function () {
         duration: 0.5,
         ease: _gsap.Power3.easeOut,
         onComplete: function onComplete() {
-          _this2.inputEl.style.height = "0px";
-          _this2.inputEl.style.pointerEvents = "none";
+          _this2.inputEl.classList.add("hidden");
         }
       });
     } // Presets

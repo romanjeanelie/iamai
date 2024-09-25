@@ -17,6 +17,11 @@
   align-items: end;
   gap: 8px;
 
+  &.hidden {
+    height: 0px;
+    pointer-events: none;
+  }
+
   @include media("<tablet") {
     padding: 0 $paddingHorMobile;
     margin-bottom: 32px;

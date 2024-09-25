@@ -50,8 +50,7 @@ export default class InputAnimations {
         duration: 0.75,
         ease: Power3.easeOut,
         onComplete: () => {
-          this.inputEl.style.height = "auto";
-          this.inputEl.style.pointerEvents = "auto";
+          this.inputEl.classList.remove("hidden");
         },
       }
     );
@@ -64,8 +63,7 @@ export default class InputAnimations {
       duration: 0.5,
       ease: Power3.easeOut,
       onComplete: () => {
-        this.inputEl.style.height = "0px";
-        this.inputEl.style.pointerEvents = "none";
+        this.inputEl.classList.add("hidden");
       },
     });
   }

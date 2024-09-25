@@ -25,7 +25,7 @@ export default class Navigation {
     this.app = document.querySelector("#app");
     this.headerNav = document.querySelector(".header-nav");
     this.footerNav = document.querySelector(".footer-nav");
-
+    this.inputEl = document.querySelector(".input__container");
     this.inputWrapper = document.querySelector(".input__wrapper");
     this.historyButton = this.headerNav.querySelector(".header-nav__history-container");
     this.tasksButton = this.footerNav.querySelector(".footer-nav__tasks-container");
@@ -73,6 +73,7 @@ export default class Navigation {
         duration: 0.5,
         ease: "power3.inOut",
       });
+      this.inputEl.classList.add("hidden");
     } else {
       this.emitter.emit("Navigation:closeTasks");
       gsap.to(this.discussionWrapper, { yPercent: 0 });
@@ -81,6 +82,7 @@ export default class Navigation {
         duration: 0.5,
         ease: "power3.inOut",
       });
+      this.inputEl.classList.remove("hidden");
     }
   }
 
