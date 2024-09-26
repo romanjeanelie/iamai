@@ -9,6 +9,8 @@ import fetcher from "../../utils/fetcher";
 import { store } from "../store";
 import TaskManagerDebug from "./TaskManagerCard/TaskManagerDebug";
 import { NotificationPill } from "./TaskManagerCard/NotificationPill";
+import HotelsUI from "../UI/HotelsUI";
+import { hotelSearchData, hotelSearchResultsData } from "../../../testData";
 
 export const STATUS_COLORS = {
   [API_STATUSES.PROGRESSING]: "rgba(149, 159, 177, 0.14)",
@@ -47,17 +49,21 @@ export default class TaskManager {
     // Debug
     this.debug = import.meta.env.VITE_DEBUG === "true";
     if (this.debug) {
-      // this.debugger = new TaskManagerDebug(this);
-      // setTimeout(() => {
-      //   for (let i = 0; i < 3; i++) {
-      //     this.debugger.addDebugTask();
-      //   }
-      //   this.onStatusUpdate(this.tasks[0].key, {
-      //     type: API_STATUSES.INPUT_REQUIRED,
-      //     title: "answer : ",
-      //     description: "This is a test description",
-      //   });
-      // }, 500);
+      this.debugger = new TaskManagerDebug(this);
+      const hotelCards = new HotelsUI(hotelSearchData, hotelSearchResultsData);
+      setTimeout(() => {
+        for (let i = 0; i < 3; i++) {
+          this.debugger.addDebugTask();
+        }
+        this.onStatusUpdate(
+          this.tasks[0].key,
+          {
+            type: API_STATUSES.ENDED,
+            title: "answer : ",
+          },
+          hotelCards.getElement()
+        );
+      }, 500);
     }
   }
 

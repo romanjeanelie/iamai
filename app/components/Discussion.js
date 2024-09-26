@@ -7,11 +7,11 @@ import DiscussionMedia from "./DiscussionMedia.js";
 import History, { getPreviousDayTimestamp } from "./History.js";
 
 import { gsap } from "gsap";
-import { flightSearchData, flightSearchResultsData, hotelSearchData, hotelSearchResultsData } from "../../testData.jsx";
 import fadeByWord from "../utils/fadeByWord.js";
 import { API_STATUSES, URL_AGENT_STATUS } from "./constants.js";
 import { store } from "./store.js";
-import { FlightUI } from "./UI/FlightUI.js";
+import { hotelSearchData, hotelSearchResultsData } from "../../testData.jsx";
+import HotelsUI from "./UI/HotelsUI/index.js";
 
 export default class Discussion {
   constructor({ user, pageEl, navigation, emitter }) {
@@ -77,17 +77,17 @@ export default class Discussion {
     const hotelButton = document.createElement("button");
     hotelButton.innerHTML = "Hotels";
     hotelButton.addEventListener("click", () => {
-      const flightCards = this.Chat.getHotelsUI(hotelSearchData, hotelSearchResultsData);
+      const hotelCards = new HotelsUI(hotelSearchData, hotelSearchResultsData).getElement();
       const AIContainer = document.createElement("div");
       AIContainer.classList.add("discussion__ai");
-      AIContainer.appendChild(flightCards);
+      AIContainer.appendChild(hotelCards);
       this.discussionContainer.appendChild(AIContainer);
     });
     debugContainer.appendChild(hotelButton);
     document.body.appendChild(debugContainer);
   }
 
-  // INPUT
+  // INPUTg
   disableInput() {
     this.inputText.disabled = true;
     const childNodes = this.inputContainer.getElementsByTagName("*");
