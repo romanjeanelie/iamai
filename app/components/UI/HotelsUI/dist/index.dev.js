@@ -48,15 +48,17 @@ function () {
       this.filters = this.mainContainer.querySelectorAll(".hotels-ui__filter-item");
       this.filters.forEach(function (element) {
         var filter = element.getAttribute("data-filter");
-        element.addEventListener("click", function (event) {
-          return _this.filterHotels(event, filter);
+        element.addEventListener("click", function () {
+          return _this.filterHotels(filter);
         });
       });
       return this.mainContainer;
     }
   }, {
     key: "filterHotels",
-    value: function filterHotels(event, filter) {
+    value: function filterHotels(filter) {
+      var _this2 = this;
+
       this.filter = filter;
       this.filters.forEach(function (f) {
         f.classList.remove("active");
@@ -65,16 +67,27 @@ function () {
           f.classList.add("active");
         }
       }); // TO DO - Update the hotelsContainer with the new filter
+
+      var newHotels = this.hotelsSearchResults.all.filter(function (hotel) {
+        return filter === "all" || hotel.website === filter;
+      });
+      this.hotelsContainer.innerHTML = "";
+      newHotels.forEach(function (element) {
+        var hotelCard = new _HotelCard["default"](element, _this2.hotelsSearch).getElement();
+
+        _this2.hotelsContainer.appendChild(hotelCard);
+      });
+      this.mainContainer.appendChild(this.hotelsContainer);
     }
   }, {
     key: "getHotelsCardsUI",
     value: function getHotelsCardsUI() {
-      var _this2 = this;
+      var _this3 = this;
 
       var hotelcardcontainerdiv = document.createElement("div");
       hotelcardcontainerdiv.className = "hotels-ui__main-container";
       this.hotelsSearchResults.all.forEach(function (element) {
-        var hotelCard = new _HotelCard["default"](element, _this2.hotelsSearch).getElement();
+        var hotelCard = new _HotelCard["default"](element, _this3.hotelsSearch).getElement();
         hotelcardcontainerdiv.appendChild(hotelCard);
       });
       return hotelcardcontainerdiv;

@@ -43,13 +43,13 @@ export default class HotelsUI {
     this.filters = this.mainContainer.querySelectorAll(".hotels-ui__filter-item");
     this.filters.forEach((element) => {
       const filter = element.getAttribute("data-filter");
-      element.addEventListener("click", (event) => this.filterHotels(event, filter));
+      element.addEventListener("click", () => this.filterHotels(filter));
     });
 
     return this.mainContainer;
   }
 
-  filterHotels(event, filter) {
+  filterHotels(filter) {
     this.filter = filter;
 
     this.filters.forEach((f) => {
@@ -61,6 +61,15 @@ export default class HotelsUI {
     });
 
     // TO DO - Update the hotelsContainer with the new filter
+    const newHotels = this.hotelsSearchResults.all.filter((hotel) => {
+      return filter === "all" || hotel.website === filter;
+    });
+    this.hotelsContainer.innerHTML = "";
+    newHotels.forEach((element) => {
+      const hotelCard = new HotelCard(element, this.hotelsSearch).getElement();
+      this.hotelsContainer.appendChild(hotelCard);
+    });
+    this.mainContainer.appendChild(this.hotelsContainer);
   }
 
   getHotelsCardsUI() {

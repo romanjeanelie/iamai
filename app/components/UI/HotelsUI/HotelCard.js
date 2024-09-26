@@ -51,7 +51,6 @@ export default class HotelCard {
 
     // Now that the HTML is set, query for the nav buttons
     this.navButtons = this.cardContainer.querySelectorAll(".slider__nav-button");
-    this.addListeners();
   }
 
   // Artifact from old design, keeping it just in case
@@ -116,15 +115,6 @@ export default class HotelCard {
       let prevDot = currentDot.previousElementSibling || currentDot.parentNode.lastElementChild;
       prevDot.classList.add("active");
     }
-  }
-
-  addListeners() {
-    // Event delegation: Add a listener to the entire card container
-    this.navButtons.forEach((button) => {
-      button.addEventListener("click", (e) => {
-        this.hotelmoveSlide(e, button.getAttribute("data-dir") === "next");
-      });
-    });
   }
 
   getElement() {
