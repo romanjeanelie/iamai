@@ -69,10 +69,12 @@ function () {
   }, {
     key: "getHotelsCardsUI",
     value: function getHotelsCardsUI() {
+      var _this2 = this;
+
       var hotelcardcontainerdiv = document.createElement("div");
-      hotelcardcontainerdiv.className = "hotelscard-container";
+      hotelcardcontainerdiv.className = "hotels-ui__main-container";
       this.hotelsSearchResults.all.forEach(function (element) {
-        var hotelCard = new _HotelCard["default"](element).getElement();
+        var hotelCard = new _HotelCard["default"](element, _this2.hotelsSearch).getElement();
         hotelcardcontainerdiv.appendChild(hotelCard);
       });
       return hotelcardcontainerdiv;

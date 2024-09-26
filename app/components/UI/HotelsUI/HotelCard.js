@@ -1,6 +1,7 @@
 export default class HotelCard {
-  constructor(hotelData) {
+  constructor(hotelData, searchParams) {
     this.hotelData = hotelData;
+    this.searchParams = searchParams;
 
     // DOM Elements
     this.cardContainer = null;
@@ -12,7 +13,8 @@ export default class HotelCard {
 
   initCard() {
     this.cardContainer = document.createElement("div");
-    this.cardContainer.className = "hotels-card";
+    this.cardContainer.className = "hotels-ui__card-container";
+    // console.log(this.hotelData);
 
     const slider = this.initSlider();
 

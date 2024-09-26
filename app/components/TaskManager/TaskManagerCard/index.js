@@ -166,9 +166,9 @@ export default class TaskManagerCard {
     if (this.isExpanded) return;
     this.isExpanded = true;
     this.animations.cardToFullScreen(this.index, () => {
-      // if (!this.debug) {
-      document.addEventListener("click", this.handleClickOutside);
-      // }
+      if (!this.debug) {
+        document.addEventListener("click", this.handleClickOutside);
+      }
       this.fullscreenContainer.classList.add("active");
       this.input?.updatePosition();
     });

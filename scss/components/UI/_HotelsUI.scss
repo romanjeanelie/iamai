@@ -25,41 +25,33 @@
 }
 
 // HOTELS CARD CONTAINER
-.hotelscard-container {
+.hotels-ui__main-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  margin-bottom: 16px;
+  grid-template-columns: repeat(4, 1fr);
   color: $colorMain;
+  column-gap: 9px;
+  row-gap: 10px;
 
   @include media("<tablet") {
-    place-items: center;
-    grid-template-columns: repeat(1, minmax(315px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include media("<phone") {
+    grid-template-columns: 1fr;
   }
 }
 
 // HOTEL CARD
-.hotels-card {
-  background: #ffffff;
-  max-width: 343px;
+.hotels-ui__card-container {
+  background: rgba($colorLight, 0.54);
   position: relative;
+  padding: 12px;
   overflow: hidden;
-  border-radius: 16px;
-  margin-bottom: 24px;
-  opacity: 80%;
-  transition: opacity 0.3s ease-outs;
-
-  @include media("<tablet") {
-    max-width: 315px;
-  }
-}
-
-.hotels-card:hover {
-  opacity: 100%;
+  border-radius: 12px;
 }
 
 .hotels-image-div {
   height: 200px;
-  // opacity: 88%;
   position: relative;
   overflow: hidden;
 }

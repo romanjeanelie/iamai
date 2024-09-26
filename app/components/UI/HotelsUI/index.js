@@ -65,10 +65,10 @@ export default class HotelsUI {
 
   getHotelsCardsUI() {
     const hotelcardcontainerdiv = document.createElement("div");
-    hotelcardcontainerdiv.className = "hotelscard-container";
+    hotelcardcontainerdiv.className = "hotels-ui__main-container";
 
     this.hotelsSearchResults.all.forEach((element) => {
-      const hotelCard = new HotelCard(element).getElement();
+      const hotelCard = new HotelCard(element, this.hotelsSearch).getElement();
       hotelcardcontainerdiv.appendChild(hotelCard);
     });
 
