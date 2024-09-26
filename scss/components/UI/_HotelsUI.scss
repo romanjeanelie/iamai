@@ -48,101 +48,68 @@
   padding: 12px;
   overflow: hidden;
   border-radius: 12px;
+  min-height: 258px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.hotels-image-div {
-  height: 200px;
+.hotels-ui__hotel-details {
+}
+
+.hotels-ui__hotel-image {
+  height: 142px;
   position: relative;
   overflow: hidden;
-}
+  border-radius: 4px;
 
-.hotels-image-div:hover {
-  opacity: 100%;
-}
-
-.hotels-image {
-  width: 100%;
-  height: auto;
-  border-radius: 16px 16px 0 0 !important;
-  max-height: 200px;
-  display: block;
-
-  @include media("<tablet") {
-    max-height: unset;
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
   }
 }
 
-.hotels-image-airbnb {
-  position: absolute;
-  /* Position the image absolutely within its relative parent */
-  top: 0;
-  /* Align the top edge of the image to the top of the container */
-  right: 0;
-  /* Align the right edge of the image to the right of the container */
-  width: 32px;
-  /* Adjust the size as needed */
-  height: 32px;
-  margin: 16px 16px 0 0;
-
-  @include media("<tablet") {
-    width: 30px;
-    /* Adjust the size as needed */
-    height: 30px;
-    margin: 15px 15px 0 0;
-  }
+.hotels-ui__hotel-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
 }
 
-.hotels-title {
-  font-feature-settings: "liga" off;
-
-  font-size: 18px;
-  line-height: 24px;
-  letter-spacing: 0.8px;
-  padding: 8px 24px 0px 24px;
-  text-align: left;
-  // display: -webkit-box;
-  // -webkit-line-clamp: 1; /* Number of lines you want to display before truncating */
-  // -webkit-box-orient: vertical;
+.hotels-ui__hotel-name {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 20px; /* 133.333% */
+  width: 75%;
+  max-height: 40px;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
-  // width: 100%;
-
-  // @include media("<tablet") {
-  //   font-size: 12px;
-  //   line-height: 16px;
-  // }
 }
 
-.hotels-rating {
-  font-feature-settings: "liga" off;
-  text-overflow: ellipsis;
-  font-size: 14px;
-  line-height: 24px;
-  letter-spacing: 0.8px;
-  padding: 0px 24px 0px 24px;
-  text-align: left;
-  color: rgba(0, 37, 78, 0.6);
+.hotels-ui__hotel-rating {
   display: flex;
-  // @include media("<tablet") {
-  //   font-size: 12px;
-  //   line-height: 16px;
-  // }
+  gap: 4px;
+  align-items: center;
+  color: $grey-4;
 }
 
-.hotels-price {
-  font-feature-settings: "liga" off;
-  text-overflow: ellipsis;
-  font-size: 40px;
-  line-height: 40px;
-  letter-spacing: 0.6px;
-  padding: 16px 24px 24px 24px;
-  text-align: left;
+.hotels-ui__hotel-location {
+  flex: 1;
+  width: 100%;
+  color: $grey-3;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px; /* 153.846% */
+  margin-top: 2px;
+}
 
-  // @include media("<tablet") {
-  //   font-size: 12px;
-  //   line-height: 16px;
-  // }
+.hotels-ui__hotel-price {
+  color: $colorMain;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px; /* 153.846% */
 }
 
 .hotels-view {

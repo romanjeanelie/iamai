@@ -11,30 +11,39 @@ export default class HotelCard {
     this.initCard();
   }
 
+  extractNumericRating(rating) {
+    if (typeof rating === "string") {
+      // find the number in the string and return it as an integer
+      return parseInt(rating.match(/\d+/)[0]);
+    } else return rating;
+  }
+
   initCard() {
     this.cardContainer = document.createElement("div");
     this.cardContainer.className = "hotels-ui__card-container";
-    // console.log(this.hotelData);
 
-    const slider = this.initSlider();
+    const rating = this.extractNumericRating(this.hotelData.rating);
 
     const hotelCardHTML = `
-      ${slider}
-      <div class="hotels-title">${this.hotelData.title}</div>
-      <div class="hotels-rating">
-        <svg width="18" height="24" viewBox="0 0 18 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M10.9846 10.7967C10.967 10.7449 10.9347 10.6989 10.8912 10.6636C10.8478 10.6284 10.7949 10.6053 10.7385 10.5971L7.31189 10.1205L5.77952 7.16317C5.75406 7.11417 5.71476 7.07294 5.66605 7.04411C5.61733 7.01528 5.56114 7 5.50382 7C5.44649 7 5.3903 7.01528 5.34158 7.04411C5.29287 7.07294 5.25357 7.11417 5.22811 7.16317L3.69575 10.1205L0.270384 10.5901C0.21192 10.5969 0.156735 10.6196 0.111382 10.6554C0.0660294 10.6912 0.0324144 10.7388 0.0145294 10.7923C-0.00335554 10.8458 -0.00475898 10.9031 0.0104858 10.9574C0.0257305 11.0116 0.0569829 11.0606 0.100531 11.0984L2.5794 13.4077L1.99476 16.6561C1.98488 16.7102 1.99109 16.7658 2.01269 16.8167C2.03428 16.8675 2.07039 16.9116 2.11691 16.9439C2.16344 16.9761 2.21852 16.9953 2.2759 16.9992C2.33328 17.0032 2.39067 16.9917 2.44154 16.9661L5.50382 15.4293L8.56732 16.9649C8.61819 16.9905 8.67558 17.002 8.73296 16.9981C8.79034 16.9942 8.84543 16.975 8.89195 16.9427C8.93848 16.9104 8.97459 16.8663 8.99618 16.8155C9.01777 16.7646 9.02398 16.709 9.0141 16.6549L8.42824 13.4077L10.9071 11.0984C10.9483 11.0601 10.9774 11.0115 10.9912 10.9581C11.0049 10.9048 11.0026 10.8489 10.9846 10.7967Z" fill="#FFB421"/>
-        </svg>
-        ${this.hotelData.rating}
+      <div class="hotels-ui__hotel-details">
+        <div class="hotels-ui__hotel-image">
+          <img src=${this.hotelData.pictures[0]}> </img>
+        </div>
+
+        <div class="hotels-ui__hotel-info">
+          <div class="hotels-ui__hotel-name">${this.hotelData.title}</div>
+          <div class="hotels-ui__hotel-rating">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="none">
+              <path d="M6.63278 10.6713C6.50432 10.6147 6.35798 10.6147 6.22953 10.6713L3.10221 12.0494C2.75154 12.2039 2.36453 11.9227 2.40313 11.5415L2.74739 8.14135C2.76153 8.00169 2.71631 7.86251 2.62278 7.75784L0.345732 5.20944C0.0904047 4.92369 0.238231 4.46872 0.612758 4.38762L3.95284 3.66434C4.09003 3.63463 4.20842 3.54861 4.27907 3.42731L5.9991 0.474216C6.19196 0.143082 6.67034 0.143083 6.86321 0.474216L8.58323 3.42731C8.65388 3.54861 8.77227 3.63463 8.90947 3.66434L12.2495 4.38762C12.6241 4.46872 12.7719 4.92369 12.5166 5.20944L10.2395 7.75784C10.146 7.86251 10.1008 8.00169 10.1149 8.14135L10.4592 11.5415C10.4978 11.9227 10.1108 12.2039 9.76009 12.0494L6.63278 10.6713Z" fill="#CED4DE"/>
+            </svg>
+            ${rating}
+          </div>
+          <div class="hotels-ui__hotel-location">${this.searchParams.location}</div>
+        </div>
       </div>
-      <div class="hotels-price">
-        ${this.hotelData.price}
-        <button class="hotels-view" onclick="window.open('${this.hotelData.booking_url}', '_blank')">
-          <svg width="95" height="40" viewBox="0 0 95 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="95" height="40" rx="12" fill="#00254E" fill-opacity="0.6"/>
-            <path d="M32.0879 24L29.1582 15.5449H30.8047L32.9492 22.3887H32.9785L35.1289 15.5449H36.7754L33.8398 24H32.0879ZM40.0777 24V15.5449H41.5895V24H40.0777ZM45.4777 24V15.5449H50.9504V16.8164H46.9895V19.0957H50.7336V20.3203H46.9895V22.7285H50.9504V24H45.4777ZM56.4383 24L54.1707 15.5449H55.741L57.2117 21.9258H57.241L58.9344 15.5449H60.3055L61.9988 21.9258H62.0281L63.4988 15.5449H65.0691L62.8016 24H61.3426L59.6375 17.9355H59.6023L57.8973 24H56.4383Z" fill="white"/>
-          </svg>
-        </button>
+
+      <div class="hotels-ui__hotel-price">
+        From ${this.hotelData.public_price_per_night || this.hotelData.price} p/ night
       </div>
     `;
 
@@ -45,6 +54,7 @@ export default class HotelCard {
     this.addListeners();
   }
 
+  // Artifact from old design, keeping it just in case
   initSlider() {
     let hotelImagesHTML = "";
     let hotelDotsHTML = "";
