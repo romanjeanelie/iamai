@@ -51,19 +51,17 @@ export default class TaskManager {
     if (this.debug) {
       this.debugger = new TaskManagerDebug(this);
       const hotelCards = new HotelsUI(hotelSearchData, hotelSearchResultsData);
-      setTimeout(() => {
-        for (let i = 0; i < 3; i++) {
-          this.debugger.addDebugTask();
-        }
-        this.onStatusUpdate(
-          this.tasks[0].key,
-          {
-            type: API_STATUSES.ENDED,
-            title: "answer : ",
-          },
-          hotelCards.getElement()
-        );
-      }, 500);
+      for (let i = 0; i < 3; i++) {
+        this.debugger.addDebugTask();
+      }
+      this.onStatusUpdate(
+        this.tasks[0].key,
+        {
+          type: API_STATUSES.ENDED,
+          title: "answer : ",
+        },
+        hotelCards.getElement()
+      );
     }
   }
 

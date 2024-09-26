@@ -3,104 +3,62 @@ export default class HotelsUI {
     this.hotelsSearch = HotelsSearch;
     this.hotelsSearchResults = HotelsSearchResults;
 
+    // State
+    this.filter = "all";
+
     // DOM Elements
+    this.mainContainer = null;
     this.hotelsContainer = null;
     this.initUI();
   }
 
   initUI() {
     // Initialize the UI
-    this.hotelsContainer = document.createElement("div");
-    this.hotelsContainer.setAttribute("data-details", JSON.stringify(this.hotelsSearchResults));
+    this.mainContainer = document.createElement("div");
 
     // Build the HTML content as a string
     let htmlContent = `
-      <div class="hotelscard-filter">
-        <div class="hotelscard-filter all hotelactive" data-filter="all" onclick="this.getHotelFilters(event, 'all')">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g clip-path="url(#clip0_3952_11361)">
-              <rect x="1" y="1" width="8" height="8" rx="1" stroke="#00254E" stroke-width="2" stroke-linejoin="round"/>
-              <rect x="1" y="15" width="8" height="8" rx="1" stroke="#00254E" stroke-width="2" stroke-linejoin="round"/>
-              <rect x="15" y="1" width="8" height="8" rx="1" stroke="#00254E" stroke-width="2" stroke-linejoin="round"/>
-              <rect x="15" y="15" width="8" height="8" rx="1" stroke="#00254E" stroke-width="2" stroke-linejoin="round"/>
-            </g>
-            <defs>
-              <clipPath id="clip0_3952_11361">
-                <rect width="24" height="24" fill="white"/>
-              </clipPath>
-            </defs>
-          </svg>
+      <div class="hotels-ui__filter-container">
+        <button class="hotels-ui__filter-item active" data-filter="all">
           All
-          <div id="border" class="hotelfilteractive"></div>
-        </div>
-        <div class="hotelscard-filter airbnb" data-filter="airbbnb" onclick="this.getHotelFilters(event, 'airbnb')">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g clip-path="url(#clip0_3952_11362)">
-              <path d="M15.3409 1.89305C14.6375 0.718783 13.3691 0 12.0002 0C10.6313 0 9.36292 0.71875 8.65949 1.89305L0.820688 14.9577C0.284133 15.851 0.000483877 16.8732 0 17.9152V18.252C0.000126002 19.7028 0.548781 21.0998 1.53605 22.163C2.52322 23.2262 3.87592 23.8767 5.32287 23.9842C6.7696 24.0916 8.20358 23.648 9.33711 22.7424L12.0003 20.6094L14.6636 22.7424C15.797 23.648 17.231 24.0916 18.6778 23.9842C20.1247 23.8767 21.4774 23.2262 22.4646 22.163C23.4519 21.0999 24.0005 19.7028 24.0007 18.252V17.9152C24.0002 16.8732 23.7165 15.851 23.18 14.9577L15.3409 1.89305ZM13.208 16.6687L12.0002 17.6365L10.7925 16.6687C10.3323 16.3013 10.0644 15.7442 10.0647 15.1552V15.0971C10.0647 14.4056 10.4337 13.7667 11.0325 13.4209C11.6313 13.0752 12.3692 13.0752 12.968 13.4209C13.5668 13.7667 13.9357 14.4056 13.9357 15.0971V15.1552C13.9361 15.7442 13.6682 16.3013 13.208 16.6687ZM21.6778 18.252C21.6791 19.1169 21.3528 19.9503 20.7646 20.5843C20.1764 21.2185 19.3698 21.6063 18.5073 21.6699C17.6446 21.7334 16.7899 21.4679 16.1151 20.9268L13.8584 19.123L14.6597 18.4804C15.6728 17.6746 16.2616 16.4497 16.2584 15.1552V15.0971C16.2584 13.5758 15.4468 12.1701 14.1293 11.4093C12.8119 10.6487 11.1887 10.6487 9.87122 11.4093C8.55378 12.17 7.74216 13.5756 7.74216 15.0971V15.1552C7.74228 16.4489 8.33049 17.6723 9.34086 18.4804L10.1422 19.123L7.88532 20.927L7.88545 20.9268C7.21067 21.4679 6.35595 21.7334 5.49329 21.6699C4.63076 21.6063 3.82417 21.2185 3.23594 20.5843C2.64774 19.9503 2.32148 19.117 2.32273 18.252V17.9152C2.32286 17.2948 2.49146 16.686 2.81051 16.154L10.6493 3.09704C10.9316 2.61681 11.4471 2.32197 12.0042 2.32197C12.5613 2.32197 13.0766 2.61683 13.359 3.09704L21.1901 16.154C21.5091 16.686 21.6777 17.2947 21.6779 17.9152L21.6778 18.252Z" fill="#00254E"/>
-            </g>
-            <defs>
-              <clipPath id="clip0_3952_11362">
-                <rect width="24" height="24" fill="white"/>
-              </clipPath>
-            </defs>
-          </svg>
+        </button>
+        <button class="hotels-ui__filter-item" data-filter="airbnb">
           Airbnb
-          <div id="border"></div>
-        </div>
-        <div class="hotelscard-filter hotels" data-filter="accor" onclick="this.getHotelFilters(event, 'accor')">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g clip-path="url(#clip0_3952_11368)">
-              <line x1="0.958357" y1="1.45836" x2="0.958358" y2="22.5422" stroke="#00254E" stroke-width="1.91671" stroke-linecap="round"/>
-              <path d="M23 16.6016L23 22.3515" stroke="#00254E" stroke-width="1.91671" stroke-linecap="round"/>
-              <line x1="1.14844" y1="16.7916" x2="21.6912" y2="16.7916" stroke="#00254E" stroke-width="1.91671"/>
-              <path d="M12.6484 8.55078H19.8042C21.5685 8.55078 22.9987 9.98099 22.9987 11.7452V16.601H12.6484V8.55078Z" stroke="#00254E" stroke-width="1.91671"/>
-              <circle cx="6.90321" cy="10.8505" r="2.49173" stroke="#00254E" stroke-width="1.91671"/>
-            </g>
-            <defs>
-              <clipPath id="clip0_3952_11368">
-                <rect width="24" height="24" fill="white"/>
-              </clipPath>
-            </defs>
-          </svg>
+        </button>
+        <button class="hotels-ui__filter-item" data-filter="accor">
           Hotels
-          <div id="border"></div>
-        </div>
+        </button>
       </div>
     `;
 
     // Append the hotel cards UI
-    htmlContent += this.getHotelsCardsUI("all").outerHTML;
+    this.hotelsContainer = this.getHotelsCardsUI(this.filter).outerHTML;
+    htmlContent += this.hotelsContainer;
 
     // Set the innerHTML of hotelsContainer
-    this.hotelsContainer.innerHTML = htmlContent;
-    this.filters = this.hotelsContainer.querySelectorAll(".hotelscard-filter");
+    this.mainContainer.innerHTML = htmlContent;
+
+    this.filters = this.mainContainer.querySelectorAll(".hotels-ui__filter-item");
     this.filters.forEach((element) => {
       const filter = element.getAttribute("data-filter");
-      element.addEventListener("click", (event) => this.getHotelFilters(event, filter));
+      element.addEventListener("click", (event) => this.filterHotels(event, filter));
     });
 
-    // Append hotelsContainer to the desired parent element
-    document.body.appendChild(this.hotelsContainer);
-
-    return this.hotelsContainer;
+    return this.mainContainer;
   }
 
-  getHotelFilters(event, Filter) {
-    let targetElement = event.target;
+  filterHotels(event, filter) {
+    this.filter = filter;
 
-    while (targetElement.tagName !== "DIV") {
-      targetElement = targetElement.parentElement;
-    }
-    let clicked = targetElement.querySelector("#border");
-    let HotelSearchResults = JSON.parse(targetElement.parentElement.parentElement.getAttribute("data-details"));
-    let hotelcardcontainerdiv = targetElement.parentElement.parentElement.querySelector(".hotelscard-container");
-    let allitems = targetElement.parentElement.querySelector(".hotelfilteractive");
-    allitems.parentElement.classList.remove("hotelactive");
-    allitems.classList.remove("hotelfilteractive");
-    clicked.parentElement.classList.add("hotelactive");
-    clicked.classList.add("hotelfilteractive");
-    hotelcardcontainerdiv.remove();
-    targetElement.parentElement.parentElement.appendChild(this.getHotelsCardsUI(Filter));
+    this.filters.forEach((f) => {
+      f.classList.remove("active");
+
+      if (f.getAttribute("data-filter") === filter) {
+        f.classList.add("active");
+      }
+    });
+
+    // TO DO - Update the hotelsContainer with the new filter
   }
 
   getHotelsCardsUI(Filter) {
@@ -193,6 +151,6 @@ export default class HotelsUI {
   }
 
   getElement() {
-    return this.hotelsContainer;
+    return this.mainContainer;
   }
 }

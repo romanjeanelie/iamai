@@ -161,7 +161,9 @@ export default class TaskManagerCard {
   // From card to fullscreen
   expandCardToFullscreen() {
     this.animations.cardToFullScreen(this.index, () => {
-      document.addEventListener("click", this.handleClickOutside);
+      if (!this.debug) {
+        document.addEventListener("click", this.handleClickOutside);
+      }
       this.input?.updatePosition();
     });
   }

@@ -1,28 +1,52 @@
-.hotelscard-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(343px, 1fr));
-  width: 100%;
-  text-align: center;
-  margin-top: 8px;
-  margin-bottom: 16px;
-  color: $colorBlueText;
-  font-family: "SFPro";
+// Filters
+.hotels-ui__filter-container {
+  display: flex;
+  gap: 13px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 20px; /* 153.846% */
+  margin-bottom: 24px;
+}
 
-  @include media("<tablet") {
-    place-items: center;
-    grid-template-columns: repeat(auto-fit, minmax(315px, 1fr));
+.hotels-ui__filter-item {
+  padding: 6px 16px;
+  border-radius: 24px;
+  border: 1px solid $grey-2;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: rgba($colorLight, 0.5);
+  }
+
+  &.active {
+    background-color: $colorLight;
+    border: none;
   }
 }
 
+// HOTELS CARD CONTAINER
+.hotelscard-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin-bottom: 16px;
+  color: $colorMain;
+
+  @include media("<tablet") {
+    place-items: center;
+    grid-template-columns: repeat(1, minmax(315px, 1fr));
+  }
+}
+
+// HOTEL CARD
 .hotels-card {
   background: #ffffff;
   max-width: 343px;
   position: relative;
   overflow: hidden;
-  // cursor: pointer;
-  border-radius: 16px !important;
+  border-radius: 16px;
   margin-bottom: 24px;
   opacity: 80%;
+  transition: opacity 0.3s ease-outs;
 
   @include media("<tablet") {
     max-width: 315px;
@@ -96,71 +120,6 @@
   //   font-size: 12px;
   //   line-height: 16px;
   // }
-}
-
-.hotelscard-filter {
-  display: flex;
-  // padding-bottom: 56px;
-  // padding-right: 60px;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 16px;
-  /* 133.333% */
-  letter-spacing: 0.5px;
-  margin-top: 60px;
-}
-
-.hotelscard-filterall {
-  // display: flex;
-  margin-right: 60px;
-  margin-bottom: 60px;
-  display: grid;
-  place-items: center;
-  grid-template-columns: 1fr;
-  gap: 10px;
-  cursor: pointer;
-  opacity: 0.6;
-}
-
-#border {
-  height: var(--4, 4px);
-  /* Height of the curve */
-  border-radius: var(--4, 4px) var(--4, 4px) var(--0, 0px) var(--0, 0px);
-  background: $backgroundColorGreyPage;
-  width: 100%;
-}
-
-.hotelfilteractive {
-  background: #000 !important;
-}
-
-.hotelactive {
-  opacity: 1 !important;
-}
-
-.hotelscard-filterairbnb {
-  // display: flex;
-  margin-right: 60px;
-  margin-bottom: 60px;
-  display: grid;
-  place-items: center;
-  grid-template-columns: 1fr;
-  gap: 10px;
-  cursor: pointer;
-  opacity: 0.6;
-}
-
-.hotelscard-filterhotels {
-  // display: flex;
-  // margin-right: 60px;
-  margin-bottom: 60px;
-  display: grid;
-  place-items: center;
-  grid-template-columns: 1fr;
-  gap: 10px;
-  cursor: pointer;
-  opacity: 0.6;
 }
 
 .hotels-rating {

@@ -349,7 +349,7 @@ export default class History {
   async getHistory({ uuid, user, size = 3 }) {
     this.isFetching = true;
     // Get elements
-    const elements = await this.getAllElements({ uuid, user, size: 1, start: this.newStart });
+    const elements = await this.getAllElements({ uuid, user, size: 2, start: this.newStart });
     // Reverse the order of elements
     elements.results.reverse();
 
