@@ -180,19 +180,15 @@
   display: block;
 }
 
-.hotels-prev,
-.hotels-next {
+.slider__nav-button {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   color: white;
+  left: 0;
   border: none;
   cursor: pointer;
   font-size: 18px;
-}
-
-.hotels-prev {
-  left: 0;
 
   &:hover {
     circle {
@@ -201,14 +197,9 @@
   }
 }
 
-.hotels-next {
+.slider__nav-button:last-of-type {
   right: 0;
-
-  &:hover {
-    circle {
-      fill-opacity: 0.6;
-    }
-  }
+  left: unset;
 }
 
 .hotels-dots {

@@ -1201,74 +1201,6 @@ class Chat {
     return codediv;
   }
 
-  getHotelsUI(HotelSearch, HotelSearchResults) {
-    const hotelsdiv = document.createElement("div");
-    hotelsdiv.setAttribute("data-details", JSON.stringify(HotelSearchResults));
-    const hotelsdivfilter = document.createElement("div");
-    hotelsdivfilter.className = "hotelscard-filter";
-    const hotelsdivfilterall = document.createElement("div");
-    hotelsdivfilterall.className = "hotelscard-filterall hotelactive";
-    hotelsdivfilterall.innerHTML =
-      '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_3952_11361)"><rect x="1" y="1" width="8" height="8" rx="1" stroke="#00254E" stroke-width="2" stroke-linejoin="round"/><rect x="1" y="15" width="8" height="8" rx="1" stroke="#00254E" stroke-width="2" stroke-linejoin="round"/><rect x="15" y="1" width="8" height="8" rx="1" stroke="#00254E" stroke-width="2" stroke-linejoin="round"/><rect x="15" y="15" width="8" height="8" rx="1" stroke="#00254E" stroke-width="2" stroke-linejoin="round"/></g><defs><clipPath id="clip0_3952_11361"><rect width="24" height="24" fill="white"/></clipPath></defs></svg>';
-    hotelsdivfilterall.innerHTML += "All";
-    const hotelsdivfilterallborder = document.createElement("div");
-    hotelsdivfilterallborder.id = "border";
-    hotelsdivfilterallborder.className = "hotelfilteractive";
-    hotelsdivfilterall.appendChild(hotelsdivfilterallborder);
-    hotelsdivfilterall.addEventListener("click", (event) => this.hotelfilter(event, "all"));
-    hotelsdivfilter.appendChild(hotelsdivfilterall);
-    const hotelsdivfilterairbnb = document.createElement("div");
-    hotelsdivfilterairbnb.className = "hotelscard-filterairbnb";
-    hotelsdivfilterairbnb.innerHTML =
-      '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_3952_11362)"><path d="M15.3409 1.89305C14.6375 0.718783 13.3691 0 12.0002 0C10.6313 0 9.36292 0.71875 8.65949 1.89305L0.820688 14.9577C0.284133 15.851 0.000483877 16.8732 0 17.9152V18.252C0.000126002 19.7028 0.548781 21.0998 1.53605 22.163C2.52322 23.2262 3.87592 23.8767 5.32287 23.9842C6.7696 24.0916 8.20358 23.648 9.33711 22.7424L12.0003 20.6094L14.6636 22.7424C15.797 23.648 17.231 24.0916 18.6778 23.9842C20.1247 23.8767 21.4774 23.2262 22.4646 22.163C23.4519 21.0999 24.0005 19.7028 24.0007 18.252V17.9152C24.0002 16.8732 23.7165 15.851 23.18 14.9577L15.3409 1.89305ZM13.208 16.6687L12.0002 17.6365L10.7925 16.6687C10.3323 16.3013 10.0644 15.7442 10.0647 15.1552V15.0971C10.0647 14.4056 10.4337 13.7667 11.0325 13.4209C11.6313 13.0752 12.3692 13.0752 12.968 13.4209C13.5668 13.7667 13.9357 14.4056 13.9357 15.0971V15.1552C13.9361 15.7442 13.6682 16.3013 13.208 16.6687ZM21.6778 18.252C21.6791 19.1169 21.3528 19.9503 20.7646 20.5843C20.1764 21.2185 19.3698 21.6063 18.5073 21.6699C17.6446 21.7334 16.7899 21.4679 16.1151 20.9268L13.8584 19.123L14.6597 18.4804C15.6728 17.6746 16.2616 16.4497 16.2584 15.1552V15.0971C16.2584 13.5758 15.4468 12.1701 14.1293 11.4093C12.8119 10.6487 11.1887 10.6487 9.87122 11.4093C8.55378 12.17 7.74216 13.5756 7.74216 15.0971V15.1552C7.74228 16.4489 8.33049 17.6723 9.34086 18.4804L10.1422 19.123L7.88532 20.927L7.88545 20.9268C7.21067 21.4679 6.35595 21.7334 5.49329 21.6699C4.63076 21.6063 3.82417 21.2185 3.23594 20.5843C2.64774 19.9503 2.32148 19.117 2.32273 18.252V17.9152C2.32286 17.2948 2.49146 16.686 2.81051 16.154L10.6493 3.09704C10.9316 2.61681 11.4471 2.32197 12.0042 2.32197C12.5613 2.32197 13.0766 2.61683 13.359 3.09704L21.1901 16.154C21.5091 16.686 21.6777 17.2947 21.6779 17.9152L21.6778 18.252Z" fill="#00254E"/></g><defs><clipPath id="clip0_3952_11362"><rect width="24" height="24" fill="white"/></clipPath></defs></svg>';
-    hotelsdivfilterairbnb.innerHTML += "Airbnb";
-    const hotelsdivfilterairbnbborder = document.createElement("div");
-    hotelsdivfilterairbnbborder.id = "border";
-    hotelsdivfilterairbnb.appendChild(hotelsdivfilterairbnbborder);
-    hotelsdivfilterairbnb.addEventListener("click", (event) => this.hotelfilter(event, "airbnb"));
-    hotelsdivfilter.appendChild(hotelsdivfilterairbnb);
-    const hotelsdivfilterhotels = document.createElement("div");
-    hotelsdivfilterhotels.className = "hotelscard-filterhotels";
-    hotelsdivfilterhotels.innerHTML =
-      '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_3952_11368)"><line x1="0.958357" y1="1.45836" x2="0.958358" y2="22.5422" stroke="#00254E" stroke-width="1.91671" stroke-linecap="round"/><path d="M23 16.6016L23 22.3515" stroke="#00254E" stroke-width="1.91671" stroke-linecap="round"/><line x1="1.14844" y1="16.7916" x2="21.6912" y2="16.7916" stroke="#00254E" stroke-width="1.91671"/><path d="M12.6484 8.55078H19.8042C21.5685 8.55078 22.9987 9.98099 22.9987 11.7452V16.601H12.6484V8.55078Z" stroke="#00254E" stroke-width="1.91671"/><circle cx="6.90321" cy="10.8505" r="2.49173" stroke="#00254E" stroke-width="1.91671"/></g><defs><clipPath id="clip0_3952_11368"><rect width="24" height="24" fill="white"/></clipPath></defs></svg>';
-    hotelsdivfilterhotels.innerHTML += "Hotels";
-    const hotelsdivfilterhotelsborder = document.createElement("div");
-    hotelsdivfilterhotelsborder.id = "border";
-    hotelsdivfilterhotels.appendChild(hotelsdivfilterhotelsborder);
-    hotelsdivfilterhotels.addEventListener("click", (event) => this.hotelfilter(event, "accor"));
-    hotelsdivfilter.appendChild(hotelsdivfilterhotels);
-    hotelsdiv.appendChild(hotelsdivfilter);
-
-    let hotelcardcontainerdiv = this.getHotelsFilterUI(HotelSearchResults, "all");
-
-    hotelsdiv.appendChild(hotelcardcontainerdiv);
-
-    return hotelsdiv;
-  }
-
-  hotelmoveSlide(event, next) {
-    // console.log("event.target", event.target)
-    let currentSlide =
-      event.target.parentElement.parentElement.parentElement.querySelector(".hotels-image-slide.active");
-    let currentDot = event.target.parentElement.parentElement.parentElement.querySelector(".hotels-dot.active");
-    currentSlide.classList.remove("active");
-    currentDot.classList.remove("active");
-
-    if (next) {
-      // Move to the next slide, or loop back to the first if at the end
-      let nextSlide = currentSlide.nextElementSibling || currentSlide.parentNode.firstElementChild;
-      nextSlide.classList.add("active");
-      let nextDot = currentDot.nextElementSibling || currentDot.parentNode.firstElementChild;
-      nextDot.classList.add("active");
-    } else {
-      // Move to the previous slide, or loop back to the last if at the beginning
-      let prevSlide = currentSlide.previousElementSibling || currentSlide.parentNode.lastElementChild;
-      prevSlide.classList.add("active");
-      let prevDot = currentDot.previousElementSibling || currentDot.parentNode.lastElementChild;
-      prevDot.classList.add("active");
-    }
-  }
-
   codefilter(event, Filter) {
     let targetElement = event.target;
 
@@ -1286,24 +1218,6 @@ class Chat {
       if (codeactive) codeactive.classList.remove("active");
       if (codenotactive) codenotactive.classList.add("active");
     }
-  }
-
-  hotelfilter(event, Filter) {
-    let targetElement = event.target;
-
-    while (targetElement.tagName !== "DIV") {
-      targetElement = targetElement.parentElement;
-    }
-    let clicked = targetElement.querySelector("#border");
-    let HotelSearchResults = JSON.parse(targetElement.parentElement.parentElement.getAttribute("data-details"));
-    let hotelcardcontainerdiv = targetElement.parentElement.parentElement.querySelector(".hotelscard-container");
-    let allitems = targetElement.parentElement.querySelector(".hotelfilteractive");
-    allitems.parentElement.classList.remove("hotelactive");
-    allitems.classList.remove("hotelfilteractive");
-    clicked.parentElement.classList.add("hotelactive");
-    clicked.classList.add("hotelfilteractive");
-    hotelcardcontainerdiv.remove();
-    targetElement.parentElement.parentElement.appendChild(this.getHotelsFilterUI(HotelSearchResults, Filter));
   }
 
   formatDateToString(date) {

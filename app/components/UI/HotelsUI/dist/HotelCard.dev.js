@@ -16,6 +16,10 @@ var HotelCard =
 function () {
   function HotelCard(hotelData) {
     _classCallCheck(this, HotelCard);
+
+    this.hotelData = hotelData; // Init Methods
+
+    this.initCard();
   }
 
   _createClass(HotelCard, [{
