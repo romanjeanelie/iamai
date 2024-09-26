@@ -57,7 +57,7 @@ export default class TaskManager {
       this.onStatusUpdate(
         this.tasks[0].key,
         {
-          type: API_STATUSES.ENDED,
+          type: API_STATUSES.VIEWED,
           title: "answer : ",
         },
         hotelCards.getElement()

@@ -39,12 +39,12 @@ function () {
       // Initialize the UI
       this.mainContainer = document.createElement("div"); // Build the HTML content as a string
 
-      var htmlContent = "\n      <div class=\"hotels-ui__filter-container\">\n        <button class=\"hotels-ui__filter-item active\" data-filter=\"all\">\n          All\n        </button>\n        <button class=\"hotels-ui__filter-item\" data-filter=\"airbnb\">\n          Airbnb\n        </button>\n        <button class=\"hotels-ui__filter-item\" data-filter=\"accor\">\n          Hotels\n        </button>\n      </div>\n    "; // Append the hotel cards UI
+      var htmlContent = "\n      <div class=\"hotels-ui__filter-container\">\n        <button class=\"hotels-ui__filter-item active\" data-filter=\"all\">\n          All\n        </button>\n        <button class=\"hotels-ui__filter-item\" data-filter=\"airbnb\">\n          Airbnb\n        </button>\n        <button class=\"hotels-ui__filter-item\" data-filter=\"accor\">\n          Hotels\n        </button>\n      </div>\n    "; // Set the innerHTML of hotelsContainer
 
-      this.hotelsContainer = this.getHotelsCardsUI().outerHTML;
-      htmlContent += this.hotelsContainer; // Set the innerHTML of hotelsContainer
+      this.mainContainer.innerHTML = htmlContent; // Append the hotel cards UI
 
-      this.mainContainer.innerHTML = htmlContent;
+      this.hotelsContainer = this.getHotelsCardsUI();
+      this.mainContainer.appendChild(this.hotelsContainer);
       this.filters = this.mainContainer.querySelectorAll(".hotels-ui__filter-item");
       this.filters.forEach(function (element) {
         var filter = element.getAttribute("data-filter");

@@ -33,12 +33,12 @@ export default class HotelsUI {
       </div>
     `;
 
-    // Append the hotel cards UI
-    this.hotelsContainer = this.getHotelsCardsUI().outerHTML;
-    htmlContent += this.hotelsContainer;
-
     // Set the innerHTML of hotelsContainer
     this.mainContainer.innerHTML = htmlContent;
+
+    // Append the hotel cards UI
+    this.hotelsContainer = this.getHotelsCardsUI();
+    this.mainContainer.appendChild(this.hotelsContainer);
 
     this.filters = this.mainContainer.querySelectorAll(".hotels-ui__filter-item");
     this.filters.forEach((element) => {

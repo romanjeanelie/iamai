@@ -180,6 +180,7 @@ $zIndex: 1;
   display: flex;
   gap: 20px;
   pointer-events: none;
+
   &.active {
     pointer-events: auto;
   }

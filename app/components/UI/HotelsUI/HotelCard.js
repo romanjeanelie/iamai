@@ -36,15 +36,10 @@ export default class HotelCard {
       </div>
     `;
 
-    this.cardContainer.innerHTML = hotelCardHTML;
+    this.cardContainer.innerHTML += hotelCardHTML;
 
     // Now that the HTML is set, query for the nav buttons
     this.navButtons = this.cardContainer.querySelectorAll(".slider__nav-button");
-
-    // Debugging: Check if navButtons is populated
-    console.log("navButtons:", this.navButtons);
-
-    // Add event listeners after the buttons are available in the DOM
     this.addListeners();
   }
 
@@ -112,12 +107,9 @@ export default class HotelCard {
   }
 
   addListeners() {
+    // Event delegation: Add a listener to the entire card container
     this.navButtons.forEach((button) => {
-      // Debugging: Check if button is an HTMLButtonElement
       button.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
         this.hotelmoveSlide(e, button.getAttribute("data-dir") === "next");
       });
     });

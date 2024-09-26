@@ -14,6 +14,9 @@ export default class TaskManagerCard {
     this.debug = import.meta.env.VITE_DEBUG === "true";
     this.index = this.taskManager.tasks.findIndex((t) => t.key == this.task.key);
 
+    // States
+    this.isExpanded = false;
+
     // DOM Elements
     this.container = document.querySelector(".task-manager__container");
     this.tasksGrid = document.querySelector(".task-manager__tasks-grid");
@@ -160,16 +163,21 @@ export default class TaskManagerCard {
 
   // From card to fullscreen
   expandCardToFullscreen() {
+    if (this.isExpanded) return;
+    this.isExpanded = true;
     this.animations.cardToFullScreen(this.index, () => {
-      if (!this.debug) {
-        document.addEventListener("click", this.handleClickOutside);
-      }
+      // if (!this.debug) {
+      document.addEventListener("click", this.handleClickOutside);
+      // }
+      this.fullscreenContainer.classList.add("active");
       this.input?.updatePosition();
     });
   }
 
   closeFullscreen() {
+    this.isExpanded = false;
     this.animations.fullscreenToCard(this.index);
+    this.fullscreenContainer.classList.remove("active");
   }
 
   // Close fullscreen when clicking outside the fullscreen container
