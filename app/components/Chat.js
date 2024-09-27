@@ -5,6 +5,7 @@ import DiscussionMedia from "./DiscussionMedia.js";
 import { FlightUI } from "./UI/FlightUI.js";
 import { API_STATUSES } from "./constants.js";
 import HotelsUI from "./UI/HotelsUI/index.js";
+import ProductUI from "./UI/ProductUI.js";
 // const uuid = "omega_" + crypto.randomUUID();
 // import { getUser } from "../User.js";
 // const IS_DEV_MODE = import.meta.env.MODE === "development";
@@ -507,8 +508,7 @@ class Chat {
     } else if (domain == FLIGHTSEARCH) {
       container = new FlightUI(JSON.parse(data.FlightSearch), JSON.parse(data.FlightSearchResults)).getElement();
     } else if (domain == PRODUCTSEARCH) {
-      console.log("PRODUCTSEARCH", JSON.stringify(data.ProductSearchResults));
-      container = this.getProductUI(JSON.parse(data.ProductSearchResults));
+      container = new ProductUI(JSON.parse(data.ProductSearchResults)).getElement();
     } else if (domain == HOTELSEARCH) {
       container = new HotelsUI(JSON.parse(data.HotelSearch), JSON.parse(data.HotelSearchResults)).getElement();
     } else if (domain == CODESEARCH) {
@@ -644,11 +644,6 @@ class Chat {
     //   .replace(/"/g, "&#34;");
     str = str.replaceAll("\n", "<br>");
     return str;
-  }
-
-  truncate(str, n = 200) {
-    // var n = 200;
-    return str && str.length > n ? str.slice(0, n - 1) + "&hellip;" : str;
   }
 
   submituserreply(text, suworkflowid, img, live_mode) {
@@ -1043,65 +1038,6 @@ class Chat {
 
     this.updateTextContainer();
     this.textContainer.appendChild(productdiv);
-  }
-
-  getProductUI(ProductSearchResults) {
-    const productdiv = document.createElement("div");
-    const productcardcontainerdiv = document.createElement("div");
-    productcardcontainerdiv.className = "shopping-container";
-    productdiv.appendChild(productcardcontainerdiv);
-
-    ProductSearchResults.forEach((element) => {
-      const productcarddiv = document.createElement("div");
-      productcarddiv.className = "shopping-card";
-      // productcarddiv.setAttribute("data-info", "product-details");
-      // productcarddiv.setAttribute("data-details", JSON.stringify(element).replace(/'/g, "&#39;"));
-      // productcarddiv.addEventListener("click", (event) => this.showProductDetail(event));
-      productcardcontainerdiv.appendChild(productcarddiv);
-      const productcarddivA = document.createElement("a");
-      productcarddivA.setAttribute("href", element.link);
-      productcarddivA.setAttribute("target", "_blank");
-      productcarddiv.appendChild(productcarddivA);
-
-      const productimagediv = document.createElement("div");
-      productimagediv.className = "shopping-image-dev";
-      productcarddivA.appendChild(productimagediv);
-
-      const productimage = document.createElement("img");
-      productimage.className = "shopping-image";
-      productimage.setAttribute("src", element.imageUrl);
-      productimage.setAttribute("alt", element.title);
-      productimagediv.appendChild(productimage);
-
-      const productname = document.createElement("h3");
-      productname.className = "shopping-name";
-      var ptitle = this.truncate(element.title, 30);
-      productname.innerHTML = ptitle;
-      productcarddivA.appendChild(productname);
-
-      const productsource = document.createElement("p");
-      productsource.className = "shopping-source";
-      productsource.innerHTML = element.source;
-      productcarddivA.appendChild(productsource);
-
-      const productprice = document.createElement("p");
-      productprice.className = "shopping-price";
-      if (element.price.includes(".00"))
-        productprice.innerHTML = element.price.substring(0, element.price.indexOf(".00"));
-      else productprice.innerHTML = element.price;
-      productcarddivA.appendChild(productprice);
-
-      const productoverlay = document.createElement("div");
-      productoverlay.className = "shopping-overlay";
-      productcarddivA.appendChild(productoverlay);
-    });
-    // const productdetails = document.createElement("div");
-    // productdetails.id = "product-details";
-    // productdiv.appendChild(productdetails);
-
-    // this.updateTextContainer();
-    // this.textContainer.appendChild(productdiv);
-    return productdiv;
   }
 
   showProductDetail(event) {

@@ -10,7 +10,7 @@ import { gsap } from "gsap";
 import fadeByWord from "../utils/fadeByWord.js";
 import { API_STATUSES, URL_AGENT_STATUS } from "./constants.js";
 import { store } from "./store.js";
-import { hotelSearchData, hotelSearchResultsData } from "../../testData.jsx";
+import { hotelSearchData, hotelSearchResultsData } from "../../testData";
 import HotelsUI from "./UI/HotelsUI/index.js";
 
 export default class Discussion {
