@@ -10,7 +10,8 @@ import { store } from "../store";
 import TaskManagerDebug from "./TaskManagerCard/TaskManagerDebug";
 import { NotificationPill } from "./TaskManagerCard/NotificationPill";
 import HotelsUI from "../UI/HotelsUI";
-import { hotelSearchData, hotelSearchResultsData } from "../../../testData";
+import { hotelSearchData, hotelSearchResultsData, productResultData } from "../../../testData";
+import ProductUI from "../UI/ProductUI";
 
 export const STATUS_COLORS = {
   [API_STATUSES.PROGRESSING]: "rgba(149, 159, 177, 0.14)",
@@ -50,7 +51,7 @@ export default class TaskManager {
     this.debug = import.meta.env.VITE_DEBUG === "true";
     if (this.debug) {
       this.debugger = new TaskManagerDebug(this);
-      const hotelCards = new HotelsUI(hotelSearchData, hotelSearchResultsData);
+      const productCards = new ProductUI(productResultData);
       for (let i = 0; i < 3; i++) {
         this.debugger.addDebugTask();
       }
@@ -60,7 +61,7 @@ export default class TaskManager {
           type: API_STATUSES.VIEWED,
           title: "answer : ",
         },
-        hotelCards.getElement()
+        productCards.getElement()
       );
     }
   }
