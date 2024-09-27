@@ -65,29 +65,10 @@ export default class Discussion {
     // DEBUG
     if (this.debug) {
       this.addUserElement({ text: "Hello" });
-      this.showDebugButtons();
     }
   }
 
-  // DEBUG
-  showDebugButtons() {
-    const debugContainer = document.createElement("div");
-    debugContainer.className = "debug-container";
-
-    const hotelButton = document.createElement("button");
-    hotelButton.innerHTML = "Hotels";
-    hotelButton.addEventListener("click", () => {
-      const hotelCards = new HotelsUI(hotelSearchData, hotelSearchResultsData).getElement();
-      const AIContainer = document.createElement("div");
-      AIContainer.classList.add("discussion__ai");
-      AIContainer.appendChild(hotelCards);
-      this.discussionContainer.appendChild(AIContainer);
-    });
-    debugContainer.appendChild(hotelButton);
-    document.body.appendChild(debugContainer);
-  }
-
-  // INPUTg
+  // INPUT
   disableInput() {
     this.inputText.disabled = true;
     const childNodes = this.inputContainer.getElementsByTagName("*");
