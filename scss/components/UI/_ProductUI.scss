@@ -1,28 +1,27 @@
-.shopping-container {
+.products-ui__main-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.products-ui__header {
+  margin-bottom: 8px;
+}
+
+.products-ui__sources {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 24px; /* 160% */
+  letter-spacing: 0.2px;
+  color: $grey-4;
+}
+
+.products-ui__products-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
-  padding: 20px;
-  width: 100%;
-  // background: #ffffff;
-  text-align: center;
-  border-radius: 16px;
-  // margin-left: 15px;
-  margin-top: 8px;
-  margin-bottom: 24px;
-  font-family: "SFPro";
-  color: $colorBlueText;
-
-  @include media("<tablet") {
-    //   place-items: center;
-    padding: 20px 0 20px 0;
-  }
+  grid-template-columns: repeat(2, 1fr);
 }
 
-.shopping-container a {
-  color: $colorBlueText !important;
-}
-
-.shopping-card {
+.products-ui__product-container {
   background: #ffffff;
   width: 215px;
   position: relative;

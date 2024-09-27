@@ -29,53 +29,55 @@ function () {
   }
 
   _createClass(ProductUI, [{
+    key: "countSources",
+    value: function countSources() {
+      var sources = [];
+      this.productsData.forEach(function (product) {
+        // Normalize the source string
+        var normalizedSource = product.source.trim().toLowerCase();
+
+        if (!sources.includes(normalizedSource)) {
+          sources.push(normalizedSource);
+        }
+      });
+      return sources.length;
+    }
+  }, {
     key: "initUI",
     value: function initUI() {
       var _this = this;
 
       this.mainContainer = document.createElement("div");
+      this.mainContainer.classList.add("products-ui__main-container");
+      this.createHeaderUI();
       var productcardcontainerdiv = document.createElement("div");
-      productcardcontainerdiv.className = "shopping-container";
+      productcardcontainerdiv.className = "products-ui__products-container";
       this.mainContainer.appendChild(productcardcontainerdiv);
       this.productsData.forEach(function (element) {
-        var productCard = _this.initCardUI(element);
+        var productCard = _this.createProductCard(element);
 
         productcardcontainerdiv.appendChild(productCard);
       });
     }
   }, {
-    key: "initCardUI",
-    value: function initCardUI(productData) {
+    key: "createHeaderUI",
+    value: function createHeaderUI() {
+      this.headerContainer = document.createElement("div");
+      this.headerContainer.classList.add("products-ui__header");
+      var sourcesTotal = this.countSources();
+      this.headerContainer.innerHTML = "\n      <p class=\"products-ui__sources\">\n        Searched ".concat(sourcesTotal, " sites\n      </p>\n    ");
+      this.mainContainer.appendChild(this.headerContainer);
+    }
+  }, {
+    key: "createProductCard",
+    value: function createProductCard(productData) {
       var productCardContainer = document.createElement("div");
       productCardContainer.className = "shopping-card";
       var productcarddivA = document.createElement("a");
       productcarddivA.setAttribute("href", productData.link);
       productcarddivA.setAttribute("target", "_blank");
+      productcarddivA.innerHTML = "\n      <div class=\"shopping-image-dev\">\n        <img class=\"shopping-image\" src=\"".concat(productData.imageUrl, "\" alt=\"").concat(productData.title, "\">\n      </div>\n      <h3 class=\"shopping-name\">").concat((0, _truncate["default"])(productData.title, 30), "</h3>\n      <p class=\"shopping-source\">").concat(productData.source, "</p>\n      <p class=\"shopping-price\">").concat(productData.price.includes(".00") ? productData.price.substring(0, productData.price.indexOf(".00")) : productData.price, "</p>\n      <div class=\"shopping-overlay\"></div>\n    ");
       productCardContainer.appendChild(productcarddivA);
-      var productimagediv = document.createElement("div");
-      productimagediv.className = "shopping-image-dev";
-      productcarddivA.appendChild(productimagediv);
-      var productimage = document.createElement("img");
-      productimage.className = "shopping-image";
-      productimage.setAttribute("src", productData.imageUrl);
-      productimage.setAttribute("alt", productData.title);
-      productimagediv.appendChild(productimage);
-      var productname = document.createElement("h3");
-      productname.className = "shopping-name";
-      var ptitle = (0, _truncate["default"])(productData.title, 30);
-      productname.innerHTML = ptitle;
-      productcarddivA.appendChild(productname);
-      var productsource = document.createElement("p");
-      productsource.className = "shopping-source";
-      productsource.innerHTML = productData.source;
-      productcarddivA.appendChild(productsource);
-      var productprice = document.createElement("p");
-      productprice.className = "shopping-price";
-      if (productData.price.includes(".00")) productprice.innerHTML = productData.price.substring(0, productData.price.indexOf(".00"));else productprice.innerHTML = productData.price;
-      productcarddivA.appendChild(productprice);
-      var productoverlay = document.createElement("div");
-      productoverlay.className = "shopping-overlay";
-      productcarddivA.appendChild(productoverlay);
       return productCardContainer;
     }
   }, {
