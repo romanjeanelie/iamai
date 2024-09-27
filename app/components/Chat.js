@@ -507,6 +507,7 @@ class Chat {
     } else if (domain == FLIGHTSEARCH) {
       container = new FlightUI(JSON.parse(data.FlightSearch), JSON.parse(data.FlightSearchResults)).getElement();
     } else if (domain == PRODUCTSEARCH) {
+      console.log("PRODUCTSEARCH", JSON.stringify(data.ProductSearchResults));
       container = this.getProductUI(JSON.parse(data.ProductSearchResults));
     } else if (domain == HOTELSEARCH) {
       container = new HotelsUI(JSON.parse(data.HotelSearch), JSON.parse(data.HotelSearchResults)).getElement();
