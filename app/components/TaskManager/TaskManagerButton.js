@@ -18,9 +18,9 @@ export default class TaskManagerButton {
 
   handleTaskButton() {
     if (this.countRelevantTasks() > 0) {
-      this.button.classList.remove("hidden");
+      this.showButton();
     } else {
-      this.button.classList.add("hidden");
+      this.hideButton();
     }
     this.updateButton();
   }
@@ -34,7 +34,7 @@ export default class TaskManagerButton {
   }
 
   showButton() {
-    this.button.classList.remove("hidden");
+    if (this.countRelevantTasks() > 0) this.button.classList.remove("hidden");
   }
 
   addEventListeners() {
