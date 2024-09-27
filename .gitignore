@@ -31,4 +31,4 @@ dist/*
 .env
 login/*
 
-testData.js
+# testData.js

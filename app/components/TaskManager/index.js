@@ -1,17 +1,16 @@
 import gsap from "gsap";
 import Flip from "gsap/Flip";
 
+import { productResultData } from "../../../testData";
+import fetcher from "../../utils/fetcher";
+import { API_STATUSES, URL_DELETE_STATUS } from "../constants";
+import { store } from "../store";
+import ProductUI from "../UI/ProductUI";
+import TaskManagerAnimations from "./TaskManagerAnimations";
 import TaskManagerButton from "./TaskManagerButton";
 import TaskManagerCard from "./TaskManagerCard";
-import TaskManagerAnimations from "./TaskManagerAnimations";
-import { API_STATUSES, URL_DELETE_STATUS } from "../constants";
-import fetcher from "../../utils/fetcher";
-import { store } from "../store";
-import TaskManagerDebug from "./TaskManagerCard/TaskManagerDebug";
 import { NotificationPill } from "./TaskManagerCard/NotificationPill";
-import HotelsUI from "../UI/HotelsUI";
-import { hotelSearchData, hotelSearchResultsData, productResultData } from "../../../testData";
-import ProductUI from "../UI/ProductUI";
+import TaskManagerDebug from "./TaskManagerCard/TaskManagerDebug";
 
 export const STATUS_COLORS = {
   [API_STATUSES.PROGRESSING]: "rgba(149, 159, 177, 0.14)",
