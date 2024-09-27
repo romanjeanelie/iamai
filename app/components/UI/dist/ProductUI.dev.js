@@ -43,6 +43,11 @@ function () {
       return sources.length;
     }
   }, {
+    key: "formatPrice",
+    value: function formatPrice(price) {
+      return price.includes(".00") ? price.substring(0, price.indexOf(".00")) : price;
+    }
+  }, {
     key: "initUI",
     value: function initUI() {
       var _this = this;
@@ -72,12 +77,13 @@ function () {
     key: "createProductCard",
     value: function createProductCard(productData) {
       var productCardContainer = document.createElement("div");
-      productCardContainer.className = "shopping-card";
-      var productcarddivA = document.createElement("a");
-      productcarddivA.setAttribute("href", productData.link);
-      productcarddivA.setAttribute("target", "_blank");
-      productcarddivA.innerHTML = "\n      <div class=\"shopping-image-dev\">\n        <img class=\"shopping-image\" src=\"".concat(productData.imageUrl, "\" alt=\"").concat(productData.title, "\">\n      </div>\n      <h3 class=\"shopping-name\">").concat((0, _truncate["default"])(productData.title, 30), "</h3>\n      <p class=\"shopping-source\">").concat(productData.source, "</p>\n      <p class=\"shopping-price\">").concat(productData.price.includes(".00") ? productData.price.substring(0, productData.price.indexOf(".00")) : productData.price, "</p>\n      <div class=\"shopping-overlay\"></div>\n    ");
-      productCardContainer.appendChild(productcarddivA);
+      productCardContainer.className = "products-ui__product-container";
+      var price = this.formatPrice(productData.price);
+      var linkWrapper = document.createElement("a");
+      linkWrapper.setAttribute("href", productData.link);
+      linkWrapper.setAttribute("target", "_blank");
+      linkWrapper.innerHTML = "\n      <div class=\"products-ui__product-infos\">\n        <div class=\"products-ui__product-details\">\n          <h3>".concat(productData.title, "</h3>\n          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>\n        </div>\n        <div class=\"products-ui__product-image\">\n          <img src=\"").concat(productData.imageUrl, "\" alt=\"").concat(productData.title, "\">\n        </div>\n      </div>\n      <p class=\"shopping-price\">").concat(price, "</p>\n    ");
+      productCardContainer.appendChild(linkWrapper);
       return productCardContainer;
     }
   }, {

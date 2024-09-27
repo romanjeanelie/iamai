@@ -26,6 +26,10 @@ export default class ProductUI {
     return sources.length;
   }
 
+  formatPrice(price) {
+    return price.includes(".00") ? price.substring(0, price.indexOf(".00")) : price;
+  }
+
   initUI() {
     this.mainContainer = document.createElement("div");
     this.mainContainer.classList.add("products-ui__main-container");
@@ -58,27 +62,28 @@ export default class ProductUI {
 
   createProductCard(productData) {
     const productCardContainer = document.createElement("div");
-    productCardContainer.className = "shopping-card";
+    productCardContainer.className = "products-ui__product-container";
 
-    const productcarddivA = document.createElement("a");
-    productcarddivA.setAttribute("href", productData.link);
-    productcarddivA.setAttribute("target", "_blank");
+    const price = this.formatPrice(productData.price);
 
-    productcarddivA.innerHTML = `
-      <div class="shopping-image-dev">
-        <img class="shopping-image" src="${productData.imageUrl}" alt="${productData.title}">
+    const linkWrapper = document.createElement("a");
+    linkWrapper.setAttribute("href", productData.link);
+    linkWrapper.setAttribute("target", "_blank");
+
+    linkWrapper.innerHTML = `
+      <div class="products-ui__product-infos">
+        <div class="products-ui__product-details">
+          <h3>${productData.title}</h3>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+        </div>
+        <div class="products-ui__product-image">
+          <img src="${productData.imageUrl}" alt="${productData.title}">
+        </div>
       </div>
-      <h3 class="shopping-name">${truncate(productData.title, 30)}</h3>
-      <p class="shopping-source">${productData.source}</p>
-      <p class="shopping-price">${
-        productData.price.includes(".00")
-          ? productData.price.substring(0, productData.price.indexOf(".00"))
-          : productData.price
-      }</p>
-      <div class="shopping-overlay"></div>
+      <p class="shopping-price">${price}</p>
     `;
 
-    productCardContainer.appendChild(productcarddivA);
+    productCardContainer.appendChild(linkWrapper);
 
     return productCardContainer;
   }
