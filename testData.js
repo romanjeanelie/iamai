@@ -1559,7 +1559,7 @@ export const productResultData = [
     delivery: "\\u20ac6.00 shipping",
     imageUrl:
       "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSoWS_0BnMVLJe4xjR1SbkGYTBokVslWuXRbkKge1p9PS3IHOxJ0JprH1Nq9bzCaGNaWN2-4jVFCasSXj3wW5Ufhm2XDudR6yIkzttpbTvtXCabdrfIZA&usqp=CAE",
-    rating: 4.5,
+    rating: 2.5,
     ratingCount: 7,
     offers: "5+",
     productId: "17866761110011705917",
@@ -1573,7 +1573,7 @@ export const productResultData = [
     delivery: "Free shipping",
     imageUrl:
       "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSwMrwNS6Cy5Izli785Yd6JH_epUtA3SSO4AR8tKxk9IQMOQ4M6GbKHrpd7lz_g4cT43dJs1CqtL-KOdG_zdfLOUYr59ZrBmjrwizDiY3C7IjUSn9BOZ7I&usqp=CAE",
-    rating: 4.5,
+    rating: 0.5,
     ratingCount: 24,
     position: 2,
   },

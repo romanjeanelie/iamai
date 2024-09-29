@@ -23,7 +23,8 @@ function () {
 
     this.productsData = productsData; // DOM Elements
 
-    this.mainContainer = null; // Init Methods
+    this.mainContainer = null;
+    this.stars = []; // Init Methods
 
     this.initUI();
   }
@@ -79,12 +80,46 @@ function () {
       var productCardContainer = document.createElement("div");
       productCardContainer.className = "products-ui__product-container";
       var price = this.formatPrice(productData.price);
+      var ratings = this.createRatingUI(productData.rating);
       var linkWrapper = document.createElement("a");
       linkWrapper.setAttribute("href", productData.link);
       linkWrapper.setAttribute("target", "_blank");
-      linkWrapper.innerHTML = "\n      <div class=\"products-ui__product-infos\">\n        <div class=\"products-ui__product-details\">\n          <h3>".concat(productData.title, "</h3>\n          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>\n        </div>\n        <div class=\"products-ui__product-image\">\n          <img src=\"").concat(productData.imageUrl, "\" alt=\"").concat(productData.title, "\">\n        </div>\n      </div>\n      <p class=\"shopping-price\">").concat(price, "</p>\n    ");
+      linkWrapper.innerHTML = "\n      <div class=\"products-ui__product-infos\">\n        <div class=\"products-ui__product-details\">\n          <h3>".concat(productData.title, "</h3>\n          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>\n        </div>\n        <div class=\"products-ui__product-image\">\n          <img src=\"").concat(productData.imageUrl, "\" alt=\"").concat(productData.title, "\">\n        </div>\n      </div>\n      <div class=\"products-ui__product-footer\">\n        <div class=\"products-ui__product-price-rating\">\n          <p class=\"products-ui__product-price\">").concat(price, "</p>\n          ").concat(ratings.outerHTML, "\n        </div>\n\n        <p class=\"products-ui__product-source\">").concat(productData.source, "</p>\n      </div>\n    ");
       productCardContainer.appendChild(linkWrapper);
       return productCardContainer;
+    }
+  }, {
+    key: "createRatingUI",
+    value: function createRatingUI(rating) {
+      var ratingContainer = document.createElement("div");
+      ratingContainer.classList.add("products-ui__product-rating");
+      var wholeFill = Math.floor(rating);
+      var decimalFill = rating % 1;
+      if (rating === undefined) return ratingContainer;
+      ratingContainer.innerHTML = "\n      <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"10.49\" height=\"10\" viewBox=\"0 0 61 12\" fill=\"none\">\n        <defs>\n          <clipPath id=\"stars-clip\">\n            <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M3.22652 11L6.46991 9.28955L9.70946 11L9.08929 7.38222L11.7125 4.81848L8.0878 4.29339L6.47 1L4.84835 4.29339L1.22363 4.81848L3.84687 7.38222L3.22652 11Z\" />\n          </clipPath>\n        </defs>\n      </svg>\n   ";
+
+      for (var i = 0; i < 5; i++) {
+        var starContainer = document.createElement("div");
+        starContainer.className = "products-ui__rating-star star-".concat(i);
+        var yellow = document.createElement("div");
+        yellow.className = "yellow";
+        var grey = document.createElement("div");
+        grey.className = "grey"; // we fill the stars yellow to the whole number of the rating
+
+        if (i < wholeFill) {
+          yellow.style.width = "100%"; // then we fill the decimal part in function of the decimal
+        } else if (i === wholeFill) {
+          yellow.style.width = "".concat(decimalFill * 100, "%");
+        } // and then because the grey part is flex-grow 1, it will fill the rest of the stars
+
+
+        starContainer.appendChild(yellow);
+        starContainer.appendChild(grey);
+        ratingContainer.appendChild(starContainer);
+        this.stars.push(starContainer);
+      }
+
+      return ratingContainer;
     }
   }, {
     key: "getElement",
