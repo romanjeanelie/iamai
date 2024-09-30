@@ -113,9 +113,6 @@
     align-items: center;
   }
 
-  .products-ui__product-price-rating {
-  }
-
   .products-ui__product-price {
     font-size: 15px;
     font-weight: 400;
@@ -135,8 +132,8 @@
     height: 10px;
     width: 10.48px;
     display: flex;
-    -webkit-clip-path: url(#stars-clip);
     clip-path: url(#stars-clip);
+    -webkit-clip-path: url(#stars-clip);
 
     .yellow {
       background: #f2d433;

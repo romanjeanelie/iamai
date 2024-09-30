@@ -106,16 +106,6 @@ export default class ProductUI {
 
     if (rating === undefined) return ratingContainer;
 
-    ratingContainer.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="10.49" height="10" viewBox="0 0 61 12" fill="none">
-        <defs>
-          <clipPath id="stars-clip">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M3.22652 11L6.46991 9.28955L9.70946 11L9.08929 7.38222L11.7125 4.81848L8.0878 4.29339L6.47 1L4.84835 4.29339L1.22363 4.81848L3.84687 7.38222L3.22652 11Z" />
-          </clipPath>
-        </defs>
-      </svg>
-   `;
-
     for (let i = 0; i < 5; i++) {
       const starContainer = document.createElement("div");
       starContainer.className = `products-ui__rating-star star-${i}`;
