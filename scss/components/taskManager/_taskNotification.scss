@@ -1,0 +1,90 @@
+// ------ Notification Container ------
+.task-manager__notification-container {
+  position: fixed;
+  top: 80px;
+  left: calc((100vw - $maxWidth) / 2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px;
+  height: 40px;
+  width: 40px;
+  border-radius: 40px;
+  overflow: hidden;
+  background-color: rgb(224, 149, 2);
+  cursor: pointer;
+  z-index: 10;
+
+  &.hidden {
+    opacity: 0;
+  }
+
+  @include media("<desktop") {
+    left: 24px;
+  }
+
+  @include media("<phone") {
+    top: 60px;
+  }
+
+  .task-manager__notification-closeBtn {
+    background-color: rgba(255, 255, 255, 0.33);
+    width: 24px;
+    height: 24px;
+    border-radius: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg {
+      opacity: 0;
+      width: 9px;
+      height: 9px;
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.4);
+    }
+  }
+
+  .task-manager__notification-label {
+    position: absolute;
+    height: 100%;
+    white-space: nowrap;
+    text-wrap: nowrap;
+    display: flex;
+    align-items: center;
+    top: 0px;
+    left: 202%;
+    font-size: 16px;
+    font-weight: 450;
+    line-height: 20px;
+    letter-spacing: 0.5px;
+    overflow: hidden;
+    max-width: 350px;
+
+    p {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    @include media("<phone") {
+      max-width: 200px;
+    }
+  }
+}
+
+.task-manager__notification-container.expanded {
+  width: auto;
+  padding: 0 8px 0 16px;
+
+  .task-manager__notification-closeBtn svg {
+    opacity: 1;
+  }
+
+  .task-manager__notification-label {
+    position: static;
+    background-color: transparent;
+  }
+}

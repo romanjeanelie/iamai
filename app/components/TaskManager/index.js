@@ -51,17 +51,8 @@ export default class TaskManager {
     if (this.debug) {
       this.debugger = new TaskManagerDebug(this);
       const productCards = new ProductUI(productResultData);
-      for (let i = 0; i < 3; i++) {
-        this.debugger.addDebugTask();
-      }
-      this.onStatusUpdate(
-        this.tasks[0].key,
-        {
-          type: API_STATUSES.VIEWED,
-          title: "answer : ",
-        },
-        productCards.getElement()
-      );
+
+      this.debugger.addDebugTask();
     }
   }
 

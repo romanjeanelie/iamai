@@ -33,10 +33,10 @@ export default class TaskManagerCard {
     this.addEventListeners();
 
     if (this.debug) {
-      if (this.task.key === 3) {
+      if (this.task.key === 1) {
         setTimeout(() => {
           this.expandCardToFullscreen();
-        }, 500);
+        }, 15);
       }
     }
   }
@@ -166,9 +166,9 @@ export default class TaskManagerCard {
     if (this.isExpanded) return;
     this.isExpanded = true;
     this.animations.cardToFullScreen(this.index, () => {
-      if (!this.debug) {
-        document.addEventListener("click", this.handleClickOutside);
-      }
+      // if (!this.debug) {
+      document.addEventListener("click", this.handleClickOutside);
+      // }
       this.fullscreenContainer.classList.add("active");
       this.input?.updatePosition();
     });

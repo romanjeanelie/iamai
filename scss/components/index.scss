@@ -4,12 +4,14 @@
 @import "./input";
 @import "./videoInput";
 @import "./phone";
-@import "./taskManager";
 @import "./slider";
 @import "./typingText";
 @import "./skeletons";
 @import "./cardSlider";
 @import "./heroBentoGrid";
+
+// Task Manager
+@import "./taskManager";
 
 .page-discussion {
   @import "./pageDiscussion/discussion";
