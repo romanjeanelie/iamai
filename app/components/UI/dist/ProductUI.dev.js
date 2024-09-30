@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _truncate = _interopRequireDefault(require("../../utils/truncate"));
+var _getDomainAndFavicon2 = _interopRequireDefault(require("../../utils/getDomainAndFavicon"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -59,10 +59,25 @@ function () {
       var productcardcontainerdiv = document.createElement("div");
       productcardcontainerdiv.className = "products-ui__products-container";
       this.mainContainer.appendChild(productcardcontainerdiv);
-      this.productsData.forEach(function (element) {
-        var productCard = _this.createProductCard(element);
+      this.productsData.forEach(function _callee(element) {
+        var productCard;
+        return regeneratorRuntime.async(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return regeneratorRuntime.awrap(_this.createProductCard(element));
 
-        productcardcontainerdiv.appendChild(productCard);
+              case 2:
+                productCard = _context.sent;
+                productcardcontainerdiv.appendChild(productCard);
+
+              case 4:
+              case "end":
+                return _context.stop();
+            }
+          }
+        });
       });
     }
   }, {
@@ -77,17 +92,72 @@ function () {
   }, {
     key: "createProductCard",
     value: function createProductCard(productData) {
-      console.log(productData);
-      var productCardContainer = document.createElement("div");
-      productCardContainer.className = "products-ui__product-container";
-      var price = this.formatPrice(productData.price);
-      var ratings = this.createRatingUI(productData.rating);
-      var linkWrapper = document.createElement("a");
-      linkWrapper.setAttribute("href", productData.link);
-      linkWrapper.setAttribute("target", "_blank");
-      linkWrapper.innerHTML = "\n      <div class=\"products-ui__product-infos\">\n        <div class=\"products-ui__product-details\">\n          <h3>".concat(productData.title, "</h3>\n          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>\n        </div>\n        <div class=\"products-ui__product-image\">\n          <img src=\"").concat(productData.imageUrl, "\" alt=\"").concat(productData.title, "\">\n        </div>\n      </div>\n      <div class=\"products-ui__product-footer\">\n        <div class=\"products-ui__product-price-rating\">\n          <p class=\"products-ui__product-price\">").concat(price, "</p>\n          ").concat(ratings.outerHTML, "\n        </div>\n\n        <p class=\"products-ui__product-source\">").concat(productData.source, "</p>\n      </div>\n    ");
-      productCardContainer.appendChild(linkWrapper);
-      return productCardContainer;
+      var productCardContainer, price, ratings, faviconContainer, linkWrapper;
+      return regeneratorRuntime.async(function createProductCard$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              productCardContainer = document.createElement("div");
+              productCardContainer.className = "products-ui__product-container";
+              productCardContainer.style.order = productData.position;
+              price = this.formatPrice(productData.price);
+              ratings = this.createRatingUI(productData.rating);
+              _context2.next = 7;
+              return regeneratorRuntime.awrap(this.createSourceFavicon(productData.source));
+
+            case 7:
+              faviconContainer = _context2.sent;
+              linkWrapper = document.createElement("a");
+              linkWrapper.setAttribute("href", productData.link);
+              linkWrapper.setAttribute("target", "_blank");
+              linkWrapper.innerHTML = "\n      <div class=\"products-ui__product-header\">\n        ".concat(faviconContainer.outerHTML, "\n        <p class=\"products-ui__product-source\">").concat(productData.source, "</p>\n      </div> \n      <div class=\"products-ui__product-infos\">\n        <div class=\"products-ui__product-details\">\n          <h3>").concat(productData.title, "</h3>\n          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>\n        </div>\n        <div class=\"products-ui__product-image\">\n          <img src=\"").concat(productData.imageUrl, "\" alt=\"").concat(productData.title, "\">\n        </div>\n      </div>\n      <div class=\"products-ui__product-footer\">\n        <div class=\"products-ui__product-price-rating\">\n          <p class=\"products-ui__product-price\">").concat(price, "</p>\n          ").concat(ratings.outerHTML, "\n        </div>\n\n        <p class=\"products-ui__product-source\">").concat(productData.source, "</p>\n      </div>\n    ");
+              productCardContainer.appendChild(linkWrapper);
+              return _context2.abrupt("return", productCardContainer);
+
+            case 14:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, null, this);
+    }
+  }, {
+    key: "createSourceFavicon",
+    value: function createSourceFavicon(source) {
+      var _getDomainAndFavicon, favicon, faviconContainer;
+
+      return regeneratorRuntime.async(function createSourceFavicon$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              _getDomainAndFavicon = (0, _getDomainAndFavicon2["default"])(source), favicon = _getDomainAndFavicon.favicon;
+              console.log(favicon);
+              faviconContainer = document.createElement("div");
+              faviconContainer.className = "products-ui__product-source-logo";
+              _context3.next = 6;
+              return regeneratorRuntime.awrap(new Promise(function (resolve, reject) {
+                var img = new Image();
+                img.src = favicon;
+
+                img.onload = function () {
+                  faviconContainer.appendChild(img);
+                  resolve();
+                };
+
+                img.onerror = function () {
+                  resolve();
+                };
+              }));
+
+            case 6:
+              return _context3.abrupt("return", faviconContainer);
+
+            case 7:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      });
     }
   }, {
     key: "createRatingUI",

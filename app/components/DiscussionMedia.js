@@ -1,17 +1,9 @@
 import gsap, { Power3 } from "gsap";
 import Flip from "gsap/Flip";
-import anim from "../utils/anim";
 import loadImages from "../utils/loadImages";
-import scrollToBottom from "../utils/scrollToBottom";
+import getDomainAndFavicon from "../utils/getDomainAndFavicon";
 
 gsap.registerPlugin(Flip);
-
-function getDomainAndFavicon(url) {
-  const urlObj = new URL(url);
-  const domain = urlObj.hostname;
-  const favicon = `https://${domain}/favicon.ico`;
-  return { domain, favicon };
-}
 
 export default class DiscussionMedia {
   constructor({ container, emitter }) {

@@ -1,4 +1,4 @@
-import truncate from "../../utils/truncate";
+import getDomainAndFavicon from "../../utils/getDomainAndFavicon";
 
 export default class ProductUI {
   constructor(productsData) {
@@ -41,8 +41,8 @@ export default class ProductUI {
     productcardcontainerdiv.className = "products-ui__products-container";
     this.mainContainer.appendChild(productcardcontainerdiv);
 
-    this.productsData.forEach((element) => {
-      const productCard = this.createProductCard(element);
+    this.productsData.forEach(async (element) => {
+      const productCard = await this.createProductCard(element);
       productcardcontainerdiv.appendChild(productCard);
     });
   }
@@ -61,18 +61,24 @@ export default class ProductUI {
     this.mainContainer.appendChild(this.headerContainer);
   }
 
-  createProductCard(productData) {
+  async createProductCard(productData) {
     const productCardContainer = document.createElement("div");
     productCardContainer.className = "products-ui__product-container";
+    productCardContainer.style.order = productData.position;
 
     const price = this.formatPrice(productData.price);
     const ratings = this.createRatingUI(productData.rating);
+    const faviconContainer = await this.createSourceFavicon(productData.source);
 
     const linkWrapper = document.createElement("a");
     linkWrapper.setAttribute("href", productData.link);
     linkWrapper.setAttribute("target", "_blank");
 
     linkWrapper.innerHTML = `
+      <div class="products-ui__product-header">
+        ${faviconContainer.outerHTML}
+        <p class="products-ui__product-source">${productData.source}</p>
+      </div> 
       <div class="products-ui__product-infos">
         <div class="products-ui__product-details">
           <h3>${productData.title}</h3>
@@ -95,6 +101,28 @@ export default class ProductUI {
     productCardContainer.appendChild(linkWrapper);
 
     return productCardContainer;
+  }
+
+  async createSourceFavicon(source) {
+    const { favicon } = getDomainAndFavicon(source);
+    console.log(favicon);
+
+    const faviconContainer = document.createElement("div");
+    faviconContainer.className = "products-ui__product-source-logo";
+
+    await new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = favicon;
+      img.onload = () => {
+        faviconContainer.appendChild(img);
+        resolve();
+      };
+      img.onerror = () => {
+        resolve();
+      };
+    });
+
+    return faviconContainer;
   }
 
   createRatingUI(rating) {
