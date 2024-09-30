@@ -2,7 +2,7 @@ import TaskCardAnimations from "./TaskCardAnimations";
 
 import { API_STATUSES } from "../../constants";
 import { TaskCardInput } from "./TaskCardInput";
-import { PRO_SEARCH_SVG, STATUS_COLORS } from "../taskManagerConstants";
+import { PRO_SEARCH_SVG, STATUS_COLORS, STATUS_PROGRESS_STATES } from "../taskManagerConstants";
 import TaskAccordion from "./TaskAccordion";
 
 export default class TaskManagerCard {
@@ -111,14 +111,25 @@ export default class TaskManagerCard {
       this.initProSearch();
     }
 
-    const div = document.createElement("div");
-    div.classList.add("status-container");
-    div.innerHTML = `
-      <h3 class="status-title">${this.task.status.title}</h3>
-      <p class="status-description">${this.task.status.description}</p>
+    const statusContainer = document.createElement("div");
+
+    statusContainer.className = `proSearch__status-container ${STATUS_PROGRESS_STATES.IDLE}`;
+    statusContainer.innerHTML = `
+      <div class="proSearch__status-side">
+        <div class="proSearch__status-progress ">
+          <div></div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+
+            <path d="M9.25 12.5L11.25 14.5L14.75 9.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <div class="proSearch__status-line"></div>
+      </div>
+      <p class="proSearch__status-description">${this.task.status.description}</p>
     `;
 
-    this.proSearchContainer.appendChild(div);
+    this.proSearchContainer.appendChild(statusContainer);
 
     if (this.task.status.type === API_STATUSES.INPUT_REQUIRED && !this.input) {
       this.input = new TaskCardInput({
