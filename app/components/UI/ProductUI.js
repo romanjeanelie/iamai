@@ -105,8 +105,6 @@ export default class ProductUI {
 
   async createSourceFavicon(source) {
     const { favicon } = getDomainAndFavicon(source);
-    console.log(favicon);
-
     const faviconContainer = document.createElement("div");
     faviconContainer.className = "products-ui__product-source-logo";
 

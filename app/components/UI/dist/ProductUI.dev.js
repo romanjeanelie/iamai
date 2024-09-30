@@ -131,10 +131,9 @@ function () {
           switch (_context3.prev = _context3.next) {
             case 0:
               _getDomainAndFavicon = (0, _getDomainAndFavicon2["default"])(source), favicon = _getDomainAndFavicon.favicon;
-              console.log(favicon);
               faviconContainer = document.createElement("div");
               faviconContainer.className = "products-ui__product-source-logo";
-              _context3.next = 6;
+              _context3.next = 5;
               return regeneratorRuntime.awrap(new Promise(function (resolve, reject) {
                 var img = new Image();
                 img.src = favicon;
@@ -149,10 +148,10 @@ function () {
                 };
               }));
 
-            case 6:
+            case 5:
               return _context3.abrupt("return", faviconContainer);
 
-            case 7:
+            case 6:
             case "end":
               return _context3.stop();
           }

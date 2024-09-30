@@ -66,6 +66,7 @@
 
     @include media("<tablet") {
       padding: 8px var(--padding-x-and-top) 21px;
+      flex-direction: column;
     }
   }
 
@@ -73,7 +74,6 @@
     position: relative;
     z-index: 1;
     width: 50%;
-
     h3 {
       font-size: 15px;
       font-weight: 500;
@@ -81,6 +81,10 @@
       max-height: 40px;
       overflow: hidden;
       text-overflow: ellipsis;
+
+      @include media("<tablet") {
+        height: 40px;
+      }
     }
 
     p {
@@ -92,6 +96,14 @@
       max-height: 54px;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    @include media("<tablet") {
+      order: 1;
+      width: 100%;
+      p {
+        display: none;
+      }
     }
   }
 
@@ -106,7 +118,6 @@
     justify-content: center;
     max-height: 100%;
     border-radius: 15px;
-    object-fit: cover;
     transform: translate(-20px, 16px);
 
     &::after {
@@ -123,9 +134,21 @@
 
     img {
       width: 95%;
-      max-height: 90%;
+      max-height: 100%;
       object-fit: cover;
-      border-radius: 8px;
+      border-radius: 10px;
+    }
+
+    @include media("<tablet") {
+      background: transparent;
+      transform: translate(0, 0);
+      box-shadow: none;
+      width: 60%;
+      margin-bottom: 8px;
+
+      &::after {
+        display: none;
+      }
     }
   }
 }
@@ -136,12 +159,22 @@
   align-items: center;
   border-top: 1px solid #dedede;
   padding: 20px var(--padding-x-and-top);
+
+  @include media("<tablet") {
+    border-top: none;
+    padding: 0 var(--padding-x-and-top) 21px;
+  }
 }
 
 .products-ui__product-price-rating {
   display: flex;
   gap: 16px;
   align-items: center;
+
+  @include media("<tablet") {
+    justify-content: space-between;
+    width: 100%;
+  }
 }
 
 .products-ui__product-price {
@@ -168,10 +201,14 @@
 
   .yellow {
     background: #f2d433;
+
+    @include media("<tablet") {
+      background: $grey-4;
+    }
   }
 
   .grey {
-    background: #dadfe7;
+    background: $grey-2;
     flex-grow: 1;
   }
 }
@@ -181,4 +218,10 @@
   font-size: 13px;
   font-weight: 400;
   line-height: 18px; /* 138.462% */
+}
+
+@include media("<tablet") {
+  .products-ui__product-footer .products-ui__product-source {
+    display: none;
+  }
 }
