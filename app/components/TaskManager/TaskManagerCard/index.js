@@ -1,8 +1,9 @@
 import TaskCardAnimations from "./TaskCardAnimations";
 
-import { STATUS_COLORS } from "..";
 import { API_STATUSES } from "../../constants";
 import { TaskCardInput } from "./TaskCardInput";
+import { PRO_SEARCH_SVG, STATUS_COLORS } from "../taskManagerConstants";
+import TaskAccordion from "./TaskAccordion";
 
 export default class TaskManagerCard {
   constructor(task, taskManager, emitter) {
@@ -30,6 +31,7 @@ export default class TaskManagerCard {
 
     // Init Methods
     this.initUI();
+    this.accordion = new TaskAccordion({ container: this.fullscreenState });
     this.addEventListeners();
 
     if (this.debug) {
@@ -100,11 +102,13 @@ export default class TaskManagerCard {
   }
 
   // Update the state
+  initProSearch() {
+    this.proSearchContainer = this.accordion.addNewPanel("Pro Search", PRO_SEARCH_SVG);
+  }
+
   addStatus() {
-    if (!this.statusesContainer) {
-      this.statusesContainer = document.createElement("div");
-      this.statusesContainer.classList.add("statuses-container");
-      this.fullscreenState.appendChild(this.statusesContainer);
+    if (!this.proSearchContainer) {
+      this.initProSearch();
     }
 
     const div = document.createElement("div");
@@ -114,7 +118,7 @@ export default class TaskManagerCard {
       <p class="status-description">${this.task.status.description}</p>
     `;
 
-    this.statusesContainer.appendChild(div);
+    this.proSearchContainer.appendChild(div);
 
     if (this.task.status.type === API_STATUSES.INPUT_REQUIRED && !this.input) {
       this.input = new TaskCardInput({
@@ -129,7 +133,7 @@ export default class TaskManagerCard {
 
   addResult() {
     if (this.task.resultsContainer instanceof Node) {
-      this.statusesContainer?.remove();
+      this.proSearchContainer?.remove();
       this.fullscreenState?.appendChild(this.task.resultsContainer);
     } else {
       console.error("resultsContainer is not a valid DOM Node", this.task.resultsContainer);
@@ -166,9 +170,9 @@ export default class TaskManagerCard {
     if (this.isExpanded) return;
     this.isExpanded = true;
     this.animations.cardToFullScreen(this.index, () => {
-      // if (!this.debug) {
-      document.addEventListener("click", this.handleClickOutside);
-      // }
+      if (!this.debug) {
+        document.addEventListener("click", this.handleClickOutside);
+      }
       this.fullscreenContainer.classList.add("active");
       this.input?.updatePosition();
     });

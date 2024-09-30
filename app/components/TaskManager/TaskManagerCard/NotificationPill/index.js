@@ -1,3 +1,5 @@
+import { STATUS_COLORS } from "../../taskManagerConstants";
+
 export class NotificationPill {
   constructor(taskKey, status, duration = 1500000) {
     this.taskKey = taskKey;

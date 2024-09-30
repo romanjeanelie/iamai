@@ -1,0 +1,63 @@
+.task-accordion__container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 16px;
+  border-radius: 20px;
+  border: 0.5px solid rgba($colorLight, 0.4);
+  padding: 20px 16px 0px;
+  background: linear-gradient(180deg, rgba(248, 248, 248, 0.5) 0%, rgba(255, 255, 255, 0.5) 100%);
+  overflow: hidden;
+
+  @include media("<tablet") {
+    padding: 0;
+    background: transparent;
+    border: none;
+  }
+}
+
+.task-accordion__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .task-accordion__header-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .task-accordion__header-title {
+    color: $grey-4;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 20px; /* 166.667% */
+    letter-spacing: 0.48px;
+    text-transform: uppercase;
+  }
+
+  .task-accordion__header-chevron {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 36px;
+    border: 1px solid #cfd1dc;
+    transition: transform 0.3s $ease-out;
+
+    &.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+}
+
+.task-accordion__content {
+  transition: max-height 0.3s $ease-in-out;
+  overflow: hidden;
+}
+
+.active .task-accordion__header-chevron {
+  transform: rotate(180deg);
+}

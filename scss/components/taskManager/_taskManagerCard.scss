@@ -1,3 +1,5 @@
+@import "./taskAccordion";
+
 // ------ Task Card : CARD VIEW ------
 .task-manager__task-card {
   width: 100%;
@@ -123,22 +125,11 @@
   .discussion__userspan {
     align-self: flex-end;
     max-width: 65%;
+    border-radius: 16px 16px 4px 16px;
   }
 
-  .statuses-container {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .sources-container {
-    order: 0;
-  }
-
+  // -------- ProSearch (= Statuses) ------
   .status-container {
-    order: 1;
-
     .status-title {
       font-size: 15px;
       font-weight: 500;
@@ -156,21 +147,6 @@
   .sources-container {
     position: relative;
     padding-bottom: 24px;
-
-    &::after {
-      content: "";
-      position: absolute;
-      display: block;
-      width: 100%;
-      height: 1px;
-      bottom: 0;
-      left: 0;
-      background-color: $colorLight;
-    }
-
-    &:last-of-type::after {
-      display: none;
-    }
   }
 }
 

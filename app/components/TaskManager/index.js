@@ -1,24 +1,14 @@
 import gsap from "gsap";
 import Flip from "gsap/Flip";
 
-import { productResultData } from "../../../testData";
 import fetcher from "../../utils/fetcher";
 import { API_STATUSES, URL_DELETE_STATUS } from "../constants";
 import { store } from "../store";
-import ProductUI from "../UI/ProductUI";
 import TaskManagerAnimations from "./TaskManagerAnimations";
 import TaskManagerButton from "./TaskManagerButton";
 import TaskManagerCard from "./TaskManagerCard";
 import { NotificationPill } from "./TaskManagerCard/NotificationPill";
 import TaskManagerDebug from "./TaskManagerCard/TaskManagerDebug";
-
-export const STATUS_COLORS = {
-  [API_STATUSES.PROGRESSING]: "rgba(149, 159, 177, 0.14)",
-  [API_STATUSES.INPUT_REQUIRED]:
-    "linear-gradient(70deg, rgba(227, 207, 28, 0.30) -10.29%, rgba(225, 135, 30, 0.30) 105%)",
-  [API_STATUSES.ENDED]: "linear-gradient(70deg, rgba(116, 225, 30, 0.30) -10.29%, rgba(28, 204, 227, 0.30) 105%)",
-  [API_STATUSES.VIEWED]: "linear-gradient(70deg, rgba(116, 225, 30, 0.30) -10.29%, rgba(28, 204, 227, 0.30) 105%)",
-};
 
 gsap.registerPlugin(Flip);
 
@@ -50,9 +40,15 @@ export default class TaskManager {
     this.debug = import.meta.env.VITE_DEBUG === "true";
     if (this.debug) {
       this.debugger = new TaskManagerDebug(this);
-      const productCards = new ProductUI(productResultData);
 
       this.debugger.addDebugTask();
+
+      this.onStatusUpdate(this.tasks[0].key, {
+        type: API_STATUSES.PROGRESSING,
+        title: "Progressing",
+        description:
+          " Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi maiores, culpa architecto enim autem iusto! Maxime sunt explicabo pariatur corporis accusantium, voluptas excepturi quam inventore dicta, consequatur soluta ipsam doloremque? ",
+      });
     }
   }
 
