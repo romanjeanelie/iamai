@@ -43,6 +43,7 @@ function () {
       var _this = this;
 
       var panelContainer = document.createElement("div");
+      panelContainer.setAttribute("data-title", title);
       panelContainer.className = "task-accordion__container active"; // Insert the panel Header
 
       var header = document.createElement("div");
@@ -54,7 +55,7 @@ function () {
       chevron.className = "task-accordion__header-chevron hidden";
       chevron.innerHTML = "\n      <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"12\" height=\"7\" viewBox=\"0 0 12 7\" fill=\"none\">\n        <path d=\"M11 1L6 6L1 0.999999\" stroke=\"#676E7F\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n      </svg>\n    ";
       chevron.addEventListener("click", function () {
-        _this.togglePanel(panelContainer);
+        _this.togglePanel(title);
       });
       header.appendChild(label);
       header.appendChild(chevron);
@@ -69,7 +70,10 @@ function () {
     }
   }, {
     key: "togglePanel",
-    value: function togglePanel(panelContainer) {
+    value: function togglePanel(panelTitle) {
+      var panelContainer = this.panels.find(function (panel) {
+        return panel.getAttribute("data-title") === panelTitle;
+      });
       var panelContent = panelContainer.querySelector(".task-accordion__content");
 
       if (panelContainer.classList.contains("active")) {
@@ -93,13 +97,12 @@ function () {
       this.activePanel = panelContainer.classList.contains("active") ? panelContainer : null;
     }
   }, {
-    key: "toggleChevrons",
-    value: function toggleChevrons() {
+    key: "displayChevrons",
+    value: function displayChevrons() {
       this.panels.forEach(function (panel) {
         var chevron = panel.querySelector(".task-accordion__header-chevron");
-        chevron.classList.toggle("hidden");
+        chevron.classList.remove("hidden");
       });
-      this.togglePanel(this.panels[this.panels.length - 1]);
     } // Method to update panel height dynamically if content changes
 
   }, {

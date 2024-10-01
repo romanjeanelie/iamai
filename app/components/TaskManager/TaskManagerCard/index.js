@@ -218,7 +218,7 @@ export default class TaskManagerCard {
 
     if (this.task.resultsContainer instanceof Node) {
       this.resultsContainer.appendChild(this.task.resultsContainer);
-      this.accordion.toggleChevrons();
+      this.accordion.displayChevrons();
     } else {
       console.error("resultsContainer is not a valid DOM Node", this.task.resultsContainer);
     }

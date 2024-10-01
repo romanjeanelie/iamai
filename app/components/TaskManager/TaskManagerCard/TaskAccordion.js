@@ -21,6 +21,7 @@ export default class TaskAccordion {
 
   addNewPanel(title, imgSrc) {
     const panelContainer = document.createElement("div");
+    panelContainer.setAttribute("data-title", title);
     panelContainer.className = "task-accordion__container active";
 
     // Insert the panel Header
@@ -45,7 +46,7 @@ export default class TaskAccordion {
     `;
 
     chevron.addEventListener("click", () => {
-      this.togglePanel(panelContainer);
+      this.togglePanel(title);
     });
 
     header.appendChild(label);
@@ -65,7 +66,8 @@ export default class TaskAccordion {
     return content;
   }
 
-  togglePanel(panelContainer) {
+  togglePanel(panelTitle) {
+    const panelContainer = this.panels.find((panel) => panel.getAttribute("data-title") === panelTitle);
     const panelContent = panelContainer.querySelector(".task-accordion__content");
 
     if (panelContainer.classList.contains("active")) {
@@ -90,13 +92,11 @@ export default class TaskAccordion {
     this.activePanel = panelContainer.classList.contains("active") ? panelContainer : null;
   }
 
-  toggleChevrons() {
+  displayChevrons() {
     this.panels.forEach((panel) => {
       const chevron = panel.querySelector(".task-accordion__header-chevron");
-      chevron.classList.toggle("hidden");
+      chevron.classList.remove("hidden");
     });
-
-    this.togglePanel(this.panels[this.panels.length - 1]);
   }
 
   // Method to update panel height dynamically if content changes
