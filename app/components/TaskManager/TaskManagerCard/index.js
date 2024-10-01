@@ -129,12 +129,6 @@ export default class TaskManagerCard {
   }
 
   addSubStatus(statusContainer) {
-    const testDataSubStatus = [
-      "On the other hand, we denounce with righteous indignation",
-      "On the other hand, we denounce with righteous indignation",
-      "On the other hand, we denounce with righteous indignation",
-    ];
-
     // HTML structure to display status
     const maxVisibleStatuses = 2; // Number of statuses to display before showing "+1 more"
 
