@@ -242,8 +242,6 @@ export default class TaskManagerCard {
       this.card.classList.remove("input-required");
       this.addStatus();
     }
-
-    this.accordion.updatePanelHeight();
   }
 
   // From card to fullscreen

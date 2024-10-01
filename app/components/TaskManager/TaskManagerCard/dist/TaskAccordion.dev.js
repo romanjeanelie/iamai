@@ -42,7 +42,6 @@ function () {
     value: function addNewPanel(title, imgSrc) {
       var _this = this;
 
-      // this.closeActivePanel();
       var panelContainer = document.createElement("div");
       panelContainer.className = "task-accordion__container active"; // Insert the panel Header
 

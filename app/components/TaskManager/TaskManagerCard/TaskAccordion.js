@@ -20,7 +20,6 @@ export default class TaskAccordion {
   }
 
   addNewPanel(title, imgSrc) {
-    // this.closeActivePanel();
     const panelContainer = document.createElement("div");
     panelContainer.className = "task-accordion__container active";
 

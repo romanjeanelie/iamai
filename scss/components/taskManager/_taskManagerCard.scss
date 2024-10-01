@@ -156,12 +156,9 @@
   .proSearch__status-line {
     flex: none;
     width: 1px;
-    height: calc(100% - 24px - 12px + 10px);
+    height: calc(100% - 24px - 10px);
+    margin-right: 0.5px;
     background: #cfd1dc;
-  }
-
-  .proSearch__status-container {
-    border: 1px green;
   }
 
   .proSearch__status-wrapper {
@@ -202,7 +199,7 @@
   }
 
   .proSearch__status-content {
-    margin: 8px 0;
+    margin: 8px 0 0;
     display: flex;
     flex-direction: column;
     gap: 8px;
