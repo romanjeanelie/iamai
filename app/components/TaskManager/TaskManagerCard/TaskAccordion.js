@@ -6,13 +6,21 @@ export default class TaskAccordion {
     this.panels = [];
     this.activePanel = null;
 
-    // DOM Elements
-
     // Init Methods
     this.addListeners();
   }
 
-  addNewPanel(title, svgContent) {
+  closeActivePanel() {
+    // Deactivate the previously active panel
+    if (this.activePanel) {
+      this.activePanel.classList.remove("active");
+      const activeContent = this.activePanel.querySelector(".task-accordion__content");
+      if (activeContent) activeContent.style.maxHeight = 0; // Close the content of the previously active panel
+    }
+  }
+
+  addNewPanel(title, imgSrc) {
+    // this.closeActivePanel();
     const panelContainer = document.createElement("div");
     panelContainer.className = "task-accordion__container active";
 
@@ -23,12 +31,14 @@ export default class TaskAccordion {
     const label = document.createElement("div");
     label.classList.add("task-accordion__header-label");
     label.innerHTML = `
-      ${svgContent}
+      <div class = "task-accordion__header-icon">
+        <img src="${imgSrc}" alt="header-icon" />
+      </div>
       <h3 class="task-accordion__header-title">${title}</h3>
     `;
 
     const chevron = document.createElement("button");
-    chevron.classList.add("task-accordion__header-chevron");
+    chevron.className = "task-accordion__header-chevron hidden";
     chevron.innerHTML = `
       <svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none">
         <path d="M11 1L6 6L1 0.999999" stroke="#676E7F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -79,6 +89,15 @@ export default class TaskAccordion {
     // Toggle the active state
     panelContainer.classList.toggle("active");
     this.activePanel = panelContainer.classList.contains("active") ? panelContainer : null;
+  }
+
+  toggleChevrons() {
+    this.panels.forEach((panel) => {
+      const chevron = panel.querySelector(".task-accordion__header-chevron");
+      chevron.classList.toggle("hidden");
+    });
+
+    this.togglePanel(this.panels[this.panels.length - 1]);
   }
 
   // Method to update panel height dynamically if content changes

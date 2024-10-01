@@ -225,8 +225,6 @@ export default class TaskManager {
     const taskIndex = this.tasks.findIndex((task) => task.key === taskKey);
     if (taskIndex === -1) return;
 
-    if (this.tasks[taskIndex].status.type === API_STATUSES.ENDED) return;
-
     this.tasks[taskIndex].status = status;
     this.button.handleTaskButton();
 

@@ -61,16 +61,20 @@ export default class History {
     // Emit the task creation
     this.emitter.emit("taskManager:createTask", initialTask, textAI);
 
-    // Handle the task status update if needed
-    const lastStatus = statuses.results.find((result) => result.status === statuses.lastStatus);
-
-    if ([API_STATUSES.ENDED, API_STATUSES.VIEWED].includes(statuses.lastStatus)) {
-      this.updateTaskStatus(lastStatus, initialTask, resultsContainer, statuses);
-    } else {
-      statuses.results.forEach((result) => {
-        this.updateTaskStatus(result, initialTask, resultsContainer);
-      });
+    // put the user_viewed or agent_ended status at the end of the statuses array
+    const userViewedStatus = statuses.results.find((result) => result.status === "user_viewed");
+    const agentEndedStatus = statuses.results.find((result) => result.status === "agent_ended");
+    if (userViewedStatus) {
+      statuses.results = statuses.results.filter((result) => result.status !== "user_viewed");
+      statuses.results.push(userViewedStatus);
+    } else if (agentEndedStatus) {
+      statuses.results = statuses.results.filter((result) => result.status !== "agent_ended");
+      statuses.results.push(agentEndedStatus);
     }
+
+    statuses.results.forEach((result) => {
+      this.updateTaskStatus(result, initialTask, resultsContainer, statuses);
+    });
   }
 
   createInitialTask(firstStatus) {
@@ -98,7 +102,7 @@ export default class History {
         break;
 
       case API_STATUSES.VIEWED:
-        const agentAnsweredResult = statuses.results.find((result) => result.status === "agent_answered");
+        const agentAnsweredResult = statuses?.results.find((result) => result.status === "agent_answered");
         this.handleViewedStatus(initialTask, agentAnsweredResult, resultsContainer);
         break;
     }
@@ -349,8 +353,9 @@ export default class History {
   async getHistory({ uuid, user, size = 3 }) {
     this.isFetching = true;
     // Get elements
-    const elements = await this.getAllElements({ uuid, user, size, start: this.newStart });
+    const elements = await this.getAllElements({ uuid, user, size: 1, start: this.newStart });
     // Reverse the order of elements
+
     elements.results.reverse();
 
     elements.results.forEach((element) => {

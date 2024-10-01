@@ -22,17 +22,27 @@ function () {
     this.container = container; // States
 
     this.panels = [];
-    this.activePanel = null; // DOM Elements
-    // Init Methods
+    this.activePanel = null; // Init Methods
 
     this.addListeners();
   }
 
   _createClass(TaskAccordion, [{
+    key: "closeActivePanel",
+    value: function closeActivePanel() {
+      // Deactivate the previously active panel
+      if (this.activePanel) {
+        this.activePanel.classList.remove("active");
+        var activeContent = this.activePanel.querySelector(".task-accordion__content");
+        if (activeContent) activeContent.style.maxHeight = 0; // Close the content of the previously active panel
+      }
+    }
+  }, {
     key: "addNewPanel",
-    value: function addNewPanel(title, svgContent) {
+    value: function addNewPanel(title, imgSrc) {
       var _this = this;
 
+      // this.closeActivePanel();
       var panelContainer = document.createElement("div");
       panelContainer.className = "task-accordion__container active"; // Insert the panel Header
 
@@ -40,9 +50,9 @@ function () {
       header.classList.add("task-accordion__header");
       var label = document.createElement("div");
       label.classList.add("task-accordion__header-label");
-      label.innerHTML = "\n      ".concat(svgContent, "\n      <h3 class=\"task-accordion__header-title\">").concat(title, "</h3>\n    ");
+      label.innerHTML = "\n      <div class = \"task-accordion__header-icon\">\n        <img src=\"".concat(imgSrc, "\" alt=\"header-icon\" />\n      </div>\n      <h3 class=\"task-accordion__header-title\">").concat(title, "</h3>\n    ");
       var chevron = document.createElement("button");
-      chevron.classList.add("task-accordion__header-chevron");
+      chevron.className = "task-accordion__header-chevron hidden";
       chevron.innerHTML = "\n      <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"12\" height=\"7\" viewBox=\"0 0 12 7\" fill=\"none\">\n        <path d=\"M11 1L6 6L1 0.999999\" stroke=\"#676E7F\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n      </svg>\n    ";
       chevron.addEventListener("click", function () {
         _this.togglePanel(panelContainer);
@@ -82,6 +92,15 @@ function () {
 
       panelContainer.classList.toggle("active");
       this.activePanel = panelContainer.classList.contains("active") ? panelContainer : null;
+    }
+  }, {
+    key: "toggleChevrons",
+    value: function toggleChevrons() {
+      this.panels.forEach(function (panel) {
+        var chevron = panel.querySelector(".task-accordion__header-chevron");
+        chevron.classList.toggle("hidden");
+      });
+      this.togglePanel(this.panels[this.panels.length - 1]);
     } // Method to update panel height dynamically if content changes
 
   }, {

@@ -2,7 +2,7 @@ import TaskCardAnimations from "./TaskCardAnimations";
 
 import { API_STATUSES } from "../../constants";
 import { TaskCardInput } from "./TaskCardInput";
-import { PRO_SEARCH_SVG, STATUS_COLORS, STATUS_PROGRESS_STATES } from "../taskManagerConstants";
+import { STATUS_COLORS, STATUS_PROGRESS_STATES } from "../taskManagerConstants";
 import TaskAccordion from "./TaskAccordion";
 
 export default class TaskManagerCard {
@@ -103,7 +103,11 @@ export default class TaskManagerCard {
 
   // Update the state
   initProSearch() {
-    this.proSearchContainer = this.accordion.addNewPanel("Pro Search", PRO_SEARCH_SVG);
+    this.proSearchContainer = this.accordion.addNewPanel("Pro Search", "/icons/blue-sparkles.png");
+  }
+
+  initResultsContainer() {
+    this.resultsContainer = this.accordion.addNewPanel("Answer", "/icons/blue-magic-wand.png");
   }
 
   addStatus() {
@@ -119,7 +123,6 @@ export default class TaskManagerCard {
         <div class="proSearch__status-progress ">
           <div></div>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-
             <path d="M9.25 12.5L11.25 14.5L14.75 9.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
@@ -143,9 +146,13 @@ export default class TaskManagerCard {
   }
 
   addResult() {
+    if (!this.resultsContainer) {
+      this.initResultsContainer();
+    }
+
     if (this.task.resultsContainer instanceof Node) {
-      this.proSearchContainer?.remove();
-      this.fullscreenState?.appendChild(this.task.resultsContainer);
+      this.resultsContainer.appendChild(this.task.resultsContainer);
+      this.accordion.toggleChevrons();
     } else {
       console.error("resultsContainer is not a valid DOM Node", this.task.resultsContainer);
     }
@@ -161,7 +168,6 @@ export default class TaskManagerCard {
       this.addResult();
       this.card.classList.add("completed");
     } else if (this.task.status?.type === API_STATUSES.VIEWED) {
-      this.addResult();
       this.card.classList.remove("completed");
     } else if (this.task.status?.type === API_STATUSES.INPUT_REQUIRED) {
       this.card.classList.add("input-required");
@@ -181,9 +187,9 @@ export default class TaskManagerCard {
     if (this.isExpanded) return;
     this.isExpanded = true;
     this.animations.cardToFullScreen(this.index, () => {
-      if (!this.debug) {
-        document.addEventListener("click", this.handleClickOutside);
-      }
+      // if (!this.debug) {
+      document.addEventListener("click", this.handleClickOutside);
+      // }
       this.fullscreenContainer.classList.add("active");
       this.input?.updatePosition();
     });
