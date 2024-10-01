@@ -28,23 +28,13 @@ function () {
   }
 
   _createClass(TaskAccordion, [{
-    key: "closeActivePanel",
-    value: function closeActivePanel() {
-      // Deactivate the previously active panel
-      if (this.activePanel) {
-        this.activePanel.classList.remove("active");
-        var activeContent = this.activePanel.querySelector(".task-accordion__content");
-        if (activeContent) activeContent.style.maxHeight = 0; // Close the content of the previously active panel
-      }
-    }
-  }, {
     key: "addNewPanel",
     value: function addNewPanel(title, imgSrc) {
       var _this = this;
 
       var panelContainer = document.createElement("div");
       panelContainer.setAttribute("data-title", title);
-      panelContainer.className = "task-accordion__container active"; // Insert the panel Header
+      panelContainer.className = "task-accordion__container"; // Insert the panel Header
 
       var header = document.createElement("div");
       header.classList.add("task-accordion__header");
@@ -65,7 +55,6 @@ function () {
       panelContainer.appendChild(content);
       this.panels.push(panelContainer);
       this.container.appendChild(panelContainer);
-      this.activePanel = panelContainer;
       return content;
     }
   }, {
@@ -74,27 +63,27 @@ function () {
       var panelContainer = this.panels.find(function (panel) {
         return panel.getAttribute("data-title") === panelTitle;
       });
+      this.activePanel = !panelContainer.classList.contains("active") ? panelContainer : null;
       var panelContent = panelContainer.querySelector(".task-accordion__content");
 
-      if (panelContainer.classList.contains("active")) {
+      if (!this.activePanel) {
         // Close the panel
         panelContent.style.maxHeight = 0;
       } else {
-        // Open the panel
-        panelContent.style.maxHeight = panelContent.scrollHeight + "px"; // Close any previously opened panel
+        // Close any previously opened panel
+        this.panels.forEach(function (panel) {
+          var content = panel.querySelector(".task-accordion__content");
+          content.style.maxHeight = 0;
+          var chevron = panel.querySelector(".task-accordion__header-chevron");
+          chevron.classList.remove("open");
+          panel.classList.remove("active");
+        }); // Open the panel
 
-        if (this.activePanel && this.activePanel !== panelContainer) {
-          var activeContent = this.activePanel.querySelector(".task-accordion__content");
-          activeContent.style.maxHeight = 0;
-          var activeChevron = this.activePanel.querySelector(".task-accordion__header-chevron");
-          activeChevron.classList.remove("open");
-          this.activePanel.classList.remove("active");
-        }
+        panelContent.style.maxHeight = panelContent.scrollHeight + "px";
       } // Toggle the active state
 
 
       panelContainer.classList.toggle("active");
-      this.activePanel = panelContainer.classList.contains("active") ? panelContainer : null;
     }
   }, {
     key: "displayChevrons",

@@ -10,19 +10,10 @@ export default class TaskAccordion {
     this.addListeners();
   }
 
-  closeActivePanel() {
-    // Deactivate the previously active panel
-    if (this.activePanel) {
-      this.activePanel.classList.remove("active");
-      const activeContent = this.activePanel.querySelector(".task-accordion__content");
-      if (activeContent) activeContent.style.maxHeight = 0; // Close the content of the previously active panel
-    }
-  }
-
   addNewPanel(title, imgSrc) {
     const panelContainer = document.createElement("div");
     panelContainer.setAttribute("data-title", title);
-    panelContainer.className = "task-accordion__container active";
+    panelContainer.className = "task-accordion__container";
 
     // Insert the panel Header
     const header = document.createElement("div");
@@ -61,35 +52,33 @@ export default class TaskAccordion {
     this.panels.push(panelContainer);
     this.container.appendChild(panelContainer);
 
-    this.activePanel = panelContainer;
-
     return content;
   }
 
   togglePanel(panelTitle) {
     const panelContainer = this.panels.find((panel) => panel.getAttribute("data-title") === panelTitle);
+    this.activePanel = !panelContainer.classList.contains("active") ? panelContainer : null;
     const panelContent = panelContainer.querySelector(".task-accordion__content");
 
-    if (panelContainer.classList.contains("active")) {
+    if (!this.activePanel) {
       // Close the panel
       panelContent.style.maxHeight = 0;
     } else {
+      // Close any previously opened panel
+      this.panels.forEach((panel) => {
+        const content = panel.querySelector(".task-accordion__content");
+        content.style.maxHeight = 0;
+        const chevron = panel.querySelector(".task-accordion__header-chevron");
+        chevron.classList.remove("open");
+        panel.classList.remove("active");
+      });
+
       // Open the panel
       panelContent.style.maxHeight = panelContent.scrollHeight + "px";
-
-      // Close any previously opened panel
-      if (this.activePanel && this.activePanel !== panelContainer) {
-        const activeContent = this.activePanel.querySelector(".task-accordion__content");
-        activeContent.style.maxHeight = 0;
-        const activeChevron = this.activePanel.querySelector(".task-accordion__header-chevron");
-        activeChevron.classList.remove("open");
-        this.activePanel.classList.remove("active");
-      }
     }
 
     // Toggle the active state
     panelContainer.classList.toggle("active");
-    this.activePanel = panelContainer.classList.contains("active") ? panelContainer : null;
   }
 
   displayChevrons() {

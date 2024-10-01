@@ -8,6 +8,11 @@ export const STATUS_COLORS = {
   [API_STATUSES.VIEWED]: "linear-gradient(70deg, rgba(116, 225, 30, 0.30) -10.29%, rgba(28, 204, 227, 0.30) 105%)",
 };
 
+export const TASK_PANELS = {
+  PROSEARCH: "Pro Search",
+  ANSWER: "Answer",
+};
+
 export const STATUS_PROGRESS_STATES = {
   IDLE: "idle",
   PROGRESSING: "progressing",

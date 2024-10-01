@@ -2,7 +2,7 @@ import TaskCardAnimations from "./TaskCardAnimations";
 
 import { API_STATUSES } from "../../constants";
 import { TaskCardInput } from "./TaskCardInput";
-import { STATUS_COLORS, STATUS_PROGRESS_STATES } from "../taskManagerConstants";
+import { STATUS_COLORS, STATUS_PROGRESS_STATES, TASK_PANELS } from "../taskManagerConstants";
 import TaskAccordion from "./TaskAccordion";
 
 const testDataSubStatus = [
@@ -109,11 +109,11 @@ export default class TaskManagerCard {
 
   // Update the state
   initProSearch() {
-    this.proSearchContainer = this.accordion.addNewPanel("Pro Search", "/icons/blue-sparkles.png");
+    this.proSearchContainer = this.accordion.addNewPanel(TASK_PANELS.PROSEARCH, "/icons/blue-sparkles.png");
   }
 
   initResultsContainer() {
-    this.resultsContainer = this.accordion.addNewPanel("Answer", "/icons/blue-magic-wand.png");
+    this.resultsContainer = this.accordion.addNewPanel(TASK_PANELS.ANSWER, "/icons/blue-magic-wand.png");
   }
 
   handleInput() {
@@ -218,10 +218,12 @@ export default class TaskManagerCard {
 
     if (this.task.resultsContainer instanceof Node) {
       this.resultsContainer.appendChild(this.task.resultsContainer);
-      this.accordion.displayChevrons();
     } else {
       console.error("resultsContainer is not a valid DOM Node", this.task.resultsContainer);
     }
+
+    this.accordion.displayChevrons();
+    this.accordion.togglePanel(TASK_PANELS.ANSWER);
   }
 
   updateTaskUI(taskData = null) {
