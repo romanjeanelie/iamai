@@ -1,4 +1,4 @@
-import { API_STATUSES } from "../../constants";
+import { API_STATUSES } from "../constants";
 
 const defaultValues = {
   [API_STATUSES.PROGRESSING]: {

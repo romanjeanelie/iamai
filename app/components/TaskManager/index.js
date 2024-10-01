@@ -8,7 +8,7 @@ import TaskManagerAnimations from "./TaskManagerAnimations";
 import TaskManagerButton from "./TaskManagerButton";
 import TaskManagerCard from "./TaskManagerCard";
 import { NotificationPill } from "./TaskManagerCard/NotificationPill";
-import TaskManagerDebug from "./TaskManagerCard/TaskManagerDebug";
+import TaskManagerDebug from "./TaskManagerDebug";
 
 gsap.registerPlugin(Flip);
 
