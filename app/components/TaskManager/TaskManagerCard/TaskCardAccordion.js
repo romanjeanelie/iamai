@@ -1,4 +1,4 @@
-export default class TaskAccordion {
+export default class TaskCardAccordion {
   constructor({ container }) {
     this.container = container;
 

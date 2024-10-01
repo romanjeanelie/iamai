@@ -3,7 +3,7 @@ import TaskCardAnimations from "./TaskCardAnimations";
 import { API_STATUSES } from "../../constants";
 import { TaskCardInput } from "./TaskCardInput";
 import { STATUS_COLORS, STATUS_PROGRESS_STATES, TASK_PANELS } from "../taskManagerConstants";
-import TaskAccordion from "./TaskAccordion";
+import TaskCardAccordion from "./TaskCardAccordion";
 
 const testDataSubStatus = [
   "lorem ipsum dolor sit amet consectetur adipiscing elit",
@@ -37,7 +37,7 @@ export default class TaskManagerCard {
 
     // Init Methods
     this.initUI();
-    this.accordion = new TaskAccordion({ container: this.fullscreenState });
+    this.accordion = new TaskCardAccordion({ container: this.fullscreenState });
     this.addEventListeners();
 
     if (this.debug) {
