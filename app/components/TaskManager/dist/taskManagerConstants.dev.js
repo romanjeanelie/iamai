@@ -15,6 +15,7 @@ var STATUS_COLORS = (_STATUS_COLORS = {}, _defineProperty(_STATUS_COLORS, _const
 exports.STATUS_COLORS = STATUS_COLORS;
 var TASK_PANELS = {
   PROSEARCH: "Pro Search",
+  SOURCES: "Sources",
   ANSWER: "Answer"
 };
 exports.TASK_PANELS = TASK_PANELS;

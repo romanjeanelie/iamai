@@ -10,6 +10,7 @@ export const STATUS_COLORS = {
 
 export const TASK_PANELS = {
   PROSEARCH: "Pro Search",
+  SOURCES: "Sources",
   ANSWER: "Answer",
 };
 
