@@ -5,6 +5,12 @@ import { TaskCardInput } from "./TaskCardInput";
 import { STATUS_COLORS, STATUS_PROGRESS_STATES } from "../taskManagerConstants";
 import TaskAccordion from "./TaskAccordion";
 
+const testDataSubStatus = [
+  "lorem ipsum dolor sit amet consectetur adipiscing elit",
+  "lorem ipsum dolor sit amet consectetur adipiscing elit",
+  "lorem ipsum dolor sit amet consectetur adipiscing elit",
+];
+
 export default class TaskManagerCard {
   constructor(task, taskManager, emitter) {
     this.task = task;
@@ -110,6 +116,62 @@ export default class TaskManagerCard {
     this.resultsContainer = this.accordion.addNewPanel("Answer", "/icons/blue-magic-wand.png");
   }
 
+  handleInput() {
+    if (this.task.status.type === API_STATUSES.INPUT_REQUIRED && !this.input) {
+      this.input = new TaskCardInput({
+        taskCard: this,
+        emitter: this.emitter,
+      });
+    } else if (this.task.status.type !== API_STATUSES.INPUT_REQUIRED && this.input) {
+      this.input.dispose();
+      this.input = null;
+    }
+  }
+
+  addSubStatus(statusContainer) {
+    const testDataSubStatus = [
+      "On the other hand, we denounce with righteous indignation",
+      "On the other hand, we denounce with righteous indignation",
+      "On the other hand, we denounce with righteous indignation",
+    ];
+
+    // HTML structure to display status
+    const maxVisibleStatuses = 2; // Number of statuses to display before showing "+1 more"
+
+    let displayedStatuses = testDataSubStatus
+      .slice(0, maxVisibleStatuses)
+      .map(
+        (status) => `
+        <div class="proSearch__substatus">
+          <span class="proSearch__substatus-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M18 18L15.0375 15.0375M16.5 11.25C16.5 14.1495 14.1495 16.5 11.25 16.5C8.35051 16.5 6 14.1495 6 11.25C6 8.35051 8.35051 6 11.25 6C14.1495 6 16.5 8.35051 16.5 11.25Z" stroke="#959FB1" stroke-width="1.5" stroke-linecap="square"/>
+            </svg>
+          </span>
+          <span class="proSearch__substatus-text">${status}</span>
+        </div>
+      `
+      )
+      .join("");
+
+    // Add a "+X more" indicator if there are more hidden statuses
+    const hiddenStatusCount = testDataSubStatus.length - maxVisibleStatuses;
+    if (hiddenStatusCount > 0) {
+      displayedStatuses += `
+          <div class="proSearch__sub-status more-substatus">
+            +${hiddenStatusCount} more
+          </div>
+        `;
+    }
+
+    statusContainer.innerHTML = `
+        <h4 class="proSearch__substatus-title"> Searching...</h4>
+        <div class="proSearch__substatus-list">
+          ${displayedStatuses}
+        </div>
+      `;
+  }
+
   addStatus() {
     if (!this.proSearchContainer) {
       this.initProSearch();
@@ -129,20 +191,30 @@ export default class TaskManagerCard {
 
         <div class="proSearch__status-line"></div>
       </div>
-      <p class="proSearch__status-description">${this.task.status.description}</p>
     `;
 
-    this.proSearchContainer.appendChild(statusContainer);
+    const statusWrapper = document.createElement("div");
+    statusWrapper.className = "proSearch__status-wrapper";
+    statusWrapper.innerHTML = `
+      <div class="proSearch__status-header">
+        <p class="proSearch__status-description">${this.task.status.description}</p>
+        <button class="proSearch__status-chevron">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none">
+            <path d="M11 1L6 6L1 0.999999" stroke="#676E7F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    `;
 
-    if (this.task.status.type === API_STATUSES.INPUT_REQUIRED && !this.input) {
-      this.input = new TaskCardInput({
-        taskCard: this,
-        emitter: this.emitter,
-      });
-    } else if (this.task.status.type !== API_STATUSES.INPUT_REQUIRED && this.input) {
-      this.input.dispose();
-      this.input = null;
-    }
+    const statusContent = document.createElement("div");
+    statusContent.className = "proSearch__status-content";
+
+    statusWrapper.appendChild(statusContent);
+    statusContainer.appendChild(statusWrapper);
+
+    this.addSubStatus(statusContent);
+    this.proSearchContainer.appendChild(statusContainer);
+    this.handleInput();
   }
 
   addResult() {
@@ -176,10 +248,8 @@ export default class TaskManagerCard {
       this.card.classList.remove("input-required");
       this.addStatus();
     }
-  }
 
-  removeTaskUI() {
-    this.cardContainer.remove();
+    this.accordion.updatePanelHeight();
   }
 
   // From card to fullscreen
@@ -187,9 +257,9 @@ export default class TaskManagerCard {
     if (this.isExpanded) return;
     this.isExpanded = true;
     this.animations.cardToFullScreen(this.index, () => {
-      // if (!this.debug) {
-      document.addEventListener("click", this.handleClickOutside);
-      // }
+      if (!this.debug) {
+        document.addEventListener("click", this.handleClickOutside);
+      }
       this.fullscreenContainer.classList.add("active");
       this.input?.updatePosition();
     });
@@ -219,13 +289,6 @@ export default class TaskManagerCard {
     this.emitter.emit("taskManager:taskRead", this.task.key);
   }
 
-  addEventListeners() {
-    this.card.addEventListener("click", () => {
-      this.expandCardToFullscreen();
-      this.markAsRead();
-    });
-  }
-
   getElement() {
     return this.cardContainer;
   }
@@ -233,5 +296,12 @@ export default class TaskManagerCard {
   dispose() {
     this.card.removeEventListener("click", this.expandCardToFullscreen);
     this.cardContainer.remove();
+  }
+
+  addEventListeners() {
+    this.card.addEventListener("click", () => {
+      this.expandCardToFullscreen();
+      this.markAsRead();
+    });
   }
 }
