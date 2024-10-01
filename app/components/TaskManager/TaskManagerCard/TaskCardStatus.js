@@ -12,6 +12,9 @@ export default class TaskCardStatus {
   constructor({ card }) {
     this.card = card;
 
+    // States
+    this.statuses = [];
+
     // Dom Elements
     this.proSearchContainer = null;
     this.input = null;
@@ -88,7 +91,16 @@ export default class TaskCardStatus {
       `;
   }
 
+  updatePrecedingStatusesStates() {
+    this.statuses.forEach((status, index) => {
+      status.classList.remove(STATUS_PROGRESS_STATES.PROGRESSING);
+      status.classList.add(STATUS_PROGRESS_STATES.ENDED);
+    });
+  }
+
   addStatus(status) {
+    this.updatePrecedingStatusesStates();
+
     const statusContainer = document.createElement("div");
 
     statusContainer.className = `proSearch__status-container ${STATUS_PROGRESS_STATES.PROGRESSING}`;
@@ -118,10 +130,12 @@ export default class TaskCardStatus {
 
     statusWrapper.appendChild(statusContent);
     statusContainer.appendChild(statusWrapper);
+    this.proSearchContainer.appendChild(statusContainer);
+
+    this.statuses.push(statusContainer);
 
     this.addSubstatusChevron(statusWrapper);
     this.addSubStatus(statusContent);
-    this.proSearchContainer.appendChild(statusContainer);
     this.handleInput(status);
   }
 }
