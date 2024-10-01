@@ -207,8 +207,12 @@
     line-height: 24px; /* 160% */
     letter-spacing: 0.2px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 71px;
+  }
+
+  .proSearch__status-description {
+    width: 85%;
   }
 
   .proSearch__status-chevron {

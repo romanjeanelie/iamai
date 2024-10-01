@@ -37,6 +37,19 @@ export default class TaskCardStatus {
     }
   }
 
+  addSubstatusChevron(statusWrapper) {
+    const header = statusWrapper.querySelector(".proSearch__status-header");
+    const button = document.createElement("button");
+    button.className = "proSearch__status-chevron";
+    button.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none">
+        <path d="M11 1L6 6L1 0.999999" stroke="#676E7F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    `;
+
+    header.appendChild(button);
+  }
+
   addSubStatus(statusContainer) {
     // HTML structure to display status
     const maxVisibleStatuses = 2; // Number of statuses to display before showing "+1 more"
@@ -97,11 +110,6 @@ export default class TaskCardStatus {
     statusWrapper.innerHTML = `
       <div class="proSearch__status-header">
         <p class="proSearch__status-description">${status?.description}</p>
-        <button class="proSearch__status-chevron">
-          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none">
-            <path d="M11 1L6 6L1 0.999999" stroke="#676E7F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
       </div>
     `;
 
@@ -111,6 +119,7 @@ export default class TaskCardStatus {
     statusWrapper.appendChild(statusContent);
     statusContainer.appendChild(statusWrapper);
 
+    this.addSubstatusChevron(statusWrapper);
     this.addSubStatus(statusContent);
     this.proSearchContainer.appendChild(statusContainer);
     this.handleInput(status);
