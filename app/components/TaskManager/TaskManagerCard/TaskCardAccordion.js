@@ -49,8 +49,13 @@ export default class TaskCardAccordion {
     panelContainer.appendChild(header);
     panelContainer.appendChild(content);
 
+    // Close the panel by default
+    content.style.maxHeight = 0;
+
     this.panels.push(panelContainer);
     this.container.appendChild(panelContainer);
+
+    this.openPanel(title);
 
     return content;
   }
@@ -81,6 +86,32 @@ export default class TaskCardAccordion {
     panelContainer.classList.toggle("active");
   }
 
+  openPanel(panelTitle) {
+    const panelContainer = this.panels.find((panel) => panel.getAttribute("data-title") === panelTitle);
+    const panelContent = panelContainer.querySelector(".task-accordion__content");
+
+    // Close any previously opened panel
+    this.panels.forEach((panel) => {
+      const content = panel.querySelector(".task-accordion__content");
+      content.style.maxHeight = 0;
+      const chevron = panel.querySelector(".task-accordion__header-chevron");
+      chevron.classList.remove("open");
+      panel.classList.remove("active");
+    });
+
+    // Open the panel
+    panelContent.style.maxHeight = panelContent.scrollHeight + "px";
+    panelContainer.classList.add("active");
+    this.activePanel = panelContainer;
+  }
+
+  closePanel(panelContainer, panelContent) {
+    const chevron = panelContainer.querySelector(".task-accordion__header-chevron");
+    panelContent.style.maxHeight = 0;
+    chevron.classList.remove("open");
+    panelContainer.classList.remove("active");
+  }
+
   displayChevrons() {
     this.panels.forEach((panel) => {
       const chevron = panel.querySelector(".task-accordion__header-chevron");
@@ -89,13 +120,15 @@ export default class TaskCardAccordion {
   }
 
   // Method to update panel height dynamically if content changes
-  updatePanelHeight() {
+  updateActivePanelHeight() {
     if (!this.activePanel) return;
+    console.log("Updating panel height");
     const panelContent = this.activePanel.querySelector(".task-accordion__content");
+    console.log(panelContent.scrollHeight);
     panelContent.style.maxHeight = panelContent.scrollHeight + "px";
   }
 
   addListeners() {
-    window.addEventListener("resize", this.updatePanelHeight.bind(this));
+    window.addEventListener("resize", this.updateActivePanelHeight.bind(this));
   }
 }

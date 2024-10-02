@@ -52,9 +52,12 @@ function () {
       var content = document.createElement("div");
       content.classList.add("task-accordion__content");
       panelContainer.appendChild(header);
-      panelContainer.appendChild(content);
+      panelContainer.appendChild(content); // Close the panel by default
+
+      content.style.maxHeight = 0;
       this.panels.push(panelContainer);
       this.container.appendChild(panelContainer);
+      this.openPanel(title);
       return content;
     }
   }, {
@@ -86,6 +89,34 @@ function () {
       panelContainer.classList.toggle("active");
     }
   }, {
+    key: "openPanel",
+    value: function openPanel(panelTitle) {
+      var panelContainer = this.panels.find(function (panel) {
+        return panel.getAttribute("data-title") === panelTitle;
+      });
+      var panelContent = panelContainer.querySelector(".task-accordion__content"); // Close any previously opened panel
+
+      this.panels.forEach(function (panel) {
+        var content = panel.querySelector(".task-accordion__content");
+        content.style.maxHeight = 0;
+        var chevron = panel.querySelector(".task-accordion__header-chevron");
+        chevron.classList.remove("open");
+        panel.classList.remove("active");
+      }); // Open the panel
+
+      panelContent.style.maxHeight = panelContent.scrollHeight + "px";
+      panelContainer.classList.add("active");
+      this.activePanel = panelContainer;
+    }
+  }, {
+    key: "closePanel",
+    value: function closePanel(panelContainer, panelContent) {
+      var chevron = panelContainer.querySelector(".task-accordion__header-chevron");
+      panelContent.style.maxHeight = 0;
+      chevron.classList.remove("open");
+      panelContainer.classList.remove("active");
+    }
+  }, {
     key: "displayChevrons",
     value: function displayChevrons() {
       this.panels.forEach(function (panel) {
@@ -95,16 +126,18 @@ function () {
     } // Method to update panel height dynamically if content changes
 
   }, {
-    key: "updatePanelHeight",
-    value: function updatePanelHeight() {
+    key: "updateActivePanelHeight",
+    value: function updateActivePanelHeight() {
       if (!this.activePanel) return;
+      console.log("Updating panel height");
       var panelContent = this.activePanel.querySelector(".task-accordion__content");
+      console.log(panelContent.scrollHeight);
       panelContent.style.maxHeight = panelContent.scrollHeight + "px";
     }
   }, {
     key: "addListeners",
     value: function addListeners() {
-      window.addEventListener("resize", this.updatePanelHeight.bind(this));
+      window.addEventListener("resize", this.updateActivePanelHeight.bind(this));
     }
   }]);
 

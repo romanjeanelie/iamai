@@ -119,7 +119,6 @@ export default class TaskManagerCard {
     }
 
     this.accordion.displayChevrons();
-    this.accordion.togglePanel(TASK_PANELS.ANSWER);
   }
 
   updateTaskUI(taskData = null) {
@@ -152,6 +151,7 @@ export default class TaskManagerCard {
       // }
       this.fullscreenContainer.classList.add("active");
       this.input?.updatePosition();
+      this.accordion.updateActivePanelHeight();
     });
   }
 
