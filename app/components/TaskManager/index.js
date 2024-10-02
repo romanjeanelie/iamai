@@ -40,9 +40,6 @@ export default class TaskManager {
     this.debug = import.meta.env.VITE_DEBUG === "true";
     if (this.debug) {
       this.debugger = new TaskManagerDebug(this);
-
-      this.debugger.addDebugTask();
-      this.debugger.addDebugTask();
       this.debugger.addDebugTask();
 
       this.onStatusUpdate(this.tasks[0].key, {
@@ -51,25 +48,6 @@ export default class TaskManager {
         description:
           " Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi maiores, culpa architecto enim autem iusto! Maxime sunt explicabo pariatur corporis accusantium, voluptas excepturi quam inventore dicta, consequatur soluta ipsam doloremque? ",
       });
-
-      this.onStatusUpdate(this.tasks[1].key, {
-        type: API_STATUSES.PROGRESSING,
-        title: "Progressing",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec eros.",
-      });
-
-      const resultContainer = document.createElement("div");
-      resultContainer.innerHTML = `RESULT OF THE TASK`;
-
-      this.onStatusUpdate(
-        this.tasks[1].key,
-        {
-          type: API_STATUSES.ENDED,
-          title: "View Results",
-          description: "Lorem ipsum dolor sit.",
-        },
-        resultContainer
-      );
     }
   }
 
@@ -78,51 +56,6 @@ export default class TaskManager {
     gsap.set(this.container, {
       yPercent: 100,
     });
-  }
-
-  // ---------- Handling the input ----------
-  addInput(key, statusContainer) {
-    const statusInputContainer = document.createElement("form");
-    statusInputContainer.classList.add("task-manager__input-container");
-
-    const statusInput = document.createElement("input");
-    statusInput.type = "text";
-    statusInput.classList.add("task-manager__input");
-
-    const button = document.createElement("button");
-    button.type = "submit";
-
-    const buttonIcon = document.createElement("img");
-    buttonIcon.src = "/icons/arrow-up.svg";
-    buttonIcon.alt = "arrow up icon";
-    button.appendChild(buttonIcon);
-
-    statusInputContainer.addEventListener("click", (e) => this.handleMobileInput(statusContainer));
-    statusInputContainer.addEventListener("submit", (e) => this.handleInputSubmit(e, key, statusInputContainer));
-
-    statusInputContainer.appendChild(statusInput);
-    statusInputContainer.appendChild(button);
-    statusContainer.appendChild(statusInputContainer);
-  }
-
-  handleInputSubmit(e, key, container) {
-    e.preventDefault();
-    const task = this.tasks.find((task) => task.key === key);
-    const input = e.target.querySelector("input");
-    const value = input.value;
-    this.emitter.emit("taskManager:inputSubmit", value, task);
-
-    this.closeInput(container);
-
-    this.onStatusUpdate(key, {
-      type: API_STATUSES.PROGRESSING,
-      label: "Answer : ",
-      description: value,
-    });
-  }
-
-  closeInput(container) {
-    container.style.display = "none";
   }
 
   // ---------- Notification Pill ----------

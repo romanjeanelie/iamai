@@ -7,6 +7,9 @@ export class TaskCardInput {
     this.taskData = this.taskCard.task;
     this.taskManager = this.taskCard.taskManager;
 
+    // States
+    this.debug = import.meta.env.VITE_DEBUG === "true";
+
     // DOM Elements
     this.fullscreenContainer = document.querySelector(".task-manager__task-fullscreen");
     this.taskContainer = this.taskCard.fullscreenState;
@@ -76,7 +79,9 @@ export class TaskCardInput {
     this.textarea.value = "";
 
     // Send the value to Chat.js
-    this.emitter.emit("taskManager:inputSubmit", value, this.taskData);
+    if (!this.debug) {
+      this.emitter.emit("taskManager:inputSubmit", value, this.taskData);
+    }
 
     this.taskManager.onStatusUpdate(this.taskData.key, {
       type: API_STATUSES.PROGRESSING,
