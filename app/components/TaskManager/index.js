@@ -42,6 +42,8 @@ export default class TaskManager {
       this.debugger = new TaskManagerDebug(this);
 
       this.debugger.addDebugTask();
+      this.debugger.addDebugTask();
+      this.debugger.addDebugTask();
 
       this.onStatusUpdate(this.tasks[0].key, {
         type: API_STATUSES.PROGRESSING,
@@ -49,6 +51,25 @@ export default class TaskManager {
         description:
           " Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi maiores, culpa architecto enim autem iusto! Maxime sunt explicabo pariatur corporis accusantium, voluptas excepturi quam inventore dicta, consequatur soluta ipsam doloremque? ",
       });
+
+      this.onStatusUpdate(this.tasks[1].key, {
+        type: API_STATUSES.PROGRESSING,
+        title: "Progressing",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio nec eros.",
+      });
+
+      const resultContainer = document.createElement("div");
+      resultContainer.innerHTML = `RESULT OF THE TASK`;
+
+      this.onStatusUpdate(
+        this.tasks[1].key,
+        {
+          type: API_STATUSES.ENDED,
+          title: "View Results",
+          description: "Lorem ipsum dolor sit.",
+        },
+        resultContainer
+      );
     }
   }
 

@@ -67,6 +67,6 @@
   overflow: hidden;
 }
 
-.active .task-accordion__header-chevron {
+.task-accordion__container.active .task-accordion__header-chevron {
   transform: rotate(180deg);
 }
