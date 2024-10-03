@@ -1,13 +1,17 @@
 .task-accordion__container {
   display: flex;
-  flex: 1;
+  flex: none;
   flex-direction: column;
+  overflow: hidden;
   gap: 16px;
   border-radius: 20px;
   border: 0.5px solid rgba($colorLight, 0.4);
   padding: 20px 16px 0px;
   background: linear-gradient(180deg, rgba(248, 248, 248, 0.5) 0%, rgba(255, 255, 255, 0.5) 100%);
-  overflow: hidden;
+
+  &.active {
+    flex: auto;
+  }
 
   @include media("<tablet") {
     padding: 0;
@@ -64,7 +68,7 @@
 .task-accordion__content {
   padding-left: 4px;
   transition: max-height 0.3s $ease-in-out;
-  overflow: hidden;
+  overflow: scroll;
 }
 
 .task-accordion__container.active .task-accordion__header-chevron {

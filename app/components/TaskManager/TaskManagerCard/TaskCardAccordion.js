@@ -45,6 +45,7 @@ export default class TaskCardAccordion {
 
     const content = document.createElement("div");
     content.classList.add("task-accordion__content");
+    content.classList.add("no-scrollbar");
 
     panelContainer.appendChild(header);
     panelContainer.appendChild(content);
