@@ -257,7 +257,10 @@ export default class Discussion {
         this.Chat.deploy_ID = data.deploy_id;
       }
     }
+
     this.uuid = this.Chat.deploy_ID;
+
+    store.set("session_id", this.Chat.sessionID);
     store.set("chatId", this.uuid);
 
     if (this.debug) return;
@@ -311,57 +314,18 @@ export default class Discussion {
     this.Chat.submituserreply(text, task.workflowID);
   }
 
+  // create small user question / ai answer in the discussion feed
   async onCreatedTask(task, textAI) {
-    if (this.debug) {
-      this.userContainer = document.createElement("div");
-      this.userContainer.classList.add("discussion__user");
-      var userContainerspan = document.createElement("span");
-      userContainerspan.classList.add("discussion__userspan");
-      userContainerspan.innerHTML = "who's obama ?";
-      this.userContainer.innerHTML = "bonjour";
-
-      this.AIContainer = document.createElement("div");
-      this.AIContainer.classList.add("discussion__ai");
-      this.addAIText({
-        text: "",
-        container: this.AIContainer,
-      });
-
-      this.discussionContainer.appendChild(this.userContainer);
-      this.discussionContainer.appendChild(this.AIContainer);
-    }
-
     if (!this.history.isSet || this.history.isFetching) return;
     if (!this.userContainer) {
       this.userContainer = document.createElement("div");
       this.userContainer.classList.add("discussion__user");
       this.discussionContainer.appendChild(this.userContainer);
     }
-
     await this.addAIText({ text: textAI, container: this.AIContainer });
     this.userContainer.classList.add("discussion__user--task-created");
     this.userContainer.setAttribute("taskkey", task.key);
     this.AIContainer.setAttribute("taskkey", task.key);
-  }
-
-  async postViewTask({ uuid, micro_thread_id, session_id, idToken }) {
-    const url = URL_AGENT_STATUS;
-    const params = {
-      uuid,
-      micro_thread_id,
-      session_id,
-      status: API_STATUSES.VIEWED,
-      time_stamp: getPreviousDayTimestamp(),
-    };
-
-    const result = await fetcher({
-      url,
-      params,
-      idToken,
-      method: "POST",
-    });
-
-    return result;
   }
 
   checkIfPrevDiscussionContainerVisible() {
@@ -401,15 +365,5 @@ export default class Discussion {
 
     this.emitter.on("taskManager:createTask", (task, textAI) => this.onCreatedTask(task, textAI));
     this.emitter.on("taskManager:inputSubmit", (text, task) => this.onUserAnswerTask(text, task));
-    this.emitter.on("taskManager:taskRead", async (taskKey) => {
-      const taskRead = await this.postViewTask({
-        uuid: this.uuid,
-        micro_thread_id: taskKey,
-        session_id: this.Chat.sessionID,
-        idToken: await this.user.user.getIdToken(true),
-      });
-
-      console.log(taskRead);
-    });
   }
 }

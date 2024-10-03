@@ -2,6 +2,7 @@
 const state = {
   chatId: null,
   user: null,
+  session_id: null,
   isLoggedIn: false,
   theme: "light",
   // add more variables as needed

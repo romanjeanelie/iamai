@@ -144,6 +144,7 @@ class Chat {
       } else this.submituserreply(input_text, this.workflowID, img, live_mode);
     } else {
       this.workflowID = this.sessionID;
+
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = async () => {
         if (xhr.readyState == 4) {

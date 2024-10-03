@@ -8,6 +8,7 @@ exports.store = void 0;
 var state = {
   chatId: null,
   user: null,
+  session_id: null,
   isLoggedIn: false,
   theme: "light" // add more variables as needed
 

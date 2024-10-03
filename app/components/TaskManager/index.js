@@ -2,13 +2,14 @@ import gsap from "gsap";
 import Flip from "gsap/Flip";
 
 import fetcher from "../../utils/fetcher";
-import { API_STATUSES, URL_DELETE_STATUS } from "../constants";
+import { API_STATUSES, URL_AGENT_STATUS, URL_DELETE_STATUS } from "../constants";
 import { store } from "../store";
 
 import TaskManagerAnimations from "./TaskManagerAnimations";
 import TaskManagerButton from "./TaskManagerButton";
 import TaskManagerCard from "./TaskManagerCard";
 import TaskManagerDebug from "./TaskManagerDebug";
+import { getPreviousDayTimestamp } from "../History";
 
 gsap.registerPlugin(Flip);
 
@@ -175,6 +176,32 @@ export default class TaskManager {
     this.updateTasksIndex();
   }
 
+  async postViewTask(taskKey) {
+    const url = URL_AGENT_STATUS;
+    const idToken = await store.getState().user.user.getIdToken(true);
+    const params = {
+      uuid: store.getState().chatId,
+      micro_thread_id: taskKey,
+      session_id: store.getState().session_id,
+      status: API_STATUSES.VIEWED,
+      time_stamp: getPreviousDayTimestamp(),
+    };
+
+    try {
+      const result = await fetcher({
+        url,
+        params,
+        idToken,
+        method: "POST",
+      });
+      console.log(result);
+    } catch (e) {
+      console.log(e);
+    }
+
+    return result;
+  }
+
   onStatusUpdate(taskKey, status, resultContainer, workflowID) {
     const taskIndex = this.tasks.findIndex((task) => task.key === taskKey);
     if (taskIndex === -1) return;
@@ -214,6 +241,7 @@ export default class TaskManager {
       this.onStatusUpdate(taskKey, status, container, workflowID);
     });
     this.emitter.on("taskManager:deleteTask", (taskKey) => this.deleteTask(taskKey));
+    this.emitter.on("taskManager:taskRead", async (taskKey) => await this.postViewTask(taskKey));
     this.emitter.on("app:initialized", (bool) => {
       this.isHistorySet = bool;
     });
