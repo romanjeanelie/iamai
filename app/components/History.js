@@ -62,15 +62,19 @@ export default class History {
     this.emitter.emit("taskManager:createTask", initialTask, textAI);
 
     // put the user_viewed or agent_ended status at the end of the statuses array
-    const userViewedStatus = statuses.results.find((result) => result.status === "user_viewed");
-    const agentEndedStatus = statuses.results.find((result) => result.status === "agent_ended");
-    if (userViewedStatus) {
-      statuses.results = statuses.results.filter((result) => result.status !== "user_viewed");
-      statuses.results.push(userViewedStatus);
-    } else if (agentEndedStatus) {
-      statuses.results = statuses.results.filter((result) => result.status !== "agent_ended");
-      statuses.results.push(agentEndedStatus);
-    }
+    statuses.results.sort((a, b) => {
+      const statusOrder = {
+        user_viewed: 2, // Last
+        agent_ended: 1, // Second last
+      };
+
+      // Assign a default value of 0 for any other status
+      const orderA = statusOrder[a.status] || 0;
+      const orderB = statusOrder[b.status] || 0;
+
+      // Sort in ascending order, meaning the higher the value, the further back it goes
+      return orderA - orderB;
+    });
 
     statuses.results.forEach((result) => {
       this.updateTaskStatus(result, initialTask, resultsContainer, statuses);
@@ -216,7 +220,7 @@ export default class History {
       size,
       order,
     };
-    const { data, error } = await fetcher({ url: URL_AGENT_STATUS, params, idToken: idToken });
+    const { data } = await fetcher({ url: URL_AGENT_STATUS, params, idToken: idToken });
     const lastStatus = this.getTaskLastStatus(data.results);
 
     data.lastStatus = lastStatus;

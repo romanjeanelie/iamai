@@ -128,6 +128,7 @@ export default class TaskManagerCard {
     if (this.task.status?.type) this.statusPill.style.background = STATUS_COLORS[this.task.status.type];
 
     if (this.task.status?.type === API_STATUSES.ENDED) {
+      this.proSearch.updatePrecedingStatusesStates();
       this.addResult();
       this.card.classList.add("completed");
     } else if (this.task.status?.type === API_STATUSES.VIEWED) {

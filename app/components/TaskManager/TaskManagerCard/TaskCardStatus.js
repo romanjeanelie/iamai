@@ -91,8 +91,8 @@ export default class TaskCardStatus {
       `;
   }
 
-  updatePrecedingStatusesStates() {
-    this.statuses.forEach((status, index) => {
+  updatePrecedingStatusesStates(state = null) {
+    this.statuses.forEach((status) => {
       status.classList.remove(STATUS_PROGRESS_STATES.PROGRESSING);
       status.classList.add(STATUS_PROGRESS_STATES.ENDED);
     });
