@@ -292,16 +292,7 @@
 
 // ------ Task Card : INPUT ------
 .task-manager__input-container {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 0 16px 26px;
-
-  &.updated-position {
-    bottom: unset;
-    transform: translate3d(0, 100%, 0);
-  }
+  width: 100%;
 }
 
 @keyframes ping {
