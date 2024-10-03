@@ -188,7 +188,7 @@ export default class TaskManager {
     };
 
     try {
-      const result = await fetcher({
+      await fetcher({
         url,
         params,
         idToken,
@@ -198,15 +198,22 @@ export default class TaskManager {
     } catch (e) {
       console.log(e);
     }
-
-    return result;
   }
 
   onStatusUpdate(taskKey, status, resultContainer, workflowID) {
     const taskIndex = this.tasks.findIndex((task) => task.key === taskKey);
     if (taskIndex === -1) return;
 
-    this.tasks[taskIndex].status = status;
+    const currentTask = this.tasks[taskIndex];
+
+    const isFinalized =
+      currentTask.status.type === API_STATUSES.ENDED || currentTask.status.type === API_STATUSES.VIEWED;
+    const isValidTransition = !isFinalized || status.type === API_STATUSES.VIEWED;
+
+    if (isValidTransition) {
+      currentTask.status = status;
+    }
+
     this.button.handleTaskButton();
 
     if (resultContainer) this.tasks[taskIndex].resultsContainer = resultContainer;
