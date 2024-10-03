@@ -152,6 +152,8 @@ export default class TaskManagerCard {
       document.addEventListener("click", this.handleClickOutside);
       this.fullscreenContainer.classList.add("active");
       this.accordion.updateActivePanelHeight();
+      const activePanel = this.accordion.getActivePanel();
+      if (activePanel === TASK_PANELS.PROSEARCH) this.proSearch.scrollToBottom();
     });
   }
 

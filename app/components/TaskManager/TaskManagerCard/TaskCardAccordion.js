@@ -130,4 +130,9 @@ export default class TaskCardAccordion {
   addListeners() {
     window.addEventListener("resize", this.updateActivePanelHeight.bind(this));
   }
+
+  getActivePanel() {
+    const panelTitle = this.activePanel.getAttribute("data-title");
+    return panelTitle;
+  }
 }

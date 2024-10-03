@@ -98,6 +98,13 @@ export default class TaskCardStatus {
     });
   }
 
+  scrollToBottom() {
+    this.proSearchContainer.scrollTo({
+      top: this.proSearchContainer.scrollHeight,
+      behavior: "smooth",
+    });
+  }
+
   addStatus(status) {
     this.updatePrecedingStatusesStates();
 

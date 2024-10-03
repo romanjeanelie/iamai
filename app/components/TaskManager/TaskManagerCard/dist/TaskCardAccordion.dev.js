@@ -138,6 +138,12 @@ function () {
     value: function addListeners() {
       window.addEventListener("resize", this.updateActivePanelHeight.bind(this));
     }
+  }, {
+    key: "getActivePanel",
+    value: function getActivePanel() {
+      var panelTitle = this.activePanel.getAttribute("data-title");
+      return panelTitle;
+    }
   }]);
 
   return TaskCardAccordion;
