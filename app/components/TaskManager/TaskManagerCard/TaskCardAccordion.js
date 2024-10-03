@@ -122,9 +122,7 @@ export default class TaskCardAccordion {
   // Method to update panel height dynamically if content changes
   updateActivePanelHeight() {
     if (!this.activePanel) return;
-    console.log("Updating panel height");
     const panelContent = this.activePanel.querySelector(".task-accordion__content");
-    console.log(panelContent.scrollHeight);
     panelContent.style.maxHeight = panelContent.scrollHeight + "px";
   }
 

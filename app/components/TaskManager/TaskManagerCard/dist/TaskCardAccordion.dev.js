@@ -129,9 +129,7 @@ function () {
     key: "updateActivePanelHeight",
     value: function updateActivePanelHeight() {
       if (!this.activePanel) return;
-      console.log("Updating panel height");
       var panelContent = this.activePanel.querySelector(".task-accordion__content");
-      console.log(panelContent.scrollHeight);
       panelContent.style.maxHeight = panelContent.scrollHeight + "px";
     }
   }, {
