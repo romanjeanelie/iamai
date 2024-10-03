@@ -55,16 +55,6 @@ export class TaskCardInput {
     this.taskContainer.appendChild(this.inputContainer);
   }
 
-  // Update the input position
-  updatePosition() {
-    const { height } = this.taskContainer.getBoundingClientRect();
-
-    if (height < this.fullscreenContainer.clientHeight) return;
-    this.inputContainer.style.bottom = "unset";
-    this.inputContainer.style.top = `${height}px`;
-    this.inputContainer.classList.add("updated-position");
-  }
-
   // Handle Submit
   handleEnterPressed(e) {
     if (this.textarea.value.trim().length > 0 && event.key === "Enter" && !event.shiftKey) {
