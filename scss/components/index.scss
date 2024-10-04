@@ -16,9 +16,10 @@
 .page-discussion {
   @import "./pageDiscussion/discussion";
   @import "./pageDiscussion/media";
-  @import "./UI/flightUI";
-  @import "./UI/hotelsUI";
-  @import "./UI/productUI";
+  @import "./UI/FlightUI";
+  @import "./UI/HotelsUI";
+  @import "./UI/ProductUI";
+  @import "./UI/MoviesUI";
 }
 
 .page-assistant {
