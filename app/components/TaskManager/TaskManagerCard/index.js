@@ -37,9 +37,9 @@ export default class TaskManagerCard {
 
     if (this.debug) {
       if (this.task.key === 1) {
-        // setTimeout(() => {
-        //   this.expandCardToFullscreen();
-        // }, 15);
+        setTimeout(() => {
+          this.expandCardToFullscreen();
+        }, 15);
       }
     }
   }
@@ -165,7 +165,7 @@ export default class TaskManagerCard {
 
   // Close fullscreen when clicking outside the fullscreen container
   handleClickOutside(event) {
-    if (!this.fullscreenContainer.contains(event.target)) {
+    if (!this.fullscreenContainer.contains(event.target) && !this.debug) {
       this.closeFullscreen();
       document.removeEventListener("click", this.handleClickOutside);
     }

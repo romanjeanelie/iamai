@@ -31,31 +31,20 @@ function () {
       var _this = this;
 
       this.mainContainer = document.createElement("div");
-      var moviescardcontainerdiv = document.createElement("div");
-      moviescardcontainerdiv.className = "moviescard-container";
-      this.moviesResultData.forEach(function (element) {
-        var moviescarddiv = document.createElement("div");
-        moviescarddiv.className = "movies-card";
-        moviescarddiv.setAttribute("data-info", "movies-details");
-        moviescarddiv.setAttribute("data-details", JSON.stringify(element).replace(/'/g, "&#39;"));
-        moviescarddiv.addEventListener("click", function (event) {
+      this.mainContainer.className = "movies-ui__main-container";
+      var moviesCardContainerHTML = this.moviesResultData.map(function (element) {
+        var movieDetails = JSON.stringify(element).replace(/'/g, "&#39;");
+        var movieTitle = element.MovieTitle.replace(/'/g, "&#39;");
+        return "\n        <div class=\"movies-card__container\">\n          <div class=\"movies-card__infos-container\">\n            <div class=\"movies-card__poster\">\n              <img alt=\"".concat(movieTitle, "\" src=\"").concat(element.MoviePoster, "\" />\n            </div>\n            <div class=\"movies-card__details-container\">\n              <h4 class=\"movies-card__title\">").concat(element.MovieTitle, "</h4> \n              <button class=\"movies-card__cta-button\">See More</button>\n            </div>\n          </div>\n        </div>\n      ");
+      }).join("");
+      this.mainContainer.innerHTML = "\n      <div class=\"movies-ui__movies-grid\">\n        ".concat(moviesCardContainerHTML, "\n      </div>\n      <div id=\"movie-details\"></div>\n    "); // Attach event listeners
+
+      var movieCards = this.mainContainer.querySelectorAll(".movies-card");
+      movieCards.forEach(function (card) {
+        card.addEventListener("click", function (event) {
           return _this.showMovieDetail(event);
         });
-        var moviesimg = document.createElement("img");
-        moviesimg.className = "movies-image";
-        moviesimg.setAttribute("alt", element.MovieTitle.replace(/'/g, "&#39;"));
-        moviesimg.setAttribute("src", element.MoviePoster);
-        moviescarddiv.appendChild(moviesimg);
-        var moviestitlep = document.createElement("p");
-        moviestitlep.className = "movies-title";
-        moviestitlep.innerText = element.MovieTitle;
-        moviescarddiv.appendChild(moviestitlep);
-        moviescardcontainerdiv.appendChild(moviescarddiv);
       });
-      this.mainContainer.appendChild(moviescardcontainerdiv);
-      var moviedetailsdiv = document.createElement("div");
-      moviedetailsdiv.setAttribute("id", "movie-details");
-      this.mainContainer.appendChild(moviedetailsdiv);
       return this.mainContainer;
     }
   }, {
@@ -81,7 +70,8 @@ function () {
 
         _this2.getMoviesDateShowtime(moviedetaildata.MovieTitle, theatre, theatre.DateTime[0].Date, moviedetailsdatesdiv);
 
-        moviedetailscarddiv.appendChild(moviedetailsdatesdiv);
+        moviedetailsc;
+        arddiv.appendChild(moviedetailsdatesdiv);
         moviedetail.appendChild(moviedetailscarddiv);
       });
       this.scrollToDiv(moviedetail);

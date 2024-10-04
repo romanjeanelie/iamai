@@ -13,30 +13,40 @@ export class MoviesUI {
 
   initUI() {
     this.mainContainer = document.createElement("div");
-    const moviescardcontainerdiv = document.createElement("div");
-    moviescardcontainerdiv.className = "moviescard-container";
+    this.mainContainer.className = "movies-ui__main-container";
 
-    this.moviesResultData.forEach((element) => {
-      const moviescarddiv = document.createElement("div");
-      moviescarddiv.className = "movies-card";
-      moviescarddiv.setAttribute("data-info", "movies-details");
-      moviescarddiv.setAttribute("data-details", JSON.stringify(element).replace(/'/g, "&#39;"));
-      moviescarddiv.addEventListener("click", (event) => this.showMovieDetail(event));
-      const moviesimg = document.createElement("img");
-      moviesimg.className = "movies-image";
-      moviesimg.setAttribute("alt", element.MovieTitle.replace(/'/g, "&#39;"));
-      moviesimg.setAttribute("src", element.MoviePoster);
-      moviescarddiv.appendChild(moviesimg);
-      const moviestitlep = document.createElement("p");
-      moviestitlep.className = "movies-title";
-      moviestitlep.innerText = element.MovieTitle;
-      moviescarddiv.appendChild(moviestitlep);
-      moviescardcontainerdiv.appendChild(moviescarddiv);
+    const moviesCardContainerHTML = this.moviesResultData
+      .map((element) => {
+        const movieDetails = JSON.stringify(element).replace(/'/g, "&#39;");
+        const movieTitle = element.MovieTitle.replace(/'/g, "&#39;");
+        return `
+        <div class="movies-card__container">
+          <div class="movies-card__infos-container">
+            <div class="movies-card__poster">
+              <img alt="${movieTitle}" src="${element.MoviePoster}" />
+            </div>
+            <div class="movies-card__details-container">
+              <h4 class="movies-card__title">${element.MovieTitle}</h4> 
+              <button class="movies-card__cta-button">See More</button>
+            </div>
+          </div>
+        </div>
+      `;
+      })
+      .join("");
+
+    this.mainContainer.innerHTML = `
+      <div class="movies-ui__movies-grid">
+        ${moviesCardContainerHTML}
+      </div>
+      <div id="movie-details"></div>
+    `;
+
+    // Attach event listeners
+    const movieCards = this.mainContainer.querySelectorAll(".movies-card");
+    movieCards.forEach((card) => {
+      card.addEventListener("click", (event) => this.showMovieDetail(event));
     });
-    this.mainContainer.appendChild(moviescardcontainerdiv);
-    const moviedetailsdiv = document.createElement("div");
-    moviedetailsdiv.setAttribute("id", "movie-details");
-    this.mainContainer.appendChild(moviedetailsdiv);
 
     return this.mainContainer;
   }
@@ -58,7 +68,8 @@ export class MoviesUI {
       moviedetailsdatesdiv.className = "movie-details-dates";
       moviedetailsdatesdiv.setAttribute("data-details", JSON.stringify(theatre).replace(/'/g, "&#39;"));
       this.getMoviesDateShowtime(moviedetaildata.MovieTitle, theatre, theatre.DateTime[0].Date, moviedetailsdatesdiv);
-      moviedetailscarddiv.appendChild(moviedetailsdatesdiv);
+      moviedetailsc;
+      arddiv.appendChild(moviedetailsdatesdiv);
       moviedetail.appendChild(moviedetailscarddiv);
     });
     this.scrollToDiv(moviedetail);
