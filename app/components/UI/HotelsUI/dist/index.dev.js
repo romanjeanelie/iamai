@@ -21,8 +21,8 @@ function () {
   function HotelsUI(HotelsSearch, HotelsSearchResults) {
     _classCallCheck(this, HotelsUI);
 
-    this.hotelsSearch = HotelsSearch;
-    this.hotelsSearchResults = HotelsSearchResults; // State
+    this.hotelsSearchData = HotelsSearch;
+    this.hotelsResultsData = HotelsSearchResults; // State
 
     this.filter = "all"; // DOM Elements
 
@@ -68,12 +68,12 @@ function () {
         }
       }); // TO DO - Update the hotelsContainer with the new filter
 
-      var newHotels = this.hotelsSearchResults.all.filter(function (hotel) {
+      var newHotels = this.hotelsResultsData.all.filter(function (hotel) {
         return filter === "all" || hotel.website === filter;
       });
       this.hotelsContainer.innerHTML = "";
       newHotels.forEach(function (element) {
-        var hotelCard = new _HotelCard["default"](element, _this2.hotelsSearch).getElement();
+        var hotelCard = new _HotelCard["default"](element, _this2.hotelsSearchData).getElement();
 
         _this2.hotelsContainer.appendChild(hotelCard);
       });
@@ -86,8 +86,8 @@ function () {
 
       var hotelcardcontainerdiv = document.createElement("div");
       hotelcardcontainerdiv.className = "hotels-ui__main-container";
-      this.hotelsSearchResults.all.forEach(function (element) {
-        var hotelCard = new _HotelCard["default"](element, _this3.hotelsSearch).getElement();
+      this.hotelsResultsData.all.forEach(function (element) {
+        var hotelCard = new _HotelCard["default"](element, _this3.hotelsSearchData).getElement();
         hotelcardcontainerdiv.appendChild(hotelCard);
       });
       return hotelcardcontainerdiv;

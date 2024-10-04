@@ -2,8 +2,8 @@ import HotelCard from "./HotelCard";
 
 export default class HotelsUI {
   constructor(HotelsSearch, HotelsSearchResults) {
-    this.hotelsSearch = HotelsSearch;
-    this.hotelsSearchResults = HotelsSearchResults;
+    this.hotelsSearchData = HotelsSearch;
+    this.hotelsResultsData = HotelsSearchResults;
 
     // State
     this.filter = "all";
@@ -61,12 +61,12 @@ export default class HotelsUI {
     });
 
     // TO DO - Update the hotelsContainer with the new filter
-    const newHotels = this.hotelsSearchResults.all.filter((hotel) => {
+    const newHotels = this.hotelsResultsData.all.filter((hotel) => {
       return filter === "all" || hotel.website === filter;
     });
     this.hotelsContainer.innerHTML = "";
     newHotels.forEach((element) => {
-      const hotelCard = new HotelCard(element, this.hotelsSearch).getElement();
+      const hotelCard = new HotelCard(element, this.hotelsSearchData).getElement();
       this.hotelsContainer.appendChild(hotelCard);
     });
     this.mainContainer.appendChild(this.hotelsContainer);
@@ -76,8 +76,8 @@ export default class HotelsUI {
     const hotelcardcontainerdiv = document.createElement("div");
     hotelcardcontainerdiv.className = "hotels-ui__main-container";
 
-    this.hotelsSearchResults.all.forEach((element) => {
-      const hotelCard = new HotelCard(element, this.hotelsSearch).getElement();
+    this.hotelsResultsData.all.forEach((element) => {
+      const hotelCard = new HotelCard(element, this.hotelsSearchData).getElement();
       hotelcardcontainerdiv.appendChild(hotelCard);
     });
 

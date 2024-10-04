@@ -10,6 +10,8 @@ import TaskManagerButton from "./TaskManagerButton";
 import TaskManagerCard from "./TaskManagerCard";
 import TaskManagerDebug from "./TaskManagerDebug";
 import { getPreviousDayTimestamp } from "../History";
+import { MoviesUI } from "../UI/HotelsUI/MoviesUI";
+import { moviesResultData } from "../../../testData";
 
 gsap.registerPlugin(Flip);
 
@@ -49,6 +51,18 @@ export default class TaskManager {
         description:
           " Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi maiores, culpa architecto enim autem iusto! Maxime sunt explicabo pariatur corporis accusantium, voluptas excepturi quam inventore dicta, consequatur soluta ipsam doloremque? ",
       });
+
+      const testMovieResult = new MoviesUI(moviesResultData);
+
+      this.onStatusUpdate(
+        this.tasks[0].key,
+        {
+          type: API_STATUSES.ENDED,
+          title: "Ended",
+          description: "Task has ended",
+        },
+        testMovieResult.getElement()
+      );
     }
   }
 
