@@ -70,7 +70,6 @@ function () {
 
         _this2.getMoviesDateShowtime(moviedetaildata.MovieTitle, theatre, theatre.DateTime[0].Date, moviedetailsdatesdiv);
 
-        moviedetailsc;
         arddiv.appendChild(moviedetailsdatesdiv);
         moviedetail.appendChild(moviedetailscarddiv);
       });

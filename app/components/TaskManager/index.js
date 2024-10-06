@@ -61,7 +61,7 @@ export default class TaskManager {
           title: "Ended",
           description: "Task has ended",
         },
-        testMovieResult.getElement()
+        testMovieResult
       );
     }
   }

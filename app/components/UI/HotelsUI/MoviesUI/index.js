@@ -68,7 +68,6 @@ export class MoviesUI {
       moviedetailsdatesdiv.className = "movie-details-dates";
       moviedetailsdatesdiv.setAttribute("data-details", JSON.stringify(theatre).replace(/'/g, "&#39;"));
       this.getMoviesDateShowtime(moviedetaildata.MovieTitle, theatre, theatre.DateTime[0].Date, moviedetailsdatesdiv);
-      moviedetailsc;
       arddiv.appendChild(moviedetailsdatesdiv);
       moviedetail.appendChild(moviedetailscarddiv);
     });

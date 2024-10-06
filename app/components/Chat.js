@@ -6,6 +6,7 @@ import { FlightUI } from "./UI/FlightUI.js";
 import { API_STATUSES } from "./constants.js";
 import HotelsUI from "./UI/HotelsUI/index.js";
 import ProductUI from "./UI/ProductUI.js";
+import { MoviesUI } from "./UI/HotelsUI/MoviesUI/index.js";
 // const uuid = "omega_" + crypto.randomUUID();
 // import { getUser } from "../User.js";
 // const IS_DEV_MODE = import.meta.env.MODE === "development";
@@ -503,7 +504,7 @@ class Chat {
     let container;
     let domain = data.domain;
     if (domain == MOVIESEARCH) {
-      container = this.getMovies(JSON.parse(data.MovieSearchResults));
+      container = new MoviesUI(JSON.parse(data.MovieSearchResults)).getElement();
     } else if (domain == TAXISEARCH) {
       container = this.getTaxiUI(JSON.parse(data.TaxiSearchResults));
     } else if (domain == FLIGHTSEARCH) {

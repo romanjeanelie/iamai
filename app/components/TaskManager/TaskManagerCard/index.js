@@ -128,12 +128,17 @@ export default class TaskManagerCard {
     if (this.task.status?.type) this.statusPill.style.background = STATUS_COLORS[this.task.status.type];
 
     if (this.task.status?.type === API_STATUSES.ENDED) {
+      // Set all the preceding proSearch states to completed
       this.proSearch.updatePrecedingStatusesStates();
+      // Adds the result AnswerPanel
       this.addResult();
+      // the completed class mostly adds the notification mark on the card
       this.card.classList.add("completed");
     } else if (this.task.status?.type === API_STATUSES.VIEWED) {
+      // remove the completed class and notification mark
       this.card.classList.remove("completed");
     } else if (this.task.status?.type === API_STATUSES.INPUT_REQUIRED) {
+      // the input-required class mostly adds the input required notification mark on the card
       this.card.classList.add("input-required");
       this.proSearch.addStatus(this.task.status);
     } else {
@@ -161,6 +166,14 @@ export default class TaskManagerCard {
     this.isExpanded = false;
     this.animations.fullscreenToCard(this.index);
     this.fullscreenContainer.classList.remove("active");
+  }
+
+  // Show details when click on a result item
+  showResultDetails(result) {
+    // hide fullscreen state
+    this.fullscreenState.style.display = "none";
+
+    // show result details
   }
 
   // Close fullscreen when clicking outside the fullscreen container
