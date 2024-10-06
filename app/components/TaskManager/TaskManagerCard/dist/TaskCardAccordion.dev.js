@@ -92,17 +92,15 @@ function () {
   }, {
     key: "openPanel",
     value: function openPanel(panelTitle) {
+      var _this2 = this;
+
       var panelContainer = this.panels.find(function (panel) {
         return panel.getAttribute("data-title") === panelTitle;
       });
       var panelContent = panelContainer.querySelector(".task-accordion__content"); // Close any previously opened panel
 
       this.panels.forEach(function (panel) {
-        var content = panel.querySelector(".task-accordion__content");
-        content.style.maxHeight = 0;
-        var chevron = panel.querySelector(".task-accordion__header-chevron");
-        chevron.classList.remove("open");
-        panel.classList.remove("active");
+        _this2.closePanel(panel, panel.querySelector(".task-accordion__content"));
       }); // Open the panel
 
       panelContent.style.maxHeight = panelContent.scrollHeight + "px";

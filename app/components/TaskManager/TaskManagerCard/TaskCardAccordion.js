@@ -93,11 +93,7 @@ export default class TaskCardAccordion {
 
     // Close any previously opened panel
     this.panels.forEach((panel) => {
-      const content = panel.querySelector(".task-accordion__content");
-      content.style.maxHeight = 0;
-      const chevron = panel.querySelector(".task-accordion__header-chevron");
-      chevron.classList.remove("open");
-      panel.classList.remove("active");
+      this.closePanel(panel, panel.querySelector(".task-accordion__content"));
     });
 
     // Open the panel
