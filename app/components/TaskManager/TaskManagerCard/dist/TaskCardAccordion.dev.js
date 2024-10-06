@@ -58,7 +58,7 @@ function () {
       content.style.maxHeight = 0;
       this.panels.push(panelContainer);
       this.container.appendChild(panelContainer);
-      this.openPanel(title);
+      this.openPanel(panelContainer, content);
       return content;
     }
   }, {
@@ -72,33 +72,19 @@ function () {
 
       if (!this.activePanel) {
         // Close the panel
-        panelContent.style.maxHeight = 0;
+        this.closePanel(panelContainer, panelContent);
       } else {
-        // Close any previously opened panel
-        this.panels.forEach(function (panel) {
-          var content = panel.querySelector(".task-accordion__content");
-          content.style.maxHeight = 0;
-          var chevron = panel.querySelector(".task-accordion__header-chevron");
-          chevron.classList.remove("open");
-          panel.classList.remove("active");
-        }); // Open the panel
-
-        panelContent.style.maxHeight = panelContent.scrollHeight + "px";
+        this.openPanel(panelContainer, panelContent);
       } // Toggle the active state
+      // panelContainer.classList.toggle("active");
 
-
-      panelContainer.classList.toggle("active");
     }
   }, {
     key: "openPanel",
-    value: function openPanel(panelTitle) {
+    value: function openPanel(panelContainer, panelContent) {
       var _this2 = this;
 
-      var panelContainer = this.panels.find(function (panel) {
-        return panel.getAttribute("data-title") === panelTitle;
-      });
-      var panelContent = panelContainer.querySelector(".task-accordion__content"); // Close any previously opened panel
-
+      // Close any previously opened panel
       this.panels.forEach(function (panel) {
         _this2.closePanel(panel, panel.querySelector(".task-accordion__content"));
       }); // Open the panel

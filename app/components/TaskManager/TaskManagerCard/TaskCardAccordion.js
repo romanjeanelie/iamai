@@ -56,7 +56,7 @@ export default class TaskCardAccordion {
     this.panels.push(panelContainer);
     this.container.appendChild(panelContainer);
 
-    this.openPanel(title);
+    this.openPanel(panelContainer, content);
 
     return content;
   }
@@ -68,29 +68,16 @@ export default class TaskCardAccordion {
 
     if (!this.activePanel) {
       // Close the panel
-      panelContent.style.maxHeight = 0;
+      this.closePanel(panelContainer, panelContent);
     } else {
-      // Close any previously opened panel
-      this.panels.forEach((panel) => {
-        const content = panel.querySelector(".task-accordion__content");
-        content.style.maxHeight = 0;
-        const chevron = panel.querySelector(".task-accordion__header-chevron");
-        chevron.classList.remove("open");
-        panel.classList.remove("active");
-      });
-
-      // Open the panel
-      panelContent.style.maxHeight = panelContent.scrollHeight + "px";
+      this.openPanel(panelContainer, panelContent);
     }
 
     // Toggle the active state
-    panelContainer.classList.toggle("active");
+    // panelContainer.classList.toggle("active");
   }
 
-  openPanel(panelTitle) {
-    const panelContainer = this.panels.find((panel) => panel.getAttribute("data-title") === panelTitle);
-    const panelContent = panelContainer.querySelector(".task-accordion__content");
-
+  openPanel(panelContainer, panelContent) {
     // Close any previously opened panel
     this.panels.forEach((panel) => {
       this.closePanel(panel, panel.querySelector(".task-accordion__content"));
