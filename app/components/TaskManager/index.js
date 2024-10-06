@@ -52,7 +52,7 @@ export default class TaskManager {
           " Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi maiores, culpa architecto enim autem iusto! Maxime sunt explicabo pariatur corporis accusantium, voluptas excepturi quam inventore dicta, consequatur soluta ipsam doloremque? ",
       });
 
-      const testMovieResult = new MoviesUI(moviesResultData);
+      const testMovieResult = new MoviesUI(moviesResultData, this.emitter);
 
       this.onStatusUpdate(
         this.tasks[0].key,
@@ -63,6 +63,9 @@ export default class TaskManager {
         },
         testMovieResult
       );
+
+      this.debugger.addDebugTask();
+      this.debugger.addDebugTask();
     }
   }
 

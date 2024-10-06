@@ -503,7 +503,7 @@ class Chat {
     let container;
     let domain = data.domain;
     if (domain == MOVIESEARCH) {
-      container = new MoviesUI(JSON.parse(data.MovieSearchResults)).getElement();
+      container = new MoviesUI(JSON.parse(data.MovieSearchResults), this.callbacks.emitter).getElement();
     } else if (domain == TAXISEARCH) {
       container = this.getTaxiUI(JSON.parse(data.TaxiSearchResults));
     } else if (domain == FLIGHTSEARCH) {

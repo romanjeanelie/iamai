@@ -1,11 +1,13 @@
 export class MoviesUI {
-  constructor(MoviesResultData) {
+  constructor(MoviesResultData, emitter) {
     this.moviesResultData = MoviesResultData;
+    this.emitter = emitter;
 
     // State
 
     // DOM Elements
     this.mainContainer = null;
+    this.resultDetailContainer = null;
 
     // Init Methods
     this.initUI();
@@ -15,63 +17,138 @@ export class MoviesUI {
     this.mainContainer = document.createElement("div");
     this.mainContainer.className = "movies-ui__main-container";
 
-    const moviesCardContainerHTML = this.moviesResultData
-      .map((element) => {
-        const movieDetails = JSON.stringify(element).replace(/'/g, "&#39;");
-        const movieTitle = element.MovieTitle.replace(/'/g, "&#39;");
-        return `
-        <div class="movies-card__container">
-          <div class="movies-card__infos-container">
-            <div class="movies-card__poster">
-              <img alt="${movieTitle}" src="${element.MoviePoster}" />
-            </div>
-            <div class="movies-card__details-container">
-              <h4 class="movies-card__title">${element.MovieTitle}</h4> 
-              <button class="movies-card__cta-button">See More</button>
-            </div>
-          </div>
-        </div>
-      `;
-      })
-      .join("");
+    const moviesGrid = document.createElement("div");
+    moviesGrid.className = "movies-ui__movies-grid";
 
-    this.mainContainer.innerHTML = `
-      <div class="movies-ui__movies-grid">
-        ${moviesCardContainerHTML}
-      </div>
-      <div id="movie-details"></div>
-    `;
-
-    // Attach event listeners
-    const movieCards = this.mainContainer.querySelectorAll(".movies-card");
-    movieCards.forEach((card) => {
-      card.addEventListener("click", (event) => this.showMovieDetail(event));
+    this.moviesResultData.forEach((movieData) => {
+      const movieCard = this.createMovieCard(movieData);
+      moviesGrid.appendChild(movieCard);
     });
 
-    return this.mainContainer;
+    this.mainContainer.appendChild(moviesGrid);
+
+    const movieDetails = document.createElement("div");
+    movieDetails.id = "movie-details";
+    this.mainContainer.appendChild(movieDetails);
   }
 
-  showMovieDetail(event) {
-    let element = event.target;
-    let moviedetail = element.parentElement.parentElement.parentElement.querySelector("#movie-details");
-    moviedetail.innerHTML = "";
-    let moviedetaildata = JSON.parse(element.parentElement.getAttribute("data-details").replace("&#39;", /'/g));
-    // let divinnerhtml = "";
-    moviedetaildata.Theatre.forEach((theatre) => {
-      const moviedetailscarddiv = document.createElement("div");
-      moviedetailscarddiv.className = "movie-details-card";
-      const moviedetailstheaterdiv = document.createElement("div");
-      moviedetailstheaterdiv.className = "movie-details-theater-header";
-      moviedetailstheaterdiv.innerHTML = theatre.Name;
-      moviedetailscarddiv.appendChild(moviedetailstheaterdiv);
-      const moviedetailsdatesdiv = document.createElement("div");
-      moviedetailsdatesdiv.className = "movie-details-dates";
-      moviedetailsdatesdiv.setAttribute("data-details", JSON.stringify(theatre).replace(/'/g, "&#39;"));
-      this.getMoviesDateShowtime(moviedetaildata.MovieTitle, theatre, theatre.DateTime[0].Date, moviedetailsdatesdiv);
-      arddiv.appendChild(moviedetailsdatesdiv);
-      moviedetail.appendChild(moviedetailscarddiv);
+  createMovieCard(movieData) {
+    const card = document.createElement("div");
+    card.className = "movies-card__container";
+    card.setAttribute("data-movie-title", movieData.title);
+
+    const infosContainer = document.createElement("div");
+    infosContainer.className = "movies-card__infos-container";
+
+    const poster = document.createElement("div");
+    poster.className = "movies-card__poster";
+    const img = document.createElement("img");
+    img.alt = movieData.MovieTitle;
+    img.src = movieData.MoviePoster;
+    poster.appendChild(img);
+
+    const details = document.createElement("div");
+    details.className = "movies-card__details-container";
+
+    const title = document.createElement("h4");
+    title.className = "movies-card__title";
+    title.textContent = movieData.MovieTitle;
+
+    const button = document.createElement("button");
+    button.className = "movies-card__cta-button";
+    button.textContent = "See More";
+
+    details.appendChild(title);
+    details.appendChild(button);
+
+    infosContainer.appendChild(poster);
+    infosContainer.appendChild(details);
+
+    card.appendChild(infosContainer);
+
+    // Add event listener directly to the card
+    card.addEventListener("click", (event) => this.handleMovieCardClick(event, movieData));
+
+    return card;
+  }
+
+  handleMovieCardClick(event, movieData) {
+    const data = {
+      type: "movie",
+      data: movieData,
+    };
+    this.createMovieDetailUI(movieData);
+    this.emitter.emit("taskManager:showDetail", event, data);
+  }
+
+  createMovieDetailUI(movie) {
+    this.resultDetailContainer = document.createElement("div");
+    this.resultDetailContainer.className = "movie-details";
+
+    // Create movie header section
+    const header = document.createElement("div");
+    header.classList.add("movie-header");
+
+    const moviePoster = document.createElement("img");
+    moviePoster.src = movie.poster;
+    moviePoster.alt = `${movie.title} Poster`;
+
+    const movieInfo = document.createElement("div");
+    movieInfo.classList.add("movie-info");
+
+    const movieTitle = document.createElement("h1");
+    movieTitle.textContent = movie.title;
+
+    const movieGenre = document.createElement("p");
+    movieGenre.textContent = movie.genre;
+
+    const movieIMDB = document.createElement("p");
+    movieIMDB.textContent = `IMDB: ${movie.imdb}`;
+
+    movieInfo.appendChild(movieTitle);
+    movieInfo.appendChild(movieGenre);
+    movieInfo.appendChild(movieIMDB);
+    header.appendChild(moviePoster);
+    header.appendChild(movieInfo);
+
+    // Create showtimes section
+    const showtimesContainer = document.createElement("div");
+    showtimesContainer.classList.add("showtimes-container");
+
+    movie.showtimes?.forEach((showtime) => {
+      const showtimeRow = document.createElement("div");
+      showtimeRow.classList.add("showtime");
+
+      const cinemaName = document.createElement("div");
+      cinemaName.classList.add("cinema-name");
+
+      const cinemaLogo = document.createElement("img");
+      cinemaLogo.src = showtime.cinemaLogo;
+      cinemaLogo.alt = showtime.cinema;
+
+      const cinemaText = document.createElement("span");
+      cinemaText.textContent = showtime.cinema;
+
+      cinemaName.appendChild(cinemaLogo);
+      cinemaName.appendChild(cinemaText);
+
+      const showtimeSlots = document.createElement("div");
+      showtimeSlots.classList.add("showtime-slots");
+
+      showtime.times.forEach((time) => {
+        const timeSlot = document.createElement("span");
+        timeSlot.textContent = time;
+        showtimeSlots.appendChild(timeSlot);
+      });
+
+      showtimeRow.appendChild(cinemaName);
+      showtimeRow.appendChild(showtimeSlots);
+      showtimesContainer.appendChild(showtimeRow);
     });
-    this.scrollToDiv(moviedetail);
+
+    // Append everything to the container
+    this.resultDetailContainer.appendChild(header);
+    this.resultDetailContainer.appendChild(showtimesContainer);
   }
 
   getMoviesDateShowtime(MovieTitle, theatre, date, moviedetailsdatesdiv) {
@@ -191,5 +268,9 @@ export class MoviesUI {
 
   getElement() {
     return this.mainContainer;
+  }
+
+  getResultsDetails() {
+    return this.resultDetailContainer;
   }
 }

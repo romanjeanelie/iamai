@@ -288,6 +288,10 @@
     position: relative;
     padding-bottom: 24px;
   }
+
+  .task-manager__result-detail {
+    display: none;
+  }
 }
 
 // ------ Task Card : INPUT ------

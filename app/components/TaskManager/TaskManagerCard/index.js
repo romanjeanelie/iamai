@@ -25,6 +25,7 @@ export default class TaskManagerCard {
     this.cardContainer = null;
     this.cardState = null;
     this.fullscreenState = null;
+    this.resultDetail = null;
 
     // Bindings
     this.handleClickOutside = this.handleClickOutside.bind(this);
@@ -33,7 +34,7 @@ export default class TaskManagerCard {
     this.initUI();
     this.accordion = new TaskCardAccordion({ container: this.fullscreenState });
     this.proSearch = new TaskCardStatus({ card: this });
-    this.addEventListeners();
+    this.addListeners();
 
     if (this.debug) {
       if (this.task.key === 1) {
@@ -82,10 +83,13 @@ export default class TaskManagerCard {
           ${this.task.name}          
         </div>
       </div>
+
+      <div class="task-manager__result-detail">
     `;
 
     this.cardState = this.card.querySelector(".card-state");
     this.fullscreenState = this.card.querySelector(".fullscreen-state");
+    this.resultDetail = this.card.querySelector(".task-manager__result-detail");
     this.statusPill = this.card.querySelector(".task-manager__task-status");
     this.statusPill.style.background = STATUS_COLORS[this.task.status.type];
 
@@ -114,6 +118,9 @@ export default class TaskManagerCard {
 
     if (this.task.resultsContainer instanceof Node) {
       this.resultsContainer.appendChild(this.task.resultsContainer);
+    } else if (this.task.resultsContainer.constructor !== Object) {
+      this.results = this.task.resultsContainer;
+      this.resultsContainer.appendChild(this.results.getElement());
     } else {
       console.error("resultsContainer is not a valid DOM Node", this.task.resultsContainer);
     }
@@ -174,6 +181,8 @@ export default class TaskManagerCard {
     this.fullscreenState.style.display = "none";
 
     // show result details
+    this.resultDetail.style.display = "block";
+    this.resultDetail.append(this.results.getResultsDetails());
   }
 
   // Close fullscreen when clicking outside the fullscreen container
@@ -203,7 +212,11 @@ export default class TaskManagerCard {
     this.cardContainer.remove();
   }
 
-  addEventListeners() {
+  addListeners() {
+    this.emitter.on("taskManager:showDetail", (event, taskData) => {
+      if (this.isExpanded) this.showResultDetails();
+    });
+
     this.card.addEventListener("click", () => {
       this.expandCardToFullscreen();
       this.markAsRead();
