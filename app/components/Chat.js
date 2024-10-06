@@ -357,7 +357,6 @@ class Chat {
             this.getGucciUI();
             (this.domain = ""), (this.RAG_CHAT = "");
           } else if (this.domain == MOVIESEARCH) {
-            this.getMovies();
             (this.domain = ""), (this.MovieSearchResults = ""), (this.MovieSearch = "");
           }
           this.callbacks.enableInput();
