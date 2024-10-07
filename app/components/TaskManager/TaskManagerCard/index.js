@@ -191,14 +191,21 @@ export default class TaskManagerCard {
     `;
 
     backButton.addEventListener("click", () => {
-      this.resultDetail.style.display = "none";
-      this.fullscreenState.style.display = "flex";
+      this.hideResultDetails();
     });
 
     // show result details
     this.resultDetail.style.display = "block";
     this.resultDetail.appendChild(backButton);
     this.resultDetail.append(this.results.getResultsDetails());
+  }
+
+  hideResultDetails() {
+    this.resultDetail.style.display = "none";
+    this.fullscreenState.style.display = "flex";
+
+    // Remove the result details from the DOM
+    this.resultDetail.innerHTML = "";
   }
 
   // Close fullscreen when clicking outside the fullscreen container
