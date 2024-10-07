@@ -34,6 +34,12 @@ export class MoviesUI {
     this.mainContainer.appendChild(movieDetails);
   }
 
+  addAIText(text) {
+    const answerContainer = document.createElement("div");
+    answerContainer.innerHTML = text || "";
+    this.mainContainer.appendChild(answerContainer);
+  }
+
   createMovieCard(movieData) {
     const card = document.createElement("div");
     card.className = "movies-card__container";

@@ -49,6 +49,13 @@ function () {
       this.mainContainer.appendChild(movieDetails);
     }
   }, {
+    key: "addAIText",
+    value: function addAIText(text) {
+      var answerContainer = document.createElement("div");
+      answerContainer.innerHTML = text || "";
+      this.mainContainer.appendChild(answerContainer);
+    }
+  }, {
     key: "createMovieCard",
     value: function createMovieCard(movieData) {
       var _this2 = this;

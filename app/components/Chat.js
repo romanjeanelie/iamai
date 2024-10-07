@@ -250,12 +250,17 @@ class Chat {
         if (mdata.status == AGENT_ENDED) {
           this.callbacks.emitter.emit(AGENT_ENDED);
 
-          const resultContainer = document.createElement("div");
+          let result;
           let datas = ui_paramsmap.get(mdata.micro_thread_id);
           if (datas) {
             datas.forEach((data) => {
               const uiElement = this.getUI(data);
-              resultContainer.appendChild(uiElement);
+              if (uiElement.constructor !== Object) {
+                result = uiElement;
+              } else {
+                result = document.createElement("div");
+                result.appendChild(uiElement);
+              }
             });
           }
 
@@ -270,7 +275,7 @@ class Chat {
             },
           };
 
-          this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, resultContainer, {
+          this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, result, {
             workflowID: mdata.session_id,
           });
           // this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, divans, { workflowID: 1234 });
@@ -503,7 +508,7 @@ class Chat {
     let container;
     let domain = data.domain;
     if (domain == MOVIESEARCH) {
-      container = new MoviesUI(JSON.parse(data.MovieSearchResults), this.callbacks.emitter).getElement();
+      container = new MoviesUI(JSON.parse(data.MovieSearchResults), this.callbacks.emitter);
     } else if (domain == TAXISEARCH) {
       container = this.getTaxiUI(JSON.parse(data.TaxiSearchResults));
     } else if (domain == FLIGHTSEARCH) {

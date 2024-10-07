@@ -29,27 +29,40 @@ export default class History {
   }
 
   getResultsUI(statuses) {
-    const resultsContainer = document.createElement("div");
+    let result;
 
     statuses.results.forEach((status) => {
       if (status.type === "ui") {
         const results = status.response_json;
-        const uiResults = this.getTaskResultUI(results);
-        resultsContainer.appendChild(uiResults);
+        const uiResults = this.getTaskResultUI(results); // Call the function that returns UI for the task
+
+        if (uiResults.constructor !== Object) {
+          result = uiResults;
+        } else {
+          result = document.createElement("div");
+          result.appendChild(uiResults); // Ensure it's a DOM element or append accordingly
+        }
       }
+
       if (status.type === "sources") {
         const sources = status.response_json.sources;
-        const media = new DiscussionMedia({ container: resultsContainer, emitter: this.emitter });
+        const media = new DiscussionMedia({ container: result, emitter: this.emitter });
         media.addSources(sources);
       }
+
       if (status.status === API_STATUSES.ANSWERED) {
         const answerContainer = document.createElement("div");
         answerContainer.innerHTML = md.parse(status.response_json.text) || "";
-        resultsContainer.append(answerContainer);
+
+        if (result.constructor !== Object) {
+          result.addAIText(md.parse(status.response_json.text) || "");
+        } else {
+          result.append(answerContainer);
+        }
       }
     });
 
-    return resultsContainer;
+    return result;
   }
 
   addTasksUI(statuses, resultsContainer) {
@@ -357,7 +370,7 @@ export default class History {
   async getHistory({ uuid, user, size = 3 }) {
     this.isFetching = true;
     // Get elements
-    const elements = await this.getAllElements({ uuid, user, size, start: this.newStart });
+    const elements = await this.getAllElements({ uuid, user, size: 1, start: this.newStart });
     // Reverse the order of elements
 
     elements.results.reverse();
