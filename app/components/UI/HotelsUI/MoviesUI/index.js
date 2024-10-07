@@ -151,11 +151,22 @@ export class MoviesUI {
         // append the chevron only if there are more than 4 showtimes
         if (theater.showtimes.length > 4) theaterHeader.appendChild(theatreChevron);
 
-        const showtimesElement = document.createElement("p");
-        showtimesElement.textContent = `Showtimes: ${theater.showtimes.join(", ")}`;
+        const showtimesContainer = document.createElement("div");
+        showtimesContainer.className = "movie-details__showtimes";
+
+        theater.showtimes.forEach((showtime) => {
+          const showtimeElement = document.createElement("a");
+          showtimeElement.className = "movie-details__showtime-item";
+          // remove the extre :00 at the end of the time
+          const formattedTime = showtime.Time.slice(0, -3);
+
+          showtimeElement.textContent = formattedTime;
+          showtimeElement.setAttribute("href", showtime.BookingUrl);
+          showtimesContainer.appendChild(showtimeElement);
+        });
 
         theatreCard.appendChild(theaterHeader);
-        theatreCard.appendChild(showtimesElement);
+        theatreCard.appendChild(showtimesContainer);
 
         container.appendChild(theatreCard);
       });
