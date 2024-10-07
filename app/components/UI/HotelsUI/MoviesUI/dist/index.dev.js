@@ -5,6 +5,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.MoviesUI = void 0;
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -22,7 +30,7 @@ function () {
     // DOM Elements
 
     this.mainContainer = null;
-    this.resultDetailcontainer = null; // Init Methods
+    this.movieDetailContainer = null; // Init Methods
 
     this.initUI();
   }
@@ -92,57 +100,81 @@ function () {
       this.emitter.emit("taskManager:showDetail", event, data);
     }
   }, {
+    key: "organizeShowtimesByDate",
+    value: function organizeShowtimesByDate(movie) {
+      var dateMap = new Map();
+      movie.Theatre.forEach(function (theater) {
+        theater.DateTime.forEach(function (dateTime) {
+          var _theaterMap$get;
+
+          var date = dateTime.Date;
+
+          if (!dateMap.has(date)) {
+            dateMap.set(date, new Map());
+          }
+
+          var theaterMap = dateMap.get(date);
+
+          if (!theaterMap.has(theater.Name)) {
+            theaterMap.set(theater.Name, []);
+          }
+
+          (_theaterMap$get = theaterMap.get(theater.Name)).push.apply(_theaterMap$get, _toConsumableArray(dateTime.Show));
+        });
+      });
+      return dateMap;
+    }
+  }, {
+    key: "displayOrganizedData",
+    value: function displayOrganizedData(data) {
+      var container = document.createElement("div");
+      container.className = "showtimes-container";
+      Object.keys(data).sort().forEach(function (date) {
+        var dateElement = document.createElement("h4");
+        dateElement.textContent = "Date: ".concat(date);
+        container.appendChild(dateElement);
+        var theatersContainer = document.createElement("div");
+        theatersContainer.className = "theaters-container";
+        Object.keys(organizedData[date]).forEach(function (theaterName) {
+          var theaterElement = document.createElement("div");
+          theaterElement.className = "theater";
+          var theaterNameElement = document.createElement("h5");
+          theaterNameElement.textContent = theaterName;
+          theaterElement.appendChild(theaterNameElement);
+          var showtimesElement = document.createElement("p");
+          showtimesElement.textContent = "Showtimes: ".concat(organizedData[date][theaterName].join(", "));
+          theaterElement.appendChild(showtimesElement);
+          theatersContainer.appendChild(theaterElement);
+        });
+        container.appendChild(theatersContainer);
+      });
+      return container;
+    }
+  }, {
     key: "createMovieDetailUI",
     value: function createMovieDetailUI(movie) {
-      this.resultDetailcontainer = document.getElementById("movie-detail"); // Create movie header section
+      this.movieDetailContainer = document.createElement("div");
+      this.movieDetailContainer.className = "movie-details__container"; // Create movie header section
 
       var header = document.createElement("div");
-      header.classList.add("movie-header");
-      var moviePoster = document.createElement("img");
-      moviePoster.src = movie.poster;
-      moviePoster.alt = "".concat(movie.title, " Poster");
+      header.classList.add("movie-details__header");
+      var moviePoster = document.createElement("div");
+      moviePoster.classList.add("movie-details__poster");
+      moviePoster.innerHTML = "<img src=\"".concat(movie.MoviePoster, "\" alt=\"").concat(movie.MovieTitle, " Poster\" />");
       var movieInfo = document.createElement("div");
-      movieInfo.classList.add("movie-info");
-      var movieTitle = document.createElement("h1");
-      movieTitle.textContent = movie.title;
-      var movieGenre = document.createElement("p");
-      movieGenre.textContent = movie.genre;
-      var movieIMDB = document.createElement("p");
-      movieIMDB.textContent = "IMDB: ".concat(movie.imdb);
+      movieInfo.classList.add("movie-details__info");
+      var movieTitle = document.createElement("h3");
+      movieTitle.textContent = movie.MovieTitle;
       movieInfo.appendChild(movieTitle);
-      movieInfo.appendChild(movieGenre);
-      movieInfo.appendChild(movieIMDB);
       header.appendChild(moviePoster);
       header.appendChild(movieInfo); // Create showtimes section
 
-      var showtimesContainer = document.createElement("div");
-      showtimesContainer.classList.add("showtimes-container");
-      movie.showtimes.forEach(function (showtime) {
-        var showtimeRow = document.createElement("div");
-        showtimeRow.classList.add("showtime");
-        var cinemaName = document.createElement("div");
-        cinemaName.classList.add("cinema-name");
-        var cinemaLogo = document.createElement("img");
-        cinemaLogo.src = showtime.cinemaLogo;
-        cinemaLogo.alt = showtime.cinema;
-        var cinemaText = document.createElement("span");
-        cinemaText.textContent = showtime.cinema;
-        cinemaName.appendChild(cinemaLogo);
-        cinemaName.appendChild(cinemaText);
-        var showtimeSlots = document.createElement("div");
-        showtimeSlots.classList.add("showtime-slots");
-        showtime.times.forEach(function (time) {
-          var timeSlot = document.createElement("span");
-          timeSlot.textContent = time;
-          showtimeSlots.appendChild(timeSlot);
-        });
-        showtimeRow.appendChild(cinemaName);
-        showtimeRow.appendChild(showtimeSlots);
-        showtimesContainer.appendChild(showtimeRow);
-      }); // Append everything to the container
+      var organizedByDateData = this.organizeShowtimesByDate(movie);
+      var showtimesContainer = this.organizeShowtimesByDate(organizedByDateData);
+      showtimesContainer.classList.add("movie-details__showtimes-container"); // Append everything to the container
 
-      this.resultDetailcontainer.appendChild(header);
-      this.resultDetailcontainer.appendChild(showtimesContainer);
+      this.movieDetailContainer.appendChild(header);
+      this.movieDetailContainer.appendChild(showtimesContainer);
     }
   }, {
     key: "getMoviesDateShowtime",
@@ -292,7 +324,7 @@ function () {
   }, {
     key: "getResultsDetails",
     value: function getResultsDetails() {
-      return this.resultDetailcontainer;
+      return this.movieDetailContainer;
     }
   }]);
 

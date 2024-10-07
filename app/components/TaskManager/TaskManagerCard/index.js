@@ -84,7 +84,7 @@ export default class TaskManagerCard {
         </div>
       </div>
 
-      <div class="task-manager__result-detail">
+      <div class="task-manager__result-detail no-scrollbar">
     `;
 
     this.cardState = this.card.querySelector(".card-state");

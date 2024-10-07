@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.formatDateString = exports.getMonthStr = exports.getMonthDetails = exports.getDayDetails = exports.getNumberOfDays = exports.months = exports.days = void 0;
+exports.getDayLabel = exports.formatDateString = exports.formatDate = exports.getMonthStr = exports.getMonthDetails = exports.getDayDetails = exports.getNumberOfDays = exports.months = exports.days = void 0;
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
@@ -94,6 +94,16 @@ var getMonthStr = function getMonthStr(month) {
 
 exports.getMonthStr = getMonthStr;
 
+var formatDate = function formatDate(date) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {
+    day: "numeric",
+    month: "long"
+  };
+  return date.toLocaleDateString("en-US", options);
+};
+
+exports.formatDate = formatDate;
+
 var formatDateString = function formatDateString(dateStr) {
   // Split the date string into components
   var _dateStr$split = dateStr.split("-"),
@@ -113,3 +123,26 @@ var formatDateString = function formatDateString(dateStr) {
 };
 
 exports.formatDateString = formatDateString;
+
+var getDayLabel = function getDayLabel(date) {
+  var inputDate = new Date(date);
+  var today = new Date();
+  var tomorrow = new Date();
+  tomorrow.setDate(today.getDate() + 1); // Remove time part for comparison
+
+  today.setHours(0, 0, 0, 0);
+  tomorrow.setHours(0, 0, 0, 0);
+  inputDate.setHours(0, 0, 0, 0);
+
+  if (inputDate.getTime() === today.getTime()) {
+    return "Today";
+  } else if (inputDate.getTime() === tomorrow.getTime()) {
+    return "Tomorrow";
+  } else {
+    return inputDate.toLocaleDateString("en-GB", {
+      weekday: "long"
+    });
+  }
+};
+
+exports.getDayLabel = getDayLabel;

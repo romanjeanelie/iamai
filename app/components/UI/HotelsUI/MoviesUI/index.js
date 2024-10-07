@@ -1,3 +1,5 @@
+import { formatDate, getDayLabel } from "../../../../utils/dateUtils";
+
 export class MoviesUI {
   constructor(MoviesResultData, emitter) {
     this.moviesResultData = MoviesResultData;
@@ -81,70 +83,102 @@ export class MoviesUI {
     this.emitter.emit("taskManager:showDetail", event, data);
   }
 
+  organizeShowtimesByDate(movie) {
+    const dateArray = [];
+
+    movie.Theatre?.forEach((theater) => {
+      theater.DateTime.forEach((dateTime) => {
+        const date = dateTime.Date;
+        let dateEntry = dateArray.find((entry) => entry.date === date);
+        if (!dateEntry) {
+          dateEntry = { date, theaters: [] };
+          dateArray.push(dateEntry);
+        }
+        let theaterEntry = dateEntry.theaters.find((entry) => entry.name === theater.Name);
+        if (!theaterEntry) {
+          theaterEntry = { name: theater.Name, showtimes: [] };
+          dateEntry.theaters.push(theaterEntry);
+        }
+        theaterEntry.showtimes.push(...dateTime.Show);
+      });
+    });
+
+    return dateArray;
+  }
+
+  getFormattedDate(timestamp) {
+    const date = new Date(timestamp);
+    const dayLabel = getDayLabel(date);
+
+    const dayValue = date.getDate().toString().padStart(2, "0");
+    const monthValue = date.toLocaleString("default", { month: "long" });
+    const formattedMonth = `${dayValue} ${monthValue}`;
+
+    return { dayLabel, formattedMonth };
+  }
+
+  displayOrganizedData(data) {
+    const container = document.createElement("div");
+    container.classList.add("movie-details__showtimes-container");
+
+    data.forEach((dateEntry) => {
+      const dateElement = document.createElement("p");
+      dateElement.className = "movie-details__showtimes-date";
+      const { dayLabel, formattedMonth } = this.getFormattedDate(dateEntry.date);
+      dateElement.innerHTML = `${dayLabel} <span> • ${formattedMonth} </span>`;
+
+      container.appendChild(dateElement);
+
+      const theatersContainer = document.createElement("div");
+      theatersContainer.className = "theaters-container";
+
+      dateEntry.theaters.forEach((theater) => {
+        const theaterElement = document.createElement("div");
+        theaterElement.className = "theater";
+
+        const theaterNameElement = document.createElement("h5");
+        theaterNameElement.textContent = theater.name;
+        theaterElement.appendChild(theaterNameElement);
+
+        const showtimesElement = document.createElement("p");
+        showtimesElement.textContent = `Showtimes: ${theater.showtimes.join(", ")}`;
+        theaterElement.appendChild(showtimesElement);
+
+        theatersContainer.appendChild(theaterElement);
+      });
+
+      container.appendChild(theatersContainer);
+    });
+
+    return container;
+  }
+
   createMovieDetailUI(movie) {
     this.movieDetailContainer = document.createElement("div");
-    this.movieDetailContainer.className = "movie-details";
+    this.movieDetailContainer.className = "movie-details__container";
 
     // Create movie header section
     const header = document.createElement("div");
-    header.classList.add("movie-header");
+    header.classList.add("movie-details__header");
 
-    const moviePoster = document.createElement("img");
-    moviePoster.src = movie.poster;
-    moviePoster.alt = `${movie.title} Poster`;
+    const moviePoster = document.createElement("div");
+    moviePoster.classList.add("movie-details__poster");
+    moviePoster.innerHTML = `<img src="${movie.MoviePoster}" alt="${movie.MovieTitle} Poster" />`;
 
     const movieInfo = document.createElement("div");
-    movieInfo.classList.add("movie-info");
+    movieInfo.classList.add("movie-details__info");
 
-    const movieTitle = document.createElement("h1");
-    movieTitle.textContent = movie.title;
-
-    const movieGenre = document.createElement("p");
-    movieGenre.textContent = movie.genre;
-
-    const movieIMDB = document.createElement("p");
-    movieIMDB.textContent = `IMDB: ${movie.imdb}`;
+    const movieTitle = document.createElement("h3");
+    movieTitle.textContent = movie.MovieTitle;
 
     movieInfo.appendChild(movieTitle);
-    movieInfo.appendChild(movieGenre);
-    movieInfo.appendChild(movieIMDB);
+
     header.appendChild(moviePoster);
     header.appendChild(movieInfo);
 
     // Create showtimes section
-    const showtimesContainer = document.createElement("div");
-    showtimesContainer.classList.add("showtimes-container");
-
-    movie.showtimes?.forEach((showtime) => {
-      const showtimeRow = document.createElement("div");
-      showtimeRow.classList.add("showtime");
-
-      const cinemaName = document.createElement("div");
-      cinemaName.classList.add("cinema-name");
-
-      const cinemaLogo = document.createElement("img");
-      cinemaLogo.src = showtime.cinemaLogo;
-      cinemaLogo.alt = showtime.cinema;
-
-      const cinemaText = document.createElement("span");
-      cinemaText.textContent = showtime.cinema;
-
-      cinemaName.appendChild(cinemaLogo);
-      cinemaName.appendChild(cinemaText);
-
-      const showtimeSlots = document.createElement("div");
-      showtimeSlots.classList.add("showtime-slots");
-
-      showtime.times.forEach((time) => {
-        const timeSlot = document.createElement("span");
-        timeSlot.textContent = time;
-        showtimeSlots.appendChild(timeSlot);
-      });
-
-      showtimeRow.appendChild(cinemaName);
-      showtimeRow.appendChild(showtimeSlots);
-      showtimesContainer.appendChild(showtimeRow);
-    });
+    const dataOrganizedByDate = this.organizeShowtimesByDate(movie);
+    const showtimesContainer = this.displayOrganizedData(dataOrganizedByDate);
 
     // Append everything to the container
     this.movieDetailContainer.appendChild(header);

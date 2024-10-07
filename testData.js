@@ -1825,7 +1825,7 @@ export const moviesResultData = [
         Name: "CGV CINEMAS LA ",
         DateTime: [
           {
-            Date: "2024-10-04",
+            Date: "2024-10-07",
             Show: [
               {
                 Time: "16:00:00",
@@ -1836,6 +1836,136 @@ export const moviesResultData = [
                 Time: "19:00:00",
                 BookingUrl:
                   "https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate=2024-10-04%2B19%3A00&from=mov_det_showtimes&source=desktop&mid=230936&tid=AAWTJ&dfam=webbrowser&showtimehashcode=v2-281b605142b7632e84e00867e3676083df3363741c200abea693da57b0849193",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        Name: "REGAL LA LIVE & 4DX ",
+        DateTime: [
+          {
+            Date: "2024-10-08",
+            Show: [
+              {
+                Time: "11:30:00",
+                BookingUrl:
+                  "https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate=2024-10-04%2B11%3A30&from=mov_det_showtimes&source=desktop&mid=230936&tid=AAVPA&dfam=webbrowser&showtimehashcode=v2-f14f30b47eff063835e0135c602c063297b7c94d805e6c8a0f68118fc0afbb9d",
+              },
+              {
+                Time: "14:45:00",
+                BookingUrl:
+                  "https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate=2024-10-04%2B14%3A45&from=mov_det_showtimes&source=desktop&mid=230936&tid=AAVPA&dfam=webbrowser&showtimehashcode=v2-af7c5ad821e2431ed7a7417ad68e514f7c8223484d90e5e81e7e6e2359e52d9c",
+              },
+              {
+                Time: "18:00:00",
+                BookingUrl:
+                  "https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate=2024-10-04%2B18%3A00&from=mov_det_showtimes&source=desktop&mid=230936&tid=AAVPA&dfam=webbrowser&showtimehashcode=v2-a50d69960d592c1707448bb6bb9a2576c5a80a132c35c3e70c9b1fd648b73733",
+              },
+              {
+                Time: "21:15:00",
+                BookingUrl:
+                  "https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate=2024-10-04%2B21%3A15&from=mov_det_showtimes&source=desktop&mid=230936&tid=AAVPA&dfam=webbrowser&showtimehashcode=v2-ff0d9c20be07988a97a53a78507bb890276dc2f6014482a0440dfe2cc99782e1",
+              },
+              {
+                Time: "12:00:00",
+                BookingUrl:
+                  "https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate=2024-10-04%2B12%3A00&from=mov_det_showtimes&source=desktop&mid=230936&tid=AAVPA&dfam=webbrowser&showtimehashcode=v2-4b2fdcfe1f70db5725196b3c65d6f9901f86870382ce866f99d3241030e61872",
+              },
+              {
+                Time: "15:30:00",
+                BookingUrl:
+                  "https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate=2024-10-04%2B15%3A30&from=mov_det_showtimes&source=desktop&mid=230936&tid=AAVPA&dfam=webbrowser&showtimehashcode=v2-6dbe85615a9059eee6c97d197bbe29aa4edb7c8236c34b447f8436f09d5a5432",
+              },
+              {
+                Time: "19:00:00",
+                BookingUrl:
+                  "https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate=2024-10-04%2B19%3A00&from=mov_det_showtimes&source=desktop&mid=230936&tid=AAVPA&dfam=webbrowser&showtimehashcode=v2-3f480fc04ee01c25b217e4ff4548ff48149fecaf6566a3a00f46cb61aab48612",
+              },
+              {
+                Time: "22:30:00",
+                BookingUrl:
+                  "https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate=2024-10-04%2B22%3A30&from=mov_det_showtimes&source=desktop&mid=230936&tid=AAVPA&dfam=webbrowser&showtimehashcode=v2-c52c79c84b49c2c0ac64b5eace9e0dcd81d495e066e2f208c1fda3fd431d0146",
+              },
+              {
+                Time: "10:15:00",
+                BookingUrl:
+                  "https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate=2024-10-04%2B10%3A15&from=mov_det_showtimes&source=desktop&mid=230936&tid=AAVPA&dfam=webbrowser&showtimehashcode=v2-e8015f6e75361c0c2ba4ed4b6c7a7070e08c1ac6ed95ee0bd7abbc322cc238ee",
+              },
+              {
+                Time: "13:30:00",
+                BookingUrl:
+                  "https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate=2024-10-04%2B13%3A30&from=mov_det_showtimes&source=desktop&mid=230936&tid=AAVPA&dfam=webbrowser&showtimehashcode=v2-89b9d7c0dcc1d404bed69fcd85605b6311776f8916571c058a51da945ad0c3af",
+              },
+              {
+                Time: "16:45:00",
+                BookingUrl:
+                  "https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate=2024-10-04%2B16%3A45&from=mov_det_showtimes&source=desktop&mid=230936&tid=AAVPA&dfam=webbrowser&showtimehashcode=v2-d71557a73bc6fe55edbecf7ff74bb8043129e0c9cfca8b606d16ed1e12413447",
+              },
+              {
+                Time: "20:00:00",
+                BookingUrl:
+                  "https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate=2024-10-04%2B20%3A00&from=mov_det_showtimes&source=desktop&mid=230936&tid=AAVPA&dfam=webbrowser&showtimehashcode=v2-d96c81d8650373dfcf5b04adb45f4f5874cd196555d38bdfb4f90999ae42459f",
+              },
+              {
+                Time: "23:15:00",
+                BookingUrl:
+                  "https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate=2024-10-04%2B23%3A15&from=mov_det_showtimes&source=desktop&mid=230936&tid=AAVPA&dfam=webbrowser&showtimehashcode=v2-fc90e3983eb99bdd8f96f3a66771dfa5310bbf9ecf53b5b7ff11e973a78fd78c",
+              },
+              {
+                Time: "09:00:00",
+                BookingUrl:
+                  "https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate=2024-10-04%2B09%3A00&from=mov_det_showtimes&source=desktop&mid=230936&tid=AAVPA&dfam=webbrowser&showtimehashcode=v2-aa8a6e2328e3cb2007cd919f1db02bfd86baf9e9000d60929ecb0d0726f1fb0e",
+              },
+              {
+                Time: "09:45:00",
+                BookingUrl:
+                  "https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate=2024-10-04%2B09%3A45&from=mov_det_showtimes&source=desktop&mid=230936&tid=AAVPA&dfam=webbrowser&showtimehashcode=v2-84735da9b0ed6e030a6a0ccea34ff559ca5e1afc85411c54391c4f3bd0626c76",
+              },
+              {
+                Time: "11:00:00",
+                BookingUrl:
+                  "https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate=2024-10-04%2B11%3A00&from=mov_det_showtimes&source=desktop&mid=230936&tid=AAVPA&dfam=webbrowser&showtimehashcode=v2-2cab188907c9778899cf5599313fa624002640e861f040d9be876d5e85f03e92",
+              },
+              {
+                Time: "12:30:00",
+                BookingUrl:
+                  "https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate=2024-10-04%2B12%3A30&from=mov_det_showtimes&source=desktop&mid=230936&tid=AAVPA&dfam=webbrowser&showtimehashcode=v2-a082a881e36290389569b20c8b0171c9fe0222596f3297e09470b9a9d20fb646",
+              },
+              {
+                Time: "14:15:00",
+                BookingUrl:
+                  "https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate=2024-10-04%2B14%3A15&from=mov_det_showtimes&source=desktop&mid=230936&tid=AAVPA&dfam=webbrowser&showtimehashcode=v2-7bb36c82b6f6712993ceea3b018f184a4463814744e9dd37d479d790152af435",
+              },
+              {
+                Time: "16:00:00",
+                BookingUrl:
+                  "https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate=2024-10-04%2B16%3A00&from=mov_det_showtimes&source=desktop&mid=230936&tid=AAVPA&dfam=webbrowser&showtimehashcode=v2-037b4f4c03c3454710e48800c8d1b91ded3329670d94cb221b54b9f2d6afd30b",
+              },
+              {
+                Time: "17:30:00",
+                BookingUrl:
+                  "https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate=2024-10-04%2B17%3A30&from=mov_det_showtimes&source=desktop&mid=230936&tid=AAVPA&dfam=webbrowser&showtimehashcode=v2-eb1f39954b6169f1840ce02b0f97a25d9404de003c8480603c703796034e46f2",
+              },
+              {
+                Time: "19:30:00",
+                BookingUrl:
+                  "https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate=2024-10-04%2B19%3A30&from=mov_det_showtimes&source=desktop&mid=230936&tid=AAVPA&dfam=webbrowser&showtimehashcode=v2-a38dff859b825981e4529c374a5de84ddcc8f0a00eeb17f38d9c0143a156cfc2",
+              },
+              {
+                Time: "20:45:00",
+                BookingUrl:
+                  "https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate=2024-10-04%2B20%3A45&from=mov_det_showtimes&source=desktop&mid=230936&tid=AAVPA&dfam=webbrowser&showtimehashcode=v2-1d4e00e2e69201b6a103e806bd27a25c1254be19563b8edd937da895327dc37c",
+              },
+              {
+                Time: "21:45:00",
+                BookingUrl:
+                  "https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate=2024-10-04%2B21%3A45&from=mov_det_showtimes&source=desktop&mid=230936&tid=AAVPA&dfam=webbrowser&showtimehashcode=v2-35bdb11a49d2df4e195b502d2ac93334802e5c9255f2769c14920cac1005479b",
+              },
+              {
+                Time: "23:45:00",
+                BookingUrl:
+                  "https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate=2024-10-04%2B23%3A45&from=mov_det_showtimes&source=desktop&mid=230936&tid=AAVPA&dfam=webbrowser&showtimehashcode=v2-0a847673d19bcfd66daddfdeea2bcc4b4370c61383b531b13a5ab6b9a5178198",
               },
             ],
           },

@@ -291,6 +291,8 @@
 
   .task-manager__result-detail {
     display: none;
+    height: 100%;
+    overflow: auto;
   }
 }
 
@@ -301,11 +303,27 @@
 
 //  ------ Task Card : BACK BUTTON ------
 .task-manager__back-button {
+  // Layout
   z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 4px;
   padding: 8px 16px 8px 8px;
+  // background
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.23);
+  background: $colorLight;
+  box-shadow: 0px 6px 30px 0px rgba($colorDark, 0.08);
+  // Font
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 20px; /* 153.846% */
+  transition: background-color 0.15s $ease-out;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
 }
 
 @keyframes ping {
