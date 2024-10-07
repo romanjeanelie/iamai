@@ -1,4 +1,4 @@
-import Navbar from "../components/Navbar";
+// import Navbar from "../components/Navbar";
 
 // [X] add new preferences page
 // [X] add link in navbar to go to preferences page
@@ -107,7 +107,7 @@ class Languages {
   }
 
   initNavbar() {
-    new Navbar();
+    // new Navbar();
   }
 
   initLanguages(languagesArray) {
