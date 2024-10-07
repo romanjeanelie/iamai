@@ -144,9 +144,37 @@
   }
 }
 
+// ------- MOVIE THEATER CARD -------
+.movie-details__theatre-card {
+  border-radius: 20px;
+  border: 0.5px solid rgba($colorLight, 0.4);
+  background-color: rgba($grey-1, 0.5);
+  box-shadow: 0px 10px 30px -2px rgba(55, 69, 108, 0.04);
+  padding: 16px 16px 20px;
+}
+
+.movie-details__theatre-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+
+  h5 {
+    margin: 0px;
+  }
+
+  .movie-details__theatre-chevron {
+    border-radius: 24px;
+    background: rgba($grey-4, 0.14);
+    height: 24px;
+    width: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
 .movie-details-theater-header h2 {
-  // color: var(--Text, rgba(0, 0, 0, 0.72));
-  // opacity: 0.72;
   font-size: 18px;
   font-style: normal;
   font-weight: 700;

@@ -129,25 +129,36 @@ export class MoviesUI {
 
       container.appendChild(dateElement);
 
-      const theatersContainer = document.createElement("div");
-      theatersContainer.className = "theaters-container";
-
       dateEntry.theaters.forEach((theater) => {
-        const theaterElement = document.createElement("div");
-        theaterElement.className = "theater";
+        const theatreCard = document.createElement("div");
+        theatreCard.className = "movie-details__theatre-card";
 
-        const theaterNameElement = document.createElement("h5");
-        theaterNameElement.textContent = theater.name;
-        theaterElement.appendChild(theaterNameElement);
+        const theaterHeader = document.createElement("div");
+        theaterHeader.className = "movie-details__theatre-header";
+
+        const theaterName = document.createElement("h5");
+        theaterName.textContent = theater.name;
+
+        const theatreChevron = document.createElement("button");
+        theatreChevron.className = "movie-details__theatre-chevron";
+        theatreChevron.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" fill="none">
+            <path d="M2 2L6 6L10 2" stroke="#979BAC" stroke-width="1.5" stroke-linecap="square"/>
+          </svg>
+        `;
+
+        theaterHeader.appendChild(theaterName);
+        // append the chevron only if there are more than 4 showtimes
+        if (theater.showtimes.length > 4) theaterHeader.appendChild(theatreChevron);
 
         const showtimesElement = document.createElement("p");
         showtimesElement.textContent = `Showtimes: ${theater.showtimes.join(", ")}`;
-        theaterElement.appendChild(showtimesElement);
 
-        theatersContainer.appendChild(theaterElement);
+        theatreCard.appendChild(theaterHeader);
+        theatreCard.appendChild(showtimesElement);
+
+        container.appendChild(theatreCard);
       });
-
-      container.appendChild(theatersContainer);
     });
 
     return container;
