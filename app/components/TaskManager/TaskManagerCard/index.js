@@ -176,7 +176,7 @@ export default class TaskManagerCard {
   }
 
   // Show details when click on a result item
-  showResultDetails(result) {
+  openResultDetails() {
     // hide fullscreen state
     this.fullscreenState.style.display = "none";
 
@@ -191,7 +191,7 @@ export default class TaskManagerCard {
     `;
 
     backButton.addEventListener("click", () => {
-      this.hideResultDetails();
+      this.closeResultDetails();
     });
 
     // show result details
@@ -200,7 +200,7 @@ export default class TaskManagerCard {
     this.resultDetail.append(this.results.getResultsDetails());
   }
 
-  hideResultDetails() {
+  closeResultDetails() {
     this.resultDetail.style.display = "none";
     this.fullscreenState.style.display = "flex";
 
@@ -237,7 +237,7 @@ export default class TaskManagerCard {
 
   addListeners() {
     this.emitter.on("taskManager:showDetail", (event, taskData) => {
-      if (this.isExpanded) this.showResultDetails();
+      if (this.isExpanded) this.openResultDetails();
     });
 
     this.card.addEventListener("click", () => {
