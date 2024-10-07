@@ -177,8 +177,10 @@ export default class TaskManagerCard {
 
   // Show details when click on a result item
   openResultDetails() {
-    // hide fullscreen state
-    this.fullscreenState.style.display = "none";
+    // Hide the fullscreen state
+    this.animations.hideFullScreenState(() => {
+      this.fullscreenState.style.display = "none";
+    });
 
     // Set up back button
     const backButton = document.createElement("button");
@@ -194,18 +196,16 @@ export default class TaskManagerCard {
       this.closeResultDetails();
     });
 
-    // show result details
+    // // show result details
     this.resultDetail.style.display = "block";
     this.resultDetail.appendChild(backButton);
     this.resultDetail.append(this.results.getResultsDetails());
+    this.animations.showResultDetails(this.resultDetail, backButton);
   }
 
   closeResultDetails() {
-    this.resultDetail.style.display = "none";
-    this.fullscreenState.style.display = "flex";
-
-    // Remove the result details from the DOM
-    this.resultDetail.innerHTML = "";
+    this.animations.showResultsTl.reverse();
+    this.animations.showFullScreenState();
   }
 
   // Close fullscreen when clicking outside the fullscreen container
@@ -236,8 +236,8 @@ export default class TaskManagerCard {
   }
 
   addListeners() {
-    this.emitter.on("taskManager:showDetail", (event, taskData) => {
-      if (this.isExpanded) this.openResultDetails();
+    this.emitter.on("taskManager:showDetail", (taskData) => {
+      if (this.isExpanded) this.openResultDetails(taskData.type);
     });
 
     this.card.addEventListener("click", () => {

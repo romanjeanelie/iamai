@@ -51,7 +51,7 @@ export class MovieDetails {
 
     data.forEach((dateEntry) => {
       const dateElement = document.createElement("p");
-      dateElement.className = "movie-details__showtimes-date";
+      dateElement.className = "movie-details__showtimes-date animate";
       const { dayLabel, formattedMonth } = this.getFormattedDate(dateEntry.date);
       dateElement.innerHTML = `${dayLabel} <span> • ${formattedMonth} </span>`;
 
@@ -68,7 +68,7 @@ export class MovieDetails {
 
   createTheatreCard(theater) {
     const theatreCard = document.createElement("div");
-    theatreCard.className = "movie-details__theatre-card";
+    theatreCard.className = "movie-details__theatre-card animate";
 
     const theaterHeader = document.createElement("div");
     theaterHeader.className = "movie-details__theatre-header";
@@ -120,7 +120,7 @@ export class MovieDetails {
 
     // Create movie header section
     const header = document.createElement("div");
-    header.classList.add("movie-details__header");
+    header.className = "movie-details__header animate";
 
     const moviePoster = document.createElement("div");
     moviePoster.classList.add("movie-details__poster");

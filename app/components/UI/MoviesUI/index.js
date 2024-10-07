@@ -42,7 +42,7 @@ export class MoviesUI {
 
   createMovieCard(movieData) {
     const card = document.createElement("div");
-    card.className = "movies-card__container";
+    card.className = "movies-card__container animate";
     card.setAttribute("data-movie-title", movieData.title);
 
     const infosContainer = document.createElement("div");
@@ -81,8 +81,10 @@ export class MoviesUI {
   }
 
   handleMovieCardClick(event, movieData) {
+    movieData.type = "movie";
+
     this.movieDetails = new MovieDetails(movieData);
-    this.emitter.emit("taskManager:showDetail");
+    this.emitter.emit("taskManager:showDetail", movieData);
   }
 
   getElement() {

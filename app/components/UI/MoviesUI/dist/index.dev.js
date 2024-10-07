@@ -61,7 +61,7 @@ function () {
       var _this2 = this;
 
       var card = document.createElement("div");
-      card.className = "movies-card__container";
+      card.className = "movies-card__container animate";
       card.setAttribute("data-movie-title", movieData.title);
       var infosContainer = document.createElement("div");
       infosContainer.className = "movies-card__infos-container";
@@ -93,8 +93,9 @@ function () {
   }, {
     key: "handleMovieCardClick",
     value: function handleMovieCardClick(event, movieData) {
+      movieData.type = "movie";
       this.movieDetails = new _MovieDetail.MovieDetails(movieData);
-      this.emitter.emit("taskManager:showDetail");
+      this.emitter.emit("taskManager:showDetail", movieData);
     }
   }, {
     key: "getElement",
