@@ -299,6 +299,15 @@
   width: 100%;
 }
 
+//  ------ Task Card : BACK BUTTON ------
+.task-manager__back-button {
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px 8px 8px;
+}
+
 @keyframes ping {
   0% {
     transform: scale(0);

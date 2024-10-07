@@ -63,8 +63,8 @@ export default class TaskCardAccordion {
 
   togglePanel(panelTitle) {
     const panelContainer = this.panels.find((panel) => panel.getAttribute("data-title") === panelTitle);
-    this.activePanel = !panelContainer.classList.contains("active") ? panelContainer : null;
     const panelContent = panelContainer.querySelector(".task-accordion__content");
+    this.activePanel = !panelContainer.classList.contains("active") ? panelContainer : null;
 
     if (!this.activePanel) {
       // Close the panel

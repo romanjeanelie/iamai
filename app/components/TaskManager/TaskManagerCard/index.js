@@ -180,8 +180,24 @@ export default class TaskManagerCard {
     // hide fullscreen state
     this.fullscreenState.style.display = "none";
 
+    // Set up back button
+    const backButton = document.createElement("button");
+    backButton.className = "task-manager__back-button";
+    backButton.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M8.75008 15.8334L2.91675 10.0001L8.75008 4.16671M17.0834 10.0001L3.33341 10" stroke="#817B93" stroke-width="1.66667"/>
+      </svg>
+      <p>Back</p>
+    `;
+
+    backButton.addEventListener("click", () => {
+      this.resultDetail.style.display = "none";
+      this.fullscreenState.style.display = "flex";
+    });
+
     // show result details
     this.resultDetail.style.display = "block";
+    this.resultDetail.appendChild(backButton);
     this.resultDetail.append(this.results.getResultsDetails());
   }
 

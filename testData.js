@@ -1,4 +1,3 @@
-// FLIGHTS
 export const flightSearchData = {
   departure_start_date: "",
   departure_end_date: ["2025-03-09", "2025-03-10"],
@@ -20,6 +19,7 @@ export const flightSearchData = {
   round_trip: "True",
   preferred_airline: null,
 };
+
 export const flightSearchResultsData = {
   website: "kayak",
   Outbound: [

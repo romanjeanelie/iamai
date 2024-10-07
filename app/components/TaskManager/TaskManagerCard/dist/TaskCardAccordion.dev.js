@@ -67,8 +67,8 @@ function () {
       var panelContainer = this.panels.find(function (panel) {
         return panel.getAttribute("data-title") === panelTitle;
       });
-      this.activePanel = !panelContainer.classList.contains("active") ? panelContainer : null;
       var panelContent = panelContainer.querySelector(".task-accordion__content");
+      this.activePanel = !panelContainer.classList.contains("active") ? panelContainer : null;
 
       if (!this.activePanel) {
         // Close the panel
