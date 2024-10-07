@@ -7,7 +7,7 @@ export class MoviesUI {
 
     // DOM Elements
     this.mainContainer = null;
-    this.resultDetailContainer = null;
+    this.movieDetailContainer = null;
 
     // Init Methods
     this.initUI();
@@ -82,8 +82,8 @@ export class MoviesUI {
   }
 
   createMovieDetailUI(movie) {
-    this.resultDetailContainer = document.createElement("div");
-    this.resultDetailContainer.className = "movie-details";
+    this.movieDetailContainer = document.createElement("div");
+    this.movieDetailContainer.className = "movie-details";
 
     // Create movie header section
     const header = document.createElement("div");
@@ -147,8 +147,8 @@ export class MoviesUI {
     });
 
     // Append everything to the container
-    this.resultDetailContainer.appendChild(header);
-    this.resultDetailContainer.appendChild(showtimesContainer);
+    this.movieDetailContainer.appendChild(header);
+    this.movieDetailContainer.appendChild(showtimesContainer);
   }
 
   getMoviesDateShowtime(MovieTitle, theatre, date, moviedetailsdatesdiv) {
@@ -271,6 +271,6 @@ export class MoviesUI {
   }
 
   getResultsDetails() {
-    return this.resultDetailContainer;
+    return this.movieDetailContainer;
   }
 }

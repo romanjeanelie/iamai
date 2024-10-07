@@ -90,9 +90,7 @@ export default class TaskCardAccordion {
   }
 
   closePanel(panelContainer, panelContent) {
-    const chevron = panelContainer.querySelector(".task-accordion__header-chevron");
     panelContent.style.maxHeight = 0;
-    chevron.classList.remove("open");
     panelContainer.classList.remove("active");
   }
 

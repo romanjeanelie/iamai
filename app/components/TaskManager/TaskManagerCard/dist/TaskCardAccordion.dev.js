@@ -96,9 +96,7 @@ function () {
   }, {
     key: "closePanel",
     value: function closePanel(panelContainer, panelContent) {
-      var chevron = panelContainer.querySelector(".task-accordion__header-chevron");
       panelContent.style.maxHeight = 0;
-      chevron.classList.remove("open");
       panelContainer.classList.remove("active");
     }
   }, {
