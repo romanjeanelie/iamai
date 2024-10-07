@@ -6,7 +6,7 @@ import { FlightUI } from "./UI/FlightUI.js";
 import { API_STATUSES } from "./constants.js";
 import HotelsUI from "./UI/HotelsUI/index.js";
 import ProductUI from "./UI/ProductUI.js";
-import { MoviesUI } from "./UI/HotelsUI/MoviesUI/index.js";
+import { MoviesUI } from "./UI/MoviesUI/index.js";
 // const uuid = "omega_" + crypto.randomUUID();
 // import { getUser } from "../User.js";
 // const IS_DEV_MODE = import.meta.env.MODE === "development";

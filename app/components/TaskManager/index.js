@@ -10,7 +10,7 @@ import TaskManagerButton from "./TaskManagerButton";
 import TaskManagerCard from "./TaskManagerCard";
 import TaskManagerDebug from "./TaskManagerDebug";
 import { getPreviousDayTimestamp } from "../History";
-import { MoviesUI } from "../UI/HotelsUI/MoviesUI";
+import { MoviesUI } from "../UI/MoviesUI";
 import { moviesResultData } from "../../../testData";
 
 gsap.registerPlugin(Flip);

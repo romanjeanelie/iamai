@@ -1,4 +1,4 @@
-import { formatDate, getDayLabel } from "../../../../utils/dateUtils";
+import { formatDate, getDayLabel } from "../../../utils/dateUtils";
 
 export class MoviesUI {
   constructor(MoviesResultData, emitter) {
