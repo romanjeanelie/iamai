@@ -151,10 +151,13 @@
   background-color: rgba($grey-1, 0.5);
   box-shadow: 0px 10px 30px -2px rgba(55, 69, 108, 0.04);
   padding: 16px 16px 20px;
+  max-height: 112px;
+  overflow: hidden;
   // Default font style
   font-size: 13px;
   font-weight: 500;
   line-height: 20px; /* 153.846% */
+  transition: max-height 0.1s ease-in-out;
 
   @include media("<tablet") {
     grid-column: span 2;
@@ -189,6 +192,7 @@
   row-gap: 18px;
   max-height: 34px;
   overflow: hidden;
+  transition: max-height 0.3s ease-out;
 
   @include media("<desktop") {
     row-gap: 10px;
@@ -200,76 +204,19 @@
     border: 0.5px solid rgba($colorLight, 0.4);
     text-align: center;
     background: rgba($grey-1, 0.5);
-
-    /* Middle State */
     box-shadow: 0px 10px 30px -2px rgba(55, 69, 108, 0.04);
   }
 }
 
-.movie-details__showtime-item .movie-details-theater-header h2 {
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 24px;
-  letter-spacing: 0.6px;
-  margin-bottom: 16px;
-}
+// Theatre card -- open state
+.movie-details__theatre-card--open {
+  max-height: fit-content;
+  .movie-details__theatre-chevron {
+    transform: rotate(180deg);
+  }
 
-.movie-details-theater-header {
-  display: block;
-  // justify-content: space-between;
-  // align-items: center;
-}
-
-.movie-details-date-selector {
-  display: flex;
-  align-items: center;
-  margin-top: 16px;
-  margin-bottom: 32px;
-}
-
-.movie-details-date-selector .arrow {
-  background: none;
-  border: none;
-  font-size: 1.2em;
-  cursor: pointer;
-}
-
-.movie-details-date-selector .arrow:disabled {
-  // color: rgba(0, 0, 0, 0.24);
-  opacity: 0.24;
-  cursor: auto;
-}
-
-.movie-details-showtimes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 20px;
-  margin-bottom: 16px;
-}
-
-.movie-details-showtime {
-  display: flex;
-  width: 98px;
-  padding: var(--8, 8px) var(--16, 16px);
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  border-radius: var(--8, 8px);
-  border-top: 1px solid var(--B40-W48, rgba(0, 37, 78, 0.4));
-  border-right: var(--0, 1px) solid var(--B40-W48, rgba(0, 37, 78, 0.4));
-  border-bottom: var(--0, 1px) solid var(--B40-W48, rgba(0, 37, 78, 0.4));
-  border-left: var(--0, 1px) solid var(--B40-W48, rgba(0, 37, 78, 0.4));
-  margin-bottom: 8px;
-}
-
-.movie-details-showtime.selected {
-  background: #6200ea;
-  color: white;
-  border-color: #6200ea;
-}
-
-.movie-details-showtime:focus {
-  outline: none;
+  .movie-details__showtimes {
+    max-height: 280px;
+    overflow: auto;
+  }
 }

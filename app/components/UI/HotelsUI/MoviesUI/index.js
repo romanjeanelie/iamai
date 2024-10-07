@@ -117,6 +117,10 @@ export class MoviesUI {
     return { dayLabel, formattedMonth };
   }
 
+  toggleTheatreDetails(theatreCard) {
+    theatreCard.classList.toggle("movie-details__theatre-card--open");
+  }
+
   displayOrganizedData(data) {
     const container = document.createElement("div");
     container.classList.add("movie-details__showtimes-container");
@@ -153,6 +157,8 @@ export class MoviesUI {
 
         const showtimesContainer = document.createElement("div");
         showtimesContainer.className = "movie-details__showtimes";
+
+        theatreChevron.addEventListener("click", () => this.toggleTheatreDetails(theatreCard));
 
         theater.showtimes.forEach((showtime) => {
           const showtimeElement = document.createElement("a");
