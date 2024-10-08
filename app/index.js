@@ -65,7 +65,6 @@ class App {
       this.gui = new GUI();
       this.toPageGrey({ duration: 0 });
       this.initApp();
-      // this.initTaskManager();
       return;
     }
   }

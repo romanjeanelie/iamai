@@ -214,21 +214,6 @@ export default class History {
     }
   }
 
-  getTaskLastStatus(data) {
-    const statuses = data.map((obj) => obj.status);
-    if (statuses.includes(API_STATUSES.CANCELLED)) {
-      return API_STATUSES.CANCELLED;
-    } else if (statuses.includes(API_STATUSES.VIEWED)) {
-      return API_STATUSES.VIEWED;
-    } else if (statuses.includes(API_STATUSES.ENDED)) {
-      return API_STATUSES.ENDED;
-    } else if (statuses.includes(API_STATUSES.PROGRESSING)) {
-      return API_STATUSES.PROGRESSING;
-    } else {
-      return API_STATUSES.STARTED;
-    }
-  }
-
   async getStatusesTask({ micro_thread_id, idToken, start = 0, size = 50, order = "asc" }) {
     const params = {
       micro_thread_id,
@@ -237,9 +222,6 @@ export default class History {
       order,
     };
     const { data } = await fetcher({ url: URL_AGENT_STATUS, params, idToken: idToken });
-    const lastStatus = this.getTaskLastStatus(data.results);
-
-    data.lastStatus = lastStatus;
     return data;
   }
 
@@ -373,7 +355,7 @@ export default class History {
   async getHistory({ uuid, user, size = 3 }) {
     this.isFetching = true;
     // Get elements
-    const elements = await this.getAllElements({ uuid, user, size, start: this.newStart });
+    const elements = await this.getAllElements({ uuid, user, size: 1, start: this.newStart });
     // Reverse the order of elements
 
     elements.results.reverse();

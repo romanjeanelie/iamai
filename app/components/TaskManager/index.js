@@ -14,6 +14,7 @@ import { MoviesUI } from "../UI/MoviesUI";
 import { flightSearchData, flightSearchResultsData, moviesResultData, productResultData } from "../../../testData";
 import { FlightUI } from "../UI/FlightUI";
 import ProductUI from "../UI/ProductUI";
+import TaskFetcher from "./TaskFetcher";
 
 gsap.registerPlugin(Flip);
 
@@ -75,6 +76,7 @@ export default class TaskManager {
 
   // ---------- Handling the task-manager states ----------
   initTaskManager() {
+    this.fetcher = new TaskFetcher();
     gsap.set(this.container, {
       yPercent: 100,
     });
