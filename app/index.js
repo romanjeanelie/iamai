@@ -65,7 +65,6 @@ class App {
     this.initNavbar();
     this.initDiscussion();
     this.initInput();
-    this.initTaskManager();
     this.initSlider();
     this.initHeroBento();
   }
@@ -100,14 +99,6 @@ class App {
     };
 
     this.input = new Input({ pageEl: this.pageEl, isActive: false, ...props });
-  }
-
-  initTaskManager() {
-    this.taskManager = new TaskManager({
-      emitter: this.emitter,
-      discussion: this.discussion,
-      navigation: this.navigation,
-    });
   }
 
   initSlider() {

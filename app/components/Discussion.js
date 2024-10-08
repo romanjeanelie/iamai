@@ -8,6 +8,7 @@ import History from "./History.js";
 import { gsap } from "gsap";
 import fadeByWord from "../utils/fadeByWord.js";
 import { store } from "./store.js";
+import TaskManager from "./TaskManager/index.js";
 
 export default class Discussion {
   constructor({ user, pageEl, navigation, emitter }) {
@@ -53,6 +54,12 @@ export default class Discussion {
     this.history = new History({
       getTaskResultUI: this.Chat.getUI.bind(this.Chat),
       emitter: this.emitter,
+    });
+
+    this.taskManager = new TaskManager({
+      discussion: this,
+      emitter: this.emitter,
+      navigation: this.navigation,
     });
 
     store.set("user", this.user);
