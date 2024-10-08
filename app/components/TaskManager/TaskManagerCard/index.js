@@ -118,6 +118,7 @@ export default class TaskManagerCard {
     if (this.task.resultsContainer instanceof Node) {
       this.resultsContainer.appendChild(this.task.resultsContainer);
     } else if (this.task.resultsContainer?.isClass) {
+      // if resultsContainer is not a dom element but a CLASS instance (from the UI components)
       this.results = this.task.resultsContainer;
       this.resultsContainer.appendChild(this.results.getElement());
     } else {

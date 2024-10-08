@@ -57,6 +57,7 @@ export default class History {
         if (typeof result == HTMLDivElement) {
           result.append(answerContainer);
         } else if (result?.isClass) {
+          // if result is not a dom Element but a Class instance (from UI components)
           result.addAIText(md.parse(status.response_json.text) || "");
         } else {
           console.log("No result found");

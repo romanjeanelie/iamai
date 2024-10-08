@@ -516,7 +516,7 @@ class Chat {
     } else if (domain == PRODUCTSEARCH) {
       container = new ProductUI(JSON.parse(data.ProductSearchResults)).getElement();
     } else if (domain == HOTELSEARCH) {
-      container = new HotelsUI(JSON.parse(data.HotelSearch), JSON.parse(data.HotelSearchResults)).getElement();
+      container = new HotelsUI(JSON.parse(data.HotelSearch), JSON.parse(data.HotelSearchResults));
     } else if (domain == CODESEARCH) {
       container = this.getCodeUI(data.Code, data.Language);
     }

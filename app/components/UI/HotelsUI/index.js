@@ -1,7 +1,9 @@
+import UIComponent from "../UIComponent";
 import HotelCard from "./HotelCard";
 
-export default class HotelsUI {
+export default class HotelsUI extends UIComponent {
   constructor(HotelsSearch, HotelsSearchResults) {
+    super();
     this.hotelsSearchData = HotelsSearch;
     this.hotelsResultsData = HotelsSearchResults;
 
@@ -9,15 +11,11 @@ export default class HotelsUI {
     this.filter = "all";
 
     // DOM Elements
-    this.mainContainer = null;
     this.hotelsContainer = null;
     this.initUI();
   }
 
   initUI() {
-    // Initialize the UI
-    this.mainContainer = document.createElement("div");
-
     // Build the HTML content as a string
     let htmlContent = `
       <div class="hotels-ui__filter-container">
@@ -33,7 +31,7 @@ export default class HotelsUI {
       </div>
     `;
 
-    // Set the innerHTML of hotelsContainer
+    // We get the mainContainer from the parent class (UIComponent)
     this.mainContainer.innerHTML = htmlContent;
 
     // Append the hotel cards UI
@@ -82,9 +80,5 @@ export default class HotelsUI {
     });
 
     return hotelcardcontainerdiv;
-  }
-
-  getElement() {
-    return this.mainContainer;
   }
 }

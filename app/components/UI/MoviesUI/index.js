@@ -1,15 +1,13 @@
+import UIComponent from "../UIComponent";
 import { MovieDetails } from "./MovieDetail";
 
-export class MoviesUI {
+export class MoviesUI extends UIComponent {
   constructor(MoviesResultData, emitter) {
+    super();
     this.moviesResultData = MoviesResultData;
     this.emitter = emitter;
 
-    // State
-    this.isClass = true;
-
     // DOM Elements
-    this.mainContainer = null;
     this.movieDetailContainer = null;
 
     // Init Methods
@@ -33,12 +31,6 @@ export class MoviesUI {
     const movieDetails = document.createElement("div");
     movieDetails.id = "movie-details";
     this.mainContainer.appendChild(movieDetails);
-  }
-
-  addAIText(text) {
-    const answerContainer = document.createElement("div");
-    answerContainer.innerHTML = text || "";
-    this.mainContainer.appendChild(answerContainer);
   }
 
   createMovieCard(movieData) {
@@ -86,13 +78,5 @@ export class MoviesUI {
 
     this.movieDetails = new MovieDetails(movieData);
     this.emitter.emit("taskManager:showDetail", movieData);
-  }
-
-  getElement() {
-    return this.mainContainer;
-  }
-
-  getResultsDetails() {
-    return this.movieDetails.getElement();
   }
 }
