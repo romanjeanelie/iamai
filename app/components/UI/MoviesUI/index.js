@@ -6,6 +6,7 @@ export class MoviesUI {
     this.emitter = emitter;
 
     // State
+    this.isClass = true;
 
     // DOM Elements
     this.mainContainer = null;

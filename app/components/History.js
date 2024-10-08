@@ -54,10 +54,12 @@ export default class History {
         const answerContainer = document.createElement("div");
         answerContainer.innerHTML = md.parse(status.response_json.text) || "";
 
-        if (result.constructor !== Object) {
+        if (typeof result == HTMLDivElement) {
+          result.append(answerContainer);
+        } else if (result?.isClass) {
           result.addAIText(md.parse(status.response_json.text) || "");
         } else {
-          result.append(answerContainer);
+          console.log("No result found");
         }
       }
     });
@@ -370,7 +372,7 @@ export default class History {
   async getHistory({ uuid, user, size = 3 }) {
     this.isFetching = true;
     // Get elements
-    const elements = await this.getAllElements({ uuid, user, size: 1, start: this.newStart });
+    const elements = await this.getAllElements({ uuid, user, size, start: this.newStart });
     // Reverse the order of elements
 
     elements.results.reverse();

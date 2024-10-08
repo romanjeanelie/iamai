@@ -21,7 +21,8 @@ function () {
 
     this.moviesResultData = MoviesResultData;
     this.emitter = emitter; // State
-    // DOM Elements
+
+    this.isClass = true; // DOM Elements
 
     this.mainContainer = null;
     this.movieDetailContainer = null; // Init Methods

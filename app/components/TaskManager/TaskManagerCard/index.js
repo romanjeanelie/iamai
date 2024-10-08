@@ -115,10 +115,9 @@ export default class TaskManagerCard {
     if (!this.resultsContainer) {
       this.initResultsContainer();
     }
-
     if (this.task.resultsContainer instanceof Node) {
       this.resultsContainer.appendChild(this.task.resultsContainer);
-    } else if (this.task.resultsContainer.constructor !== Object) {
+    } else if (this.task.resultsContainer?.isClass) {
       this.results = this.task.resultsContainer;
       this.resultsContainer.appendChild(this.results.getElement());
     } else {
