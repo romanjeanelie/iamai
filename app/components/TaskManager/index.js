@@ -15,12 +15,12 @@ import { flightSearchData, flightSearchResultsData, moviesResultData, productRes
 import { FlightUI } from "../UI/FlightUI";
 import ProductUI from "../UI/ProductUI";
 import TaskFetcher from "./TaskFetcher";
+import { GUI } from "dat.gui";
 
 gsap.registerPlugin(Flip);
 
 export default class TaskManager {
-  constructor({ gui, emitter, discussion, navigation }) {
-    this.gui = gui;
+  constructor({ emitter, discussion, navigation }) {
     this.emitter = emitter;
     this.navigation = navigation;
     this.discussion = discussion;
@@ -45,6 +45,7 @@ export default class TaskManager {
     // Debug
     this.debug = import.meta.env.VITE_DEBUG === "true";
     if (this.debug) {
+      this.gui = new GUI();
       this.debugger = new TaskManagerDebug(this);
       this.debugger.addDebugTask();
 

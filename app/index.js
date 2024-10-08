@@ -13,25 +13,10 @@ import Slider from "./components/Slider";
 import TaskManager from "./components/TaskManager";
 import { auth } from "./firebaseConfig";
 import animateString from "./utils/animateString";
-import { GUI } from "dat.gui";
 
 const divlogin = document.getElementById("divlogin");
 
 // ---- DEBUG FUNCTIONS ----
-const showFormValidation = () => {
-  divlogin.style.display = "none";
-  divwaitlist.style.display = "flex";
-  divwaitlistform.style.display = "none";
-  divwaitlistvalidation.style.display = "block";
-};
-
-const showForm = () => {
-  divlogin.style.display = "none";
-  divwaitlist.style.display = "flex";
-  divwaitlistform.style.display = "flex";
-  divwaitlistvalidation.style.display = "none";
-};
-
 const divwaitlist = document.getElementById("divwaitlist");
 const divwaitlistvalidation = document.querySelector(".waitListForm__validation-container");
 const divwaitlistform = document.getElementById("divwaitlistform");
@@ -62,7 +47,6 @@ class App {
     this.resetScroll();
 
     if (this.debug) {
-      this.gui = new GUI();
       this.toPageGrey({ duration: 0 });
       this.initApp();
       return;
@@ -120,7 +104,6 @@ class App {
 
   initTaskManager() {
     this.taskManager = new TaskManager({
-      gui: this.gui,
       emitter: this.emitter,
       discussion: this.discussion,
       navigation: this.navigation,
