@@ -21,22 +21,24 @@ export default class TaskFetcher {
   // }
 
   async getTasks(start = 0, size = 10, order = "desc") {
-    const user = store.getState().chatId;
-    console.log(user);
+    const uuid = store.getState().chatId;
+    const idToken = await store.getState().user.user.getIdToken(true);
 
-    // const params = {
-    //   uuid,
-    //   start,
-    //   size,
-    //   order,
-    // };
+    const params = {
+      uuid,
+      start,
+      size,
+      order,
+    };
 
     // Get all elements
-    // const { data } = await fetcher({
-    //   url: URL_TASK_HISTORY,
-    //   params,
-    //   idToken: await this.user?.user?.getIdToken(true),
-    // });
+    const { data } = await fetcher({
+      url: URL_TASK_HISTORY,
+      params,
+      idToken,
+    });
+
+    console.log(data);
 
     // // Remove duplicate tasks
     // const uniqueMicroThreadId = [];

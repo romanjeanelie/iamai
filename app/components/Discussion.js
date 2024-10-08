@@ -270,6 +270,7 @@ export default class Discussion {
 
     if (this.debug) return;
     await this.updateHistory({ uuid: this.uuid, user: this.user });
+    this.taskManager.initTaskManager();
     this.scrollToBottom(false);
     this.isHistoryLoading = false;
     this.emitter.emit("app:initialized", true);

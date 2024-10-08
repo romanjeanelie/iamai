@@ -39,7 +39,6 @@ export default class TaskManager {
     // Init Methods
     this.button = new TaskManagerButton(this.tasks, this.emitter);
     this.animations = new TaskManagerAnimations(this.emitter);
-    this.initTaskManager();
     this.addListeners();
 
     // Debug
@@ -81,6 +80,8 @@ export default class TaskManager {
     gsap.set(this.container, {
       yPercent: 100,
     });
+
+    this.container.classList.remove("hidden");
   }
 
   // ---------- Notification Pill ----------
