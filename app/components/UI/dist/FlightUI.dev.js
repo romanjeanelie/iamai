@@ -41,7 +41,7 @@ function (_UIComponent) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(FlightUI).call(this));
     _this.FlightSearch = FlightSearch;
-    _this.FlightSearchResults = FlightSearchResults;
+    _this.FlightSearchResults = FlightSearchResults; // Init Methods
 
     _this.initUI();
 
@@ -49,62 +49,102 @@ function (_UIComponent) {
   }
 
   _createClass(FlightUI, [{
-    key: "initUI",
-    value: function initUI() {
+    key: "createNavButtons",
+    value: function createNavButtons() {
       var _this2 = this;
 
-      this.mainContainer = this.createElement("div", "FlightContainer Flight-Container", {
-        name: "flightResult"
+      var flighttogglebuttoncontainerdiv = document.createElement("div");
+      flighttogglebuttoncontainerdiv.className = "flight-toggle-button-container";
+      this.mainContainer.appendChild(flighttogglebuttoncontainerdiv);
+      var flighttogglebutton = document.createElement("button");
+      flighttogglebutton.className = "flight-toggle-button active";
+      flighttogglebutton.addEventListener("click", function (event) {
+        return _this2.toggleflights(event);
       });
-
-      if (this.FlightSearch.departure_end_date.length > 0 && this.FlightSearch.return_end_date.length > 0) {
-        var flightToggleButtonContainer = this.createElement("div", "flight-toggle-button-container");
-        this.appendChild(this.FlightContainer, flightToggleButtonContainer);
-        var outboundButton = this.createElement("button", "flight-toggle-button active", {
-          id: "Outbound"
-        });
-        outboundButton.innerHTML = "Outbound";
-        outboundButton.addEventListener("click", function (event) {
-          return _this2.toggleflights(event);
-        });
-        this.appendChild(flightToggleButtonContainer, outboundButton);
-        var returnButton = this.createElement("button", "flight-toggle-button", {
-          id: "Return"
-        });
-        returnButton.innerHTML = "Return";
-        returnButton.addEventListener("click", function (event) {
-          return _this2.toggleflights(event);
-        });
-        this.appendChild(flightToggleButtonContainer, returnButton);
-      }
-
-      this.renderFlightResults(this.FlightSearchResults.Outbound, "flightResultOutbound");
-      this.renderFlightResults(this.FlightSearchResults.Return, "flightResultReturn", true);
+      flighttogglebutton.innerHTML = "Outbound";
+      flighttogglebutton.id = "Outbound";
+      flighttogglebuttoncontainerdiv.appendChild(flighttogglebutton);
+      var flighttogglebutton2 = document.createElement("button");
+      flighttogglebutton2.className = "flight-toggle-button";
+      flighttogglebutton2.addEventListener("click", function (event) {
+        return _this2.toggleflights(event);
+      });
+      flighttogglebutton2.id = "Return";
+      flighttogglebutton2.innerHTML = "Return";
+      flighttogglebuttoncontainerdiv.appendChild(flighttogglebutton2);
     }
   }, {
-    key: "renderFlightResults",
-    value: function renderFlightResults(flightResults, resultId) {
+    key: "createFlightCard",
+    value: function createFlightCard(FlightSearchResult) {
+      var flightCard = document.createElement("div");
+      flightCard.className = "flightCard";
+      flightCard.setAttribute("onclick", "window.open('" + FlightSearchResult.link_url + "', '_blank');");
+      var date = (0, _dateUtils.formatDateString)(FlightSearchResult.travel_date);
+      var stops = FlightSearchResult.travel.stops === 0 ? "Direct" : FlightSearchResult.travel.stops + " stop";
+      flightCard.innerHTML = "\n      <section class=\"flightCard__main\">\n        <div class=\"flightCard__main-header\">\n          <p class=\"flightCard__departure-date\">\n            ".concat(date, "\n          </p>\n\n          <p class=\"flightCard__duration\">\n            ").concat(FlightSearchResult.travel.duration, ", ").concat(stops, "\n          </p>\n\n          <p class=\"flightCard__arrival-date\">\n            ").concat(date, "\n          </p>\n        </div>\n\n        <div class=\"flightCard__main-body\">\n          <p class=\"flightCard__departure-time\">\n            ").concat(FlightSearchResult.travel.start_time, "\n          </p>\n          <div class=\"flightCard__progress-line\">\n            <div class=\"flightCard__progress-dot\"></div>\n            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"116\" height=\"8\" viewBox=\"0 0 116 8\" fill=\"none\">\n              <path d=\"M1 3.5C0.723858 3.5 0.5 3.72386 0.5 4C0.5 4.27614 0.723858 4.5 1 4.5L1 3.5ZM115.354 4.35354C115.549 4.15828 115.549 3.8417 115.354 3.64644L112.172 0.464456C111.976 0.269194 111.66 0.269194 111.464 0.464456C111.269 0.659719 111.269 0.976301 111.464 1.17156L114.293 3.99999L111.464 6.82842C111.269 7.02368 111.269 7.34026 111.464 7.53552C111.66 7.73079 111.976 7.73079 112.172 7.53552L115.354 4.35354ZM1 4.5L115 4.49999L115 3.49999L1 3.5L1 4.5Z\" \n              />\n            </svg>\n            <div class=\"flightCard__progress-dot\"></div>\n            <img class=\"flightCard__airline-logo\" src=\"").concat(FlightSearchResult.travel.airlines_logo, "\" alt=\"").concat(FlightSearchResult.travel.airlines, "\">\n          </div>\n\n          <p class=\"flightCard__arrival-time\">\n            ").concat(FlightSearchResult.travel.end_time, "\n          </p>\n        </div>\n\n        <div class=\"flightCard__main-footer\">\n          <p class=\"flightCard__departure-airport-code\">\n            ").concat(FlightSearchResult.airport1_code, "\n          </p>\n          <p> ").concat(FlightSearchResult.travel.airlines, " </p>\n          <p class=\"flightCard__arrival-airport-code\">\n            ").concat(FlightSearchResult.airport2_code, "\n          </p>\n        </div>\n      </section>\n      <section class=\"flightCard__footer\">\n        <p class=\"flightCard__source\">\n            ").concat(FlightSearchResult.website, "              \n        </p>\n\n        <div class=\"flightCard__price\">\n          <p>\n            Price\n          </p>\n          <p class=\"flightCard__price-value\">\n            ").concat(FlightSearchResult.price, "\n          </p>\n        </div>\n      </section>\n    ");
+      return flightCard;
+    }
+  }, {
+    key: "initUI",
+    value: function initUI() {
       var _this3 = this;
 
-      var hide = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+      this.mainContainer = document.createElement("div");
+      this.mainContainer.className = "FlightContainer Flight-Container";
+      this.mainContainer.setAttribute("name", "flightResult");
 
-      if (flightResults.length > 0) {
-        var flightResultDiv = this.createElement("div", "flightResult", {
-          id: resultId
-        });
-        if (hide) flightResultDiv.style.display = "none";
-        this.appendChild(this.FlightContainer, flightResultDiv);
-        flightResults.forEach(function (flightResult) {
-          var flightCardDiv = _this3.createElement("div", "flightCard", {
-            onclick: "window.open('".concat(flightResult.link_url, "', '_blank');")
-          });
+      if (this.FlightSearch.departure_end_date.length > 0 && this.FlightSearch.return_end_date.length > 0) {
+        this.createNavButtons();
+      }
 
-          _this3.appendChild(flightResultDiv, flightCardDiv);
+      var resultsArray = this.FlightSearchResults.Outbound;
 
-          var date = (0, _dateUtils.formatDateString)(flightResult.travel_date);
-          var stops = flightResult.travel.stops === 0 ? "Direct" : "".concat(flightResult.travel.stops, " stop");
-          flightCardDiv.innerHTML = "\n          <section class=\"flightCard__main\">\n            <div class=\"flightCard__main-header\">\n              <p class=\"flightCard__departure-date\">".concat(date, "</p>\n              <p class=\"flightCard__duration\">").concat(flightResult.travel.duration, ", ").concat(stops, "</p>\n              <p class=\"flightCard__arrival-date\">").concat(date, "</p>\n            </div>\n            <div class=\"flightCard__main-body\">\n              <p class=\"flightCard__departure-time\">").concat(flightResult.travel.start_time, "</p>\n              <div class=\"flightCard__progress-line\">\n                <div class=\"flightCard__progress-dot\"></div>\n                <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"116\" height=\"8\" viewBox=\"0 0 116 8\" fill=\"none\">\n                  <path d=\"M1 3.5C0.723858 3.5 0.5 3.72386 0.5 4C0.5 4.27614 0.723858 4.5 1 4.5L1 3.5ZM115.354 4.35354C115.549 4.15828 115.549 3.8417 115.354 3.64644L112.172 0.464456C111.976 0.269194 111.66 0.269194 111.464 0.464456C111.269 0.659719 111.269 0.976301 111.464 1.17156L114.293 3.99999L111.464 6.82842C111.269 7.02368 111.269 7.34026 111.464 7.53552C111.66 7.73079 111.976 7.73079 112.172 7.53552L115.354 4.35354ZM1 4.5L115 4.49999L115 3.49999L1 3.5L1 4.5Z\" />\n                </svg>\n                <div class=\"flightCard__progress-dot\"></div>\n                <img class=\"flightCard__airline-logo\" src=\"").concat(flightResult.travel.airlines_logo, "\" alt=\"").concat(flightResult.travel.airlines, "\">\n              </div>\n              <p class=\"flightCard__arrival-time\">").concat(flightResult.travel.end_time, "</p>\n            </div>\n            <div class=\"flightCard__main-footer\">\n              <p class=\"flightCard__departure-airport-code\">").concat(flightResult.airport1_code, "</p>\n              <p>").concat(flightResult.travel.airlines, "</p>\n              <p class=\"flightCard__arrival-airport-code\">").concat(flightResult.airport2_code, "</p>\n            </div>\n          </section>\n          <section class=\"flightCard__footer\">\n            <p class=\"flightCard__source\">").concat(flightResult.website, "</p>\n            <div class=\"flightCard__price\">\n              <p>Price</p>\n              <p class=\"flightCard__price-value\">").concat(flightResult.price, "</p>\n            </div>\n          </section>\n        ");
-        });
+      for (var i = 0; i < 2; i++) {
+        if (i == 1) resultsArray = this.FlightSearchResults.Return;
+
+        if (resultsArray && resultsArray.length > 0) {
+          (function () {
+            var flightResultdiv = document.createElement("div");
+            flightResultdiv.className = "flightResult";
+
+            if (i == 0) {
+              flightResultdiv.className = "flightResult";
+              flightResultdiv.setAttribute("id", "flightResultOutbound");
+
+              _this3.mainContainer.appendChild(flightResultdiv);
+            }
+
+            if (i == 1) {
+              flightResultdiv.setAttribute("id", "flightResultReturn");
+              flightResultdiv.setAttribute("style", "display:None");
+
+              _this3.mainContainer.appendChild(flightResultdiv);
+            }
+
+            resultsArray.forEach(function (FlightSearchResult) {
+              var card = _this3.createFlightCard(FlightSearchResult);
+
+              flightResultdiv.appendChild(card);
+            });
+          })();
+        }
+      }
+    }
+  }, {
+    key: "toggleflights",
+    value: function toggleflights(event) {
+      var element = event.target;
+
+      if (element.id == "Outbound") {
+        element.classList.add("active");
+        element.parentElement.querySelector("#Return").classList.remove("active");
+        element.parentElement.parentElement.querySelector("#flightResultOutbound").style.display = "grid";
+        element.parentElement.parentElement.querySelector("#flightResultReturn").style.display = "none";
+      } else {
+        element.classList.add("active");
+        element.parentElement.querySelector("#Outbound").classList.remove("active");
+        element.parentElement.parentElement.querySelector("#flightResultOutbound").style.display = "none";
+        element.parentElement.parentElement.querySelector("#flightResultReturn").style.display = "grid";
       }
     }
   }]);

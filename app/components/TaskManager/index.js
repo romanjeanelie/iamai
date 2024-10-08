@@ -11,7 +11,8 @@ import TaskManagerCard from "./TaskManagerCard";
 import TaskManagerDebug from "./TaskManagerDebug";
 import { getPreviousDayTimestamp } from "../History";
 import { MoviesUI } from "../UI/MoviesUI";
-import { moviesResultData } from "../../../testData";
+import { flightSearchData, flightSearchResultsData, moviesResultData } from "../../../testData";
+import { FlightUI } from "../UI/FlightUI";
 
 gsap.registerPlugin(Flip);
 
@@ -53,6 +54,7 @@ export default class TaskManager {
       });
 
       const testMovieResult = new MoviesUI(moviesResultData, this.emitter);
+      const testFlightResult = new FlightUI(flightSearchData, flightSearchResultsData);
 
       this.onStatusUpdate(
         this.tasks[0].key,
@@ -61,7 +63,7 @@ export default class TaskManager {
           title: "Ended",
           description: "Task has ended",
         },
-        testMovieResult
+        testFlightResult
       );
 
       this.debugger.addDebugTask();
