@@ -11,8 +11,9 @@ import TaskManagerCard from "./TaskManagerCard";
 import TaskManagerDebug from "./TaskManagerDebug";
 import { getPreviousDayTimestamp } from "../History";
 import { MoviesUI } from "../UI/MoviesUI";
-import { flightSearchData, flightSearchResultsData, moviesResultData } from "../../../testData";
+import { flightSearchData, flightSearchResultsData, moviesResultData, productResultData } from "../../../testData";
 import { FlightUI } from "../UI/FlightUI";
+import ProductUI from "../UI/ProductUI";
 
 gsap.registerPlugin(Flip);
 
@@ -53,6 +54,7 @@ export default class TaskManager {
           " Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi maiores, culpa architecto enim autem iusto! Maxime sunt explicabo pariatur corporis accusantium, voluptas excepturi quam inventore dicta, consequatur soluta ipsam doloremque? ",
       });
 
+      const testProductResult = new ProductUI(productResultData);
       const testMovieResult = new MoviesUI(moviesResultData, this.emitter);
       const testFlightResult = new FlightUI(flightSearchData, flightSearchResultsData);
 
@@ -63,7 +65,7 @@ export default class TaskManager {
           title: "Ended",
           description: "Task has ended",
         },
-        testFlightResult
+        testProductResult
       );
 
       this.debugger.addDebugTask();
