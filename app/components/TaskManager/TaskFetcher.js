@@ -6,7 +6,6 @@ import UIComponent from "../UI/UIComponent";
 import { getTaskUI } from "./utils/getTaskUI";
 
 const md = getMarked();
-const isTaskCancelled = (el) => el.statuses?.lastStatus === API_STATUSES.CANCELLED;
 
 export default class TaskFetcher {
   constructor(emitter) {
@@ -232,6 +231,13 @@ export default class TaskFetcher {
 
     const tasks = data.results || [];
     tasks.forEach(async (task) => {
+      // remove cancelled task
+      if (task.status === API_STATUSES.CANCELLED) {
+        // remove from tasks array
+        tasks.splice(tasks.indexOf(task), 1);
+        return;
+      }
+
       // add the statuses to the task
       const statuses = await this.getStatusesTask({
         micro_thread_id: task.micro_thread_id,
