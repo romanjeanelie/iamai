@@ -23,6 +23,7 @@ export const TASK_LABELS = {
 
 const BASE_URL = import.meta.env.VITE_API_HOST || "https://api.asterizk.ai";
 export const URL_CONVERSATION_HISTORY = `${BASE_URL}/search/conversation_history`;
-export const URL_TASK_HISTORY = "https://api-dev.asterizk.ai/search/agent_status_all";
+export const URL_TASK_HISTORY = "https://api-dev.asterizk.ai/search/user_agent_tasks";
+export const URL_TASK_STATUSES_HISTORY = "https://api-dev.asterizk.ai/search/agent_status_all";
 export const URL_AGENT_STATUS = `${BASE_URL}/search/agent_status`;
 export const URL_DELETE_STATUS = `${BASE_URL}/workflows/tasks`;
