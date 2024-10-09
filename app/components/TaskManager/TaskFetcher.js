@@ -212,7 +212,7 @@ export default class TaskFetcher {
     return result;
   }
 
-  async getTasks(start = 0, size = 1, order = "desc") {
+  async getTasks(start = 0, size = 10, order = "desc") {
     const uuid = store.getState().chatId;
     const idToken = await store.getState().user.user.getIdToken(true);
 
