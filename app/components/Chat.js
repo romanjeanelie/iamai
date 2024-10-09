@@ -237,6 +237,7 @@ class Chat {
     };
     for await (const m of iter) {
       var mdata = m.json();
+      // console.log(mdata);
       if (steamseq.includes(m.seq) && m.redelivered) {
         // console.log("prevent duplicate");
         m.ack();
@@ -245,8 +246,6 @@ class Chat {
         this.status = mdata.status;
         this.task_name = mdata.task_name;
         var mtext = mdata.response_json;
-        console.log(this.status);
-        console.log(mtext);
 
         // HERE IS MADE THE RESULT UI FOR A TASK
         if (mdata.status == AGENT_ENDED) {
@@ -281,6 +280,21 @@ class Chat {
           });
           // this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, divans, { workflowID: 1234 });
           ui_paramsmap.delete(mdata.micro_thread_id);
+        } else if (mdata.status == AGENT_ANSWERED) {
+          const task = {
+            key: mdata.micro_thread_id,
+            status: {
+              type: API_STATUSES.ENDED,
+              title: "AGENT ANSWERED",
+              description: mdata.response_json.text,
+              label: "In Progress",
+            },
+          };
+
+          const answerContainer = document.createElement("div");
+          answerContainer.innerHTML = md.parse(mdata.response_json.text) || "";
+
+          this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, answerContainer);
         }
 
         //get UI and RAG params
@@ -392,7 +406,6 @@ class Chat {
           this.callbacks.enableInput();
           this.callbacks.emitter.emit("paEnd");
           this.callbacks.emitter.emit(PA_RESPONSE_ENDED);
-          console.timeEnd("conversation");
         } else if (mdata.status && mdata.status == AGENT_STARTED) {
           // micro_thread_id =  mdata.micro_thread_id;
           let taskname = mdata.task_name;
@@ -429,8 +442,6 @@ class Chat {
             this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, null, task.workflowID);
           } else {
             if (mdata.type == SOURCES) {
-              // console.log("mdata:", mdata);
-              // console.log("mdata.source:", JSON.stringify(mdata.response_json.sources));
               const task = {
                 key: mdata.micro_thread_id,
                 status: {
@@ -467,7 +478,6 @@ class Chat {
               }
             }
           }
-        } else if (mdata.status == AGENT_ENDED) {
         } else if (mdata.status && mdata.status == RESPONSE_FOLLOW_UP) {
           var mtext = mdata.response_json.text;
           var AIAnswer = await this.toTitleCase2(mtext);
