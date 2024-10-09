@@ -10,7 +10,6 @@ import WaitListForm from "./components/Login/WaitListForm";
 import Navigation from "./components/Navigation";
 import PreLoginContent from "./components/PreLoginContent";
 import Slider from "./components/Slider";
-import TaskManager from "./components/TaskManager";
 import { auth } from "./firebaseConfig";
 import animateString from "./utils/animateString";
 

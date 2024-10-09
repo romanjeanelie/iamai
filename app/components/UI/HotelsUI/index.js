@@ -1,7 +1,7 @@
 import UIComponent from "../UIComponent";
 import HotelCard from "./HotelCard";
 
-export default class HotelsUI extends UIComponent {
+export class HotelsUI extends UIComponent {
   constructor(HotelsSearch, HotelsSearchResults) {
     super();
     this.hotelsSearchData = HotelsSearch;

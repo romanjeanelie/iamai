@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.ProductUI = void 0;
 
 var _getDomainAndFavicon2 = _interopRequireDefault(require("../../utils/getDomainAndFavicon"));
 
@@ -215,4 +215,4 @@ function (_UIComponent) {
   return ProductUI;
 }(_UIComponent2["default"]);
 
-exports["default"] = ProductUI;
+exports.ProductUI = ProductUI;

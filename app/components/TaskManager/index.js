@@ -10,20 +10,18 @@ import TaskManagerButton from "./TaskManagerButton";
 import TaskManagerCard from "./TaskManagerCard";
 import TaskManagerDebug from "./TaskManagerDebug";
 import { getPreviousDayTimestamp } from "../History";
-import { MoviesUI } from "../UI/MoviesUI";
+import { MoviesUI, FlightUI, ProductUI } from "../UI";
 import { flightSearchData, flightSearchResultsData, moviesResultData, productResultData } from "../../../testData";
-import { FlightUI } from "../UI/FlightUI";
-import ProductUI from "../UI/ProductUI";
+
 import TaskFetcher from "./TaskFetcher";
 import { GUI } from "dat.gui";
 
 gsap.registerPlugin(Flip);
 
 export default class TaskManager {
-  constructor({ emitter, discussion, navigation }) {
+  constructor({ emitter, navigation }) {
     this.emitter = emitter;
     this.navigation = navigation;
-    this.discussion = discussion;
 
     // DOM Elements
     this.html = document.documentElement;
@@ -76,7 +74,7 @@ export default class TaskManager {
 
   // ---------- Handling the task-manager states ----------
   initTaskManager() {
-    this.fetcher = new TaskFetcher();
+    this.fetcher = new TaskFetcher(this.emitter);
     gsap.set(this.container, {
       yPercent: 100,
     });

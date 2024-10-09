@@ -52,12 +52,10 @@ export default class Discussion {
     });
 
     this.history = new History({
-      getTaskResultUI: this.Chat.getUI.bind(this.Chat),
       emitter: this.emitter,
     });
 
     this.taskManager = new TaskManager({
-      discussion: this,
       emitter: this.emitter,
       navigation: this.navigation,
     });
@@ -179,6 +177,7 @@ export default class Discussion {
   }
 
   async addAIText({ text, container, targetlang, type = null } = {}) {
+    if (!container) return;
     let textContainer = container.querySelector(".text__container");
     if (!textContainer) {
       textContainer = document.createElement("div");
@@ -331,7 +330,7 @@ export default class Discussion {
     await this.addAIText({ text: textAI, container: this.AIContainer });
     this.userContainer.classList.add("discussion__user--task-created");
     this.userContainer.setAttribute("taskkey", task.key);
-    this.AIContainer.setAttribute("taskkey", task.key);
+    // this.AIContainer.setAttribute("taskkey", task.key);
   }
 
   checkIfPrevDiscussionContainerVisible() {

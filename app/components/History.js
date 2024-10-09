@@ -20,8 +20,7 @@ export function getPreviousDayTimestamp() {
 }
 
 export default class History {
-  constructor({ getTaskResultUI, emitter }) {
-    this.getTaskResultUI = getTaskResultUI;
+  constructor({ emitter }) {
     this.emitter = emitter;
 
     this.elements = null;
@@ -358,18 +357,18 @@ export default class History {
   async getHistory({ uuid, user, size = 3 }) {
     this.isFetching = true;
     // Get elements
-    const elements = await this.getAllElements({ uuid, user, size: 5, start: this.newStart });
+    const elements = await this.getAllElements({ uuid, user, size, start: this.newStart });
     // Reverse the order of elements
 
     elements.results.reverse();
 
     elements.results.forEach((element) => {
       if (!isTask(element)) return;
-      const statuses = element.statuses;
-      // Get results container
-      const resultsContainer = this.getResultsUI(statuses);
-      element.resultsContainer = resultsContainer;
-      this.addTasksUI(statuses, resultsContainer);
+      // const statuses = element.statuses;
+      // // Get results container
+      // const resultsContainer = this.getResultsUI(statuses);
+      // element.resultsContainer = resultsContainer;
+      // this.addTasksUI(statuses, resultsContainer);
     });
 
     // Create UI elements

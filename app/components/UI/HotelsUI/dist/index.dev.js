@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.HotelsUI = void 0;
 
 var _UIComponent2 = _interopRequireDefault(require("../UIComponent"));
 
@@ -116,4 +116,4 @@ function (_UIComponent) {
   return HotelsUI;
 }(_UIComponent2["default"]);
 
-exports["default"] = HotelsUI;
+exports.HotelsUI = HotelsUI;

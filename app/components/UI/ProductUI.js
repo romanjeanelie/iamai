@@ -1,7 +1,7 @@
 import getDomainAndFavicon from "../../utils/getDomainAndFavicon";
 import UIComponent from "./UIComponent";
 
-export default class ProductUI extends UIComponent {
+export class ProductUI extends UIComponent {
   constructor(productsData) {
     super();
     this.productsData = productsData;
