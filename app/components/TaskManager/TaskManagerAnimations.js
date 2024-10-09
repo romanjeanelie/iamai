@@ -21,16 +21,18 @@ export default class TaskManagerAnimations {
   }
 
   hideCards() {
-    const cards = document.querySelectorAll(".task-manager__task-card");
+    const cards = document.querySelectorAll(".task-manager__task-card-container");
     gsap.to(cards, { opacity: 0, y: 50, duration: 0.1, stagger: 0.05 });
   }
 
   showCards() {
-    const cards = document.querySelectorAll(".task-manager__task-card");
+    const cards = document.querySelectorAll(".task-manager__task-card-container");
+    gsap.killTweensOf(cards);
     gsap.set(cards, { opacity: 0, y: 50 });
     gsap.to(cards, {
       opacity: 1,
       y: 0,
+      scale: 1,
       duration: 0.2,
       stagger: 0.05,
       delay: 0.3,
