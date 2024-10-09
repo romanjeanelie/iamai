@@ -229,15 +229,12 @@ export default class TaskFetcher {
       idToken,
     });
 
-    const tasks = data.results || [];
-    tasks.forEach(async (task) => {
-      // remove cancelled task
-      if (task.status === API_STATUSES.CANCELLED) {
-        // remove from tasks array
-        tasks.splice(tasks.indexOf(task), 1);
-        return;
-      }
+    let tasks = data.results || [];
 
+    // remove cancelled task
+    tasks = tasks?.filter((task) => task.status !== API_STATUSES.CANCELLED);
+
+    tasks.forEach(async (task) => {
       // add the statuses to the task
       const statuses = await this.getStatusesTask({
         micro_thread_id: task.micro_thread_id,
@@ -251,16 +248,5 @@ export default class TaskFetcher {
 
       this.addTasksUI(statuses, result);
     });
-
-    // Remove tasks with status CANCELLED
-    // data.results = data.results.filter((item) => {
-    //   if (isTaskCancelled(item)) {
-    //     return false;
-    //   } else {
-    //     return true;
-    //   }
-    // });
-
-    // return data;
   }
 }
