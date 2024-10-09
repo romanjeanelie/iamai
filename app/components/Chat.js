@@ -237,7 +237,6 @@ class Chat {
     };
     for await (const m of iter) {
       var mdata = m.json();
-      console.log(mdata);
       if (steamseq.includes(m.seq) && m.redelivered) {
         // console.log("prevent duplicate");
         m.ack();
@@ -246,7 +245,10 @@ class Chat {
         this.status = mdata.status;
         this.task_name = mdata.task_name;
         var mtext = mdata.response_json;
+        console.log(this.status);
+        console.log(mtext);
 
+        // HERE IS MADE THE RESULT UI FOR A TASK
         if (mdata.status == AGENT_ENDED) {
           this.callbacks.emitter.emit(AGENT_ENDED);
 
@@ -255,7 +257,7 @@ class Chat {
           if (datas) {
             datas.forEach((data) => {
               const uiElement = this.getUI(data);
-              if (uiElement.constructor !== Object) {
+              if (uiElement.isClass) {
                 result = uiElement;
               } else {
                 result = document.createElement("div");
@@ -264,7 +266,6 @@ class Chat {
             });
           }
 
-          // console.log("taskname", taskname);
           const task = {
             key: mdata.micro_thread_id,
             status: {

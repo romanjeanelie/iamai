@@ -1,7 +1,9 @@
 import fetcher from "../utils/fetcher.js";
 import getMarked from "../utils/getMarked.js";
 import DiscussionMedia from "./DiscussionMedia.js";
+import UIComponent from "./UI/UIComponent.js";
 import { API_STATUSES, URL_AGENT_STATUS, URL_CONVERSATION_HISTORY } from "./constants.js";
+import { store } from "./store.js";
 
 const isEmpty = (obj) => Object.keys(obj).length === 0;
 // const md = getRemarkable();
@@ -29,14 +31,14 @@ export default class History {
   }
 
   getResultsUI(statuses) {
-    let result;
+    let result = new UIComponent();
 
     statuses.results.forEach((status) => {
       if (status.type === "ui") {
         const results = status.response_json;
         const uiResults = this.getTaskResultUI(results); // Call the function that returns UI for the task
 
-        if (uiResults.constructor !== Object) {
+        if (uiResults.isClass) {
           result = uiResults;
         } else {
           result = document.createElement("div");
@@ -44,11 +46,11 @@ export default class History {
         }
       }
 
-      if (status.type === "sources") {
-        const sources = status.response_json.sources;
-        const media = new DiscussionMedia({ container: result, emitter: this.emitter });
-        media.addSources(sources);
-      }
+      // if (status.type === "sources") {
+      //   const sources = status.response_json.sources;
+      //   const media = new DiscussionMedia({ container: result.getElement(), emitter: this.emitter });
+      //   media.addSources(sources);
+      // }
 
       if (status.status === API_STATUSES.ANSWERED) {
         const answerContainer = document.createElement("div");
@@ -138,6 +140,7 @@ export default class History {
         label: "View results",
       },
     };
+
     this.emitter.emit("taskManager:updateStatus", taskEnded.key, taskEnded.status, resultsContainer);
   }
 
@@ -355,7 +358,7 @@ export default class History {
   async getHistory({ uuid, user, size = 3 }) {
     this.isFetching = true;
     // Get elements
-    const elements = await this.getAllElements({ uuid, user, size: 1, start: this.newStart });
+    const elements = await this.getAllElements({ uuid, user, size: 5, start: this.newStart });
     // Reverse the order of elements
 
     elements.results.reverse();

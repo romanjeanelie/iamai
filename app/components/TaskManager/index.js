@@ -219,7 +219,6 @@ export default class TaskManager {
         idToken,
         method: "POST",
       });
-      console.log(result);
     } catch (e) {
       console.log(e);
     }

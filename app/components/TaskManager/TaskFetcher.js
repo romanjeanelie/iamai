@@ -1,5 +1,5 @@
 import fetcher from "../../utils/fetcher";
-import { API_STATUSES, URL_AGENT_STATUS, URL_CONVERSATION_HISTORY, URL_TASK_HISTORY } from "../constants";
+import { API_STATUSES, URL_TASK_HISTORY } from "../constants";
 import { store } from "../store";
 
 const isTaskCancelled = (el) => el.statuses?.lastStatus === API_STATUSES.CANCELLED;
@@ -37,8 +37,6 @@ export default class TaskFetcher {
       params,
       idToken,
     });
-
-    console.log(data);
 
     // // Remove duplicate tasks
     // const uniqueMicroThreadId = [];
