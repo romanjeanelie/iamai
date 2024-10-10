@@ -111,3 +111,71 @@
   font-weight: 400;
   line-height: 20px; /* 153.846% */
 }
+
+// HOTEL DETAILS
+.hotel-details__header-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  overflow: hidden;
+
+  img {
+    object-fit: cover;
+    height: 100%;
+  }
+}
+
+.hotel-details__body {
+  margin-top: 164px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hotel-details__section {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0px 10px 30px rgba(55, 69, 108, 0.1);
+  backdrop-filter: blur(40px);
+  border-radius: 12px;
+}
+
+.hotel-details__description {
+  padding: 22px 20px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  h2 {
+    width: 70%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 135%; /* 22.95px */
+  }
+  .hotel-details__rating {
+    color: $grey-3;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 4px;
+    width: calc(30% - 8px);
+    text-align: end;
+
+    @include media("<phone") {
+      width: 100%;
+      text-align: start;
+    }
+  }
+
+  .hotel-details__about {
+    margin-top: 6px;
+    color: rgba($grey-5, 0.59);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 20px;
+  }
+}
