@@ -111,6 +111,11 @@ function (_UIComponent) {
       this.movieDetails = new _MovieDetail.MovieDetails(movieData);
       this.emitter.emit("taskManager:showDetail", movieData);
     }
+  }, {
+    key: "getResultsDetails",
+    value: function getResultsDetails() {
+      return this.movieDetails.getElement();
+    }
   }]);
 
   return MoviesUI;

@@ -79,4 +79,8 @@ export class MoviesUI extends UIComponent {
     this.movieDetails = new MovieDetails(movieData);
     this.emitter.emit("taskManager:showDetail", movieData);
   }
+
+  getResultsDetails() {
+    return this.movieDetails.getElement();
+  }
 }

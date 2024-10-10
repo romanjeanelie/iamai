@@ -72,7 +72,7 @@ export default class TaskManager {
           title: "Ended",
           description: "Task has ended",
         },
-        testHotelResult
+        testMovieResult
       );
 
       this.debugger.addDebugTask();
