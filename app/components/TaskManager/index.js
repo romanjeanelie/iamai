@@ -10,8 +10,15 @@ import TaskManagerButton from "./TaskManagerButton";
 import TaskManagerCard from "./TaskManagerCard";
 import TaskManagerDebug from "./TaskManagerDebug";
 import { getPreviousDayTimestamp } from "../History";
-import { MoviesUI, FlightUI, ProductUI } from "../UI";
-import { flightSearchData, flightSearchResultsData, moviesResultData, productResultData } from "../../../testData";
+import { MoviesUI, FlightUI, ProductUI, HotelsUI } from "../UI";
+import {
+  flightSearchData,
+  flightSearchResultsData,
+  hotelSearchData,
+  hotelSearchResultsData,
+  moviesResultData,
+  productResultData,
+} from "../../../testData";
 
 import TaskFetcher from "./TaskFetcher";
 import { GUI } from "dat.gui";
@@ -55,6 +62,7 @@ export default class TaskManager {
 
       const testProductResult = new ProductUI(productResultData);
       const testMovieResult = new MoviesUI(moviesResultData, this.emitter);
+      const testHotelResult = new HotelsUI(hotelSearchData, hotelSearchResultsData);
       const testFlightResult = new FlightUI(flightSearchData, flightSearchResultsData);
 
       this.onStatusUpdate(
@@ -64,7 +72,7 @@ export default class TaskManager {
           title: "Ended",
           description: "Task has ended",
         },
-        testProductResult
+        testHotelResult
       );
 
       this.debugger.addDebugTask();

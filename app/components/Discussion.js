@@ -66,6 +66,7 @@ export default class Discussion {
     // DEBUG
     if (this.debug) {
       this.addUserElement({ text: "Hello" });
+      this.taskManager.initTaskManager();
     }
   }
 
