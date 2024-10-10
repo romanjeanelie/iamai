@@ -2,6 +2,7 @@ export class HotelDetails {
   constructor(hotel, resultDetailsContainer) {
     this.hotel = hotel;
     this.hotelDetailContainer = resultDetailsContainer;
+    console.log(this.hotel);
 
     // Init Methods
     this.createHotelDetailUI();

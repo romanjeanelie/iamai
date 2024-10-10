@@ -18,7 +18,8 @@ function () {
     _classCallCheck(this, HotelDetails);
 
     this.hotel = hotel;
-    this.hotelDetailContainer = resultDetailsContainer; // Init Methods
+    this.hotelDetailContainer = resultDetailsContainer;
+    console.log(this.hotel); // Init Methods
 
     this.createHotelDetailUI();
   }
