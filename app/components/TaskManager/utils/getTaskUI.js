@@ -267,7 +267,7 @@ export function getTaskUI(data, emitter) {
   } else if (domain == "ProductSearch") {
     container = new ProductUI(JSON.parse(data.ProductSearchResults)).getElement();
   } else if (domain == "HotelSearch") {
-    container = new HotelsUI(JSON.parse(data.HotelSearch), JSON.parse(data.HotelSearchResults));
+    container = new HotelsUI(JSON.parse(data.HotelSearch), JSON.parse(data.HotelSearchResults), emitter);
   } else if (domain == "Code") {
     container = getCodeUI(data.Code, data.Language);
   }

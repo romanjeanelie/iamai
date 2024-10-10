@@ -270,7 +270,7 @@ function getTaskUI(data, emitter) {
   } else if (domain == "ProductSearch") {
     container = new _UI.ProductUI(JSON.parse(data.ProductSearchResults)).getElement();
   } else if (domain == "HotelSearch") {
-    container = new _UI.HotelsUI(JSON.parse(data.HotelSearch), JSON.parse(data.HotelSearchResults));
+    container = new _UI.HotelsUI(JSON.parse(data.HotelSearch), JSON.parse(data.HotelSearchResults), emitter);
   } else if (domain == "Code") {
     container = getCodeUI(data.Code, data.Language);
   }

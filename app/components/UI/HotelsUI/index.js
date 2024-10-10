@@ -1,9 +1,11 @@
 import UIComponent from "../UIComponent";
 import HotelCard from "./HotelCard";
+import { HotelDetails } from "./HotelDetails";
 
 export class HotelsUI extends UIComponent {
-  constructor(HotelsSearch, HotelsSearchResults) {
+  constructor(HotelsSearch, HotelsSearchResults, emitter) {
     super();
+    this.emitter = emitter;
     this.hotelsSearchData = HotelsSearch;
     this.hotelsResultsData = HotelsSearchResults;
 
@@ -70,12 +72,19 @@ export class HotelsUI extends UIComponent {
     this.mainContainer.appendChild(this.hotelsContainer);
   }
 
+  handleCardClick(hotelData) {
+    // this.resultDetailsContainer comes from the parent class (UIComponent)
+    this.hotelDetails = new HotelDetails(hotelData, this.resultDetailsContainer);
+    this.emitter.emit("taskManager:showDetail", hotelData);
+  }
+
   getHotelsCardsUI() {
     const hotelcardcontainerdiv = document.createElement("div");
     hotelcardcontainerdiv.className = "hotels-ui__main-container";
 
-    this.hotelsResultsData.all.forEach((element) => {
-      const hotelCard = new HotelCard(element, this.hotelsSearchData).getElement();
+    this.hotelsResultsData.all.forEach((hotelData) => {
+      const hotelCard = new HotelCard(hotelData, this.hotelsSearchData).getElement();
+      hotelCard.addEventListener("click", () => this.handleCardClick(hotelData));
       hotelcardcontainerdiv.appendChild(hotelCard);
     });
 

@@ -9,6 +9,8 @@ var _UIComponent2 = _interopRequireDefault(require("../UIComponent"));
 
 var _HotelCard = _interopRequireDefault(require("./HotelCard"));
 
+var _HotelDetails = require("./HotelDetails");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -34,12 +36,13 @@ var HotelsUI =
 function (_UIComponent) {
   _inherits(HotelsUI, _UIComponent);
 
-  function HotelsUI(HotelsSearch, HotelsSearchResults) {
+  function HotelsUI(HotelsSearch, HotelsSearchResults, emitter) {
     var _this;
 
     _classCallCheck(this, HotelsUI);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(HotelsUI).call(this));
+    _this.emitter = emitter;
     _this.hotelsSearchData = HotelsSearch;
     _this.hotelsResultsData = HotelsSearchResults; // State
 
@@ -99,14 +102,24 @@ function (_UIComponent) {
       this.mainContainer.appendChild(this.hotelsContainer);
     }
   }, {
+    key: "handleCardClick",
+    value: function handleCardClick(hotelData) {
+      // this.resultDetailsContainer comes from the parent class (UIComponent)
+      this.hotelDetails = new _HotelDetails.HotelDetails(hotelData, this.resultDetailsContainer);
+      this.emitter.emit("taskManager:showDetail", hotelData);
+    }
+  }, {
     key: "getHotelsCardsUI",
     value: function getHotelsCardsUI() {
       var _this4 = this;
 
       var hotelcardcontainerdiv = document.createElement("div");
       hotelcardcontainerdiv.className = "hotels-ui__main-container";
-      this.hotelsResultsData.all.forEach(function (element) {
-        var hotelCard = new _HotelCard["default"](element, _this4.hotelsSearchData).getElement();
+      this.hotelsResultsData.all.forEach(function (hotelData) {
+        var hotelCard = new _HotelCard["default"](hotelData, _this4.hotelsSearchData).getElement();
+        hotelCard.addEventListener("click", function () {
+          return _this4.handleCardClick(hotelData);
+        });
         hotelcardcontainerdiv.appendChild(hotelCard);
       });
       return hotelcardcontainerdiv;

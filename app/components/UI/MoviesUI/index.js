@@ -1,5 +1,5 @@
 import UIComponent from "../UIComponent";
-import { MovieDetails } from "./MovieDetail";
+import { MovieDetails } from "./MovieDetails";
 
 export class MoviesUI extends UIComponent {
   constructor(MoviesResultData, emitter) {
@@ -65,14 +65,13 @@ export class MoviesUI extends UIComponent {
     card.appendChild(infosContainer);
 
     // Add event listener directly to the card
-    card.addEventListener("click", (event) => this.handleMovieCardClick(event, movieData));
+    card.addEventListener("click", (event) => this.handleMovieCardClick(movieData));
 
     return card;
   }
 
-  handleMovieCardClick(event, movieData) {
-    movieData.type = "movie";
-
+  handleMovieCardClick(movieData) {
+    // this.resultDetailsContainer comes from the parent class (UIComponent)
     this.movieDetails = new MovieDetails(movieData, this.resultDetailsContainer);
     this.emitter.emit("taskManager:showDetail", movieData);
   }

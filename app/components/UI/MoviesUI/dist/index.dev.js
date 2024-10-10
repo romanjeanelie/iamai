@@ -7,7 +7,7 @@ exports.MoviesUI = void 0;
 
 var _UIComponent2 = _interopRequireDefault(require("../UIComponent"));
 
-var _MovieDetail = require("./MovieDetail");
+var _MovieDetails = require("./MovieDetails");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -98,15 +98,15 @@ function (_UIComponent) {
       card.appendChild(infosContainer); // Add event listener directly to the card
 
       card.addEventListener("click", function (event) {
-        return _this3.handleMovieCardClick(event, movieData);
+        return _this3.handleMovieCardClick(movieData);
       });
       return card;
     }
   }, {
     key: "handleMovieCardClick",
-    value: function handleMovieCardClick(event, movieData) {
-      movieData.type = "movie";
-      this.movieDetails = new _MovieDetail.MovieDetails(movieData, this.resultDetailsContainer);
+    value: function handleMovieCardClick(movieData) {
+      // this.resultDetailsContainer comes from the parent class (UIComponent)
+      this.movieDetails = new _MovieDetails.MovieDetails(movieData, this.resultDetailsContainer);
       this.emitter.emit("taskManager:showDetail", movieData);
     }
   }]);

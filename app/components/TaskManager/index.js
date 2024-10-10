@@ -62,7 +62,7 @@ export default class TaskManager {
 
       const testProductResult = new ProductUI(productResultData);
       const testMovieResult = new MoviesUI(moviesResultData, this.emitter);
-      const testHotelResult = new HotelsUI(hotelSearchData, hotelSearchResultsData);
+      const testHotelResult = new HotelsUI(hotelSearchData, hotelSearchResultsData, this.emitter);
       const testFlightResult = new FlightUI(flightSearchData, flightSearchResultsData);
 
       this.onStatusUpdate(
@@ -72,7 +72,7 @@ export default class TaskManager {
           title: "Ended",
           description: "Task has ended",
         },
-        testMovieResult
+        testHotelResult
       );
 
       this.debugger.addDebugTask();
