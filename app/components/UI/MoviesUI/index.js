@@ -4,11 +4,8 @@ import { MovieDetails } from "./MovieDetail";
 export class MoviesUI extends UIComponent {
   constructor(MoviesResultData, emitter) {
     super();
-    this.moviesResultData = MoviesResultData;
     this.emitter = emitter;
-
-    // DOM Elements
-    this.movieDetailContainer = null;
+    this.moviesResultData = MoviesResultData;
 
     // Init Methods
     this.initUI();
@@ -76,11 +73,7 @@ export class MoviesUI extends UIComponent {
   handleMovieCardClick(event, movieData) {
     movieData.type = "movie";
 
-    this.movieDetails = new MovieDetails(movieData);
+    this.movieDetails = new MovieDetails(movieData, this.resultDetailsContainer);
     this.emitter.emit("taskManager:showDetail", movieData);
-  }
-
-  getResultsDetails() {
-    return this.movieDetails.getElement();
   }
 }

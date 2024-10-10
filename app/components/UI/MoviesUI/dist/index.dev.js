@@ -40,10 +40,8 @@ function (_UIComponent) {
     _classCallCheck(this, MoviesUI);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(MoviesUI).call(this));
-    _this.moviesResultData = MoviesResultData;
-    _this.emitter = emitter; // DOM Elements
-
-    _this.movieDetailContainer = null; // Init Methods
+    _this.emitter = emitter;
+    _this.moviesResultData = MoviesResultData; // Init Methods
 
     _this.initUI();
 
@@ -108,13 +106,8 @@ function (_UIComponent) {
     key: "handleMovieCardClick",
     value: function handleMovieCardClick(event, movieData) {
       movieData.type = "movie";
-      this.movieDetails = new _MovieDetail.MovieDetails(movieData);
+      this.movieDetails = new _MovieDetail.MovieDetails(movieData, this.resultDetailsContainer);
       this.emitter.emit("taskManager:showDetail", movieData);
-    }
-  }, {
-    key: "getResultsDetails",
-    value: function getResultsDetails() {
-      return this.movieDetails.getElement();
     }
   }]);
 

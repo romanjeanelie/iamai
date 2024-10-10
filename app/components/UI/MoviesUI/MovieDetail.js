@@ -1,11 +1,9 @@
 import { getDayLabel } from "../../../utils/dateUtils";
 
 export class MovieDetails {
-  constructor(movie) {
+  constructor(movie, resultDetailsContainer) {
     this.movie = movie;
-
-    // DOM Elements
-    this.movieDetailContainer = null;
+    this.movieDetailContainer = resultDetailsContainer;
 
     // Init Methods
     this.createMovieDetailUI();
@@ -115,7 +113,6 @@ export class MovieDetails {
   }
 
   createMovieDetailUI() {
-    this.movieDetailContainer = document.createElement("div");
     this.movieDetailContainer.className = "movie-details__container";
 
     // Create movie header section

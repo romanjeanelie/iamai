@@ -1,8 +1,11 @@
-// BaseUI.js
 export default class UIComponent {
   constructor() {
-    this.mainContainer = document.createElement("div");
+    // States
     this.isClass = true;
+
+    // DOM Elements
+    this.mainContainer = document.createElement("div");
+    this.resultDetailsContainer = document.createElement("div");
   }
 
   addAIText(text) {
@@ -13,5 +16,9 @@ export default class UIComponent {
 
   getElement() {
     return this.mainContainer;
+  }
+
+  getResultsDetails() {
+    return this.resultDetailsContainer;
   }
 }
