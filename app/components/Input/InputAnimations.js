@@ -1,5 +1,6 @@
 import gsap, { Power2, Power3 } from "gsap";
 import anim from "../../utils/anim";
+
 export default class InputAnimations {
   constructor({ pageEl, emitter }) {
     this.pageEl = pageEl;
@@ -13,7 +14,7 @@ export default class InputAnimations {
     this.centerBtn = this.inputFrontEl.querySelector(".center-btn");
     this.frontCameraBtn = this.inputFrontEl.querySelector(".camera-btn");
     this.frontMicBtn = this.inputFrontEl.querySelector(".phone-btn");
-    this.frontVideoBtn = this.inputFrontHeight = this.inputFrontEl.offsetHeight;
+    this.inputFrontHeight = this.inputFrontEl.offsetHeight;
 
     // Write
     this.inputText = this.inputEl.querySelector(".input-text");
@@ -25,7 +26,6 @@ export default class InputAnimations {
     this.phoneWrapper = this.pageEl.querySelector(".phone__wrapper");
 
     // Other dom elements
-    this.cancelBtn = document.querySelector(".cancel-btn");
     this.logoEl = document.querySelector(".logo__main");
     this.logoMobileEl = document.querySelector(".logo__mobile");
     this.categoriesListEl = document.querySelector(".categories__list--container");
@@ -97,6 +97,7 @@ export default class InputAnimations {
       ease: "ease-in-out",
     });
   }
+
   fadeOutCategoriesAndCaroussel(delay = 0) {
     anim([this.categoriesListEl, this.carousselEl], [{ opacity: 1 }, { opacity: 0 }], {
       delay,
@@ -119,6 +120,7 @@ export default class InputAnimations {
       ease: "ease-in-out",
     });
   }
+
   fadeInLogo(delay = 0) {
     anim(this.logoEl, [{ opacity: 0 }, { opacity: 1 }], {
       delay,
@@ -167,6 +169,7 @@ export default class InputAnimations {
       }
     );
   }
+
   expandWidthInputFront({ delay = 0, duration = 400 } = {}) {
     return anim(this.inputFrontEl, [{ width: `${this.inputFrontHeight}px` }, { width: "100%" }], {
       delay,
@@ -175,6 +178,7 @@ export default class InputAnimations {
       fill: "forwards",
     });
   }
+
   fadeInInputFront({ delay = 0, duration = 400 } = {}) {
     return anim(this.inputFrontEl, [{ opacity: 0 }, { opacity: 1 }], {
       delay,
@@ -189,7 +193,6 @@ export default class InputAnimations {
    */
   toInitial({ delay = 0, animButtons = true, animBottom = true, animLogo = true } = {}) {
     this.inputFrontEl.style.pointerEvents = "auto";
-    this.inputEl.style.overflow = "visible";
   }
 
   fromRecordAudioToInitial() {
@@ -205,9 +208,7 @@ export default class InputAnimations {
    * Write
    */
   toWrite({ delay = 0, animButtons = true, animLogos = true, placeholder = "", focus = true } = {}) {
-    console.log("TO WRITE");
     this.inputText.placeholder = placeholder;
-    // this.inputEl.style.overflow = "hidden";
   }
 
   /**
@@ -217,12 +218,13 @@ export default class InputAnimations {
     this.inputEl.classList.add("hidden");
     this.phoneWrapper.classList.add("show");
   }
+
   toStopPhoneRecording() {
     const fadeOutphoneWrapper = anim(
       this.phoneWrapper,
       [
         { opacity: 1, transform: "translateY(0px)" },
-        { topacity: 0, transform: "translateY(100%)" },
+        { opacity: 0, transform: "translateY(100%)" },
       ],
       {
         duration: 150,
@@ -236,7 +238,7 @@ export default class InputAnimations {
         this.inputEl,
         [
           { opacity: 0, transform: "translateY(100%)" },
-          { topacity: 1, transform: "translateY(0)" },
+          { opacity: 1, transform: "translateY(0)" },
         ],
         {
           duration: 300,
@@ -254,25 +256,6 @@ export default class InputAnimations {
     };
   }
 
-  /**
-   * Image
-   */
-  toDragImage({ animBottom = true, delay = 0 } = {}) {
-    // Prvent break lines when we enter url
-    this.inputText.disabled = true;
-
-    this.imageDroppedContainer.classList.remove("visible");
-
-    setTimeout(() => {
-      this.frontCameraBtn.classList.add("active-imagedrop");
-      this.inputImageContainer.classList.add("show");
-    }, delay);
-
-    if (animBottom) {
-      this.fadeOutCategoriesAndCaroussel(0, 500);
-    }
-  }
-
   leaveDragImage({ animBottom = true } = {}) {
     this.frontCameraBtn.classList.remove("active-imagedrop");
     this.inputImageContainer.classList.remove("show");
@@ -283,7 +266,7 @@ export default class InputAnimations {
     }
   }
 
-  toImageDroped() {
+  toLoadingImage() {
     this.inputText.disabled = false;
     this.inputImageContainer.classList.remove("show");
 
@@ -301,7 +284,6 @@ export default class InputAnimations {
         ease: "ease-out",
       }
     );
-    this.fadeInButtons(1000, 500);
     this.animCircleYoyo = anim(this.inputFrontEl, [{ opacity: 1 }, { opacity: 0 }, { opacity: 1 }], {
       delay: step1.effect.getComputedTiming().duration,
       duration: 400,
@@ -311,9 +293,6 @@ export default class InputAnimations {
   }
 
   toImageAnalyzed() {
-    // this.cancelBtn.classList.add("show");
-    // this.cancelBtn.classList.add("image-drop");
-
     this.animCircleYoyo.cancel();
 
     const step3 = this.fadeInInputFront({ delay: 0, duration: 300 });
@@ -323,10 +302,9 @@ export default class InputAnimations {
     this.toWrite({ delay: 1200, animButtons: false, animLogos: false, placeholder: "Ask a question about the image" });
     this.imageDroppedContainer.classList.add("visible");
   }
+
   toRemoveImage() {
     this.imageDroppedContainer.classList.remove("visible");
-    // this.cancelBtn.classList.remove("show");
-    // this.cancelBtn.classList.remove("image-drop");
 
     this.navbarEl.classList.remove("hidden");
     this.toInitial({ animLogo: false });

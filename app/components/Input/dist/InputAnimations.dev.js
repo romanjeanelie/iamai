@@ -41,7 +41,7 @@ function () {
     this.centerBtn = this.inputFrontEl.querySelector(".center-btn");
     this.frontCameraBtn = this.inputFrontEl.querySelector(".camera-btn");
     this.frontMicBtn = this.inputFrontEl.querySelector(".phone-btn");
-    this.frontVideoBtn = this.inputFrontHeight = this.inputFrontEl.offsetHeight; // Write
+    this.inputFrontHeight = this.inputFrontEl.offsetHeight; // Write
 
     this.inputText = this.inputEl.querySelector(".input-text"); // Image
 
@@ -50,7 +50,6 @@ function () {
 
     this.phoneWrapper = this.pageEl.querySelector(".phone__wrapper"); // Other dom elements
 
-    this.cancelBtn = document.querySelector(".cancel-btn");
     this.logoEl = document.querySelector(".logo__main");
     this.logoMobileEl = document.querySelector(".logo__mobile");
     this.categoriesListEl = document.querySelector(".categories__list--container");
@@ -314,7 +313,6 @@ function () {
           animLogo = _ref6$animLogo === void 0 ? true : _ref6$animLogo;
 
       this.inputFrontEl.style.pointerEvents = "auto";
-      this.inputEl.style.overflow = "visible";
     }
   }, {
     key: "fromRecordAudioToInitial",
@@ -344,8 +342,7 @@ function () {
           _ref7$focus = _ref7.focus,
           focus = _ref7$focus === void 0 ? true : _ref7$focus;
 
-      console.log("TO WRITE");
-      this.inputText.placeholder = placeholder; // this.inputEl.style.overflow = "hidden";
+      this.inputText.placeholder = placeholder;
     }
     /**
      * Phone
@@ -366,7 +363,7 @@ function () {
         opacity: 1,
         transform: "translateY(0px)"
       }, {
-        topacity: 0,
+        opacity: 0,
         transform: "translateY(100%)"
       }], {
         duration: 150,
@@ -379,7 +376,7 @@ function () {
           opacity: 0,
           transform: "translateY(100%)"
         }, {
-          topacity: 1,
+          opacity: 1,
           transform: "translateY(0)"
         }], {
           duration: 300,
@@ -397,40 +394,12 @@ function () {
         };
       };
     }
-    /**
-     * Image
-     */
-
-  }, {
-    key: "toDragImage",
-    value: function toDragImage() {
-      var _this4 = this;
-
-      var _ref8 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-          _ref8$animBottom = _ref8.animBottom,
-          animBottom = _ref8$animBottom === void 0 ? true : _ref8$animBottom,
-          _ref8$delay = _ref8.delay,
-          delay = _ref8$delay === void 0 ? 0 : _ref8$delay;
-
-      // Prvent break lines when we enter url
-      this.inputText.disabled = true;
-      this.imageDroppedContainer.classList.remove("visible");
-      setTimeout(function () {
-        _this4.frontCameraBtn.classList.add("active-imagedrop");
-
-        _this4.inputImageContainer.classList.add("show");
-      }, delay);
-
-      if (animBottom) {
-        this.fadeOutCategoriesAndCaroussel(0, 500);
-      }
-    }
   }, {
     key: "leaveDragImage",
     value: function leaveDragImage() {
-      var _ref9 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-          _ref9$animBottom = _ref9.animBottom,
-          animBottom = _ref9$animBottom === void 0 ? true : _ref9$animBottom;
+      var _ref8 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+          _ref8$animBottom = _ref8.animBottom,
+          animBottom = _ref8$animBottom === void 0 ? true : _ref8$animBottom;
 
       this.frontCameraBtn.classList.remove("active-imagedrop");
       this.inputImageContainer.classList.remove("show");
@@ -441,8 +410,8 @@ function () {
       }
     }
   }, {
-    key: "toImageDroped",
-    value: function toImageDroped() {
+    key: "toLoadingImage",
+    value: function toLoadingImage() {
       this.inputText.disabled = false;
       this.inputImageContainer.classList.remove("show");
       this.fadeOutButtons(0, 0);
@@ -457,7 +426,6 @@ function () {
         fill: "forwards",
         ease: "ease-out"
       });
-      this.fadeInButtons(1000, 500);
       this.animCircleYoyo = (0, _anim["default"])(this.inputFrontEl, [{
         opacity: 1
       }, {
@@ -474,8 +442,6 @@ function () {
   }, {
     key: "toImageAnalyzed",
     value: function toImageAnalyzed() {
-      // this.cancelBtn.classList.add("show");
-      // this.cancelBtn.classList.add("image-drop");
       this.animCircleYoyo.cancel();
       var step3 = this.fadeInInputFront({
         delay: 0,
@@ -496,9 +462,7 @@ function () {
   }, {
     key: "toRemoveImage",
     value: function toRemoveImage() {
-      this.imageDroppedContainer.classList.remove("visible"); // this.cancelBtn.classList.remove("show");
-      // this.cancelBtn.classList.remove("image-drop");
-
+      this.imageDroppedContainer.classList.remove("visible");
       this.navbarEl.classList.remove("hidden");
       this.toInitial({
         animLogo: false

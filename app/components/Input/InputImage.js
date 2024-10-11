@@ -37,7 +37,7 @@ export default class InputImage {
   }
 
   async handleImageUpload(imgFile) {
-    this.anims.toImageDroped();
+    this.anims.toLoadingImage();
     const imgsUploaded = await uploadFiles(imgFile);
     imgsUploaded.forEach((img) => {
       this.previewImage(img);
@@ -65,6 +65,10 @@ export default class InputImage {
       this.addImageToSlider(img);
     };
     img.src = src;
+  }
+
+  triggerFileUpload() {
+    this.inputFileUploadEl.click();
   }
 
   addListeners() {

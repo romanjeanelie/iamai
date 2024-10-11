@@ -73,11 +73,11 @@ export default class Input {
     this.inputImage = new InputImage(
       {
         reset: (delay) => this.anims.toImageReset(delay),
-        toImageDroped: () => this.anims.toImageDroped(),
+        toLoadingImage: () => this.anims.toLoadingImage(),
         toImageAnalyzed: () => this.anims.toImageAnalyzed(),
       },
       {
-        onImageUploaded: (img) => {
+        toLoadingImage: (img) => {
           this.currentImages.push(img);
         },
         onImageCancel: () => {
@@ -199,7 +199,8 @@ export default class Input {
     this.imageUploadBtn.addEventListener("click", () => {
       this.currentStatus = STATUS.UPLOAD_IMAGE;
       this.inputImage.enable();
-      this.anims.toDragImage();
+      this.anims.toLoadingImage();
+      this.inputImage.triggerFileUpload();
     });
 
     this.closeInputImageBtn.addEventListener("click", () => {
