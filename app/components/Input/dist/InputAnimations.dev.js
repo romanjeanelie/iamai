@@ -39,8 +39,8 @@ function () {
     this.inputFrontEl = this.inputEl.querySelector(".input__front");
     this.inputBackEl = this.inputEl.querySelector(".input__back");
     this.centerBtn = this.inputFrontEl.querySelector(".center-btn");
-    this.frontCameraBtn = this.inputFrontEl.querySelector(".camera-btn");
-    this.frontMicBtn = this.inputFrontEl.querySelector(".phone-btn");
+    this.imageUploadButton = this.inputFrontEl.querySelector(".camera-btn");
+    this.videoBtn = this.inputFrontEl.querySelector(".video-btn");
     this.inputFrontHeight = this.inputFrontEl.offsetHeight; // Write
 
     this.inputText = this.inputEl.querySelector(".input-text"); // Image
@@ -105,9 +105,8 @@ function () {
     value: function fadeInButtons() {
       var delay = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
       var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 500;
-      var videoBtn = this.inputFrontEl.querySelector(".video-btn");
 
-      _gsap["default"].to([this.frontCameraBtn, videoBtn, this.centerBtn], {
+      _gsap["default"].to([this.imageUploadButton, this.videoBtn, this.centerBtn], {
         opacity: 1,
         duration: duration / 1000,
         ease: _gsap.Power3.easeInOut,
@@ -121,7 +120,7 @@ function () {
       var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 500;
       var videoBtn = this.inputFrontEl.querySelector(".video-btn");
 
-      _gsap["default"].to([this.frontCameraBtn, videoBtn, this.centerBtn], {
+      _gsap["default"].to([this.imageUploadButton, videoBtn, this.centerBtn], {
         opacity: 0,
         duration: duration / 1000,
         ease: _gsap.Power3.easeInOut,
@@ -342,6 +341,10 @@ function () {
           _ref7$focus = _ref7.focus,
           focus = _ref7$focus === void 0 ? true : _ref7$focus;
 
+      if (animButtons) {
+        this.fadeInButtons();
+      }
+
       this.inputText.placeholder = placeholder;
     }
     /**
@@ -401,7 +404,7 @@ function () {
           _ref8$animBottom = _ref8.animBottom,
           animBottom = _ref8$animBottom === void 0 ? true : _ref8$animBottom;
 
-      this.frontCameraBtn.classList.remove("active-imagedrop");
+      this.imageUploadButton.classList.remove("active-imagedrop");
       this.inputImageContainer.classList.remove("show");
       this.fadeInButtons();
 

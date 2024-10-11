@@ -51,7 +51,6 @@ export default class Input {
     this.videoBtn = this.inputFrontEl.querySelector(".video-btn");
 
     // Image
-    this.closeInputImageBtn = this.pageEl.querySelector(".input__image--closeBtn");
     this.currentImages = [];
     this.inputImageEl = this.pageEl.querySelector(".input__image");
 
@@ -77,8 +76,9 @@ export default class Input {
         toImageAnalyzed: () => this.anims.toImageAnalyzed(),
       },
       {
-        toLoadingImage: (img) => {
+        onImageUploaded: (img) => {
           this.currentImages.push(img);
+          console.log("ON IMAGE UPLOADED : ", img);
         },
         onImageCancel: () => {
           this.currentImages = [];
@@ -135,7 +135,6 @@ export default class Input {
 
   onSubmit(event) {
     event.preventDefault();
-    console.time("input");
     if (this.currentStatus === STATUS.IMAGE_QUESTION) {
       this.emitter.emit("slider:close");
     }
@@ -199,14 +198,7 @@ export default class Input {
     this.imageUploadBtn.addEventListener("click", () => {
       this.currentStatus = STATUS.UPLOAD_IMAGE;
       this.inputImage.enable();
-      this.anims.toLoadingImage();
       this.inputImage.triggerFileUpload();
-    });
-
-    this.closeInputImageBtn.addEventListener("click", () => {
-      this.currentStatus = STATUS.INITIAL;
-      this.inputImage.disable();
-      this.anims.leaveDragImage();
     });
 
     // Video
@@ -256,6 +248,10 @@ export default class Input {
     window.addEventListener("resize", this.updateInputFieldSize.bind(this));
 
     // Emitter
+    this.emitter.on("input:imagesQuestionAsked", () => {
+      this.toWrite({ placeholder: "How can I help you?", animLogos: true, animButtons: true });
+    });
+
     this.emitter.on("input:toWrite", (data) => {
       if (data && data.type === "imageQuestions") {
         this.toWrite({ type: data.type });

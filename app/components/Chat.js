@@ -105,6 +105,7 @@ class Chat {
   }
 
   callsubmit = async (text, img, container, live_mode = false) => {
+    console.log(text, img, container);
     this.container = container;
     var input_text = text;
     var original_text = input_text;
@@ -127,6 +128,7 @@ class Chat {
           );
           // this.SendPHIQns(input_text);
         } else {
+          console.log("submituserreply");
           this.submituserreply(
             input_text,
             this.workflowID,

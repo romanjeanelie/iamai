@@ -12,8 +12,9 @@ export default class InputAnimations {
     this.inputBackEl = this.inputEl.querySelector(".input__back");
 
     this.centerBtn = this.inputFrontEl.querySelector(".center-btn");
-    this.frontCameraBtn = this.inputFrontEl.querySelector(".camera-btn");
-    this.frontMicBtn = this.inputFrontEl.querySelector(".phone-btn");
+    this.imageUploadButton = this.inputFrontEl.querySelector(".camera-btn");
+    this.videoBtn = this.inputFrontEl.querySelector(".video-btn");
+
     this.inputFrontHeight = this.inputFrontEl.offsetHeight;
 
     // Write
@@ -70,8 +71,7 @@ export default class InputAnimations {
 
   // Presets
   fadeInButtons(delay = 0, duration = 500) {
-    const videoBtn = this.inputFrontEl.querySelector(".video-btn");
-    gsap.to([this.frontCameraBtn, videoBtn, this.centerBtn], {
+    gsap.to([this.imageUploadButton, this.videoBtn, this.centerBtn], {
       opacity: 1,
       duration: duration / 1000,
       ease: Power3.easeInOut,
@@ -81,7 +81,7 @@ export default class InputAnimations {
 
   fadeOutButtons(delay = 0, duration = 500) {
     const videoBtn = this.inputFrontEl.querySelector(".video-btn");
-    gsap.to([this.frontCameraBtn, videoBtn, this.centerBtn], {
+    gsap.to([this.imageUploadButton, videoBtn, this.centerBtn], {
       opacity: 0,
       duration: duration / 1000,
       ease: Power3.easeInOut,
@@ -208,6 +208,9 @@ export default class InputAnimations {
    * Write
    */
   toWrite({ delay = 0, animButtons = true, animLogos = true, placeholder = "", focus = true } = {}) {
+    if (animButtons) {
+      this.fadeInButtons();
+    }
     this.inputText.placeholder = placeholder;
   }
 
@@ -257,7 +260,7 @@ export default class InputAnimations {
   }
 
   leaveDragImage({ animBottom = true } = {}) {
-    this.frontCameraBtn.classList.remove("active-imagedrop");
+    this.imageUploadButton.classList.remove("active-imagedrop");
     this.inputImageContainer.classList.remove("show");
     this.fadeInButtons();
 

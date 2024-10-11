@@ -152,9 +152,11 @@ export default class Discussion {
     this.userContainer.appendChild(userContainerspan);
 
     this.discussionContainer.appendChild(this.userContainer);
+    console.log("imgs", imgs);
 
     //moves this to save time
     if (imgs && imgs.length > 0) {
+      console.log("imgs", imgs);
       this.getAiAnswer({ text, imgs, isLiveMode: isFromVideo });
     } else this.getAiAnswer({ text });
 

@@ -211,6 +211,7 @@ export default class Slider {
   close() {
     this.imgs = [];
     this.sliderEl.classList.remove("show");
+
     this.resetImageQuestions();
   }
 
