@@ -38,7 +38,6 @@ function () {
     this.inputEl = this.pageEl.querySelector(".input__container");
     this.inputFrontEl = this.inputEl.querySelector(".input__front");
     this.inputBackEl = this.inputEl.querySelector(".input__back");
-    this.centerBtn = this.inputFrontEl.querySelector(".center-btn");
     this.imageUploadButton = this.inputFrontEl.querySelector(".camera-btn");
     this.videoBtn = this.inputFrontEl.querySelector(".video-btn");
     this.inputFrontHeight = this.inputFrontEl.offsetHeight; // Write
@@ -103,28 +102,39 @@ function () {
   }, {
     key: "fadeInButtons",
     value: function fadeInButtons() {
+      var _this3 = this;
+
       var delay = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
       var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 500;
 
-      _gsap["default"].to([this.imageUploadButton, this.videoBtn, this.centerBtn], {
+      _gsap["default"].to([this.imageUploadButton, this.videoBtn], {
         opacity: 1,
         duration: duration / 1000,
         ease: _gsap.Power3.easeInOut,
-        delay: delay / 1000
+        delay: delay / 1000,
+        onComplete: function onComplete() {
+          _this3.imageUploadButton.style.pointerEvents = "auto";
+          _this3.videoBtn.style.pointerEvents = "auto";
+        }
       });
     }
   }, {
     key: "fadeOutButtons",
     value: function fadeOutButtons() {
+      var _this4 = this;
+
       var delay = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
       var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 500;
-      var videoBtn = this.inputFrontEl.querySelector(".video-btn");
 
-      _gsap["default"].to([this.imageUploadButton, videoBtn, this.centerBtn], {
+      _gsap["default"].to([this.imageUploadButton, this.videoBtn], {
         opacity: 0,
         duration: duration / 1000,
         ease: _gsap.Power3.easeInOut,
-        delay: delay / 1000
+        delay: delay / 1000,
+        onComplete: function onComplete() {
+          _this4.imageUploadButton.style.pointerEvents = "none";
+          _this4.videoBtn.style.pointerEvents = "none";
+        }
       });
     }
   }, {
@@ -360,7 +370,7 @@ function () {
   }, {
     key: "toStopPhoneRecording",
     value: function toStopPhoneRecording() {
-      var _this3 = this;
+      var _this5 = this;
 
       var fadeOutphoneWrapper = (0, _anim["default"])(this.phoneWrapper, [{
         opacity: 1,
@@ -375,7 +385,7 @@ function () {
       });
 
       fadeOutphoneWrapper.onfinish = function () {
-        var fadeInIput = (0, _anim["default"])(_this3.inputEl, [{
+        var fadeInIput = (0, _anim["default"])(_this5.inputEl, [{
           opacity: 0,
           transform: "translateY(100%)"
         }, {
@@ -388,9 +398,9 @@ function () {
         });
         fadeOutphoneWrapper.cancel();
 
-        _this3.inputEl.classList.remove("hidden");
+        _this5.inputEl.classList.remove("hidden");
 
-        _this3.phoneWrapper.classList.remove("show");
+        _this5.phoneWrapper.classList.remove("show");
 
         fadeInIput.onfinish = function () {
           fadeInIput.cancel();

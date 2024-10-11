@@ -11,7 +11,6 @@ export default class InputAnimations {
     this.inputFrontEl = this.inputEl.querySelector(".input__front");
     this.inputBackEl = this.inputEl.querySelector(".input__back");
 
-    this.centerBtn = this.inputFrontEl.querySelector(".center-btn");
     this.imageUploadButton = this.inputFrontEl.querySelector(".camera-btn");
     this.videoBtn = this.inputFrontEl.querySelector(".video-btn");
 
@@ -71,21 +70,28 @@ export default class InputAnimations {
 
   // Presets
   fadeInButtons(delay = 0, duration = 500) {
-    gsap.to([this.imageUploadButton, this.videoBtn, this.centerBtn], {
+    gsap.to([this.imageUploadButton, this.videoBtn], {
       opacity: 1,
       duration: duration / 1000,
       ease: Power3.easeInOut,
       delay: delay / 1000,
+      onComplete: () => {
+        this.imageUploadButton.style.pointerEvents = "auto";
+        this.videoBtn.style.pointerEvents = "auto";
+      },
     });
   }
 
   fadeOutButtons(delay = 0, duration = 500) {
-    const videoBtn = this.inputFrontEl.querySelector(".video-btn");
-    gsap.to([this.imageUploadButton, videoBtn, this.centerBtn], {
+    gsap.to([this.imageUploadButton, this.videoBtn], {
       opacity: 0,
       duration: duration / 1000,
       ease: Power3.easeInOut,
       delay: delay / 1000,
+      onComplete: () => {
+        this.imageUploadButton.style.pointerEvents = "none";
+        this.videoBtn.style.pointerEvents = "none";
+      },
     });
   }
 
