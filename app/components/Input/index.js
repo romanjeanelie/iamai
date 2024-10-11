@@ -47,8 +47,8 @@ export default class Input {
     this.isInputExtanded = false;
 
     // Front input
-    this.frontCameraBtn = this.inputEl.querySelector(".camera-btn");
-    this.frontVideoBtn = this.inputFrontEl.querySelector(".video-btn");
+    this.imageUploadBtn = this.inputEl.querySelector(".camera-btn");
+    this.videoBtn = this.inputFrontEl.querySelector(".video-btn");
 
     // Image
     this.closeInputImageBtn = this.pageEl.querySelector(".input__image--closeBtn");
@@ -196,7 +196,7 @@ export default class Input {
     );
 
     // Image
-    this.frontCameraBtn.addEventListener("click", () => {
+    this.imageUploadBtn.addEventListener("click", () => {
       this.currentStatus = STATUS.UPLOAD_IMAGE;
       this.inputImage.enable();
       this.anims.toDragImage();
@@ -209,7 +209,7 @@ export default class Input {
     });
 
     // Video
-    this.frontVideoBtn.addEventListener("click", () => {
+    this.videoBtn.addEventListener("click", () => {
       this.emitter.emit("input:displayVideoInput");
 
       //initailse the video workflow api
