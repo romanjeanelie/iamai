@@ -8,6 +8,7 @@ const SECTIONS = {
   history: "history",
   tasks: "tasks",
   discussion: "discussion",
+  uploadImages: "upload-images",
 };
 
 gsap.registerPlugin(ScrollToPlugin);
@@ -128,6 +129,16 @@ export default class Navigation {
     });
   }
 
+  displayNavButtons() {
+    this.currentSection = SECTIONS.discussion;
+    this.updateNavButtons();
+  }
+
+  hideNavButtons() {
+    this.currentSection = SECTIONS.uploadImages;
+    this.updateNavButtons();
+  }
+
   addListeners() {
     this.setupIntersectionObserver();
     this.userPicture.addEventListener("click", signOutUser);
@@ -137,5 +148,8 @@ export default class Navigation {
     this.emitter.on("app:initialized", () => {
       this.anims.showNav();
     });
+
+    this.emitter.on("input:updateImages", this.hideNavButtons.bind(this));
+    this.emitter.on("input:imagesQuestionAsked", this.displayNavButtons.bind(this));
   }
 }

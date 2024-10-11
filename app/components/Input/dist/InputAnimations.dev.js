@@ -476,7 +476,6 @@ function () {
     value: function toImageAnalyzed() {
       // this.cancelBtn.classList.add("show");
       // this.cancelBtn.classList.add("image-drop");
-      this.navbarEl.classList.add("hidden");
       this.animCircleYoyo.cancel();
       var step3 = this.fadeInInputFront({
         delay: 0,

@@ -36,12 +36,14 @@ export default class InputImage {
     this.imgs = [];
   }
 
-  async onDrop(imgFile) {
+  async handleImageUpload(imgFile) {
     this.anims.toImageDroped();
     const imgsUploaded = await uploadFiles(imgFile);
     imgsUploaded.forEach((img) => {
       this.previewImage(img);
     });
+
+    this.emitter.emit("input:updateImages");
   }
 
   addImageToSlider(img) {
@@ -74,6 +76,7 @@ export default class InputImage {
       e.stopPropagation();
     }
 
+    // Display the drop zone on drag over/enter
     ["dragenter", "dragover"].forEach((e) => {
       this.pageEl.addEventListener(e, () => {
         if (!this.isEnabled) return;
@@ -81,6 +84,7 @@ export default class InputImage {
       });
     });
 
+    // Remove the drop zone on drag leave/drop
     ["dragleave", "drop"].forEach((e) => {
       this.pageEl.addEventListener(e, () => {
         if (!this.isEnabled) return;
@@ -92,12 +96,12 @@ export default class InputImage {
       if (!this.isEnabled) return;
       let dataTrans = e.dataTransfer;
       let files = dataTrans.files;
-      this.onDrop(files);
+      this.handleImageUpload(files);
     });
 
     this.inputFileUploadEl.addEventListener("change", (e) => {
       if (this.inputFileUploadEl.files && this.inputFileUploadEl.files[0]) {
-        this.onDrop(this.inputFileUploadEl.files);
+        this.handleImageUpload(this.inputFileUploadEl.files);
       }
     });
 
@@ -106,7 +110,7 @@ export default class InputImage {
       if (e.keyCode == 13) {
         const url = this.inputImageEl.value;
         const imgFile = await createImageFile(url);
-        this.onDrop(imgFile);
+        this.handleImageUpload(imgFile);
       }
     });
 

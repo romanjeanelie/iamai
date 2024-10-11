@@ -313,7 +313,6 @@ export default class InputAnimations {
   toImageAnalyzed() {
     // this.cancelBtn.classList.add("show");
     // this.cancelBtn.classList.add("image-drop");
-    this.navbarEl.classList.add("hidden");
 
     this.animCircleYoyo.cancel();
 
