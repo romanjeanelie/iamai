@@ -28,6 +28,7 @@ export default {
         accor: resolve(__dirname, "accor.html"),
         external: resolve(__dirname, "external.html"),
         callservice: resolve(__dirname, "phone-call.html"),
+        call_res: resolve(__dirname, "call/call_res.html"),
       },
       output: {
         preserveModules: false,

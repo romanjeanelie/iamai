@@ -144,7 +144,7 @@ export class SplitText {
 
   #splitStart() {
     if (this.options.splitBy === "both" || this.options.splitBy === "chars") {
-      console.log("yo");
+      // console.log("yo");
       this.#splitChars();
     }
     if (this.options.splitBy === "both" || this.options.splitBy === "words") {

@@ -275,7 +275,7 @@ export default class PopUp {
   }
 
   vonage(opening, prompt, phone, languageCode, email) {
-    console.log("vonage", opening, prompt, phone, languageCode);
+    // console.log("vonage", opening, prompt, phone, languageCode);
     // WARNING: For POST requests, body is set to null by browsers.
     const UUID = crypto.randomUUID();
     var data = JSON.stringify({
@@ -293,7 +293,7 @@ export default class PopUp {
 
     xhr.addEventListener("readystatechange", function () {
       if (this.readyState === 4) {
-        console.log(this.responseText);
+        // console.log(this.responseText);
         // ---- HERE WE OPEN THE SECOND STATE OF THE POPUP ----
       }
     });
@@ -312,7 +312,7 @@ export default class PopUp {
     let lastMessageP = null; // Keep track of the last message element
     const streamName = uuid;
     const subject = `${streamName}.call.>`;
-    console.log("subject: ", subject);
+    // console.log("subject: ", subject);
     let nc = await connect({
       servers: [NATS_URL],
       user: NATS_USER,
@@ -324,7 +324,7 @@ export default class PopUp {
       name: streamName,
       subjects: [subject],
     });
-    console.log("Stream add_stream =", si);
+    // console.log("Stream add_stream =", si);
     // Add the consumer
     si = await jsm.consumers.add(streamName, {
       durable_name: streamName,
@@ -354,7 +354,7 @@ export default class PopUp {
     };
     for await (const m of iter) {
       var mdata = m.json();
-      console.log("mdata:", mdata);
+      // console.log("mdata:", mdata);
       m.ack();
       if (mdata.event) {
         if (mdata.event == PHONECALLCONNECTED || mdata.event == PHONECALLENDED) {

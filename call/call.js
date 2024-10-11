@@ -32,11 +32,11 @@ async function load() {
   var tabelrow = document.getElementById("ddus");
   xhr.addEventListener("readystatechange", function () {
     if (this.readyState === 4) {
-      console.log(this.responseText);
+      // console.log(this.responseText);
       let data = JSON.parse(this.responseText);
       prompts = data.list;
       prompts.forEach(function (item) {
-        console.log(item);
+        // console.log(item);
         str = str + '<option value="' + item.Id + '">' + item.Title + "</option>";
       });
       str = str + '<option value="others">Others</option>';
@@ -133,7 +133,7 @@ function pilivo(lang, languageCode, systemPrompt, userPrompt, phonenumber, userm
   // xhr.withCredentials = true;
   xhr.addEventListener("readystatechange", function () {
     if (this.readyState === 4) {
-      console.log(this.responseText);
+      // console.log(this.responseText);
       btnsubmit.style.display = "block";
       window.open("https://api.asterizk.ai/callservice/outbound/calls/" + uuid);
     }
@@ -161,7 +161,7 @@ function vonage(opening, prompt, phone, languageCode) {
 
   xhr.addEventListener("readystatechange", function () {
     if (this.readyState === 4) {
-      console.log(this.responseText);
+      // console.log(this.responseText);
       btnsubmit.style.display = "block";
       window.open("/call/call_res.html?UUID=" + UUID, "_blank");
     }

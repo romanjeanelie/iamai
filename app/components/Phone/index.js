@@ -87,21 +87,23 @@ export default class Phone {
     this.debugFlights = false;
 
     if (this.debug) {
-      // this.anims.toStartPhoneRecording();
-      // this.startConnecting();
+      // console.log("debug mode");
+      this.phoneDebugContainer.classList.add("show");
+      this.anims.toStartPhoneRecording();
+      this.startConnecting();
     }
   }
 
   startConnecting() {
     this.phoneAnimations.toConnecting();
-    console.log("connecting");
+    // console.log("connecting");
     this.phoneAnimations.newInfoText("connecting");
   }
 
   connected() {
     this.phoneAnimations.toConnected();
     this.phoneAnimations.newInfoText("connected");
-    console.log("connected");
+    // console.log("connected");
 
     this.emitter.emit("phone:connected");
     if (this.debug) return;
@@ -117,7 +119,7 @@ export default class Phone {
   }
 
   leave() {
-    console.log("leave");
+    // console.log("leave");
     this.audioProcessing?.stopAudio();
     if (this.unbindEvent) {
       this.unbindEvent();
@@ -149,19 +151,19 @@ export default class Phone {
       this.phoneAnimations.toListening();
     }
     this.isListening = true;
-    console.log("I'm listening");
+    // console.log("I'm listening");
     this.phoneAnimations.newInfoText("I'm listening");
     this.emitter.emit("phone:listening");
   }
 
   async toProcessing(audio) {
-    console.log("toProcessing");
+    // console.log("toProcessing");
     if (!this.isActive) return;
 
     this.isProcessing = true;
     this.phoneAnimations.newInfoText("processing");
     this.phoneAnimations.toProcessing();
-    console.log("processing");
+    // console.log("processing");
     this.emitter.emit("phone:processing");
     if (this.debugIOSAnim) {
       this.discussion.addUserElement({ text: "Hi I am a test", debug: true });
@@ -183,13 +185,15 @@ export default class Phone {
   async processTextAndPlayAudio(textRecorded) {
     try {
       if (!this.sentencesData) {
-        console.log("here for stopwords");
+        // console.log("here for stopwords");
         const response = await fetch("stopwords.json");
         this.sentencesData = await response.json();
-        console.log("here for stopwords:", this.sentencesData);
+        // console.log("here for stopwords:", this.sentencesData);
         const response2 = await fetch("stopwordscon.json");
         this.sentencesconData = await response2.json();
-        console.log("here for stopwords:", this.sentencesconData);
+        // console.log("here for stopwords:", this.sentencesconData);
+        // this.sentencesData = await fetch('stopwords.json').then(response => response.json());
+        // this.sentencesconData = await fetch('stopwords.json').then(response => response.json());
       }
 
       const randomIndex = Math.floor(Math.random() * this.sentencesData.sentences.length);
@@ -201,22 +205,22 @@ export default class Phone {
         stopText = this.sentencesconData.sentences[randomIndex];
       }
       this.stopwords = false;
-      console.log("here for stopText:", stopText);
-      console.log("here for this.textRecorded:", textRecorded);
+      // console.log("here for stopText:", stopText);
+      // console.log("here for this.textRecorded:", textRecorded);
 
       const googletrresponse = await this.discussion.Chat.googletranslate(textRecorded, "en", "");
-      console.log("here for response:", googletrresponse);
+      // console.log("here for response:", googletrresponse);
       if (googletrresponse.data.translations[0].detectedSourceLanguage) {
         sourceLang = googletrresponse.data.translations[0].detectedSourceLanguage;
       }
-      console.log("here for stopText:", stopText);
-      console.log("here for sourceLang:", sourceLang);
+      // console.log("here for stopText:", stopText);
+      // console.log("here for sourceLang:", sourceLang);
       if (sourceLang !== "en") {
         const transResponse = await this.discussion.Chat.googletranslate(stopText, sourceLang, "en");
         stopText = transResponse.data.translations[0].translatedText;
       }
-      console.log(sourceLang);
-      console.log(stopText);
+      // console.log(sourceLang);
+      // console.log(stopText);
 
       const { audio: audioP, index } = await textToSpeech(stopText, sourceLang, 1);
 
@@ -297,7 +301,7 @@ export default class Phone {
     if (!this.isActive) return;
     if (this.audiosAI[this.currentIndexAudioAI + 1]) {
       this.currentIndexAudioAI++;
-      console.log("Stil one sound");
+      // console.log("Stil one sound");
       // this.audiosAI[this.currentIndexAudioAI].play();
       this.currentAudioAIPlaying = new AudioPlayer({
         audioUrl: this.audiosAI[this.currentIndexAudioAI]?.src,
@@ -310,7 +314,7 @@ export default class Phone {
       this.clearAIAudios();
       this.isAITalking = false;
       if (this.isStreamEnded) {
-        console.log("all sounds played", this.isStreamEnded);
+        // console.log("all sounds played", this.isStreamEnded);
         // if (this.debug) return;
         this.toTalkToMe();
       } else {
@@ -327,7 +331,7 @@ export default class Phone {
   }
 
   stopAITalking() {
-    console.log("stop talking");
+    // console.log("stop talking");
     this.currentAudioAIPlaying?.pauseAudio();
     this.currentAudioAIPlaying = null;
     this.isAITalking = false;
@@ -359,7 +363,7 @@ export default class Phone {
             }
           },
           onSpeechStart: () => {
-            console.log("speech start");
+            // console.log("speech start");
             if (!this.isConnected) return;
             this.stopAITalking();
             this.toListening();
@@ -373,7 +377,7 @@ export default class Phone {
           redemptionFrames: 10 * 1.4,
         });
       } catch (err) {
-        console.log("error in vad");
+        // console.log("error in vad");
         console.log(err);
       }
     }
@@ -393,7 +397,7 @@ export default class Phone {
       return;
     }
     this.myvad.start();
-    console.log("THE VAD IS STARTING !");
+    // console.log("THE VAD IS STARTING !");
   }
 
   stopRecording() {
@@ -442,7 +446,7 @@ export default class Phone {
     this.isMicMuted = true;
     this.phoneAnimations.toPause("user");
     this.phoneAnimations.newInfoText("Click to resume");
-    console.log("mute mic");
+    // console.log("mute mic");
     this.emitter.emit("phone:muteMic");
     this.pauseBtn.classList.add("active");
 
@@ -453,7 +457,7 @@ export default class Phone {
 
   unmuteMic() {
     this.isMicMuted = false;
-    console.log("unmute mic");
+    // console.log("unmute mic");
     this.phoneAnimations.toResume("user");
     this.phoneAnimations.newInfoText("Start talking");
     this.pauseBtn.classList.remove("active");
@@ -470,22 +474,22 @@ export default class Phone {
     // isProcessing = this.isProcessing,
     isAIPaused = this.isAIPaused
   ) {
-    console.log("pause initiated");
+    // console.log("pause initiated");
     if (isAITalking) {
-      console.log("ai talking");
+      // console.log("ai talking");
       if (!isAIPaused) {
-        console.log("ai not paused");
+        // console.log("ai not paused");
         this.pauseAI();
       } else {
-        console.log("ai paused");
+        // console.log("ai paused");
         this.resumeAI();
       }
     } else {
       if (!isMicMuted) {
-        console.log("mic not muted");
+        // console.log("mic not muted");
         this.muteMic();
       } else {
-        console.log("mic muted");
+        // console.log("mic muted");
         this.unmuteMic();
       }
     }

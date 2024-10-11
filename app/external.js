@@ -169,7 +169,7 @@ async function getstreamdata(stream_name) {
   };
   for await (const m of iter) {
     var mdata = m.json();
-    console.log(mdata);
+    // console.log(mdata);
     if (steamseq.includes(m.seq) && m.redelivered) {
       m.ack();
     } else {
@@ -373,7 +373,7 @@ function toTitleCase2(str) {
 }
 
 async function onScrollTop() {
-  console.log("ON SCROLL TOP");
+  // console.log("ON SCROLL TOP");
   // only if there is more history to be added, we change the scrollTop value so the user stays at the same spot
   if (container.hasChildNodes()) {
     mainEl.scrollTop = document.documentElement.scrollTop = container.offsetHeight;

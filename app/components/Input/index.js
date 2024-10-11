@@ -11,6 +11,10 @@ import { calculateInputTextWidth } from "../../utils/calculateInputTextWidth";
 import InputVideo from "./InputVideo";
 
 function isLetterKey(event) {
+  // console.log("event.key", event.key);
+  // console.log("event.key.length", event.key.length);
+  const keyCode = event.keyCode;
+  // return (keyCode >= 65 && keyCode <= 90); // Key codes for A-Z
   if (
     event.key.length === 1 &&
     event.key.match(/[a-z]/i) &&
@@ -135,6 +139,11 @@ export default class Input {
 
   onSubmit(event) {
     event.preventDefault();
+    // console.log("ON SUBMIT FUNCTION : ", this.inputText.value);
+    console.time("input");
+    if (this.isPageBlue) {
+      this.toPageGrey({ duration: 1200 });
+    }
     if (this.currentStatus === STATUS.IMAGE_QUESTION) {
       this.emitter.emit("slider:close");
     }

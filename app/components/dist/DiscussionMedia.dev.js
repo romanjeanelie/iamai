@@ -46,7 +46,7 @@ function () {
     this.emitter = emitter;
     this.imagesSkeletons = [];
     this.textContainer = this.container.querySelector(".text__container");
-    console.log(this.textContainer);
+    // console.log(this.textContainer);
     this.init();
   }
 
@@ -110,7 +110,7 @@ function () {
       }
 
       this.topWrapper.appendChild(this.sources);
-      console.log("before initial State"); // const initialState = Flip.getState([this.topWrapper, this.textContainer]);
+      // console.log("before initial State"); // const initialState = Flip.getState([this.topWrapper, this.textContainer]);
       // console.log("after iinitial");
       // this.topWrapper.classList.remove("none");
       // console.log("before flip");

@@ -11,7 +11,7 @@ const sendToWispher = (url, lang = "", attempt = 0) =>
     data.append("audio_file", url, crypto.randomUUID() + ".wav");
     data.append("type", "audio/wav");
     xhr.open("POST", WHISPER_URL + lang, true);
-    console.log("sending to whisper");
+    // console.log("sending to whisper");
     xhr.onreadystatechange = function () {
       if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
         var response = JSON.parse(this.responseText);
@@ -19,7 +19,7 @@ const sendToWispher = (url, lang = "", attempt = 0) =>
       }
     };
     xhr.addEventListener("error", function (e) {
-      console.log(`Error on attempt ${attempt}:`, e);
+      // console.log(`Error on attempt ${attempt}:`, e);
       if (attempt < 2) {
         // If this was the first or second attempt, try again
         resolve(sendToWispher(url, lang, attempt + 1));
@@ -48,7 +48,7 @@ const sendToWisphergroq = (url, lang = "", attempt = 0) =>
 
     xhr.addEventListener("readystatechange", function () {
       if (this.readyState === 4) {
-        console.log(this.responseText);
+        // console.log(this.responseText);
         var response = JSON.parse(this.responseText);
         resolve(response.text);
       }

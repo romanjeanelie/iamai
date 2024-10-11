@@ -30,14 +30,14 @@ const loadVideoBlobAsync = (url) => {
 // Options pour la fonction de préchargement des vidéos
 export const preloadVideos = async (urls, options) => {
   const { onComplete } = options;
-  console.log("preloading...");
+  // console.log("preloading...");
 
   try {
     const results = await Promise.allSettled(urls.map((url) => loadVideoBlobAsync(url)));
 
     const successfulVideos = results.filter((result) => result.status === "fulfilled").map((result) => result.value);
 
-    console.log("All videos preloaded", successfulVideos);
+    // console.log("All videos preloaded", successfulVideos);
 
     if (onComplete && typeof onComplete === "function") {
       onComplete();

@@ -75,7 +75,7 @@ async function onCompleteRecording(blob) {
     const divtranslatedaudioplayer = document.createElement("audio");
     divtranslatedaudioplayer.controls = true;
     const { audio, index } = await textToSpeech(response.data.translations[0].translatedText, targetlang.value, 1);
-    console.log("audio", audio)
+    // console.log("audio", audio)
     divtranslatedaudioplayer.src = audio.src;
     divtranslated.appendChild(divtranslatedaudioplayer);
     divcontainer.prepend(divtranslated);
@@ -91,7 +91,7 @@ const googletranslate = (text, lang, sourcelang) =>
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                console.log("google:" + xhr.responseText);
+                // console.log("google:" + xhr.responseText);
                 var jsonResponse = JSON.parse(xhr.responseText);
                 if (jsonResponse.data && jsonResponse.data.translations) {
                     resolve(jsonResponse);
@@ -143,7 +143,7 @@ function textToSpeech(text, targetlang, index, attempt = 0) {
         })
             .then((response) => response.blob())
             .then((audioBlob) => {
-                console.log("from text to speech  : ", audioBlob, index);
+                // console.log("from text to speech  : ", audioBlob, index);
                 return { audio: getAudio(audioBlob), index };
             })
             .catch((error) => {
@@ -188,7 +188,7 @@ function textToSpeech(text, targetlang, index, attempt = 0) {
         })
             .then(async (response) => {
                 const audidata = await response.text();
-                console.log("response.text()", audidata)
+                // console.log("response.text()", audidata)
                 const base64 = JSON.parse(audidata).audioContent;
                 const binaryString = window.atob(base64);
                 const length = binaryString.length;
@@ -200,7 +200,7 @@ function textToSpeech(text, targetlang, index, attempt = 0) {
                 return new Blob([bytes], { type: "audio/mpeg" })
             })
             .then((audioBlob) => {
-                console.log("from text to speech  : ", audioBlob, index);
+                // console.log("from text to speech  : ", audioBlob, index);
                 return { audio: getAudio(audioBlob), index };
             })
             .catch((error) => {

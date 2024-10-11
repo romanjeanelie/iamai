@@ -44,7 +44,7 @@ export default class AudioPlayer {
   pauseAudio() {
     this.isPaused = true;
     if (this.currentAudioPlaying) {
-      console.log("pause");
+      // console.log("pause");
       this.currentAudioPlaying.stop();
       // Measure how much time passed since the last pause.
       this.startOffset += this.audioContext.currentTime - this.startTime;
