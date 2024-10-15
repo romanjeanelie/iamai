@@ -90,7 +90,6 @@ export default class VoiceConv {
 
     if (this.debug) {
       // console.log("debug mode");
-      this.voiceConvDebugContainer.classList.add("show");
       this.anims.toStartVoiceConv();
       this.startConnecting();
     }

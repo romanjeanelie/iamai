@@ -49,34 +49,28 @@ export default class TaskManager {
     // Debug
     this.debug = import.meta.env.VITE_DEBUG === "true";
     if (this.debug) {
-      this.gui = new GUI();
-      this.debugger = new TaskManagerDebug(this);
-      this.debugger.addDebugTask();
-
-      this.onStatusUpdate(this.tasks[0].key, {
-        type: API_STATUSES.PROGRESSING,
-        title: "Progressing",
-        description:
-          " Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi maiores, culpa architecto enim autem iusto! Maxime sunt explicabo pariatur corporis accusantium, voluptas excepturi quam inventore dicta, consequatur soluta ipsam doloremque? ",
-      });
-
-      const testProductResult = new ProductUI(productResultData);
-      const testMovieResult = new MoviesUI(moviesResultData, this.emitter);
-      const testHotelResult = new HotelsUI(hotelSearchData, hotelSearchResultsData, this.emitter);
-      const testFlightResult = new FlightUI(flightSearchData, flightSearchResultsData);
-
-      this.onStatusUpdate(
-        this.tasks[0].key,
-        {
-          type: API_STATUSES.ENDED,
-          title: "Ended",
-          description: "Task has ended",
-        },
-        testHotelResult
-      );
-
-      this.debugger.addDebugTask();
-      this.debugger.addDebugTask();
+      // this.gui = new GUI();
+      // this.debugger = new TaskManagerDebug(this);
+      // this.debugger.addDebugTask();
+      // this.onStatusUpdate(this.tasks[0].key, {
+      //   type: API_STATUSES.PROGRESSING,
+      //   title: "Progressing",
+      //   description:
+      //     " Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi maiores, culpa architecto enim autem iusto! Maxime sunt explicabo pariatur corporis accusantium, voluptas excepturi quam inventore dicta, consequatur soluta ipsam doloremque? ",
+      // });
+      // const testProductResult = new ProductUI(productResultData);
+      // const testMovieResult = new MoviesUI(moviesResultData, this.emitter);
+      // const testHotelResult = new HotelsUI(hotelSearchData, hotelSearchResultsData, this.emitter);
+      // const testFlightResult = new FlightUI(flightSearchData, flightSearchResultsData);
+      // this.onStatusUpdate(
+      //   this.tasks[0].key,
+      //   {
+      //     type: API_STATUSES.ENDED,
+      //     title: "Ended",
+      //     description: "Task has ended",
+      //   },
+      //   testHotelResult
+      // );
     }
   }
 

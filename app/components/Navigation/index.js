@@ -44,7 +44,7 @@ export default class Navigation {
     this.anims = new NavigationAnimations();
 
     if (this.debug) {
-      this.toggleTasks();
+      // this.toggleTasks();
     }
   }
 
