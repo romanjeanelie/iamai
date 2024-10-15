@@ -92,7 +92,7 @@ export default class Input {
       this.emitter
     );
 
-    // Video
+    // Video Conversation
     this.inputVideo = new InputVideo(this.emitter);
 
     // Voice Conversation

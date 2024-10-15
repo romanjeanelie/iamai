@@ -12,6 +12,7 @@ import PreLoginContent from "./components/PreLoginContent";
 import Slider from "./components/Slider";
 import { auth } from "./firebaseConfig";
 import animateString from "./utils/animateString";
+import Waves from "./components/Three/Waves";
 
 const divlogin = document.getElementById("divlogin");
 

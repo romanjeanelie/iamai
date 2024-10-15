@@ -7,6 +7,7 @@ import VoiceConvAnimations from "./VoiceConvAnimations";
 import unlockAudio from "../../utils/audio/unlockAudio";
 import AudioPlayer from "../../utils/audio/AudioPlayer";
 import audioFlights from "/sounds/debugFlights.mp3";
+import Waves from "../Three/Waves";
 
 export default class VoiceConv {
   constructor({ anims, pageEl, photos, discussion, emitter }) {
@@ -33,6 +34,7 @@ export default class VoiceConv {
     this.btnFinishProcessing = this.pageEl.querySelector("#btn-finishProcessing");
 
     this.anims = anims;
+    this.waves = new Waves();
 
     this.isActive = false;
     this.audioContext = null;

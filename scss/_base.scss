@@ -9,6 +9,12 @@ html {
   }
 }
 
+.threejs-container {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+}
+
 #app {
   position: relative;
   color: $colorMain;
