@@ -1,6 +1,7 @@
 import handlebars from "vite-plugin-handlebars";
 import { resolve } from "path";
 import mkcert from "vite-plugin-mkcert";
+import glsl from "vite-plugin-glsl";
 
 export default {
   server: { https: true }, // Not needed for Vite 5+
@@ -12,6 +13,7 @@ export default {
         isBlue: (labelPage) => labelPage === "blue",
       },
     }),
+    glsl(),
   ],
   build: {
     minify: true,

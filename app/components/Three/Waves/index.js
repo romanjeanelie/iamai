@@ -1,10 +1,11 @@
 import * as THREE from "three";
+import vertexShader from "./vertexShader.glsl";
 
 export default class Waves {
   constructor() {
     // States
     this.sizes = { width: window?.innerWidth, height: window?.innerHeight };
-
+    console.log(vertexShader);
     // DOM ELEMENTS
     this.canvas = document.querySelector(".threejs-container");
 
