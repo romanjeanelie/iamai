@@ -49,9 +49,9 @@ function () {
     this.inputText = this.inputEl.querySelector(".input-text"); // Image
 
     this.inputImageContainer = this.inputEl.querySelector(".input__image--container");
-    this.imageDroppedContainer = this.pageEl.querySelector(".image-dropped__container"); // Phone
+    this.imageDroppedContainer = this.pageEl.querySelector(".image-dropped__container"); // VoiceConversation
 
-    this.phoneWrapper = this.pageEl.querySelector(".phone__wrapper"); // Other dom elements
+    this.voiceConvWrapper = this.pageEl.querySelector(".phone__wrapper"); // Other dom elements
 
     this.logoEl = document.querySelector(".logo__main");
     this.logoMobileEl = document.querySelector(".logo__mobile");
@@ -362,12 +362,12 @@ function () {
       this.inputText.placeholder = placeholder;
     }
     /**
-     * Phone
+     * Voice Conversation
      */
 
   }, {
-    key: "toStartPhoneRecording",
-    value: function toStartPhoneRecording() {
+    key: "toStartVoiceConv",
+    value: function toStartVoiceConv() {
       var _this5 = this;
 
       var tl = _gsap["default"].timeline({
@@ -376,7 +376,7 @@ function () {
           ease: _gsap.Circ.easeInOut
         },
         onComplete: function onComplete() {
-          _this5.phoneWrapper.classList.add("show");
+          _this5.voiceConvWrapper.classList.add("show");
         }
       });
 
@@ -394,20 +394,20 @@ function () {
           ease: _gsap.Circ.easeInOut
         });
       });
-      tl.to(this.phoneWrapper.children, {
+      tl.to(this.voiceConvWrapper.children, {
         opacity: 1,
         stagger: 0.1
       }, "+=0.2");
       tl.to(this.inputEl, {
         opacity: 0
       });
-      tl.to(this.phoneWrapper, {
+      tl.to(this.voiceConvWrapper, {
         opacity: 1
       }, "<");
     }
   }, {
-    key: "toStopPhoneRecording",
-    value: function toStopPhoneRecording() {
+    key: "toStopVoiceConv",
+    value: function toStopVoiceConv() {
       var _this6 = this;
 
       var tl = _gsap["default"].timeline({
@@ -416,11 +416,11 @@ function () {
           ease: _gsap.Circ.easeInOut
         },
         onComplete: function onComplete() {
-          _this6.phoneWrapper.classList.remove("show");
+          _this6.voiceConvWrapper.classList.remove("show");
         }
       });
 
-      tl.to(this.phoneWrapper.children, {
+      tl.to(this.voiceConvWrapper.children, {
         opacity: 0
       });
       tl.to(this.inputEl, {
@@ -440,7 +440,7 @@ function () {
         opacity: 1,
         stagger: 0.1
       }, "+=0.2");
-      tl.to(this.phoneWrapper, {
+      tl.to(this.voiceConvWrapper, {
         opacity: 0,
         pointerEvents: "none"
       });

@@ -1,10 +1,10 @@
 import anim from "../../utils/anim";
 
-export default class PhoneHomeAnimations {
+export default class VoiceConvHomeAnimations {
   constructor({ pageEl }) {
     this.pageEl = pageEl;
 
-    this.phoneWrapper = this.pageEl.querySelector(".phone__wrapper");
+    this.voiceConvWrapper = this.pageEl.querySelector(".phone__wrapper");
 
     this.isConnected = false;
     this.colors = {
@@ -61,12 +61,12 @@ export default class PhoneHomeAnimations {
   }
 
   newInfoText(text) {
-    const activeText = this.phoneWrapper.querySelector(".phone__info.active");
+    const activeText = this.voiceConvWrapper.querySelector(".phone__info.active");
     if (this.isIOSSafari) {
       activeText.textContent = text;
       return;
     }
-    const notActiveText = this.phoneWrapper.querySelector(".phone__info:not(.active)");
+    const notActiveText = this.voiceConvWrapper.querySelector(".phone__info:not(.active)");
 
     const animations = {
       hide: [

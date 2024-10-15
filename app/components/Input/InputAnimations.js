@@ -24,8 +24,8 @@ export default class InputAnimations {
     this.inputImageContainer = this.inputEl.querySelector(".input__image--container");
     this.imageDroppedContainer = this.pageEl.querySelector(".image-dropped__container");
 
-    // Phone
-    this.phoneWrapper = this.pageEl.querySelector(".phone__wrapper");
+    // VoiceConversation
+    this.voiceConvWrapper = this.pageEl.querySelector(".phone__wrapper");
 
     // Other dom elements
     this.logoEl = document.querySelector(".logo__main");
@@ -223,16 +223,16 @@ export default class InputAnimations {
   }
 
   /**
-   * Phone
+   * Voice Conversation
    */
-  toStartPhoneRecording() {
+  toStartVoiceConv() {
     const tl = gsap.timeline({
       default: {
         duration: 0.4,
         ease: Circ.easeInOut,
       },
       onComplete: () => {
-        this.phoneWrapper.classList.add("show");
+        this.voiceConvWrapper.classList.add("show");
       },
     });
 
@@ -246,23 +246,23 @@ export default class InputAnimations {
         ease: Circ.easeInOut,
       });
     });
-    tl.to(this.phoneWrapper.children, { opacity: 1, stagger: 0.1 }, "+=0.2");
+    tl.to(this.voiceConvWrapper.children, { opacity: 1, stagger: 0.1 }, "+=0.2");
     tl.to(this.inputEl, { opacity: 0 });
-    tl.to(this.phoneWrapper, { opacity: 1 }, "<");
+    tl.to(this.voiceConvWrapper, { opacity: 1 }, "<");
   }
 
-  toStopPhoneRecording() {
+  toStopVoiceConv() {
     const tl = gsap.timeline({
       default: {
         duration: 0.4,
         ease: Circ.easeInOut,
       },
       onComplete: () => {
-        this.phoneWrapper.classList.remove("show");
+        this.voiceConvWrapper.classList.remove("show");
       },
     });
 
-    tl.to(this.phoneWrapper.children, { opacity: 0 });
+    tl.to(this.voiceConvWrapper.children, { opacity: 0 });
     tl.to(this.inputEl, { opacity: 1 }, "-=0.3");
     tl.add(() => {
       const initialState = Flip.getState(this.inputFrontEl);
@@ -274,7 +274,7 @@ export default class InputAnimations {
     });
 
     tl.to(this.inputFrontEl.children, { opacity: 1, stagger: 0.1 }, "+=0.2");
-    tl.to(this.phoneWrapper, { opacity: 0, pointerEvents: "none" });
+    tl.to(this.voiceConvWrapper, { opacity: 0, pointerEvents: "none" });
   }
 
   leaveDragImage({ animBottom = true } = {}) {
