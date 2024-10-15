@@ -29,6 +29,87 @@ $colorTalkAI: $colorBlueText;
   }
 }
 
+// STYLING FOR THE HOME INPUT
+.input__wrapper {
+  .phone__wrapper {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    top: 0px;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    transition: transform 0.3s $ease-out;
+    backdrop-filter: none;
+    @supports not (backdrop-filter: blur(10px)) {
+      background: rgba($backgroundColorGreyPage, 0.8); // Fallback for browsers that do not support backdrop-filter
+    }
+  }
+
+  .phone__wrapper.show {
+    pointer-events: auto;
+
+    .phone__container {
+      pointer-events: auto;
+    }
+  }
+
+  .phone__container {
+    position: static;
+    max-width: $maxWidth;
+    margin: 0 auto;
+    padding: 0;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: none;
+    display: flex;
+    justify-content: flex-end;
+
+    @include media("<tablet") {
+      padding: 0 $paddingHorMobile;
+    }
+  }
+
+  .phone__info-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 15px;
+    color: $colorGrey;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 24px; /* 160% */
+    letter-spacing: 0.2px;
+
+    .phone__info:last-of-type {
+      position: absolute;
+      inset: 0;
+    }
+  }
+
+  .phone__buttons-container {
+    z-index: 1;
+    display: flex;
+    gap: 10px;
+
+    button {
+      background: rgba($colorLight, 0.54);
+      width: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 50px;
+      border-radius: 50px;
+    }
+
+    button img,
+    button svg {
+      width: 14px;
+    }
+  }
+}
+
 // STYLING FOR THE ACCOR AND VIDEO INPUT
 .phone__container {
   p {
@@ -222,92 +303,6 @@ $colorTalkAI: $colorBlueText;
       }
     }
     overflow: hidden;
-  }
-}
-
-// STYLING FOR THE HOME INPUT
-.input__wrapper {
-  .phone__wrapper {
-    opacity: 0;
-    pointer-events: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    transform: translateY(100%);
-    pointer-events: none;
-    transition: transform 0.3s $ease-out;
-    backdrop-filter: none;
-    @supports not (backdrop-filter: blur(10px)) {
-      background: rgba($backgroundColorGreyPage, 0.8); // Fallback for browsers that do not support backdrop-filter
-    }
-  }
-
-  .phone__wrapper.show {
-    transform: translateY(0);
-    opacity: 1;
-    pointer-events: auto;
-
-    .phone__container {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-    }
-  }
-
-  .phone__container {
-    position: static;
-    max-width: $maxWidth;
-    margin: 0 auto;
-    padding: 0;
-    opacity: 1;
-    visibility: visible;
-    pointer-events: none;
-    display: flex;
-    justify-content: flex-end;
-
-    @include media("<tablet") {
-      padding: 0 $paddingHorMobile;
-    }
-  }
-
-  .phone__info-container {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 15px;
-    color: $colorGrey;
-    text-align: center;
-    font-size: 15px;
-    font-weight: 500;
-    line-height: 24px; /* 160% */
-    letter-spacing: 0.2px;
-
-    .phone__info:last-of-type {
-      position: absolute;
-      inset: 0;
-    }
-  }
-
-  .phone__buttons-container {
-    z-index: 1;
-    display: flex;
-    gap: 16px;
-
-    button {
-      background: rgba($colorLight, 0.54);
-      width: 50px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 50px;
-      border-radius: 50px;
-    }
-
-    button img,
-    button svg {
-      width: 14px;
-    }
   }
 }
 

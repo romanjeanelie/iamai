@@ -1,6 +1,8 @@
-import gsap, { Power2, Power3 } from "gsap";
+import gsap, { Circ, Power3 } from "gsap";
+import Flip from "gsap/Flip";
 import anim from "../../utils/anim";
 
+gsap.registerPlugin(Flip);
 export default class InputAnimations {
   constructor({ pageEl, emitter }) {
     this.pageEl = pageEl;
@@ -224,45 +226,55 @@ export default class InputAnimations {
    * Phone
    */
   toStartPhoneRecording() {
-    this.inputEl.classList.add("hidden");
-    this.phoneWrapper.classList.add("show");
+    const tl = gsap.timeline({
+      default: {
+        duration: 0.4,
+        ease: Circ.easeInOut,
+      },
+      onComplete: () => {
+        this.phoneWrapper.classList.add("show");
+      },
+    });
+
+    tl.to(this.inputFrontEl.children, { opacity: 0, stagger: 0.1 });
+
+    tl.add(() => {
+      const initialState = Flip.getState(this.inputFrontEl);
+      this.inputFrontEl.classList.add("voice-conversation");
+      Flip.from(initialState, {
+        duration: 0.4,
+        ease: Circ.easeInOut,
+      });
+    });
+    tl.to(this.phoneWrapper.children, { opacity: 1, stagger: 0.1 }, "+=0.2");
+    tl.to(this.inputEl, { opacity: 0 });
+    tl.to(this.phoneWrapper, { opacity: 1 }, "<");
   }
 
   toStopPhoneRecording() {
-    const fadeOutphoneWrapper = anim(
-      this.phoneWrapper,
-      [
-        { opacity: 1, transform: "translateY(0px)" },
-        { opacity: 0, transform: "translateY(100%)" },
-      ],
-      {
-        duration: 150,
-        ease: "ease-in-out",
-        fill: "forwards",
-      }
-    );
+    const tl = gsap.timeline({
+      default: {
+        duration: 0.4,
+        ease: Circ.easeInOut,
+      },
+      onComplete: () => {
+        this.phoneWrapper.classList.remove("show");
+      },
+    });
 
-    fadeOutphoneWrapper.onfinish = () => {
-      const fadeInIput = anim(
-        this.inputEl,
-        [
-          { opacity: 0, transform: "translateY(100%)" },
-          { opacity: 1, transform: "translateY(0)" },
-        ],
-        {
-          duration: 300,
-          ease: "ease-in-out",
-          fill: "forwards",
-        }
-      );
-      fadeOutphoneWrapper.cancel();
-      this.inputEl.classList.remove("hidden");
-      this.phoneWrapper.classList.remove("show");
+    tl.to(this.phoneWrapper.children, { opacity: 0 });
+    tl.to(this.inputEl, { opacity: 1 }, "-=0.3");
+    tl.add(() => {
+      const initialState = Flip.getState(this.inputFrontEl);
+      this.inputFrontEl.classList.remove("voice-conversation");
+      Flip.from(initialState, {
+        duration: 0.4,
+        ease: Circ.easeInOut,
+      });
+    });
 
-      fadeInIput.onfinish = () => {
-        fadeInIput.cancel();
-      };
-    };
+    tl.to(this.inputFrontEl.children, { opacity: 1, stagger: 0.1 }, "+=0.2");
+    tl.to(this.phoneWrapper, { opacity: 0, pointerEvents: "none" });
   }
 
   leaveDragImage({ animBottom = true } = {}) {

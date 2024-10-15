@@ -82,7 +82,6 @@ export default class Input {
       {
         onImageUploaded: (img) => {
           this.currentImages.push(img);
-          console.log("ON IMAGE UPLOADED : ", img);
         },
         onImageCancel: () => {
           this.currentImages = [];

@@ -9,6 +9,8 @@ exports["default"] = void 0;
 
 var _gsap = _interopRequireWildcard(require("gsap"));
 
+var _Flip = _interopRequireDefault(require("gsap/Flip"));
+
 var _anim = _interopRequireDefault(require("../../utils/anim"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -22,6 +24,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+_gsap["default"].registerPlugin(_Flip["default"]);
 
 var InputAnimations =
 /*#__PURE__*/
@@ -364,48 +368,82 @@ function () {
   }, {
     key: "toStartPhoneRecording",
     value: function toStartPhoneRecording() {
-      this.inputEl.classList.add("hidden");
-      this.phoneWrapper.classList.add("show");
+      var _this5 = this;
+
+      var tl = _gsap["default"].timeline({
+        "default": {
+          duration: 0.4,
+          ease: _gsap.Circ.easeInOut
+        },
+        onComplete: function onComplete() {
+          _this5.phoneWrapper.classList.add("show");
+        }
+      });
+
+      tl.to(this.inputFrontEl.children, {
+        opacity: 0,
+        stagger: 0.1
+      });
+      tl.add(function () {
+        var initialState = _Flip["default"].getState(_this5.inputFrontEl);
+
+        _this5.inputFrontEl.classList.add("voice-conversation");
+
+        _Flip["default"].from(initialState, {
+          duration: 0.4,
+          ease: _gsap.Circ.easeInOut
+        });
+      });
+      tl.to(this.phoneWrapper.children, {
+        opacity: 1,
+        stagger: 0.1
+      }, "+=0.2");
+      tl.to(this.inputEl, {
+        opacity: 0
+      });
+      tl.to(this.phoneWrapper, {
+        opacity: 1
+      }, "<");
     }
   }, {
     key: "toStopPhoneRecording",
     value: function toStopPhoneRecording() {
-      var _this5 = this;
+      var _this6 = this;
 
-      var fadeOutphoneWrapper = (0, _anim["default"])(this.phoneWrapper, [{
-        opacity: 1,
-        transform: "translateY(0px)"
-      }, {
-        opacity: 0,
-        transform: "translateY(100%)"
-      }], {
-        duration: 150,
-        ease: "ease-in-out",
-        fill: "forwards"
+      var tl = _gsap["default"].timeline({
+        "default": {
+          duration: 0.4,
+          ease: _gsap.Circ.easeInOut
+        },
+        onComplete: function onComplete() {
+          _this6.phoneWrapper.classList.remove("show");
+        }
       });
 
-      fadeOutphoneWrapper.onfinish = function () {
-        var fadeInIput = (0, _anim["default"])(_this5.inputEl, [{
-          opacity: 0,
-          transform: "translateY(100%)"
-        }, {
-          opacity: 1,
-          transform: "translateY(0)"
-        }], {
-          duration: 300,
-          ease: "ease-in-out",
-          fill: "forwards"
+      tl.to(this.phoneWrapper.children, {
+        opacity: 0
+      });
+      tl.to(this.inputEl, {
+        opacity: 1
+      }, "-=0.3");
+      tl.add(function () {
+        var initialState = _Flip["default"].getState(_this6.inputFrontEl);
+
+        _this6.inputFrontEl.classList.remove("voice-conversation");
+
+        _Flip["default"].from(initialState, {
+          duration: 0.4,
+          ease: _gsap.Circ.easeInOut
         });
-        fadeOutphoneWrapper.cancel();
-
-        _this5.inputEl.classList.remove("hidden");
-
-        _this5.phoneWrapper.classList.remove("show");
-
-        fadeInIput.onfinish = function () {
-          fadeInIput.cancel();
-        };
-      };
+      });
+      tl.to(this.inputFrontEl.children, {
+        opacity: 1,
+        stagger: 0.1
+      }, "+=0.2");
+      tl.to(this.phoneWrapper, {
+        opacity: 0,
+        pointerEvents: "none"
+      });
     }
   }, {
     key: "leaveDragImage",
