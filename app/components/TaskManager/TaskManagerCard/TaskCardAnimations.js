@@ -1,4 +1,4 @@
-import gsap from "gsap";
+import gsap, { Power3 } from "gsap";
 import { Flip } from "gsap/Flip";
 import ScrollToPlugin from "gsap/ScrollToPlugin";
 
@@ -67,6 +67,7 @@ export default class TaskCardAnimations {
     const tasks = document.querySelectorAll(".task-manager__task-card-container");
     const cardState = this.card.querySelector(".card-state");
     const fullscreenState = this.card.querySelector(".fullscreen-state");
+    const showDatesTl = this.showDates();
 
     const tl = gsap.timeline();
 
@@ -100,15 +101,12 @@ export default class TaskCardAnimations {
       delay: 1,
       ease: "power3.easeOut",
     });
-    tl.to(this.dates, {
-      opacity: 1,
-      yPercent: 0,
-      stagger: 0.1,
-    });
+    tl.add(showDatesTl, "<");
   }
 
   hideDates() {
     this.dates = this.container.querySelectorAll(".task-manager__date");
+    gsap.killTweensOf(this.dates);
     const tl = gsap.timeline();
 
     tl.to(this.dates, {
@@ -117,6 +115,23 @@ export default class TaskCardAnimations {
       yPercent: 10,
       stagger: 0.1,
     });
+
+    return tl;
+  }
+
+  showDates() {
+    this.dates = this.container.querySelectorAll(".task-manager__date");
+    gsap.killTweensOf(this.dates);
+    const tl = gsap.timeline();
+
+    tl.to(this.dates, {
+      opacity: 1,
+      duration: 0.2,
+      yPercent: 0,
+      stagger: 0.1,
+    });
+
+    return tl;
   }
 
   hideRemainingCards = (index) => {
@@ -160,4 +175,118 @@ export default class TaskCardAnimations {
 
     return tl;
   };
+
+  hideFullScreenState(callback) {
+    this.hideFullScreenStateTl = gsap.timeline({
+      defaults: {
+        duration: 0.3,
+        ease: Power3.easeInOut,
+        stagger: 0.02,
+        onComplete: callback,
+      },
+    });
+    const panels = this.fullscreenState.children;
+    const cards = Array.from(this.fullscreenState.querySelectorAll(".animate"));
+
+    const firstCards = cards.splice(0, 6);
+    const remainingCards = cards;
+
+    this.hideFullScreenStateTl.to(firstCards, {
+      y: -50,
+      opacity: 0,
+    });
+
+    this.hideFullScreenStateTl.to(remainingCards, {
+      y: -50,
+      opacity: 0,
+      stagger: 0,
+      duration: 0.01,
+    });
+    this.hideFullScreenStateTl.to(
+      panels,
+      {
+        y: -50,
+        opacity: 0,
+      },
+      "<+=0.5"
+    );
+  }
+
+  showFullScreenState(resultType) {
+    const panels = this.fullscreenState.children;
+    const elementsToAnimate = this.fullscreenState.querySelectorAll(".animate");
+
+    gsap.set([elementsToAnimate], {
+      y: 50,
+      opacity: 0,
+    });
+
+    gsap?.set(panels, {
+      y: 10,
+      opacity: 0,
+    });
+
+    const tl = gsap.timeline({
+      defaults: {
+        duration: 0.5,
+        ease: Power3.easeInOut,
+        stagger: 0.02,
+      },
+    });
+
+    tl.to(panels, {
+      y: 0,
+      opacity: 1,
+      duration: 0.2,
+      ease: Power3.easeIn,
+    });
+
+    tl.to(elementsToAnimate, {
+      y: 0,
+      opacity: 1,
+    });
+  }
+
+  showResultDetails(resultContainer, backButton) {
+    const elementsToAnimate = resultContainer.querySelectorAll(".animate");
+    gsap.set(elementsToAnimate, {
+      opacity: 0,
+      y: -50,
+    });
+
+    gsap.set(backButton, {
+      opacity: 0,
+    });
+
+    this.showResultsTl = gsap.timeline({
+      defaults: {
+        duration: 0.4,
+        delay: 0.5,
+        ease: Power3.easeInOut,
+        stagger: 0.02,
+      },
+      onComplete: () => {
+        this.hideFullScreenStateTl.vars.defaults.delay = 0;
+      },
+      onReverseComplete: () => {
+        resultContainer.style.display = "none";
+        resultContainer.innerHTML = "";
+        this.fullscreenState.style.display = "flex";
+        this.showFullScreenState();
+      },
+    });
+
+    this.showResultsTl.to(elementsToAnimate, {
+      y: 0,
+      opacity: 1,
+    });
+
+    this.showResultsTl.to(
+      backButton,
+      {
+        opacity: 1,
+      },
+      "<-=0.3"
+    );
+  }
 }

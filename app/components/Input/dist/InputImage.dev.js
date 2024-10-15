@@ -58,16 +58,16 @@ function () {
       this.imgs = [];
     }
   }, {
-    key: "onDrop",
-    value: function onDrop(imgFile) {
+    key: "handleImageUpload",
+    value: function handleImageUpload(imgFile) {
       var _this = this;
 
       var imgsUploaded;
-      return regeneratorRuntime.async(function onDrop$(_context) {
+      return regeneratorRuntime.async(function handleImageUpload$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              this.anims.toImageDroped();
+              this.anims.toLoadingImage();
               _context.next = 3;
               return regeneratorRuntime.awrap((0, _uploadFiles["default"])(imgFile));
 
@@ -76,8 +76,9 @@ function () {
               imgsUploaded.forEach(function (img) {
                 _this.previewImage(img);
               });
+              this.emitter.emit("input:updateImages");
 
-            case 5:
+            case 6:
             case "end":
               return _context.stop();
           }
@@ -118,6 +119,11 @@ function () {
       img.src = src;
     }
   }, {
+    key: "triggerFileUpload",
+    value: function triggerFileUpload() {
+      this.inputFileUploadEl.click();
+    }
+  }, {
     key: "addListeners",
     value: function addListeners() {
       var _this3 = this;
@@ -129,7 +135,8 @@ function () {
       function prevDefault(e) {
         e.preventDefault();
         e.stopPropagation();
-      }
+      } // Display the drop zone on drag over/enter
+
 
       ["dragenter", "dragover"].forEach(function (e) {
         _this3.pageEl.addEventListener(e, function () {
@@ -137,7 +144,8 @@ function () {
 
           _this3.dropImageOverlayEl.classList.add("hovered");
         });
-      });
+      }); // Remove the drop zone on drag leave/drop
+
       ["dragleave", "drop"].forEach(function (e) {
         _this3.pageEl.addEventListener(e, function () {
           if (!_this3.isEnabled) return;
@@ -150,11 +158,11 @@ function () {
         var dataTrans = e.dataTransfer;
         var files = dataTrans.files;
 
-        _this3.onDrop(files);
+        _this3.handleImageUpload(files);
       });
       this.inputFileUploadEl.addEventListener("change", function (e) {
         if (_this3.inputFileUploadEl.files && _this3.inputFileUploadEl.files[0]) {
-          _this3.onDrop(_this3.inputFileUploadEl.files);
+          _this3.handleImageUpload(_this3.inputFileUploadEl.files);
         }
       });
       this.inputImageEl.addEventListener("keydown", function _callee(e) {
@@ -175,7 +183,7 @@ function () {
               case 4:
                 imgFile = _context2.sent;
 
-                _this3.onDrop(imgFile);
+                _this3.handleImageUpload(imgFile);
 
               case 6:
               case "end":

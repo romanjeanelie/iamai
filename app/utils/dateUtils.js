@@ -85,6 +85,10 @@ export const getMonthDetails = (year, month) => {
 
 export const getMonthStr = (month) => months[Math.max(Math.min(11, month), 0)] || "Month";
 
+export const formatDate = (date, options = { day: "numeric", month: "long" }) => {
+  return date.toLocaleDateString("en-US", options);
+};
+
 export const formatDateString = (dateStr) => {
   // Split the date string into components
   const [day, month, year] = dateStr.split("-");
@@ -99,4 +103,24 @@ export const formatDateString = (dateStr) => {
   });
 
   return formattedDate;
+};
+
+export const getDayLabel = (date) => {
+  const inputDate = new Date(date);
+  const today = new Date();
+  const tomorrow = new Date();
+  tomorrow.setDate(today.getDate() + 1);
+
+  // Remove time part for comparison
+  today.setHours(0, 0, 0, 0);
+  tomorrow.setHours(0, 0, 0, 0);
+  inputDate.setHours(0, 0, 0, 0);
+
+  if (inputDate.getTime() === today.getTime()) {
+    return "Today";
+  } else if (inputDate.getTime() === tomorrow.getTime()) {
+    return "Tomorrow";
+  } else {
+    return inputDate.toLocaleDateString("en-GB", { weekday: "long" });
+  }
 };

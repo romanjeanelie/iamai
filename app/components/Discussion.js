@@ -1,15 +1,14 @@
 import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scss";
 import TypingText from "../TypingText";
 import { getsessionID } from "../User";
-import fetcher from "../utils/fetcher.js";
 import Chat from "./Chat.js";
 import DiscussionMedia from "./DiscussionMedia.js";
-import History, { getPreviousDayTimestamp } from "./History.js";
+import History from "./History.js";
 
 import { gsap } from "gsap";
 import fadeByWord from "../utils/fadeByWord.js";
-import { API_STATUSES, URL_AGENT_STATUS } from "./constants.js";
 import { store } from "./store.js";
+import TaskManager from "./TaskManager/index.js";
 
 export default class Discussion {
   constructor({ user, pageEl, navigation, emitter }) {
@@ -53,8 +52,12 @@ export default class Discussion {
     });
 
     this.history = new History({
-      getTaskResultUI: this.Chat.getUI.bind(this.Chat),
       emitter: this.emitter,
+    });
+
+    this.taskManager = new TaskManager({
+      emitter: this.emitter,
+      navigation: this.navigation,
     });
 
     store.set("user", this.user);
@@ -63,6 +66,7 @@ export default class Discussion {
     // DEBUG
     if (this.debug) {
       this.addUserElement({ text: "Hello" });
+      this.taskManager.initTaskManager();
     }
   }
 
@@ -148,9 +152,11 @@ export default class Discussion {
     this.userContainer.appendChild(userContainerspan);
 
     this.discussionContainer.appendChild(this.userContainer);
+    console.log("imgs", imgs);
 
     //moves this to save time
     if (imgs && imgs.length > 0) {
+      // console.log(imgs.length);
       this.getAiAnswer({ text, imgs, isLiveMode: isFromVideo });
     } else this.getAiAnswer({ text });
 
@@ -174,6 +180,7 @@ export default class Discussion {
   }
 
   async addAIText({ text, container, targetlang, type = null } = {}) {
+    if (!container) return;
     let textContainer = container.querySelector(".text__container");
     if (!textContainer) {
       textContainer = document.createElement("div");
@@ -217,6 +224,7 @@ export default class Discussion {
   }
 
   async onScrollTop() {
+    // console.log("ON SCROLL TOP");
     const { container } = await this.history.getHistory({ uuid: this.uuid, user: this.user });
     this.historyContainer.prepend(container);
     // only if there is more history to be added, we change the scrollTop value so the user stays at the same spot
@@ -265,6 +273,7 @@ export default class Discussion {
 
     if (this.debug) return;
     await this.updateHistory({ uuid: this.uuid, user: this.user });
+    this.taskManager.initTaskManager();
     this.scrollToBottom(false);
     this.isHistoryLoading = false;
     this.emitter.emit("app:initialized", true);
@@ -325,7 +334,7 @@ export default class Discussion {
     await this.addAIText({ text: textAI, container: this.AIContainer });
     this.userContainer.classList.add("discussion__user--task-created");
     this.userContainer.setAttribute("taskkey", task.key);
-    this.AIContainer.setAttribute("taskkey", task.key);
+    // this.AIContainer.setAttribute("taskkey", task.key);
   }
 
   checkIfPrevDiscussionContainerVisible() {

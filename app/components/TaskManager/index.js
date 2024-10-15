@@ -10,17 +10,25 @@ import TaskManagerButton from "./TaskManagerButton";
 import TaskManagerCard from "./TaskManagerCard";
 import TaskManagerDebug from "./TaskManagerDebug";
 import { getPreviousDayTimestamp } from "../History";
-import { MoviesUI } from "../UI/HotelsUI/MoviesUI";
-import { moviesResultData } from "../../../testData";
+import { MoviesUI, FlightUI, ProductUI, HotelsUI } from "../UI";
+import {
+  flightSearchData,
+  flightSearchResultsData,
+  hotelSearchData,
+  hotelSearchResultsData,
+  moviesResultData,
+  productResultData,
+} from "../../../testData";
+
+import TaskFetcher from "./TaskFetcher";
+import { GUI } from "dat.gui";
 
 gsap.registerPlugin(Flip);
 
 export default class TaskManager {
-  constructor({ gui, emitter, discussion, navigation }) {
-    this.gui = gui;
+  constructor({ emitter, navigation }) {
     this.emitter = emitter;
     this.navigation = navigation;
-    this.discussion = discussion;
 
     // DOM Elements
     this.html = document.documentElement;
@@ -36,12 +44,12 @@ export default class TaskManager {
     // Init Methods
     this.button = new TaskManagerButton(this.tasks, this.emitter);
     this.animations = new TaskManagerAnimations(this.emitter);
-    this.initTaskManager();
     this.addListeners();
 
     // Debug
     this.debug = import.meta.env.VITE_DEBUG === "true";
     if (this.debug) {
+      this.gui = new GUI();
       this.debugger = new TaskManagerDebug(this);
       this.debugger.addDebugTask();
 
@@ -52,7 +60,10 @@ export default class TaskManager {
           " Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi maiores, culpa architecto enim autem iusto! Maxime sunt explicabo pariatur corporis accusantium, voluptas excepturi quam inventore dicta, consequatur soluta ipsam doloremque? ",
       });
 
+      const testProductResult = new ProductUI(productResultData);
       const testMovieResult = new MoviesUI(moviesResultData, this.emitter);
+      const testHotelResult = new HotelsUI(hotelSearchData, hotelSearchResultsData, this.emitter);
+      const testFlightResult = new FlightUI(flightSearchData, flightSearchResultsData);
 
       this.onStatusUpdate(
         this.tasks[0].key,
@@ -61,7 +72,7 @@ export default class TaskManager {
           title: "Ended",
           description: "Task has ended",
         },
-        testMovieResult
+        testHotelResult
       );
 
       this.debugger.addDebugTask();
@@ -71,9 +82,12 @@ export default class TaskManager {
 
   // ---------- Handling the task-manager states ----------
   initTaskManager() {
+    this.fetcher = new TaskFetcher(this.emitter);
     gsap.set(this.container, {
       yPercent: 100,
     });
+
+    this.container.classList.remove("hidden");
   }
 
   // ---------- Notification Pill ----------
@@ -211,7 +225,6 @@ export default class TaskManager {
         idToken,
         method: "POST",
       });
-      console.log(result);
     } catch (e) {
       console.log(e);
     }

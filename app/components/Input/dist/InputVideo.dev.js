@@ -30,7 +30,7 @@ function () {
   _createClass(InputVideo, [{
     key: "displayVideoInput",
     value: function displayVideoInput() {
-      console.log("displayVideoInput");
+      // console.log("displayVideoInput");
       this.container.classList.add("visible");
     }
   }, {

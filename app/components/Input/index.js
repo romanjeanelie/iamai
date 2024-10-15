@@ -11,6 +11,10 @@ import { calculateInputTextWidth } from "../../utils/calculateInputTextWidth";
 import InputVideo from "./InputVideo";
 
 function isLetterKey(event) {
+  // console.log("event.key", event.key);
+  // console.log("event.key.length", event.key.length);
+  const keyCode = event.keyCode;
+  // return (keyCode >= 65 && keyCode <= 90); // Key codes for A-Z
   if (
     event.key.length === 1 &&
     event.key.match(/[a-z]/i) &&
@@ -47,11 +51,10 @@ export default class Input {
     this.isInputExtanded = false;
 
     // Front input
-    this.frontCameraBtn = this.inputEl.querySelector(".camera-btn");
-    this.frontVideoBtn = this.inputFrontEl.querySelector(".video-btn");
+    this.imageUploadBtn = this.inputEl.querySelector(".camera-btn");
+    this.videoBtn = this.inputFrontEl.querySelector(".video-btn");
 
     // Image
-    this.closeInputImageBtn = this.pageEl.querySelector(".input__image--closeBtn");
     this.currentImages = [];
     this.inputImageEl = this.pageEl.querySelector(".input__image");
 
@@ -73,12 +76,13 @@ export default class Input {
     this.inputImage = new InputImage(
       {
         reset: (delay) => this.anims.toImageReset(delay),
-        toImageDroped: () => this.anims.toImageDroped(),
+        toLoadingImage: () => this.anims.toLoadingImage(),
         toImageAnalyzed: () => this.anims.toImageAnalyzed(),
       },
       {
         onImageUploaded: (img) => {
           this.currentImages.push(img);
+          console.log("ON IMAGE UPLOADED : ", img);
         },
         onImageCancel: () => {
           this.currentImages = [];
@@ -135,7 +139,11 @@ export default class Input {
 
   onSubmit(event) {
     event.preventDefault();
+    // console.log("ON SUBMIT FUNCTION : ", this.inputText.value);
     console.time("input");
+    if (this.isPageBlue) {
+      this.toPageGrey({ duration: 1200 });
+    }
     if (this.currentStatus === STATUS.IMAGE_QUESTION) {
       this.emitter.emit("slider:close");
     }
@@ -196,20 +204,14 @@ export default class Input {
     );
 
     // Image
-    this.frontCameraBtn.addEventListener("click", () => {
+    this.imageUploadBtn.addEventListener("click", () => {
       this.currentStatus = STATUS.UPLOAD_IMAGE;
       this.inputImage.enable();
-      this.anims.toDragImage();
-    });
-
-    this.closeInputImageBtn.addEventListener("click", () => {
-      this.currentStatus = STATUS.INITIAL;
-      this.inputImage.disable();
-      this.anims.leaveDragImage();
+      this.inputImage.triggerFileUpload();
     });
 
     // Video
-    this.frontVideoBtn.addEventListener("click", () => {
+    this.videoBtn.addEventListener("click", () => {
       this.emitter.emit("input:displayVideoInput");
 
       //initailse the video workflow api
@@ -255,6 +257,10 @@ export default class Input {
     window.addEventListener("resize", this.updateInputFieldSize.bind(this));
 
     // Emitter
+    this.emitter.on("input:imagesQuestionAsked", () => {
+      this.toWrite({ placeholder: "How can I help you?", animLogos: true, animButtons: true });
+    });
+
     this.emitter.on("input:toWrite", (data) => {
       if (data && data.type === "imageQuestions") {
         this.toWrite({ type: data.type });

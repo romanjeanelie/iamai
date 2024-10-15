@@ -84,7 +84,7 @@ export default class TaskManagerCard {
         </div>
       </div>
 
-      <div class="task-manager__result-detail">
+      <div class="task-manager__result-detail no-scrollbar">
     `;
 
     this.cardState = this.card.querySelector(".card-state");
@@ -115,10 +115,10 @@ export default class TaskManagerCard {
     if (!this.resultsContainer) {
       this.initResultsContainer();
     }
-
     if (this.task.resultsContainer instanceof Node) {
       this.resultsContainer.appendChild(this.task.resultsContainer);
-    } else if (this.task.resultsContainer.constructor !== Object) {
+    } else if (this.task.resultsContainer?.isClass) {
+      // if resultsContainer is not a dom element but a CLASS instance (from the UI components)
       this.results = this.task.resultsContainer;
       this.resultsContainer.appendChild(this.results.getElement());
     } else {
@@ -176,9 +176,11 @@ export default class TaskManagerCard {
   }
 
   // Show details when click on a result item
-  showResultDetails(result) {
-    // hide fullscreen state
-    this.fullscreenState.style.display = "none";
+  openResultDetails() {
+    // Hide the fullscreen state
+    this.animations.hideFullScreenState(() => {
+      this.fullscreenState.style.display = "none";
+    });
 
     // Set up back button
     const backButton = document.createElement("button");
@@ -191,14 +193,19 @@ export default class TaskManagerCard {
     `;
 
     backButton.addEventListener("click", () => {
-      this.resultDetail.style.display = "none";
-      this.fullscreenState.style.display = "flex";
+      this.closeResultDetails();
     });
 
-    // show result details
+    // // show result details
     this.resultDetail.style.display = "block";
     this.resultDetail.appendChild(backButton);
     this.resultDetail.append(this.results.getResultsDetails());
+    this.animations.showResultDetails(this.resultDetail, backButton);
+  }
+
+  closeResultDetails() {
+    this.animations.showResultsTl.reverse();
+    this.animations.showFullScreenState();
   }
 
   // Close fullscreen when clicking outside the fullscreen container
@@ -229,8 +236,8 @@ export default class TaskManagerCard {
   }
 
   addListeners() {
-    this.emitter.on("taskManager:showDetail", (event, taskData) => {
-      if (this.isExpanded) this.showResultDetails();
+    this.emitter.on("taskManager:showDetail", (taskData) => {
+      if (this.isExpanded) this.openResultDetails(taskData.type);
     });
 
     this.card.addEventListener("click", () => {

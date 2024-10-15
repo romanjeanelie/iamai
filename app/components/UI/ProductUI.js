@@ -1,11 +1,12 @@
 import getDomainAndFavicon from "../../utils/getDomainAndFavicon";
+import UIComponent from "./UIComponent";
 
-export default class ProductUI {
+export class ProductUI extends UIComponent {
   constructor(productsData) {
+    super();
     this.productsData = productsData;
 
     // DOM Elements
-    this.mainContainer = null;
     this.stars = [];
 
     // Init Methods
@@ -158,9 +159,5 @@ export default class ProductUI {
     }
 
     return ratingContainer;
-  }
-
-  getElement() {
-    return this.mainContainer;
   }
 }

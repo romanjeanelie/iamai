@@ -243,7 +243,7 @@ export default class InputVideo {
     });
 
     this.emitter.on("phone:talkToMe", () => {
-      console.log("talk to me");
+      // console.log("talk to me");
       this.pauseBtn.removeAttribute("disabled");
       this.currentState = states.TALKTOME;
       this.phoneAnimations.toTalkToMe();

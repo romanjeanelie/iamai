@@ -13,6 +13,10 @@ $zIndex: 1;
   transition: opacity 0.3s $ease-out;
   padding-bottom: 200px;
 
+  &.hidden {
+    display: none;
+  }
+
   @include media("<phone") {
     -webkit-overflow-scrolling: touch;
   }

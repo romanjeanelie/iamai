@@ -17,7 +17,7 @@ export default class Slider {
     // Buttons
     this.nextBtn = this.sliderEl.querySelector(".slider__next");
     this.prevBtn = this.sliderEl.querySelector(".slider__prev");
-    this.clostBtn = this.sliderEl.querySelector(".slider__close");
+    this.closeBtn = this.sliderEl.querySelector(".slider__close");
     this.questionsBtn = this.sliderEl.querySelector(".slider__questions");
 
     // Other DOM elements
@@ -149,6 +149,8 @@ export default class Slider {
     this.questionsImgs = [];
     this.sliderContentQuestionsEl.innerHTML = "";
     this.sliderContentQuestionsWrapperEl.classList.remove("show");
+
+    this.emitter.emit("input:imagesQuestionAsked");
   }
 
   updateSelectedCounter() {
@@ -209,6 +211,7 @@ export default class Slider {
   close() {
     this.imgs = [];
     this.sliderEl.classList.remove("show");
+
     this.resetImageQuestions();
   }
 
@@ -222,7 +225,7 @@ export default class Slider {
     this.prevBtn.addEventListener("click", () => {
       this.prev();
     });
-    this.clostBtn.addEventListener("click", () => {
+    this.closeBtn.addEventListener("click", () => {
       this.close();
     });
     this.questionsBtn.addEventListener("click", () => {

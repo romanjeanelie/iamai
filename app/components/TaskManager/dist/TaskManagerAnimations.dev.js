@@ -42,7 +42,7 @@ function () {
   }, {
     key: "hideCards",
     value: function hideCards() {
-      var cards = document.querySelectorAll(".task-manager__task-card");
+      var cards = document.querySelectorAll(".task-manager__task-card-container");
 
       _gsap["default"].to(cards, {
         opacity: 0,
@@ -54,7 +54,9 @@ function () {
   }, {
     key: "showCards",
     value: function showCards() {
-      var cards = document.querySelectorAll(".task-manager__task-card");
+      var cards = document.querySelectorAll(".task-manager__task-card-container");
+
+      _gsap["default"].killTweensOf(cards);
 
       _gsap["default"].set(cards, {
         opacity: 0,
@@ -64,6 +66,7 @@ function () {
       _gsap["default"].to(cards, {
         opacity: 1,
         y: 0,
+        scale: 1,
         duration: 0.2,
         stagger: 0.05,
         delay: 0.3

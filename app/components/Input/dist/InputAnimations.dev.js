@@ -38,10 +38,9 @@ function () {
     this.inputEl = this.pageEl.querySelector(".input__container");
     this.inputFrontEl = this.inputEl.querySelector(".input__front");
     this.inputBackEl = this.inputEl.querySelector(".input__back");
-    this.centerBtn = this.inputFrontEl.querySelector(".center-btn");
-    this.frontCameraBtn = this.inputFrontEl.querySelector(".camera-btn");
-    this.frontMicBtn = this.inputFrontEl.querySelector(".phone-btn");
-    this.frontVideoBtn = this.inputFrontHeight = this.inputFrontEl.offsetHeight; // Write
+    this.imageUploadButton = this.inputFrontEl.querySelector(".camera-btn");
+    this.videoBtn = this.inputFrontEl.querySelector(".video-btn");
+    this.inputFrontHeight = this.inputFrontEl.offsetHeight; // Write
 
     this.inputText = this.inputEl.querySelector(".input-text"); // Image
 
@@ -50,7 +49,6 @@ function () {
 
     this.phoneWrapper = this.pageEl.querySelector(".phone__wrapper"); // Other dom elements
 
-    this.cancelBtn = document.querySelector(".cancel-btn");
     this.logoEl = document.querySelector(".logo__main");
     this.logoMobileEl = document.querySelector(".logo__mobile");
     this.categoriesListEl = document.querySelector(".categories__list--container");
@@ -104,29 +102,39 @@ function () {
   }, {
     key: "fadeInButtons",
     value: function fadeInButtons() {
+      var _this3 = this;
+
       var delay = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
       var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 500;
-      var videoBtn = this.inputFrontEl.querySelector(".video-btn");
 
-      _gsap["default"].to([this.frontCameraBtn, videoBtn, this.centerBtn], {
+      _gsap["default"].to([this.imageUploadButton, this.videoBtn], {
         opacity: 1,
         duration: duration / 1000,
         ease: _gsap.Power3.easeInOut,
-        delay: delay / 1000
+        delay: delay / 1000,
+        onComplete: function onComplete() {
+          _this3.imageUploadButton.style.pointerEvents = "auto";
+          _this3.videoBtn.style.pointerEvents = "auto";
+        }
       });
     }
   }, {
     key: "fadeOutButtons",
     value: function fadeOutButtons() {
+      var _this4 = this;
+
       var delay = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
       var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 500;
-      var videoBtn = this.inputFrontEl.querySelector(".video-btn");
 
-      _gsap["default"].to([this.frontCameraBtn, videoBtn, this.centerBtn], {
+      _gsap["default"].to([this.imageUploadButton, this.videoBtn], {
         opacity: 0,
         duration: duration / 1000,
         ease: _gsap.Power3.easeInOut,
-        delay: delay / 1000
+        delay: delay / 1000,
+        onComplete: function onComplete() {
+          _this4.imageUploadButton.style.pointerEvents = "none";
+          _this4.videoBtn.style.pointerEvents = "none";
+        }
       });
     }
   }, {
@@ -314,7 +322,6 @@ function () {
           animLogo = _ref6$animLogo === void 0 ? true : _ref6$animLogo;
 
       this.inputFrontEl.style.pointerEvents = "auto";
-      this.inputEl.style.overflow = "visible";
     }
   }, {
     key: "fromRecordAudioToInitial",
@@ -344,8 +351,11 @@ function () {
           _ref7$focus = _ref7.focus,
           focus = _ref7$focus === void 0 ? true : _ref7$focus;
 
-      console.log("TO WRITE");
-      this.inputText.placeholder = placeholder; // this.inputEl.style.overflow = "hidden";
+      if (animButtons) {
+        this.fadeInButtons();
+      }
+
+      this.inputText.placeholder = placeholder;
     }
     /**
      * Phone
@@ -360,13 +370,13 @@ function () {
   }, {
     key: "toStopPhoneRecording",
     value: function toStopPhoneRecording() {
-      var _this3 = this;
+      var _this5 = this;
 
       var fadeOutphoneWrapper = (0, _anim["default"])(this.phoneWrapper, [{
         opacity: 1,
         transform: "translateY(0px)"
       }, {
-        topacity: 0,
+        opacity: 0,
         transform: "translateY(100%)"
       }], {
         duration: 150,
@@ -375,11 +385,11 @@ function () {
       });
 
       fadeOutphoneWrapper.onfinish = function () {
-        var fadeInIput = (0, _anim["default"])(_this3.inputEl, [{
+        var fadeInIput = (0, _anim["default"])(_this5.inputEl, [{
           opacity: 0,
           transform: "translateY(100%)"
         }, {
-          topacity: 1,
+          opacity: 1,
           transform: "translateY(0)"
         }], {
           duration: 300,
@@ -388,51 +398,23 @@ function () {
         });
         fadeOutphoneWrapper.cancel();
 
-        _this3.inputEl.classList.remove("hidden");
+        _this5.inputEl.classList.remove("hidden");
 
-        _this3.phoneWrapper.classList.remove("show");
+        _this5.phoneWrapper.classList.remove("show");
 
         fadeInIput.onfinish = function () {
           fadeInIput.cancel();
         };
       };
     }
-    /**
-     * Image
-     */
-
-  }, {
-    key: "toDragImage",
-    value: function toDragImage() {
-      var _this4 = this;
-
-      var _ref8 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-          _ref8$animBottom = _ref8.animBottom,
-          animBottom = _ref8$animBottom === void 0 ? true : _ref8$animBottom,
-          _ref8$delay = _ref8.delay,
-          delay = _ref8$delay === void 0 ? 0 : _ref8$delay;
-
-      // Prvent break lines when we enter url
-      this.inputText.disabled = true;
-      this.imageDroppedContainer.classList.remove("visible");
-      setTimeout(function () {
-        _this4.frontCameraBtn.classList.add("active-imagedrop");
-
-        _this4.inputImageContainer.classList.add("show");
-      }, delay);
-
-      if (animBottom) {
-        this.fadeOutCategoriesAndCaroussel(0, 500);
-      }
-    }
   }, {
     key: "leaveDragImage",
     value: function leaveDragImage() {
-      var _ref9 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-          _ref9$animBottom = _ref9.animBottom,
-          animBottom = _ref9$animBottom === void 0 ? true : _ref9$animBottom;
+      var _ref8 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+          _ref8$animBottom = _ref8.animBottom,
+          animBottom = _ref8$animBottom === void 0 ? true : _ref8$animBottom;
 
-      this.frontCameraBtn.classList.remove("active-imagedrop");
+      this.imageUploadButton.classList.remove("active-imagedrop");
       this.inputImageContainer.classList.remove("show");
       this.fadeInButtons();
 
@@ -441,8 +423,8 @@ function () {
       }
     }
   }, {
-    key: "toImageDroped",
-    value: function toImageDroped() {
+    key: "toLoadingImage",
+    value: function toLoadingImage() {
       this.inputText.disabled = false;
       this.inputImageContainer.classList.remove("show");
       this.fadeOutButtons(0, 0);
@@ -457,7 +439,6 @@ function () {
         fill: "forwards",
         ease: "ease-out"
       });
-      this.fadeInButtons(1000, 500);
       this.animCircleYoyo = (0, _anim["default"])(this.inputFrontEl, [{
         opacity: 1
       }, {
@@ -474,9 +455,6 @@ function () {
   }, {
     key: "toImageAnalyzed",
     value: function toImageAnalyzed() {
-      // this.cancelBtn.classList.add("show");
-      // this.cancelBtn.classList.add("image-drop");
-      this.navbarEl.classList.add("hidden");
       this.animCircleYoyo.cancel();
       var step3 = this.fadeInInputFront({
         delay: 0,
@@ -497,9 +475,7 @@ function () {
   }, {
     key: "toRemoveImage",
     value: function toRemoveImage() {
-      this.imageDroppedContainer.classList.remove("visible"); // this.cancelBtn.classList.remove("show");
-      // this.cancelBtn.classList.remove("image-drop");
-
+      this.imageDroppedContainer.classList.remove("visible");
       this.navbarEl.classList.remove("hidden");
       this.toInitial({
         animLogo: false

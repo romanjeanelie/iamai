@@ -117,6 +117,21 @@
 }
 
 // Navigation animation
+.upload-images {
+  .footer-nav {
+    margin-top: 0;
+  }
+
+  .header-nav__history-container {
+    display: none;
+  }
+
+  .footer-nav__tasks-container {
+    display: none;
+    pointer-events: none;
+  }
+}
+
 .history {
   .footer-nav {
     margin-top: 0;

@@ -161,7 +161,7 @@ export default class BlogSlider {
       const video = slide.querySelector("video");
       if (slide === this.slides[this.currentSlide] && this.isInView) {
         slide.classList.add("active");
-        console.log("active");
+        // console.log("active");
         video?.play();
         if(video)
           video.controls = false;

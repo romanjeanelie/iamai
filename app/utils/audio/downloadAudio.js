@@ -6,7 +6,7 @@ export default function downloadAudio(audio) {
   //   au.controls = true;
   //   au.src = audioUrl;
 
-  console.log(audio);
+  // console.log(audio);
   audioLink.href = audio.src;
   audioLink.download = new Date().toISOString() + ".mp3";
 

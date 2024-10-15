@@ -7,7 +7,7 @@ const uploadFiles = (files) =>
       var file = files[i];
       formData.append("files", file, file.name);
     }
-    console.log("formData:", formData);
+    // console.log("formData:", formData);
 
     var xhr = new XMLHttpRequest();
     xhr.open("POST", UPLOAD_URL, true);
@@ -15,7 +15,7 @@ const uploadFiles = (files) =>
     xhr.onload = function () {
       if (xhr.status === 200) {
         // alert('Files uploaded successfully');
-        console.log("this.responseText:", this.responseText);
+        // console.log("this.responseText:", this.responseText);
         let data = JSON.parse(this.responseText);
         resolve(data.urls);
       } else {

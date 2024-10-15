@@ -174,7 +174,7 @@ export default async function textToSpeech(text, targetlang, index, attempt = 0)
     })
       .then(async (response) => {
         const audidata = await response.text();
-        console.log("response.text()", audidata);
+        // console.log("response.text()", audidata);
         const base64 = JSON.parse(audidata).audioContent;
         const binaryString = window.atob(base64);
         const length = binaryString.length;
@@ -225,7 +225,7 @@ async function getlangselected(targetlang) {
         const filteredLanguages = languagesArray.filter((language) =>
           language.code?.toLowerCase().startsWith(targetlang ? targetlang.toLowerCase() : "en")
         );
-        console.log("getlangselected:", filteredLanguages);
+        // console.log("getlangselected:", filteredLanguages);
         resolve(filteredLanguages);
       })
       .catch((error) => {

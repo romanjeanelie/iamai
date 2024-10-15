@@ -1,7 +1,11 @@
+import UIComponent from "../UIComponent";
 import HotelCard from "./HotelCard";
+import { HotelDetails } from "./HotelDetails";
 
-export default class HotelsUI {
-  constructor(HotelsSearch, HotelsSearchResults) {
+export class HotelsUI extends UIComponent {
+  constructor(HotelsSearch, HotelsSearchResults, emitter) {
+    super();
+    this.emitter = emitter;
     this.hotelsSearchData = HotelsSearch;
     this.hotelsResultsData = HotelsSearchResults;
 
@@ -9,15 +13,11 @@ export default class HotelsUI {
     this.filter = "all";
 
     // DOM Elements
-    this.mainContainer = null;
     this.hotelsContainer = null;
     this.initUI();
   }
 
   initUI() {
-    // Initialize the UI
-    this.mainContainer = document.createElement("div");
-
     // Build the HTML content as a string
     let htmlContent = `
       <div class="hotels-ui__filter-container">
@@ -33,7 +33,7 @@ export default class HotelsUI {
       </div>
     `;
 
-    // Set the innerHTML of hotelsContainer
+    // We get the mainContainer from the parent class (UIComponent)
     this.mainContainer.innerHTML = htmlContent;
 
     // Append the hotel cards UI
@@ -72,19 +72,22 @@ export default class HotelsUI {
     this.mainContainer.appendChild(this.hotelsContainer);
   }
 
+  handleCardClick(hotelData) {
+    // this.resultDetailsContainer comes from the parent class (UIComponent)
+    this.hotelDetails = new HotelDetails(hotelData, this.resultDetailsContainer);
+    this.emitter.emit("taskManager:showDetail", hotelData);
+  }
+
   getHotelsCardsUI() {
     const hotelcardcontainerdiv = document.createElement("div");
     hotelcardcontainerdiv.className = "hotels-ui__main-container";
 
-    this.hotelsResultsData.all.forEach((element) => {
-      const hotelCard = new HotelCard(element, this.hotelsSearchData).getElement();
+    this.hotelsResultsData.all.forEach((hotelData) => {
+      const hotelCard = new HotelCard(hotelData, this.hotelsSearchData).getElement();
+      hotelCard.addEventListener("click", () => this.handleCardClick(hotelData));
       hotelcardcontainerdiv.appendChild(hotelCard);
     });
 
     return hotelcardcontainerdiv;
-  }
-
-  getElement() {
-    return this.mainContainer;
   }
 }

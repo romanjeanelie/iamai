@@ -20,7 +20,7 @@ export default class HotelCard {
 
   initCard() {
     this.cardContainer = document.createElement("div");
-    this.cardContainer.className = "hotels-ui__card-container";
+    this.cardContainer.className = "hotels-ui__card-container animate";
 
     const rating = this.extractNumericRating(this.hotelData.rating);
 
