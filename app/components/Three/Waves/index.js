@@ -6,10 +6,16 @@ import fragmentShader from "./fragmentShader.glsl";
 export default class Waves {
   constructor() {
     // States
+    this.debug = import.meta.env.VITE_DEBUG === "true";
     this.sizes = { width: window?.innerWidth, height: window?.innerHeight };
     this.aspectRatio = this.sizes.width / this.sizes.height;
     this.settings = {
-      frequency: { x: 10, y: 5 },
+      frequency: 5,
+      amplitude: 1.2,
+      wave1Speed: 13,
+      wave2Speed: 20,
+      waveLength: 3.3,
+      color: "#ffa500", // Orange color in hex format
     };
 
     // DOM ELEMENTS
@@ -17,6 +23,10 @@ export default class Waves {
 
     // INIT METHODS
     this.init();
+
+    if (this.debug) {
+      this.setupGUI();
+    }
   }
 
   init() {
@@ -24,7 +34,6 @@ export default class Waves {
     this.setupCamera();
     this.setupRenderer();
     this.setupMesh();
-    this.setupGUI();
 
     this.updateCamera();
     this.updateRenderer();
@@ -58,15 +67,19 @@ export default class Waves {
   }
 
   setupMesh() {
-    this.geometry = new THREE.PlaneGeometry(2, 2, 32, 32); // Plane will be resized to fit screen
+    this.geometry = new THREE.PlaneGeometry(2, 2, 1, 1); // Plane will be resized to fit screen
     this.material = new THREE.ShaderMaterial({
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
       uniforms: {
-        uFrequency: { value: this.settings.frequency },
         uTime: { value: 0 },
-        uColor: { value: new THREE.Color("orange") },
-        uTexture: { value: new THREE.TextureLoader().load("uv-tester.png") },
+        uFrequency: { value: this.settings.frequency },
+        uAmplitude: { value: this.settings.amplitude },
+        uWave1Speed: { value: this.settings.wave1Speed },
+        uWave2Speed: { value: this.settings.wave2Speed },
+        uWaveLength: { value: this.settings.waveLength },
+        uResolution: { value: new THREE.Vector2(this.sizes.width, this.sizes.height) },
+        uColor: { value: new THREE.Color(this.settings.color) },
       },
       transparent: true,
     });
@@ -89,10 +102,38 @@ export default class Waves {
 
   setupGUI() {
     this.gui = new dat.GUI();
-    const frequencyFolder = this.gui.addFolder("Frequency");
-    frequencyFolder.add(this.settings.frequency, "x", 0, 20).name("Frequency X");
-    frequencyFolder.add(this.settings.frequency, "y", 0, 20).name("Frequency Y");
-    frequencyFolder.open();
+
+    this.gui
+      .add(this.settings, "frequency", 0, 20)
+      .name("Frequency")
+      .onChange((value) => {
+        this.material.uniforms.uFrequency.value = value;
+      });
+    this.gui
+      .add(this.settings, "amplitude", 0, 10)
+      .name("Amplitude")
+      .onChange((value) => {
+        this.material.uniforms.uAmplitude.value = value;
+      });
+    this.gui
+      .add(this.settings, "wave1Speed", 0, 100)
+      .name("Wave 1 Speed")
+      .onChange((value) => {
+        this.material.uniforms.uWave1Speed.value = value;
+      });
+    this.gui
+      .add(this.settings, "wave2Speed", 0, 100)
+      .name("Wave 2 Speed")
+      .onChange((value) => {
+        this.material.uniforms.uWave2Speed.value = value;
+      });
+
+    this.gui
+      .add(this.settings, "waveLength", 0, 5)
+      .name("Wave Length")
+      .onChange((value) => {
+        this.material.uniforms.uWaveLength.value = value;
+      });
   }
 
   updateRenderer() {
@@ -125,6 +166,8 @@ export default class Waves {
       this.sizes.width = window.innerWidth;
       this.sizes.height = window.innerHeight;
       this.aspectRatio = this.sizes.width / this.sizes.height;
+
+      this.material.uniforms.uResolution.value.set(this.sizes.width, this.sizes.height);
 
       this.updateCamera();
       this.updateRenderer();
