@@ -1,19 +1,9 @@
 "use strict";
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
-
-var THREE = _interopRequireWildcard(require("three"));
-
-var _OrbitControls = require("three/examples/jsm/controls/OrbitControls.js");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -28,10 +18,13 @@ function () {
     _classCallCheck(this, Waves);
 
     // States
-    this.sizes.width = window.innerWidth;
-    this.sizes.height = window.innerHeight; // DOM ELEMENTS
+    this.sizes = {
+      width: window.innerWidth,
+      height: window.innerHeight
+    };
+    this.aspectRatio = this.sizes.width / this.sizes.height; // DOM ELEMENTS
 
-    this.canvas = document.querySelector(".threejs-canvas"); // INIT METHODS
+    this.canvas = document.querySelector(".threejs-container"); // INIT METHODS
 
     this.init();
   }
@@ -42,9 +35,8 @@ function () {
       this.setupScene();
       this.setupCamera();
       this.setupRenderer();
-      this.setupGUI();
       this.setupMesh();
-      this.setupEventListeners();
+      this.addEvents();
       this.animate();
     }
   }, {
@@ -55,82 +47,100 @@ function () {
   }, {
     key: "setupCamera",
     value: function setupCamera() {
-      this.sizes = {
-        width: window.innerWidth,
-        height: window.innerHeight
-      };
-      this.camera = new THREE.PerspectiveCamera(75, this.sizes.width / this.sizes.height, 0.1, 100);
-      this.camera.position.set(0.25, -0.25, 1);
+      this.camera = new THREE.PerspectiveCamera(75, this.aspectRatio, 0.1, 100);
+      this.updateCamera();
       this.scene.add(this.camera);
     }
   }, {
     key: "setupRenderer",
     value: function setupRenderer() {
       this.renderer = new THREE.WebGLRenderer({
-        canvas: this.canvas
+        canvas: this.canvas,
+        antialias: true,
+        alpha: true
       });
+      this.renderer.setClearAlpha(0);
       this.renderer.setSize(this.sizes.width, this.sizes.height);
       this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     }
   }, {
-    key: "setupGUI",
-    value: function setupGUI() {}
-  }, {
     key: "setupMesh",
     value: function setupMesh() {
-      var geometry = new THREE.PlaneGeometry(1, 1, 32, 32); // this.material = new THREE.ShaderMaterial({
-      //   vertexShader: testVertexShader,
-      //   fragmentShader: testFragmentShader,
-      //   uniforms: {
-      //     uFrequency: { value: new THREE.Vector2(10, 5) },
-      //     uTime: { value: 0 },
-      //     uColor: { value: new THREE.Color("orange") },
-      //   },
-      // });
-
-      this.material = new THREE.MeshBasicMaterial({
-        color: 0xff0000
+      // Create the plane to match the camera's view
+      var geometry = new THREE.PlaneGeometry(2, 2, 32, 32);
+      var material = new THREE.ShaderMaterial({
+        vertexShader: vertexShader,
+        fragmentShader: fragmentShader,
+        uniforms: {
+          uFrequency: {
+            value: new THREE.Vector2(10, 5)
+          },
+          uTime: {
+            value: 0
+          },
+          uColor: {
+            value: new THREE.Color("orange")
+          },
+          uTexture: {
+            value: new THREE.TextureLoader().load("uv-tester.png")
+          }
+        },
+        transparent: true
       });
-      this.mesh = new THREE.Mesh(geometry, this.material);
+      this.mesh = new THREE.Mesh(geometry, material);
       this.scene.add(this.mesh);
     }
   }, {
-    key: "setupEventListeners",
-    value: function setupEventListeners() {
-      var _this = this;
+    key: "updateCamera",
+    value: function updateCamera() {
+      var aspect = this.sizes.width / this.sizes.height; // Ensure the camera distance is set so the plane perfectly fills the screen
 
-      window.addEventListener("resize", function () {
-        _this.sizes.width = window.innerWidth;
-        _this.sizes.height = window.innerHeight;
-        _this.camera.aspect = _this.sizes.width / _this.sizes.height;
+      this.camera.position.set(0, 0, 1); // Ensure the camera stays close
 
-        _this.camera.updateProjectionMatrix();
+      this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+      this.camera.aspect = aspect; // Update the camera aspect ratio
 
-        _this.renderer.setSize(_this.sizes.width, _this.sizes.height);
-
-        _this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      });
+      this.camera.updateProjectionMatrix();
+    }
+  }, {
+    key: "updateRenderer",
+    value: function updateRenderer() {
+      this.renderer.setSize(this.sizes.width, this.sizes.height);
+      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     }
   }, {
     key: "animate",
     value: function animate() {
-      var _this2 = this;
+      var _this = this;
 
       this.clock = new THREE.Clock();
 
       var tick = function tick() {
-        var elapsedTime = _this2.clock.getElapsedTime();
+        var elapsedTime = _this.clock.getElapsedTime();
 
-        _this2.material.uniforms.uTime.value = elapsedTime;
+        _this.mesh.material.uniforms.uTime.value = elapsedTime;
 
-        _this2.controls.update();
-
-        _this2.renderer.render(_this2.scene, _this2.camera);
+        _this.renderer.render(_this.scene, _this.camera);
 
         window.requestAnimationFrame(tick);
       };
 
       tick();
+    }
+  }, {
+    key: "addEvents",
+    value: function addEvents() {
+      var _this2 = this;
+
+      window.addEventListener("resize", function () {
+        _this2.sizes.width = window.innerWidth;
+        _this2.sizes.height = window.innerHeight;
+        _this2.aspectRatio = _this2.sizes.width / _this2.sizes.height;
+
+        _this2.updateCamera();
+
+        _this2.updateRenderer();
+      });
     }
   }]);
 

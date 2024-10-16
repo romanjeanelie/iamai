@@ -5,23 +5,12 @@ import fetcher from "../../utils/fetcher";
 import { API_STATUSES, URL_AGENT_STATUS, URL_DELETE_STATUS } from "../constants";
 import { store } from "../store";
 
+import { getPreviousDayTimestamp } from "../History";
 import TaskManagerAnimations from "./TaskManagerAnimations";
 import TaskManagerButton from "./TaskManagerButton";
 import TaskManagerCard from "./TaskManagerCard";
-import TaskManagerDebug from "./TaskManagerDebug";
-import { getPreviousDayTimestamp } from "../History";
-import { MoviesUI, FlightUI, ProductUI, HotelsUI } from "../UI";
-import {
-  flightSearchData,
-  flightSearchResultsData,
-  hotelSearchData,
-  hotelSearchResultsData,
-  moviesResultData,
-  productResultData,
-} from "../../../testData";
 
 import TaskFetcher from "./TaskFetcher";
-import { GUI } from "dat.gui";
 
 gsap.registerPlugin(Flip);
 

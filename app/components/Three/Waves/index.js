@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import dat from "dat.gui";
 import vertexShader from "./vertexShader.glsl";
 import fragmentShader from "./fragmentShader.glsl";
 
@@ -6,6 +7,10 @@ export default class Waves {
   constructor() {
     // States
     this.sizes = { width: window?.innerWidth, height: window?.innerHeight };
+    this.aspectRatio = this.sizes.width / this.sizes.height;
+    this.settings = {
+      frequency: { x: 10, y: 5 },
+    };
 
     // DOM ELEMENTS
     this.canvas = document.querySelector(".threejs-container");
@@ -18,9 +23,14 @@ export default class Waves {
     this.setupScene();
     this.setupCamera();
     this.setupRenderer();
-    this.setupGUI();
     this.setupMesh();
-    this.setupEventListeners();
+    this.setupGUI();
+
+    this.updateCamera();
+    this.updateRenderer();
+    this.updateMeshGeometry();
+
+    this.addEvents();
     this.animate();
   }
 
@@ -29,13 +39,9 @@ export default class Waves {
   }
 
   setupCamera() {
-    this.sizes = {
-      width: window.innerWidth,
-      height: window.innerHeight,
-    };
-
-    this.camera = new THREE.PerspectiveCamera(75, this.sizes.width / this.sizes.height, 0.1, 100);
-    this.camera.position.set(0.25, -0.25, 1);
+    // Set a constant FOV and calculate the camera distance needed
+    this.camera = new THREE.PerspectiveCamera(75, this.aspectRatio, 0.1, 100);
+    this.updateCamera();
     this.scene.add(this.camera);
   }
 
@@ -51,44 +57,60 @@ export default class Waves {
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   }
 
-  setupGUI() {}
-
   setupMesh() {
-    const geometry = new THREE.PlaneGeometry(1, 1, 32, 32);
-
+    this.geometry = new THREE.PlaneGeometry(2, 2, 32, 32); // Plane will be resized to fit screen
     this.material = new THREE.ShaderMaterial({
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
       uniforms: {
-        uFrequency: { value: new THREE.Vector2(10, 5) },
+        uFrequency: { value: this.settings.frequency },
         uTime: { value: 0 },
         uColor: { value: new THREE.Color("orange") },
+        uTexture: { value: new THREE.TextureLoader().load("uv-tester.png") },
       },
+      transparent: true,
     });
 
-    this.mesh = new THREE.Mesh(geometry, this.material);
+    this.mesh = new THREE.Mesh(this.geometry, this.material);
+    this.updateMeshGeometry();
     this.scene.add(this.mesh);
   }
 
-  setupEventListeners() {
-    window.addEventListener("resize", () => {
-      this.sizes.width = window.innerWidth;
-      this.sizes.height = window.innerHeight;
+  updateCamera() {
+    // Calculate the FOV to fit the plane exactly
+    const fov = 2 * Math.atan(1 / this.camera.position.z) * (180 / Math.PI);
+    this.camera.aspect = this.aspectRatio;
+    this.camera.fov = fov; // Apply FOV based on aspect ratio
 
-      this.camera.aspect = this.sizes.width / this.sizes.height;
-      this.camera.updateProjectionMatrix();
+    this.camera.position.set(0, 0, 1); // Move the camera back to fit the entire plane
+    this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+    this.camera.updateProjectionMatrix();
+  }
 
-      this.renderer.setSize(this.sizes.width, this.sizes.height);
-      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    });
+  setupGUI() {
+    this.gui = new dat.GUI();
+    const frequencyFolder = this.gui.addFolder("Frequency");
+    frequencyFolder.add(this.settings.frequency, "x", 0, 20).name("Frequency X");
+    frequencyFolder.add(this.settings.frequency, "y", 0, 20).name("Frequency Y");
+    frequencyFolder.open();
+  }
+
+  updateRenderer() {
+    this.renderer.setSize(this.sizes.width, this.sizes.height);
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  }
+
+  updateMeshGeometry() {
+    this.mesh.geometry.dispose();
+    this.mesh.geometry = new THREE.PlaneGeometry(2 * this.aspectRatio, 2, 32, 32);
   }
 
   animate() {
     this.clock = new THREE.Clock();
 
     const tick = () => {
-      // const elapsedTime = this.clock.getElapsedTime();
-      // this.material.uniforms.uTime.value = elapsedTime;
+      const elapsedTime = this.clock.getElapsedTime();
+      this.material.uniforms.uTime.value = elapsedTime;
 
       this.renderer.render(this.scene, this.camera);
 
@@ -96,5 +118,17 @@ export default class Waves {
     };
 
     tick();
+  }
+
+  addEvents() {
+    window.addEventListener("resize", () => {
+      this.sizes.width = window.innerWidth;
+      this.sizes.height = window.innerHeight;
+      this.aspectRatio = this.sizes.width / this.sizes.height;
+
+      this.updateCamera();
+      this.updateRenderer();
+      this.updateMeshGeometry();
+    });
   }
 }
