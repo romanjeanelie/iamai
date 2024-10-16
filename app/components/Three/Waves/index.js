@@ -15,7 +15,8 @@ export default class Waves {
       wave1Speed: 13,
       wave2Speed: 20,
       waveLength: 3.3,
-      color: "#ffa500", // Orange color in hex format
+      waveColor: 0xffa500,
+      backgroundColor: 0xffffff,
     };
 
     // DOM ELEMENTS
@@ -79,6 +80,8 @@ export default class Waves {
         uWave2Speed: { value: this.settings.wave2Speed },
         uWaveLength: { value: this.settings.waveLength },
         uResolution: { value: new THREE.Vector2(this.sizes.width, this.sizes.height) },
+        uWaveColor: { value: new THREE.Color(0xffa500) }, // Set your desired wave color (orange)
+        uBackgroundColor: { value: new THREE.Color("#f2f5f7") },
         uColor: { value: new THREE.Color(this.settings.color) },
       },
       transparent: true,
@@ -133,6 +136,13 @@ export default class Waves {
       .name("Wave Length")
       .onChange((value) => {
         this.material.uniforms.uWaveLength.value = value;
+      });
+    this.gui
+      .addColor(this.settings, "backgroundColor")
+      .name("Background Color")
+      .onChange((value) => {
+        // Assuming this.material.uniforms.uBackgroundColor exists
+        this.material.uniforms.uBackgroundColor.value.set(value);
       });
   }
 
