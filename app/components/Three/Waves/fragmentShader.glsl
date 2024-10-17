@@ -1,6 +1,8 @@
+uniform float uTime;
+uniform float uPixelRatio;
+
 uniform vec3 uWaveColor;        // Color of the waves
 uniform vec3 uBackgroundColor;  // Color of the background
-uniform float uTime;
 uniform float uWaveSpeed;
 uniform float uFrequency;
 uniform float uAmplitude;
@@ -10,9 +12,14 @@ uniform vec2 uResolution;
 void main() {
     // Normalize fragment coordinates to [0, 1] range
     vec2 st = gl_FragCoord.xy / uResolution.xy;
-    vec2 center = vec2(.5, 0.0); // Center at the bottom of the plane
     
-    float dist = distance(st, center) * uWaveLength;
+    // Now you can use uPixelRatio inside your fragment shader
+    float adjustedPixelSize = 1.0 / uPixelRatio;
+
+    vec2 scaledCoords = st * adjustedPixelSize;
+
+    vec2 center = vec2(.5, 0.0); // Center at the bottom of the plane
+    float dist = distance(scaledCoords, center) * uWaveLength;
     
     // Create a single wave
     float wave = sin(dist * uWaveSpeed - uTime * uFrequency ) * .5 + 0.5;
