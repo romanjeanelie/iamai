@@ -12,10 +12,9 @@ export default class Waves {
     this.settings = {
       frequency: 5,
       amplitude: 1.2,
-      wave1Speed: 13,
-      wave2Speed: 20,
+      waveSpeed: 13,
       waveLength: 3.3,
-      waveColor: 0xffa500,
+      waveColor: 0xf9f9f9,
       backgroundColor: 0xffffff,
     };
 
@@ -76,14 +75,11 @@ export default class Waves {
         uTime: { value: 0 },
         uFrequency: { value: this.settings.frequency },
         uAmplitude: { value: this.settings.amplitude },
-        uWave1Speed: { value: this.settings.wave1Speed },
-        uWave2Speed: { value: this.settings.wave2Speed },
+        uWaveSpeed: { value: this.settings.waveSpeed },
         uWaveLength: { value: this.settings.waveLength },
         uResolution: { value: new THREE.Vector2(this.sizes.width, this.sizes.height) },
-        uWaveColor1: { value: new THREE.Color(0xfcfefb) }, // Set your desired wave color (orange)
-        uWaveColor2: { value: new THREE.Color(0x1f1f1f) }, // Set your desired wave color (black)
+        uWaveColor: { value: new THREE.Color(0xfcfefb) },
         uBackgroundColor: { value: new THREE.Color("#f2f5f7") },
-        uColor: { value: new THREE.Color(this.settings.color) },
       },
       transparent: true,
     });
@@ -120,18 +116,11 @@ export default class Waves {
         this.material.uniforms.uAmplitude.value = value;
       });
     this.gui
-      .add(this.settings, "wave1Speed", 0, 100)
-      .name("Wave 1 Speed")
+      .add(this.settings, "waveSpeed", 0, 100)
+      .name("Wave Speed")
       .onChange((value) => {
-        this.material.uniforms.uWave1Speed.value = value;
+        this.material.uniforms.uWaveSpeed.value = value;
       });
-    this.gui
-      .add(this.settings, "wave2Speed", 0, 100)
-      .name("Wave 2 Speed")
-      .onChange((value) => {
-        this.material.uniforms.uWave2Speed.value = value;
-      });
-
     this.gui
       .add(this.settings, "waveLength", 0, 5)
       .name("Wave Length")
@@ -145,6 +134,7 @@ export default class Waves {
         // Assuming this.material.uniforms.uWaveColor exists
         this.material.uniforms.uWaveColor.value.set(value);
       });
+
     this.gui
       .addColor(this.settings, "backgroundColor")
       .name("Background Color")
