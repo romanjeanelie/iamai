@@ -1,7 +1,6 @@
 import * as THREE from "three";
-import dat from "dat.gui";
-import vertexShader from "./vertexShader.glsl";
-import fragmentShader from "./fragmentShader.glsl";
+import vertexShader from "./shader/vertexShader.glsl";
+import fragmentShader from "./shader/fragmentShader.glsl";
 import WavesGUI from "./WavesGUI";
 
 export default class Waves {
