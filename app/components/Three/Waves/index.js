@@ -10,12 +10,12 @@ export default class Waves {
     this.sizes = { width: window?.innerWidth, height: window?.innerHeight };
     this.aspectRatio = this.sizes.width / this.sizes.height;
     this.settings = {
-      frequency: 5,
-      amplitude: 1.2,
-      waveSpeed: 13,
-      waveLength: 3.3,
+      frequency: 4,
+      amplitude: 1.9,
+      waveSpeed: 22,
+      waveLength: 2,
       waveColor: 0xf9f9f9,
-      backgroundColor: 0xffffff,
+      backgroundColor: 0xf9f9f9,
     };
 
     // DOM ELEMENTS

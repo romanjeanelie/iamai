@@ -31,17 +31,19 @@ void main() {
     float dist = distance(scaledCoords, center) * uWaveLength;
     
     // Create the wave with speed, frequency, and amplitude controls
-    float wave = sin(dist * uWaveSpeed - uTime * uFrequency) * .5 + 0.5;
+    float wave = sin(dist * uWaveSpeed - uTime * uFrequency) * 1.5 + 0.5;
     
     // Control the amplitude of the wave
     float waveIntensity = wave * uAmplitude;
+
     
     // Apply a smooth distance-based falloff for the wave
-    waveIntensity *= smoothstep(0.5, 0.0, dist);
+    waveIntensity *= smoothstep(0.5, 0., dist);
+    waveIntensity *= smoothstep(0., 0.7 , dist);
    
     // Smooth transition for alpha
     float alpha = smoothstep(0.0, 0.2, waveIntensity);  // Adjust 0.2 for smoother transition
-    
+
     // Use wave intensity to calculate the hue for the rainbow effect (only near the tip)
     float hue = dist - 0.5 ; // Rainbow only near tip
     
@@ -56,4 +58,5 @@ void main() {
     
     // Output the final color with transparency
     gl_FragColor = vec4(finalColor, alpha);
+    // gl_FragColor = vec4(0., 0., alpha, 1.);
 }
