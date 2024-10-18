@@ -31,32 +31,38 @@ void main() {
     float dist = distance(scaledCoords, center) * uWaveLength;
     
     // Create the wave with speed, frequency, and amplitude controls
-    float wave = sin(dist * uWaveSpeed - uTime * uFrequency) * 1.5 + 0.5;
+    float wave = sin(dist * uWaveSpeed - uTime * uFrequency) * 1. + 0.5;
     
     // Control the amplitude of the wave
     float waveIntensity = wave * uAmplitude;
 
     
-    // Apply a smooth distance-based falloff for the wave
+    // Apply a smooth distance-based falloff for the wave (so it fades at the beginning and end)
     waveIntensity *= smoothstep(0.5, 0., dist);
-    waveIntensity *= smoothstep(0., 0.7 , dist);
+    waveIntensity *= smoothstep(0., 0.5 , dist);
    
-    // Smooth transition for alpha
-    float alpha = smoothstep(0.0, 0.2, waveIntensity);  // Adjust 0.2 for smoother transition
-
     // Use wave intensity to calculate the hue for the rainbow effect (only near the tip)
     float hue = dist - 0.5 ; // Rainbow only near tip
-    
+    float shadowIntensity = smoothstep(0.48, 1., wave);
+
     // Convert hue (rainbow color range) to RGB
     vec3 rainbowColor = hsv2rgb(vec3(hue, 1.0, 1.0));
+    vec3 shadowColor = vec3(0.945, 0.965, 0.980);;
     
     // Interpolate between the wave color and the rainbow color based on the wave intensity
-    vec3 finalWaveColor = mix(uWaveColor, rainbowColor, smoothstep(dist + 0.01, .0, waveIntensity));
+    vec3 waveWithShadowColor = mix(shadowColor,uWaveColor,shadowIntensity);
     
     // Interpolate between background color and the final wave color based on intensity
-    vec3 finalColor = mix(uBackgroundColor, finalWaveColor, waveIntensity);
+    vec3 finalColor = mix(uBackgroundColor, waveWithShadowColor, waveIntensity);
     
     // Output the final color with transparency
-    gl_FragColor = vec4(finalColor, alpha);
-    // gl_FragColor = vec4(0., 0., alpha, 1.);
+    gl_FragColor = vec4(finalColor, waveIntensity);
+
+    // test 
+    vec3 shadow = vec3(0.1, 0.1, 0.1);
+    vec3 light = vec3(1.0, 1.0, 1.0);
+    vec3 mixShadowLight = mix(shadow, light, waveIntensity * 0.5);
+
+
+    // gl_FragColor = vec4(mixShadowLight, 1.);
 }

@@ -11,7 +11,7 @@ export default class Waves {
     this.aspectRatio = this.sizes.width / this.sizes.height;
     this.settings = {
       frequency: 4,
-      amplitude: 1.9,
+      amplitude: 2.5,
       waveSpeed: 22,
       waveLength: 2,
       waveColor: 0xf9f9f9,
