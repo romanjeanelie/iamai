@@ -10,12 +10,16 @@ export default class Waves {
     this.sizes = { width: window?.innerWidth, height: window?.innerHeight };
     this.aspectRatio = this.sizes.width / this.sizes.height;
     this.settings = {
-      frequency: 4,
+      frequency: 20,
       amplitude: 2.5,
-      waveSpeed: 22,
+      waveSpeed: 4,
       waveLength: 2,
       waveColor: 0xf9f9f9,
       backgroundColor: 0xf9f9f9,
+
+      // Debug wave rainbow color
+      colorMin: 0.14,
+      colorMax: 1.0,
     };
 
     // DOM ELEMENTS
@@ -72,14 +76,22 @@ export default class Waves {
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
       uniforms: {
+        // Classic uniforms
         uTime: { value: 0 },
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
+        uResolution: { value: new THREE.Vector2(this.sizes.width, this.sizes.height) },
 
+        // Debug Uniforms
         uFrequency: { value: this.settings.frequency },
         uAmplitude: { value: this.settings.amplitude },
         uWaveSpeed: { value: this.settings.waveSpeed },
         uWaveLength: { value: this.settings.waveLength },
-        uResolution: { value: new THREE.Vector2(this.sizes.width, this.sizes.height) },
+
+        // Rainbow helper
+        uColorMin: { value: this.settings.colorMin },
+        uColorMax: { value: this.settings.colorMax },
+
+        // Colors
         uWaveColor: { value: new THREE.Color(0xfcfefb) },
         uBackgroundColor: { value: new THREE.Color("#f2f5f7") },
       },
@@ -128,6 +140,18 @@ export default class Waves {
       .name("Wave Length")
       .onChange((value) => {
         this.material.uniforms.uWaveLength.value = value;
+      });
+    this.gui
+      .add(this.settings, "colorMin", 0, 1)
+      .name("Color Min")
+      .onChange((value) => {
+        this.material.uniforms.uColorMin.value = value;
+      });
+    this.gui
+      .add(this.settings, "colorMax", 0, 1)
+      .name("Color Max")
+      .onChange((value) => {
+        this.material.uniforms.uColorMax.value = value;
       });
     this.gui
       .addColor(this.settings, "waveColor")
