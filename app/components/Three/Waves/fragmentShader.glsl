@@ -12,6 +12,8 @@ uniform float uWaveLength;
 // Rainbow helper
 uniform float uColorMin;
 uniform float uColorMax;
+uniform float uSaturation;
+uniform float uLightness;
 
 // Colors
 uniform vec3 uWaveColor; 
@@ -22,6 +24,10 @@ vec3 hsv2rgb(vec3 c) {
   vec4 K = vec4(1.0, 2.0/3.0, 1.0/3.0, 3.0);
   vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
   return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+}
+
+vec3 blend(vec3 color1, vec3 color2, float t) {
+    return mix(color1, color2, t);
 }
 
 void main() {
@@ -46,7 +52,7 @@ void main() {
 
     // Apply a smooth distance-based falloff for the wave (so it fades at the beginning and end)
     waveIntensity *= smoothstep(0.5, 0., dist);
-    waveIntensity *= smoothstep(0., 0.5 , dist);
+    waveIntensity *= smoothstep(0., 0.45 , dist);
    
     // handling the shadow 
     float shadowIntensity = smoothstep(0.48, 1., wave);
@@ -55,10 +61,23 @@ void main() {
     vec3 waveWithShadowColor = mix(shadowColor,uWaveColor,shadowIntensity);
 
     // Handling the rainbow color that appears near the tip of the wave
-    float hue = dist - 0.5 ; // Rainbow only near tip
-    vec3 rainbowColor = hsv2rgb(vec3(hue, 1.0, 1.0));
-    float rainbowIntensity = smoothstep(uColorMin, uColorMax, dist);
+    // Defining colors
+    vec3 yellow = vec3(1.0, 1.0, 0.0);
+    vec3 red = vec3(1.0, 0.0, 0.0);
+    vec3 blue = vec3(0.0, 0.0, 1.0);
+
+    // Calculate color blend based on distance
+    float t = smoothstep(uColorMin, uColorMax, dist);
+    vec3 rainbowColor;
+    if (t < 0.5 ) {
+        rainbowColor = blend(yellow, red, t * 2.0);
+    } else {
+        rainbowColor = blend(red, blue, (t - 0.5) * 2.0);
+    }
+
+    float rainbowIntensity = smoothstep(0.14, 1., dist);
     vec3 finalWaveColor = mix(waveWithShadowColor, rainbowColor, rainbowIntensity);
+    // vec3 finalWaveColor = mix(rainbowColor, rainbowColor, rainbowIntensity);
     
  
     
@@ -74,5 +93,5 @@ void main() {
     vec3 mixShadowLight = mix(shadow, light, waveIntensity * 0.5);
 
 
-    // gl_FragColor = vec4(mixShadowLight, 1.);
+    // gl_FragColor = vec4(uLightness, 0., 0., 1.);
 }

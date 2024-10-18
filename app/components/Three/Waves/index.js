@@ -14,12 +14,16 @@ export default class Waves {
       amplitude: 2.5,
       waveSpeed: 4,
       waveLength: 2,
+
+      // Colors
       waveColor: 0xf9f9f9,
       backgroundColor: 0xf9f9f9,
 
       // Debug wave rainbow color
-      colorMin: 0.14,
-      colorMax: 1.0,
+      colorMin: 0.06,
+      colorMax: 0.5,
+      saturation: 0.77,
+      lightness: 1,
     };
 
     // DOM ELEMENTS
@@ -90,6 +94,8 @@ export default class Waves {
         // Rainbow helper
         uColorMin: { value: this.settings.colorMin },
         uColorMax: { value: this.settings.colorMax },
+        uSaturation: { value: this.settings.saturation },
+        uLightness: { value: this.settings.lightness },
 
         // Colors
         uWaveColor: { value: new THREE.Color(0xfcfefb) },
@@ -148,10 +154,22 @@ export default class Waves {
         this.material.uniforms.uColorMin.value = value;
       });
     this.gui
-      .add(this.settings, "colorMax", 0, 1)
+      .add(this.settings, "colorMax", 0, 5)
       .name("Color Max")
       .onChange((value) => {
         this.material.uniforms.uColorMax.value = value;
+      });
+    this.gui
+      .add(this.settings, "saturation", 0, 1)
+      .name("Saturation")
+      .onChange((value) => {
+        this.material.uniforms.uSaturation.value = value;
+      });
+    this.gui
+      .add(this.settings, "lightness", 0, 1, 0.01)
+      .name("Lightness")
+      .onChange((value) => {
+        this.material.uniforms.uLightness.value = value;
       });
     this.gui
       .addColor(this.settings, "waveColor")
