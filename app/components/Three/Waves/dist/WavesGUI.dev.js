@@ -36,6 +36,9 @@ function () {
       var _this = this;
 
       this.gui = new _dat["default"].GUI();
+      this.gui.add(this.settings, "progress", 0, 1).name("Progress").step(0.01).onChange(function (value) {
+        _this.material.uniforms.uProgress.value = value;
+      });
       this.gui.add(this.settings, "frequency", 0, 20).name("Frequency").onChange(function (value) {
         _this.material.uniforms.uFrequency.value = value;
       });
@@ -47,18 +50,6 @@ function () {
       });
       this.gui.add(this.settings, "waveLength", 0, 5).name("Wave Length").onChange(function (value) {
         _this.material.uniforms.uWaveLength.value = value;
-      });
-      this.gui.add(this.settings, "colorMin", 0, 1).name("Color Min").onChange(function (value) {
-        _this.material.uniforms.uColorMin.value = value;
-      });
-      this.gui.add(this.settings, "colorMax", 0, 5).name("Color Max").onChange(function (value) {
-        _this.material.uniforms.uColorMax.value = value;
-      });
-      this.gui.add(this.settings, "saturation", 0, 1).name("Saturation").onChange(function (value) {
-        _this.material.uniforms.uSaturation.value = value;
-      });
-      this.gui.add(this.settings, "lightness", 0, 1, 0.01).name("Lightness").onChange(function (value) {
-        _this.material.uniforms.uLightness.value = value;
       });
       this.gui.addColor(this.settings, "waveColor").name("Wave Color").onChange(function (value) {
         // Assuming this.material.uniforms.uWaveColor exists

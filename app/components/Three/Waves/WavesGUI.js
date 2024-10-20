@@ -10,7 +10,13 @@ export default class WavesGUI {
 
   setupGUI() {
     this.gui = new dat.GUI();
-
+    this.gui
+      .add(this.settings, "progress", 0, 1)
+      .name("Progress")
+      .step(0.01)
+      .onChange((value) => {
+        this.material.uniforms.uProgress.value = value;
+      });
     this.gui
       .add(this.settings, "frequency", 0, 20)
       .name("Frequency")
@@ -34,30 +40,6 @@ export default class WavesGUI {
       .name("Wave Length")
       .onChange((value) => {
         this.material.uniforms.uWaveLength.value = value;
-      });
-    this.gui
-      .add(this.settings, "colorMin", 0, 1)
-      .name("Color Min")
-      .onChange((value) => {
-        this.material.uniforms.uColorMin.value = value;
-      });
-    this.gui
-      .add(this.settings, "colorMax", 0, 5)
-      .name("Color Max")
-      .onChange((value) => {
-        this.material.uniforms.uColorMax.value = value;
-      });
-    this.gui
-      .add(this.settings, "saturation", 0, 1)
-      .name("Saturation")
-      .onChange((value) => {
-        this.material.uniforms.uSaturation.value = value;
-      });
-    this.gui
-      .add(this.settings, "lightness", 0, 1, 0.01)
-      .name("Lightness")
-      .onChange((value) => {
-        this.material.uniforms.uLightness.value = value;
       });
     this.gui
       .addColor(this.settings, "waveColor")

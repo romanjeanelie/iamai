@@ -1,5 +1,6 @@
 // Classic uniforms
 uniform float uTime;
+uniform float uProgress;
 uniform vec2 uResolution;
 uniform float uPixelRatio;
 
@@ -8,12 +9,6 @@ uniform float uWaveSpeed;
 uniform float uFrequency;
 uniform float uAmplitude;
 uniform float uWaveLength;
-
-// Rainbow helper
-uniform float uColorMin;
-uniform float uColorMax;
-uniform float uSaturation;
-uniform float uLightness;
 
 // Colors
 uniform vec3 uWaveColor; 
