@@ -2,6 +2,7 @@ import * as THREE from "three";
 import vertexShader from "./shader/vertexShader.glsl";
 import fragmentShader from "./shader/fragmentShader.glsl";
 import WavesGUI from "./WavesGUI";
+import gsap from "gsap";
 
 export default class Waves {
   constructor() {
@@ -136,6 +137,10 @@ export default class Waves {
   }
 
   addEvents() {
+    window.addEventListener("click", () => {
+      gsap.to(this.settings, { progress: 1, duration: 1 });
+    });
+
     window.addEventListener("resize", () => {
       this.sizes.width = window.innerWidth;
       this.sizes.height = window.innerHeight;
