@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import vertexShader from "./shader/vertexShader.glsl";
-import fragmentShader from "./shader/fragmentShader.glsl";
+import fragmentShader from "./shader/testFragmentShader.glsl";
 import WavesGUI from "./WavesGUI";
 import gsap from "gsap";
 

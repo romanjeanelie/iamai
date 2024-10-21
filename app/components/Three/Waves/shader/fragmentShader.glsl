@@ -14,6 +14,8 @@ uniform float uWaveLength;
 uniform vec3 uWaveColor; 
 uniform vec3 uBackgroundColor; 
 
+varying vec2 vUv;
+
 // Helper function to convert HSV to RGB
 vec3 hsv2rgb(vec3 c) {
   vec4 K = vec4(1.0, 2.0/3.0, 1.0/3.0, 3.0);
@@ -63,12 +65,9 @@ void main() {
 
   // Calculate color blend based on distance
   float t = smoothstep(0.06, 0.5, dist);
-  vec3 rainbowColor;
-  if (t < 0.5 ) {
-      rainbowColor = blend(yellow, red, t * 2.0);
-  } else {
-      rainbowColor = blend(red, blue, (t - 0.5) * 2.0);
-  }
+  vec3 rainbowColor = t < 0.5 
+    ? blend(yellow, red, t * 2.0) 
+    : blend(red, blue, (t - 0.5) * 2.0);
 
   float rainbowIntensity = smoothstep(0.14, 1., dist);
   vec3 finalWaveColor = mix(waveWithShadowColor, rainbowColor, rainbowIntensity);
@@ -76,6 +75,7 @@ void main() {
   // Interpolate between background color and the final wave color based on intensity
   vec3 finalColor = mix(uBackgroundColor, finalWaveColor, waveIntensity);
   
+  
   // Output the final color with transparency
-  gl_FragColor = vec4(finalColor, waveIntensity);
+  gl_FragColor = vec4(finalColor, waveIntensity );
 }
