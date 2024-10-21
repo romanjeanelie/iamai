@@ -11,7 +11,7 @@ export default class Waves {
     this.sizes = { width: window?.innerWidth, height: window?.innerHeight };
     this.aspectRatio = this.sizes.width / this.sizes.height;
     this.settings = {
-      progress: 0,
+      progress: 0.5,
       frequency: 20,
       amplitude: 2.5,
       waveSpeed: 4,
@@ -78,7 +78,7 @@ export default class Waves {
       uniforms: {
         // Classic uniforms
         uTime: { value: 0 },
-        uProgress: { value: this.settings.uProgress },
+        uProgress: { value: this.settings.progress },
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
         uResolution: { value: new THREE.Vector2(this.sizes.width, this.sizes.height) },
 
