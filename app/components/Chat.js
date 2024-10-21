@@ -105,7 +105,6 @@ class Chat {
   }
 
   callsubmit = async (text, img, container, live_mode = false) => {
-    console.log(text, img, container);
     this.container = container;
     var input_text = text;
     var original_text = input_text;
