@@ -1,8 +1,12 @@
 // Classic uniforms
 uniform float uTime;
-uniform float uProgress;
 uniform vec2 uResolution;
 uniform float uPixelRatio;
+
+// Wave progress uniforms
+uniform float uProgress1;
+uniform float uProgress2;
+uniform float uProgress3;
 
 // Debug uniforms
 uniform float uWaveSpeed;
@@ -20,46 +24,66 @@ vec3 blend(vec3 color1, vec3 color2, float t) {
     return mix(color1, color2, t);
 }
 
-void main(){
-  float radius = 0.85 * uProgress; 
-  float thickness = 0.3;
-  float blurAmount = 0.1 + 0.2 * uProgress;
-  float amplitude =  4. ;
-
-  // Calculate the distance from the center (which is at vec2(0.5, 0.0))
-  float distFromCenter = distance(vUv, vec2(0.5 , 0.0 - 0.1 * (1. - uProgress))) * amplitude;
-  float innerRadius = uProgress - thickness * 0.5;
-  float outerRadius = uProgress + thickness * 0.5;
-
-
-  // Colors
-  vec3 shadowColor = vec3(0.945, 0.965, 0.980);
-
-  // Handling the rainbow color that appears near the tip of the wave
-  vec3 yellow = vec3(1.0, 1.0, 0.0);
-  vec3 red = vec3(1.0, 0.0, 0.0);
-  vec3 blue = vec3(0.0, 0.0, 1.0);
-
-  float colorMixFactor = smoothstep(0.0, 1.0, distFromCenter);
-
-  // Calculate color blend based on distance
-  vec3 rainbowColor = mix(blend(yellow, red, colorMixFactor * 2.0), blend(red, blue, (colorMixFactor - 0.5) * 2.0), colorMixFactor);
-  float rainbowIntensity = smoothstep(0.14, 1., distFromCenter);
-
-  vec3 outerColor = mix(uWaveColor * 2., rainbowColor, rainbowIntensity - 0.1  );
-
-  // Calculate the smooth transition (blurred lines)
-  float innerEdge = smoothstep(innerRadius - blurAmount, innerRadius + blurAmount, distFromCenter);
-  float outerEdge = smoothstep(outerRadius - blurAmount, outerRadius + blurAmount, distFromCenter);
-  
-  // Transition zone between inner and outer colors
-  float blendFactor = smoothstep( innerRadius,outerRadius, distFromCenter + uProgress * 0.15);
-  vec3 color = mix(shadowColor, outerColor, blendFactor);  // Blend between green and blue
-
-  // Generate the wave (or ring) outline with smoothstep
-  float wave = 1.0 - smoothstep(thickness - blurAmount, thickness + blurAmount, abs(distFromCenter - uProgress) * uAmplitude);
-
-  // Set the fragment color with transparency based on wave
-  gl_FragColor = vec4(color, wave * (1. - uProgress)); 
+float calculateWave(float progress, float distFromCenter) {
+    float thickness = 0.3;
+    float blurAmount = 0.1 + 0.2 * progress;
+    
+    // Calculate wave properties
+    float innerRadius = progress - thickness * 0.5;
+    float outerRadius = progress + thickness * 0.5;
+    
+    // Generate the wave outline
+    return 1.0 - smoothstep(thickness - blurAmount, thickness + blurAmount, 
+                           abs(distFromCenter - progress) * uAmplitude);
 }
 
+vec3 calculateWaveColor(float progress, float distFromCenter) {
+    float thickness = 0.3;
+    float innerRadius = progress - thickness * 0.5;
+    float outerRadius = progress + thickness * 0.5;
+    
+    vec3 shadowColor = vec3(0.945, 0.965, 0.980);
+    vec3 yellow = vec3(1.0, 1.0, 0.0);
+    vec3 red = vec3(1.0, 0.0, 0.0);
+    vec3 blue = vec3(0.0, 0.0, 1.0);
+    
+    float colorMixFactor = smoothstep(0.0, 1.0, distFromCenter);
+    vec3 rainbowColor = mix(blend(yellow, red, colorMixFactor * 2.0), 
+                           blend(red, blue, (colorMixFactor - 0.5) * 2.0), 
+                           colorMixFactor);
+    
+    float rainbowIntensity = smoothstep(0.14, 1., distFromCenter);
+    vec3 outerColor = mix(uWaveColor * 2., rainbowColor, rainbowIntensity - 0.1);
+    
+    float blendFactor = smoothstep(innerRadius, outerRadius, 
+                                 distFromCenter + progress * 0.15);
+    return mix(shadowColor, outerColor, blendFactor);
+}
+
+vec4 processWave(float progress, float distFromCenter) {
+    if(progress >= 1.0) return vec4(0.0);
+    
+    float wave = calculateWave(progress, distFromCenter);
+    vec3 color = calculateWaveColor(progress, distFromCenter);
+    return vec4(color, wave * (1. - progress));
+}
+
+void main() {
+    vec4 finalColor = vec4(0.0);
+    
+    // Process each wave
+    float dist1 = distance(vUv, vec2(0.5, 0.0 - 0.1 * (1. - uProgress1))) * 4.0;
+    float dist2 = distance(vUv, vec2(0.5, 0.0 - 0.1 * (1. - uProgress2))) * 4.0;
+    float dist3 = distance(vUv, vec2(0.5, 0.0 - 0.1 * (1. - uProgress3))) * 4.0;
+    
+    vec4 wave1 = processWave(uProgress1, dist1);
+    vec4 wave2 = processWave(uProgress2, dist2);
+    vec4 wave3 = processWave(uProgress3, dist3);
+    
+    // Blend all waves together
+    finalColor = mix(finalColor, wave1, wave1.a * (1.0 - finalColor.a));
+    finalColor = mix(finalColor, wave2, wave2.a * (1.0 - finalColor.a));
+    finalColor = mix(finalColor, wave3, wave3.a * (1.0 - finalColor.a));
+    
+    gl_FragColor = finalColor;
+}

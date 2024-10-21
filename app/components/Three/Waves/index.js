@@ -8,10 +8,11 @@ export default class Waves {
   constructor() {
     // States
     this.debug = import.meta.env.VITE_DEBUG === "true";
+    this.currentWaveIndex = 0; // Track which wave to trigger next
     this.sizes = { width: window?.innerWidth, height: window?.innerHeight };
     this.aspectRatio = this.sizes.width / this.sizes.height;
     this.settings = {
-      progress: 0.5,
+      progress: 0,
       frequency: 20,
       amplitude: 2.5,
       waveSpeed: 4,
@@ -71,14 +72,18 @@ export default class Waves {
   }
 
   setupMesh() {
-    this.geometry = new THREE.PlaneGeometry(2, 2, 1, 1); // Plane will be resized to fit screen
+    this.geometry = new THREE.PlaneGeometry(2, 2, 1, 1);
     this.material = new THREE.ShaderMaterial({
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
       uniforms: {
         // Classic uniforms
         uTime: { value: 0 },
-        uProgress: { value: this.settings.progress },
+        // Three separate progress uniforms instead of array
+        uProgress: { value: 0 },
+        uProgress1: { value: 0 }, // 1.0 means inactive
+        uProgress2: { value: 0 },
+        uProgress3: { value: 0 },
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
         uResolution: { value: new THREE.Vector2(this.sizes.width, this.sizes.height) },
 
@@ -100,13 +105,31 @@ export default class Waves {
     this.scene.add(this.mesh);
   }
 
+  triggerWave() {
+    // Get the uniform name based on current index
+    const progressUniform = `uProgress${this.currentWaveIndex + 1}`;
+
+    // Only trigger if the current wave is inactive (progress >= 1.0)
+    if (this.material.uniforms[progressUniform].value > 0) return; // Animate the wave from 0 to 1
+    gsap.to(this.material.uniforms[progressUniform], {
+      value: 1,
+      duration: 2, // Adjust duration as needed
+      ease: "power1.out",
+      onComplete: () => {
+        // Reset progress to 0 at start
+        this.material.uniforms[progressUniform].value = 0;
+        this.currentWaveIndex = (this.currentWaveIndex + 1) % 3;
+      },
+    });
+    this.currentWaveIndex = (this.currentWaveIndex + 1) % 3;
+  }
+
   updateCamera() {
-    // Calculate the FOV to fit the plane exactly
     const fov = 2 * Math.atan(1 / this.camera.position.z) * (180 / Math.PI);
     this.camera.aspect = this.aspectRatio;
-    this.camera.fov = fov; // Apply FOV based on aspect ratio
+    this.camera.fov = fov;
 
-    this.camera.position.set(0, 0, 1); // Move the camera back to fit the entire plane
+    this.camera.position.set(0, 0, 1);
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
     this.camera.updateProjectionMatrix();
   }
@@ -138,7 +161,7 @@ export default class Waves {
 
   addEvents() {
     window.addEventListener("click", () => {
-      gsap.to(this.settings, { progress: 1, duration: 1 });
+      this.triggerWave();
     });
 
     window.addEventListener("resize", () => {

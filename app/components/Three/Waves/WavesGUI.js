@@ -41,13 +41,7 @@ export default class WavesGUI {
       .onChange((value) => {
         this.material.uniforms.uWaveLength.value = value;
       });
-    this.gui
-      .addColor(this.settings, "waveColor")
-      .name("Wave Color")
-      .onChange((value) => {
-        // Assuming this.material.uniforms.uWaveColor exists
-        this.material.uniforms.uWaveColor.value.set(value);
-      });
+
     this.gui
       .addColor(this.settings, "backgroundColor")
       .name("Background Color")

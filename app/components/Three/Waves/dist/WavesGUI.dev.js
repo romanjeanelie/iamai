@@ -51,10 +51,6 @@ function () {
       this.gui.add(this.settings, "waveLength", 0, 5).name("Wave Length").onChange(function (value) {
         _this.material.uniforms.uWaveLength.value = value;
       });
-      this.gui.addColor(this.settings, "waveColor").name("Wave Color").onChange(function (value) {
-        // Assuming this.material.uniforms.uWaveColor exists
-        _this.material.uniforms.uWaveColor.value.set(value);
-      });
       this.gui.addColor(this.settings, "backgroundColor").name("Background Color").onChange(function (value) {
         // Assuming this.material.uniforms.uBackgroundColor exists
         _this.material.uniforms.uBackgroundColor.value.set(value);
