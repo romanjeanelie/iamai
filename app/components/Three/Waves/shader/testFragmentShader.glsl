@@ -46,19 +46,20 @@ vec3 calculateWaveColor(float progress, float distFromCenter) {
   float outerRadius = progress + thickness * 0.5;
   
   vec3 shadowColor = vec3(0.945, 0.965, 0.980);
+
   vec3 yellow = vec3(0.7529, 0.9490, 0.9765);  // #C0F2F9
   vec3 red = vec3(0.9765, 0.7098, 0.7098);  // #F9B5B5
   vec3 blue = vec3(0.7098, 0.7686, 0.9882);  // #B5C4FC
   
-  float colorMixFactor = smoothstep(0.0, 1.0, distFromCenter);
+  float colorMixFactor = smoothstep(0.4, 1., distFromCenter);
   vec3 rainbowColor = mix(
     blend(yellow, red, colorMixFactor * 2.0), 
     blend(red, blue, (colorMixFactor - 0.5) * 2.0), 
     colorMixFactor
   );
   
-  float rainbowIntensity = smoothstep(0.2, 0.8, distFromCenter);
-  vec3 outerColor = mix(uWaveColor, rainbowColor, rainbowIntensity * 2.);
+  float rainbowIntensity = smoothstep(0.4, .6, distFromCenter);
+  vec3 outerColor = mix(uWaveColor, rainbowColor , rainbowIntensity);
   
   float blendFactor = smoothstep(
     innerRadius, outerRadius, 
@@ -74,7 +75,7 @@ vec4 processWave(float progress, float distFromCenter) {
 }
 
 void main() {
-  vec4 finalColor = vec4(vec3(1.), .0);
+  vec4 finalColor = vec4(uWaveColor, .0);
   
   // Process each wave
   float dist1 = distance(vUv, vec2(0.5, 0.0 - 0.1 * (1. - uProgress1))) * uAmplitude;
