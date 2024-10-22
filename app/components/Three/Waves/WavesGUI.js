@@ -36,8 +36,9 @@ export default class WavesGUI {
         this.material.uniforms.uWaveSpeed.value = value;
       });
     this.gui
-      .add(this.settings, "waveLength", 0, 5)
+      .add(this.settings, "waveLength", 0, 1)
       .name("Wave Length")
+      .step(0.01)
       .onChange((value) => {
         this.material.uniforms.uWaveLength.value = value;
       });

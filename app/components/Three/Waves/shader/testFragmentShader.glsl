@@ -4,6 +4,7 @@ uniform vec2 uResolution;
 uniform float uPixelRatio;
 
 // Wave progress uniforms
+uniform float uProgress;
 uniform float uProgress1;
 uniform float uProgress2;
 uniform float uProgress3;
@@ -69,11 +70,11 @@ vec3 calculateWaveColor(float progress, float distFromCenter) {
 vec4 processWave(float progress, float distFromCenter) {    
   float wave = calculateWave(progress, distFromCenter);
   vec3 color = calculateWaveColor(progress, distFromCenter);
-  return vec4(color, wave * (1. - progress));
+  return vec4(color, pow(wave, 0.3) * (1. - progress));
 }
 
 void main() {
-  vec4 finalColor = vec4(0.0);
+  vec4 finalColor = vec4(vec3(1.), .0);
   
   // Process each wave
   float dist1 = distance(vUv, vec2(0.5, 0.0 - 0.1 * (1. - uProgress1))) * uAmplitude;
@@ -85,11 +86,11 @@ void main() {
   vec4 wave3 = processWave(uProgress3, dist3);
   
   // Blend all waves together
-  finalColor = mix(finalColor, wave1 , wave1.a * (1.0 - finalColor.r));
-  finalColor = mix(finalColor, wave2 , wave2.a * (1.0 - finalColor.r));
-  finalColor = mix(finalColor, wave3 , wave3.a * (1.0 - finalColor.r));
+  finalColor = mix(finalColor, wave1 , wave1.a * (1.0 - finalColor.a));
+  finalColor = mix(finalColor, wave2 , wave2.a * (1.0 - finalColor.a));
+  finalColor = mix(finalColor, wave3 , wave3.a * (1.0 - finalColor.a));
 
-  finalColor *= 3.;
-  
-  gl_FragColor = vec4(vec3(finalColor.a), 1.0);
+  finalColor.a *= 3.;
+
+  gl_FragColor = finalColor;
 }

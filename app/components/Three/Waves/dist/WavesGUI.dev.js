@@ -48,7 +48,7 @@ function () {
       this.gui.add(this.settings, "waveSpeed", 0, 100).name("Wave Speed").onChange(function (value) {
         _this.material.uniforms.uWaveSpeed.value = value;
       });
-      this.gui.add(this.settings, "waveLength", 0, 5).name("Wave Length").onChange(function (value) {
+      this.gui.add(this.settings, "waveLength", 0, 1).name("Wave Length").step(0.01).onChange(function (value) {
         _this.material.uniforms.uWaveLength.value = value;
       });
       this.gui.addColor(this.settings, "backgroundColor").name("Background Color").onChange(function (value) {

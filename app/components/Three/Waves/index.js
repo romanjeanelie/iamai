@@ -113,7 +113,7 @@ export default class Waves {
     if (this.material.uniforms[progressUniform].value > 0) return; // Animate the wave from 0 to 1
     gsap.to(this.material.uniforms[progressUniform], {
       value: 1,
-      duration: 1,
+      duration: 3,
       ease: "power1.out",
       onComplete: () => {
         // Reset progress to 0 at start
