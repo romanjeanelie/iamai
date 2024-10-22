@@ -26,22 +26,22 @@ vec3 blend(vec3 color1, vec3 color2, float t) {
 }
 
 float calculateWave(float progress, float distFromCenter) {
-    float thickness = 0.3;
-    float blurAmount = 0.1 + 0.2 * progress;
-    
-    // Calculate wave properties
-    float innerRadius = progress - thickness * 0.5;
-    float outerRadius = progress + thickness * 0.5;
-    
-    // Generate the wave outline
-    return 1.0 - smoothstep(
-      thickness - blurAmount, thickness + blurAmount, 
-      abs(distFromCenter - progress) * uAmplitude
-    );
+  float thickness = 0.3;
+  float blurAmount = 0.1 + 0.2 * progress;
+  
+  // Calculate wave properties
+  float innerRadius = progress - thickness * 0.5;
+  float outerRadius = progress + thickness * 0.5;
+  
+  // Generate the wave outline
+  return 1.0 - smoothstep(
+    thickness - blurAmount, thickness + blurAmount, 
+    abs(distFromCenter - progress) * uAmplitude
+  );
 }
 
 vec3 calculateWaveColor(float progress, float distFromCenter) {
-  float thickness = 0.3;
+  float thickness = 0.5;
   float innerRadius = progress - thickness * 0.5;
   float outerRadius = progress + thickness * 0.5;
   
@@ -74,7 +74,7 @@ vec4 processWave(float progress, float distFromCenter) {
   return vec4(color, pow(wave, 0.3) * (1. - progress));
 }
 
-void main() {
+vec4 waveAnimation(){
   vec4 finalColor = vec4(uWaveColor, .0);
   
   // Process each wave
@@ -93,5 +93,20 @@ void main() {
 
   finalColor.a *= 3.;
 
-  gl_FragColor = finalColor;
+  return  finalColor;
+}
+
+vec4 idleAnimation(){
+  
+
+  return vec4(0., vUv, 1.0);
+}
+
+
+void main() {
+  // vec4 waveAnimation = waveAnimation();
+  vec4 idleAnimation = idleAnimation();
+ 
+
+  gl_FragColor = idleAnimation;
 }
