@@ -59,9 +59,9 @@ void main() {
 
   // Handling the rainbow color that appears near the tip of the wave
   // Defining colors
-  vec3 yellow = vec3(1.0, 1.0, 0.0);
-  vec3 red = vec3(1.0, 0.0, 0.0);
-  vec3 blue = vec3(0.0, 0.0, 1.0);
+   vec3 blue = vec3(181.0 , 255.0, 196.0,  255.0, 252.0  255.0);
+  vec3 green = vec3(192.0 , 255.0, 242.0 , 255.0, 249.0  255.0);
+  vec3 red = vec3(249.0 , 255.0, 192.0, 255.0, 192.0  255.0);
 
   // Calculate color blend based on distance
   float t = smoothstep(0.06, 0.5, dist);

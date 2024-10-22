@@ -94,7 +94,7 @@ export default class Waves {
         uWaveLength: { value: this.settings.waveLength },
 
         // Colors
-        uWaveColor: { value: new THREE.Color(0xfcfefb) },
+        uWaveColor: { value: new THREE.Color("#fcfefb") },
         uBackgroundColor: { value: new THREE.Color("#f2f5f7") },
       },
       transparent: true,
