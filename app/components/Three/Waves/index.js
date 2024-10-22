@@ -12,7 +12,7 @@ export default class Waves {
     this.sizes = { width: window?.innerWidth, height: window?.innerHeight };
     this.aspectRatio = this.sizes.width / this.sizes.height;
     this.settings = {
-      progress: 0,
+      progress: 0.16,
       frequency: 20,
       amplitude: 3.2,
       waveSpeed: 4,
@@ -80,7 +80,7 @@ export default class Waves {
         // Classic uniforms
         uTime: { value: 0 },
         // Three separate progress uniforms instead of array
-        uProgress: { value: 0 },
+        uProgress: { value: this.settings.progress },
         uProgress1: { value: 0 }, // 1.0 means inactive
         uProgress2: { value: 0 },
         uProgress3: { value: 0 },

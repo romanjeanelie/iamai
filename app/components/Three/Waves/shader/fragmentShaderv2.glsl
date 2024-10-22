@@ -96,10 +96,46 @@ vec4 waveAnimation(){
   return  finalColor;
 }
 
-vec4 idleAnimation(){
-  
+vec4 idleAnimation() {
+  float thickness = 0.2;
+  float blurAmount = 0.05;
 
-  return vec4(0., vUv, 1.0);
+  float distFromCenter = distance(vUv, vec2(0.5));
+
+  // Calculate wave properties
+  float innerRadius = uProgress - thickness * 0.5;
+  float outerRadius = uProgress + thickness * 0.5;
+
+  // Generate the wave outline
+  float strength = 1.0 - smoothstep(
+    thickness - blurAmount, thickness + blurAmount, 
+    abs(distFromCenter - uProgress) * uAmplitude
+  );
+
+  // Define colors: yellow, red, and blue
+  vec3 green = vec3(0., 1., 0.);  // #C0F2F9
+  vec3 red = vec3(0.9765, 0.7098, 0.7098);     // #F9B5B5
+  vec3 blue = vec3(0.7098, 0.7686, 0.9882);    // #B5C4FC
+
+  // Define the regions for each color
+  float region1 = innerRadius + thickness * 0.5; // Increase the size of the green region
+  float region2 = innerRadius + thickness * 0.75; // Adjust the size of the red region
+
+
+  // Calculate the color based on the distance from the center
+  vec3 rainbowColor = mix(
+    green, 
+    red, 
+    smoothstep(innerRadius, region1, distFromCenter)
+  );
+
+  rainbowColor = mix(
+    rainbowColor, 
+    blue, 
+    smoothstep(region1, region2, distFromCenter)
+  );
+
+  return vec4(rainbowColor, strength);
 }
 
 
