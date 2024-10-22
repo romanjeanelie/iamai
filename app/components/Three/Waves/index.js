@@ -14,7 +14,7 @@ export default class Waves {
     this.settings = {
       progress: 0,
       frequency: 20,
-      amplitude: 2.5,
+      amplitude: 3.2,
       waveSpeed: 4,
       waveLength: 2,
 
