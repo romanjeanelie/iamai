@@ -96,53 +96,53 @@ vec4 waveAnimation(){
   return  finalColor;
 }
 
-vec4 idleAnimation() {
-  float thickness = 0.2;
-  float blurAmount = 0.05;
-
-  float distFromCenter = distance(vUv, vec2(0.5));
-
-  // Calculate wave properties
-  float innerRadius = uProgress - thickness * 0.5;
-  float outerRadius = uProgress + thickness * 0.5;
-
-  // Generate the wave outline
-  float strength = 1.0 - smoothstep(
-    thickness - blurAmount, thickness + blurAmount, 
-    abs(distFromCenter - uProgress) * uAmplitude
-  );
-
-  // Define colors: yellow, red, and blue
-  vec3 green = vec3(0., 1., 0.);  // #C0F2F9
-  vec3 red = vec3(0.9765, 0.7098, 0.7098);     // #F9B5B5
-  vec3 blue = vec3(0., 0., 1.);    // #B5C4FC
-
-  // Define the regions for each color
-  float region1 = innerRadius + thickness * 0.6; // Increase the size of the green region
-  float region2 = innerRadius + thickness * 0.75; // Adjust the size of the red region
-
-
-  // Calculate the color based on the distance from the center
-  vec3 rainbowColor = mix(
-    blue, 
-    red, 
-    smoothstep(innerRadius, region1, distFromCenter)
-  );
-
-  rainbowColor = mix(
-    rainbowColor, 
-    blue, 
-    smoothstep(region1, region2, distFromCenter)
-  );
-
-  return vec4(vUv * strength , 1., strength);
+float generateRainbowForm(vec2 uv, float d, float time) {
+    vec2 center = vec2(0.5, 0. - 0.2);
+    vec2 pos = uv - center;
+    float angle = atan(pos.y, pos.x);
+    float radius = length(pos);
+    
+    float rotatedAngle = angle + time;
+    float targetRadius = 0.3 + sin(rotatedAngle) * 0.01;
+    return 1.0 - smoothstep(0.0, d, abs(radius - targetRadius));
 }
 
+vec4 generateRainbowWave(float time) {
+    float d = 0.05 + abs(sin(time * 0.2)) * 0.15;
+
+    vec4 lightBackground = vec4(1.);
+    
+    // Calculate each color channel separately
+    float r = generateRainbowForm(vUv + vec2(d * 0.25, 0.0), d, time);
+    float g = generateRainbowForm(vUv - vec2(0.015, 0.005), d, time);
+    float b = generateRainbowForm(vUv - vec2(d * 0.5, 0.015), d, time);
+    
+    // Normalize the colors to prevent white
+    float sum = r + g + b;
+    float factor = smoothstep(1., 3., sum);
+    vec4 rainbow = mix(vec4(r, g, b, 1.0) * 2., vec4(1., vUv,1.), factor);
+    
+    return lightBackground - rainbow;
+}
+
+vec4 idleAnimation() {
+    vec2 center = vec2(0.5, 0. - 0.2);
+    vec2 pos = vUv - center;
+    float angle = atan(pos.y, pos.x);
+    float d = 0.05 + abs(sin(1. * 0.1)) * 0.15;
+
+    float radius = length(pos);
+    float rotatedAngle = angle;
+    float targetRadius = 0.3 + sin(rotatedAngle) * 0.01;
+    float strength = 1.0 - smoothstep(0.0, d, abs(radius - targetRadius));
+
+    vec4 rainbow = generateRainbowWave(uTime * 0.5) * 1.;
+    return vec4(rainbow.xyz, strength);
+}
 
 void main() {
   vec4 waveAnimation = waveAnimation();
-  // vec4 idleAnimation = idleAnimation();
- 
+  vec4 idleAnimation = idleAnimation();
 
-  gl_FragColor = waveAnimation;
+  gl_FragColor = idleAnimation;
 }
