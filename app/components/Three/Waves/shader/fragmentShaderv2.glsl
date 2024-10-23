@@ -147,5 +147,7 @@ vec4 idleAnimation() {
 void main() {
   vec4 waveAnimation = waveAnimation();
   vec4 idleAnimation = idleAnimation();
-  gl_FragColor = idleAnimation;
+
+  vec4 finalColor = mix(waveAnimation, idleAnimation, uProgress);
+  gl_FragColor = finalColor;
 }
