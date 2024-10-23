@@ -96,6 +96,7 @@ vec4 waveAnimation(){
   return  finalColor;
 }
 
+//  ----- IDLE ANIMATION -----
 float generateRainbowForm(vec2 uv, float d, float time) {
     vec2 center = vec2(0.5, 0. - 0.2);
     vec2 pos = uv - center;
@@ -104,40 +105,42 @@ float generateRainbowForm(vec2 uv, float d, float time) {
     
     float rotatedAngle = angle + time;
     float targetRadius = 0.3 + sin(rotatedAngle) * 0.01;
-    return 1.0 - smoothstep(0.0, d, abs(radius - targetRadius));
+    return 1.0 - smoothstep(0., d, abs(radius - targetRadius));
 }
 
 vec4 generateRainbowWave(float time) {
-    float d = 0.05 + abs(sin(time * 0.2)) * 0.15;
+  float d = 0.05 + abs(sin(time * 0.2)) * 0.15;
 
-    vec4 lightBackground = vec4(1.);
-    
-    // Calculate each color channel separately
-    float r = generateRainbowForm(vUv + vec2(d * 0.25, 0.0), d, time);
-    float g = generateRainbowForm(vUv - vec2(0.015, 0.005), d, time);
-    float b = generateRainbowForm(vUv - vec2(d * 0.5, 0.015), d, time);
-    
-    // Normalize the colors to prevent white
-    float sum = r + g + b;
-    float factor = smoothstep(1., 3., sum);
-    vec4 rainbow = mix(vec4(r, g, b, 1.0) * 2., vec4(1., vUv,1.), factor);
-    
-    return lightBackground - rainbow;
+  vec4 lightBackground = vec4(1.);
+  
+  // Calculate each color channel separately
+  float r = generateRainbowForm(vUv + vec2(d * 0.25, 0.0), d, time * 3.);
+  float g = generateRainbowForm(vUv - vec2(0.015, 0.005), d, time * 3.);
+  float b = generateRainbowForm(vUv - vec2(d * 0.5, 0.015), d, time * 3.);
+  
+  // Normalize the colors to prevent white
+  float sum = r + g + b;
+  float factor = smoothstep(1., 3., sum);
+  // vec4 rainbow = mix(vec4(r, g, b, 1.0) * 2., vec4(1., vUv,1.), factor);
+  vec4 rainbow = vec4(b, g, r, 1.0);
+  
+  return rainbow;
 }
 
 vec4 idleAnimation() {
-    vec2 center = vec2(0.5, 0. - 0.2);
-    vec2 pos = vUv - center;
-    float angle = atan(pos.y, pos.x);
-    float d = 0.05 + abs(sin(1. * 0.1)) * 0.15;
+  vec2 center = vec2(0.5, 0. - 0.2);
+  vec2 pos = vUv - center;
+  float angle = atan(pos.y, pos.x);
+  float d = 0.05 * 0.5 + abs(sin(1. * 0.1)) * 0.1;
 
-    float radius = length(pos);
-    float rotatedAngle = angle;
-    float targetRadius = 0.3 + sin(rotatedAngle) * 0.01;
-    float strength = 1.0 - smoothstep(0.0, d, abs(radius - targetRadius));
+  float radius = length(pos);
+  float rotatedAngle = angle;
+  float targetRadius = 0.3 + sin(rotatedAngle) * 0.01;
+  float wave = sin(uTime * 2.0 - vUv.x * 5.0) * 0.5 + 0.7;
+  float strength = (1.0 - smoothstep(0.0, d, abs(radius - targetRadius) + 0.)) * wave;
 
-    vec4 rainbow = generateRainbowWave(uTime * 0.5) * 1.;
-    return vec4(rainbow.xyz, strength);
+  vec4 rainbow = generateRainbowWave(uTime * 0.5);
+  return vec4(rainbow.xyz, strength);
 }
 
 void main() {
