@@ -115,16 +115,16 @@ vec4 idleAnimation() {
   // Define colors: yellow, red, and blue
   vec3 green = vec3(0., 1., 0.);  // #C0F2F9
   vec3 red = vec3(0.9765, 0.7098, 0.7098);     // #F9B5B5
-  vec3 blue = vec3(0.7098, 0.7686, 0.9882);    // #B5C4FC
+  vec3 blue = vec3(0., 0., 1.);    // #B5C4FC
 
   // Define the regions for each color
-  float region1 = innerRadius + thickness * 0.5; // Increase the size of the green region
+  float region1 = innerRadius + thickness * 0.6; // Increase the size of the green region
   float region2 = innerRadius + thickness * 0.75; // Adjust the size of the red region
 
 
   // Calculate the color based on the distance from the center
   vec3 rainbowColor = mix(
-    green, 
+    blue, 
     red, 
     smoothstep(innerRadius, region1, distFromCenter)
   );
@@ -135,14 +135,14 @@ vec4 idleAnimation() {
     smoothstep(region1, region2, distFromCenter)
   );
 
-  return vec4(rainbowColor, strength);
+  return vec4(vUv * strength , 1., strength);
 }
 
 
 void main() {
-  // vec4 waveAnimation = waveAnimation();
-  vec4 idleAnimation = idleAnimation();
+  vec4 waveAnimation = waveAnimation();
+  // vec4 idleAnimation = idleAnimation();
  
 
-  gl_FragColor = idleAnimation;
+  gl_FragColor = waveAnimation;
 }
