@@ -2,13 +2,17 @@ import * as THREE from "three";
 import vertexShader from "./shader/vertexShader.glsl";
 import fragmentShader from "./shader/fragmentShaderv2.glsl";
 import WavesGUI from "./WavesGUI";
-import gsap from "gsap";
+import gsap, { Power3 } from "gsap";
+import { compressNormals } from "three/examples/jsm/utils/GeometryCompressionUtils.js";
 
 export default class Waves {
   constructor() {
     // States
+    this.maxWaves = 3;
+    this.currentWaveIndex = 1; // Track which wave to trigger next
     this.debug = import.meta.env.VITE_DEBUG === "true";
-    this.currentWaveIndex = 0; // Track which wave to trigger next
+
+    // Params
     this.sizes = { width: window?.innerWidth, height: window?.innerHeight };
     this.aspectRatio = this.sizes.width / this.sizes.height;
     this.settings = {
@@ -39,6 +43,8 @@ export default class Waves {
     this.setupCamera();
     this.setupRenderer();
     this.setupMesh();
+
+    this.startWaveLoop();
 
     this.updateCamera();
     this.updateRenderer();
@@ -105,23 +111,39 @@ export default class Waves {
     this.scene.add(this.mesh);
   }
 
+  increaseWaveIndex() {
+    this.currentWaveIndex = (this.currentWaveIndex + 1) % this.maxWaves || 1;
+  }
+
+  startWaveLoop() {
+    gsap.to(this.material.uniforms.uProgress1, {
+      value: 1,
+      duration: 2,
+      ease: Power3.easeIn,
+      repeat: -1,
+    });
+  }
+
   triggerWave() {
     // Get the uniform name based on current index
     const progressUniform = `uProgress${this.currentWaveIndex + 1}`;
 
     // Only trigger if the current wave is inactive (progress >= 1.0)
-    if (this.material.uniforms[progressUniform].value > 0) return; // Animate the wave from 0 to 1
+    if (this.material.uniforms[progressUniform].value > 0) {
+      return;
+    }
+
     gsap.to(this.material.uniforms[progressUniform], {
       value: 1,
-      duration: 3,
-      ease: "power1.out",
+      duration: 1.5,
+      ease: Power3.easeOut,
       onComplete: () => {
         // Reset progress to 0 at start
         this.material.uniforms[progressUniform].value = 0;
-        this.currentWaveIndex = (this.currentWaveIndex + 1) % 3;
       },
     });
-    this.currentWaveIndex = (this.currentWaveIndex + 1) % 3;
+
+    this.increaseWaveIndex();
   }
 
   updateCamera() {
