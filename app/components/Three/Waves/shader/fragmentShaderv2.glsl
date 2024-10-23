@@ -98,33 +98,32 @@ vec4 waveAnimation(){
 
 //  ----- IDLE ANIMATION -----
 float generateRainbowForm(vec2 uv, float d, float time) {
-    vec2 center = vec2(0.5, 0. - 0.2);
-    vec2 pos = uv - center;
-    float angle = atan(pos.y, pos.x);
-    float radius = length(pos);
-    
-    float rotatedAngle = angle + time;
-    float targetRadius = 0.3 + sin(rotatedAngle) * 0.01;
-    return 1.0 - smoothstep(0., d, abs(radius - targetRadius));
+  vec2 center = vec2(0.5, 0. - 0.2);
+  vec2 pos = uv - center;
+  float angle = atan(pos.y, pos.x);
+  float radius = length(pos);
+  
+  float rotatedAngle = angle + time;
+  float targetRadius = 0.3 + sin(rotatedAngle) * 0.01;
+  return 1.0 - smoothstep(0., d, abs(radius - targetRadius));
 }
 
 vec4 generateRainbowWave(float time) {
   float d = 0.05 + abs(sin(time * 0.2)) * 0.15;
-
-  vec4 lightBackground = vec4(1.);
   
-  // Calculate each color channel separately
+  // Basic RGB channels
   float r = generateRainbowForm(vUv + vec2(d * 0.25, 0.0), d, time * 3.);
   float g = generateRainbowForm(vUv - vec2(0.015, 0.005), d, time * 3.);
   float b = generateRainbowForm(vUv - vec2(d * 0.5, 0.015), d, time * 3.);
   
-  // Normalize the colors to prevent white
-  float sum = r + g + b;
-  float factor = smoothstep(1., 3., sum);
-  // vec4 rainbow = mix(vec4(r, g, b, 1.0) * 2., vec4(1., vUv,1.), factor);
-  vec4 rainbow = vec4(b, g, r, 1.0);
+  // Option 4: Complementary colors
+  vec3 complementary = vec3(
+      b * 0.99 + g * 0.,
+      r * 0.9 + b * .2,
+      g * 0.7 + r * 0.2
+  );
   
-  return rainbow;
+  return vec4(complementary, 1.0);                       // Custom mix option
 }
 
 vec4 idleAnimation() {
@@ -137,15 +136,16 @@ vec4 idleAnimation() {
   float rotatedAngle = angle;
   float targetRadius = 0.3 + sin(rotatedAngle) * 0.01;
   float wave = sin(uTime * 2.0 - vUv.x * 5.0) * 0.5 + 0.7;
-  float strength = (1.0 - smoothstep(0.0, d, abs(radius - targetRadius) + 0.)) * wave;
+  float strength = (1.0 - smoothstep(0.0, d * 2., abs(radius - targetRadius))) * wave;
 
-  vec4 rainbow = generateRainbowWave(uTime * 0.5);
-  return vec4(rainbow.xyz, strength);
+  vec4 rainbow = generateRainbowWave(uTime * 0.5 + 2.);
+
+  vec3 rainbowWithWhiteBackground = mix(rainbow.xyz, uBackgroundColor, 1.0 - strength);
+  return vec4(rainbowWithWhiteBackground, strength);
 }
 
 void main() {
   vec4 waveAnimation = waveAnimation();
   vec4 idleAnimation = idleAnimation();
-
   gl_FragColor = idleAnimation;
 }
