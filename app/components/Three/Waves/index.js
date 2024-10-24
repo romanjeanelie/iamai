@@ -32,38 +32,44 @@ export default class Waves {
 
     // INIT METHODS
     this.init();
+    this.addEvents();
 
     if (this.debug) {
       this.debugGUI = new WavesGUI({
         settings: this.settings,
         material: this.material,
-        toggleWaves: this.toggleWaves.bind(this),
+        toggleWaves: () => console.log("prout"),
       });
     }
   }
 
   init() {
-    this.initLottieAnimation();
-    // this.addEvents();
-    // this.initThreeScene();
+    if (isMobile()) {
+      this.initLottieAnimation();
+    } else {
+      this.initThreeScene();
+    }
   }
 
   initLottieAnimation() {
     const lottieContainer = document.querySelector(".lottie-container");
-
-    console.log(bodymovin);
-
-    const lottie = bodymovin.loadAnimation({
+    this.lottieAnimation = bodymovin.loadAnimation({
       container: lottieContainer,
       renderer: "svg",
       loop: true,
-      autoplay: true,
       path: "/public/animations/mobile_listening.json",
+      autoplay: true,
     });
   }
 
+  destroyLottieAnimation() {
+    if (this.lottieAnimation) {
+      this.lottieAnimation.destroy();
+      this.lottieAnimation = null;
+    }
+  }
+
   initThreeScene() {
-    this.isWaving = true;
     this.setupScene();
     this.setupCamera();
     this.setupRenderer();
@@ -76,19 +82,13 @@ export default class Waves {
   }
 
   destroyThreeScene() {
-    this.isWaving = false;
-    this.scene.remove(this.mesh);
-    this.mesh.geometry.dispose();
-    this.mesh.material.dispose();
-    this.renderer.dispose();
-  }
+    this.scene?.remove(this.mesh);
+    this.mesh?.geometry.dispose();
+    this.mesh?.material.dispose();
 
-  toggleWaves() {
-    if (this.isWaving) {
-      this.destroyThreeScene();
-    } else {
-      this.initThreeScene();
-    }
+    this.renderer?.dispose();
+
+    window.cancelAnimationFrame(this.raf);
   }
 
   setupScene() {
@@ -162,6 +162,7 @@ export default class Waves {
   }
 
   triggerWave() {
+    if (isMobile()) return;
     // Get the uniform name based on current index
     const progressUniform = `uProgress${this.currentWaveIndex + 1}`;
 
@@ -212,7 +213,7 @@ export default class Waves {
 
       this.renderer.render(this.scene, this.camera);
 
-      window.requestAnimationFrame(tick);
+      this.raf = window.requestAnimationFrame(tick);
     };
 
     tick();
@@ -228,12 +229,21 @@ export default class Waves {
       this.sizes.height = window.innerHeight;
       this.aspectRatio = this.sizes.width / this.sizes.height;
 
-      this.material.uniforms.uResolution.value.set(this.sizes.width, this.sizes.height);
-      this.material.uniforms.uPixelRatio.value = Math.min(window.devicePixelRatio, 2);
+      if (this.material) {
+        this.material.uniforms.uResolution.value.set(this.sizes.width, this.sizes.height);
+        this.material.uniforms.uPixelRatio.value = Math.min(window.devicePixelRatio, 2);
+        this.updateCamera();
+        this.updateRenderer();
+        this.updateMeshGeometry();
+      }
 
-      this.updateCamera();
-      this.updateRenderer();
-      this.updateMeshGeometry();
+      if (isMobile()) {
+        this.destroyThreeScene();
+        this.initLottieAnimation();
+      } else {
+        this.destroyLottieAnimation();
+        this.initThreeScene();
+      }
     });
   }
 }
