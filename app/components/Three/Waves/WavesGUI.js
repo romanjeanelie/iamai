@@ -5,7 +5,6 @@ export default class WavesGUI {
     this.settings = settings;
     this.material = material;
     this.toggleWaves = toggleWaves;
-    console.log("WavesGUI -> constructor -> this.material", this.material);
     this.setupGUI();
   }
 
@@ -61,5 +60,9 @@ export default class WavesGUI {
         "add"
       )
       .name("Toggle Waves");
+  }
+
+  destroy() {
+    this.gui.destroy();
   }
 }

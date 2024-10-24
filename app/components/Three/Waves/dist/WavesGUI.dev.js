@@ -28,7 +28,6 @@ function () {
     this.settings = settings;
     this.material = material;
     this.toggleWaves = toggleWaves;
-    console.log("WavesGUI -> constructor -> this.material", this.material);
     this.setupGUI();
   }
 
@@ -61,6 +60,11 @@ function () {
       this.gui.add({
         add: this.toggleWaves
       }, "add").name("Toggle Waves");
+    }
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      this.gui.destroy();
     }
   }]);
 
