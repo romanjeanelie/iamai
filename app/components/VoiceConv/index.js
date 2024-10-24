@@ -34,7 +34,6 @@ export default class VoiceConv {
     this.btnFinishProcessing = this.pageEl.querySelector("#btn-finishProcessing");
 
     this.anims = anims;
-    this.waves = new Waves();
 
     this.isActive = false;
     this.audioContext = null;
@@ -69,6 +68,7 @@ export default class VoiceConv {
     this.micAccessConfirmed = false;
 
     // Anims
+    this.waves = null;
     this.voiceConvAnimations = new VoiceConvAnimations({
       pageEl: this.pageEl,
     });
@@ -90,6 +90,7 @@ export default class VoiceConv {
 
     if (this.debug) {
       // console.log("debug mode");
+      this.waves = new Waves();
       this.anims.toStartVoiceConv();
       this.startConnecting();
     }
@@ -102,6 +103,7 @@ export default class VoiceConv {
   }
 
   connected() {
+    this.waves = new Waves();
     this.voiceConvAnimations.toConnected();
     this.voiceConvAnimations.newInfoText("connected");
     // console.log("connected");
@@ -512,6 +514,8 @@ export default class VoiceConv {
     if (this.closeBtn) {
       this.closeBtn.addEventListener("click", async () => {
         this.anims.toStopVoiceConv();
+        this.waves.destroy();
+        this.waves = null;
         this.leave();
       });
     }
