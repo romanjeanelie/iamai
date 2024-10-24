@@ -43,9 +43,23 @@ export default class Waves {
   }
 
   init() {
-    this.addEvents();
+    this.initLottieAnimation();
+    // this.addEvents();
+    // this.initThreeScene();
+  }
 
-    this.initThreeScene();
+  initLottieAnimation() {
+    const lottieContainer = document.querySelector(".lottie-container");
+
+    console.log(bodymovin);
+
+    const lottie = bodymovin.loadAnimation({
+      container: lottieContainer,
+      renderer: "svg",
+      loop: true,
+      autoplay: true,
+      path: "/public/animations/mobile_listening.json",
+    });
   }
 
   initThreeScene() {
