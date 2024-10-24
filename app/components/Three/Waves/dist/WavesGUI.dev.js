@@ -20,12 +20,14 @@ var WavesGUI =
 function () {
   function WavesGUI(_ref) {
     var settings = _ref.settings,
-        material = _ref.material;
+        material = _ref.material,
+        toggleWaves = _ref.toggleWaves;
 
     _classCallCheck(this, WavesGUI);
 
     this.settings = settings;
     this.material = material;
+    this.toggleWaves = toggleWaves;
     console.log("WavesGUI -> constructor -> this.material", this.material);
     this.setupGUI();
   }
@@ -54,7 +56,11 @@ function () {
       this.gui.addColor(this.settings, "backgroundColor").name("Background Color").onChange(function (value) {
         // Assuming this.material.uniforms.uBackgroundColor exists
         _this.material.uniforms.uBackgroundColor.value.set(value);
-      });
+      }); // Add a button that creates or destroy the waves
+
+      this.gui.add({
+        add: this.toggleWaves
+      }, "add").name("Toggle Waves");
     }
   }]);
 

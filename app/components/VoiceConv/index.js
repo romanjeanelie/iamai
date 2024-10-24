@@ -158,13 +158,11 @@ export default class VoiceConv {
   }
 
   async toProcessing(audio) {
-    // console.log("toProcessing");
     if (!this.isActive) return;
 
     this.isProcessing = true;
     this.voiceConvAnimations.newInfoText("processing");
     this.voiceConvAnimations.toProcessing();
-    // console.log("processing");
     this.emitter.emit("phone:processing");
     if (this.debugIOSAnim) {
       this.discussion.addUserElement({ text: "Hi I am a test", debug: true });

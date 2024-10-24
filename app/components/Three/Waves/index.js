@@ -1,9 +1,9 @@
-import * as THREE from "three";
-import vertexShader from "./shader/vertexShader.glsl";
-import fragmentShader from "./shader/fragmentShaderv2.glsl";
-import WavesGUI from "./WavesGUI";
 import gsap, { Power3 } from "gsap";
-import { compressNormals } from "three/examples/jsm/utils/GeometryCompressionUtils.js";
+import * as THREE from "three";
+import fragmentShader from "./shader/fragmentShaderv2.glsl";
+import vertexShader from "./shader/vertexShader.glsl";
+import WavesGUI from "./WavesGUI";
+import isMobile from "../../../utils/isMobile";
 
 export default class Waves {
   constructor() {
@@ -34,24 +34,47 @@ export default class Waves {
     this.init();
 
     if (this.debug) {
-      this.debugGUI = new WavesGUI({ settings: this.settings, material: this.material });
+      this.debugGUI = new WavesGUI({
+        settings: this.settings,
+        material: this.material,
+        toggleWaves: this.toggleWaves.bind(this),
+      });
     }
   }
 
   init() {
+    this.addEvents();
+
+    this.initThreeScene();
+  }
+
+  initThreeScene() {
+    this.isWaving = true;
     this.setupScene();
     this.setupCamera();
     this.setupRenderer();
     this.setupMesh();
-
     this.startWaveLoop();
-
     this.updateCamera();
     this.updateRenderer();
     this.updateMeshGeometry();
-
-    this.addEvents();
     this.animate();
+  }
+
+  destroyThreeScene() {
+    this.isWaving = false;
+    this.scene.remove(this.mesh);
+    this.mesh.geometry.dispose();
+    this.mesh.material.dispose();
+    this.renderer.dispose();
+  }
+
+  toggleWaves() {
+    if (this.isWaving) {
+      this.destroyThreeScene();
+    } else {
+      this.initThreeScene();
+    }
   }
 
   setupScene() {
@@ -129,13 +152,13 @@ export default class Waves {
     const progressUniform = `uProgress${this.currentWaveIndex + 1}`;
 
     // Only trigger if the current wave is inactive (progress >= 1.0)
-    if (this.material.uniforms[progressUniform].value > 0) {
+    if (this.material.uniforms?.[progressUniform].value > 0) {
       return;
     }
 
     gsap.to(this.material.uniforms[progressUniform], {
       value: 1,
-      duration: 1.5,
+      duration: 2,
       ease: Power3.easeOut,
       onComplete: () => {
         // Reset progress to 0 at start

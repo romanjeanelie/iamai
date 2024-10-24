@@ -1,9 +1,10 @@
 import dat from "dat.gui";
 
 export default class WavesGUI {
-  constructor({ settings, material }) {
+  constructor({ settings, material, toggleWaves }) {
     this.settings = settings;
     this.material = material;
+    this.toggleWaves = toggleWaves;
     console.log("WavesGUI -> constructor -> this.material", this.material);
     this.setupGUI();
   }
@@ -50,5 +51,15 @@ export default class WavesGUI {
         // Assuming this.material.uniforms.uBackgroundColor exists
         this.material.uniforms.uBackgroundColor.value.set(value);
       });
+
+    // Add a button that creates or destroy the waves
+    this.gui
+      .add(
+        {
+          add: this.toggleWaves,
+        },
+        "add"
+      )
+      .name("Toggle Waves");
   }
 }
