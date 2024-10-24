@@ -161,7 +161,6 @@ export default class VoiceConv {
 
   async toProcessing(audio) {
     if (!this.isActive) return;
-
     this.isProcessing = true;
     this.voiceConvAnimations.newInfoText("processing");
     this.voiceConvAnimations.toProcessing();

@@ -45,6 +45,7 @@ export default class ShaderWaves {
   }
 
   init() {
+    this.captureMicrophone();
     this.setupScene();
     this.setupCamera();
     this.setupRenderer();
@@ -54,6 +55,45 @@ export default class ShaderWaves {
     this.updateRenderer();
     this.updateMeshGeometry();
     this.animate();
+  }
+
+  captureMicrophone() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      console.error("getUserMedia is not supported in this browser.");
+      return;
+    }
+
+    navigator.mediaDevices
+      .getUserMedia({ audio: true })
+      .then((stream) => {
+        this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const source = this.audioContext.createMediaStreamSource(stream);
+
+        // Create an AnalyserNode to process the audio
+        this.analyser = this.audioContext.createAnalyser();
+        this.analyser.fftSize = 256; // Set the FFT size
+        source.connect(this.analyser);
+      })
+      .catch((error) => {
+        console.error("Error accessing microphone:", error);
+      });
+  }
+
+  analyseAudio() {
+    if (!this.analyser) return;
+
+    const bufferLength = this.analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+
+    // Get the frequency data
+    this.analyser.getByteFrequencyData(dataArray);
+
+    const avgVolume = dataArray.reduce((sum, value) => sum + value, 0) / bufferLength;
+
+    // Trigger the wave if volume exceeds a threshold
+    if (avgVolume > 10) {
+      this.triggerWave();
+    }
   }
 
   setupScene() {
@@ -178,6 +218,8 @@ export default class ShaderWaves {
       this.material.uniforms.uTime.value = elapsedTime;
 
       this.renderer.render(this.scene, this.camera);
+
+      this.analyseAudio();
 
       this.raf = window.requestAnimationFrame(tick);
     };
