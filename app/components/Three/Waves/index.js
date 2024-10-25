@@ -3,9 +3,6 @@ import ShaderWaves from "./ShaderWaves";
 
 export default class Waves {
   constructor() {
-    // STATES
-    this.isAnimating = true;
-
     // INIT METHODS
     this.init();
     this.addEvents();
@@ -41,6 +38,11 @@ export default class Waves {
     this.shaderWaves?.destroy();
     this.shaderWaves = null;
     this.destroyLottieAnimation();
+  }
+
+  toggleBetweenIdleAndActive() {
+    if (!this.shaderWaves) return;
+    this.shaderWaves.toggleBetweenIdleAndActive();
   }
 
   addEvents() {

@@ -103,7 +103,6 @@ export default class VoiceConv {
   }
 
   connected() {
-    this.waves = new Waves();
     this.voiceConvAnimations.toConnected();
     this.voiceConvAnimations.newInfoText("connected");
     // console.log("connected");
@@ -141,6 +140,8 @@ export default class VoiceConv {
     if (!this.unbindEvent) {
       this.unbindEvent = this.emitter.on("addAIText", (html, targetlang) => this.startAITalking(html, targetlang));
     }
+    this.waves = new Waves();
+
     this.isStreamEnded = false;
     this.voiceConvAnimations.toTalkToMe();
     this.voiceConvAnimations.newInfoText("Talk to me");
@@ -162,6 +163,7 @@ export default class VoiceConv {
   async toProcessing(audio) {
     if (!this.isActive) return;
     this.isProcessing = true;
+    this.waves.toggleBetweenIdleAndActive();
     this.voiceConvAnimations.newInfoText("processing");
     this.voiceConvAnimations.toProcessing();
     this.emitter.emit("phone:processing");

@@ -60,50 +60,7 @@ export default class ShaderWaves {
     this.animate();
   }
 
-  captureMicrophone() {
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      console.error("getUserMedia is not supported in this browser.");
-      return;
-    }
-
-    navigator.mediaDevices
-      .getUserMedia({ audio: true })
-      .then((stream) => {
-        this.stream = stream;
-        this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const source = this.audioContext.createMediaStreamSource(stream);
-
-        // Create an AnalyserNode to process the audio
-        this.analyser = this.audioContext.createAnalyser();
-        this.analyser.fftSize = 256; // Set the FFT size
-        source.connect(this.analyser);
-      })
-      .catch((error) => {
-        console.error("Error accessing microphone:", error);
-      });
-  }
-
-  stopMicrophone() {
-    this.stream.getTracks().forEach((track) => track.stop());
-  }
-
-  analyseAudio() {
-    if (!this.analyser) return;
-
-    const bufferLength = this.analyser.frequencyBinCount;
-    const dataArray = new Uint8Array(bufferLength);
-
-    // Get the frequency data
-    this.analyser.getByteFrequencyData(dataArray);
-
-    const avgVolume = dataArray.reduce((sum, value) => sum + value, 0) / bufferLength;
-
-    // Trigger the wave if volume exceeds a threshold
-    if (avgVolume > 10) {
-      this.triggerWave();
-    }
-  }
-
+  // ----- Three.js setup -----
   setupScene() {
     this.scene = new THREE.Scene();
   }
@@ -160,6 +117,85 @@ export default class ShaderWaves {
     this.scene.add(this.mesh);
   }
 
+  // ----- Three.js methods to handle window resize -----
+  updateCamera() {
+    const fov = 2 * Math.atan(1 / this.camera.position.z) * (180 / Math.PI);
+    this.camera.aspect = this.aspectRatio;
+    this.camera.fov = fov;
+
+    this.camera.position.set(0, 0, 1);
+    this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+    this.camera.updateProjectionMatrix();
+  }
+
+  updateRenderer() {
+    this.renderer.setSize(this.sizes.width, this.sizes.height);
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  }
+
+  updateMeshGeometry() {
+    this.mesh.geometry.dispose();
+    this.mesh.geometry = new THREE.PlaneGeometry(2 * this.aspectRatio, 2, 32, 32);
+  }
+
+  handleResize() {
+    this.sizes.width = window.innerWidth;
+    this.sizes.height = window.innerHeight;
+    this.aspectRatio = this.sizes.width / this.sizes.height;
+
+    this.material.uniforms.uResolution.value.set(this.sizes.width, this.sizes.height);
+    this.material.uniforms.uPixelRatio.value = Math.min(window.devicePixelRatio, 2);
+    this.updateCamera();
+    this.updateRenderer();
+    this.updateMeshGeometry();
+  }
+
+  // ----- Get audio to make it interact with the animation -----
+  captureMicrophone() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      console.error("getUserMedia is not supported in this browser.");
+      return;
+    }
+
+    navigator.mediaDevices
+      .getUserMedia({ audio: true })
+      .then((stream) => {
+        this.stream = stream;
+        this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const source = this.audioContext.createMediaStreamSource(stream);
+
+        // Create an AnalyserNode to process the audio
+        this.analyser = this.audioContext.createAnalyser();
+        this.analyser.fftSize = 256; // Set the FFT size
+        source.connect(this.analyser);
+      })
+      .catch((error) => {
+        console.error("Error accessing microphone:", error);
+      });
+  }
+
+  stopMicrophone() {
+    this.stream.getTracks().forEach((track) => track.stop());
+  }
+
+  analyseAudio() {
+    if (!this.analyser) return;
+
+    const bufferLength = this.analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+
+    // Get the frequency data
+    this.analyser.getByteFrequencyData(dataArray);
+
+    const avgVolume = dataArray.reduce((sum, value) => sum + value, 0) / bufferLength;
+
+    // Trigger the wave if volume exceeds a threshold
+    if (avgVolume > 10) {
+      this.triggerWave();
+    }
+  }
+
+  // ----- Waves Animations -----
   increaseWaveIndex() {
     // Increment the wave index and loop back to 1 if it exceeds the maxWaves
     // Never set to to 0 as the first wave is looping indefinitely
@@ -209,26 +245,19 @@ export default class ShaderWaves {
     });
   }
 
-  updateCamera() {
-    const fov = 2 * Math.atan(1 / this.camera.position.z) * (180 / Math.PI);
-    this.camera.aspect = this.aspectRatio;
-    this.camera.fov = fov;
-
-    this.camera.position.set(0, 0, 1);
-    this.camera.lookAt(new THREE.Vector3(0, 0, 0));
-    this.camera.updateProjectionMatrix();
+  // ----- Toggle between idle and active states -----
+  toggleBetweenIdleAndActive() {
+    gsap.to(this.settings, {
+      progress: this.settings.progress === 0 ? 1 : 0,
+      duration: 2,
+      ease: Power3.easeInOut,
+      onUpdate: () => {
+        this.material.uniforms.uStateProgress.value = this.settings.progress;
+      },
+    });
   }
 
-  updateRenderer() {
-    this.renderer.setSize(this.sizes.width, this.sizes.height);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  }
-
-  updateMeshGeometry() {
-    this.mesh.geometry.dispose();
-    this.mesh.geometry = new THREE.PlaneGeometry(2 * this.aspectRatio, 2, 32, 32);
-  }
-
+  // ----- Animate loop -----
   animate() {
     this.clock = new THREE.Clock();
 
@@ -244,18 +273,6 @@ export default class ShaderWaves {
     };
 
     tick();
-  }
-
-  handleResize() {
-    this.sizes.width = window.innerWidth;
-    this.sizes.height = window.innerHeight;
-    this.aspectRatio = this.sizes.width / this.sizes.height;
-
-    this.material.uniforms.uResolution.value.set(this.sizes.width, this.sizes.height);
-    this.material.uniforms.uPixelRatio.value = Math.min(window.devicePixelRatio, 2);
-    this.updateCamera();
-    this.updateRenderer();
-    this.updateMeshGeometry();
   }
 
   addEvents() {
