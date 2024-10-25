@@ -172,12 +172,9 @@ export default class VoiceConv {
     this.myvad.pause();
 
     if (!audio) return;
-    console.log(audio);
     const blob = float32ArrayToMp3Blob(audio, 16000);
     if (this.discussion.Chat.autodetect) this.textRecorded = await sendToWisphergroq(blob);
     else this.textRecorded = await sendToWisphergroq(blob, this.discussion.Chat.sourcelang);
-
-    console.log(this.textRecorded);
 
     this.discussion.addUserElement({ text: this.textRecorded, imgs: this.photos, isFromVideo: this.photos.length > 0 });
 
@@ -188,7 +185,6 @@ export default class VoiceConv {
   async processTextAndPlayAudio(textRecorded) {
     try {
       if (!this.sentencesData) {
-        console.log("here for stopwords");
         const response = await fetch("stopwords.json");
         this.sentencesData = await response.json();
         // console.log("here for stopwords:", this.sentencesData);

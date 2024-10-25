@@ -7,8 +7,6 @@ const sendToWispher = (url, lang = "", attempt = 0) =>
   new Promise((resolve, reject) => {
     var xhr = new XMLHttpRequest();
 
-    console.log("sending to whisper");
-
     var data = new FormData();
     data.append("audio_file", url, crypto.randomUUID() + ".wav");
     data.append("type", "audio/wav");
