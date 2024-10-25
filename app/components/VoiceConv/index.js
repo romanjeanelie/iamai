@@ -1,4 +1,4 @@
-import sendToWispher from "../../utils/audio/sendToWhisper";
+import { sendToWisphergroq } from "../../utils/audio/sendToWhisper";
 import float32ArrayToMp3Blob from "../../utils/audio/float32ArrayToMp3Blob";
 import htmlToText from "../../utils/htmlToText";
 import textToSpeech from "../../utils/textToSpeech";
@@ -172,9 +172,12 @@ export default class VoiceConv {
     this.myvad.pause();
 
     if (!audio) return;
+    console.log(audio);
     const blob = float32ArrayToMp3Blob(audio, 16000);
-    if (this.discussion.Chat.autodetect) this.textRecorded = await sendToWispher(blob);
-    else this.textRecorded = await sendToWispher(blob, this.discussion.Chat.sourcelang);
+    if (this.discussion.Chat.autodetect) this.textRecorded = await sendToWisphergroq(blob);
+    else this.textRecorded = await sendToWisphergroq(blob, this.discussion.Chat.sourcelang);
+
+    console.log(this.textRecorded);
 
     this.discussion.addUserElement({ text: this.textRecorded, imgs: this.photos, isFromVideo: this.photos.length > 0 });
 
@@ -185,7 +188,7 @@ export default class VoiceConv {
   async processTextAndPlayAudio(textRecorded) {
     try {
       if (!this.sentencesData) {
-        // console.log("here for stopwords");
+        console.log("here for stopwords");
         const response = await fetch("stopwords.json");
         this.sentencesData = await response.json();
         // console.log("here for stopwords:", this.sentencesData);
@@ -410,8 +413,8 @@ export default class VoiceConv {
 
   async onCompleteRecording(blob) {
     if (this.isRecordCanceled) return;
-    if (this.discussion.Chat.autodetect) this.textRecorded = await sendToWispher(blob);
-    else this.textRecorded = await sendToWispher(blob, this.discussion.Chat.sourcelang);
+    if (this.discussion.Chat.autodetect) this.textRecorded = await sendToWisphergroq(blob);
+    else this.textRecorded = await sendToWisphergroq(blob, this.discussion.Chat.sourcelang);
 
     this.timeoutTranscripting = setTimeout(() => {
       this.onCompleteTranscripting();
