@@ -9,6 +9,7 @@ uniform float uPixelRatio;
 uniform int uMaxWaveNb;
 
 uniform float uStateProgress;
+uniform float uFadeProgress;
 uniform float uWaveProgress[MAX_WAVES];
 
 
@@ -30,7 +31,7 @@ vec3 blend(vec3 color1, vec3 color2, float t) {
 
 float calculateWave(float progress, float distFromCenter) {
   float thickness = 0.3;
-  float blurAmount = 0.1 + 0.2 * progress;
+  float blurAmount = 0.1 + 0.2 * progress + 2. * uFadeProgress;
   
   // Calculate wave properties
   float innerRadius = progress - thickness * 0.5;
@@ -86,7 +87,7 @@ vec4 waveAnimation(){
     finalColor = mix(finalColor, wave, wave.a * (1.0 - finalColor.a));
   }
 
-  finalColor.a *= (float(MAX_WAVES) );
+  finalColor.a *= float(MAX_WAVES) * (1. - uFadeProgress);
   return  finalColor;
 }
 
@@ -94,7 +95,7 @@ vec4 waveAnimation(){
 float generateRainbowForm(vec2 uv, float d, float time) {
   vec2 center = vec2(0.5, 0. - 0.2);
   vec2 pos = uv - center;
-  float angle = atan(pos.y, pos.x);
+  float angle = atan(pos.y, pos.x) ;
   float radius = length(pos);
   
   float rotatedAngle = angle + time;
@@ -135,7 +136,7 @@ vec4 idleAnimation() {
   vec4 rainbow = generateRainbowWave(uTime * 0.5 + 2.);
 
   vec3 rainbowWithWhiteBackground = mix(rainbow.xyz, uBackgroundColor, 1.0 - strength);
-  return vec4(rainbowWithWhiteBackground, strength);
+  return vec4(rainbowWithWhiteBackground, strength * (1. - uFadeProgress));
 }
 
 void main() {
@@ -143,5 +144,6 @@ void main() {
   vec4 idleAnimation = idleAnimation();
 
   vec4 finalColor = mix(waveAnimation, idleAnimation, uStateProgress);
+
   gl_FragColor = finalColor;
 }

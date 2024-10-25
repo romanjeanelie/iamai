@@ -15,6 +15,7 @@ export default class ShaderWaves {
     this.aspectRatio = this.sizes.width / this.sizes.height;
     this.settings = {
       progress: 0,
+      fadeProgress: 0,
       frequency: 20,
       amplitude: 4,
       waveSpeed: 4,
@@ -40,6 +41,7 @@ export default class ShaderWaves {
         settings: this.settings,
         material: this.material,
         toggleWaves: () => console.log("toggle waves on and off"),
+        destroy: () => this.destroy(),
       });
     }
   }
@@ -94,8 +96,9 @@ export default class ShaderWaves {
       uniforms: {
         uTime: { value: 0 },
         uMaxWaves: { value: this.maxWaves },
-        uStateProgress: { value: this.settings.progress }, // handling the transition between idle and waves states
+        uFadeProgress: { value: 0 },
         uWaveProgress: { value: waveProgressArray },
+        uStateProgress: { value: this.settings.progress }, // handling the transition between idle and waves states
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
         uResolution: { value: new THREE.Vector2(this.sizes.width, this.sizes.height) },
 
@@ -190,7 +193,7 @@ export default class ShaderWaves {
     const avgVolume = dataArray.reduce((sum, value) => sum + value, 0) / bufferLength;
 
     // Trigger the wave if volume exceeds a threshold
-    if (avgVolume > 10) {
+    if (avgVolume > 5) {
       this.triggerWave();
     }
   }
@@ -283,7 +286,18 @@ export default class ShaderWaves {
     window.addEventListener("resize", this.handleResize);
   }
 
-  destroy() {
+  fade() {
+    return new Promise((resolve) => {
+      gsap.to(this.material.uniforms.uFadeProgress, {
+        duration: 1,
+        value: 1,
+        onComplete: resolve,
+      });
+    });
+  }
+
+  async destroy() {
+    await this.fade();
     // Clean up the Three.js ressources
     this.scene?.remove(this.mesh);
     this.mesh?.geometry.dispose();

@@ -1,10 +1,11 @@
 import dat from "dat.gui";
 
 export default class WavesGUI {
-  constructor({ settings, material, toggleWaves }) {
+  constructor({ settings, material, toggleWaves, destroy }) {
     this.settings = settings;
     this.material = material;
     this.toggleWaves = toggleWaves;
+    this.destroy = destroy;
     this.setupGUI();
   }
 
@@ -16,6 +17,13 @@ export default class WavesGUI {
       .step(0.01)
       .onChange((value) => {
         this.material.uniforms.uStateProgress.value = value;
+      });
+    this.gui
+      .add(this.settings, "fadeProgress", 0, 1)
+      .name("Fade Progress")
+      .step(0.01)
+      .onChange((value) => {
+        this.material.uniforms.uFadeProgress.value = value;
       });
     this.gui
       .add(this.settings, "frequency", 0, 20)
@@ -60,6 +68,14 @@ export default class WavesGUI {
         "add"
       )
       .name("Toggle Waves");
+    this.gui
+      .add(
+        {
+          add: this.destroy,
+        },
+        "add"
+      )
+      .name("DEstroy");
   }
 
   destroy() {

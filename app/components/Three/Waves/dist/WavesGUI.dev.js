@@ -21,13 +21,15 @@ function () {
   function WavesGUI(_ref) {
     var settings = _ref.settings,
         material = _ref.material,
-        toggleWaves = _ref.toggleWaves;
+        toggleWaves = _ref.toggleWaves,
+        destroy = _ref.destroy;
 
     _classCallCheck(this, WavesGUI);
 
     this.settings = settings;
     this.material = material;
     this.toggleWaves = toggleWaves;
+    this.destroy = destroy;
     this.setupGUI();
   }
 
@@ -39,6 +41,9 @@ function () {
       this.gui = new _dat["default"].GUI();
       this.gui.add(this.settings, "progress", 0, 1).name("Progress").step(0.01).onChange(function (value) {
         _this.material.uniforms.uStateProgress.value = value;
+      });
+      this.gui.add(this.settings, "fadeProgress", 0, 1).name("Fade Progress").step(0.01).onChange(function (value) {
+        _this.material.uniforms.uFadeProgress.value = value;
       });
       this.gui.add(this.settings, "frequency", 0, 20).name("Frequency").onChange(function (value) {
         _this.material.uniforms.uFrequency.value = value;
@@ -60,6 +65,9 @@ function () {
       this.gui.add({
         add: this.toggleWaves
       }, "add").name("Toggle Waves");
+      this.gui.add({
+        add: this.destroy
+      }, "add").name("DEstroy");
     }
   }, {
     key: "destroy",

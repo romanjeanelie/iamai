@@ -255,7 +255,6 @@ export default class VoiceConv {
       this.voiceConvAnimations.toAITalking();
       this.emitter.emit("phone:AITalking");
       if (this.myvad) this.myvad.start();
-      console.log("AI is talking");
       this.emitter.emit("phone:talkToMe");
     }
     this.isAITalking = true;
