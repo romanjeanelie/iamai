@@ -66,6 +66,7 @@ export default class ShaderWaves {
     navigator.mediaDevices
       .getUserMedia({ audio: true })
       .then((stream) => {
+        this.stream = stream;
         this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const source = this.audioContext.createMediaStreamSource(stream);
 
@@ -77,6 +78,10 @@ export default class ShaderWaves {
       .catch((error) => {
         console.error("Error accessing microphone:", error);
       });
+  }
+
+  stopMicrophone() {
+    this.stream.getTracks().forEach((track) => track.stop());
   }
 
   analyseAudio() {
@@ -248,14 +253,19 @@ export default class ShaderWaves {
   }
 
   destroy() {
+    // Clean up the Three.js ressources
     this.scene?.remove(this.mesh);
     this.mesh?.geometry.dispose();
     this.mesh?.material.dispose();
     this.debugGUI?.destroy();
-
     this.renderer?.dispose();
+
+    // Stop the request animation frame loop
     window.cancelAnimationFrame(this.raf);
 
+    this.stopMicrophone();
+
+    // Remove the event listeners
     window.removeEventListener("resize", this.handleResize);
   }
 }
