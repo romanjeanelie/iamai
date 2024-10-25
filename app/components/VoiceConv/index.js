@@ -270,6 +270,7 @@ export default class VoiceConv {
     }
 
     this.waves?.destroy();
+    this.waves = null;
 
     this.currentIndexTextAI === null ? (this.currentIndexTextAI = 0) : this.currentIndexTextAI++;
     const { audio, index } = await textToSpeech(htmlToText(html), targetlang, this.currentIndexTextAI);
@@ -359,6 +360,8 @@ export default class VoiceConv {
           onSpeechStart: () => {
             // console.log("speech start");
             if (!this.isConnected) return;
+
+            if (!this.waves) this.waves = new Waves();
             this.stopAITalking();
             this.toListening();
           },
