@@ -38,7 +38,7 @@ function () {
 
       this.gui = new _dat["default"].GUI();
       this.gui.add(this.settings, "progress", 0, 1).name("Progress").step(0.01).onChange(function (value) {
-        _this.material.uniforms.uProgress.value = value;
+        _this.material.uniforms.uStateProgress.value = value;
       });
       this.gui.add(this.settings, "frequency", 0, 20).name("Frequency").onChange(function (value) {
         _this.material.uniforms.uFrequency.value = value;

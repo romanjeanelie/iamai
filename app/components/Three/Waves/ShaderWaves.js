@@ -7,7 +7,7 @@ import WavesGUI from "./WavesGUI";
 export default class ShaderWaves {
   constructor() {
     // States
-    this.maxWaves = 3;
+    this.maxWaves = 5;
     this.currentWaveIndex = 1; // Track which wave to trigger next
     this.debug = import.meta.env.VITE_DEBUG === "true";
 
@@ -16,7 +16,7 @@ export default class ShaderWaves {
     this.settings = {
       progress: 0,
       frequency: 20,
-      amplitude: 3.2,
+      amplitude: 4,
       waveSpeed: 4,
       waveLength: 2,
 
@@ -45,7 +45,10 @@ export default class ShaderWaves {
   }
 
   init() {
-    this.captureMicrophone();
+    if (!this.debug) {
+      this.captureMicrophone();
+    }
+
     this.setupScene();
     this.setupCamera();
     this.setupRenderer();
@@ -125,18 +128,17 @@ export default class ShaderWaves {
   }
 
   setupMesh() {
+    const waveProgressArray = new Float32Array(this.maxWaves).fill(0);
+
     this.geometry = new THREE.PlaneGeometry(2, 2, 1, 1);
     this.material = new THREE.ShaderMaterial({
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
       uniforms: {
-        // Classic uniforms
         uTime: { value: 0 },
-        // Three separate progress uniforms instead of array
-        uProgress: { value: this.settings.progress },
-        uProgress1: { value: 0 }, // 1.0 means inactive
-        uProgress2: { value: 0 },
-        uProgress3: { value: 0 },
+        uMaxWaves: { value: this.maxWaves },
+        uStateProgress: { value: this.settings.progress }, // handling the transition between idle and waves states
+        uWaveProgress: { value: waveProgressArray },
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
         uResolution: { value: new THREE.Vector2(this.sizes.width, this.sizes.height) },
 
@@ -165,34 +167,46 @@ export default class ShaderWaves {
   }
 
   startWaveLoop() {
-    gsap.to(this.material.uniforms.uProgress1, {
+    const progressProxy = {
+      value: 0,
+    };
+
+    gsap.to(progressProxy, {
       value: 1,
       duration: 2,
       ease: Power3.easeIn,
       repeat: -1,
+      onUpdate: () => {
+        this.material.uniforms.uWaveProgress.value[0] = progressProxy.value;
+      },
     });
   }
 
   triggerWave() {
-    // Get the uniform name based on current index
-    const progressUniform = `uProgress${this.currentWaveIndex + 1}`;
+    this.increaseWaveIndex();
+    const currentIndex = this.currentWaveIndex - 1;
 
     // Only trigger if the current wave is inactive (progress >= 1.0)
-    if (this.material.uniforms?.[progressUniform].value > 0) {
-      return;
-    }
+    if (this.material.uniforms.uWaveProgress.value[currentIndex] > 0) return;
 
-    gsap.to(this.material.uniforms[progressUniform], {
+    // gasp can't animates an array so we have to use a proxy object
+    const progressProxy = {
+      value: 0,
+    };
+
+    gsap.to(progressProxy, {
       value: 1,
       duration: 2,
       ease: Power3.easeOut,
+      onUpdate: () => {
+        // Update the array value during animation
+        this.material.uniforms.uWaveProgress.value[currentIndex] = progressProxy.value;
+      },
       onComplete: () => {
-        // Reset progress to 0 at start
-        this.material.uniforms[progressUniform].value = 0;
+        // Reset progress to 0 at end
+        this.material.uniforms.uWaveProgress.value[currentIndex] = 0;
       },
     });
-
-    this.increaseWaveIndex();
   }
 
   updateCamera() {

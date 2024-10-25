@@ -1,13 +1,16 @@
+#define MAX_WAVES 5
+
 // Classic uniforms
 uniform float uTime;
 uniform vec2 uResolution;
 uniform float uPixelRatio;
 
 // Wave progress uniforms
-uniform float uProgress;
-uniform float uProgress1;
-uniform float uProgress2;
-uniform float uProgress3;
+uniform int uMaxWaveNb;
+
+uniform float uStateProgress;
+uniform float uWaveProgress[MAX_WAVES];
+
 
 // Debug uniforms
 uniform float uWaveSpeed;
@@ -76,23 +79,14 @@ vec4 processWave(float progress, float distFromCenter) {
 
 vec4 waveAnimation(){
   vec4 finalColor = vec4(uWaveColor, .0);
-  
-  // Process each wave
-  float dist1 = distance(vUv, vec2(0.5, 0.0 - 0.1 * (1. - uProgress1))) * uAmplitude;
-  float dist2 = distance(vUv, vec2(0.5, 0.0 - 0.1 * (1. - uProgress2))) * uAmplitude;
-  float dist3 = distance(vUv, vec2(0.5, 0.0 - 0.1 * (1. - uProgress3))) * uAmplitude;
-  
-  vec4 wave1 = processWave(uProgress1, dist1);
-  vec4 wave2 = processWave(uProgress2, dist2);
-  vec4 wave3 = processWave(uProgress3, dist3);
-  
-  // Blend all waves together
-  finalColor = mix(finalColor, wave1 , wave1.a * (1.0 - finalColor.a));
-  finalColor = mix(finalColor, wave2 , wave2.a * (1.0 - finalColor.a));
-  finalColor = mix(finalColor, wave3 , wave3.a * (1.0 - finalColor.a));
 
-  finalColor.a *= 3.;
+  for (int i; i< MAX_WAVES;i++){
+    float dist = distance(vUv, vec2(0.5, 0.0 - 0.1 * (1. - uWaveProgress[i]))) * uAmplitude;
+    vec4 wave = processWave(uWaveProgress[i], dist);
+    finalColor = mix(finalColor, wave, wave.a * (1.0 - finalColor.a));
+  }
 
+  finalColor.a *= (float(MAX_WAVES) );
   return  finalColor;
 }
 
@@ -148,6 +142,6 @@ void main() {
   vec4 waveAnimation = waveAnimation();
   vec4 idleAnimation = idleAnimation();
 
-  vec4 finalColor = mix(waveAnimation, idleAnimation, uProgress);
+  vec4 finalColor = mix(waveAnimation, idleAnimation, uStateProgress);
   gl_FragColor = finalColor;
 }

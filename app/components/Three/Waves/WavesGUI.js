@@ -15,7 +15,7 @@ export default class WavesGUI {
       .name("Progress")
       .step(0.01)
       .onChange((value) => {
-        this.material.uniforms.uProgress.value = value;
+        this.material.uniforms.uStateProgress.value = value;
       });
     this.gui
       .add(this.settings, "frequency", 0, 20)
