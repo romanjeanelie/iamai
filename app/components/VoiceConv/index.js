@@ -195,7 +195,6 @@ export default class VoiceConv {
         // this.sentencesconData = await fetch('stopwords.json').then(response => response.json());
       }
 
-      console.log("here for textRecorded:", textRecorded);
       const randomIndex = Math.floor(Math.random() * this.sentencesData.sentences.length);
       let stopText = this.sentencesData.sentences[randomIndex];
       let sourceLang = "en";
@@ -207,7 +206,6 @@ export default class VoiceConv {
       this.stopwords = false;
       // console.log("here for stopText:", stopText);
       // console.log("here for this.textRecorded:", textRecorded);
-      console.log("before google translate");
 
       const googletrresponse = await this.discussion.Chat.googletranslate(textRecorded, "en", "");
       // console.log("here for response:", googletrresponse);
@@ -220,14 +218,10 @@ export default class VoiceConv {
         const transResponse = await this.discussion.Chat.googletranslate(stopText, sourceLang, "en");
         stopText = transResponse.data.translations[0].translatedText;
       }
-
-      console.log("after google translate");
       // console.log(sourceLang);
       // console.log(stopText);
 
       const { audio: audioP, index } = await textToSpeech(stopText, sourceLang, 1);
-
-      console.log("after textToSpeech");
 
       this.audioProcessing?.stopAudio();
       this.audioProcessing = new AudioPlayer({
@@ -275,6 +269,8 @@ export default class VoiceConv {
       this.onPlay();
       return;
     }
+
+    this.waves?.destroy();
 
     this.currentIndexTextAI === null ? (this.currentIndexTextAI = 0) : this.currentIndexTextAI++;
     const { audio, index } = await textToSpeech(htmlToText(html), targetlang, this.currentIndexTextAI);
