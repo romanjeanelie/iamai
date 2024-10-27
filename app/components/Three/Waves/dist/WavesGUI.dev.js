@@ -39,35 +39,53 @@ function () {
       var _this = this;
 
       this.gui = new _dat["default"].GUI();
-      this.gui.add(this.settings, "progress", 0, 1).name("Progress").step(0.01).onChange(function (value) {
+      var paramsFolder = this.gui.addFolder("Parameters");
+      paramsFolder.add(this.settings, "progress", 0, 1).name("Progress").step(0.01).onChange(function (value) {
         _this.material.uniforms.uStateProgress.value = value;
       });
-      this.gui.add(this.settings, "fadeProgress", 0, 1).name("Fade Progress").step(0.01).onChange(function (value) {
+      paramsFolder.add(this.settings, "fadeProgress", 0, 1).name("Fade Progress").step(0.01).onChange(function (value) {
         _this.material.uniforms.uFadeProgress.value = value;
       });
-      this.gui.add(this.settings, "frequency", 0, 20).name("Frequency").onChange(function (value) {
+      paramsFolder.add(this.settings, "frequency", 0, 20).name("Frequency").onChange(function (value) {
         _this.material.uniforms.uFrequency.value = value;
       });
-      this.gui.add(this.settings, "amplitude", 0, 10).name("Amplitude").onChange(function (value) {
+      paramsFolder.add(this.settings, "amplitude", 0, 10).name("Amplitude").onChange(function (value) {
         _this.material.uniforms.uAmplitude.value = value;
       });
-      this.gui.add(this.settings, "waveSpeed", 0, 100).name("Wave Speed").onChange(function (value) {
+      paramsFolder.add(this.settings, "waveSpeed", 0, 100).name("Wave Speed").onChange(function (value) {
         _this.material.uniforms.uWaveSpeed.value = value;
       });
-      this.gui.add(this.settings, "waveLength", 0, 1).name("Wave Length").step(0.01).onChange(function (value) {
+      paramsFolder.add(this.settings, "waveLength", 0, 1).name("Wave Length").step(0.01).onChange(function (value) {
         _this.material.uniforms.uWaveLength.value = value;
-      });
-      this.gui.addColor(this.settings, "backgroundColor").name("Background Color").onChange(function (value) {
-        // Assuming this.material.uniforms.uBackgroundColor exists
-        _this.material.uniforms.uBackgroundColor.value.set(value);
       }); // Add a button that creates or destroy the waves
 
-      this.gui.add({
+      paramsFolder.add({
         add: this.toggleWaves
       }, "add").name("Toggle Waves");
       this.gui.add({
         add: this.destroy
-      }, "add").name("DEstroy");
+      }, "add").name("DEstroy"); // create a new gui folder for colors
+
+      var colorsFolder = this.gui.addFolder("Colors");
+      colorsFolder.addColor(this.settings, "backgroundColor").name("Background Color").onChange(function (value) {
+        // Assuming this.material.uniforms.uBackgroundColor exists
+        _this.material.uniforms.uBackgroundColor.value.set(value);
+      });
+      this.gui.add(this.settings, "b1", 0, 1).onChange(function (value) {
+        return _this.material.uniforms.uB1.value = value;
+      }).step(0.01);
+      this.gui.add(this.settings, "g1", 0, 1).onChange(function (value) {
+        return _this.material.uniforms.uG1.value = value;
+      }).step(0.01);
+      this.gui.add(this.settings, "r2", 0, 1).onChange(function (value) {
+        return _this.material.uniforms.uR2.value = value;
+      }).step(0.01);
+      this.gui.add(this.settings, "b2", 0, 1).onChange(function (value) {
+        return _this.material.uniforms.uB2.value = value;
+      }).step(0.01);
+      this.gui.add(this.settings, "g3", 0, 1).onChange(function (value) {
+        return _this.material.uniforms.uG3.value = value;
+      }).step(0.01);
     }
   }, {
     key: "destroy",

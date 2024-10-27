@@ -19,6 +19,14 @@ uniform float uFrequency;
 uniform float uAmplitude;
 uniform float uWaveLength;
 
+uniform float uB1;
+uniform float uB2;
+uniform float uR1;
+uniform float uR2;
+uniform float uG1;
+uniform float uG2;
+uniform float uG3;
+
 // Colors
 uniform vec3 uWaveColor;
 uniform vec3 uBackgroundColor;
@@ -113,9 +121,9 @@ vec4 generateRainbowWave(float time) {
   
   // Option 4: Complementary colors
   vec3 complementary = vec3(
-      b * 0.99 + g * 0.,
-      r * 0.9 + b * .2,
-      g * 0.7 + r * 0.2
+      b * uB1 + g * uG1,
+      r * uR2 + b * uB2,
+      g * uG3 + r * uR2
   );
   
   return vec4(complementary, 1.0);                       // Custom mix option
@@ -132,11 +140,13 @@ vec4 idleAnimation() {
   float targetRadius = 0.3 + sin(rotatedAngle) * 0.01;
   float wave = sin(uTime * 2.0 - vUv.x * 5.0) * 0.5 + 0.7;
   float strength = (1.0 - smoothstep(0.0, d * 2., abs(radius - targetRadius))) * wave;
+  // float strength = (1.0 - smoothstep(0.0, d * 2., abs(radius - targetRadius))) ;
 
-  vec4 rainbow = generateRainbowWave(uTime * 0.5 + 2.);
+  vec4 rainbow = generateRainbowWave(0.5 + 2.);
 
   vec3 rainbowWithWhiteBackground = mix(rainbow.xyz, uBackgroundColor, 1.0 - strength);
   return vec4(rainbowWithWhiteBackground, strength * (1. - uFadeProgress));
+  // return vec4(rainbowWithWhiteBackground, strength * (1. - uFadeProgress));
 }
 
 void main() {

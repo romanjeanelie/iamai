@@ -24,7 +24,17 @@ export default class ShaderWaves {
       // Colors
       waveColor: 0xf9f9f9,
       backgroundColor: 0xf9f9f9,
+
+      // Rainbow - IDLE colors
+      b1: 0.22,
+      g1: 0.79,
+      r2: 0.83,
+      b2: 0,
+      g3: 0.03,
     };
+
+    // during debug only - to be removed
+    this.settings.progress = 1;
 
     // DOM ELEMENTS
     this.canvas = document.querySelector(".threejs-container");
@@ -111,6 +121,14 @@ export default class ShaderWaves {
         // Colors
         uWaveColor: { value: new THREE.Color("#fcfefb") },
         uBackgroundColor: { value: new THREE.Color("#f2f5f7") },
+
+        // Rainbow - IDLE colors
+        uB1: { value: this.settings.b1 },
+        uG1: { value: this.settings.g1 },
+        uR2: { value: this.settings.r2 },
+        uB2: { value: this.settings.b2 },
+        uG3: { value: this.settings.g3 },
+        uR3: { value: this.settings.r3 },
       },
       transparent: true,
     });

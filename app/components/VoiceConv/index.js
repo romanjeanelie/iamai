@@ -360,7 +360,6 @@ export default class VoiceConv {
           onSpeechStart: () => {
             // console.log("speech start");
             if (!this.isConnected) return;
-
             if (!this.waves) this.waves = new Waves();
             this.stopAITalking();
             this.toListening();
