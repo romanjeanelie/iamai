@@ -163,7 +163,7 @@ export default class VoiceConv {
   async toProcessing(audio) {
     if (!this.isActive) return;
     this.isProcessing = true;
-    this.waves.toggleBetweenIdleAndActive();
+    this.waves?.toggleBetweenIdleAndActive();
     this.voiceConvAnimations.newInfoText("processing");
     this.voiceConvAnimations.toProcessing();
     this.emitter.emit("phone:processing");
@@ -204,17 +204,20 @@ export default class VoiceConv {
         stopText = this.sentencesconData.sentences[randomIndex];
       }
       this.stopwords = false;
-      // console.log("here for stopText:", stopText);
-      // console.log("here for this.textRecorded:", textRecorded);
 
-      const googletrresponse = await this.discussion.Chat.googletranslate(textRecorded, "en", "");
-      // console.log("here for response:", googletrresponse);
+      console.log("TEXT RECORDED : ", textRecorded);
+      const googletrresponse = await this.discussion.Chat.googletranslate(textRecorded, sourceLang, "");
+      console.log("FIRST GOOGLE RESPONSE", googletrresponse);
       if (googletrresponse.data.translations[0].detectedSourceLanguage) {
-        sourceLang = googletrresponse.data.translations[0].detectedSourceLanguage;
+        const detectedLang = googletrresponse.data.translations[0].detectedSourceLanguage;
+        sourceLang = detectedLang === "und" ? "en" : detectedLang;
       }
       // console.log("here for stopText:", stopText);
       // console.log("here for sourceLang:", sourceLang);
       if (sourceLang !== "en") {
+        console.log("here for stopText:", stopText);
+        console.log("here for sourceLang:", sourceLang);
+
         const transResponse = await this.discussion.Chat.googletranslate(stopText, sourceLang, "en");
         stopText = transResponse.data.translations[0].translatedText;
       }
