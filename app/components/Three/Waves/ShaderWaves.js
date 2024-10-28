@@ -7,7 +7,7 @@ import WavesGUI from "./WavesGUI";
 export default class ShaderWaves {
   constructor() {
     // States
-    this.maxWaves = 5;
+    this.maxWaves = 7;
     this.currentWaveIndex = 1; // Track which wave to trigger next
     this.debug = import.meta.env.VITE_DEBUG === "true";
 
@@ -34,7 +34,7 @@ export default class ShaderWaves {
     };
 
     // during debug only - to be removed
-    this.settings.progress = 1;
+    // this.settings.progress = 1;
 
     // DOM ELEMENTS
     this.canvas = document.querySelector(".threejs-container");
@@ -211,7 +211,7 @@ export default class ShaderWaves {
     const avgVolume = dataArray.reduce((sum, value) => sum + value, 0) / bufferLength;
 
     // Trigger the wave if volume exceeds a threshold
-    if (avgVolume > 5) {
+    if (avgVolume > 10) {
       this.triggerWave();
     }
   }

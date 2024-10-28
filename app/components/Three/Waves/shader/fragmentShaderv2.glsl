@@ -1,4 +1,4 @@
-#define MAX_WAVES 5
+#define MAX_WAVES 7
 
 // Classic uniforms
 uniform float uTime;
