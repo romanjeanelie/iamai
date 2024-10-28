@@ -243,6 +243,20 @@ export default class TaskManager {
     }
   }
 
+  handleScrollDown(e) {
+    // detect if the user scrolled all the way down the container
+    const scrollPosition = e.target.scrollTop;
+    const scrollHeight = e.target.scrollHeight;
+    const clientHeight = e.target.clientHeight;
+
+    if (scrollPosition + clientHeight >= scrollHeight) {
+      this.fetcher.getTasks(3);
+      // i don't wan't the user to see the scrolling change so i'm going to scroll back to the top
+      // this.container.scrollTop = scrollPosition + clientHeight;
+      this.container.scrollTop = 0;
+    }
+  }
+
   addListeners() {
     // Prevent touch event bugs
     this.container.addEventListener("touchstart", (e) => {
@@ -254,6 +268,8 @@ export default class TaskManager {
     this.container.addEventListener("touchend", (e) => {
       e.stopPropagation();
     });
+
+    this.container.addEventListener("scroll", this.handleScrollDown.bind(this));
 
     // Emitter
     this.emitter.on("taskManager:createTask", (task) => this.createTask(task));

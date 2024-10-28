@@ -9,6 +9,8 @@ const md = getMarked();
 
 export default class TaskFetcher {
   constructor(emitter) {
+    this.startIndex = 0;
+
     this.emitter = emitter;
     this.getTasks();
   }
@@ -211,13 +213,13 @@ export default class TaskFetcher {
     return result;
   }
 
-  async getTasks(start = 0, size = 10, order = "desc") {
+  async getTasks(size = 10, order = "desc") {
     const uuid = store.getState().chatId;
     const idToken = await store.getState().user.user.getIdToken(true);
 
     const params = {
       uuid,
-      start,
+      start: this.startIndex,
       size,
       order,
     };
@@ -247,6 +249,10 @@ export default class TaskFetcher {
       task.resultsContainer = result;
 
       this.addTasksUI(statuses, result);
+
+      console.log("Task added", task);
+
+      this.startIndex += size;
     });
   }
 }
