@@ -506,14 +506,12 @@ export default class VoiceConv {
     });
 
     // Close
-    if (this.closeBtn) {
-      this.closeBtn.addEventListener("click", async () => {
-        this.anims.toStopVoiceConv();
-        this.waves.destroy();
-        this.waves = null;
-        this.leave();
-      });
-    }
+    this.closeBtn.addEventListener("click", async () => {
+      this.anims.toStopVoiceConv();
+      this.waves?.destroy();
+      this.waves = null;
+      this.leave();
+    });
 
     this.emitter.on("videoInput:leave", () => {
       this.anims.toStopVoiceConv();
