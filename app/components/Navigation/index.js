@@ -1,4 +1,4 @@
-import gsap from "gsap";
+import gsap, { Power3 } from "gsap";
 import { signOutUser } from "../../User";
 import { Flip } from "gsap/Flip";
 import { NavigationAnimations } from "./NavigationAnimations";
@@ -22,6 +22,8 @@ export default class Navigation {
     // State
     this.rootMargin = -100;
     this.currentSection = SECTIONS.discussion; // State to track the current section
+    this.touchStartY = 0;
+    this.touchCurrentY = 0;
 
     // DOM Elements
     this.app = document.querySelector("#app");
@@ -31,6 +33,7 @@ export default class Navigation {
     this.inputWrapper = document.querySelector(".input__wrapper");
     this.historyButton = this.headerNav.querySelector(".header-nav__history-container");
     this.tasksButton = this.footerNav.querySelector(".footer-nav__tasks-container");
+
     this.pageEl = document.querySelector(".page-discussion");
     this.discussionWrapper = document.querySelector(".discussion__wrapper");
     this.discussionContainer = document.querySelector(".discussion__container");
@@ -76,6 +79,9 @@ export default class Navigation {
         yPercent: 0,
         duration: 0.5,
         ease: "power3.inOut",
+        onComplete: () => {
+          this.isTasksInMotion = false;
+        },
       });
       this.inputEl.classList.add("hidden");
     } else {
@@ -85,6 +91,9 @@ export default class Navigation {
         yPercent: 100,
         duration: 0.5,
         ease: "power3.inOut",
+        onComplete: () => {
+          this.isTasksInMotion = false;
+        },
       });
       this.inputEl.classList.remove("hidden");
     }
@@ -140,15 +149,48 @@ export default class Navigation {
   }
 
   addListeners() {
+    // Scroll Events
+    this.pageEl.addEventListener("touchstart", (e) => {
+      if (this.currentSection !== SECTIONS.discussion) return;
+      this.touchStartY = e.targetTouches[0].screenY;
+    });
+
+    this.pageEl.addEventListener("touchmove", (e) => {
+      if (this.currentSection !== SECTIONS.discussion) return;
+      this.touchCurrentY = e.targetTouches[0].screenY;
+
+      let changeY = this.touchCurrentY < this.touchStartY ? Math.abs(this.touchCurrentY - this.touchStartY) : 0;
+
+      if (changeY >= 200) {
+        if (this.isTasksInMotion) return;
+        this.isTasksInMotion = true;
+        gsap.to(this.discussionContainer, {
+          yPercent: -100,
+          duration: 0.5,
+          ease: Power3.easeOut,
+          onComplete: this.toggleTasks.bind(this),
+        });
+      }
+    });
+
+    this.pageEl.addEventListener("touchend", (e) => {
+      // if (this.currentSection !== SECTIONS.discussion) return;
+      this.pageEl.style.paddingBottom = "0";
+      this.footerNav.style.paddingBottom = "0";
+    });
+
+    // Intersection Observer
     this.setupIntersectionObserver();
+
+    // Buttons
     this.userPicture.addEventListener("click", signOutUser);
     this.historyButton.addEventListener("click", this.toggleHistory.bind(this));
     this.tasksButton.addEventListener("click", this.toggleTasks.bind(this));
 
+    // Emitter
     this.emitter.on("app:initialized", () => {
       this.anims.showNav();
     });
-
     this.emitter.on("input:updateImages", this.hideNavButtons.bind(this));
     this.emitter.on("input:imagesQuestionAsked", this.displayNavButtons.bind(this));
   }

@@ -250,8 +250,6 @@ export default class TaskFetcher {
 
       this.addTasksUI(statuses, result);
 
-      console.log("Task added", task);
-
       this.startIndex += size;
     });
   }
