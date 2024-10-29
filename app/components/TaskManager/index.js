@@ -29,6 +29,8 @@ export default class TaskManager {
     this.tasksUI = [];
     this.currentDay = null;
     this.isHistorySet = false;
+    this.touchCurrentY = 0;
+    this.touchStartY = 0;
 
     // Init Methods
     this.button = new TaskManagerButton(this.tasks, this.emitter);
@@ -261,12 +263,32 @@ export default class TaskManager {
     // Prevent touch event bugs
     this.container.addEventListener("touchstart", (e) => {
       e.stopPropagation();
+      this.touchStartY = e.targetTouches[0].screenY;
     });
+
+    // Add event listener for touchmove event
     this.container.addEventListener("touchmove", (e) => {
       e.stopPropagation();
+      this.touchCurrentY = e.targetTouches[0].screenY;
+      let changeY = this.touchCurrentY > this.touchStartY ? Math.abs(this.touchCurrentY - this.touchStartY) : 0;
+      const threshold = 100; // Set a threshold for the vertical change
+
+      if (this.container.scrollTop === 0 && changeY < threshold) {
+        this.container.style.marginTop = `${changeY}px`;
+      } else if (this.container.scrollTop === 0 && changeY >= threshold && !this.isMovingBackToDiscussion) {
+        this.isMovingBackToDiscussion = true;
+        // Go back to discussion section if the user swiped up enough when on top of the tasks section
+        this.navigation.toggleTasks();
+
+        setTimeout(() => {
+          this.isMovingBackToDiscussion = false;
+        }, 500);
+      }
     });
+
     this.container.addEventListener("touchend", (e) => {
       e.stopPropagation();
+      this.container.style.marginTop = "0";
     });
 
     this.container.addEventListener("scroll", this.handleScrollDown.bind(this));

@@ -161,7 +161,7 @@ export default class Navigation {
 
       let changeY = this.touchCurrentY < this.touchStartY ? Math.abs(this.touchCurrentY - this.touchStartY) : 0;
 
-      if (changeY >= 200) {
+      if (changeY >= 50) {
         if (this.isTasksInMotion) return;
         this.isTasksInMotion = true;
         gsap.to(this.discussionContainer, {
