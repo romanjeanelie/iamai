@@ -27,6 +27,7 @@ export default class TaskManager {
     // States
     this.tasks = [];
     this.tasksUI = [];
+    this.dates = [];
     this.currentDay = null;
     this.isHistorySet = false;
     this.touchCurrentY = 0;
@@ -83,18 +84,20 @@ export default class TaskManager {
   }
 
   // ---------- Handling the tasks ----------
-  createTask(task) {
+  createTask(task, textAI, isFromChat) {
     // Handling the Date
     const taskDate = new Date(task.createdAt);
-    this.currentDay = taskDate;
-    this.addDate();
+    if (!this.dates.includes(taskDate.toDateString())) {
+      this.currentDay = taskDate;
+      this.addDate();
+    }
 
     // Handling the Data
     this.tasks.push(task);
 
     // Handling the UI
     const initialState = Flip.getState(".task-manager__task-card-container");
-    const newCardUI = new TaskManagerCard(task, this, this.emitter);
+    const newCardUI = new TaskManagerCard(task, this, isFromChat, this.emitter);
 
     this.animations.cardInOutAnimation(newCardUI, initialState);
     this.tasksUI.push(newCardUI);
@@ -111,6 +114,7 @@ export default class TaskManager {
 
     if (dayMonthYear === new Date().toDateString()) {
       divDate.innerHTML = "Today";
+      divDate.style.order = -1;
     } else {
       divDate.innerHTML = this.currentDay.toLocaleDateString("en-US", {
         weekday: "long",
@@ -118,6 +122,7 @@ export default class TaskManager {
     }
 
     this.tasksGrid.appendChild(divDate);
+    this.dates.push(dayMonthYear);
   }
 
   removePreviousDates(day) {
@@ -244,16 +249,16 @@ export default class TaskManager {
   }
 
   handleScrollDown(e) {
-    // // detect if the user scrolled all the way down the container
-    // const scrollPosition = e.target.scrollTop;
-    // const scrollHeight = e.target.scrollHeight;
-    // const clientHeight = e.target.clientHeight;
-    // if (scrollPosition + clientHeight >= scrollHeight) {
-    //   this.fetcher.getTasks(3);
-    //   // i don't wan't the user to see the scrolling change so i'm going to scroll back to the top
-    //   // this.container.scrollTop = scrollPosition + clientHeight;
-    //   this.container.scrollTop = 0;
-    // }
+    // detect if the user scrolled all the way down the container
+    const scrollPosition = e.target.scrollTop;
+    const scrollHeight = e.target.scrollHeight;
+    const clientHeight = e.target.clientHeight;
+    if (scrollPosition + clientHeight >= scrollHeight) {
+      this.fetcher.getTasks(3);
+      // i don't wan't the user to see the scrolling change so i'm going to scroll back to the top
+      this.container.scrollTop = scrollPosition + clientHeight;
+      // this.container.scrollTop = 0;
+    }
   }
 
   addListeners() {
@@ -291,7 +296,7 @@ export default class TaskManager {
     this.container.addEventListener("scroll", this.handleScrollDown.bind(this));
 
     // Emitter
-    this.emitter.on("taskManager:createTask", (task) => this.createTask(task));
+    this.emitter.on("taskManager:createTask", (task, textAI, isFromChat) => this.createTask(task, textAI, isFromChat));
     this.emitter.on("taskManager:updateStatus", (taskKey, status, container, workflowID) => {
       this.onStatusUpdate(taskKey, status, container, workflowID);
     });

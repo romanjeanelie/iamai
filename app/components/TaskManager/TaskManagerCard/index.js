@@ -6,9 +6,10 @@ import TaskCardAccordion from "./TaskCardAccordion";
 import TaskCardStatus from "./TaskCardStatus";
 
 export default class TaskManagerCard {
-  constructor(task, taskManager, emitter) {
+  constructor(task, taskManager, isFromChat, emitter) {
     this.task = task;
     this.taskManager = taskManager;
+    this.isFromChat = isFromChat;
     this.emitter = emitter;
 
     // Index of the task in the tasks array
@@ -47,18 +48,26 @@ export default class TaskManagerCard {
 
   // Create the card element
   initUI() {
+    console.log("inside taskCard : ", this.isFromChat);
     this.cardContainer = document.createElement("li");
     this.cardContainer.classList.add("task-manager__task-card-container");
 
     this.card = document.createElement("div");
     this.card.classList.add("task-manager__task-card");
     this.card.setAttribute("task-key", this.task.key);
+    if (this.isFromChat) this.cardContainer.style.order = -1;
+
+    const date = new Date(this.task.createdAt);
 
     this.card.innerHTML = `
       <div class="card-state">
         <div class="task-manager__task-card-content">
           <h3 class="task-manager__task-card-title">
             ${this.task.name} 
+            ${date.toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+            })}
           </h3>
 
           <div class="task-manager__task-status">

@@ -213,7 +213,7 @@ export default class TaskFetcher {
     return result;
   }
 
-  async getTasks(size = 4, order = "desc") {
+  async getTasks(size = 10, order = "desc") {
     const uuid = store.getState().chatId;
     const idToken = await store.getState().user.user.getIdToken(true);
 
@@ -249,8 +249,7 @@ export default class TaskFetcher {
       task.resultsContainer = result;
 
       this.addTasksUI(statuses, result);
-
-      this.startIndex += size;
     }
+    this.startIndex += size + 1;
   }
 }
