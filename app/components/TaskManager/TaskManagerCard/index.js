@@ -96,7 +96,7 @@ export default class TaskManagerCard {
     this.statusPillLabel = this.card.querySelector(".task-manager__task-status-label");
 
     this.cardContainer.appendChild(this.card);
-    this.tasksGrid.prepend(this.cardContainer);
+    this.tasksGrid.appendChild(this.cardContainer);
 
     this.animations = new TaskCardAnimations(this.card);
   }

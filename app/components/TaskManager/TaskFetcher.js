@@ -213,7 +213,7 @@ export default class TaskFetcher {
     return result;
   }
 
-  async getTasks(size = 10, order = "desc") {
+  async getTasks(size = 4, order = "desc") {
     const uuid = store.getState().chatId;
     const idToken = await store.getState().user.user.getIdToken(true);
 
@@ -236,7 +236,7 @@ export default class TaskFetcher {
     // remove cancelled task
     tasks = tasks?.filter((task) => task.status !== API_STATUSES.CANCELLED);
 
-    tasks.forEach(async (task) => {
+    for (const task of tasks) {
       // add the statuses to the task
       const statuses = await this.getStatusesTask({
         micro_thread_id: task.micro_thread_id,
@@ -251,6 +251,6 @@ export default class TaskFetcher {
       this.addTasksUI(statuses, result);
 
       this.startIndex += size;
-    });
+    }
   }
 }

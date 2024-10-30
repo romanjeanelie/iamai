@@ -84,22 +84,20 @@ export default class TaskManager {
 
   // ---------- Handling the tasks ----------
   createTask(task) {
+    // Handling the Date
+    const taskDate = new Date(task.createdAt);
+    this.currentDay = taskDate;
+    this.addDate();
+
     // Handling the Data
-    this.tasks.unshift(task);
+    this.tasks.push(task);
 
     // Handling the UI
     const initialState = Flip.getState(".task-manager__task-card-container");
     const newCardUI = new TaskManagerCard(task, this, this.emitter);
 
-    // Handling the Date
-    const taskDate = new Date(task.createdAt);
-    const taskDay = taskDate?.toDateString();
-    this.currentDay = taskDate;
-    this.removePreviousDates(taskDay);
-    this.addDate();
-
     this.animations.cardInOutAnimation(newCardUI, initialState);
-    this.tasksUI.unshift(newCardUI);
+    this.tasksUI.push(newCardUI);
 
     // Handling the Index
     this.updateTasksIndex();
@@ -119,7 +117,7 @@ export default class TaskManager {
       });
     }
 
-    this.tasksGrid.prepend(divDate);
+    this.tasksGrid.appendChild(divDate);
   }
 
   removePreviousDates(day) {
@@ -246,17 +244,16 @@ export default class TaskManager {
   }
 
   handleScrollDown(e) {
-    // detect if the user scrolled all the way down the container
-    const scrollPosition = e.target.scrollTop;
-    const scrollHeight = e.target.scrollHeight;
-    const clientHeight = e.target.clientHeight;
-
-    if (scrollPosition + clientHeight >= scrollHeight) {
-      this.fetcher.getTasks(3);
-      // i don't wan't the user to see the scrolling change so i'm going to scroll back to the top
-      // this.container.scrollTop = scrollPosition + clientHeight;
-      this.container.scrollTop = 0;
-    }
+    // // detect if the user scrolled all the way down the container
+    // const scrollPosition = e.target.scrollTop;
+    // const scrollHeight = e.target.scrollHeight;
+    // const clientHeight = e.target.clientHeight;
+    // if (scrollPosition + clientHeight >= scrollHeight) {
+    //   this.fetcher.getTasks(3);
+    //   // i don't wan't the user to see the scrolling change so i'm going to scroll back to the top
+    //   // this.container.scrollTop = scrollPosition + clientHeight;
+    //   this.container.scrollTop = 0;
+    // }
   }
 
   addListeners() {
