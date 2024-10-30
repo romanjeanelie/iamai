@@ -48,7 +48,6 @@ export default class TaskManagerCard {
 
   // Create the card element
   initUI() {
-    console.log("inside taskCard : ", this.isFromChat);
     this.cardContainer = document.createElement("li");
     this.cardContainer.classList.add("task-manager__task-card-container");
 

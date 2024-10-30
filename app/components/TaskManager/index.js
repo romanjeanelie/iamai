@@ -233,7 +233,6 @@ export default class TaskManager {
     }
 
     this.button.handleTaskButton();
-
     if (resultContainer) this.tasks[taskIndex].resultsContainer = resultContainer;
     this.tasks[taskIndex].workflowID = workflowID;
 
