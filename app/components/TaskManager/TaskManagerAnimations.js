@@ -44,7 +44,7 @@ export default class TaskManagerAnimations {
       duration: 0.3,
       ease: "power1.inOut",
       onStart: () => {
-        return gsap.fromTo(
+        gsap.fromTo(
           newCard.cardContainer,
           {
             opacity: 0,

@@ -252,11 +252,14 @@ export default class TaskManager {
     const scrollPosition = e.target.scrollTop;
     const scrollHeight = e.target.scrollHeight;
     const clientHeight = e.target.clientHeight;
-    if (scrollPosition + clientHeight >= scrollHeight) {
-      this.fetcher.getTasks(3);
-      // i don't wan't the user to see the scrolling change so i'm going to scroll back to the top
+
+    if (scrollPosition + clientHeight >= scrollHeight - 1 && !this.isFetching) {
+      this.isFetching = true;
+      this.fetcher.getTasks(10);
       this.container.scrollTop = scrollPosition + clientHeight;
-      // this.container.scrollTop = 0;
+      setTimeout(() => {
+        this.isFetching = false;
+      }, 500);
     }
   }
 
