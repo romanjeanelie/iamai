@@ -105,7 +105,6 @@ class Chat {
   }
 
   callsubmit = async (text, img, container, live_mode = false) => {
-    console.log(text, img, container);
     this.container = container;
     var input_text = text;
     var original_text = input_text;
@@ -421,7 +420,7 @@ class Chat {
 
           const textAI = mdata.response_json.text;
           // await this.createTask(task, textAI)
-          this.callbacks.emitter.emit("taskManager:createTask", task, textAI);
+          this.callbacks.emitter.emit("taskManager:createTask", task, textAI, true);
           this.callbacks.emitter.emit("endStream");
         } else if (mdata.status && mdata.status == AGENT_PROGRESSING) {
           if (mdata.awaiting) {

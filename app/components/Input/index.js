@@ -1,5 +1,5 @@
 // Components
-import Phone from "../Phone";
+import VoiceConv from "../VoiceConv";
 import InputImage from "./InputImage";
 
 // Utils
@@ -82,7 +82,6 @@ export default class Input {
       {
         onImageUploaded: (img) => {
           this.currentImages.push(img);
-          console.log("ON IMAGE UPLOADED : ", img);
         },
         onImageCancel: () => {
           this.currentImages = [];
@@ -93,18 +92,18 @@ export default class Input {
       this.emitter
     );
 
-    // Video
+    // Video Conversation
     this.inputVideo = new InputVideo(this.emitter);
 
-    // Phone
-    this.phone = new Phone({
+    // Voice Conversation
+    this.voiceConv = new VoiceConv({
       pageEl: this.pageEl,
       discussion: this.discussion,
       emitter: this.emitter,
       photos: this.inputVideo.photos,
       anims: {
-        toStartPhoneRecording: () => this.anims.toStartPhoneRecording(),
-        toStopPhoneRecording: () => this.anims.toStopPhoneRecording(),
+        toStartVoiceConv: () => this.anims.toStartVoiceConv(),
+        toStopVoiceConv: () => this.anims.toStopVoiceConv(),
       },
     });
 

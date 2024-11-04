@@ -2,8 +2,8 @@ const WHISPER_URL =
   import.meta.env.VITE_API_WHISPER_URL ||
   "https://api.asterizk.ai/proxy-whisper-api-web/asr?task=transcribe&encode=true&output=json&word_timestamps=false&language=";
 const GROQ_TOKEN = import.meta.env.VITE_API_GROQ_TOKEN;
-  
-const sendToWispherProxy = (url, lang = "", attempt = 0) =>
+
+const sendToWispher = (url, lang = "", attempt = 0) =>
   new Promise((resolve, reject) => {
     var xhr = new XMLHttpRequest();
 
@@ -31,9 +31,8 @@ const sendToWispherProxy = (url, lang = "", attempt = 0) =>
     xhr.send(data);
   });
 
-const sendToWispher = (url, lang = "", attempt = 0) =>
+export const sendToWisphergroq = (url, lang = "", attempt = 0) =>
   new Promise(async (resolve, reject) => {
-
     // WARNING: For POST requests, body is set to null by browsers.
     var data = new FormData();
     // data.append("file", fileInput.files[0], "file");
@@ -42,8 +41,7 @@ const sendToWispher = (url, lang = "", attempt = 0) =>
     data.append("temperature", "0");
     data.append("response_format", "json");
     // console.log("lang:",lang)
-    if(lang && lang != "" )
-      data.append("language", lang);
+    if (lang && lang != "") data.append("language", lang);
 
     var xhr = new XMLHttpRequest();
     // xhr.withCredentials = true;
@@ -60,7 +58,6 @@ const sendToWispher = (url, lang = "", attempt = 0) =>
     xhr.setRequestHeader("Authorization", `Bearer ${GROQ_TOKEN}`);
 
     xhr.send(data);
-    
 
     var xhr = new XMLHttpRequest();
 

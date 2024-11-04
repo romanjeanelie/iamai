@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _PhoneDotAnimations = _interopRequireDefault(require("../../components/Phone/PhoneDotAnimations"));
+var _VoiceConvDotAnimations = _interopRequireDefault(require("../../components/VoiceConv/VoiceConvDotAnimations"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -33,7 +33,7 @@ function () {
     this.btnFinishTalk = document.querySelector("#btn-finishTalk");
     this.btnFinishProcessing = document.querySelector("#btn-finishProcessing"); // Phone Animations
 
-    this.phoneAnimations = new _PhoneDotAnimations["default"]({
+    this.phoneAnimations = new _VoiceConvDotAnimations["default"]({
       pageEl: document
     }); // Events Listener
 

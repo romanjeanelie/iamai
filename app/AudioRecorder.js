@@ -6,6 +6,8 @@ export default class AudioRecorder {
     this.input = null;
     this.audioContext = null;
     this.encodingType = "mp3"; // or 'ogg, mp3, wav'
+
+    console.log("AudioRecorder initialized");
   }
 
   startRecording() {

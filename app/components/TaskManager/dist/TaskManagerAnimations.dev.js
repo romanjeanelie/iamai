@@ -79,7 +79,7 @@ function () {
         duration: 0.3,
         ease: "power1.inOut",
         onStart: function onStart() {
-          return _gsap["default"].fromTo(newCard.cardContainer, {
+          _gsap["default"].fromTo(newCard.cardContainer, {
             opacity: 0,
             scale: 0.9
           }, {

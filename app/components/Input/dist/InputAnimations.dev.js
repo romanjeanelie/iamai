@@ -9,6 +9,8 @@ exports["default"] = void 0;
 
 var _gsap = _interopRequireWildcard(require("gsap"));
 
+var _Flip = _interopRequireDefault(require("gsap/Flip"));
+
 var _anim = _interopRequireDefault(require("../../utils/anim"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -22,6 +24,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+_gsap["default"].registerPlugin(_Flip["default"]);
 
 var InputAnimations =
 /*#__PURE__*/
@@ -45,9 +49,9 @@ function () {
     this.inputText = this.inputEl.querySelector(".input-text"); // Image
 
     this.inputImageContainer = this.inputEl.querySelector(".input__image--container");
-    this.imageDroppedContainer = this.pageEl.querySelector(".image-dropped__container"); // Phone
+    this.imageDroppedContainer = this.pageEl.querySelector(".image-dropped__container"); // VoiceConversation
 
-    this.phoneWrapper = this.pageEl.querySelector(".phone__wrapper"); // Other dom elements
+    this.voiceConvWrapper = this.pageEl.querySelector(".phone__wrapper"); // Other dom elements
 
     this.logoEl = document.querySelector(".logo__main");
     this.logoMobileEl = document.querySelector(".logo__mobile");
@@ -358,54 +362,88 @@ function () {
       this.inputText.placeholder = placeholder;
     }
     /**
-     * Phone
+     * Voice Conversation
      */
 
   }, {
-    key: "toStartPhoneRecording",
-    value: function toStartPhoneRecording() {
-      this.inputEl.classList.add("hidden");
-      this.phoneWrapper.classList.add("show");
-    }
-  }, {
-    key: "toStopPhoneRecording",
-    value: function toStopPhoneRecording() {
+    key: "toStartVoiceConv",
+    value: function toStartVoiceConv() {
       var _this5 = this;
 
-      var fadeOutphoneWrapper = (0, _anim["default"])(this.phoneWrapper, [{
-        opacity: 1,
-        transform: "translateY(0px)"
-      }, {
-        opacity: 0,
-        transform: "translateY(100%)"
-      }], {
-        duration: 150,
-        ease: "ease-in-out",
-        fill: "forwards"
+      var tl = _gsap["default"].timeline({
+        "default": {
+          duration: 0.4,
+          ease: _gsap.Circ.easeInOut
+        },
+        onComplete: function onComplete() {
+          _this5.voiceConvWrapper.classList.add("show");
+        }
       });
 
-      fadeOutphoneWrapper.onfinish = function () {
-        var fadeInIput = (0, _anim["default"])(_this5.inputEl, [{
-          opacity: 0,
-          transform: "translateY(100%)"
-        }, {
-          opacity: 1,
-          transform: "translateY(0)"
-        }], {
-          duration: 300,
-          ease: "ease-in-out",
-          fill: "forwards"
+      tl.to(this.inputFrontEl.children, {
+        opacity: 0,
+        stagger: 0.1
+      });
+      tl.add(function () {
+        var initialState = _Flip["default"].getState(_this5.inputFrontEl);
+
+        _this5.inputFrontEl.classList.add("voice-conversation");
+
+        _Flip["default"].from(initialState, {
+          duration: 0.4,
+          ease: _gsap.Circ.easeInOut
         });
-        fadeOutphoneWrapper.cancel();
+      });
+      tl.to(this.voiceConvWrapper.children, {
+        opacity: 1,
+        stagger: 0.1
+      }, "+=0.2");
+      tl.to(this.inputEl, {
+        opacity: 0
+      });
+      tl.to(this.voiceConvWrapper, {
+        opacity: 1
+      }, "<");
+    }
+  }, {
+    key: "toStopVoiceConv",
+    value: function toStopVoiceConv() {
+      var _this6 = this;
 
-        _this5.inputEl.classList.remove("hidden");
+      var tl = _gsap["default"].timeline({
+        "default": {
+          duration: 0.4,
+          ease: _gsap.Circ.easeInOut
+        },
+        onComplete: function onComplete() {
+          _this6.voiceConvWrapper.classList.remove("show");
+        }
+      });
 
-        _this5.phoneWrapper.classList.remove("show");
+      tl.to(this.voiceConvWrapper.children, {
+        opacity: 0
+      });
+      tl.to(this.inputEl, {
+        opacity: 1
+      }, "-=0.3");
+      tl.add(function () {
+        var initialState = _Flip["default"].getState(_this6.inputFrontEl);
 
-        fadeInIput.onfinish = function () {
-          fadeInIput.cancel();
-        };
-      };
+        _this6.inputFrontEl.classList.remove("voice-conversation");
+
+        _Flip["default"].from(initialState, {
+          duration: 0.4,
+          ease: _gsap.Circ.easeInOut
+        });
+      });
+      tl.to(this.inputFrontEl.children, {
+        opacity: 1,
+        stagger: 0.1
+      }, "+=0.2");
+      tl.to(this.voiceConvWrapper, {
+        opacity: 0,
+        pointerEvents: "none"
+      });
     }
   }, {
     key: "leaveDragImage",

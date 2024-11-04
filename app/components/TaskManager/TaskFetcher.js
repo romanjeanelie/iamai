@@ -9,6 +9,8 @@ const md = getMarked();
 
 export default class TaskFetcher {
   constructor(emitter) {
+    this.startIndex = 0;
+
     this.emitter = emitter;
     this.getTasks();
   }
@@ -211,13 +213,13 @@ export default class TaskFetcher {
     return result;
   }
 
-  async getTasks(start = 0, size = 10, order = "desc") {
+  async getTasks(size = 10, order = "desc") {
     const uuid = store.getState().chatId;
     const idToken = await store.getState().user.user.getIdToken(true);
 
     const params = {
       uuid,
-      start,
+      start: this.startIndex,
       size,
       order,
     };
@@ -234,7 +236,7 @@ export default class TaskFetcher {
     // remove cancelled task
     tasks = tasks?.filter((task) => task.status !== API_STATUSES.CANCELLED);
 
-    tasks.forEach(async (task) => {
+    for (const task of tasks) {
       // add the statuses to the task
       const statuses = await this.getStatusesTask({
         micro_thread_id: task.micro_thread_id,
@@ -247,6 +249,7 @@ export default class TaskFetcher {
       task.resultsContainer = result;
 
       this.addTasksUI(statuses, result);
-    });
+    }
+    this.startIndex += size;
   }
 }

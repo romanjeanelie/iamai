@@ -5,23 +5,12 @@ import fetcher from "../../utils/fetcher";
 import { API_STATUSES, URL_AGENT_STATUS, URL_DELETE_STATUS } from "../constants";
 import { store } from "../store";
 
+import { getPreviousDayTimestamp } from "../History";
 import TaskManagerAnimations from "./TaskManagerAnimations";
 import TaskManagerButton from "./TaskManagerButton";
 import TaskManagerCard from "./TaskManagerCard";
-import TaskManagerDebug from "./TaskManagerDebug";
-import { getPreviousDayTimestamp } from "../History";
-import { MoviesUI, FlightUI, ProductUI, HotelsUI } from "../UI";
-import {
-  flightSearchData,
-  flightSearchResultsData,
-  hotelSearchData,
-  hotelSearchResultsData,
-  moviesResultData,
-  productResultData,
-} from "../../../testData";
 
 import TaskFetcher from "./TaskFetcher";
-import { GUI } from "dat.gui";
 
 gsap.registerPlugin(Flip);
 
@@ -38,45 +27,44 @@ export default class TaskManager {
     // States
     this.tasks = [];
     this.tasksUI = [];
+    this.taskCreationQueue = [];
+    this.dates = [];
     this.currentDay = null;
     this.isHistorySet = false;
+    this.touchCurrentY = 0;
+    this.touchStartY = 0;
 
     // Init Methods
     this.button = new TaskManagerButton(this.tasks, this.emitter);
     this.animations = new TaskManagerAnimations(this.emitter);
+
     this.addListeners();
 
     // Debug
     this.debug = import.meta.env.VITE_DEBUG === "true";
     if (this.debug) {
-      this.gui = new GUI();
-      this.debugger = new TaskManagerDebug(this);
-      this.debugger.addDebugTask();
-
-      this.onStatusUpdate(this.tasks[0].key, {
-        type: API_STATUSES.PROGRESSING,
-        title: "Progressing",
-        description:
-          " Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi maiores, culpa architecto enim autem iusto! Maxime sunt explicabo pariatur corporis accusantium, voluptas excepturi quam inventore dicta, consequatur soluta ipsam doloremque? ",
-      });
-
-      const testProductResult = new ProductUI(productResultData);
-      const testMovieResult = new MoviesUI(moviesResultData, this.emitter);
-      const testHotelResult = new HotelsUI(hotelSearchData, hotelSearchResultsData, this.emitter);
-      const testFlightResult = new FlightUI(flightSearchData, flightSearchResultsData);
-
-      this.onStatusUpdate(
-        this.tasks[0].key,
-        {
-          type: API_STATUSES.ENDED,
-          title: "Ended",
-          description: "Task has ended",
-        },
-        testHotelResult
-      );
-
-      this.debugger.addDebugTask();
-      this.debugger.addDebugTask();
+      // this.gui = new GUI();
+      // this.debugger = new TaskManagerDebug(this);
+      // this.debugger.addDebugTask();
+      // this.onStatusUpdate(this.tasks[0].key, {
+      //   type: API_STATUSES.PROGRESSING,
+      //   title: "Progressing",
+      //   description:
+      //     " Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi maiores, culpa architecto enim autem iusto! Maxime sunt explicabo pariatur corporis accusantium, voluptas excepturi quam inventore dicta, consequatur soluta ipsam doloremque? ",
+      // });
+      // const testProductResult = new ProductUI(productResultData);
+      // const testMovieResult = new MoviesUI(moviesResultData, this.emitter);
+      // const testHotelResult = new HotelsUI(hotelSearchData, hotelSearchResultsData, this.emitter);
+      // const testFlightResult = new FlightUI(flightSearchData, flightSearchResultsData);
+      // this.onStatusUpdate(
+      //   this.tasks[0].key,
+      //   {
+      //     type: API_STATUSES.ENDED,
+      //     title: "Ended",
+      //     description: "Task has ended",
+      //   },
+      //   testHotelResult
+      // );
     }
   }
 
@@ -98,26 +86,37 @@ export default class TaskManager {
   }
 
   // ---------- Handling the tasks ----------
-  createTask(task) {
-    // Handling the Data
-    this.tasks.unshift(task);
-
-    // Handling the UI
-    const initialState = Flip.getState(".task-manager__task-card-container");
-    const newCardUI = new TaskManagerCard(task, this, this.emitter);
-
+  createTask(task, textAI, isFromChat) {
     // Handling the Date
     const taskDate = new Date(task.createdAt);
-    const taskDay = taskDate?.toDateString();
-    this.currentDay = taskDate;
-    this.removePreviousDates(taskDay);
-    this.addDate();
+    if (!this.dates.includes(taskDate.toDateString())) {
+      this.currentDay = taskDate;
+      this.addDate();
+    }
 
-    this.animations.cardInOutAnimation(newCardUI, initialState);
-    this.tasksUI.unshift(newCardUI);
+    // Handling the Data
+    this.tasks.push(task);
+
+    // Handling the UI
+    // const initialState = Flip.getState(".task-manager__task-card-container");
+    const newCardUI = new TaskManagerCard(task, this, isFromChat, this.emitter);
+
+    // this.animations.cardInOutAnimation(newCardUI, initialState);
+    this.tasksUI.push(newCardUI);
 
     // Handling the Index
     this.updateTasksIndex();
+  }
+
+  // Method to handle batch creation of tasks
+  createTaskBatch() {
+    console.log("Creating tasks in batch");
+    const tasksToCreate = [...this.taskCreationQueue];
+    this.taskCreationQueue = []; // Clear the queue
+
+    tasksToCreate.forEach(({ task, textAI, isFromChat }) => {
+      this.createTask(task, textAI, isFromChat);
+    });
   }
 
   addDate() {
@@ -128,13 +127,15 @@ export default class TaskManager {
 
     if (dayMonthYear === new Date().toDateString()) {
       divDate.innerHTML = "Today";
+      divDate.style.order = -1;
     } else {
       divDate.innerHTML = this.currentDay.toLocaleDateString("en-US", {
         weekday: "long",
       });
     }
 
-    this.tasksGrid.prepend(divDate);
+    this.tasksGrid.appendChild(divDate);
+    this.dates.push(dayMonthYear);
   }
 
   removePreviousDates(day) {
@@ -245,7 +246,6 @@ export default class TaskManager {
     }
 
     this.button.handleTaskButton();
-
     if (resultContainer) this.tasks[taskIndex].resultsContainer = resultContainer;
     this.tasks[taskIndex].workflowID = workflowID;
 
@@ -260,20 +260,58 @@ export default class TaskManager {
     }
   }
 
+  handleScrollDown(e) {
+    // detect if the user scrolled all the way down the container
+    const scrollPosition = e.target.scrollTop;
+    const scrollHeight = e.target.scrollHeight;
+    const clientHeight = e.target.clientHeight;
+
+    if (scrollPosition + clientHeight >= scrollHeight - 1 && !this.isFetching) {
+      this.isFetching = true;
+      this.fetcher.getTasks(10);
+      this.container.scrollTop = scrollPosition + clientHeight;
+      setTimeout(() => {
+        this.isFetching = false;
+      }, 500);
+    }
+  }
+
   addListeners() {
     // Prevent touch event bugs
     this.container.addEventListener("touchstart", (e) => {
       e.stopPropagation();
-    });
-    this.container.addEventListener("touchmove", (e) => {
-      e.stopPropagation();
-    });
-    this.container.addEventListener("touchend", (e) => {
-      e.stopPropagation();
+      this.touchStartY = e.targetTouches[0].screenY;
     });
 
+    // Add event listener for touchmove event
+    this.container.addEventListener("touchmove", (e) => {
+      e.stopPropagation();
+      this.touchCurrentY = e.targetTouches[0].screenY;
+      let changeY = this.touchCurrentY > this.touchStartY ? Math.abs(this.touchCurrentY - this.touchStartY) : 0;
+      const threshold = 100; // Set a threshold for the vertical change
+
+      if (this.container.scrollTop === 0 && changeY < threshold) {
+        this.container.style.marginTop = `${changeY}px`;
+      } else if (this.container.scrollTop === 0 && changeY >= threshold && !this.isMovingBackToDiscussion) {
+        this.isMovingBackToDiscussion = true;
+        // Go back to discussion section if the user swiped up enough when on top of the tasks section
+        this.navigation.toggleTasks();
+
+        setTimeout(() => {
+          this.isMovingBackToDiscussion = false;
+        }, 500);
+      }
+    });
+
+    this.container.addEventListener("touchend", (e) => {
+      e.stopPropagation();
+      this.container.style.marginTop = "0";
+    });
+
+    this.container.addEventListener("scroll", this.handleScrollDown.bind(this));
+
     // Emitter
-    this.emitter.on("taskManager:createTask", (task) => this.createTask(task));
+    this.emitter.on("taskManager:createTask", (task, textAI, isFromChat) => this.createTask(task, textAI, isFromChat));
     this.emitter.on("taskManager:updateStatus", (taskKey, status, container, workflowID) => {
       this.onStatusUpdate(taskKey, status, container, workflowID);
     });

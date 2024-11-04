@@ -1,4 +1,4 @@
-import PhoneAnimations from "../../components/Phone/PhoneDotAnimations";
+import PhoneAnimations from "../../components/VoiceConv/VoiceConvDotAnimations";
 
 export default class AccorSearchBarPhone {
   constructor({ debug }) {

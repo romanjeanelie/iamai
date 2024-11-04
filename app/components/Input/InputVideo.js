@@ -1,4 +1,4 @@
-import PhoneAnimations from "../Phone/PhoneDotAnimations";
+import VoiceConvAnimations from "../VoiceConv/VoiceConvDotAnimations";
 
 import minSecStr from "../../utils/minSecStr";
 
@@ -46,8 +46,8 @@ export default class InputVideo {
     this.reverseBtn = document.querySelector(".input__video--button.reverse-btn");
     this.exitBtn = document.querySelector(".input__video--button.exit-btn");
 
-    // Phone Animations
-    this.phoneAnimations = new PhoneAnimations({
+    // Voice Conversation Animations
+    this.voiceConvAnimations = new VoiceConvAnimations({
       pageEl: this.container,
     });
 
@@ -56,8 +56,8 @@ export default class InputVideo {
 
     // Init Methods
     this.pauseBtn.setAttribute("disabled", true);
-    this.phoneAnimations.toConnecting();
-    this.phoneAnimations.newInfoText("connecting");
+    this.voiceConvAnimations.toConnecting();
+    this.voiceConvAnimations.newInfoText("connecting");
     this.addEvents();
 
     if (this.debug) {
@@ -117,8 +117,8 @@ export default class InputVideo {
       this.captureInterval = null;
     }
 
-    this.phoneAnimations.toResume("user");
-    this.phoneAnimations.newInfoText("Start talking");
+    this.voiceConvAnimations.toResume("user");
+    this.voiceConvAnimations.newInfoText("Start talking");
     this.currentFacingMode = this.currentFacingMode === "user" ? "environment" : "user";
     this.initCamera();
   }
@@ -189,22 +189,22 @@ export default class InputVideo {
     if (this.isAITalking) {
       if (!this.isAIPaused) {
         this.isAIPaused = true;
-        this.phoneAnimations.newInfoText("Click to resume");
-        this.phoneAnimations.toPause("AI");
+        this.voiceConvAnimations.newInfoText("Click to resume");
+        this.voiceConvAnimations.toPause("AI");
       } else {
         this.isAIPaused = false;
-        this.phoneAnimations.newInfoText("I'm talking");
-        this.phoneAnimations.toResume("AI");
+        this.voiceConvAnimations.newInfoText("I'm talking");
+        this.voiceConvAnimations.toResume("AI");
       }
     } else {
       if (!this.isMicMuted) {
         this.isMicMuted = true;
-        this.phoneAnimations.toPause("user");
-        this.phoneAnimations.newInfoText("Click to resume");
+        this.voiceConvAnimations.toPause("user");
+        this.voiceConvAnimations.newInfoText("Click to resume");
       } else {
         this.isMicMuted = false;
-        this.phoneAnimations.toResume("user");
-        this.phoneAnimations.newInfoText("Start talking");
+        this.voiceConvAnimations.toResume("user");
+        this.voiceConvAnimations.newInfoText("Start talking");
       }
     }
   }
@@ -238,42 +238,42 @@ export default class InputVideo {
     this.emitter.on("input:displayVideoInput", this.displayVideoInput);
     this.emitter.on("phone:connected", () => {
       this.currentState = states.CONNECTED;
-      this.phoneAnimations.toConnected();
-      this.phoneAnimations.newInfoText("connected");
+      this.voiceConvAnimations.toConnected();
+      this.voiceConvAnimations.newInfoText("connected");
     });
 
     this.emitter.on("phone:talkToMe", () => {
       // console.log("talk to me");
       this.pauseBtn.removeAttribute("disabled");
       this.currentState = states.TALKTOME;
-      this.phoneAnimations.toTalkToMe();
-      this.phoneAnimations.newInfoText("Talk to me");
+      this.voiceConvAnimations.toTalkToMe();
+      this.voiceConvAnimations.newInfoText("Talk to me");
     });
 
     this.emitter.on("phone:listening", () => {
       this.currentState = states.LISTENING;
       this.isAITalking = false;
-      this.phoneAnimations.toListening();
-      this.phoneAnimations.newInfoText("I'm listening");
+      this.voiceConvAnimations.toListening();
+      this.voiceConvAnimations.newInfoText("I'm listening");
     });
 
     this.emitter.on("phone:processing", () => {
       this.pauseBtn.setAttribute("disabled", true);
       this.currentState = states.PROCESSING;
-      this.phoneAnimations.newInfoText("processing");
-      this.phoneAnimations.toProcessing();
+      this.voiceConvAnimations.newInfoText("processing");
+      this.voiceConvAnimations.toProcessing();
     });
 
     this.emitter.on("phone:AITalking", () => {
       this.currentState = states.AITALKING;
       this.isAITalking = true;
-      this.phoneAnimations.newInfoText("Speak to interrupt");
-      this.phoneAnimations.toAITalking();
+      this.voiceConvAnimations.newInfoText("Speak to interrupt");
+      this.voiceConvAnimations.toAITalking();
     });
 
     this.emitter.on("phone:leave", () => {
       this.currentState = states.LEAVE;
-      this.phoneAnimations.leave();
+      this.voiceConvAnimations.leave();
     });
   }
 }
