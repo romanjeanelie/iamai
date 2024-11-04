@@ -27,7 +27,6 @@ export default class TaskManager {
     // States
     this.tasks = [];
     this.tasksUI = [];
-    this.taskCreationQueue = [];
     this.dates = [];
     this.currentDay = null;
     this.isHistorySet = false;
@@ -106,17 +105,6 @@ export default class TaskManager {
 
     // Handling the Index
     this.updateTasksIndex();
-  }
-
-  // Method to handle batch creation of tasks
-  createTaskBatch() {
-    console.log("Creating tasks in batch");
-    const tasksToCreate = [...this.taskCreationQueue];
-    this.taskCreationQueue = []; // Clear the queue
-
-    tasksToCreate.forEach(({ task, textAI, isFromChat }) => {
-      this.createTask(task, textAI, isFromChat);
-    });
   }
 
   addDate() {
