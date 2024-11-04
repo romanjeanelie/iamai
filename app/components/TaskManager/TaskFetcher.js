@@ -61,10 +61,10 @@ export default class TaskFetcher {
   updateTaskStatus(status, initialTask, resultsContainer, statuses = null) {
     switch (status.status) {
       case API_STATUSES.PROGRESSING:
-        this.handleProgressingStatus(initialTask, status);
+        this.handleProgressingStatus(initialTask, status, resultsContainer);
         break;
 
-      case API_STATUSES.ENDED:
+      case API_STATUSES.ANSWERED:
         this.handleEndedStatus(initialTask, status, resultsContainer);
         break;
 
@@ -79,7 +79,7 @@ export default class TaskFetcher {
     const taskEnded = {
       ...initialTask,
       status: {
-        type: API_STATUSES.ENDED,
+        type: API_STATUSES.ANSWERED,
         title: "Completed",
         description: status.response_json.text,
         label: "View results",
@@ -103,7 +103,7 @@ export default class TaskFetcher {
     this.emitter.emit("taskManager:updateStatus", taskViewed.key, taskViewed.status, resultsContainer);
   }
 
-  handleProgressingStatus(initialTask, status) {
+  handleProgressingStatus(initialTask, status, resultsContainer) {
     if (status?.awaiting) {
       const taskname = status.task_name;
       const task = {
@@ -158,7 +158,8 @@ export default class TaskFetcher {
           }
           break;
       }
-      if (task) this.emitter.emit("taskManager:updateStatus", task.key, task.status);
+
+      if (task) this.emitter.emit("taskManager:updateStatus", task.key, task.status, resultsContainer || null);
     }
   }
 

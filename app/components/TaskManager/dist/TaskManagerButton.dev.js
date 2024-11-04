@@ -29,7 +29,7 @@ function () {
     key: "countRelevantTasks",
     value: function countRelevantTasks() {
       var relevantTasks = this.tasks.filter(function (task) {
-        return task.status.type === _constants.API_STATUSES.ENDED || task.status.type === _constants.API_STATUSES.INPUT_REQUIRED;
+        return task.status.type === _constants.API_STATUSES.ANSWERED || task.status.type === _constants.API_STATUSES.INPUT_REQUIRED;
       });
       return relevantTasks.length;
     }

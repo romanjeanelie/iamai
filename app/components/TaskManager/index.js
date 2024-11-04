@@ -237,7 +237,7 @@ export default class TaskManager {
     const currentTask = this.tasks[taskIndex];
 
     const isFinalized =
-      currentTask.status.type === API_STATUSES.ENDED || currentTask.status.type === API_STATUSES.VIEWED;
+      currentTask.status.type === API_STATUSES.ANSWERED || currentTask.status.type === API_STATUSES.VIEWED;
     const isValidTransition = !isFinalized || status.type === API_STATUSES.VIEWED;
 
     if (isValidTransition) {

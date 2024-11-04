@@ -272,7 +272,7 @@ class Chat {
               type: API_STATUSES.ENDED,
               title: "Completed",
               description: mdata.response_json.text,
-              label: "View Results",
+              label: "In Progress",
             },
           };
 
@@ -286,10 +286,10 @@ class Chat {
           const task = {
             key: mdata.micro_thread_id,
             status: {
-              type: API_STATUSES.ENDED,
+              type: API_STATUSES.ANSWERED,
               title: "AGENT ANSWERED",
               description: mdata.response_json.text,
-              label: "In Progress",
+              label: "View Results",
             },
           };
 

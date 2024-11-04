@@ -146,7 +146,7 @@ export default class TaskManagerCard {
     if (this.task.status?.label) this.statusPillLabel.innerText = this.task.status.label;
     if (this.task.status?.type) this.statusPill.style.background = STATUS_COLORS[this.task.status.type];
 
-    if (this.task.status?.type === API_STATUSES.ENDED) {
+    if (this.task.status?.type === API_STATUSES.ANSWERED) {
       // Set all the preceding proSearch states to completed
       this.proSearch.updatePrecedingStatusesStates();
       // Adds the result AnswerPanel
@@ -229,7 +229,7 @@ export default class TaskManagerCard {
   }
 
   markAsRead() {
-    if (this.task.status?.type !== API_STATUSES.ENDED) return;
+    if (this.task.status?.type !== API_STATUSES.ANSWERED) return;
     this.task.status = {
       ...this.task.status,
       type: API_STATUSES.VIEWED,

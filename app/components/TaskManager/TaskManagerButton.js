@@ -11,7 +11,7 @@ export default class TaskManagerButton {
 
   countRelevantTasks() {
     const relevantTasks = this.tasks.filter(
-      (task) => task.status.type === API_STATUSES.ENDED || task.status.type === API_STATUSES.INPUT_REQUIRED
+      (task) => task.status.type === API_STATUSES.ANSWERED || task.status.type === API_STATUSES.INPUT_REQUIRED
     );
     return relevantTasks.length;
   }
