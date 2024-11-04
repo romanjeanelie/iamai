@@ -324,8 +324,8 @@ export default class Discussion {
   }
 
   // create small user question / ai answer in the discussion feed
-  async onCreatedTask(task, textAI) {
-    if (!this.history.isSet || this.history.isFetching) return;
+  async onCreatedTask(task, textAI, isNew) {
+    if (!this.history.isSet || this.history.isFetching || !isNew) return;
     if (!this.userContainer) {
       this.userContainer = document.createElement("div");
       this.userContainer.classList.add("discussion__user");
@@ -372,7 +372,7 @@ export default class Discussion {
       this.centralFinished = true;
     });
 
-    this.emitter.on("taskManager:createTask", (task, textAI) => this.onCreatedTask(task, textAI));
+    this.emitter.on("taskManager:createTask", (task, textAI, isNew) => this.onCreatedTask(task, textAI, isNew));
     this.emitter.on("taskManager:inputSubmit", (text, task) => this.onUserAnswerTask(text, task));
   }
 }
