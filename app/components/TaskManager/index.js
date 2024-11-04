@@ -95,12 +95,18 @@ export default class TaskManager {
 
     // Handling the Data
     this.tasks.push(task);
+    let newCardUI;
 
     // Handling the UI
-    // const initialState = Flip.getState(".task-manager__task-card-container");
-    const newCardUI = new TaskManagerCard(task, this, isFromChat, this.emitter);
+    if (isFromChat) {
+      const initialState = Flip.getState(".task-manager__task-card-container");
+      newCardUI = new TaskManagerCard(task, this, isFromChat, this.emitter);
+      this.animations.cardInOutAnimation(newCardUI, initialState);
+    } else {
+      newCardUI = new TaskManagerCard(task, this, isFromChat, this.emitter);
+      newCardUI.animateIn();
+    }
 
-    // this.animations.cardInOutAnimation(newCardUI, initialState);
     this.tasksUI.push(newCardUI);
 
     // Handling the Index

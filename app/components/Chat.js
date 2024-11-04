@@ -111,11 +111,13 @@ class Chat {
     if (this.autodetect) {
       var response = await this.googletranslate(input_text, this.targetlang, "");
       input_text = response.data.translations[0].translatedText;
-      
-      if (response.data.translations[0].detectedSourceLanguage && response.data.translations[0].detectedSourceLanguage != "und")
+
+      if (
+        response.data.translations[0].detectedSourceLanguage &&
+        response.data.translations[0].detectedSourceLanguage != "und"
+      )
         this.sourcelang = response.data.translations[0].detectedSourceLanguage;
-      else
-        this.sourcelang = "en";
+      else this.sourcelang = "en";
     } else if (this.sourcelang != this.targetlang) {
       var response = await this.googletranslate(input_text, this.targetlang, this.sourcelang);
       input_text = response.data.translations[0].translatedText;
@@ -262,6 +264,8 @@ class Chat {
             });
           }
 
+          console.log("AGENT_ENDED", mdata);
+
           const task = {
             key: mdata.micro_thread_id,
             status: {
@@ -278,6 +282,7 @@ class Chat {
           // this.callbacks.emitter.emit("taskManager:updateStatus", task.key, task.status, divans, { workflowID: 1234 });
           ui_paramsmap.delete(mdata.micro_thread_id);
         } else if (mdata.status == AGENT_ANSWERED) {
+          console.log("AGENT_ANSWERED", mdata);
           const task = {
             key: mdata.micro_thread_id,
             status: {

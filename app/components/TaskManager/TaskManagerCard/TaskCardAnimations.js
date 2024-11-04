@@ -104,6 +104,22 @@ export default class TaskCardAnimations {
     tl.add(showDatesTl, "<");
   }
 
+  animateInTaskCard() {
+    gsap.fromTo(
+      this.card,
+      {
+        opacity: 0,
+        scale: 0.9,
+        y: 10,
+      },
+      {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+      }
+    );
+  }
+
   hideDates() {
     this.dates = this.container.querySelectorAll(".task-manager__date");
     gsap.killTweensOf(this.dates);

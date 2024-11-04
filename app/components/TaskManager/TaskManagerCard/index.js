@@ -238,6 +238,10 @@ export default class TaskManagerCard {
     return this.cardContainer;
   }
 
+  animateIn() {
+    this.animations.animateInTaskCard();
+  }
+
   dispose() {
     this.card.removeEventListener("click", this.expandCardToFullscreen);
     this.cardContainer.remove();
