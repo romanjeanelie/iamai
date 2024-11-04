@@ -54,7 +54,6 @@ export default class TaskManagerCard {
     this.card = document.createElement("div");
     this.card.classList.add("task-manager__task-card");
     this.card.setAttribute("task-key", this.task.key);
-    if (this.isFromChat) this.cardContainer.style.order = -1;
 
     const date = new Date(this.task.createdAt);
 
@@ -104,7 +103,12 @@ export default class TaskManagerCard {
     this.statusPillLabel = this.card.querySelector(".task-manager__task-status-label");
 
     this.cardContainer.appendChild(this.card);
-    this.tasksGrid.appendChild(this.cardContainer);
+
+    if (this.isFromChat) {
+      this.tasksGrid.prepend(this.cardContainer);
+    } else {
+      this.tasksGrid.appendChild(this.cardContainer);
+    }
 
     this.animations = new TaskCardAnimations(this.card);
   }

@@ -94,7 +94,6 @@ export default class TaskManager {
     }
 
     // Handling the Data
-    this.tasks.push(task);
     let newCardUI;
 
     // Handling the UI
@@ -107,7 +106,13 @@ export default class TaskManager {
       newCardUI.animateIn();
     }
 
-    this.tasksUI.push(newCardUI);
+    if (isFromChat) {
+      this.tasks.unshift(task);
+      this.tasksUI.unshift(newCardUI);
+    } else {
+      this.tasks.push(task);
+      this.tasksUI.push(newCardUI);
+    }
 
     // Handling the Index
     this.updateTasksIndex();
