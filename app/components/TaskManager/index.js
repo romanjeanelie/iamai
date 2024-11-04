@@ -27,6 +27,7 @@ export default class TaskManager {
     // States
     this.tasks = [];
     this.tasksUI = [];
+    this.taskCreationQueue = [];
     this.dates = [];
     this.currentDay = null;
     this.isHistorySet = false;
@@ -36,6 +37,7 @@ export default class TaskManager {
     // Init Methods
     this.button = new TaskManagerButton(this.tasks, this.emitter);
     this.animations = new TaskManagerAnimations(this.emitter);
+
     this.addListeners();
 
     // Debug
@@ -96,14 +98,25 @@ export default class TaskManager {
     this.tasks.push(task);
 
     // Handling the UI
-    const initialState = Flip.getState(".task-manager__task-card-container");
+    // const initialState = Flip.getState(".task-manager__task-card-container");
     const newCardUI = new TaskManagerCard(task, this, isFromChat, this.emitter);
 
-    this.animations.cardInOutAnimation(newCardUI, initialState);
+    // this.animations.cardInOutAnimation(newCardUI, initialState);
     this.tasksUI.push(newCardUI);
 
     // Handling the Index
     this.updateTasksIndex();
+  }
+
+  // Method to handle batch creation of tasks
+  createTaskBatch() {
+    console.log("Creating tasks in batch");
+    const tasksToCreate = [...this.taskCreationQueue];
+    this.taskCreationQueue = []; // Clear the queue
+
+    tasksToCreate.forEach(({ task, textAI, isFromChat }) => {
+      this.createTask(task, textAI, isFromChat);
+    });
   }
 
   addDate() {
