@@ -1,7 +1,7 @@
-import fetcher from "../utils/fetcher.js";
-import getMarked from "../utils/getMarked.js";
-import DiscussionMedia from "./DiscussionMedia.js";
-import { URL_CONVERSATION_HISTORY } from "./constants.js";
+import fetcher from "../../utils/fetcher.js";
+import getMarked from "../../utils/getMarked.js";
+import DiscussionMedia from "../DiscussionMedia.js";
+import { URL_CONVERSATION_HISTORY } from "../constants.js";
 
 const isEmpty = (obj) => Object.keys(obj).length === 0;
 // const md = getRemarkable();
@@ -14,7 +14,7 @@ export function getPreviousDayTimestamp() {
   return previousDate.toISOString();
 }
 
-export default class History {
+export default class HistoryFetcher {
   constructor({ emitter }) {
     this.emitter = emitter;
 

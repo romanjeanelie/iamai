@@ -3,7 +3,7 @@ import TypingText from "../TypingText";
 import { getsessionID } from "../User";
 import Chat from "./Chat.js";
 import DiscussionMedia from "./DiscussionMedia.js";
-import History from "./History.js";
+import History from "./History";
 
 import { gsap } from "gsap";
 import fadeByWord from "../utils/fadeByWord.js";
@@ -272,50 +272,14 @@ export default class Discussion {
     store.set("chatId", this.uuid);
 
     if (this.debug) return;
-    await this.updateHistory({ uuid: this.uuid, user: this.user });
+
+    await this.history.updateHistory();
     this.taskManager.initTaskManager();
     this.scrollToBottom(false);
     this.isHistoryLoading = false;
     this.emitter.emit("app:initialized", true);
 
     this.enableInput();
-  }
-
-  async updateHistory({ uuid, user }) {
-    // hide the previous discussion container while it is loading to avoid scroll jumps
-    this.historyContainer.style.display = "none";
-
-    await new Promise(async (resolve, reject) => {
-      const { container } = await this.history.getHistory({ uuid, user, size: 10 });
-      this.historyContainer.appendChild(container);
-      const imgs = this.historyContainer.querySelectorAll("img");
-      let imgLoadedCount = 0;
-      const totalImages = imgs.length;
-
-      const showHistory = () => {
-        this.historyContainer.style.display = "block";
-        this.scrollToBottom(false);
-      };
-
-      const handleImageLoad = () => {
-        imgLoadedCount++;
-
-        if (imgLoadedCount === totalImages) {
-          showHistory();
-          resolve();
-        }
-      };
-
-      if (imgs.length) {
-        imgs.forEach((img) => {
-          img.addEventListener("load", handleImageLoad);
-          img.addEventListener("error", handleImageLoad); // Treat errors as loaded to ensure resolution
-        });
-      } else {
-        showHistory();
-        resolve();
-      }
-    });
   }
 
   // Tasks

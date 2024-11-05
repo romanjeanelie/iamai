@@ -5,7 +5,7 @@ import fetcher from "../../utils/fetcher";
 import { API_STATUSES, URL_AGENT_STATUS, URL_DELETE_STATUS } from "../constants";
 import { store } from "../store";
 
-import { getPreviousDayTimestamp } from "../History";
+import { getPreviousDayTimestamp } from "../History/HistoryFetcher";
 import TaskManagerAnimations from "./TaskManagerAnimations";
 import TaskManagerButton from "./TaskManagerButton";
 import TaskManagerCard from "./TaskManagerCard";
