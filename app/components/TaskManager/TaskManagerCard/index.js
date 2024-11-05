@@ -62,10 +62,6 @@ export default class TaskManagerCard {
         <div class="task-manager__task-card-content">
           <h3 class="task-manager__task-card-title">
             ${this.task.name} 
-            ${date.toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-            })}
           </h3>
 
           <div class="task-manager__task-status">
