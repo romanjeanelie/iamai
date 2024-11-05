@@ -59,7 +59,7 @@ export default class TaskManagerCard {
       <div class="card-state">
         <div class="task-manager__task-card-content">
           <h3 class="task-manager__task-card-title">
-            ${this.task.name} 
+            ${this.task.name}
           </h3>
 
           <div class="task-manager__task-status">

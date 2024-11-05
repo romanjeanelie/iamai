@@ -88,9 +88,9 @@ export default class TaskManager {
   createTask(task, textAI, isFromChat) {
     // Handling the Date
     const taskDate = new Date(task.createdAt);
-    if (!this.dates.includes(taskDate.toDateString())) {
-      this.currentDay = taskDate;
-      this.addDate();
+    const dateLabel = this.getDateLabel(taskDate);
+    if (!this.dates.includes(dateLabel)) {
+      this.addDate(dateLabel);
     }
 
     // Handling the Data
@@ -118,23 +118,41 @@ export default class TaskManager {
     this.updateTasksIndex();
   }
 
-  addDate() {
-    const divDate = document.createElement("div");
-    divDate.classList.add("task-manager__date");
-    const dayMonthYear = this.currentDay.toDateString();
-    divDate.setAttribute("data-date", this.currentDay.toDateString());
+  getDateLabel(taskDate) {
+    let date = "";
 
-    if (dayMonthYear === new Date().toDateString()) {
-      divDate.innerHTML = "Today";
-      divDate.style.order = -1;
+    const today = new Date();
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(today.getDate() - 7);
+    const previousMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+
+    if (taskDate.toLocaleDateString() === today.toLocaleDateString()) {
+      date = "Today";
+    } else if (taskDate >= sevenDaysAgo && taskDate < today) {
+      date = "Previous 7 days";
+    } else if (taskDate >= previousMonth && taskDate < sevenDaysAgo) {
+      date = "Previous month";
     } else {
-      divDate.innerHTML = this.currentDay.toLocaleDateString("en-US", {
-        weekday: "long",
+      date = taskDate.toLocaleDateString("en-US", {
+        month: "long",
       });
     }
 
+    return date;
+  }
+
+  addDate(dateLabel) {
+    const divDate = document.createElement("div");
+    divDate.classList.add("task-manager__date");
+    divDate.setAttribute("data-date", dateLabel);
+
+    if (dateLabel === "Today") {
+      divDate.style.order = -1;
+    }
+
+    divDate.innerHTML = dateLabel;
     this.tasksGrid.appendChild(divDate);
-    this.dates.push(dayMonthYear);
+    this.dates.push(dateLabel);
   }
 
   removePreviousDates(day) {

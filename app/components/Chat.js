@@ -430,7 +430,6 @@ class Chat {
         } else if (mdata.status && mdata.status == AGENT_PROGRESSING) {
           if (mdata.awaiting) {
             let taskname = mdata.task_name;
-            console.log("TASK IN PROGRESS", mdata);
             const task = {
               key: mdata.micro_thread_id,
               status: {
