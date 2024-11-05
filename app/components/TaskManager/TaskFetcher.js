@@ -15,10 +15,11 @@ export default class TaskFetcher {
     this.getTasks();
   }
 
-  addTasksUI(statuses, resultsContainer) {
+  addTasksUI(task, statuses, resultsContainer) {
     // Initialize the task
     const firstStatus = statuses.results.find((result) => result.status === "agent_started");
     const initialTask = this.createInitialTask(firstStatus);
+    initialTask.createdAt = task.time_stamp;
     const textAI = firstStatus.response_json.text;
 
     // Emit the task creation
@@ -249,7 +250,7 @@ export default class TaskFetcher {
       const result = this.getResultsUI(task.statuses);
       task.resultsContainer = result;
 
-      this.addTasksUI(statuses, result);
+      this.addTasksUI(task, statuses, result);
     }
     this.startIndex += size;
   }

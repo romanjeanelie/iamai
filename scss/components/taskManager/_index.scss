@@ -50,9 +50,9 @@ $zIndex: 1;
   font-weight: 300;
   padding: 74px 0 24px;
 
-  &:first-of-type {
-    padding-top: 0;
-  }
+  // &:first-of-type {
+  //   padding-top: 0;
+  // }
 
   @include media("<tablet") {
     grid-column: span 1;

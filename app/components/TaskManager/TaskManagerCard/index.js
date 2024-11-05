@@ -55,8 +55,6 @@ export default class TaskManagerCard {
     this.card.classList.add("task-manager__task-card");
     this.card.setAttribute("task-key", this.task.key);
 
-    const date = new Date(this.task.createdAt);
-
     this.card.innerHTML = `
       <div class="card-state">
         <div class="task-manager__task-card-content">
