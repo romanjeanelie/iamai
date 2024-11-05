@@ -10,6 +10,7 @@ var _gsap = _interopRequireDefault(require("gsap"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function stopOverscroll(element) {
+  console.log(stopOverscroll);
   element = _gsap["default"].utils.toArray(element)[0] || window;
   (element === document.body || element === document.documentElement) && (element = window);
 
@@ -44,8 +45,7 @@ function stopOverscroll(element) {
     var evt = e.changedTouches ? e.changedTouches[0] : e,
         forward = evt.pageY <= lastTouch;
 
-    if ((!forward && scroller.scrollTop <= 1 || forward && scroller.scrollTop >= getMax() - 1) && e.type === "touchmove") {
-      e.preventDefault();
+    if ((!forward && scroller.scrollTop <= 1 || forward && scroller.scrollTop >= getMax() - 1) && e.type === "touchmove") {// e.preventDefault();
     } else {
       lastTouch = evt.pageY;
     }
@@ -56,7 +56,7 @@ function stopOverscroll(element) {
       forward = scrollTop > lastScroll;
 
       if (!forward && scrollTop < 1 || forward && scrollTop >= getMax() - 1) {
-        e.preventDefault();
+        // e.preventDefault();
         kill();
       }
 

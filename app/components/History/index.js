@@ -7,14 +7,17 @@ export default class History {
 
     // DOM Elements
     this.historyContainer = document.querySelector(".history__container");
+
     this.fetcher = new HistoryFetcher({ emitter: this.emitter });
+
+    this.addListeners();
   }
 
   async updateHistory() {
     // hide the previous discussion container while it is loading to avoid scroll jumps
     this.historyContainer.style.display = "none";
 
-    await new Promise(async (resolve, reject) => {
+    await new Promise(async (resolve) => {
       const chatId = store.get("chatId");
       const user = store.get("user");
 
@@ -47,6 +50,12 @@ export default class History {
         showHistory();
         resolve();
       }
+    });
+  }
+
+  addListeners() {
+    this.historyContainer.addEventListener("scroll", (e) => {
+      console.log("scrolling");
     });
   }
 }

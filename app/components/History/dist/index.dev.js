@@ -31,6 +31,7 @@ function () {
     this.fetcher = new _HistoryFetcher["default"]({
       emitter: this.emitter
     });
+    this.addListeners();
   }
 
   _createClass(History, [{
@@ -45,7 +46,7 @@ function () {
               // hide the previous discussion container while it is loading to avoid scroll jumps
               this.historyContainer.style.display = "none";
               _context2.next = 3;
-              return regeneratorRuntime.awrap(new Promise(function _callee(resolve, reject) {
+              return regeneratorRuntime.awrap(new Promise(function _callee(resolve) {
                 var chatId, user, _ref2, container, imgs, imgLoadedCount, totalImages, showHistory, handleImageLoad;
 
                 return regeneratorRuntime.async(function _callee$(_context) {
@@ -108,6 +109,13 @@ function () {
           }
         }
       }, null, this);
+    }
+  }, {
+    key: "addListeners",
+    value: function addListeners() {
+      this.historyContainer.addEventListener("scroll", function (e) {
+        console.log("scrolling");
+      });
     }
   }]);
 
