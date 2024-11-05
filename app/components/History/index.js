@@ -1,6 +1,7 @@
 import getMarked from "../../utils/getMarked";
 import { store } from "../store";
 import HistoryFetcher from "./HistoryFetcher";
+import DiscussionMedia from "../DiscussionMedia";
 
 const md = getMarked();
 const isEmpty = (obj) => Object.keys(obj).length === 0;
@@ -18,7 +19,6 @@ export default class History {
   }
 
   createUIElements(data) {
-    console.log(data);
     data.forEach((element) => {
       if (element.user.length > 0) {
         const userContainer = document.createElement("div");
@@ -42,7 +42,7 @@ export default class History {
             emitter: this.emitter,
           });
           if (element.images.user_images) media?.addUserImages(JSON.parse(element.images.user_images));
-          container.appendChild(userContainer);
+          this.historyContainer.appendChild(userContainer);
         }
       }
 
