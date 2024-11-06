@@ -129,7 +129,6 @@ export default class History {
   addListeners() {
     this.historyContainer.addEventListener("scroll", (e) => {
       if (e.target.scrollTop + e.target.clientHeight >= e.target.scrollHeight) {
-        console.log("Reached the bottom of the history container");
         this.updateHistory();
       }
     });

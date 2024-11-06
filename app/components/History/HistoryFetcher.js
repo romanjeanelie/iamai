@@ -1,13 +1,6 @@
 import fetcher from "../../utils/fetcher.js";
 import { URL_CONVERSATION_HISTORY } from "../constants.js";
 
-export function getPreviousDayTimestamp() {
-  const currentDate = new Date();
-  const previousDate = new Date(currentDate);
-  previousDate.setDate(currentDate.getDate() - 1);
-  return previousDate.toISOString();
-}
-
 export default class HistoryFetcher {
   constructor({ emitter }) {
     this.emitter = emitter;
