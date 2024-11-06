@@ -58,10 +58,8 @@ export default class Navigation {
 
   toggleHistory() {
     if (this.currentSection !== SECTIONS.history) {
-      const containerRect = this.historyContainer.getBoundingClientRect();
-      const scrollTarget = containerRect.height - window.innerHeight + 202;
       this.pageEl.scrollTo({
-        top: scrollTarget,
+        top: 0,
         behavior: "smooth",
         duration: 5,
       });

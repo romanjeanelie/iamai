@@ -129,7 +129,9 @@ export default class History {
 
   addListeners() {
     this.historyContainer.addEventListener("scroll", (e) => {
-      console.log("scrolling");
+      if (e.target.scrollTop === 0) {
+        console.log("when to the top and back");
+      }
     });
   }
 }
