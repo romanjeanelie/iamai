@@ -103,7 +103,6 @@ export default class History {
 
       const showHistory = () => {
         this.historyContainer.style.display = "block";
-        // this.scrollToBottom(false);
       };
 
       const handleImageLoad = () => {
@@ -130,7 +129,7 @@ export default class History {
   addListeners() {
     this.historyContainer.addEventListener("scroll", (e) => {
       if (e.target.scrollTop === 0) {
-        console.log("when to the top and back");
+        this.updateHistory();
       }
     });
   }

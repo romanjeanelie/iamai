@@ -325,11 +325,6 @@ export default class Discussion {
   addListeners() {
     window.addEventListener("load", this.onLoad());
 
-    this.pageEl.addEventListener("scroll", () => {
-      if (this.isHistoryLoading) return;
-      if (this.pageEl.scrollTop === 0) this.onScrollTop();
-    });
-
     this.checkIfPrevDiscussionContainerVisible();
 
     this.emitter.on("centralFinished", () => {
