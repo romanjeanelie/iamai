@@ -40,9 +40,6 @@ export default class HistoryFetcher {
     this.isFetching = true;
     // Get elements
     const data = await this.getAllElements({ uuid, user, size, start: this.newStart });
-    // Reverse the order of elements
-
-    // data.results.reverse();
 
     this.isSet = true;
     this.isFetching = false;
