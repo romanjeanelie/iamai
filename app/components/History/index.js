@@ -85,9 +85,9 @@ export default class History {
     return this.historyContainer;
   }
 
-  async updateHistory() {
+  async updateHistory(isFirstLoad) {
     // hide the previous discussion container while it is loading to avoid scroll jumps
-    this.historyContainer.style.display = "none";
+    if (isFirstLoad) this.historyContainer.style.display = "none";
 
     await new Promise(async (resolve) => {
       const chatId = store.get("chatId");

@@ -273,7 +273,8 @@ export default class Discussion {
 
     if (this.debug) return;
 
-    await this.history.updateHistory();
+    const isFirstLoad = true;
+    await this.history.updateHistory(isFirstLoad);
     this.taskManager.initTaskManager();
     this.scrollToBottom(false);
     this.isHistoryLoading = false;
