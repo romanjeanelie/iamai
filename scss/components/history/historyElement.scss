@@ -5,11 +5,14 @@
   padding: 8px 16px;
   border-radius: 16px;
   margin-bottom: 16px;
+  overflow: hidden;
 
   // Main container of the user question
   .discussion__user {
     padding: 0;
     text-align: left;
+    padding: 12px 0 12px;
+    margin-bottom: 0;
   }
 
   // child of the user question container
@@ -17,5 +20,18 @@
     padding: 0;
     box-shadow: none;
     background: none;
+  }
+
+  &.expanded .discussion__ai {
+    max-height: 1000px; // Set max height to a large value to allow for expansion
+    padding-bottom: 12px;
+  }
+
+  .discussion__ai {
+    padding: 0;
+    margin: 0;
+    min-height: 0;
+    max-height: 0px;
+    overflow: hidden; // Ensure content is hidden when height is 0
   }
 }

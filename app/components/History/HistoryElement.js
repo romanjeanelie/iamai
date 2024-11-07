@@ -1,3 +1,4 @@
+import Flip from "gsap/Flip";
 import getMarked from "../../utils/getMarked";
 import DiscussionMedia from "../DiscussionMedia";
 
@@ -18,6 +19,7 @@ export default class HistoryElement {
 
     // Init Methods
     this.createUI();
+    this.addListeners();
   }
 
   createUI() {
@@ -82,5 +84,19 @@ export default class HistoryElement {
     }
 
     this.historyContainer.appendChild(this.elementWrapper);
+  }
+
+  toggleElement() {
+    const initialState = Flip.getState(this.elementWrapper);
+    this.elementWrapper.classList.toggle("expanded");
+    Flip.from(initialState, {
+      duration: 0.5,
+    });
+  }
+
+  addListeners() {
+    this.elementWrapper?.addEventListener("click", () => {
+      this.toggleElement();
+    });
   }
 }

@@ -5,13 +5,27 @@
   padding: 8px 16px;
   border-radius: 16px;
   margin-bottom: 16px;
+  overflow: hidden;
 }
 .history-element__wrapper .discussion__user {
   padding: 0;
   text-align: left;
+  padding: 12px 0 12px;
+  margin-bottom: 0;
 }
 .history-element__wrapper .discussion__userspan {
   padding: 0;
   box-shadow: none;
   background: none;
+}
+.history-element__wrapper.expanded .discussion__ai {
+  max-height: 1000px;
+  padding-bottom: 12px;
+}
+.history-element__wrapper .discussion__ai {
+  padding: 0;
+  margin: 0;
+  min-height: 0;
+  max-height: 0px;
+  overflow: hidden;
 }
