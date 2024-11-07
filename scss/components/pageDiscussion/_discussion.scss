@@ -61,6 +61,7 @@
 .discussion__container,
 .history__container {
   padding-top: 21px;
+  // background-color: red;
 
   .discussion__user,
   .discussion__ai {
@@ -144,6 +145,11 @@
 
 .main-content__container {
   position: relative;
+}
+
+.main-content__container,
+.history__container {
+  scroll-snap-align: center;
 }
 
 .discussion__container {
