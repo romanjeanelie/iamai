@@ -1,0 +1,27 @@
+@import "./historyElement.scss";
+
+.history__container {
+  padding: 120px 0 100px;
+  height: 100vh; // fallback for browsers that don't support svh units
+  height: 100dvh;
+  overflow-y: auto;
+  transition: opacity 200ms ease-in-out;
+
+  // Hide scrollbar for Chrome, Safari and Opera
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  // Hide scrollbar for IE, Edge and Firefox
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+
+  &.visible {
+    transition: opacity 1200ms ease-in-out;
+    opacity: 1;
+  }
+
+  &.hidden {
+    opacity: 0;
+  }
+}

@@ -58,86 +58,78 @@
   }
 }
 
-.discussion__container,
-.history__container {
-  padding-top: 21px;
-  // background-color: red;
+.discussion__user,
+.discussion__ai {
+  font-family: "SFPro";
+  position: relative;
+  overflow-wrap: anywhere;
+  margin-bottom: 24px;
+  line-height: 28px;
+  font-feature-settings: "liga" off;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.75px;
 
-  .discussion__user,
-  .discussion__ai {
-    font-family: "SFPro";
+  p {
+    overflow-wrap: break-word;
+  }
+
+  .bold {
+    font-weight: 600;
+  }
+
+  @include media("<tablet") {
+    font-size: 16px;
+    line-height: 26px; /* 162.5% */
+  }
+}
+
+.discussion__ai {
+  color: $colorGrey;
+  min-height: 24px;
+
+  .text-beforeLink {
+    margin-right: 4px;
+  }
+
+  a {
+    color: $colorBlack;
+    text-decoration: underline;
+    display: inline-block;
+  }
+
+  .AIword {
+    filter: blur(1px);
+  }
+
+  strong {
+    font-weight: 600;
+  }
+
+  &.discussion__ai--task-created {
     position: relative;
-    overflow-wrap: anywhere;
-    margin-bottom: 24px;
-    line-height: 28px;
-    font-feature-settings: "liga" off;
-    font-size: 18px;
-    font-weight: 500;
-    letter-spacing: 0.75px;
+    margin-left: 48px;
 
-    p {
-      overflow-wrap: break-word;
-    }
-
-    .bold {
-      font-weight: 600;
-    }
-
-    @include media("<tablet") {
-      font-size: 16px;
-      line-height: 26px; /* 162.5% */
+    &::before {
+      content: url("/icons/timer.svg");
+      position: absolute;
+      top: 50%;
+      padding-right: 40px;
+      transform: translate(-50%, -50%);
     }
   }
 
-  .discussion__ai {
-    color: $colorGrey;
-    // For cursor
-    min-height: 24px;
-    // padding-right: 112px;
-
-    .text-beforeLink {
-      margin-right: 4px;
-    }
-
-    a {
-      color: $colorBlack;
-      text-decoration: underline;
-      display: inline-block;
-    }
-
-    .AIword {
-      filter: blur(1px);
-    }
-
-    strong {
-      font-weight: 600;
-    }
+  @include media("<tablet") {
+    padding: 0 $paddingHorMobile;
+    margin-right: unset;
 
     &.discussion__ai--task-created {
       position: relative;
-      margin-left: 48px;
+      margin-left: 24px;
 
       &::before {
-        content: url("/icons/timer.svg");
-        position: absolute;
-        top: 50%;
         padding-right: 40px;
         transform: translate(-50%, -50%);
-      }
-    }
-
-    @include media("<tablet") {
-      padding: 0 $paddingHorMobile;
-      margin-right: unset;
-
-      &.discussion__ai--task-created {
-        position: relative;
-        margin-left: 24px;
-
-        &::before {
-          padding-right: 40px;
-          transform: translate(-50%, -50%);
-        }
       }
     }
   }
@@ -155,46 +147,12 @@
 .discussion__container {
   min-height: calc(100vh - 96px);
   margin-top: 96px;
+  padding-top: 21px;
   padding-bottom: 200px;
 
   @include media("<tablet") {
     min-height: calc(100vh - 96px); // fallback for browsers that don't support svh units
     min-height: calc(100svh - 96px);
     padding-bottom: 80px;
-  }
-}
-
-.history__container {
-  padding: 120px 0 100px;
-  height: 100vh; // fallback for browsers that don't support svh units
-  height: 100dvh;
-  overflow-y: auto;
-  transition: opacity 200ms ease-in-out;
-
-  // Hide scrollbar for Chrome, Safari and Opera
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  // Hide scrollbar for IE, Edge and Firefox
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-
-  &.visible {
-    transition: opacity 1200ms ease-in-out;
-    opacity: 1;
-  }
-
-  &.hidden {
-    opacity: 0;
-  }
-}
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
   }
 }

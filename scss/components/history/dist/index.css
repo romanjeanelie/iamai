@@ -1,0 +1,21 @@
+.history__container {
+  padding: 120px 0 100px;
+  height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
+  transition: opacity 200ms ease-in-out;
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+.history__container::-webkit-scrollbar {
+  display: none;
+}
+.history__container.visible {
+  transition: opacity 1200ms ease-in-out;
+  opacity: 1;
+}
+.history__container.hidden {
+  opacity: 0;
+}
