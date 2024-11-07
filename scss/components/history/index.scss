@@ -1,11 +1,16 @@
 @import "./historyElement.scss";
 
 .history__container {
-  padding: 120px 0 100px;
   height: 100vh; // fallback for browsers that don't support svh units
   height: 100dvh;
+  margin: 0 -15px; // adding negative margin to leave space for the shadow of the children
+  padding: 120px 15px 100px; // if the children have a shadow, the parent should have a padding to avoid cutting the shadow with the overflow
   overflow-y: auto;
   transition: opacity 200ms ease-in-out;
+
+  @include media("<tablet") {
+    padding: 120px 35px 80px;
+  }
 
   // Hide scrollbar for Chrome, Safari and Opera
   &::-webkit-scrollbar {

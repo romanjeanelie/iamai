@@ -247,6 +247,10 @@ export default class TaskFetcher {
       task.statuses = statuses;
 
       // add the result ui to the task
+      if (task.statuses.results.length === 0) {
+        console.log("Skipping task creation: no statuses found", task);
+        return;
+      }
       const result = this.getResultsUI(task.statuses);
       task.resultsContainer = result;
 
