@@ -39,6 +39,7 @@ function () {
   _createClass(History, [{
     key: "createUIElements",
     value: function createUIElements(data) {
+      console.log(data.length);
       data.forEach(function (element) {
         new _HistoryElement["default"](element);
       });

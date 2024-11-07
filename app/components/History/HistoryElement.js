@@ -21,21 +21,23 @@ export default class HistoryElement {
   }
 
   createUI() {
-    if (this.data.user.length === 0 || this.data.assistant.length === 0) return;
+    if (this.data.user.length === 0 || this.data.assistant.length === 0) {
+      console.log("Skipping creation: user or assistant data is empty");
+      return;
+    }
+
+    this.elementWrapper = document.createElement("div");
+    this.elementWrapper.classList.add("history-element__wrapper");
 
     const userContainer = document.createElement("div");
     userContainer.classList.add("discussion__user");
     var userContainerspan = document.createElement("span");
     userContainerspan.classList.add("discussion__userspan");
-    // const userTextMarkdowned = md.renderInline(element.user);
     userContainerspan.innerHTML = this.data.user;
     userContainer.appendChild(userContainerspan);
-    this.historyContainer.appendChild(userContainer);
 
-    // 1st way to figure out if an img comes from the video input - the length
-    // const isImgsComingFromVideo = element.images.user_images?.length > 40000;
+    this.elementWrapper.appendChild(userContainer);
 
-    // 2nd way to figure out if an img comes from the video input - the presence of 'data:image/png;base64,'
     const isImgsComingFromVideo = this.data.images.user_images?.includes("data:image/png;base64,");
 
     if (!isEmpty(this.data.images) && !isImgsComingFromVideo) {
@@ -63,7 +65,7 @@ export default class HistoryElement {
     const assistantTextMardowned = md.parse(assistantText);
 
     AIContainer.innerHTML = assistantTextMardowned;
-    this.historyContainer.appendChild(AIContainer);
+    this.elementWrapper.appendChild(AIContainer);
 
     if (!isEmpty(this.data.sources) || !isEmpty(this.data.images)) {
       const media = new DiscussionMedia({
@@ -77,8 +79,8 @@ export default class HistoryElement {
       if (this.data.sources.sources) {
         media?.addSources(JSON.parse(this.data.sources.sources));
       }
-
-      this.historyContainer.appendChild(AIContainer);
     }
+
+    this.historyContainer.appendChild(this.elementWrapper);
   }
 }
