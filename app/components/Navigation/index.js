@@ -110,6 +110,13 @@ export default class Navigation {
     });
   }
 
+  scrollHistoryToTop() {
+    this.historyContainer.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
   setupIntersectionObserver() {
     const options = {
       root: null,
@@ -124,6 +131,10 @@ export default class Navigation {
         this.currentSection = SECTIONS.discussion;
       } else {
         this.currentSection = intersectingSections[0];
+      }
+
+      if (this.currentSection !== SECTIONS.history) {
+        this.scrollHistoryToTop();
       }
 
       this.updateNavButtons();
