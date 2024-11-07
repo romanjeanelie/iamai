@@ -7,6 +7,8 @@ exports["default"] = void 0;
 
 var _store = require("../store");
 
+var _HistoryElement = _interopRequireDefault(require("./HistoryElement"));
+
 var _HistoryFetcher = _interopRequireDefault(require("./HistoryFetcher"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -35,8 +37,16 @@ function () {
   }
 
   _createClass(History, [{
+    key: "createUIElements",
+    value: function createUIElements(data) {
+      data.forEach(function (element) {
+        new _HistoryElement["default"](element);
+      });
+      return this.historyContainer;
+    }
+  }, {
     key: "updateHistory",
-    value: function updateHistory() {
+    value: function updateHistory(isFirstLoad) {
       var _this = this;
 
       return regeneratorRuntime.async(function updateHistory$(_context2) {
@@ -44,11 +54,10 @@ function () {
           switch (_context2.prev = _context2.next) {
             case 0:
               // hide the previous discussion container while it is loading to avoid scroll jumps
-              this.historyContainer.style.display = "none";
+              if (isFirstLoad) this.historyContainer.style.display = "none";
               _context2.next = 3;
               return regeneratorRuntime.awrap(new Promise(function _callee(resolve) {
-                var chatId, user, _ref2, container, imgs, imgLoadedCount, totalImages, showHistory, handleImageLoad;
-
+                var chatId, user, data, imgs, imgLoadedCount, totalImages, showHistory, handleImageLoad;
                 return regeneratorRuntime.async(function _callee$(_context) {
                   while (1) {
                     switch (_context.prev = _context.next) {
@@ -63,17 +72,16 @@ function () {
                         }));
 
                       case 4:
-                        _ref2 = _context.sent;
-                        container = _ref2.container;
+                        data = _context.sent;
 
-                        _this.historyContainer.appendChild(container);
+                        _this.createUIElements(data);
 
                         imgs = _this.historyContainer.querySelectorAll("img");
                         imgLoadedCount = 0;
                         totalImages = imgs.length;
 
                         showHistory = function showHistory() {
-                          _this.historyContainer.style.display = "block"; // this.scrollToBottom(false);
+                          _this.historyContainer.style.display = "block";
                         };
 
                         handleImageLoad = function handleImageLoad() {
@@ -95,7 +103,7 @@ function () {
                           resolve();
                         }
 
-                      case 13:
+                      case 12:
                       case "end":
                         return _context.stop();
                     }
@@ -113,8 +121,12 @@ function () {
   }, {
     key: "addListeners",
     value: function addListeners() {
+      var _this2 = this;
+
       this.historyContainer.addEventListener("scroll", function (e) {
-        console.log("scrolling");
+        if (e.target.scrollTop + e.target.clientHeight >= e.target.scrollHeight - 1) {
+          _this2.updateHistory();
+        }
       });
     }
   }]);
