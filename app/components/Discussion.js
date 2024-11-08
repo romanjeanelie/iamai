@@ -223,18 +223,6 @@ export default class Discussion {
     });
   }
 
-  async onScrollTop() {
-    // console.log("ON SCROLL TOP");
-    const { container } = await this.history.getHistory({ uuid: this.uuid, user: this.user });
-    this.historyContainer.prepend(container);
-    // only if there is more history to be added, we change the scrollTop value so the user stays at the same spot
-    if (container.hasChildNodes() && !this.navigation.isHistoryButtonClicked) {
-      this.pageEl.scrollTop = document.documentElement.scrollTop = container.offsetHeight;
-    }
-
-    this.navigation.isHistoryButtonClicked = false;
-  }
-
   async onLoad() {
     var queryString = window.location.search;
     var urlParams = new URLSearchParams(queryString);
@@ -302,31 +290,8 @@ export default class Discussion {
     // this.AIContainer.setAttribute("taskkey", task.key);
   }
 
-  checkIfPrevDiscussionContainerVisible() {
-    let options = {
-      rootMargin: "-96px",
-    };
-
-    const observerCallback = (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          this.historyContainer.classList.remove("hidden");
-          this.historyContainer.classList.add("visible");
-        } else {
-          this.historyContainer.classList.remove("visible");
-          this.historyContainer.classList.add("hidden");
-        }
-      });
-    };
-
-    let observer = new IntersectionObserver(observerCallback, options);
-    observer.observe(this.historyContainer);
-  }
-
   addListeners() {
     window.addEventListener("load", this.onLoad());
-
-    this.checkIfPrevDiscussionContainerVisible();
 
     this.emitter.on("centralFinished", () => {
       this.centralFinished = true;
