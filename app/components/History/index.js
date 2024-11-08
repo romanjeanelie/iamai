@@ -6,17 +6,22 @@ export default class History {
   constructor({ emitter }) {
     this.emitter = emitter;
 
+    // States
+    this.elements = [];
+    this.currentlyExpandedElement = null;
+
     // DOM Elements
     this.historyContainer = document.querySelector(".history__container");
 
+    // Init Methods
     this.fetcher = new HistoryFetcher({ emitter: this.emitter });
-
     this.addListeners();
   }
 
   createUIElements(data) {
     data.forEach((element) => {
-      new HistoryElement(element);
+      const newElement = new HistoryElement(element, this);
+      this.elements.push(newElement);
     });
     return this.historyContainer;
   }
@@ -60,6 +65,18 @@ export default class History {
         resolve();
       }
     });
+  }
+
+  setCurrentlyExpandedElement(element) {
+    element.toggleElement();
+
+    if (element !== this.currentlyExpandedElement) this.currentlyExpandedElement?.toggleElement();
+
+    if (!element.isExpanded) {
+      this.currentlyExpandedElement = null;
+    } else {
+      this.currentlyExpandedElement = element;
+    }
   }
 
   addListeners() {

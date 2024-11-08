@@ -6,10 +6,12 @@ const md = getMarked();
 const isEmpty = (obj) => Object.keys(obj).length === 0;
 
 export default class HistoryElement {
-  constructor(data) {
+  constructor(data, history) {
     this.data = data;
+    this.history = history;
 
     // States
+    this.isExpanded = false;
 
     // DOM Elements
     this.historyContainer = document.querySelector(".history__container");
@@ -87,6 +89,7 @@ export default class HistoryElement {
   }
 
   toggleElement() {
+    this.isExpanded = !this.isExpanded;
     const initialState = Flip.getState(this.elementWrapper);
     this.elementWrapper.classList.toggle("expanded");
     Flip.from(initialState, {
@@ -96,7 +99,7 @@ export default class HistoryElement {
 
   addListeners() {
     this.elementWrapper?.addEventListener("click", () => {
-      this.toggleElement();
+      this.history.setCurrentlyExpandedElement(this);
     });
   }
 }

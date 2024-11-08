@@ -27,9 +27,13 @@ function () {
 
     _classCallCheck(this, History);
 
-    this.emitter = emitter; // DOM Elements
+    this.emitter = emitter; // States
 
-    this.historyContainer = document.querySelector(".history__container");
+    this.elements = [];
+    this.currentlyExpandedElement = null; // DOM Elements
+
+    this.historyContainer = document.querySelector(".history__container"); // Init Methods
+
     this.fetcher = new _HistoryFetcher["default"]({
       emitter: this.emitter
     });
@@ -39,16 +43,19 @@ function () {
   _createClass(History, [{
     key: "createUIElements",
     value: function createUIElements(data) {
-      console.log(data.length);
+      var _this = this;
+
       data.forEach(function (element) {
-        new _HistoryElement["default"](element);
+        var newElement = new _HistoryElement["default"](element, _this);
+
+        _this.elements.push(newElement);
       });
       return this.historyContainer;
     }
   }, {
     key: "updateHistory",
     value: function updateHistory(isFirstLoad) {
-      var _this = this;
+      var _this2 = this;
 
       return regeneratorRuntime.async(function updateHistory$(_context2) {
         while (1) {
@@ -66,7 +73,7 @@ function () {
                         chatId = _store.store.get("chatId");
                         user = _store.store.get("user");
                         _context.next = 4;
-                        return regeneratorRuntime.awrap(_this.fetcher.getHistory({
+                        return regeneratorRuntime.awrap(_this2.fetcher.getHistory({
                           uuid: chatId,
                           user: user,
                           size: 10
@@ -75,14 +82,14 @@ function () {
                       case 4:
                         data = _context.sent;
 
-                        _this.createUIElements(data);
+                        _this2.createUIElements(data);
 
-                        imgs = _this.historyContainer.querySelectorAll("img");
+                        imgs = _this2.historyContainer.querySelectorAll("img");
                         imgLoadedCount = 0;
                         totalImages = imgs.length;
 
                         showHistory = function showHistory() {
-                          _this.historyContainer.style.display = "block";
+                          _this2.historyContainer.style.display = "block";
                         };
 
                         handleImageLoad = function handleImageLoad() {
@@ -120,13 +127,20 @@ function () {
       }, null, this);
     }
   }, {
+    key: "setCurrentlyExpandedElement",
+    value: function setCurrentlyExpandedElement(element) {
+      if (element !== this.currentlyExpandedElement) this.currentlyExpandedElement.toggleElement();
+      this.currentlyExpandedElement = element;
+      this.currentlyExpandedElement.toggleElement();
+    }
+  }, {
     key: "addListeners",
     value: function addListeners() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.historyContainer.addEventListener("scroll", function (e) {
         if (e.target.scrollTop + e.target.clientHeight >= e.target.scrollHeight - 1) {
-          _this2.updateHistory();
+          _this3.updateHistory();
         }
       });
     }
