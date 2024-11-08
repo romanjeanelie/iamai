@@ -50,7 +50,6 @@ export default class HistoryElement {
         emitter: this.emitter,
       });
       if (this.data.images.user_images) media?.addUserImages(JSON.parse(this.data.images.user_images));
-      this.historyContainer.appendChild(userContainer);
     }
 
     const AIContainer = document.createElement("div");
@@ -84,8 +83,6 @@ export default class HistoryElement {
         media?.addSources(JSON.parse(this.data.sources.sources));
       }
     }
-
-    this.historyContainer.appendChild(this.elementWrapper);
   }
 
   toggleElement() {

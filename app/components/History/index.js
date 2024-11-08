@@ -43,6 +43,8 @@ export default class History {
       }
 
       const newElement = new HistoryElement(element, this);
+      if (!newElement.elementWrapper) return;
+      this.historyContainer.appendChild(newElement.elementWrapper);
       this.elements.push(newElement);
     });
     return this.historyContainer;

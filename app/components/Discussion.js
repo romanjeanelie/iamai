@@ -111,12 +111,12 @@ export default class Discussion {
     this.currentTopStatus = null;
   }
 
-  moveChildrenToPrevContainer() {
-    this.historyContainer.classList.add("hidden");
+  archivePreviousDiscussion() {
+    // this.historyContainer.classList.add("hidden");
     const children = Array.from(this.discussionContainer.childNodes);
 
     children.forEach((child) => {
-      this.historyContainer.appendChild(child);
+      this.historyContainer.prepend(child);
     });
     this.scrollToBottom();
 
@@ -129,7 +129,7 @@ export default class Discussion {
   async addUserElement({ text, imgs, debug = false, isFromVideo } = {}) {
     //reduced the duration to save time
     await gsap.to(this.discussionContainer, { duration: 0.0005, y: -40, opacity: 0, ease: "power2.inOut" });
-    this.moveChildrenToPrevContainer();
+    this.archivePreviousDiscussion();
 
     if (imgs?.length > 0 && !isFromVideo) {
       const userContainer = document.createElement("div");
@@ -152,7 +152,6 @@ export default class Discussion {
     this.userContainer.appendChild(userContainerspan);
 
     this.discussionContainer.appendChild(this.userContainer);
-    console.log("imgs", imgs);
 
     //moves this to save time
     if (imgs && imgs.length > 0) {

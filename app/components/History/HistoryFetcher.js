@@ -29,7 +29,7 @@ export default class HistoryFetcher {
     return data;
   }
 
-  async getHistory({ uuid, user, size = 3 }) {
+  async getHistory({ uuid, user, size = 10 }) {
     this.isFetching = true;
     // Get elements
     const data = await this.getAllElements({ uuid, user, size, start: this.newStart });
