@@ -6,9 +6,10 @@ const md = getMarked();
 const isEmpty = (obj) => Object.keys(obj).length === 0;
 
 export default class HistoryElement {
-  constructor(data, history) {
+  constructor({ data, history, domNodes }) {
     this.data = data;
     this.history = history;
+    this.domNodes = domNodes;
 
     // States
     this.isExpanded = false;
@@ -20,11 +21,15 @@ export default class HistoryElement {
     this.assistantContainer = null;
 
     // Init Methods
-    this.createUI();
+    if (this.data) {
+      this.createUIFromData();
+    } else {
+      this.createUIFromDomNodes();
+    }
     this.addListeners();
   }
 
-  createUI() {
+  createUIFromData() {
     if (this.data.user.length === 0 || this.data.assistant.length === 0) {
       console.log("Skipping creation: user or assistant data is empty");
       return;
@@ -83,6 +88,16 @@ export default class HistoryElement {
         media?.addSources(JSON.parse(this.data.sources.sources));
       }
     }
+  }
+
+  createUIFromDomNodes() {
+    this.elementWrapper = document.createElement("div");
+    this.elementWrapper.classList.add("history-element__wrapper");
+
+    this.elementWrapper.appendChild(this.domNodes.user);
+    this.elementWrapper.appendChild(this.domNodes.assistant);
+
+    this.historyContainer.prepend(this.elementWrapper);
   }
 
   toggleElement() {

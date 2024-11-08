@@ -112,12 +112,12 @@ export default class Discussion {
   }
 
   archivePreviousDiscussion() {
-    // this.historyContainer.classList.add("hidden");
     const children = Array.from(this.discussionContainer.childNodes);
+    if (children.length <= 1) return;
+    const userElement = children.filter((child) => child.classList?.contains("discussion__user"))[0];
+    const aiElement = children.filter((child) => child.classList?.contains("discussion__ai"))[0];
 
-    children.forEach((child) => {
-      this.historyContainer.prepend(child);
-    });
+    this.history.createUIElementsFromDiscussion(userElement, aiElement);
     this.scrollToBottom();
 
     // Wait for scroll finish

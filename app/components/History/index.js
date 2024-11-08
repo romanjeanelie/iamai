@@ -42,12 +42,19 @@ export default class History {
         this.addDate(dateLabel);
       }
 
-      const newElement = new HistoryElement(element, this);
+      const newElement = new HistoryElement({ data: element, history: this });
       if (!newElement.elementWrapper) return;
       this.historyContainer.appendChild(newElement.elementWrapper);
       this.elements.push(newElement);
     });
     return this.historyContainer;
+  }
+
+  createUIElementsFromDiscussion(userElement, aiElement) {
+    new HistoryElement({
+      history: this,
+      domNodes: { user: userElement, assistant: aiElement },
+    });
   }
 
   async updateHistory(isFirstLoad) {
