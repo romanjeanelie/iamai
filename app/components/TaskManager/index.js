@@ -11,6 +11,7 @@ import TaskManagerCard from "./TaskManagerCard";
 
 import TaskFetcher from "./TaskFetcher";
 import { getPreviousDayTimestamp } from "../../utils/getPreviousDayTimestamp";
+import { getDateLabel } from "../../utils/dateUtils";
 
 gsap.registerPlugin(Flip);
 
@@ -88,7 +89,7 @@ export default class TaskManager {
   createTask(task, textAI, isFromChat) {
     // Handling the Date
     const taskDate = new Date(task.createdAt);
-    const dateLabel = this.getDateLabel(taskDate);
+    const dateLabel = getDateLabel(taskDate);
     if (!this.dates.includes(dateLabel)) {
       this.addDate(dateLabel);
     }
@@ -116,29 +117,6 @@ export default class TaskManager {
 
     // Handling the Index
     this.updateTasksIndex();
-  }
-
-  getDateLabel(taskDate) {
-    let date = "";
-
-    const today = new Date();
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(today.getDate() - 7);
-    const previousMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-
-    if (taskDate.toLocaleDateString() === today.toLocaleDateString()) {
-      date = "Today";
-    } else if (taskDate >= sevenDaysAgo && taskDate < today) {
-      date = "Previous 7 days";
-    } else if (taskDate >= previousMonth && taskDate < sevenDaysAgo) {
-      date = "Previous month";
-    } else {
-      date = taskDate.toLocaleDateString("en-US", {
-        month: "long",
-      });
-    }
-
-    return date;
   }
 
   addDate(dateLabel) {

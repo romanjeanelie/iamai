@@ -21,12 +21,24 @@
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 
-  &.visible {
-    transition: opacity 1200ms ease-in-out;
-    opacity: 1;
-  }
+  // &.visible {
+  //   transition: opacity 1200ms ease-in-out;
+  //   opacity: 1;
+  // }
 
-  &.hidden {
-    opacity: 0;
+  // &.hidden {
+  //   opacity: 0;
+  // }
+}
+
+.history__date {
+  color: #9fb7cb;
+  font-size: 48px;
+  font-weight: 300;
+  padding: 74px 0 24px;
+
+  @include media("<tablet") {
+    grid-column: span 1;
+    padding: 20px 0 4px;
   }
 }

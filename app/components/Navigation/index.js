@@ -58,11 +58,7 @@ export default class Navigation {
 
   toggleHistory() {
     if (this.currentSection !== SECTIONS.history) {
-      this.pageEl.scrollTo({
-        top: 0,
-        behavior: "smooth",
-        duration: 5,
-      });
+      gsap.to(this.pageEl, { scrollTo: 0, duration: 1, ease: Power3.easeOut });
     } else {
       this.isHistoryButtonClicked = true;
       this.discussionContainer.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -75,8 +71,8 @@ export default class Navigation {
       gsap.to(this.discussionWrapper, { yPercent: -100 });
       gsap.to(this.tasksContainer, {
         yPercent: 0,
-        duration: 0.5,
-        ease: "power3.inOut",
+        duration: 1,
+        ease: Power3.easeOut,
         onComplete: () => {
           this.isTasksInMotion = false;
         },
@@ -87,8 +83,8 @@ export default class Navigation {
       gsap.to(this.discussionWrapper, { yPercent: 0 });
       gsap.to(this.tasksContainer, {
         yPercent: 100,
-        duration: 0.5,
-        ease: "power3.inOut",
+        duration: 1,
+        ease: Power3.easeOut,
         onComplete: () => {
           this.isTasksInMotion = false;
         },

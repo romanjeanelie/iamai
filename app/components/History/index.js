@@ -1,3 +1,4 @@
+import { getDateLabel } from "../../utils/dateUtils";
 import { store } from "../store";
 import HistoryElement from "./HistoryElement";
 import HistoryFetcher from "./HistoryFetcher";
@@ -7,6 +8,7 @@ export default class History {
     this.emitter = emitter;
 
     // States
+    this.dates = [];
     this.elements = [];
     this.currentlyExpandedElement = null;
 
@@ -18,8 +20,28 @@ export default class History {
     this.addListeners();
   }
 
+  addDate(dateLabel) {
+    const divDate = document.createElement("div");
+    divDate.classList.add("history__date");
+
+    if (dateLabel === "Today") {
+      divDate.style.order = -1;
+      divDate.style.paddingTop = "20px";
+    }
+
+    divDate.innerHTML = dateLabel;
+    this.historyContainer.appendChild(divDate);
+    this.dates.push(dateLabel);
+  }
+
   createUIElements(data) {
     data.forEach((element) => {
+      const elementDate = new Date(element.time_stamp);
+      const dateLabel = getDateLabel(elementDate);
+      if (!this.dates.includes(dateLabel)) {
+        this.addDate(dateLabel);
+      }
+
       const newElement = new HistoryElement(element, this);
       this.elements.push(newElement);
     });

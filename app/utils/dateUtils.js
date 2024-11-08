@@ -124,3 +124,26 @@ export const getDayLabel = (date) => {
     return inputDate.toLocaleDateString("en-GB", { weekday: "long" });
   }
 };
+
+export const getDateLabel = (newDate) => {
+  let date = "";
+
+  const today = new Date();
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(today.getDate() - 7);
+  const previousMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+
+  if (newDate.toLocaleDateString() === today.toLocaleDateString()) {
+    date = "Today";
+  } else if (newDate >= sevenDaysAgo && newDate < today) {
+    date = "Previous 7 days";
+  } else if (newDate >= previousMonth && newDate < sevenDaysAgo) {
+    date = "Previous month";
+  } else {
+    date = newDate.toLocaleDateString("en-US", {
+      month: "long",
+    });
+  }
+
+  return date;
+};

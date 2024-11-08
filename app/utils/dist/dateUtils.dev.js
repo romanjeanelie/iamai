@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getDayLabel = exports.formatDateString = exports.formatDate = exports.getMonthStr = exports.getMonthDetails = exports.getDayDetails = exports.getNumberOfDays = exports.months = exports.days = void 0;
+exports.getDateLabel = exports.getDayLabel = exports.formatDateString = exports.formatDate = exports.getMonthStr = exports.getMonthDetails = exports.getDayDetails = exports.getNumberOfDays = exports.months = exports.days = void 0;
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
@@ -146,3 +146,27 @@ var getDayLabel = function getDayLabel(date) {
 };
 
 exports.getDayLabel = getDayLabel;
+
+var getDateLabel = function getDateLabel(newDate) {
+  var date = "";
+  var today = new Date();
+  var sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(today.getDate() - 7);
+  var previousMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+
+  if (newDate.toLocaleDateString() === today.toLocaleDateString()) {
+    date = "Today";
+  } else if (newDate >= sevenDaysAgo && newDate < today) {
+    date = "Previous 7 days";
+  } else if (newDate >= previousMonth && newDate < sevenDaysAgo) {
+    date = "Previous month";
+  } else {
+    date = newDate.toLocaleDateString("en-US", {
+      month: "long"
+    });
+  }
+
+  return date;
+};
+
+exports.getDateLabel = getDateLabel;
