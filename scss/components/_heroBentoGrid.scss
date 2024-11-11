@@ -326,4 +326,14 @@
       }
     }
   }
+
+  @media screen and (max-height: 740px) and (max-width: 640px) {
+    .talk-item {
+      display: none;
+    }
+
+    .entertainment-item {
+      grid-column: 31 / 61;
+    }
+  }
 }
