@@ -119,7 +119,7 @@
     justify-content: center;
     max-height: 100%;
     border-radius: 15px;
-    transform: translate(-20px, 18px);
+    // transform: translate(-20px, 18px);
 
     &::after {
       content: "";
@@ -142,7 +142,6 @@
 
     @include media("<tablet") {
       background: transparent;
-      transform: translate(0, 0);
       box-shadow: none;
       width: 60%;
       margin-bottom: 8px;
