@@ -7,12 +7,10 @@
   font-weight: 700;
   line-height: 100%; /* 4.762% */
   opacity: 0.6;
-  background: -webkit-linear-gradient(270deg, #dee2f1 0%, rgba(#dee2f1, 0) 100%);
-
+  background: linear-gradient(to bottom, rgba(230, 232, 243, 1) 0%, rgba(230, 232, 243, 0) 70%);
+  -webkit-text-fill-color: transparent;
   background-clip: text;
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  mix-blend-mode: overlay;
 }
 
 .discussion__wrapper {
