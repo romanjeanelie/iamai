@@ -50,6 +50,12 @@
     font-weight: 500;
     line-height: 20px;
     letter-spacing: 0.5px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    text-overflow: ellipsis;
   }
 
   .task-manager__task-status {
