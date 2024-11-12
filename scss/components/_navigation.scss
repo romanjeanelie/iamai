@@ -75,6 +75,8 @@
     content: "";
     position: absolute;
     inset: 0;
+    z-index: -1;
+    -webkit-backdrop-filter: blur(40px);
     backdrop-filter: blur(40px);
     mask-image: linear-gradient(to top, transparent 0%, rgba(0, 0, 0, 1) 70%);
     -webkit-mask-image: linear-gradient(to top, transparent 0%, rgba(0, 0, 0, 1) 70%);

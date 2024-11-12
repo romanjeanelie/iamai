@@ -46,6 +46,7 @@ html {
     position: fixed;
     inset: 0;
     background: rgba($colorLight, 0.01);
+    -webkit-backdrop-filter: blur(100px); /* fixes blur for Safari*/
     backdrop-filter: blur(100px);
   }
 

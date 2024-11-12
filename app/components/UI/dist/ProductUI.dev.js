@@ -120,12 +120,13 @@ function (_UIComponent) {
               productCardContainer = document.createElement("div");
               productCardContainer.className = "products-ui__product-container";
               productCardContainer.style.order = productData.position;
+              console.log(productData.price);
               price = this.formatPrice(productData.price);
               ratings = this.createRatingUI(productData.rating);
-              _context2.next = 7;
+              _context2.next = 8;
               return regeneratorRuntime.awrap(this.createSourceFavicon(productData.source));
 
-            case 7:
+            case 8:
               faviconContainer = _context2.sent;
               linkWrapper = document.createElement("a");
               linkWrapper.setAttribute("href", productData.link);
@@ -134,7 +135,7 @@ function (_UIComponent) {
               productCardContainer.appendChild(linkWrapper);
               return _context2.abrupt("return", productCardContainer);
 
-            case 14:
+            case 15:
             case "end":
               return _context2.stop();
           }

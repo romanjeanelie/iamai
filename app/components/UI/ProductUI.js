@@ -67,6 +67,7 @@ export class ProductUI extends UIComponent {
     productCardContainer.className = "products-ui__product-container";
     productCardContainer.style.order = productData.position;
 
+    console.log(productData.price);
     const price = this.formatPrice(productData.price);
     const ratings = this.createRatingUI(productData.rating);
     const faviconContainer = await this.createSourceFavicon(productData.source);

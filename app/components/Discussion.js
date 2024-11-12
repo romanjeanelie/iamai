@@ -286,7 +286,7 @@ export default class Discussion {
     await this.addAIText({ text: textAI, container: this.AIContainer });
     this.userContainer.classList.add("discussion__user--task-created");
     this.userContainer.setAttribute("taskkey", task.key);
-    // this.AIContainer.setAttribute("taskkey", task.key);
+    // this.AIContainer.setAttribute("taskkey", task.key);d
   }
 
   addListeners() {
