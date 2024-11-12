@@ -29,7 +29,15 @@ export class ProductUI extends UIComponent {
   }
 
   formatPrice(price) {
-    return price.includes(".00") ? price.substring(0, price.indexOf(".00")) : price;
+    // Replace any Unicode escape sequence with its corresponding symbol
+    let formattedPrice = price.replace("\\u20ac", "€").replace("\\u0024", "$");
+
+    // Remove ".00" if present
+    if (formattedPrice.includes(".00")) {
+      formattedPrice = formattedPrice.substring(0, formattedPrice.indexOf(".00"));
+    }
+
+    return formattedPrice;
   }
 
   initUI() {
@@ -67,7 +75,6 @@ export class ProductUI extends UIComponent {
     productCardContainer.className = "products-ui__product-container";
     productCardContainer.style.order = productData.position;
 
-    console.log(productData.price);
     const price = this.formatPrice(productData.price);
     const ratings = this.createRatingUI(productData.rating);
     const faviconContainer = await this.createSourceFavicon(productData.source);

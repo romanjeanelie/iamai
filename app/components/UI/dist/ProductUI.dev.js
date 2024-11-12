@@ -66,7 +66,14 @@ function (_UIComponent) {
   }, {
     key: "formatPrice",
     value: function formatPrice(price) {
-      return price.includes(".00") ? price.substring(0, price.indexOf(".00")) : price;
+      // Replace any Unicode escape sequence with its corresponding symbol
+      var formattedPrice = price.replace("\\u20ac", "€").replace("\\u0024", "$"); // Remove ".00" if present
+
+      if (formattedPrice.includes(".00")) {
+        formattedPrice = formattedPrice.substring(0, formattedPrice.indexOf(".00"));
+      }
+
+      return formattedPrice;
     }
   }, {
     key: "initUI",
@@ -120,13 +127,12 @@ function (_UIComponent) {
               productCardContainer = document.createElement("div");
               productCardContainer.className = "products-ui__product-container";
               productCardContainer.style.order = productData.position;
-              console.log(productData.price);
               price = this.formatPrice(productData.price);
               ratings = this.createRatingUI(productData.rating);
-              _context2.next = 8;
+              _context2.next = 7;
               return regeneratorRuntime.awrap(this.createSourceFavicon(productData.source));
 
-            case 8:
+            case 7:
               faviconContainer = _context2.sent;
               linkWrapper = document.createElement("a");
               linkWrapper.setAttribute("href", productData.link);
@@ -135,7 +141,7 @@ function (_UIComponent) {
               productCardContainer.appendChild(linkWrapper);
               return _context2.abrupt("return", productCardContainer);
 
-            case 15:
+            case 14:
             case "end":
               return _context2.stop();
           }
