@@ -7,6 +7,8 @@
   padding: 120px 15px 100px; // if the children have a shadow, the parent should have a padding to avoid cutting the shadow with the overflow
   overflow-y: auto;
   transition: opacity 200ms ease-in-out;
+  display: flex;
+  flex-direction: column;
 
   @include media("<tablet") {
     padding: 120px 35px 80px;

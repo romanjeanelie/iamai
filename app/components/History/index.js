@@ -51,6 +51,9 @@ export default class History {
   }
 
   createUIElementsFromDiscussion(userElement, aiElement) {
+    if (!this.dates.includes("Today")) {
+      this.addDate("Today");
+    }
     new HistoryElement({
       history: this,
       domNodes: { user: userElement, assistant: aiElement },
