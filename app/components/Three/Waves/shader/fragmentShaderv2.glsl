@@ -90,7 +90,7 @@ vec4 waveAnimation(){
   vec4 finalColor = vec4(uWaveColor, .0);
 
   for (int i; i< MAX_WAVES;i++){
-    float dist = distance(vUv, vec2(0.5, 0.0 - 0.1 * (1. - uWaveProgress[i]))) * uAmplitude;
+    float dist = distance(vUv, vec2(0.5, 0.0 - 0.1 * (1. - uWaveProgress[i])  * (1. - uWaveProgress[i]))) * uAmplitude;
     vec4 wave = processWave(uWaveProgress[i], dist);
     finalColor = mix(finalColor, wave, wave.a * (1.0 - finalColor.a));
   }
