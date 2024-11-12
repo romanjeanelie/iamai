@@ -96,7 +96,7 @@ export class ProductUI extends UIComponent {
           ${ratings.outerHTML}
         </div>
 
-        <p class="products-ui__product-source">${productData.source}</p>
+        <p class="products-ui__product-source">${productData.source} test etstet</p>
       </div>
     `;
 

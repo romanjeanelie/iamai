@@ -218,6 +218,12 @@
   font-size: 13px;
   font-weight: 400;
   line-height: 18px; /* 138.462% */
+  max-width: 96px;
+  max-height: 14px;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 @include media("<tablet") {
