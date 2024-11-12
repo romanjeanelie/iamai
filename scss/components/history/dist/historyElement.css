@@ -3,21 +3,32 @@
   position: relative;
   background: rgba(244, 244, 244, 0.55);
   box-shadow: 0px 8px 8px 0px rgba(55, 69, 108, 0.04);
-  padding: 8px 16px;
+  padding: 0px 16px;
   border-radius: 16px;
   margin-bottom: 16px;
   overflow: hidden;
 }
 .history-element__wrapper .discussion__user {
-  padding: 0;
   text-align: left;
-  padding: 12px 0 12px;
+  padding: 16px 0;
   margin-bottom: 0;
+  font-weight: 400;
 }
 .history-element__wrapper .discussion__userspan {
-  padding: 0;
   box-shadow: none;
   background: none;
+  padding: 0;
+  border-radius: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+}
+.history-element__wrapper.expanded .discussion__userspan {
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
 }
 .history-element__wrapper.expanded .discussion__ai {
   max-height: 1000px;
