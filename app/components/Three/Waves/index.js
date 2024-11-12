@@ -3,12 +3,16 @@ import ShaderWaves from "./ShaderWaves";
 
 export default class Waves {
   constructor() {
+    // DOM Elements
+    this.inputWrapper = document.querySelector(".input__wrapper");
+
     // INIT METHODS
     this.init();
     this.addEvents();
   }
 
   init() {
+    this.inputWrapper.classList.add("compact-gradient-background");
     if (isMobile()) {
       this.initLottieAnimation();
     } else {
@@ -35,6 +39,7 @@ export default class Waves {
   }
 
   destroy() {
+    this.inputWrapper.classList.remove("compact-gradient-background");
     this.shaderWaves?.destroy();
     this.shaderWaves = null;
     this.destroyLottieAnimation();
