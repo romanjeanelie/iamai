@@ -3,6 +3,7 @@ import { signOutUser } from "../../User";
 import { Flip } from "gsap/Flip";
 import { NavigationAnimations } from "./NavigationAnimations";
 import ScrollToPlugin from "gsap/ScrollToPlugin";
+import { debounce } from "../../utils/debounce";
 
 const SECTIONS = {
   history: "history",
@@ -120,21 +121,24 @@ export default class Navigation {
       rootMargin: "-100px",
     };
 
-    const observer = new IntersectionObserver((entries) => {
-      let intersectingSections = entries.filter((entry) => entry.isIntersecting).map((entry) => entry.target.id);
+    const observer = new IntersectionObserver(
+      debounce((entries) => {
+        let intersectingSections = entries.filter((entry) => entry.isIntersecting).map((entry) => entry.target.id);
 
-      if (intersectingSections.length === 0) {
-        this.currentSection = SECTIONS.discussion;
-      } else {
-        this.currentSection = intersectingSections[0];
-      }
+        if (intersectingSections.length === 0) {
+          this.currentSection = SECTIONS.discussion;
+        } else {
+          this.currentSection = intersectingSections[0];
+        }
 
-      if (this.currentSection !== SECTIONS.history) {
-        this.scrollHistoryToTop();
-      }
+        if (this.currentSection !== SECTIONS.history) {
+          this.scrollHistoryToTop();
+        }
 
-      this.updateNavButtons();
-    }, options);
+        this.updateNavButtons();
+      }, 250),
+      options
+    );
 
     // Observe the sections
     [SECTIONS.history, SECTIONS.tasks].forEach((sectionId) => {

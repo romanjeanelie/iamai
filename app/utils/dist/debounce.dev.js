@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = debounce;
+exports.debounce = debounce;
 
 // Debounce function to collect data and trigger createTaskBatch
 function debounce(func, wait) {

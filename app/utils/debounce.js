@@ -1,5 +1,5 @@
 // Debounce function to collect data and trigger createTaskBatch
-export default function debounce(func, wait) {
+export function debounce(func, wait) {
   let timeout;
   return function (...args) {
     clearTimeout(timeout);
