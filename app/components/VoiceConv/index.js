@@ -172,6 +172,8 @@ export default class VoiceConv {
     }
     this.myvad.pause();
 
+    console.log("TOPRIOCCESSING");
+
     if (!audio) return;
     const blob = float32ArrayToMp3Blob(audio, 16000);
     if (this.discussion.Chat.autodetect) this.textRecorded = await sendToWisphergroq(blob);
@@ -184,6 +186,7 @@ export default class VoiceConv {
   }
 
   async processTextAndPlayAudio(textRecorded) {
+    if (!this.isActive) return;
     try {
       if (!this.sentencesData) {
         const response = await fetch("stopwords.json");
@@ -510,6 +513,8 @@ export default class VoiceConv {
     // Close
     this.closeBtn.addEventListener("click", async () => {
       this.anims.toStopVoiceConv();
+      this.stopRecording();
+      this.stopAITalking();
       this.waves?.destroy();
       this.waves = null;
       this.leave();
