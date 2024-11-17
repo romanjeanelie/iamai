@@ -38,9 +38,9 @@ export default class Waves {
     }
   }
 
-  destroy() {
+  async destroy() {
     this.inputWrapper.classList.remove("compact-gradient-background");
-    this.shaderWaves?.destroy();
+    await this.shaderWaves?.destroy();
     this.shaderWaves = null;
     this.destroyLottieAnimation();
   }

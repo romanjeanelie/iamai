@@ -16,6 +16,10 @@ export default class VoiceConv {
     this.emitter = emitter;
     this.photos = photos;
 
+    // States
+    this.isSceneDestroyed = true;
+    this.isStartingConversation = false;
+
     // DOM Elements
     this.pageEl = pageEl;
     this.discussion = discussion;
@@ -126,11 +130,13 @@ export default class VoiceConv {
       this.unbindEvent();
       this.unbindEvent = null;
     }
+    this.isStartingConversation = false;
     this.isActive = false;
 
     this.voiceConvAnimations.leave();
     this.stopRecording();
     this.stopAITalking();
+
     this.emitter.emit("phone:leave");
   }
 
@@ -172,7 +178,7 @@ export default class VoiceConv {
     }
     this.myvad.pause();
 
-    console.log("TOPRIOCCESSING");
+    console.log("TOPROCCESSING");
 
     if (!audio) return;
     const blob = float32ArrayToMp3Blob(audio, 16000);
@@ -207,9 +213,7 @@ export default class VoiceConv {
       }
       this.stopwords = false;
 
-      console.log("TEXT RECORDED : ", textRecorded);
       const googletrresponse = await this.discussion.Chat.googletranslate(textRecorded, sourceLang, "");
-      console.log("FIRST GOOGLE RESPONSE", googletrresponse);
       if (googletrresponse.data.translations[0].detectedSourceLanguage) {
         const detectedLang = googletrresponse.data.translations[0].detectedSourceLanguage;
         sourceLang = detectedLang === "und" ? "en" : detectedLang;
@@ -344,6 +348,7 @@ export default class VoiceConv {
   }
 
   async startRecording() {
+    if (this.isActive) return;
     this.isActive = true;
 
     if (!this.micAccessConfirmed) {
@@ -499,12 +504,15 @@ export default class VoiceConv {
   addListeners() {
     // Open
     this.voiceConvBtn.addEventListener("click", async () => {
+      console.log("OPEN VOICE CONVERSATION");
+      if (!this.isSceneDestroyed || this.isActive) return; // making sure to wait till the 3D scene is destroyed before creating a new one
       this.audioContext = unlockAudio();
       this.anims.toStartVoiceConv();
       this.startRecording();
     });
 
     this.emitter.on("input:displayVideoInput", () => {
+      if (this.isActive) return;
       this.audioContext = unlockAudio();
       this.anims.toStartVoiceConv();
       this.startRecording();
@@ -512,10 +520,12 @@ export default class VoiceConv {
 
     // Close
     this.closeBtn.addEventListener("click", async () => {
+      console.log("CLOSE VOICE CONVERSATION");
       this.anims.toStopVoiceConv();
       this.stopRecording();
       this.stopAITalking();
-      this.waves?.destroy();
+      await this.waves?.destroy();
+
       this.waves = null;
       this.leave();
     });
