@@ -34,9 +34,9 @@ class HeroBento {
   hideBento() {
     this.isDisplayed = false;
     gsap.to(this.container, {
-      yPercent: -100,
+      yPercent: -200,
       ease: Power3.easeOut,
-      duration: 1,
+      duration: 0.5,
       onComplete: this.destroy.bind(this),
     });
   }

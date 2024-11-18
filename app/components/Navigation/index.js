@@ -70,32 +70,24 @@ export default class Navigation {
   }
 
   toggleTasks() {
-    console.log("toggleTasks");
     if (this.currentSection !== SECTIONS.tasks) {
-      console.log("open tasks");
       this.emitter.emit("Navigation:openTasks");
-      gsap.to(this.discussionWrapper, { yPercent: -100 });
-      gsap.to(this.tasksContainer, {
-        yPercent: 0,
-        duration: 1,
-        ease: Power3.easeOut,
-        onComplete: () => {
-          this.isTasksInMotion = false;
-        },
-      });
+      this.tasksContainer.classList.add("scroll-snap");
+      gsap.to(this.pageEl, { scrollTo: ".task-manager__container", duration: 0.5, ease: Power3.easeOut });
       this.inputEl.classList.add("hidden");
     } else {
-      console.log("close tasks");
       this.emitter.emit("Navigation:closeTasks");
-      gsap.to(this.discussionWrapper, { yPercent: 0 });
-      gsap.to(this.tasksContainer, {
-        yPercent: 100,
-        duration: 1,
+      console.log("close tasks");
+      this.pageEl.style.scrollSnapType = "none";
+      gsap.to(this.pageEl, {
+        scrollTo: ".main-content__container",
+        duration: 0.5,
         ease: Power3.easeOut,
         onComplete: () => {
-          this.isTasksInMotion = false;
+          this.pageEl.style.scrollSnapType = "y mandatory";
         },
       });
+      this.tasksContainer.classList.remove("scroll-snap");
       this.inputEl.classList.remove("hidden");
     }
   }
@@ -142,7 +134,7 @@ export default class Navigation {
         }
 
         this.updateNavButtons();
-      }, 250),
+      }, 500),
       options
     );
 
@@ -164,36 +156,6 @@ export default class Navigation {
   }
 
   addListeners() {
-    // Scroll Events
-    this.pageEl.addEventListener("touchstart", (e) => {
-      if (this.currentSection !== SECTIONS.discussion) return;
-      this.touchStartY = e.targetTouches[0].screenY;
-    });
-
-    this.pageEl.addEventListener("touchmove", (e) => {
-      if (this.currentSection !== SECTIONS.discussion) return;
-      this.touchCurrentY = e.targetTouches[0].screenY;
-
-      let changeY = this.touchCurrentY < this.touchStartY ? Math.abs(this.touchCurrentY - this.touchStartY) : 0;
-
-      if (changeY >= 50) {
-        if (this.isTasksInMotion) return;
-        this.isTasksInMotion = true;
-        gsap.to(this.discussionContainer, {
-          // yPercent: -100,
-          duration: 0.5,
-          ease: Power3.easeOut,
-          onComplete: this.toggleTasks.bind(this),
-        });
-      }
-    });
-
-    this.pageEl.addEventListener("touchend", (e) => {
-      // if (this.currentSection !== SECTIONS.discussion) return;
-      this.pageEl.style.paddingBottom = "0";
-      this.footerNav.style.paddingBottom = "0";
-    });
-
     // Intersection Observer
     this.setupIntersectionObserver();
 

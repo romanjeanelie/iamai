@@ -107,11 +107,12 @@
     <div class="discussion__wrapper">
       <div id="history" class="history__container hidden"></div>
       <div id="discussion" class="main-content__container">
-        <div class="discussion__container">
-
-        </div>
         {{> homePage/heroBentoGrid}}
+        <div class="discussion__container">
+        </div>
       </div>
+      <!--Task Manager -->
+      {{> homePage/taskManager}}
     </div>
 
     <div class="input__wrapper">
@@ -127,8 +128,7 @@
     {{> homePage/slider}}
     <!-- Video conversation -->
     {{> homePage/videoInput }}
-    <!--Task Manager -->
-    {{> homePage/taskManager}}
+
   </main>
   <script src="/libAudioRecorder/WebAudioRecorder.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

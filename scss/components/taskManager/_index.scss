@@ -5,19 +5,24 @@ $zIndex: 1;
 @import "./taskNotification";
 
 .task-manager__container {
-  font-family: "Noto Sans", sans-serif;
-  position: fixed;
+  height: 100vh; // fallback for browsers that don't support 100vh
+  height: 100svh;
   inset: 0;
   z-index: $zIndex;
   overflow-y: scroll;
   transition: opacity 0.3s $ease-out;
   padding-bottom: 200px;
 
+  &.scroll-snap {
+    scroll-snap-align: start;
+  }
+
   &.hidden {
     display: none;
   }
 
   @include media("<phone") {
+    scroll-snap-align: start;
     -webkit-overflow-scrolling: touch;
   }
 }

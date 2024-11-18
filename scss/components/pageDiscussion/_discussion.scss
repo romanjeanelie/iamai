@@ -12,10 +12,6 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   -webkit-background-clip: text;
-
-  @include media("<tablet") {
-    display: none;
-  }
 }
 
 .discussion__wrapper {
@@ -140,23 +136,18 @@
 }
 
 .main-content__container {
-  position: relative;
+  min-height: 100vh;
+  padding-top: 118px;
+
+  padding-bottom: 200px;
+
+  @include media("<tablet") {
+    padding-top: 96px;
+    padding-bottom: 80px;
+  }
 }
 
 .main-content__container,
 .history__container {
   scroll-snap-align: center;
-}
-
-.discussion__container {
-  min-height: calc(100vh - 96px);
-  margin-top: 96px;
-  padding-top: 21px;
-  padding-bottom: 200px;
-
-  @include media("<tablet") {
-    min-height: calc(100vh - 96px); // fallback for browsers that don't support svh units
-    min-height: calc(100svh - 96px);
-    padding-bottom: 80px;
-  }
 }

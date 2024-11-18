@@ -25,6 +25,7 @@ export default class Discussion {
     this.discussionContainer = document.querySelector(".discussion__container");
 
     // States
+    this.isFirstQuestion = true;
     this.currentProgress = 0;
     this.nextProgress = 0;
 
@@ -100,8 +101,9 @@ export default class Discussion {
       marginLeft: 16,
     });
 
-    this.emitter.emit("pre-text-animation");
-    this.typingText.fadeIn();
+    setTimeout(() => {
+      this.typingText.fadeIn();
+    }, 1000);
     this.Chat.callsubmit(text, imgs, this.AIContainer, isLiveMode);
   }
 
@@ -127,8 +129,17 @@ export default class Discussion {
   }
 
   async addUserElement({ text, imgs, debug = false, isFromVideo } = {}) {
+    this.emitter.emit("pre-text-animation");
+
     //reduced the duration to save time
-    await gsap.to(this.discussionContainer, { duration: 0.0005, y: -40, opacity: 0, ease: "power2.inOut" });
+    await gsap.to(this.discussionContainer, {
+      duration: 0.0005,
+      y: -40,
+      opacity: 0,
+      delay: this.isFirstQuestion ? 0.2 : 0,
+      ease: "power2.inOut",
+    });
+    this.isFirstQuestion = false;
     this.archivePreviousDiscussion();
 
     if (imgs?.length > 0 && !isFromVideo) {
