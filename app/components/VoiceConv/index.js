@@ -381,12 +381,12 @@ export default class VoiceConv {
           },
           // Time to wait before onSpeechEnd (10 frames * X seconds)
           redemptionFrames: 10 * 1.4,
-          forceNonSIMD: true,
         });
       } catch (err) {
-        // console.log("error in vad");
         console.log(err);
         const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+        // Safari specific error handling if microphone permission is not granted
         if (err.name === "NotAllowedError" && isSafari) {
           alert(
             "Safari requires microphone permission to use this feature.\n\n" +
@@ -396,6 +396,10 @@ export default class VoiceConv {
               "3. Allow access for this website\n" +
               "4. Refresh the page"
           );
+        } else if (isSafari && err.message.includes("WebAssembly SIMD is not supported in the current environment")) {
+          // Safari 16.4 or newer is required for voice conversations
+          alert("You need Safari 16.4 or newer to use voice conversations. Quick update and you're good to go!");
+          this.stopRecording();
         }
       }
     }
