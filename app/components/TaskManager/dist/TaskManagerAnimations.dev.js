@@ -42,7 +42,6 @@ function () {
       scroller: this.pageEl,
       start: "top top",
       end: "bottom bottom",
-      markers: true,
       onEnter: function onEnter() {
         _this.showCards();
       },

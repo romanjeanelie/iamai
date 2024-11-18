@@ -20,7 +20,6 @@ export default class TaskManagerAnimations {
       scroller: this.pageEl,
       start: "top top",
       end: "bottom bottom",
-      markers: true,
       onEnter: () => {
         this.showCards();
       },

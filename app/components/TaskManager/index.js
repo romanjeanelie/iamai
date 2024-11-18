@@ -9,14 +9,13 @@ import TaskManagerAnimations from "./TaskManagerAnimations";
 import TaskManagerButton from "./TaskManagerButton";
 import TaskManagerCard from "./TaskManagerCard";
 
-import TaskFetcher from "./TaskFetcher";
-import { getPreviousDayTimestamp } from "../../utils/getPreviousDayTimestamp";
-import { getDateLabel } from "../../utils/dateUtils";
 import { GUI } from "dat.gui";
-import TaskManagerDebug from "./TaskManagerDebug";
-import { ProductUI } from "../UI";
 import { productResultData } from "../../../testData";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { getDateLabel } from "../../utils/dateUtils";
+import { getPreviousDayTimestamp } from "../../utils/getPreviousDayTimestamp";
+import { ProductUI } from "../UI";
+import TaskFetcher from "./TaskFetcher";
+import TaskManagerDebug from "./TaskManagerDebug";
 
 gsap.registerPlugin(Flip);
 
