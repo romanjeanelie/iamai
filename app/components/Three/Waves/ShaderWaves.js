@@ -316,7 +316,6 @@ export default class ShaderWaves {
 
   async destroy() {
     await this.fade();
-    console.log("destroying");
     // Clean up the Three.js ressources
     this.scene?.remove(this.mesh);
     this.mesh?.geometry.dispose();

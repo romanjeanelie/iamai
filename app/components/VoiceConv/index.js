@@ -504,7 +504,6 @@ export default class VoiceConv {
   addListeners() {
     // Open
     this.voiceConvBtn.addEventListener("click", async () => {
-      console.log("OPEN VOICE CONVERSATION");
       if (!this.isSceneDestroyed || this.isActive) return; // making sure to wait till the 3D scene is destroyed before creating a new one
       this.audioContext = unlockAudio();
       this.anims.toStartVoiceConv();
@@ -520,7 +519,6 @@ export default class VoiceConv {
 
     // Close
     this.closeBtn.addEventListener("click", async () => {
-      console.log("CLOSE VOICE CONVERSATION");
       this.anims.toStopVoiceConv();
       this.stopRecording();
       this.stopAITalking();
