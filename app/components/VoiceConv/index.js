@@ -381,10 +381,22 @@ export default class VoiceConv {
           },
           // Time to wait before onSpeechEnd (10 frames * X seconds)
           redemptionFrames: 10 * 1.4,
+          forceNonSIMD: true,
         });
       } catch (err) {
         // console.log("error in vad");
         console.log(err);
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        if (err.name === "NotAllowedError" && isSafari) {
+          alert(
+            "Safari requires microphone permission to use this feature.\n\n" +
+              "Please check your Safari settings:\n" +
+              "1. Click Safari > Settings > Websites\n" +
+              "2. Find 'Microphone' in the left sidebar\n" +
+              "3. Allow access for this website\n" +
+              "4. Refresh the page"
+          );
+        }
       }
     }
 
@@ -394,7 +406,6 @@ export default class VoiceConv {
         const testAudio = new Audio();
         testAudio.src = audioFlights;
         this.toProcessing(testAudio);
-        return;
       }, 2500);
     }
 
@@ -474,28 +485,17 @@ export default class VoiceConv {
     this.myvad.start();
   }
 
-  pauseResume(
-    isMicMuted = this.isMicMuted,
-    isAITalking = this.isAITalking,
-    // isProcessing = this.isProcessing,
-    isAIPaused = this.isAIPaused
-  ) {
-    // console.log("pause initiated");
+  pauseResume(isMicMuted = this.isMicMuted, isAITalking = this.isAITalking, isAIPaused = this.isAIPaused) {
     if (isAITalking) {
-      // console.log("ai talking");
       if (!isAIPaused) {
-        // console.log("ai not paused");
         this.pauseAI();
       } else {
-        // console.log("ai paused");
         this.resumeAI();
       }
     } else {
       if (!isMicMuted) {
-        // console.log("mic not muted");
         this.muteMic();
       } else {
-        // console.log("mic muted");
         this.unmuteMic();
       }
     }
