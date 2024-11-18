@@ -58,16 +58,21 @@ export default class Navigation {
   }
 
   toggleHistory() {
+    console.log("toggleHistory");
     if (this.currentSection !== SECTIONS.history) {
+      console.log("open history");
       gsap.to(this.pageEl, { scrollTo: 0, duration: 0.5, ease: Power3.easeOut });
     } else {
+      console.log("close history");
       this.isHistoryButtonClicked = true;
       this.discussionContainer.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }
 
   toggleTasks() {
+    console.log("toggleTasks");
     if (this.currentSection !== SECTIONS.tasks) {
+      console.log("open tasks");
       this.emitter.emit("Navigation:openTasks");
       gsap.to(this.discussionWrapper, { yPercent: -100 });
       gsap.to(this.tasksContainer, {
@@ -80,6 +85,7 @@ export default class Navigation {
       });
       this.inputEl.classList.add("hidden");
     } else {
+      console.log("close tasks");
       this.emitter.emit("Navigation:closeTasks");
       gsap.to(this.discussionWrapper, { yPercent: 0 });
       gsap.to(this.tasksContainer, {
@@ -174,7 +180,7 @@ export default class Navigation {
         if (this.isTasksInMotion) return;
         this.isTasksInMotion = true;
         gsap.to(this.discussionContainer, {
-          yPercent: -100,
+          // yPercent: -100,
           duration: 0.5,
           ease: Power3.easeOut,
           onComplete: this.toggleTasks.bind(this),

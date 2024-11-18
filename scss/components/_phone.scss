@@ -41,9 +41,6 @@ $colorTalkAI: $colorBlueText;
     pointer-events: none;
     transition: transform 0.3s $ease-out;
     backdrop-filter: none;
-    @supports not (backdrop-filter: blur(10px)) {
-      background: rgba($backgroundColorGreyPage, 0.8); // Fallback for browsers that do not support backdrop-filter
-    }
   }
 
   .phone__wrapper.show {
