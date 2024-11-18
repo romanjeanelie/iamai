@@ -274,7 +274,10 @@ export default class Discussion {
     const isFirstLoad = true;
     await this.history.updateHistory(isFirstLoad);
     this.taskManager.initTaskManager();
-    this.scrollToBottom(false);
+    this.discussionContainer.scrollIntoView({
+      behavior: "instant",
+      block: "start",
+    });
     this.isHistoryLoading = false;
     this.emitter.emit("app:initialized", true);
 

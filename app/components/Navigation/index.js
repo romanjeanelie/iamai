@@ -58,12 +58,9 @@ export default class Navigation {
   }
 
   toggleHistory() {
-    console.log("toggleHistory");
     if (this.currentSection !== SECTIONS.history) {
-      console.log("open history");
       gsap.to(this.pageEl, { scrollTo: 0, duration: 0.5, ease: Power3.easeOut });
     } else {
-      console.log("close history");
       this.isHistoryButtonClicked = true;
       this.discussionContainer.scrollIntoView({ behavior: "smooth", block: "start" });
     }
