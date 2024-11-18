@@ -9,6 +9,8 @@ var _gsap = _interopRequireDefault(require("gsap"));
 
 var _Flip = require("gsap/Flip");
 
+var _ScrollTrigger = require("gsap/ScrollTrigger");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -21,15 +23,39 @@ var TaskManagerAnimations =
 /*#__PURE__*/
 function () {
   function TaskManagerAnimations(emitter) {
+    var _this = this;
+
     _classCallCheck(this, TaskManagerAnimations);
 
     this.emitter = emitter;
     this.container = document.querySelector(".task-manager__container"); // Bindings
 
+    this.pageEl = document.querySelector(".page-discussion");
+    this.container = document.querySelector(".task-manager__container");
     this.showCards = this.showCards.bind(this);
     this.hideCards = this.hideCards.bind(this); // Init Methods
 
     this.initAnimations();
+
+    _ScrollTrigger.ScrollTrigger.create({
+      trigger: this.container,
+      scroller: this.pageEl,
+      start: "top top",
+      end: "bottom bottom",
+      markers: true,
+      onEnter: function onEnter() {
+        _this.showCards();
+      },
+      onEnterBack: function onEnterBack() {
+        _this.showCards();
+      },
+      onLeave: function onLeave() {
+        _this.hideCards();
+      },
+      onLeaveBack: function onLeaveBack() {
+        _this.hideCards();
+      }
+    });
   }
 
   _createClass(TaskManagerAnimations, [{

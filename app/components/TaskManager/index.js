@@ -16,6 +16,7 @@ import { GUI } from "dat.gui";
 import TaskManagerDebug from "./TaskManagerDebug";
 import { ProductUI } from "../UI";
 import { productResultData } from "../../../testData";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(Flip);
 
@@ -26,6 +27,7 @@ export default class TaskManager {
 
     // DOM Elements
     this.html = document.documentElement;
+    this.pageEl = document.querySelector(".page-discussion");
     this.container = document.querySelector(".task-manager__container");
     this.tasksGrid = document.querySelector(".task-manager__tasks-grid");
 

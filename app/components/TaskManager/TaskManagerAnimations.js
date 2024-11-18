@@ -1,5 +1,6 @@
 import gsap from "gsap";
 import { Flip } from "gsap/Flip";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export default class TaskManagerAnimations {
   constructor(emitter) {
@@ -7,11 +8,32 @@ export default class TaskManagerAnimations {
     this.container = document.querySelector(".task-manager__container");
 
     // Bindings
+    this.pageEl = document.querySelector(".page-discussion");
+    this.container = document.querySelector(".task-manager__container");
     this.showCards = this.showCards.bind(this);
     this.hideCards = this.hideCards.bind(this);
 
     // Init Methods
     this.initAnimations();
+    ScrollTrigger.create({
+      trigger: this.container,
+      scroller: this.pageEl,
+      start: "top top",
+      end: "bottom bottom",
+      markers: true,
+      onEnter: () => {
+        this.showCards();
+      },
+      onEnterBack: () => {
+        this.showCards();
+      },
+      onLeave: () => {
+        this.hideCards();
+      },
+      onLeaveBack: () => {
+        this.hideCards();
+      },
+    });
   }
 
   updateCards(newCards) {
