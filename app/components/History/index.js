@@ -38,12 +38,12 @@ export default class History {
     data.forEach((element) => {
       const elementDate = new Date(element.time_stamp);
       const dateLabel = getDateLabel(elementDate);
-      if (!this.dates.includes(dateLabel)) {
-        this.addDate(dateLabel);
-      }
 
       const newElement = new HistoryElement({ data: element, history: this });
       if (!newElement.elementWrapper) return;
+      if (!this.dates.includes(dateLabel)) {
+        this.addDate(dateLabel);
+      }
       this.historyContainer.appendChild(newElement.elementWrapper);
       this.elements.push(newElement);
     });
