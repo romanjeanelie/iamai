@@ -122,6 +122,7 @@ export default class Navigation {
 
         if (intersectingSections.length === 0) {
           this.currentSection = SECTIONS.discussion;
+          this.tasksContainer.classList.remove("scroll-snap");
         } else {
           this.currentSection = intersectingSections[0];
         }

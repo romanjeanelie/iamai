@@ -76,10 +76,9 @@ export default class TaskManager {
   // ---------- Handling the task-manager states ----------
   initTaskManager() {
     this.fetcher = new TaskFetcher(this.emitter);
-    gsap.set(this.container, {
-      yPercent: 100,
-    });
-
+    // gsap.set(this.container, {
+    //   yPercent: 100,
+    // });
     this.container.classList.remove("hidden");
   }
 
