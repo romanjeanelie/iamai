@@ -279,8 +279,8 @@
     align-items: center;
     gap: 10px;
     stroke: rgba(255, 255, 255, 0.22);
-    outline: 10px solid rgba(255, 255, 255, 0.22);
     border-radius: 100px;
+    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0.22); // Use box-shadow for the outline
 
     p {
       color: $colorMain;
