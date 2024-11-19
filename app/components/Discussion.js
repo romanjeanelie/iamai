@@ -167,6 +167,7 @@ export default class Discussion {
     //moves this to save time
     if (imgs && imgs.length > 0) {
       // console.log(imgs.length);
+      console.log(imgs);
       this.getAiAnswer({ text, imgs, isLiveMode: isFromVideo });
     } else this.getAiAnswer({ text });
 
