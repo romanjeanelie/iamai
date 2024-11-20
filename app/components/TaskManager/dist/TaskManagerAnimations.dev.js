@@ -11,6 +11,8 @@ var _Flip = require("gsap/Flip");
 
 var _ScrollTrigger = require("gsap/ScrollTrigger");
 
+var _isMobile = _interopRequireDefault(require("../../utils/isMobile"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -67,6 +69,7 @@ function () {
   }, {
     key: "hideCards",
     value: function hideCards() {
+      if ((0, _isMobile["default"])()) return;
       var cards = document.querySelectorAll(".task-manager__task-card-container");
 
       _gsap["default"].to(cards, {
@@ -79,6 +82,7 @@ function () {
   }, {
     key: "showCards",
     value: function showCards() {
+      if ((0, _isMobile["default"])()) return;
       var cards = document.querySelectorAll(".task-manager__task-card-container");
 
       _gsap["default"].killTweensOf(cards);

@@ -1,6 +1,7 @@
 import gsap from "gsap";
 import { Flip } from "gsap/Flip";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import isMobile from "../../utils/isMobile";
 
 export default class TaskManagerAnimations {
   constructor(emitter) {
@@ -42,11 +43,13 @@ export default class TaskManagerAnimations {
   }
 
   hideCards() {
+    if (isMobile()) return;
     const cards = document.querySelectorAll(".task-manager__task-card-container");
     gsap.to(cards, { opacity: 0, y: 50, duration: 0.1, stagger: 0.05 });
   }
 
   showCards() {
+    if (isMobile()) return;
     const cards = document.querySelectorAll(".task-manager__task-card-container");
     gsap.killTweensOf(cards);
     gsap.set(cards, { opacity: 0, y: 50 });
