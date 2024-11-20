@@ -20,7 +20,7 @@ export default class Discussion {
     // DOM Elements
     this.inputContainer = this.pageEl.querySelector("div.input__container");
     this.inputText = this.pageEl.querySelector(".input-text");
-    this.discussionWrapper = document.querySelector(".discussion__wrapper");
+    this.discussionWrapper = document.querySelector("#discussion");
     this.historyContainer = document.querySelector(".history__container");
     this.discussionContainer = document.querySelector(".discussion__container");
 
@@ -275,10 +275,12 @@ export default class Discussion {
     const isFirstLoad = true;
     await this.history.updateHistory(isFirstLoad);
     this.taskManager.initTaskManager();
-    this.discussionContainer.scrollIntoView({
+
+    this.discussionWrapper.scrollIntoView({
       behavior: "instant",
       block: "start",
     });
+
     this.isHistoryLoading = false;
     this.emitter.emit("app:initialized", true);
 

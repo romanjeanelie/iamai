@@ -36,8 +36,7 @@ export default class Navigation {
     this.tasksButton = this.footerNav.querySelector(".footer-nav__tasks-container");
 
     this.pageEl = document.querySelector(".page-discussion");
-    this.discussionWrapper = document.querySelector(".discussion__wrapper");
-    this.discussionContainer = document.querySelector(".discussion__container");
+    this.discussionWrapper = document.querySelector("#discussion");
     this.historyContainer = document.querySelector(".history__container");
     this.tasksContainer = document.querySelector(".task-manager__container");
     this.userPicture = this.headerNav.querySelector(".user-logo img");
@@ -62,7 +61,7 @@ export default class Navigation {
       gsap.to(this.pageEl, { scrollTo: 0, duration: 0.5, ease: Power3.easeOut });
     } else {
       this.isHistoryButtonClicked = true;
-      this.discussionContainer.scrollIntoView({ behavior: "smooth", block: "start" });
+      this.discussionWrapper.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }
 
@@ -74,7 +73,6 @@ export default class Navigation {
       this.inputEl.classList.add("hidden");
     } else {
       this.emitter.emit("Navigation:closeTasks");
-      console.log("close tasks");
       this.pageEl.style.scrollSnapType = "none";
       gsap.to(this.pageEl, {
         scrollTo: ".main-content__container",

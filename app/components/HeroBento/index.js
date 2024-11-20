@@ -1,7 +1,5 @@
 import gsap, { Power3 } from "gsap";
 import HeroBentoAnimations from "./HeroBentoAnimations";
-import isMobile from "../../utils/isMobile";
-
 class HeroBento {
   constructor({ user, emitter }) {
     this.user = user;
