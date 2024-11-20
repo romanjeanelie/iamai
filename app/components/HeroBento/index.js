@@ -1,5 +1,6 @@
 import gsap, { Power3 } from "gsap";
 import HeroBentoAnimations from "./HeroBentoAnimations";
+import isMobile from "../../utils/isMobile";
 
 class HeroBento {
   constructor({ user, emitter }) {
@@ -8,11 +9,16 @@ class HeroBento {
 
     // States
     this.debug = import.meta.env.VITE_DEBUG === "true";
+    this.currentSlider = 0;
     this.isDisplayed = true;
+    this.isDragging = false;
+    this.startX = 0;
+    this.scrollLeft = 0;
 
     // Dom Elements
     this.container = document.querySelector(".heroBentoGrid__container");
     this.name = this.container.querySelector(".name");
+    this.slider = this.container.querySelector(".heroBentoGrid__slider");
     this.bentoGrids = this.container.querySelectorAll(".heroBentoGrid__grid");
     this.indicators = this.container.querySelectorAll(".heroBentoGrid__indicators .indicator");
 
@@ -51,8 +57,8 @@ class HeroBento {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             // Get the index of the bento grid
-            const index = Array.from(this.bentoGrids).indexOf(entry.target);
-            this.updateIndicators(index);
+            this.currentSlider = Array.from(this.bentoGrids).indexOf(entry.target);
+            this.updateIndicators(this.currentSlider);
           }
         });
       },
@@ -69,7 +75,45 @@ class HeroBento {
     });
   }
 
+  startDragging(event) {
+    this.isDragging = true;
+    this.startX = event.pageX - this.slider.offsetLeft;
+    this.scrollLeft = this.slider.scrollLeft;
+
+    // Remove snap and adjust cursor style
+    this.slider.classList.add("dragging");
+  }
+
+  moveSlider(event) {
+    if (!this.isDragging) return;
+    const x = event.pageX - this.slider.offsetLeft;
+    const scroll = x - this.startX;
+    this.slider.scrollLeft = this.scrollLeft - scroll;
+  }
+
+  stopDragging() {
+    this.isDragging = false;
+    gsap.to(this.slider, {
+      scrollLeft: this.currentSlider * this.slider.offsetWidth,
+      duration: 0.5,
+      onComplete: () => {
+        console.log("done");
+        this.slider.classList.remove("dragging");
+      },
+    });
+    // Add back snap and remove cursor style
+    // this.slider.classList.remove("dragging");
+  }
+
   addEventListeners() {
+    this.slider.addEventListener("mousedown", this.startDragging.bind(this));
+
+    this.slider.addEventListener("mouseup", this.stopDragging.bind(this));
+
+    this.slider.addEventListener("mousemove", this.moveSlider.bind(this));
+
+    this.slider.addEventListener("mouseleave", this.stopDragging.bind(this));
+
     this.emitter.on("pre-text-animation", () => {
       if (!this.isDisplayed) return;
       this.hideBento();

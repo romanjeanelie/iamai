@@ -1,6 +1,5 @@
 .heroBentoGrid__container {
   z-index: 3;
-
   max-width: $maxWidth;
   padding: 0;
   margin: 0 auto;
@@ -87,7 +86,22 @@
   display: flex;
   gap: 4px;
   overflow-x: auto;
+  overflow-y: hidden;
   scroll-snap-type: x mandatory;
+  user-select: none;
+
+  &.dragging {
+    cursor: grab;
+    scroll-snap-type: none;
+
+    .heroBentoGrid__grid .heroBentoGrid__grid-item {
+      cursor: grab;
+    }
+  }
+
+  .heroBentoGrid__grid .heroBentoGrid__grid-item {
+    cursor: pointer;
+  }
 }
 
 .heroBentoGrid__grid {
