@@ -53,6 +53,7 @@ export class ProductUI extends UIComponent {
     this.productsData.forEach(async (element) => {
       const productCard = await this.createProductCard(element);
       productcardcontainerdiv.appendChild(productCard);
+      await this.updateSourceFavicon(element.link, productCard);
     });
   }
 
@@ -73,11 +74,12 @@ export class ProductUI extends UIComponent {
   async createProductCard(productData) {
     const productCardContainer = document.createElement("div");
     productCardContainer.className = "products-ui__product-container";
-    productCardContainer.style.order = productData.position;
+    productCardContainer.style.order = productData;
 
     const price = this.formatPrice(productData.price);
     const ratings = this.createRatingUI(productData.rating);
-    const faviconContainer = await this.createSourceFavicon(productData.source);
+    const faviconContainer = document.createElement("div");
+    faviconContainer.className = "products-ui__product-source-logo placeholder";
 
     const linkWrapper = document.createElement("a");
     linkWrapper.setAttribute("href", productData.link);
@@ -85,7 +87,8 @@ export class ProductUI extends UIComponent {
 
     linkWrapper.innerHTML = `
       <div class="products-ui__product-header">
-        ${faviconContainer.outerHTML}
+        <div class="products-ui__product-source-logo placeholder">
+        </div>
         <p class="products-ui__product-source">${productData.source}</p>
       </div> 
       <div class="products-ui__product-infos">
@@ -103,19 +106,19 @@ export class ProductUI extends UIComponent {
           ${ratings.outerHTML}
         </div>
 
-        <p class="products-ui__product-source">${productData.source} test etstet</p>
+        <p class="products-ui__product-source">${productData.source}</p>
       </div>
     `;
 
     productCardContainer.appendChild(linkWrapper);
-
     return productCardContainer;
   }
 
-  async createSourceFavicon(source) {
-    const { favicon } = getDomainAndFavicon(source);
-    const faviconContainer = document.createElement("div");
-    faviconContainer.className = "products-ui__product-source-logo";
+  async updateSourceFavicon(source, cardContainer) {
+    const faviconContainer = cardContainer.querySelector(".products-ui__product-source-logo");
+
+    const baseUrl = new URL(source).origin;
+    const { favicon } = getDomainAndFavicon(baseUrl);
 
     await new Promise((resolve, reject) => {
       const img = new Image();
@@ -124,10 +127,12 @@ export class ProductUI extends UIComponent {
         faviconContainer.appendChild(img);
         resolve();
       };
-      img.onerror = () => {
+      img.onerror = (e) => {
         resolve();
       };
     });
+
+    faviconContainer.classList.remove("placeholder");
 
     return faviconContainer;
   }

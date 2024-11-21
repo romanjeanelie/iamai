@@ -41,7 +41,7 @@ export default class TaskManagerCard {
       if (this.task.key === 1) {
         setTimeout(() => {
           this.expandCardToFullscreen();
-        }, 15);
+        }, 500);
       }
     }
   }

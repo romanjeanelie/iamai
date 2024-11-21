@@ -98,8 +98,10 @@ function (_UIComponent) {
               case 2:
                 productCard = _context.sent;
                 productcardcontainerdiv.appendChild(productCard);
+                _context.next = 6;
+                return regeneratorRuntime.awrap(_this2.updateSourceFavicon(element.link, productCard));
 
-              case 4:
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -126,22 +128,19 @@ function (_UIComponent) {
             case 0:
               productCardContainer = document.createElement("div");
               productCardContainer.className = "products-ui__product-container";
-              productCardContainer.style.order = productData.position;
+              productCardContainer.style.order = productData;
               price = this.formatPrice(productData.price);
               ratings = this.createRatingUI(productData.rating);
-              _context2.next = 7;
-              return regeneratorRuntime.awrap(this.createSourceFavicon(productData.source));
-
-            case 7:
-              faviconContainer = _context2.sent;
+              faviconContainer = document.createElement("div");
+              faviconContainer.className = "products-ui__product-source-logo placeholder";
               linkWrapper = document.createElement("a");
               linkWrapper.setAttribute("href", productData.link);
               linkWrapper.setAttribute("target", "_blank");
-              linkWrapper.innerHTML = "\n      <div class=\"products-ui__product-header\">\n        ".concat(faviconContainer.outerHTML, "\n        <p class=\"products-ui__product-source\">").concat(productData.source, "</p>\n      </div> \n      <div class=\"products-ui__product-infos\">\n        <div class=\"products-ui__product-details\">\n          <h3>").concat(productData.title, "</h3>\n          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>\n        </div>\n        <div class=\"products-ui__product-image\">\n          <img src=\"").concat(productData.imageUrl, "\" alt=\"").concat(productData.title, "\">\n        </div>\n      </div>\n      <div class=\"products-ui__product-footer\">\n        <div class=\"products-ui__product-price-rating\">\n          <p class=\"products-ui__product-price\">").concat(price, "</p>\n          ").concat(ratings.outerHTML, "\n        </div>\n\n        <p class=\"products-ui__product-source\">").concat(productData.source, " test etstet</p>\n      </div>\n    ");
+              linkWrapper.innerHTML = "\n      <div class=\"products-ui__product-header\">\n        <div class=\"products-ui__product-source-logo placeholder\">\n        </div>\n        <p class=\"products-ui__product-source\">".concat(productData.source, "</p>\n      </div> \n      <div class=\"products-ui__product-infos\">\n        <div class=\"products-ui__product-details\">\n          <h3>").concat(productData.title, "</h3>\n          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>\n        </div>\n        <div class=\"products-ui__product-image\">\n          <img src=\"").concat(productData.imageUrl, "\" alt=\"").concat(productData.title, "\">\n        </div>\n      </div>\n      <div class=\"products-ui__product-footer\">\n        <div class=\"products-ui__product-price-rating\">\n          <p class=\"products-ui__product-price\">").concat(price, "</p>\n          ").concat(ratings.outerHTML, "\n        </div>\n\n        <p class=\"products-ui__product-source\">").concat(productData.source, "</p>\n      </div>\n    ");
               productCardContainer.appendChild(linkWrapper);
               return _context2.abrupt("return", productCardContainer);
 
-            case 14:
+            case 13:
             case "end":
               return _context2.stop();
           }
@@ -149,17 +148,17 @@ function (_UIComponent) {
       }, null, this);
     }
   }, {
-    key: "createSourceFavicon",
-    value: function createSourceFavicon(source) {
-      var _getDomainAndFavicon, favicon, faviconContainer;
+    key: "updateSourceFavicon",
+    value: function updateSourceFavicon(source, cardContainer) {
+      var faviconContainer, baseUrl, _getDomainAndFavicon, favicon;
 
-      return regeneratorRuntime.async(function createSourceFavicon$(_context3) {
+      return regeneratorRuntime.async(function updateSourceFavicon$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
-              _getDomainAndFavicon = (0, _getDomainAndFavicon2["default"])(source), favicon = _getDomainAndFavicon.favicon;
-              faviconContainer = document.createElement("div");
-              faviconContainer.className = "products-ui__product-source-logo";
+              faviconContainer = cardContainer.querySelector(".products-ui__product-source-logo");
+              baseUrl = new URL(source).origin;
+              _getDomainAndFavicon = (0, _getDomainAndFavicon2["default"])(baseUrl), favicon = _getDomainAndFavicon.favicon;
               _context3.next = 5;
               return regeneratorRuntime.awrap(new Promise(function (resolve, reject) {
                 var img = new Image();
@@ -170,15 +169,16 @@ function (_UIComponent) {
                   resolve();
                 };
 
-                img.onerror = function () {
+                img.onerror = function (e) {
                   resolve();
                 };
               }));
 
             case 5:
+              faviconContainer.classList.remove("placeholder");
               return _context3.abrupt("return", faviconContainer);
 
-            case 6:
+            case 7:
             case "end":
               return _context3.stop();
           }

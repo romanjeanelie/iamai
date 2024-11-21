@@ -93,9 +93,9 @@ export default class VoiceConv {
     this.debugFlights = false;
 
     if (this.debug) {
-      this.waves = new Waves();
-      this.anims.toStartVoiceConv();
-      this.startConnecting();
+      // this.waves = new Waves();
+      // this.anims.toStartVoiceConv();
+      // this.startConnecting();
     }
   }
 

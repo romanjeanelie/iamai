@@ -38,19 +38,19 @@
 
   .products-ui__product-header {
     padding: var(--padding-x-and-top) var(--padding-x-and-top) 0;
-    display: none;
-
-    @include media("<tablet") {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
     .products-ui__product-source-logo {
       width: 28px;
       height: 28px;
       border-radius: 30px;
       overflow: hidden;
+
+      &.placeholder {
+        background: $grey-2;
+      }
 
       img {
         width: 100%;
