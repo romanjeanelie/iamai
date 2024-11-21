@@ -479,7 +479,7 @@ class Chat {
               }
             }
           }
-        } else if (mdata.status && mdata.status == RESPONSE_FOLLOW_UP) {
+        } else if (mdata.status && (mdata.status == RESPONSE_FOLLOW_UP || mdata.status == RESPONSE_GREETING)) {
           var mtext = mdata.response_json.text;
           var AIAnswer = await this.toTitleCase2(mtext);
           if (this.sourcelang != "en") {
@@ -490,6 +490,7 @@ class Chat {
             );
             AIAnswer = transresponse.data.translations[0].translatedText;
           }
+          console.log(AIAnswer);
           await this.callbacks.addAIText({ text: AIAnswer, container: this.container, targetlang: this.sourcelang });
         } else if (mdata.status && mdata.status == IMAGE_GENERATION_IN_PROGRESS) {
           // set up the images scene with images skeletons

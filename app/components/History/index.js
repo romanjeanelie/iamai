@@ -68,7 +68,7 @@ export default class History {
       const chatId = store.get("chatId");
       const user = store.get("user");
 
-      const data = await this.fetcher.getHistory({ uuid: chatId, user, size: 10 });
+      const data = await this.fetcher.getHistory({ uuid: chatId, user });
 
       this.createUIElements(data);
 
