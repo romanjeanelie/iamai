@@ -117,6 +117,7 @@
   width: 100%;
   border-radius: 20px;
   pointer-events: auto;
+  background: linear-gradient(180deg, #f8f8f8 56%, rgba(248, 248, 248, 0) 97.6%);
 
   @include media("<tablet") {
     margin: 0 16px;

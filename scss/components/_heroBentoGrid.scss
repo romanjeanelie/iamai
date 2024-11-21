@@ -84,7 +84,7 @@
 
 .heroBentoGrid__slider {
   display: flex;
-  gap: 4px;
+  gap: 8px;
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
@@ -318,20 +318,20 @@
     }
 
     .travel-item {
-      grid-row: 1;
+      order: -1;
       grid-column: span 60;
     }
 
     .tagline-item {
-      grid-column: 1/ 31;
+      grid-column: span 30;
     }
 
     .entertainment-item {
-      grid-column: 1/31;
+      grid-column: span 30;
     }
 
     .talk-item {
-      grid-column: 31 / 61;
+      grid-column: span 30;
 
       p {
         max-width: 152px;
@@ -345,7 +345,7 @@
     }
 
     .entertainment-item {
-      grid-column: 31 / 61;
+      grid-column: span 30;
     }
   }
 }

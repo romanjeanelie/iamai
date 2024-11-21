@@ -1,5 +1,36 @@
 import gsap, { Power3 } from "gsap";
 import HeroBentoAnimations from "./HeroBentoAnimations";
+import HeroBentoItems from "./HeroBentoItems";
+
+const itemTypes = {
+  SQUARE: { label: "square-item", value: 1 },
+  HIGH: { label: "high-item", value: 2 },
+  WIDE: { label: "wide-item", value: 2 },
+};
+
+const bentoItems = [
+  {
+    name: "tagline-item",
+    type: itemTypes.SQUARE,
+  },
+  {
+    name: "multitasking-item",
+    type: itemTypes.WIDE,
+  },
+  {
+    name: "talk-item",
+    type: itemTypes.HIGH,
+  },
+  {
+    name: "travel-item",
+    type: itemTypes.WIDE,
+  },
+  {
+    entertainment: "entertainment-item",
+    type: itemTypes.HIGH,
+  },
+];
+
 class HeroBento {
   constructor({ user, emitter }) {
     this.user = user;
@@ -23,6 +54,7 @@ class HeroBento {
     // Init
     this.anims = new HeroBentoAnimations();
     this.setName();
+    this.populateBentoGrid();
     this.observeBentoItems();
     this.addEventListeners();
 
@@ -33,6 +65,10 @@ class HeroBento {
 
   setName() {
     this.name.textContent = this.user?.name || "Guest";
+  }
+
+  populateBentoGrid() {
+    if (!this.bentoGrids.length) return;
   }
 
   hideBento() {
