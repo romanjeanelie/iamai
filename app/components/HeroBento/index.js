@@ -90,12 +90,12 @@ class HeroBento {
   }
 
   stopDragging() {
+    if (!this.isDragging) return;
     this.isDragging = false;
     gsap.to(this.slider, {
       scrollLeft: this.currentSlider * this.slider.offsetWidth,
       duration: 0.5,
       onComplete: () => {
-        console.log("done");
         this.slider.classList.remove("dragging");
       },
     });
