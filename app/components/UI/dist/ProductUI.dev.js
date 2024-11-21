@@ -121,7 +121,7 @@ function (_UIComponent) {
   }, {
     key: "createProductCard",
     value: function createProductCard(productData) {
-      var productCardContainer, price, ratings, faviconContainer, linkWrapper;
+      var productCardContainer, price, faviconContainer, linkWrapper;
       return regeneratorRuntime.async(function createProductCard$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
@@ -130,17 +130,16 @@ function (_UIComponent) {
               productCardContainer.className = "products-ui__product-container";
               productCardContainer.style.order = productData;
               price = this.formatPrice(productData.price);
-              ratings = this.createRatingUI(productData.rating);
               faviconContainer = document.createElement("div");
               faviconContainer.className = "products-ui__product-source-logo placeholder";
               linkWrapper = document.createElement("a");
               linkWrapper.setAttribute("href", productData.link);
               linkWrapper.setAttribute("target", "_blank");
-              linkWrapper.innerHTML = "\n      <div class=\"products-ui__product-header\">\n        <div class=\"products-ui__product-source-logo placeholder\">\n        </div>\n        <p class=\"products-ui__product-source\">".concat(productData.source, "</p>\n      </div> \n      <div class=\"products-ui__product-infos\">\n        <div class=\"products-ui__product-details\">\n          <h3>").concat(productData.title, "</h3>\n          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>\n        </div>\n        <div class=\"products-ui__product-image\">\n          <img src=\"").concat(productData.imageUrl, "\" alt=\"").concat(productData.title, "\">\n        </div>\n      </div>\n      <div class=\"products-ui__product-footer\">\n        <div class=\"products-ui__product-price-rating\">\n          <p class=\"products-ui__product-price\">").concat(price, "</p>\n          ").concat(ratings.outerHTML, "\n        </div>\n\n        <p class=\"products-ui__product-source\">").concat(productData.source, "</p>\n      </div>\n    ");
+              linkWrapper.innerHTML = "\n      <div class=\"products-ui__product-header\">\n        <div class=\"products-ui__product-source-logo placeholder\">\n        </div>\n        <p class=\"products-ui__product-source\">".concat(productData.source, "</p>\n      </div> \n      <div class=\"products-ui__product-image\">\n        <img src=\"").concat(productData.imageUrl, "\" alt=\"").concat(productData.title, "\">\n      </div>\n      <div class=\"products-ui__product-details\">\n        <h3>").concat(productData.title, "</h3>\n      </div>\n      <div class=\"products-ui__product-footer\">\n        <p class=\"products-ui__product-price\">").concat(price, "</p>\n        <div class=\"products-ui__product-rating\">\n          <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"12\" height=\"12\" viewBox=\"0 0 12 12\" fill=\"none\">\n            <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M2.75289 11L5.99628 9.28955L9.23583 11L8.61566 7.38222L11.2389 4.81848L7.61417 4.29339L5.99637 1L4.37472 4.29339L0.75 4.81848L3.37323 7.38222L2.75289 11Z\" fill=\"#959FB1\" style=\"mix-blend-mode:multiply\"/>\n          </svg>\n          <p>").concat(productData.rating, " </p>\n        </div>\n      </div>\n    ");
               productCardContainer.appendChild(linkWrapper);
               return _context2.abrupt("return", productCardContainer);
 
-            case 13:
+            case 12:
             case "end":
               return _context2.stop();
           }
@@ -184,38 +183,6 @@ function (_UIComponent) {
           }
         }
       });
-    }
-  }, {
-    key: "createRatingUI",
-    value: function createRatingUI(rating) {
-      var ratingContainer = document.createElement("div");
-      ratingContainer.classList.add("products-ui__product-rating");
-      var wholeFill = Math.floor(rating);
-      var decimalFill = rating % 1;
-      if (rating === undefined) return ratingContainer;
-
-      for (var i = 0; i < 5; i++) {
-        var starContainer = document.createElement("div");
-        starContainer.className = "products-ui__rating-star star-".concat(i);
-        var yellow = document.createElement("div");
-        yellow.className = "yellow";
-        var grey = document.createElement("div");
-        grey.className = "grey"; // we fill the stars yellow to the whole number of the rating
-
-        if (i < wholeFill) {
-          yellow.style.width = "100%"; // then we fill the decimal part in function of the decimal
-        } else if (i === wholeFill) {
-          yellow.style.width = "".concat(decimalFill * 100, "%");
-        } // and then because the grey part is flex-grow 1, it will fill the rest of the stars
-
-
-        starContainer.appendChild(yellow);
-        starContainer.appendChild(grey);
-        ratingContainer.appendChild(starContainer);
-        this.stars.push(starContainer);
-      }
-
-      return ratingContainer;
     }
   }]);
 

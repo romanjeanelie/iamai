@@ -77,7 +77,6 @@ export class ProductUI extends UIComponent {
     productCardContainer.style.order = productData;
 
     const price = this.formatPrice(productData.price);
-    const ratings = this.createRatingUI(productData.rating);
     const faviconContainer = document.createElement("div");
     faviconContainer.className = "products-ui__product-source-logo placeholder";
 
@@ -91,22 +90,20 @@ export class ProductUI extends UIComponent {
         </div>
         <p class="products-ui__product-source">${productData.source}</p>
       </div> 
-      <div class="products-ui__product-infos">
-        <div class="products-ui__product-details">
-          <h3>${productData.title}</h3>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        </div>
-        <div class="products-ui__product-image">
-          <img src="${productData.imageUrl}" alt="${productData.title}">
-        </div>
+      <div class="products-ui__product-image">
+        <img src="${productData.imageUrl}" alt="${productData.title}">
+      </div>
+      <div class="products-ui__product-details">
+        <h3>${productData.title}</h3>
       </div>
       <div class="products-ui__product-footer">
-        <div class="products-ui__product-price-rating">
-          <p class="products-ui__product-price">${price}</p>
-          ${ratings.outerHTML}
+        <p class="products-ui__product-price">${price}</p>
+        <div class="products-ui__product-rating">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M2.75289 11L5.99628 9.28955L9.23583 11L8.61566 7.38222L11.2389 4.81848L7.61417 4.29339L5.99637 1L4.37472 4.29339L0.75 4.81848L3.37323 7.38222L2.75289 11Z" fill="#959FB1" style="mix-blend-mode:multiply"/>
+          </svg>
+          <p>${productData.rating} </p>
         </div>
-
-        <p class="products-ui__product-source">${productData.source}</p>
       </div>
     `;
 
@@ -135,42 +132,5 @@ export class ProductUI extends UIComponent {
     faviconContainer.classList.remove("placeholder");
 
     return faviconContainer;
-  }
-
-  createRatingUI(rating) {
-    const ratingContainer = document.createElement("div");
-    ratingContainer.classList.add("products-ui__product-rating");
-
-    const wholeFill = Math.floor(rating);
-    const decimalFill = rating % 1;
-
-    if (rating === undefined) return ratingContainer;
-
-    for (let i = 0; i < 5; i++) {
-      const starContainer = document.createElement("div");
-      starContainer.className = `products-ui__rating-star star-${i}`;
-
-      const yellow = document.createElement("div");
-      yellow.className = "yellow";
-
-      const grey = document.createElement("div");
-      grey.className = "grey";
-
-      // we fill the stars yellow to the whole number of the rating
-      if (i < wholeFill) {
-        yellow.style.width = "100%";
-        // then we fill the decimal part in function of the decimal
-      } else if (i === wholeFill) {
-        yellow.style.width = `${decimalFill * 100}%`;
-      } // and then because the grey part is flex-grow 1, it will fill the rest of the stars
-
-      starContainer.appendChild(yellow);
-      starContainer.appendChild(grey);
-
-      ratingContainer.appendChild(starContainer);
-      this.stars.push(starContainer);
-    }
-
-    return ratingContainer;
   }
 }
