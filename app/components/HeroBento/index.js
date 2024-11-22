@@ -54,14 +54,18 @@ class HeroBento {
 
     // Init
     this.anims = new HeroBentoAnimations();
-    this.setName();
-    this.populateBentoGrids();
-    this.observeBentoItems();
+    this.init();
     this.addEventListeners();
 
     if (this.debug) {
       this.hideBento();
     }
+  }
+
+  init() {
+    this.setName();
+    this.populateBentoGrids();
+    this.observeBentoItems();
   }
 
   setName() {
@@ -139,14 +143,17 @@ class HeroBento {
     this.container.remove();
   }
 
+  setCurrentSlider(index) {
+    this.currentSlider = index;
+    this.updateIndicators(index);
+  }
+
   observeBentoItems() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            // Get the index of the bento grid
-            this.currentSlider = Array.from(this.bentoGrids).indexOf(entry.target);
-            this.updateIndicators(this.currentSlider);
+            this.setCurrentSlider(Array.from(this.bentoGrids).indexOf(entry.target));
           }
         });
       },
@@ -182,15 +189,15 @@ class HeroBento {
   stopDragging() {
     if (!this.isDragging) return;
     this.isDragging = false;
-    // gsap.to(this.slider, {
-    //   scrollLeft: this.currentSlider * this.slider.offsetWidth,
-    //   duration: 0.5,
-    //   onComplete: () => {
-    //     this.slider.classList.remove("dragging");
-    //   },
-    // });
+    gsap.to(this.slider, {
+      scrollLeft: this.currentSlider * this.slider.offsetWidth,
+      duration: 0.5,
+      onComplete: () => {
+        this.slider.classList.remove("dragging");
+      },
+    });
     // Add back snap and remove cursor style
-    // this.slider.classList.remove("dragging");
+    this.slider.classList.remove("dragging");
   }
 
   handleResize() {
