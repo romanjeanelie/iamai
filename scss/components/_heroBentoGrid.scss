@@ -145,12 +145,14 @@
 
   .square-item {
     grid-column: span 13;
+    grid-row: span 1;
   }
 
   .wide-item {
     display: flex;
     justify-content: space-between;
     grid-column: span 34;
+    grid-row: span 1;
   }
 
   .high-item {
@@ -260,7 +262,7 @@
     position: relative;
     display: flex;
     justify-content: end;
-    width: 100%;
+    aspect-ratio: 1/1;
 
     .travel-picture:first-of-type {
       position: absolute;
@@ -320,6 +322,12 @@
     .travel-item {
       order: -1;
       grid-column: span 60;
+      align-items: center;
+      gap: 8px;
+
+      .travel-pictures {
+        height: 75%;
+      }
     }
 
     .tagline-item {
