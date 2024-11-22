@@ -48,7 +48,7 @@ function () {
     value: function getMultitaskingItem() {
       var container = document.createElement("div");
       container.className = "heroBentoGrid__grid-item wide-item multitasking-item";
-      container.innerHTML = "\n      <h3>Your Multitasking<br /> Marvel! \n      <p>\n        Watch me juggle multiple tasks simultaneously, no matter how many you throw my way.\n      </p>\n    ";
+      container.innerHTML = "\n      <h3>Your Multitasking<br /> Marvel!</h3> \n      <p>\n        Watch me juggle multiple tasks simultaneously, no matter how many you throw my way.\n      </p>\n    ";
       return container;
     }
   }, {

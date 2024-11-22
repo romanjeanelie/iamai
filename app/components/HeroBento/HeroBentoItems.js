@@ -38,7 +38,7 @@ export default class HeroBentoItems {
     container.className = `heroBentoGrid__grid-item wide-item multitasking-item`;
 
     container.innerHTML = `
-      <h3>Your Multitasking<br /> Marvel! 
+      <h3>Your Multitasking<br /> Marvel!</h3> 
       <p>
         Watch me juggle multiple tasks simultaneously, no matter how many you throw my way.
       </p>

@@ -8,7 +8,7 @@ const itemTypes = {
   WIDE: { label: "wide-item", value: 2 },
 };
 
-const bentoItems = [
+let bentoItems = [
   {
     name: "tagline-item",
     type: itemTypes.SQUARE,
@@ -24,6 +24,18 @@ const bentoItems = [
   {
     name: "travel-item",
     type: itemTypes.WIDE,
+  },
+  {
+    name: "tagline-item",
+    type: itemTypes.SQUARE,
+  },
+  {
+    name: "tagline-item",
+    type: itemTypes.SQUARE,
+  },
+  {
+    name: "entertainment-item",
+    type: itemTypes.SQUARE,
   },
   {
     name: "entertainment-item",
@@ -79,6 +91,49 @@ class HeroBento {
     return breakpoint;
   }
 
+  getItemsOrder() {
+    if (this.currentBreakpoint === "mobile") {
+      return [
+        {
+          name: "multitasking-item",
+          type: itemTypes.WIDE,
+        },
+        {
+          name: "entertainment-item",
+          type: itemTypes.SQUARE,
+        },
+        {
+          name: "tagline-item",
+          type: itemTypes.SQUARE,
+        },
+        {
+          name: "talk-item",
+          type: itemTypes.HIGH,
+        },
+        {
+          name: "tagline-item",
+          type: itemTypes.SQUARE,
+        },
+        {
+          name: "tagline-item",
+          type: itemTypes.SQUARE,
+        },
+
+        {
+          name: "entertainment-item",
+          type: itemTypes.SQUARE,
+        },
+
+        {
+          name: "travel-item",
+          type: itemTypes.WIDE,
+        },
+      ];
+    } else {
+      return bentoItems; // else return the default order
+    }
+  }
+
   getMaxValue() {
     const breakpointValues = {
       mobile: 4,
@@ -98,7 +153,9 @@ class HeroBento {
     const maxValue = this.getMaxValue(); // Define your maximum grid value
     let currentValue = 0;
 
-    for (const item of bentoItems) {
+    const items = this.getItemsOrder();
+
+    for (const item of items) {
       const itemValue = item.type.value;
       // If adding the item exceeds the maxValue, finalize the current grid
       if (currentValue + itemValue > maxValue) {
@@ -107,7 +164,6 @@ class HeroBento {
       }
 
       // Add the item to the grid and update the current value
-
       const bentoItem = new HeroBentoItems(item);
       currentGrid.appendChild(bentoItem);
 
@@ -196,8 +252,6 @@ class HeroBento {
         this.slider.classList.remove("dragging");
       },
     });
-    // Add back snap and remove cursor style
-    this.slider.classList.remove("dragging");
   }
 
   handleResize() {
