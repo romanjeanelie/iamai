@@ -27,7 +27,7 @@ const bentoItems = [
   },
   {
     name: "entertainment-item",
-    type: itemTypes.HIGH,
+    type: itemTypes.SQUARE,
   },
 ];
 
@@ -38,6 +38,7 @@ class HeroBento {
 
     // States
     this.debug = import.meta.env.VITE_DEBUG === "true";
+    this.currentBreakpoint = this.getBreakpoint();
     this.currentSlider = 0;
     this.isDisplayed = true;
     this.isDragging = false;
@@ -54,7 +55,7 @@ class HeroBento {
     // Init
     this.anims = new HeroBentoAnimations();
     this.setName();
-    this.populateBentoGrid();
+    this.populateBentoGrids();
     this.observeBentoItems();
     this.addEventListeners();
 
@@ -67,19 +68,61 @@ class HeroBento {
     this.name.textContent = this.user?.name || "Guest";
   }
 
-  populateBentoGrid() {
-    let currentGrid = document.createElement("div");
-    currentGrid.className = "heroBentoGrid__grid";
-    if (!this.bentoGrids.length) {
-      this.bentoGrids?.push(currentGrid);
-    }
+  getBreakpoint() {
+    const width = window.innerWidth;
+    let breakpoint = "desktop";
+    if (width <= 640) breakpoint = "mobile";
+    return breakpoint;
+  }
 
-    bentoItems.forEach((item, index) => {
+  getMaxValue() {
+    const breakpointValues = {
+      mobile: 4,
+      tablet: 6,
+      desktop: 8,
+    };
+    return breakpointValues[this.currentBreakpoint] || 8;
+  }
+
+  resetBentoGrids() {
+    this.slider.innerHTML = "";
+    this.bentoGrids = [];
+  }
+
+  populateBentoGrids() {
+    let currentGrid = this.createNewGrid();
+    const maxValue = this.getMaxValue(); // Define your maximum grid value
+    let currentValue = 0;
+
+    for (const item of bentoItems) {
+      const itemValue = item.type.value;
+      // If adding the item exceeds the maxValue, finalize the current grid
+      if (currentValue + itemValue > maxValue) {
+        currentGrid = this.createNewGrid(); // Start a new grid
+        currentValue = 0; // Reset the current value
+      }
+
+      // Add the item to the grid and update the current value
+
       const bentoItem = new HeroBentoItems(item);
       currentGrid.appendChild(bentoItem);
-    });
 
-    this.slider.appendChild(currentGrid);
+      currentValue += itemValue;
+    }
+
+    // Append the final grid to the container if it has any items
+    if (currentGrid.children.length > 0) {
+      this.slider.prepend(currentGrid);
+    }
+  }
+
+  createNewGrid() {
+    const grid = document.createElement("div");
+    grid.className = "heroBentoGrid__grid";
+    grid.style.order = this.bentoGrids.length;
+    this.bentoGrids.push(grid);
+    this.slider.appendChild(grid);
+    return grid;
   }
 
   hideBento() {
@@ -139,24 +182,34 @@ class HeroBento {
   stopDragging() {
     if (!this.isDragging) return;
     this.isDragging = false;
-    gsap.to(this.slider, {
-      scrollLeft: this.currentSlider * this.slider.offsetWidth,
-      duration: 0.5,
-      onComplete: () => {
-        this.slider.classList.remove("dragging");
-      },
-    });
+    // gsap.to(this.slider, {
+    //   scrollLeft: this.currentSlider * this.slider.offsetWidth,
+    //   duration: 0.5,
+    //   onComplete: () => {
+    //     this.slider.classList.remove("dragging");
+    //   },
+    // });
     // Add back snap and remove cursor style
     // this.slider.classList.remove("dragging");
   }
 
+  handleResize() {
+    const newBreakpoint = this.getBreakpoint();
+    if (newBreakpoint !== this.currentBreakpoint) {
+      this.currentBreakpoint = newBreakpoint;
+      this.resetBentoGrids();
+      this.populateBentoGrids();
+    }
+  }
+
   addEventListeners() {
+    // Resize event
+    window.addEventListener("resize", this.handleResize.bind(this));
+
+    // Slider Dragging events
     this.slider.addEventListener("mousedown", this.startDragging.bind(this));
-
     this.slider.addEventListener("mouseup", this.stopDragging.bind(this));
-
     this.slider.addEventListener("mousemove", this.moveSlider.bind(this));
-
     this.slider.addEventListener("mouseleave", this.stopDragging.bind(this));
 
     this.emitter.on("pre-text-animation", () => {

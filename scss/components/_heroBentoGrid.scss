@@ -105,7 +105,7 @@
 
 .heroBentoGrid__grid {
   scroll-snap-align: start;
-  $bentoGap: 4px;
+  $bentoGap: 8px;
   $bentoWidth: 160px;
   flex-shrink: 0;
   width: 100%;
@@ -312,10 +312,6 @@
   @include media("<phone") {
     .heroBentoGrid__grid-item {
       max-height: 146px;
-    }
-
-    .multitasking-item {
-      display: none;
     }
 
     .travel-item {
