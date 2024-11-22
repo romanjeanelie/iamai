@@ -26,7 +26,7 @@ const bentoItems = [
     type: itemTypes.WIDE,
   },
   {
-    entertainment: "entertainment-item",
+    name: "entertainment-item",
     type: itemTypes.HIGH,
   },
 ];
@@ -48,7 +48,7 @@ class HeroBento {
     this.container = document.querySelector(".heroBentoGrid__container");
     this.name = this.container.querySelector(".name");
     this.slider = this.container.querySelector(".heroBentoGrid__slider");
-    this.bentoGrids = this.container.querySelectorAll(".heroBentoGrid__grid");
+    this.bentoGrids = [];
     this.indicators = this.container.querySelectorAll(".heroBentoGrid__indicators .indicator");
 
     // Init
@@ -68,7 +68,18 @@ class HeroBento {
   }
 
   populateBentoGrid() {
-    if (!this.bentoGrids.length) return;
+    let currentGrid = document.createElement("div");
+    currentGrid.className = "heroBentoGrid__grid";
+    if (!this.bentoGrids.length) {
+      this.bentoGrids?.push(currentGrid);
+    }
+
+    bentoItems.forEach((item, index) => {
+      const bentoItem = new HeroBentoItems(item);
+      currentGrid.appendChild(bentoItem);
+    });
+
+    this.slider.appendChild(currentGrid);
   }
 
   hideBento() {

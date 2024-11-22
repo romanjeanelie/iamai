@@ -1,11 +1,23 @@
-const itemTypes = {
-  SQUARE: "square-item",
-  HIGH: "high-item",
-  WIDE: "wide-item",
-};
-
 export default class HeroBentoItems {
-  constructor() {}
+  constructor(item) {
+    this.item = item;
+
+    // Map item names to their respective methods
+    const itemHandlers = {
+      "tagline-item": this.getTaglineItem.bind(this),
+      "multitasking-item": this.getMultitaskingItem.bind(this),
+      "talk-item": this.getTalkItem.bind(this),
+      "travel-item": this.getTravelItem.bind(this),
+      "entertainment-item": this.getEntertainmentItem.bind(this),
+    };
+
+    const handler = itemHandlers[item.name];
+    if (handler) {
+      return handler();
+    } else {
+      console.error(`No handler found for item ${item.name}`);
+    }
+  }
 
   getTaglineItem() {
     const container = document.createElement("div");

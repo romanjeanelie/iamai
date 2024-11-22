@@ -11,17 +11,28 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var itemTypes = {
-  SQUARE: "square-item",
-  HIGH: "high-item",
-  WIDE: "wide-item"
-};
-
 var HeroBentoItems =
 /*#__PURE__*/
 function () {
-  function HeroBentoItems() {
+  function HeroBentoItems(item) {
     _classCallCheck(this, HeroBentoItems);
+
+    this.item = item; // Map item names to their respective methods
+
+    var itemHandlers = {
+      "tagline-item": this.getTaglineItem.bind(this),
+      "multitasking-item": this.getMultitaskingItem.bind(this),
+      "talk-item": this.getTalkItem.bind(this),
+      "travel-item": this.getTravelItem.bind(this),
+      "entertainment-item": this.getEntertainmentItem.bind(this)
+    };
+    var handler = itemHandlers[item.name];
+
+    if (handler) {
+      return handler();
+    } else {
+      console.error("No handler found for item ".concat(item.name));
+    }
   }
 
   _createClass(HeroBentoItems, [{
