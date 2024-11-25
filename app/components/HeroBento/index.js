@@ -77,7 +77,6 @@ class HeroBento {
   init() {
     this.setName();
     this.populateBentoGrids();
-    this.observeBentoItems();
   }
 
   setName() {
@@ -145,6 +144,7 @@ class HeroBento {
 
   resetBentoGrids() {
     this.slider.innerHTML = "";
+    this.observer.disconnect();
     this.bentoGrids = [];
   }
 
@@ -174,6 +174,8 @@ class HeroBento {
     if (currentGrid.children.length > 0) {
       this.slider.prepend(currentGrid);
     }
+
+    this.observeBentoItems();
   }
 
   createNewGrid() {
@@ -205,18 +207,19 @@ class HeroBento {
   }
 
   observeBentoItems() {
-    const observer = new IntersectionObserver(
+    this.observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             this.setCurrentSlider(Array.from(this.bentoGrids).indexOf(entry.target));
+            console.log(this.currentSlider);
           }
         });
       },
       { threshold: 0.5 }
     );
 
-    this.bentoGrids.forEach((item) => observer.observe(item));
+    this.bentoGrids.forEach((item) => this.observer.observe(item));
   }
 
   updateIndicators(activeIndex) {
@@ -227,6 +230,8 @@ class HeroBento {
   }
 
   startDragging(event) {
+    console.log(this.bentoGrids);
+
     this.isDragging = true;
     this.startX = event.pageX - this.slider.offsetLeft;
     this.scrollLeft = this.slider.scrollLeft;
@@ -245,6 +250,7 @@ class HeroBento {
   stopDragging() {
     if (!this.isDragging) return;
     this.isDragging = false;
+    console.log(this.currentSlider);
     gsap.to(this.slider, {
       scrollLeft: this.currentSlider * this.slider.offsetWidth,
       duration: 0.5,
