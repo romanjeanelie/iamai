@@ -1,6 +1,7 @@
 import gsap, { Power3 } from "gsap";
 import HeroBentoAnimations from "./HeroBentoAnimations";
 import HeroBentoItems from "./HeroBentoItems";
+import { debounce } from "../../utils/debounce";
 
 const itemTypes = {
   SQUARE: { label: "square-item", value: 1 },
@@ -208,14 +209,14 @@ class HeroBento {
 
   observeBentoItems() {
     this.observer = new IntersectionObserver(
-      (entries) => {
+      debounce((entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             this.setCurrentSlider(Array.from(this.bentoGrids).indexOf(entry.target));
             console.log(this.currentSlider);
           }
         });
-      },
+      }, 150),
       { threshold: 0.5 }
     );
 
@@ -250,7 +251,6 @@ class HeroBento {
   stopDragging() {
     if (!this.isDragging) return;
     this.isDragging = false;
-    console.log(this.currentSlider);
     gsap.to(this.slider, {
       scrollLeft: this.currentSlider * this.slider.offsetWidth,
       duration: 0.5,
