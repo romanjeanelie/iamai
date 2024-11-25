@@ -1,4 +1,4 @@
-import gsap from "gsap";
+import gsap, { Power3 } from "gsap";
 
 export default class HeroBentoAnimations {
   constructor() {
@@ -30,5 +30,18 @@ export default class HeroBentoAnimations {
       },
       "<+=0.2"
     );
+  }
+
+  async hideBentoGridsAnim(bentoContainer, destroy) {
+    await new Promise((res) => {
+      gsap.to(bentoContainer, {
+        yPercent: -200,
+        ease: Power3.easeOut,
+        duration: 0.5,
+        onComplete: () => {
+          res();
+        },
+      });
+    });
   }
 }

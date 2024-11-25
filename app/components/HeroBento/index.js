@@ -1,7 +1,7 @@
 import gsap, { Power3 } from "gsap";
 import HeroBentoAnimations from "./HeroBentoAnimations";
 import HeroBentoItems from "./HeroBentoItems";
-import { debounce } from "../../utils/debounce";
+import HeroBentoNavigation from "./HeroBentoNavigation";
 
 const itemTypes = {
   SQUARE: { label: "square-item", value: 1 },
@@ -67,12 +67,13 @@ class HeroBento {
     this.indicators = [];
 
     // Init
+    this.navigation = new HeroBentoNavigation(this);
     this.anims = new HeroBentoAnimations();
     this.init();
     this.addEventListeners();
 
     if (this.debug) {
-      this.hideBento();
+      this.hideBentoGrids();
     }
   }
 
@@ -216,14 +217,10 @@ class HeroBento {
   }
 
   // Animate the bento grid
-  hideBento() {
+  async hideBentoGrids() {
     this.isDisplayed = false;
-    gsap.to(this.container, {
-      yPercent: -200,
-      ease: Power3.easeOut,
-      duration: 0.5,
-      onComplete: this.destroy.bind(this),
-    });
+    await this.anims.hideBentoGridsAnim(this.container);
+    this.destroy();
   }
 
   destroy() {
@@ -253,36 +250,6 @@ class HeroBento {
     this.updateIndicators(index);
   }
 
-  startDragging(event) {
-    console.log(this.bentoGrids);
-
-    this.isDragging = true;
-    this.startX = event.pageX - this.slider.offsetLeft;
-    this.scrollLeft = this.slider.scrollLeft;
-
-    // Remove snap and adjust cursor style
-    this.slider.classList.add("dragging");
-  }
-
-  moveSlider(event) {
-    if (!this.isDragging) return;
-    const x = event.pageX - this.slider.offsetLeft;
-    const scroll = x - this.startX;
-    this.slider.scrollLeft = this.scrollLeft - scroll;
-  }
-
-  stopDragging() {
-    if (!this.isDragging) return;
-    this.isDragging = false;
-    gsap.to(this.slider, {
-      scrollLeft: this.currentSlider * this.slider.offsetWidth,
-      duration: 0.5,
-      onComplete: () => {
-        this.slider.classList.remove("dragging");
-      },
-    });
-  }
-
   handleResize() {
     const newBreakpoint = this.getBreakpoint();
     if (newBreakpoint !== this.currentBreakpoint) {
@@ -297,14 +264,14 @@ class HeroBento {
     window.addEventListener("resize", this.handleResize.bind(this));
 
     // Slider Dragging events
-    this.slider.addEventListener("mousedown", this.startDragging.bind(this));
-    this.slider.addEventListener("mouseup", this.stopDragging.bind(this));
-    this.slider.addEventListener("mousemove", this.moveSlider.bind(this));
-    this.slider.addEventListener("mouseleave", this.stopDragging.bind(this));
+    this.slider.addEventListener("mousedown", this.navigation.startDragging.bind(this.navigation));
+    this.slider.addEventListener("mouseup", this.navigation.stopDragging.bind(this.navigation));
+    this.slider.addEventListener("mousemove", this.navigation.moveSlider.bind(this.navigation));
+    this.slider.addEventListener("mouseleave", this.navigation.stopDragging.bind(this.navigation));
 
     this.emitter.on("pre-text-animation", () => {
       if (!this.isDisplayed) return;
-      this.hideBento();
+      this.hideBentoGrids();
     });
   }
 }
