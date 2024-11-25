@@ -62,8 +62,9 @@ class HeroBento {
     this.container = document.querySelector(".heroBentoGrid__container");
     this.name = this.container.querySelector(".name");
     this.slider = this.container.querySelector(".heroBentoGrid__slider");
+    this.indicatorsContainer = this.container.querySelector(".heroBentoGrid__indicators");
     this.bentoGrids = [];
-    this.indicators = this.container.querySelectorAll(".heroBentoGrid__indicators .indicator");
+    this.indicators = [];
 
     // Init
     this.anims = new HeroBentoAnimations();
@@ -80,15 +81,26 @@ class HeroBento {
     this.populateBentoGrids();
   }
 
+  // Set the user name
   setName() {
     this.name.textContent = this.user?.name || "Guest";
   }
 
+  // Handle dynamic breakpoint changes
   getBreakpoint() {
     const width = window.innerWidth;
     let breakpoint = "desktop";
     if (width <= 640) breakpoint = "mobile";
     return breakpoint;
+  }
+
+  getMaxValue() {
+    const breakpointValues = {
+      mobile: 4,
+      tablet: 6,
+      desktop: 8,
+    };
+    return breakpointValues[this.currentBreakpoint] || 8;
   }
 
   getItemsOrder() {
@@ -134,21 +146,19 @@ class HeroBento {
     }
   }
 
-  getMaxValue() {
-    const breakpointValues = {
-      mobile: 4,
-      tablet: 6,
-      desktop: 8,
-    };
-    return breakpointValues[this.currentBreakpoint] || 8;
+  resetIndicators() {
+    this.indicators.forEach((indicator) => indicator.remove());
+    this.indicators = [];
   }
 
   resetBentoGrids() {
     this.slider.innerHTML = "";
     this.observer.disconnect();
+    this.resetIndicators();
     this.bentoGrids = [];
   }
 
+  // Handle the bento grids generation
   populateBentoGrids() {
     let currentGrid = this.createNewGrid();
     const maxValue = this.getMaxValue(); // Define your maximum grid value
@@ -176,7 +186,24 @@ class HeroBento {
       this.slider.prepend(currentGrid);
     }
 
+    this.generateIndicators();
     this.observeBentoItems();
+  }
+
+  observeBentoItems() {
+    this.observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            this.setCurrentSlider(Array.from(this.bentoGrids).indexOf(entry.target));
+            console.log(this.currentSlider);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    this.bentoGrids.forEach((item) => this.observer.observe(item));
   }
 
   createNewGrid() {
@@ -188,6 +215,7 @@ class HeroBento {
     return grid;
   }
 
+  // Animate the bento grid
   hideBento() {
     this.isDisplayed = false;
     gsap.to(this.container, {
@@ -202,25 +230,15 @@ class HeroBento {
     this.container.remove();
   }
 
-  setCurrentSlider(index) {
-    this.currentSlider = index;
-    this.updateIndicators(index);
-  }
-
-  observeBentoItems() {
-    this.observer = new IntersectionObserver(
-      debounce((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            this.setCurrentSlider(Array.from(this.bentoGrids).indexOf(entry.target));
-            console.log(this.currentSlider);
-          }
-        });
-      }, 150),
-      { threshold: 0.5 }
-    );
-
-    this.bentoGrids.forEach((item) => this.observer.observe(item));
+  // Handle navigation between slides
+  generateIndicators() {
+    this.bentoGrids?.forEach((_, index) => {
+      const indicator = document.createElement("span");
+      indicator.className = `indicator ${index === this.currentSlider ? "active" : ""}`;
+      indicator.dataset.slide = index;
+      this.indicators.push(indicator);
+      this.indicatorsContainer.appendChild(indicator);
+    });
   }
 
   updateIndicators(activeIndex) {
@@ -228,6 +246,11 @@ class HeroBento {
       // Toggle the active class on the indicator
       indicator.classList.toggle("active", index === activeIndex);
     });
+  }
+
+  setCurrentSlider(index) {
+    this.currentSlider = index;
+    this.updateIndicators(index);
   }
 
   startDragging(event) {
