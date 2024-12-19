@@ -108,7 +108,7 @@ export default async function textToSpeech(text, targetlang, index, attempt = 0)
       "xi-api-key": ELEVENLABS_TOKEN,
       "Content-Type": "application/json",
     };
-    var model_id = "eleven_turbo_v2_5";
+    var model_id = "eleven_flash_v2_5";
     // var model_id = "eleven_turbo_v2";
     if (targetlang != "en") {
       // model_id = "eleven_multilingual_v2";

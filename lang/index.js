@@ -123,9 +123,9 @@ function textToSpeech(text, targetlang, index, attempt = 0) {
             "xi-api-key": ELEVENLABS_TOKEN,
             "Content-Type": "application/json",
         };
-        var model_id = "eleven_turbo_v2";
+        var model_id = "eleven_flash_v2_5";
         if (targetlang != "en") {
-            model_id = "eleven_multilingual_v2";
+            model_id = "eleven_flash_v2_5";
         }
         const body = JSON.stringify({
             text: text + " ",
