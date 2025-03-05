@@ -68,9 +68,10 @@ class HeroBento {
 
     // Init
     this.navigation = new HeroBentoNavigation(this);
-    this.anims = new HeroBentoAnimations();
     this.init();
     this.addEventListeners();
+
+    this.anims = new HeroBentoAnimations();
 
     if (this.debug) {
       this.hideBentoGrids();
