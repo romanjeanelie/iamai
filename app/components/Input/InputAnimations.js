@@ -51,9 +51,6 @@ export default class InputAnimations {
         yPercent: 0,
         duration: 0.75,
         ease: Power3.easeOut,
-        onComplete: () => {
-          this.inputEl.classList.remove("hidden");
-        },
       }
     );
   }
@@ -64,9 +61,6 @@ export default class InputAnimations {
       yPercent: 100,
       duration: 0.5,
       ease: Power3.easeOut,
-      onComplete: () => {
-        this.inputEl.classList.add("hidden");
-      },
     });
   }
 

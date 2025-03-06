@@ -70,9 +70,7 @@ export default class Navigation {
       this.emitter.emit("Navigation:openTasks");
       this.tasksContainer.classList.add("scroll-snap");
       gsap.to(this.pageEl, { scrollTo: ".task-manager__container", duration: 0.5, ease: Power3.easeOut });
-      this.inputEl.classList.add("hidden");
     } else {
-      this.emitter.emit("Navigation:closeTasks");
       this.pageEl.style.scrollSnapType = "none";
       gsap.to(this.pageEl, {
         scrollTo: ".main-content__container",
@@ -83,13 +81,12 @@ export default class Navigation {
         },
       });
       this.tasksContainer.classList.remove("scroll-snap");
-      this.inputEl.classList.remove("hidden");
     }
   }
 
   updateNavButtons() {
     // in the navigation scss file, when the parent class is changed, the animation will trigger
-    // animation = oppositin navButton disappears and currentSection chevron rotates
+    // animation = opposit navButton disappears and currentSection chevron rotates
     const initialState = Flip.getState([this.tasksButton, this.inputWrapper]);
 
     this.app.className = this.currentSection;
@@ -117,12 +114,17 @@ export default class Navigation {
     const observer = new IntersectionObserver(
       debounce((entries) => {
         let intersectingSections = entries.filter((entry) => entry.isIntersecting).map((entry) => entry.target.id);
+        const prevSection = this.currentSection;
 
         if (intersectingSections.length === 0) {
           this.currentSection = SECTIONS.discussion;
           this.tasksContainer.classList.remove("scroll-snap");
         } else {
           this.currentSection = intersectingSections[0];
+        }
+
+        if (prevSection === SECTIONS.tasks && this.currentSection !== SECTIONS.tasks) {
+          this.emitter.emit("Navigation:closeTasks"); // Notify Input class
         }
 
         if (this.currentSection !== SECTIONS.history) {

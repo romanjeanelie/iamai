@@ -72,8 +72,6 @@ function () {
   }, {
     key: "showInput",
     value: function showInput() {
-      var _this = this;
-
       _gsap["default"].fromTo(this.inputEl, {
         yPercent: 200,
         opacity: 0
@@ -81,32 +79,24 @@ function () {
         opacity: 1,
         yPercent: 0,
         duration: 0.75,
-        ease: _gsap.Power3.easeOut,
-        onComplete: function onComplete() {
-          _this.inputEl.classList.remove("hidden");
-        }
+        ease: _gsap.Power3.easeOut
       });
     }
   }, {
     key: "hideInput",
     value: function hideInput() {
-      var _this2 = this;
-
       _gsap["default"].to(this.inputEl, {
         opacity: 0,
         yPercent: 100,
         duration: 0.5,
-        ease: _gsap.Power3.easeOut,
-        onComplete: function onComplete() {
-          _this2.inputEl.classList.add("hidden");
-        }
+        ease: _gsap.Power3.easeOut
       });
     } // Presets
 
   }, {
     key: "fadeInButtons",
     value: function fadeInButtons() {
-      var _this3 = this;
+      var _this = this;
 
       var delay = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
       var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 500;
@@ -117,15 +107,15 @@ function () {
         ease: _gsap.Power3.easeInOut,
         delay: delay / 1000,
         onComplete: function onComplete() {
-          _this3.imageUploadButton.style.pointerEvents = "auto";
-          _this3.videoBtn.style.pointerEvents = "auto";
+          _this.imageUploadButton.style.pointerEvents = "auto";
+          _this.videoBtn.style.pointerEvents = "auto";
         }
       });
     }
   }, {
     key: "fadeOutButtons",
     value: function fadeOutButtons() {
-      var _this4 = this;
+      var _this2 = this;
 
       var delay = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
       var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 500;
@@ -136,8 +126,8 @@ function () {
         ease: _gsap.Power3.easeInOut,
         delay: delay / 1000,
         onComplete: function onComplete() {
-          _this4.imageUploadButton.style.pointerEvents = "none";
-          _this4.videoBtn.style.pointerEvents = "none";
+          _this2.imageUploadButton.style.pointerEvents = "none";
+          _this2.videoBtn.style.pointerEvents = "none";
         }
       });
     }
@@ -368,7 +358,7 @@ function () {
   }, {
     key: "toStartVoiceConv",
     value: function toStartVoiceConv() {
-      var _this5 = this;
+      var _this3 = this;
 
       var tl = _gsap["default"].timeline({
         "default": {
@@ -376,7 +366,7 @@ function () {
           ease: _gsap.Circ.easeInOut
         },
         onComplete: function onComplete() {
-          _this5.voiceConvWrapper.classList.add("show");
+          _this3.voiceConvWrapper.classList.add("show");
         }
       });
 
@@ -385,9 +375,9 @@ function () {
         stagger: 0.1
       });
       tl.add(function () {
-        var initialState = _Flip["default"].getState(_this5.inputFrontEl);
+        var initialState = _Flip["default"].getState(_this3.inputFrontEl);
 
-        _this5.inputFrontEl.classList.add("voice-conversation");
+        _this3.inputFrontEl.classList.add("voice-conversation");
 
         _Flip["default"].from(initialState, {
           duration: 0.4,
@@ -408,7 +398,7 @@ function () {
   }, {
     key: "toStopVoiceConv",
     value: function toStopVoiceConv() {
-      var _this6 = this;
+      var _this4 = this;
 
       var tl = _gsap["default"].timeline({
         "default": {
@@ -416,7 +406,7 @@ function () {
           ease: _gsap.Circ.easeInOut
         },
         onComplete: function onComplete() {
-          _this6.voiceConvWrapper.classList.remove("show");
+          _this4.voiceConvWrapper.classList.remove("show");
         }
       });
 
@@ -427,9 +417,9 @@ function () {
         opacity: 1
       }, "-=0.3");
       tl.add(function () {
-        var initialState = _Flip["default"].getState(_this6.inputFrontEl);
+        var initialState = _Flip["default"].getState(_this4.inputFrontEl);
 
-        _this6.inputFrontEl.classList.remove("voice-conversation");
+        _this4.inputFrontEl.classList.remove("voice-conversation");
 
         _Flip["default"].from(initialState, {
           duration: 0.4,
