@@ -25,8 +25,6 @@ var TaskManagerAnimations =
 /*#__PURE__*/
 function () {
   function TaskManagerAnimations(emitter) {
-    var _this = this;
-
     _classCallCheck(this, TaskManagerAnimations);
 
     this.emitter = emitter;
@@ -43,30 +41,23 @@ function () {
       trigger: this.container,
       scroller: this.pageEl,
       start: "top top",
-      end: "bottom bottom",
-      onEnter: function onEnter() {
-        _this.showCards();
-      },
-      onEnterBack: function onEnterBack() {
-        _this.showCards();
-      },
-      onLeave: function onLeave() {
-        _this.hideCards();
-      },
-      onLeaveBack: function onLeaveBack() {
-        _this.hideCards();
-      }
+      end: "bottom bottom" // onEnter: () => {
+      //   this.showCards();
+      // },
+      // onEnterBack: () => {
+      //   this.showCards();
+      // },
+      // onLeave: () => {
+      //   this.hideCards();
+      // },
+      // onLeaveBack: () => {
+      //   this.hideCards();
+      // },
+
     });
   }
 
   _createClass(TaskManagerAnimations, [{
-    key: "updateCards",
-    value: function updateCards(newCards) {
-      this.cards = newCards;
-      this.initAnimations();
-      this.initIntersectionObserver();
-    }
-  }, {
     key: "hideCards",
     value: function hideCards() {
       if ((0, _isMobile["default"])()) return;
@@ -123,7 +114,9 @@ function () {
   }, {
     key: "initAnimations",
     value: function initAnimations() {
-      _gsap["default"].set(this.cards, {
+      var cards = document.querySelectorAll(".task-manager__task-card-container");
+
+      _gsap["default"].set(cards, {
         opacity: 0,
         y: 50
       }); // Set initial state for all cards

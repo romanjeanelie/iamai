@@ -21,25 +21,19 @@ export default class TaskManagerAnimations {
       scroller: this.pageEl,
       start: "top top",
       end: "bottom bottom",
-      onEnter: () => {
-        this.showCards();
-      },
-      onEnterBack: () => {
-        this.showCards();
-      },
-      onLeave: () => {
-        this.hideCards();
-      },
-      onLeaveBack: () => {
-        this.hideCards();
-      },
+      // onEnter: () => {
+      //   this.showCards();
+      // },
+      // onEnterBack: () => {
+      //   this.showCards();
+      // },
+      // onLeave: () => {
+      //   this.hideCards();
+      // },
+      // onLeaveBack: () => {
+      //   this.hideCards();
+      // },
     });
-  }
-
-  updateCards(newCards) {
-    this.cards = newCards;
-    this.initAnimations();
-    this.initIntersectionObserver();
   }
 
   hideCards() {
@@ -86,7 +80,8 @@ export default class TaskManagerAnimations {
   }
 
   initAnimations() {
-    gsap.set(this.cards, { opacity: 0, y: 50 }); // Set initial state for all cards
+    const cards = document.querySelectorAll(".task-manager__task-card-container");
+    gsap.set(cards, { opacity: 0, y: 50 }); // Set initial state for all cards
 
     this.emitter.on("Navigation:openTasks", this.showCards);
     this.emitter.on("Navigation:closeTasks", this.hideCards);

@@ -198,7 +198,6 @@ class HeroBento {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             this.setCurrentSlider(Array.from(this.bentoGrids).indexOf(entry.target));
-            console.log(this.currentSlider);
           }
         });
       },
