@@ -23,7 +23,6 @@
   border-radius: 16px !important;
   padding: 16px;
   font-feature-settings: "liga" off;
-  font-family: "SFPro";
   font-size: 24px-;
   font-style: normal;
   font-weight: 450;
@@ -206,7 +205,6 @@
   .divwaitlisttext {
     color: $colorBlack;
     text-align: center;
-    font-family: "SFPro";
     font-size: clamp(20px, 5vw, 80px);
     font-weight: 600;
     line-height: 105%; /* 105% */

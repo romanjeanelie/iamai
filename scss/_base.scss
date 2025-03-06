@@ -35,7 +35,7 @@ html {
 #app {
   position: relative;
   color: $colorMain;
-  font-family: "SFPro";
+  font-family: "Aktiv_Grotesk", sans-serif;
   font-weight: 400;
   font-feature-settings: "liga" 0;
   min-height: 100vh; // in case svh is not supported by browser
@@ -484,7 +484,6 @@ button {
   width: 100%;
   margin-top: 16px;
   margin-bottom: 32px;
-  font-family: "SFPro";
   color: $colorBlueText;
 }
 
