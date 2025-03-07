@@ -38,6 +38,7 @@ export default class Input {
   constructor({ pageEl, isActive, toPageGrey, discussion, emitter }) {
     this.isActive = isActive;
     this.debug = import.meta.env.VITE_DEBUG === "true";
+    this.debugVideo = import.meta.env.VITE_DEBUG_VIDEO === "true";
 
     this.toPageGrey = toPageGrey;
     this.discussion = discussion;
@@ -108,6 +109,9 @@ export default class Input {
     });
 
     this.addListeners();
+    if (this.debugVideo) {
+      this.emitter.emit("input:displayVideoInput");
+    }
   }
 
   // Write
