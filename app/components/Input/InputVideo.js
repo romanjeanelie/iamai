@@ -87,7 +87,7 @@ export default class InputVideo {
         const videoInputs = devices.filter((device) => device.kind === "videoinput");
         this.isEnvCam = videoInputs.length > 1;
         // if so enable the reverse button that switches between cameras
-        // this.reverseBtn.classList.add(this.isEnvCam ? "visible" : "hidden");
+        this.reverseBtn.classList.add(this.isEnvCam ? "visible" : "hidden");
       }
 
       // Set the new stream to the video element and start playing it
