@@ -16,70 +16,42 @@
   }
 }
 
-.input__video--phone-container {
-  flex: none;
-  padding: 34px 0 16px;
+.input__video--header {
+  display: flex;
+  padding: 28px 40px;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+  color: $colorLight;
 
-  .input__video--timer {
-    color: $colorBlueText;
-    font-size: 16px;
+  .flash-btn {
+    font-family: "SFPro";
     font-weight: 600;
-    line-height: 20px; /* 125% */
+    font-size: 20px;
+    line-height: 100%;
+    letter-spacing: 0%;
     text-align: center;
-    margin-bottom: 20px;
-  }
-
-  .phone__container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 16px;
-    position: relative;
-    opacity: 1;
-    visibility: visible;
-
-    p {
-      margin: 0;
-      padding: 0;
-      border: 0;
-    }
-
-    .phone__bottom {
-      width: inherit;
-    }
-  }
-
-  @include media("<phone") {
-    padding-top: 20px;
+    vertical-align: middle;
   }
 }
 
+.input__video--timer {
+  background-color: rgba(255, 0, 0, 1);
+  padding: 6px 12px 4px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 16px;
+  letter-spacing: 0.2px;
+}
+
 .input__video--camera {
-  position: relative;
+  position: absolute;
+  inset: 0;
   // background-color: $colorBlueText;
-  width: 1400px;
-  margin: 0 auto;
-  flex-grow: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 16px;
-  overflow: hidden;
-
-  @include media("<maximum") {
-    width: auto;
-    margin: 0 56px;
-  }
-
-  @include media("<phone") {
-    margin: 0 16px;
-  }
 
   video {
-    border-radius: 16px;
     pointer-events: none;
-    position: absolute;
     height: 100%;
     inset: 0;
     object-fit: cover;
@@ -91,35 +63,6 @@
 
   video::-webkit-media-controls {
     display: none !important;
-  }
-
-  .exit-btn {
-    position: absolute;
-    top: 24px;
-    right: 24px;
-    width: 40px;
-    height: 40px;
-    background-color: rgba($colorBlueText, 0.24);
-    -webkit-backdrop-filter: blur(6px);
-    backdrop-filter: blur(6px);
-
-    svg {
-      rect,
-      path,
-      mask {
-        fill: white;
-        stroke: white;
-      }
-    }
-
-    &:hover {
-      background-color: rgba($colorBlueText, 0.4);
-    }
-
-    @include media("<phone") {
-      top: 16px;
-      right: 16px;
-    }
   }
 }
 
@@ -155,11 +98,16 @@
 }
 
 .input__video--footer {
-  flex: none;
-  padding: 24px 0 46px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 32px;
+
+  padding: 24px 0 80px;
+  z-index: 2;
 
   @include media("<phone") {
-    padding: 24px 0 32px;
+    padding: 24px 0 67px;
   }
 
   .input__video--buttons-wrapper {
@@ -169,32 +117,65 @@
     justify-content: center;
     row-gap: 30px;
     column-gap: 74px;
+    color: $colorLight;
+  }
+
+  .input__video--info-container {
+    text-align: center;
+    color: $colorLight;
   }
 }
 
 .input__video--button {
-  height: 60px;
-  width: 60px;
+  height: 54px;
+  width: 54px;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 60px;
-  background-color: rgba($colorBlueText, 0.03);
+  background: rgba(0, 0, 0, 0.24);
+
   transition: background-color ease-out 0.2s;
+
+  rect,
+  path,
+  mask {
+    fill: white;
+    stroke: white;
+  }
+
+  &.pause-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .pause-btn__line {
+    width: 2px;
+    height: 13px;
+    border-radius: 2px;
+    background-color: $colorLight;
+  }
+
+  &.exit-btn {
+    font-family: "SFPro";
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 100%;
+    letter-spacing: 0%;
+  }
+
+  &.flash-btn {
+    background-color: transparent;
+  }
 
   * {
     transition: all ease-out 0.2s;
   }
   &:hover,
   &:active {
-    background-color: $colorBlueText;
-
-    rect,
-    path,
-    mask {
-      fill: white;
-      stroke: white;
-    }
+    background: rgba(44, 44, 43, 1);
   }
 
   &.pause-btn:disabled {

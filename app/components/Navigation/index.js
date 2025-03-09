@@ -19,6 +19,7 @@ export default class Navigation {
     this.user = user;
     this.emitter = emitter;
     this.debug = import.meta.env.VITE_DEBUG === "true";
+    this.debugVideo = import.meta.env.VITE_DEBUG_VIDEO === "true";
 
     // State
     this.rootMargin = -100;
@@ -48,6 +49,10 @@ export default class Navigation {
 
     if (this.debug) {
       this.toggleTasks();
+    }
+    if (this.debugVideo) {
+      this.historyButton.style.display = "none";
+      this.userPicture.style.display = "none";
     }
   }
 

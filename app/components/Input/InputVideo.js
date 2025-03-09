@@ -1,4 +1,4 @@
-import VoiceConvAnimations from "../VoiceConv/VoiceConvDotAnimations";
+import VoiceConvAnimations from "../VoiceConv/VoiceConvAnimations";
 
 import minSecStr from "../../utils/minSecStr";
 
@@ -56,13 +56,8 @@ export default class InputVideo {
 
     // Init Methods
     this.pauseBtn.setAttribute("disabled", true);
-    this.voiceConvAnimations.toConnecting();
     this.voiceConvAnimations.newInfoText("connecting");
     this.addEvents();
-
-    if (this.debug) {
-      // this.displayVideoInput();
-    }
   }
 
   toggleLoading(isLoading) {
@@ -92,7 +87,7 @@ export default class InputVideo {
         const videoInputs = devices.filter((device) => device.kind === "videoinput");
         this.isEnvCam = videoInputs.length > 1;
         // if so enable the reverse button that switches between cameras
-        this.reverseBtn.classList.add(this.isEnvCam ? "visible" : "hidden");
+        // this.reverseBtn.classList.add(this.isEnvCam ? "visible" : "hidden");
       }
 
       // Set the new stream to the video element and start playing it
@@ -182,7 +177,6 @@ export default class InputVideo {
     // Determine the actor based on the current state
     // const isProcessing = this.currentState === states.PROCESSING;
     const isAiTalking = this.currentState === states.AITALKING;
-    const actor = this.isAITalking ? "AI" : "user";
     this.emitter.emit("videoInput:pause", this.isMicMuted, isAiTalking, this.isAIPaused);
 
     // If not paused, handle pause logic
@@ -190,20 +184,16 @@ export default class InputVideo {
       if (!this.isAIPaused) {
         this.isAIPaused = true;
         this.voiceConvAnimations.newInfoText("Click to resume");
-        this.voiceConvAnimations.toPause("AI");
       } else {
         this.isAIPaused = false;
         this.voiceConvAnimations.newInfoText("I'm talking");
-        this.voiceConvAnimations.toResume("AI");
       }
     } else {
       if (!this.isMicMuted) {
         this.isMicMuted = true;
-        this.voiceConvAnimations.toPause("user");
         this.voiceConvAnimations.newInfoText("Click to resume");
       } else {
         this.isMicMuted = false;
-        this.voiceConvAnimations.toResume("user");
         this.voiceConvAnimations.newInfoText("Start talking");
       }
     }
@@ -238,7 +228,6 @@ export default class InputVideo {
     this.emitter.on("input:displayVideoInput", this.displayVideoInput);
     this.emitter.on("phone:connected", () => {
       this.currentState = states.CONNECTED;
-      this.voiceConvAnimations.toConnected();
       this.voiceConvAnimations.newInfoText("connected");
     });
 
@@ -246,14 +235,12 @@ export default class InputVideo {
       // console.log("talk to me");
       this.pauseBtn.removeAttribute("disabled");
       this.currentState = states.TALKTOME;
-      this.voiceConvAnimations.toTalkToMe();
       this.voiceConvAnimations.newInfoText("Talk to me");
     });
 
     this.emitter.on("phone:listening", () => {
       this.currentState = states.LISTENING;
       this.isAITalking = false;
-      this.voiceConvAnimations.toListening();
       this.voiceConvAnimations.newInfoText("I'm listening");
     });
 
@@ -261,19 +248,16 @@ export default class InputVideo {
       this.pauseBtn.setAttribute("disabled", true);
       this.currentState = states.PROCESSING;
       this.voiceConvAnimations.newInfoText("processing");
-      this.voiceConvAnimations.toProcessing();
     });
 
     this.emitter.on("phone:AITalking", () => {
       this.currentState = states.AITALKING;
       this.isAITalking = true;
       this.voiceConvAnimations.newInfoText("Speak to interrupt");
-      this.voiceConvAnimations.toAITalking();
     });
 
     this.emitter.on("phone:leave", () => {
       this.currentState = states.LEAVE;
-      this.voiceConvAnimations.leave();
     });
   }
 }

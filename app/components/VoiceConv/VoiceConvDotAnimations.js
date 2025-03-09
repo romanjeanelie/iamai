@@ -3,6 +3,7 @@ import anim from "../../utils/anim";
 export default class PhoneDotAnimations {
   constructor({ pageEl }) {
     this.pageEl = pageEl;
+    console.log("phone dot animations");
 
     this.phoneContainer = this.pageEl.querySelector(".phone__container");
     this.phoneBarContainer = this.phoneContainer.querySelector(".phone-bar__container");

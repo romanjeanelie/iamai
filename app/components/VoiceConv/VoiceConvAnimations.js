@@ -4,7 +4,7 @@ export default class VoiceConvHomeAnimations {
   constructor({ pageEl }) {
     this.pageEl = pageEl;
 
-    this.voiceConvWrapper = this.pageEl.querySelector(".phone__wrapper");
+    this.voiceConvWrapper = this.pageEl.querySelector(".input__video--container");
 
     this.isConnected = false;
     this.colors = {
@@ -61,12 +61,13 @@ export default class VoiceConvHomeAnimations {
   }
 
   newInfoText(text) {
-    const activeText = this.voiceConvWrapper.querySelector(".phone__info.active");
+    const activeText = this.voiceConvWrapper?.querySelector(".input__video--info.active");
+    if (!activeText) return;
     if (this.isIOSSafari) {
       activeText.textContent = text;
       return;
     }
-    const notActiveText = this.voiceConvWrapper.querySelector(".phone__info:not(.active)");
+    const notActiveText = this.voiceConvWrapper?.querySelector(".input__video--info:not(.active)");
 
     const animations = {
       hide: [

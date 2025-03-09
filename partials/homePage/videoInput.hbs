@@ -1,66 +1,25 @@
 <!-- Video input -->
 <div class="input__video--container">
-  <div class="input__video--phone-container">
+  {{! HEADER  }}
+  <div class="input__video--header">
+    <button class="input__video--button flash-btn">
+      􀋦
+    </button>
+
     <p class="input__video--timer">00:00</p>
-    <div class="phone__container">
-      <div class="phone__top">
-        <div class="phone-bar__container">
-          <div class="phone-bar__one">
-            <span class="dot"></span>
-            <span class="dot"></span>
-          </div>
-          <div class="phone-bar__processing">
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-          </div>
-          <div class="phone-bar__AI">
-          </div>
-          <div class="phone-bar__pause">
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-          </div>
-        </div>
-      </div>
-      <div class="phone__bottom">
-        <p class="phone__info active"></p>
-        <p class="phone__info">not active</p>
-      </div>
-    </div>
+
   </div>
+
+  {{! VIDEO DISPLAY }}
   <div class="input__video--camera">
     <canvas class="input__video--canvas"></canvas>
     <video playsinline controlslist="nodownload nofullscreen noremoteplayback" disablePictureInPicture>Video stream not
       available.</video>
     <div class="input__video--camera-loader"></div>
-    {{! EXIT BUTTON }}
-    <button class="input__video--button exit-btn">
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
-        <rect
-          x="0.00195312"
-          y="1.13184"
-          width="1.6"
-          height="17.6"
-          rx="0.8"
-          transform="rotate(-45 0.00195312 1.13184)"
-          fill="#00254E"
-        />
-        <rect y="12.4453" width="17.6" height="1.6" rx="0.8" transform="rotate(-45 0 12.4453)" fill="#00254E" />
-      </svg>
-    </button>
+
   </div>
   <div class="input__video--footer">
     <div class="input__video--buttons-wrapper">
-      {{! PAUSE BUTTON }}
-      <button class="input__video--button pause-btn">
-        <svg width="12" height="16" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="3" height="16" rx="1.5" fill="#00254E" />
-          <rect x="9" width="3" height="16" rx="1.5" fill="#00254E" />
-        </svg>
-      </button>
       {{! REVERSE BUTTON }}
       <button class="input__video--button reverse-btn">
         <svg width="30" height="25" viewBox="0 0 30 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -72,6 +31,19 @@
           />
         </svg>
       </button>
+      {{! PAUSE BUTTON }}
+      <button class="input__video--button pause-btn">
+        <div class="pause-btn__line"></div>
+        <div class="pause-btn__line"></div>
+      </button>
+      {{! EXIT BUTTON }}
+      <button class="input__video--button exit-btn">
+        􀆄
+      </button>
+    </div>
+    <div class="input__video--info-container">
+      <p class="input__video--info active"></p>
+      <p class="input__video--info">not active</p>
     </div>
   </div>
 </div>
