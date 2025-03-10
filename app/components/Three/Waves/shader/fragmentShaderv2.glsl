@@ -104,7 +104,8 @@ vec4 waveAnimation(){
   vec4 finalColor = vec4(uWaveColor, .0);
 
   for (int i; i< MAX_WAVES;i++){
-    vec2 waveCenter = vec2(0.5, 0.0 - 0.1 * (1. - uWaveProgress[i]) * (1. - uWaveProgress[i]));
+    vec2 waveCenter = vec2(0.5,  0.0 - 0.1 * (1. - uWaveProgress[i]) * (1. - uWaveProgress[i]));
+    waveCenter.y -= 0.1;
 
     float dist = calculateAspectCorrectedDistance(vUv, waveCenter) * uAmplitude;
     vec4 wave = processWave(uWaveProgress[i], dist);
