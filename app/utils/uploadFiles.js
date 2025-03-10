@@ -19,7 +19,7 @@ const uploadFiles = (files) =>
         let data = JSON.parse(this.responseText);
         resolve(data.urls);
       } else {
-        // alert('An error occurred!');
+        console.log("An error occurred!");
         reject("An error occurred!");
       }
     };

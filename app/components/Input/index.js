@@ -131,6 +131,7 @@ export default class Input {
   // Images Questions
   updateImages(imgs) {
     this.currentImages = imgs;
+    console.log(this.currentImages);
   }
 
   // Submit

@@ -73,12 +73,13 @@ function () {
 
             case 3:
               imgsUploaded = _context.sent;
+              console.log(imgsUploaded);
               imgsUploaded.forEach(function (img) {
                 _this.previewImage(img);
               });
               this.emitter.emit("input:updateImages");
 
-            case 6:
+            case 7:
             case "end":
               return _context.stop();
           }

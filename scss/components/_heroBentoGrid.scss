@@ -17,6 +17,10 @@
       font-weight: 300;
       color: #b3bdce;
     }
+
+    @include media("<tablet") {
+      display: none;
+    }
   }
 
   h3 {
@@ -56,8 +60,10 @@
   align-items: flex-end;
   margin: 0 0 24px;
 
-  @include media("<phone") {
-    // display: none;
+  @include media("<tablet") {
+    justify-content: end;
+
+    margin: 12px 0;
   }
 }
 

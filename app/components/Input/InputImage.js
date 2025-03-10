@@ -39,6 +39,7 @@ export default class InputImage {
   async handleImageUpload(imgFile) {
     this.anims.toLoadingImage();
     const imgsUploaded = await uploadFiles(imgFile);
+    console.log(imgsUploaded);
     imgsUploaded.forEach((img) => {
       this.previewImage(img);
     });
