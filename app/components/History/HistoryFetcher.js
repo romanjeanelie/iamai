@@ -18,6 +18,7 @@ export default class HistoryFetcher {
       start,
       size,
       order,
+      mode: "cors",
     };
 
     // Get all elements
