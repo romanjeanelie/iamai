@@ -24,6 +24,7 @@ export default class InputVideo {
     this.isMicMuted = false;
     this.isAIPaused = false;
     this.stream = null;
+    this.isFlashOn = false;
     this.currentState = states.CONNECTED;
 
     // camera facing state
@@ -44,6 +45,7 @@ export default class InputVideo {
     this.timer = document.querySelector(".input__video--timer");
     this.video = document.querySelector(".input__video--camera video");
     this.canvas = document.querySelector(".input__video--canvas");
+    this.flashBtn = document.querySelector(".input__video--button.flash-btn");
     this.pauseBtn = document.querySelector(".input__video--button.pause-btn");
     this.reverseBtn = document.querySelector(".input__video--button.reverse-btn");
     this.exitBtn = document.querySelector(".input__video--button.exit-btn");
@@ -62,7 +64,7 @@ export default class InputVideo {
     this.addEvents();
 
     if (this.debugVideo) {
-      // this.addDebugButtons();
+      this.addDebugButtons();
     }
   }
 
@@ -75,6 +77,29 @@ export default class InputVideo {
   }
 
   // CAMERA
+  async enableCameraFlip() {
+    if (!this.isEnvCam) {
+      // Check if the device has more than one camera
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const videoInputs = devices.filter((device) => device.kind === "videoinput");
+      this.isEnvCam = videoInputs.length > 1;
+      // if so enable the reverse button that switches between cameras
+      this.reverseBtn.classList.add(this.isEnvCam ? "visible" : "hidden");
+    }
+  }
+
+  async enableFlashButton() {
+    if (!this.isFlashOn) {
+      // Check if the device has a flashlight
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const videoInputs = devices.filter((device) => device.kind === "videoinput");
+      const hasFlash = videoInputs.some((device) => device.label.includes("flash"));
+      // if so enable the flash button that toggles the flashlight
+      this.isFlashOn = hasFlash;
+      this.flashBtn.classList.add(this.isFlashOn ? "visible" : "hidden");
+    }
+  }
+
   async initCamera() {
     try {
       if (this.stream) {
@@ -87,14 +112,8 @@ export default class InputVideo {
         audio: false,
       });
 
-      if (!this.isEnvCam) {
-        // Check if the device has more than one camera
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        const videoInputs = devices.filter((device) => device.kind === "videoinput");
-        this.isEnvCam = videoInputs.length > 1;
-        // if so enable the reverse button that switches between cameras
-        this.reverseBtn.classList.add(this.isEnvCam ? "visible" : "hidden");
-      }
+      await this.enableCameraFlip();
+      await this.enableFlashButton();
 
       // Set the new stream to the video element and start playing it
       this.video.srcObject = this.stream;
@@ -266,24 +285,23 @@ export default class InputVideo {
       this.currentState = states.LEAVE;
     });
   }
-}
 
-// DEBUG
-addDebugButtons() {
-  const infoTexts = ["connected", "talkToMe", "listening", "processing", "AITalking", "leave"];
+  // DEBUG
+  addDebugButtons() {
+    const infoTexts = ["connected", "talkToMe", "listening", "processing", "AITalking", "leave"];
 
-  const debugBtns = document.createElement("div");
-  debugBtns.classList.add("debug__btns--container");
+    const debugBtns = document.createElement("div");
+    debugBtns.classList.add("debug__btns--container");
 
-  infoTexts.forEach((text) => {
-    const btn = document.createElement("button");
-    btn.textContent = text;
-    btn.addEventListener("click", () => {
-      this.voiceConvAnimations.newInfoText(text);
+    infoTexts.forEach((text) => {
+      const btn = document.createElement("button");
+      btn.textContent = text;
+      btn.addEventListener("click", () => {
+        this.voiceConvAnimations.newInfoText(text);
+      });
+      debugBtns.appendChild(btn);
     });
-    debugBtns.appendChild(btn);
-  });
 
-  this.container.appendChild(debugBtns);
+    this.container.appendChild(debugBtns);
+  }
 }
-

@@ -178,6 +178,11 @@
     background-color: transparent;
   }
 
+  &.flash-btn.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
   * {
     transition: all ease-out 0.2s;
   }
