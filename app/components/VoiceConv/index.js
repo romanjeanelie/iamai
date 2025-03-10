@@ -72,9 +72,10 @@ export default class VoiceConv {
     this.micAccessConfirmed = false;
 
     // Anims
+
     this.waves = null;
     this.voiceConvAnimations = new VoiceConvAnimations({
-      pageEl: this.pageEl,
+      mainContainer: this.voiceConvContainer,
     });
 
     this.onClickOutside = {

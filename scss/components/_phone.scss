@@ -79,9 +79,11 @@ $colorTalkAI: $colorBlueText;
     line-height: 24px; /* 160% */
     letter-spacing: 0.2px;
 
-    .phone__info:last-of-type {
+    .active {
       position: absolute;
-      inset: 0;
+      top: 0;
+      left: 0;
+      right: 0;
     }
   }
 

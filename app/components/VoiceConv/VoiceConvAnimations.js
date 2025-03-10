@@ -1,28 +1,8 @@
 import anim from "../../utils/anim";
 
 export default class VoiceConvHomeAnimations {
-  constructor({ pageEl }) {
-    this.pageEl = pageEl;
-
-    this.voiceConvWrapper = this.pageEl.querySelector(".input__video--container");
-
-    this.isConnected = false;
-    this.colors = {
-      talkToMe: "#2B41EE",
-    };
-
-    this.animations = [];
-
-    // Remove animations for iOS Safari
-    // this.isIOSSafari = isMobile() && isSafari();
-    this.isIOSSafari = false;
-
-    if (this.isIOSSafari) {
-      this.phoneBarOne.style.display = "none";
-      this.phoneBarProcessing.style.display = "none";
-      this.phoneBarAI.style.display = "none";
-      this.phoneBarPause.style.display = "none";
-    }
+  constructor({ mainContainer }) {
+    this.mainContainer = mainContainer;
   }
 
   animateTextTransition(text, activeText, notActiveText, animations) {
@@ -44,30 +24,15 @@ export default class VoiceConvHomeAnimations {
     showNotActiveText.onfinish = () => notActiveText.classList.add("active");
   }
 
-  createAnimation(target, keyframes, options) {
-    if (this.isIOSSafari) return null;
-    const animation = anim(target, keyframes, options);
-    this.animations.push(animation);
-    return animation;
-  }
-
-  cancelAllAnimations() {
-    this.isConnected = false;
-    const flatAnimations = this.animations.flat();
-    flatAnimations.forEach((animation) => {
-      animation.cancel();
-    });
-    this.animations = []; // Reset the list of animations
-  }
-
   newInfoText(text) {
-    const activeText = this.voiceConvWrapper?.querySelector(".input__video--info.active");
+    const activeText = this.mainContainer?.querySelector(".input__info.active");
+
     if (!activeText) return;
     if (this.isIOSSafari) {
       activeText.textContent = text;
       return;
     }
-    const notActiveText = this.voiceConvWrapper?.querySelector(".input__video--info:not(.active)");
+    const notActiveText = this.mainContainer?.querySelector(".input__info:not(.active)");
 
     const animations = {
       hide: [

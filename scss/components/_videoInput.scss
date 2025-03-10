@@ -123,19 +123,6 @@
     column-gap: 74px;
     color: $colorLight;
   }
-
-  .input__video--info-container {
-    text-align: center;
-    color: $colorLight;
-    position: relative;
-
-    .active {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-    }
-  }
 }
 
 .input__video--button {

@@ -53,7 +53,7 @@ export default class InputVideo {
 
     // Voice Conversation Animations
     this.voiceConvAnimations = new VoiceConvAnimations({
-      pageEl: this.container,
+      mainContainer: this.container,
     });
 
     // Bindings
@@ -139,7 +139,6 @@ export default class InputVideo {
       this.captureInterval = null;
     }
 
-    this.voiceConvAnimations.toResume("user");
     this.voiceConvAnimations.newInfoText("Start talking");
     this.currentFacingMode = this.currentFacingMode === "user" ? "environment" : "user";
     this.initCamera();

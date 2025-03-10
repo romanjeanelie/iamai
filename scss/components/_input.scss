@@ -22,6 +22,19 @@
   }
 }
 
+.input__info-container {
+  text-align: center;
+  color: $colorLight;
+  position: relative;
+
+  .active {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+}
+
 .input__container {
   $borderRadius: 40px;
   position: relative;
