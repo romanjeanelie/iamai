@@ -71,6 +71,7 @@ export default class Navigation {
   }
 
   toggleTasks() {
+    console.log("TOGGLE TASKS");
     if (this.currentSection !== SECTIONS.tasks) {
       this.tasksContainer.classList.add("scroll-snap");
       gsap.to(this.pageEl, { scrollTo: ".task-manager__container", duration: 0.5, ease: Power3.easeOut });
@@ -167,6 +168,9 @@ export default class Navigation {
       this.anims.showNav();
     });
     this.emitter.on("input:updateImages", this.hideNavButtons.bind(this));
+    // this.emitter.on("phone:open", this.hideNavButtons.bind(this));
+
+    // this.emitter.on("phone:close", this.displayNavButtons.bind(this));
     this.emitter.on("input:imagesQuestionAsked", this.displayNavButtons.bind(this));
   }
 }

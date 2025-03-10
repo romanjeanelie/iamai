@@ -24,7 +24,6 @@ export default class HistoryAnimation {
       start: "top center",
       end: "bottom-=49% center",
       invalidateOnRefresh: true, // Ensures correct positioning on resize
-
       onLeave: () => {
         this.hideElements();
       },
@@ -41,7 +40,7 @@ export default class HistoryAnimation {
 
   showElements() {
     this.refreshElements();
-    const tl = gsap.timeline({ default: { duration: 0.4, ease: Power3.easeOut } });
+    const tl = gsap.timeline({ defaults: { duration: 0.4, ease: Power3.easeOut } });
 
     tl.to(this.elements, {
       opacity: 1,
@@ -55,7 +54,7 @@ export default class HistoryAnimation {
   hideElements() {
     this.refreshElements();
 
-    const tl = gsap.timeline({ default: { duration: 0.4, ease: Power3.easeOut } });
+    const tl = gsap.timeline({ defaults: { duration: 0.4, ease: Power3.easeOut } });
     tl.to(this.elements, { opacity: 0, y: 50, duration: 0.05, stagger: 0.05, ease: Power3.easeOut });
     tl.to(this.dates, { opacity: 0, y: 5, duration: 0.4, stagger: 0.05 }, "-=0.1");
   }

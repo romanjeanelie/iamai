@@ -101,7 +101,6 @@ export default class VoiceConv {
   }
 
   startConnecting() {
-    // console.log("connecting");
     this.voiceConvAnimations.newInfoText("connecting");
   }
 
@@ -495,6 +494,7 @@ export default class VoiceConv {
     this.anims.toStopVoiceConv();
     this.stopRecording();
     this.stopAITalking();
+    this.emitter.emit("phone:close");
 
     if (this.waves) {
       await this.waves.destroy();
@@ -515,6 +515,7 @@ export default class VoiceConv {
       this.audioContext = unlockAudio();
       this.anims.toStartVoiceConv();
       this.startRecording();
+      this.emitter.emit("phone:open");
     });
 
     this.emitter.on("input:displayVideoInput", () => {

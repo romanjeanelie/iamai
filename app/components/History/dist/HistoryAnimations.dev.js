@@ -77,7 +77,7 @@ function () {
       this.refreshElements();
 
       var tl = _gsap["default"].timeline({
-        "default": {
+        defaults: {
           duration: 0.4,
           ease: _gsap.Power3.easeOut
         }
@@ -101,7 +101,7 @@ function () {
       this.refreshElements();
 
       var tl = _gsap["default"].timeline({
-        "default": {
+        defaults: {
           duration: 0.4,
           ease: _gsap.Power3.easeOut
         }
