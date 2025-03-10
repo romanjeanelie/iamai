@@ -176,11 +176,13 @@
 
   &.flash-btn {
     background-color: transparent;
-  }
-
-  &.flash-btn.hidden {
     opacity: 0;
     pointer-events: none;
+  }
+
+  &.flash-btn.visible {
+    opacity: 1;
+    pointer-events: auto;
   }
 
   * {

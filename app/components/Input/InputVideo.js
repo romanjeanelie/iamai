@@ -32,6 +32,7 @@ export default class InputVideo {
 
     // photos states
     this.isEnvCam = null;
+    this.isFlashAvailable = false;
     this.captureInterval = null;
     this.photos = [];
     this.maxPhotos = 5;
@@ -64,7 +65,8 @@ export default class InputVideo {
     this.addEvents();
 
     if (this.debugVideo) {
-      this.addDebugButtons();
+      // this.addDebugButtons();
+      this.flashBtn.classList.add("visible");
     }
   }
 
@@ -90,13 +92,13 @@ export default class InputVideo {
 
   async enableFlashButton() {
     if (!this.isFlashOn) {
-      // Check if the device has a flashlight
-      const devices = await navigator.mediaDevices.enumerateDevices();
-      const videoInputs = devices.filter((device) => device.kind === "videoinput");
-      const hasFlash = videoInputs.some((device) => device.label.includes("flash"));
-      // if so enable the flash button that toggles the flashlight
-      this.isFlashOn = hasFlash;
-      this.flashBtn.classList.add(this.isFlashOn ? "visible" : "hidden");
+      this.stream.getVideoTracks().forEach((track) => {
+        const capabilities = track.getCapabilities();
+        if (capabilities.torch) {
+          this.isFlashAvailable = true;
+          this.flashBtn.classList.add("visible");
+        }
+      });
     }
   }
 
@@ -224,6 +226,24 @@ export default class InputVideo {
     }
   }
 
+  // FLASH
+  toggleFlash() {
+    if (this.isFlashAvailable) {
+      this.stream.getVideoTracks().forEach((track) => {
+        track.applyConstraints({
+          advanced: [{ torch: this.isFlashOn }],
+        });
+      });
+    }
+
+    if (!this.isFlashOn) {
+      this.flashBtn.textContent = "􀋪";
+    } else {
+      this.flashBtn.textContent = "􀋦";
+    }
+    this.isFlashOn = !this.isFlashOn;
+  }
+
   // EXIT
   hideVideoInput() {
     if (this.video.srcObject) {
@@ -248,6 +268,7 @@ export default class InputVideo {
     });
 
     this.exitBtn.addEventListener("click", this.hideVideoInput.bind(this));
+    this.flashBtn.addEventListener("click", this.toggleFlash.bind(this));
 
     // Emitter events
     this.emitter.on("input:displayVideoInput", this.displayVideoInput);
