@@ -101,13 +101,11 @@ export default class VoiceConv {
   }
 
   startConnecting() {
-    this.voiceConvAnimations.toConnecting();
     // console.log("connecting");
     this.voiceConvAnimations.newInfoText("connecting");
   }
 
   connected() {
-    this.voiceConvAnimations.toConnected();
     this.voiceConvAnimations.newInfoText("connected");
     // console.log("connected");
 
@@ -134,7 +132,6 @@ export default class VoiceConv {
     this.isStartingConversation = false;
     this.isActive = false;
 
-    this.voiceConvAnimations.leave();
     this.stopRecording();
     this.stopAITalking();
 
@@ -149,7 +146,6 @@ export default class VoiceConv {
     this.waves = new Waves();
 
     this.isStreamEnded = false;
-    this.voiceConvAnimations.toTalkToMe();
     this.voiceConvAnimations.newInfoText("Talk to me");
     if (this.myvad) this.myvad.start();
 
@@ -157,9 +153,6 @@ export default class VoiceConv {
   }
 
   toListening() {
-    if (!this.isListening) {
-      this.voiceConvAnimations.toListening();
-    }
     this.isListening = true;
     // console.log("I'm listening");
     this.voiceConvAnimations.newInfoText("I'm listening");
@@ -171,15 +164,12 @@ export default class VoiceConv {
     this.isProcessing = true;
     this.waves?.toggleBetweenIdleAndActive();
     this.voiceConvAnimations.newInfoText("processing");
-    this.voiceConvAnimations.toProcessing();
     this.emitter.emit("phone:processing");
     if (this.debugIOSAnim) {
       this.discussion.addUserElement({ text: "Hi I am a test", debug: true });
       return;
     }
     this.myvad.pause();
-
-    console.log("TOPROCCESSING");
 
     if (!audio) return;
     const blob = float32ArrayToMp3Blob(audio, 16000);
@@ -262,7 +252,6 @@ export default class VoiceConv {
     if (!this.isAITalking) {
       this.isProcessing = false;
       this.voiceConvAnimations.newInfoText("Speak to interrupt");
-      this.voiceConvAnimations.toAITalking();
       this.emitter.emit("phone:AITalking");
       if (this.myvad) this.myvad.start();
       this.emitter.emit("phone:talkToMe");
@@ -443,7 +432,6 @@ export default class VoiceConv {
   pauseAI() {
     this.isAIPaused = true;
     this.voiceConvAnimations.newInfoText("Click to resume");
-    this.voiceConvAnimations.toPause("AI");
     this.pauseBtn.classList.add("active");
     this.emitter.emit("phone:pauseAI");
 
@@ -456,7 +444,6 @@ export default class VoiceConv {
 
   resumeAI() {
     this.isAIPaused = false;
-    this.voiceConvAnimations.toResume("AI");
     this.pauseBtn.classList.remove("active");
     this.emitter.emit("phone:resumeAI");
     this.currentAudioAIPlaying?.resumeAudio();
@@ -466,7 +453,6 @@ export default class VoiceConv {
 
   muteMic() {
     this.isMicMuted = true;
-    this.voiceConvAnimations.toPause("user");
     this.voiceConvAnimations.newInfoText("Click to resume");
     // console.log("mute mic");
     this.emitter.emit("phone:muteMic");
@@ -480,7 +466,6 @@ export default class VoiceConv {
   unmuteMic() {
     this.isMicMuted = false;
     // console.log("unmute mic");
-    this.voiceConvAnimations.toResume("user");
     this.voiceConvAnimations.newInfoText("Start talking");
     this.pauseBtn.classList.remove("active");
     this.emitter.emit("phone:unmuteMic");
