@@ -34,23 +34,29 @@ export default class HistoryAnimation {
     });
   }
 
-  showElements() {
+  refreshElements() {
     this.elements = document.querySelectorAll(".history-element__wrapper");
+    this.dates = document.querySelectorAll(".history__date");
+  }
+
+  showElements() {
+    this.refreshElements();
     const tl = gsap.timeline({ default: { duration: 0.4, ease: Power3.easeOut } });
 
-    gsap.fromTo(
-      this.elements,
-      { opacity: 0, y: 50 },
-      {
-        opacity: 1,
-        y: 0,
-        delay: 0.4,
-        stagger: 0.05,
-      }
-    );
+    tl.to(this.elements, {
+      opacity: 1,
+      y: 0,
+      stagger: 0.05,
+    });
+
+    tl.to(this.dates, { opacity: 1, y: 0, duration: 0.4, stagger: 0.05 }, "<+=0.2");
   }
 
   hideElements() {
-    gsap.to(this.elements, { opacity: 0, y: 50, duration: 0.05, stagger: 0.05, ease: Power3.easeOut });
+    this.refreshElements();
+
+    const tl = gsap.timeline({ default: { duration: 0.4, ease: Power3.easeOut } });
+    tl.to(this.elements, { opacity: 0, y: 50, duration: 0.05, stagger: 0.05, ease: Power3.easeOut });
+    tl.to(this.dates, { opacity: 0, y: 5, duration: 0.4, stagger: 0.05 }, "-=0.1");
   }
 }

@@ -66,9 +66,15 @@ function () {
       });
     }
   }, {
+    key: "refreshElements",
+    value: function refreshElements() {
+      this.elements = document.querySelectorAll(".history-element__wrapper");
+      this.dates = document.querySelectorAll(".history__date");
+    }
+  }, {
     key: "showElements",
     value: function showElements() {
-      this.elements = document.querySelectorAll(".history-element__wrapper");
+      this.refreshElements();
 
       var tl = _gsap["default"].timeline({
         "default": {
@@ -77,26 +83,43 @@ function () {
         }
       });
 
-      _gsap["default"].fromTo(this.elements, {
-        opacity: 0,
-        y: 50
-      }, {
+      tl.to(this.elements, {
         opacity: 1,
         y: 0,
-        delay: 0.4,
         stagger: 0.05
       });
+      tl.to(this.dates, {
+        opacity: 1,
+        y: 0,
+        duration: 0.4,
+        stagger: 0.05
+      }, "<+=0.2");
     }
   }, {
     key: "hideElements",
     value: function hideElements() {
-      _gsap["default"].to(this.elements, {
+      this.refreshElements();
+
+      var tl = _gsap["default"].timeline({
+        "default": {
+          duration: 0.4,
+          ease: _gsap.Power3.easeOut
+        }
+      });
+
+      tl.to(this.elements, {
         opacity: 0,
         y: 50,
         duration: 0.05,
         stagger: 0.05,
         ease: _gsap.Power3.easeOut
       });
+      tl.to(this.dates, {
+        opacity: 0,
+        y: 5,
+        duration: 0.4,
+        stagger: 0.05
+      }, "-=0.1");
     }
   }]);
 
