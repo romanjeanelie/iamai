@@ -274,6 +274,7 @@ export default class Discussion {
 
     const isFirstLoad = true;
     await this.history.updateHistory(isFirstLoad);
+    this.history.initAnimations();
     this.taskManager.initTaskManager();
 
     this.discussionWrapper.scrollIntoView({

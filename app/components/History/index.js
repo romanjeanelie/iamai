@@ -1,5 +1,6 @@
 import { getDateLabel } from "../../utils/dateUtils";
 import { store } from "../store";
+import HistoryAnimation from "./HistoryAnimations";
 import HistoryElement from "./HistoryElement";
 import HistoryFetcher from "./HistoryFetcher";
 
@@ -17,6 +18,7 @@ export default class History {
 
     // Init Methods
     this.fetcher = new HistoryFetcher({ emitter: this.emitter });
+    this.animations = new HistoryAnimation({ emitter: this.emitter });
     this.addListeners();
   }
 
@@ -99,6 +101,10 @@ export default class History {
         resolve();
       }
     });
+  }
+
+  initAnimations() {
+    this.animations.initAnimations();
   }
 
   setCurrentlyExpandedElement(element) {

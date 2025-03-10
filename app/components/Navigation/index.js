@@ -72,7 +72,6 @@ export default class Navigation {
 
   toggleTasks() {
     if (this.currentSection !== SECTIONS.tasks) {
-      this.emitter.emit("Navigation:openTasks");
       this.tasksContainer.classList.add("scroll-snap");
       gsap.to(this.pageEl, { scrollTo: ".task-manager__container", duration: 0.5, ease: Power3.easeOut });
     } else {
@@ -126,10 +125,6 @@ export default class Navigation {
           this.tasksContainer.classList.remove("scroll-snap");
         } else {
           this.currentSection = intersectingSections[0];
-        }
-
-        if (prevSection === SECTIONS.tasks && this.currentSection !== SECTIONS.tasks) {
-          this.emitter.emit("Navigation:closeTasks"); // Notify Input class
         }
 
         if (this.currentSection !== SECTIONS.history) {

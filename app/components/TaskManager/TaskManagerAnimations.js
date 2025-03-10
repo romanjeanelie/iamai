@@ -21,18 +21,6 @@ export default class TaskManagerAnimations {
       scroller: this.pageEl,
       start: "top top",
       end: "bottom bottom",
-      // onEnter: () => {
-      //   this.showCards();
-      // },
-      // onEnterBack: () => {
-      //   this.showCards();
-      // },
-      // onLeave: () => {
-      //   this.hideCards();
-      // },
-      // onLeaveBack: () => {
-      //   this.hideCards();
-      // },
     });
   }
 
