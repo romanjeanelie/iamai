@@ -491,6 +491,23 @@ export default class VoiceConv {
     }
   }
 
+  async handleExit(videoCall = false) {
+    this.anims.toStopVoiceConv();
+    this.stopRecording();
+    this.stopAITalking();
+
+    if (this.waves) {
+      await this.waves.destroy();
+      this.waves = null;
+    }
+
+    this.leave();
+
+    if (videoCall) {
+      this.discussion.Chat.VideoCallEnded();
+    }
+  }
+
   addListeners() {
     // Open
     this.voiceConvBtn.addEventListener("click", async () => {
@@ -508,21 +525,9 @@ export default class VoiceConv {
     });
 
     // Close
-    this.closeBtn.addEventListener("click", async () => {
-      this.anims.toStopVoiceConv();
-      this.stopRecording();
-      this.stopAITalking();
-      await this.waves?.destroy();
+    this.closeBtn.addEventListener("click", () => this.handleExit());
 
-      this.waves = null;
-      this.leave();
-    });
-
-    this.emitter.on("videoInput:leave", () => {
-      this.anims.toStopVoiceConv();
-      this.leave();
-      this.discussion.Chat.VideoCallEnded();
-    });
+    this.emitter.on("videoInput:leave", () => this.handleExit(true));
 
     this.emitter.on("videoInput:captureImage", (imageData) => {
       //call the part to send data
