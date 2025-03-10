@@ -33,7 +33,6 @@ $zIndex: 1;
   }
 
   @include media("<phone") {
-    scroll-snap-align: start;
     -webkit-overflow-scrolling: touch;
   }
 }

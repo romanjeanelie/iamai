@@ -71,7 +71,6 @@ export default class Navigation {
   }
 
   toggleTasks() {
-    console.log("TOGGLE TASKS");
     if (this.currentSection !== SECTIONS.tasks) {
       this.tasksContainer.classList.add("scroll-snap");
       gsap.to(this.pageEl, { scrollTo: ".task-manager__container", duration: 0.5, ease: Power3.easeOut });
