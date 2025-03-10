@@ -86,11 +86,27 @@ vec4 processWave(float progress, float distFromCenter) {
   return vec4(color, pow(wave, 0.3) * (1. - progress));
 }
 
+// Corrected function to handle aspect ratio for circular waves
+float calculateAspectCorrectedDistance(vec2 uv, vec2 center) {
+  // Get the aspect ratio from resolution
+  float aspectRatio = uResolution.x / uResolution.y;
+  
+  // Create aspect-corrected uv coordinates
+  vec2 correctedUv = uv;
+  correctedUv.x = (uv.x - 0.5) * aspectRatio + 0.5;
+  
+  // Calculate the distance with corrected coordinates
+  return distance(correctedUv, center);
+}
+
+
 vec4 waveAnimation(){
   vec4 finalColor = vec4(uWaveColor, .0);
 
   for (int i; i< MAX_WAVES;i++){
-    float dist = distance(vUv, vec2(0.5, 0.0 - 0.1 * (1. - uWaveProgress[i])  * (1. - uWaveProgress[i]))) * uAmplitude;
+    vec2 waveCenter = vec2(0.5, 0.0 - 0.1 * (1. - uWaveProgress[i]) * (1. - uWaveProgress[i]));
+
+    float dist = calculateAspectCorrectedDistance(vUv, waveCenter) * uAmplitude;
     vec4 wave = processWave(uWaveProgress[i], dist);
     finalColor = mix(finalColor, wave, wave.a * (1.0 - finalColor.a));
   }
