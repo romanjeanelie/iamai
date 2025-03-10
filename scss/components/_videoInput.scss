@@ -123,6 +123,14 @@
   .input__video--info-container {
     text-align: center;
     color: $colorLight;
+    position: relative;
+
+    .active {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
   }
 }
 
@@ -198,5 +206,21 @@
 
   &.reverse-btn.hidden {
     display: none;
+  }
+}
+
+.debug__btns--container {
+  position: fixed;
+  top: 50px;
+  z-index: 100;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  button {
+    background-color: white;
+    border: 1px solid black;
+    padding: 8px;
   }
 }

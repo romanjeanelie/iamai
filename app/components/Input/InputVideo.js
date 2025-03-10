@@ -18,6 +18,8 @@ export default class InputVideo {
 
     // States
     this.debug = import.meta.env.VITE_DEBUG === "true";
+    this.debugVideo = import.meta.env.VITE_DEBUG_VIDEO === "true";
+
     this.isAITalking = false;
     this.isMicMuted = false;
     this.isAIPaused = false;
@@ -58,6 +60,10 @@ export default class InputVideo {
     this.pauseBtn.setAttribute("disabled", true);
     this.voiceConvAnimations.newInfoText("connecting");
     this.addEvents();
+
+    if (this.debugVideo) {
+      // this.addDebugButtons();
+    }
   }
 
   toggleLoading(isLoading) {
@@ -261,3 +267,23 @@ export default class InputVideo {
     });
   }
 }
+
+// DEBUG
+addDebugButtons() {
+  const infoTexts = ["connected", "talkToMe", "listening", "processing", "AITalking", "leave"];
+
+  const debugBtns = document.createElement("div");
+  debugBtns.classList.add("debug__btns--container");
+
+  infoTexts.forEach((text) => {
+    const btn = document.createElement("button");
+    btn.textContent = text;
+    btn.addEventListener("click", () => {
+      this.voiceConvAnimations.newInfoText(text);
+    });
+    debugBtns.appendChild(btn);
+  });
+
+  this.container.appendChild(debugBtns);
+}
+
