@@ -1,6 +1,7 @@
 import VoiceConvAnimations from "../VoiceConv/VoiceConvAnimations";
 
 import minSecStr from "../../utils/minSecStr";
+import Waves from "../Three/Waves";
 
 const states = {
   CONNECTING: "connecting",
@@ -65,8 +66,8 @@ export default class InputVideo {
     this.addEvents();
 
     if (this.debugVideo) {
-      // this.addDebugButtons();
-      this.flashBtn.classList.add("visible");
+      this.waves = new Waves();
+      this.emitter.emit("input:displayVideoInput");
     }
   }
 

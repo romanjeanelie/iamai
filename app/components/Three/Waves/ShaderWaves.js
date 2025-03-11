@@ -20,6 +20,7 @@ export default class ShaderWaves {
       amplitude: 4,
       waveSpeed: 4,
       waveLength: 2,
+      darkMode: 0,
 
       // Colors
       waveColor: 0xf9f9f9,
@@ -111,6 +112,7 @@ export default class ShaderWaves {
         uStateProgress: { value: this.settings.progress }, // handling the transition between idle and waves states
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
         uResolution: { value: new THREE.Vector2(this.sizes.width, this.sizes.height) },
+        uDarkMode: { value: 0 },
 
         // Debug Uniforms
         uFrequency: { value: this.settings.frequency },

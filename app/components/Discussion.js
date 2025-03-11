@@ -104,6 +104,7 @@ export default class Discussion {
     setTimeout(() => {
       this.typingText.fadeIn();
     }, 1000);
+    if (this.debug) return;
     this.Chat.callsubmit(text, imgs, this.AIContainer, isLiveMode);
   }
 

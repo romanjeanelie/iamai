@@ -12,6 +12,9 @@ export default class TaskFetcher {
     this.startIndex = 0;
 
     this.emitter = emitter;
+    this.debug = import.meta.env.VITE_DEBUG === "true";
+
+    if (this.debug) return;
     this.getTasks();
   }
 

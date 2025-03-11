@@ -11,6 +11,7 @@ uniform int uMaxWaveNb;
 uniform float uStateProgress;
 uniform float uFadeProgress;
 uniform float uWaveProgress[MAX_WAVES];
+uniform float uDarkMode;
 
 
 // Debug uniforms
@@ -113,6 +114,9 @@ vec4 waveAnimation(){
   }
 
   finalColor.a *= float(MAX_WAVES) * (1. - uFadeProgress);
+
+  finalColor.rgb = mix(finalColor.rgb, finalColor.rgb / vec3(MAX_WAVES - 1), uDarkMode);
+
   return  finalColor;
 }
 
