@@ -2,7 +2,9 @@ import isMobile from "../../../utils/isMobile";
 import ShaderWaves from "./ShaderWaves";
 
 export default class Waves {
-  constructor() {
+  constructor(inputType = "audio") {
+    this.inputType = inputType;
+
     // DOM Elements
     this.inputWrapper = document.querySelector(".input__wrapper");
 
@@ -16,7 +18,8 @@ export default class Waves {
     if (isMobile()) {
       this.initLottieAnimation();
     } else {
-      this.shaderWaves = new ShaderWaves();
+      console.log(this.inputType);
+      this.shaderWaves = new ShaderWaves(this.inputType);
     }
   }
 

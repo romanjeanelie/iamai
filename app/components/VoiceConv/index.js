@@ -142,7 +142,7 @@ export default class VoiceConv {
     if (!this.unbindEvent) {
       this.unbindEvent = this.emitter.on("addAIText", (html, targetlang) => this.startAITalking(html, targetlang));
     }
-    this.waves = new Waves();
+    this.waves = new Waves(this.isVideoInput ? "video" : "audio");
 
     this.isStreamEnded = false;
     this.voiceConvAnimations.newInfoText("Talk to me");
@@ -520,6 +520,7 @@ export default class VoiceConv {
 
     this.emitter.on("input:displayVideoInput", () => {
       if (this.isActive) return;
+      this.isVideoInput = true;
       this.audioContext = unlockAudio();
       this.anims.toStartVoiceConv();
       this.startRecording();

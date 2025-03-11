@@ -51,13 +51,6 @@ export default class WavesGUI {
       .onChange((value) => {
         this.material.uniforms.uWaveLength.value = value;
       });
-    paramsFolder
-      .add(this.settings, "darkMode", 0, 1)
-      .name("Dark mode")
-      .step(0.01)
-      .onChange((value) => {
-        this.material.uniforms.uDarkMode.value = value;
-      });
 
     // Add a button that creates or destroy the waves
     paramsFolder

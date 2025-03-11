@@ -66,7 +66,7 @@ export default class InputVideo {
     this.addEvents();
 
     if (this.debugVideo) {
-      this.waves = new Waves();
+      this.waves = new Waves("video");
       this.emitter.emit("input:displayVideoInput");
     }
   }

@@ -5,7 +5,9 @@ import vertexShader from "./shader/vertexShader.glsl";
 import WavesGUI from "./WavesGUI";
 
 export default class ShaderWaves {
-  constructor() {
+  constructor(inputType = "audio") {
+    this.inputType = inputType;
+
     // States
     this.maxWaves = 7;
     this.currentWaveIndex = 1; // Track which wave to trigger next
@@ -20,7 +22,6 @@ export default class ShaderWaves {
       amplitude: 4,
       waveSpeed: 4,
       waveLength: 2,
-      darkMode: 0,
 
       // Colors
       waveColor: 0xf9f9f9,
@@ -98,6 +99,7 @@ export default class ShaderWaves {
   }
 
   setupMesh() {
+    console.log(this.inputType);
     const waveProgressArray = new Float32Array(this.maxWaves).fill(0);
 
     this.geometry = new THREE.PlaneGeometry(2, 2, 1, 1);
@@ -112,7 +114,7 @@ export default class ShaderWaves {
         uStateProgress: { value: this.settings.progress }, // handling the transition between idle and waves states
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
         uResolution: { value: new THREE.Vector2(this.sizes.width, this.sizes.height) },
-        uDarkMode: { value: 0 },
+        uDarkMode: { value: this.inputType === "video" ? 1 : 0 },
 
         // Debug Uniforms
         uFrequency: { value: this.settings.frequency },
