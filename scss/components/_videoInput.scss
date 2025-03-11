@@ -103,6 +103,7 @@
 
 .input__video--footer {
   display: flex;
+  position: relative;
   flex-direction: column;
   justify-content: center;
   gap: 32px;
@@ -112,6 +113,14 @@
 
   @include media("<phone") {
     padding: 24px 0 67px;
+  }
+
+  &::after {
+    transform: translate(0, 40%);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 10%, rgba(0, 0, 0, 0) 100%);
+    content: "";
+    position: absolute;
+    inset: 0;
   }
 
   .input__video--buttons-wrapper {
