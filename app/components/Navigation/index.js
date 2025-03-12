@@ -72,6 +72,7 @@ export default class Navigation {
 
   toggleTasks() {
     if (this.currentSection !== SECTIONS.tasks) {
+      this.emitter.emit("Navigation:openTasks");
       this.tasksContainer.classList.add("scroll-snap");
       gsap.to(this.pageEl, { scrollTo: ".task-manager__container", duration: 0.5, ease: Power3.easeOut });
     } else {
@@ -129,6 +130,10 @@ export default class Navigation {
 
         if (this.currentSection !== SECTIONS.history) {
           this.scrollHistoryToTop();
+        }
+
+        if (prevSection === SECTIONS.tasks) {
+          this.emitter.emit("Navigation:closeTasks");
         }
 
         this.updateNavButtons();
