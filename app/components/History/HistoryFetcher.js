@@ -42,7 +42,6 @@ export default class HistoryFetcher {
       if (!data.results.length) break; // Stop if no more data is available
 
       const validElements = data.results.filter((el) => el.micro_thread_id === "");
-      console.log(validElements);
       filteredData = [...filteredData, ...validElements];
 
       remainingSize = size - filteredData.length;
