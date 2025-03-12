@@ -174,7 +174,8 @@ void main() {
   vec4 waveAnimation = waveAnimation();
   vec4 idleAnimation = idleAnimation();
 
-  vec4 finalColor = mix(waveAnimation, idleAnimation, uStateProgress);
+  float stateMix = mix(uStateProgress, 0.0, uDarkMode); // Forces waveAnimation when uDarkMode is 1
+  vec4 finalColor = mix(waveAnimation, idleAnimation, stateMix);
 
   gl_FragColor = finalColor;
 }

@@ -92,15 +92,20 @@ export default class InputVideo {
   }
 
   async enableFlashButton() {
-    if (!this.isFlashOn) {
-      this.stream.getVideoTracks().forEach((track) => {
-        const capabilities = track.getCapabilities();
-        if (capabilities.torch) {
-          this.isFlashAvailable = true;
-          this.flashBtn.classList.add("visible");
-        }
-      });
-    }
+    // Reset flashLight States in case
+    this.isFlashOn = false; // Assume flash is off on the new camera
+    this.flashBtn.textContent = "􀋦"; // Default flash off icon
+    this.flashBtn.classList.remove("visible"); // Hide until confirmed
+
+    this.stream.getVideoTracks().forEach((track) => {
+      const capabilities = track.getCapabilities();
+      if (capabilities.torch) {
+        this.isFlashAvailable = true;
+        this.flashBtn.classList.add("visible");
+      } else {
+        this.flashBtn.classList.remove("visible");
+      }
+    });
   }
 
   async initCamera() {
@@ -231,7 +236,7 @@ export default class InputVideo {
     if (this.isFlashAvailable) {
       this.stream.getVideoTracks().forEach((track) => {
         track.applyConstraints({
-          advanced: [{ torch: this.isFlashOn }],
+          advanced: [{ torch: !this.isFlashOn }],
         });
       });
     }
