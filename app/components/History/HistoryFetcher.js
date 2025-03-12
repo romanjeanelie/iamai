@@ -33,13 +33,25 @@ export default class HistoryFetcher {
 
   async getHistory({ uuid, user, size = this.defaultSize }) {
     this.isFetching = true;
-    // Get elements
-    const data = await this.getAllElements({ uuid, user, size, start: this.newStart });
+    let filteredData = [];
+    let remainingSize = size;
+
+    while (filteredData.length < size) {
+      const data = await this.getAllElements({ uuid, user, size: remainingSize, start: this.newStart });
+
+      if (!data.results.length) break; // Stop if no more data is available
+
+      const validElements = data.results.filter((el) => el.micro_thread_id === "");
+      console.log(validElements);
+      filteredData = [...filteredData, ...validElements];
+
+      remainingSize = size - filteredData.length;
+      this.newStart += data.results.length; // Update start for next fetch
+    }
 
     this.isSet = true;
     this.isFetching = false;
-    this.newStart += size;
 
-    return data.results;
+    return filteredData; // Ensure we only return `size` elements
   }
 }

@@ -192,9 +192,7 @@ export default class Discussion {
   }
 
   async addAIText({ text, container, targetlang, type = null } = {}) {
-    console.log("add Ai text");
     if (!container) return;
-    console.log("here is the container :", container);
     let textContainer = container.querySelector(".text__container");
     if (!textContainer) {
       textContainer = document.createElement("div");

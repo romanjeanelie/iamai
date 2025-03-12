@@ -248,6 +248,7 @@ export default class TaskFetcher {
         idToken: idToken,
       });
       task.statuses = statuses;
+      console.log(statuses);
 
       // add the result ui to the task
       if (task.statuses.results.length === 0) {

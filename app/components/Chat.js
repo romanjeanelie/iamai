@@ -132,7 +132,6 @@ class Chat {
           );
           // this.SendPHIQns(input_text);
         } else {
-          console.log("submituserreply");
           this.submituserreply(
             input_text,
             this.workflowID,
@@ -648,6 +647,8 @@ class Chat {
 
   submituserreply(text, suworkflowid, img, live_mode) {
     var data = "";
+    console.log("SUBMIT USER REPLY ");
+    console.log("workflow id : ", suworkflowid);
     if (img && img.length > 0) {
       data = JSON.stringify({
         message_type: "user_message",
