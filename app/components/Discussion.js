@@ -192,7 +192,9 @@ export default class Discussion {
   }
 
   async addAIText({ text, container, targetlang, type = null } = {}) {
+    console.log("add Ai text");
     if (!container) return;
+    console.log("here is the container :", container);
     let textContainer = container.querySelector(".text__container");
     if (!textContainer) {
       textContainer = document.createElement("div");
@@ -296,7 +298,7 @@ export default class Discussion {
 
   // create small user question / ai answer in the discussion feed
   async onCreatedTask(task, textAI, isNew) {
-    if (!this.history.isSet || this.history.isFetching || !isNew) return;
+    if (!this.history.fetcher.isSet || this.history.fetcher.isFetching || !isNew) return;
     if (!this.userContainer) {
       this.userContainer = document.createElement("div");
       this.userContainer.classList.add("discussion__user");
