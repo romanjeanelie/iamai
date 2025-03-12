@@ -9,13 +9,9 @@ import TaskManagerAnimations from "./TaskManagerAnimations";
 import TaskManagerButton from "./TaskManagerButton";
 import TaskManagerCard from "./TaskManagerCard";
 
-import { GUI } from "dat.gui";
-import { productResultData } from "../../../testData";
 import { getDateLabel } from "../../utils/dateUtils";
 import { getPreviousDayTimestamp } from "../../utils/getPreviousDayTimestamp";
-import { ProductUI } from "../UI";
 import TaskFetcher from "./TaskFetcher";
-import TaskManagerDebug from "./TaskManagerDebug";
 
 gsap.registerPlugin(Flip);
 
