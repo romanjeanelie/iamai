@@ -18,7 +18,7 @@ export default class Waves {
     if (isMobile()) {
       this.initLottieAnimation();
     } else {
-      console.log(this.inputType);
+      console.log("from Waves init method :", this.inputType);
       this.shaderWaves = new ShaderWaves(this.inputType);
     }
   }
@@ -42,6 +42,7 @@ export default class Waves {
   }
 
   async destroy() {
+    console.log("destroying the waves", this.inputType);
     this.inputWrapper.classList.remove("compact-gradient-background");
     await this.shaderWaves?.destroy();
     this.shaderWaves = null;

@@ -142,6 +142,7 @@ export default class VoiceConv {
     if (!this.unbindEvent) {
       this.unbindEvent = this.emitter.on("addAIText", (html, targetlang) => this.startAITalking(html, targetlang));
     }
+
     this.waves = new Waves(this.isVideoInput ? "video" : "audio");
 
     this.isStreamEnded = false;
@@ -359,7 +360,7 @@ export default class VoiceConv {
           onSpeechStart: () => {
             // console.log("speech start");
             if (!this.isConnected) return;
-            if (!this.waves) this.waves = new Waves();
+            if (!this.waves) this.waves = new Waves(this.isVideoInput ? "video" : "audio");
             this.stopAITalking();
             this.toListening();
           },
@@ -495,6 +496,8 @@ export default class VoiceConv {
     this.stopRecording();
     this.stopAITalking();
     this.emitter.emit("phone:close");
+
+    this.isVideoInput = null;
 
     if (this.waves) {
       await this.waves.destroy();
