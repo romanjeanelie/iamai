@@ -115,17 +115,21 @@ export default class Discussion {
   }
 
   archivePreviousDiscussion() {
-    const children = Array.from(this.discussionContainer.childNodes);
-    if (children.length <= 1) return;
-    const userElement = children.filter((child) => child.classList?.contains("discussion__user"))[0];
-    const aiElement = children.filter((child) => child.classList?.contains("discussion__ai"))[0];
+    if (!this.userContainer || !this?.AIContainer) return;
 
-    this.history.createUIElementsFromDiscussion(userElement, aiElement);
+    const taskKey = this.userContainer.getAttribute("taskkey");
+    if (taskKey) {
+      this.discussionContainer.removeChild(this.AIContainer);
+      this.discussionContainer.removeChild(this.userContainer);
+      return;
+    }
+
+    this.history.createUIElementsFromDiscussion(this.userContainer, this.AIContainer);
     this.scrollToBottom();
 
     // Wait for scroll finish
     setTimeout(() => {
-      this.historyContainer.classList.remove("hidden");
+      // this.historyContainer.classList.remove("hidden");
     }, 1000);
   }
 
@@ -297,6 +301,7 @@ export default class Discussion {
   // create small user question / ai answer in the discussion feed
   async onCreatedTask(task, textAI, isNew) {
     if (!this.history.fetcher.isSet || this.history.fetcher.isFetching || !isNew) return;
+
     if (!this.userContainer) {
       this.userContainer = document.createElement("div");
       this.userContainer.classList.add("discussion__user");
@@ -305,7 +310,7 @@ export default class Discussion {
     await this.addAIText({ text: textAI, container: this.AIContainer });
     this.userContainer.classList.add("discussion__user--task-created");
     this.userContainer.setAttribute("taskkey", task.key);
-    // this.AIContainer.setAttribute("taskkey", task.key);d
+    this.AIContainer.setAttribute("taskkey", task.key);
   }
 
   addListeners() {
