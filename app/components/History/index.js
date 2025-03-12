@@ -79,7 +79,7 @@ export default class History {
       const totalImages = imgs.length;
 
       const showHistory = () => {
-        this.historyContainer.style.display = "block";
+        this.historyContainer.style.display = "flex";
       };
 
       const handleImageLoad = () => {
