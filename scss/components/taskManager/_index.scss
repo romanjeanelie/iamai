@@ -32,6 +32,10 @@ $zIndex: 1;
     display: none;
   }
 
+  &.no-scroll {
+    overflow-y: hidden;
+  }
+
   @include media("<phone") {
     -webkit-overflow-scrolling: touch;
   }
