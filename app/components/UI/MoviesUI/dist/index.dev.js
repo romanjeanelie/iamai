@@ -41,14 +41,65 @@ function (_UIComponent) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(MoviesUI).call(this));
     _this.emitter = emitter;
-    _this.moviesResultData = MoviesResultData; // Init Methods
+    _this.moviesResultData = MoviesResultData; // States
 
-    _this.initUI();
+    _this.movieCards = []; // Init Methods
+
+    _this.init();
 
     return _this;
   }
 
   _createClass(MoviesUI, [{
+    key: "init",
+    value: function init() {
+      var data;
+      return regeneratorRuntime.async(function init$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              this.initUI();
+              _context.next = 3;
+              return regeneratorRuntime.awrap(this.fetchData());
+
+            case 3:
+              data = _context.sent;
+              this.appendAdditionalData();
+
+            case 5:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, null, this);
+    } // const response = await fetch("https://example.org/post", {
+    //   method: "POST",
+    //   body: JSON.stringify({ username: "example" }),
+    //   // ...
+    // });
+
+  }, {
+    key: "fetchData",
+    value: function fetchData() {
+      var movieData;
+      return regeneratorRuntime.async(function fetchData$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return regeneratorRuntime.awrap(fetch(""));
+
+            case 2:
+              movieData = _context2.sent;
+
+            case 3:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      });
+    }
+  }, {
     key: "initUI",
     value: function initUI() {
       var _this2 = this;
@@ -61,11 +112,21 @@ function (_UIComponent) {
         var movieCard = _this2.createMovieCard(movieData);
 
         moviesGrid.appendChild(movieCard);
+
+        _this2.movieCards.push(movieCard);
       });
       this.mainContainer.appendChild(moviesGrid);
       var movieDetails = document.createElement("div");
       movieDetails.id = "movie-details";
       this.mainContainer.appendChild(movieDetails);
+    }
+  }, {
+    key: "appendAdditionalData",
+    value: function appendAdditionalData() {
+      this.movieCards.forEach(function (movieCard) {
+        var title = movieCard.querySelector("h4");
+        title.textContent = "e";
+      });
     }
   }, {
     key: "createMovieCard",

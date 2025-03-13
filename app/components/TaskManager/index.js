@@ -15,8 +15,8 @@ import TaskFetcher from "./TaskFetcher";
 
 // Debug oriented imports
 import { GUI } from "dat.gui";
-import { ProductUI } from "../UI";
-import { productResultData } from "../../../testData";
+import { MoviesUI } from "../UI";
+import { moviesResultData } from "../../../testData";
 import TaskManagerDebug from "./TaskManagerDebug";
 
 gsap.registerPlugin(Flip);
@@ -59,8 +59,8 @@ export default class TaskManager {
         description:
           " Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi maiores, culpa architecto enim autem iusto! Maxime sunt explicabo pariatur corporis accusantium, voluptas excepturi quam inventore dicta, consequatur soluta ipsam doloremque? ",
       });
-      const testProductResult = new ProductUI(productResultData);
-      // const testMovieResult = new MoviesUI(moviesResultData, this.emitter);
+      // const testProductResult = new ProductUI(productResultData);
+      const testMovieResult = new MoviesUI(moviesResultData, this.emitter);
       // const testHotelResult = new HotelsUI(hotelSearchData, hotelSearchResultsData, this.emitter);
       // const testFlightResult = new FlightUI(flightSearchData, flightSearchResultsData);
       this.onStatusUpdate(
@@ -70,7 +70,7 @@ export default class TaskManager {
           title: "Ended",
           description: "Task has ended",
         },
-        testProductResult
+        testMovieResult
       );
     }
   }

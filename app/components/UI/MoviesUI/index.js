@@ -7,8 +7,33 @@ export class MoviesUI extends UIComponent {
     this.emitter = emitter;
     this.moviesResultData = MoviesResultData;
 
+    // States
+    this.movieCards = [];
+
     // Init Methods
+    this.init();
+  }
+
+  async init() {
     this.initUI();
+    const data = await this.fetchData();
+
+    this.appendAdditionalData();
+  }
+
+  async fetchData() {
+    try {
+      const movieData = await fetch("https://api.themoviedb.org/3/movie/11", {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEYS}`,
+        },
+      });
+      return movieData;
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   initUI() {
@@ -21,6 +46,7 @@ export class MoviesUI extends UIComponent {
     this.moviesResultData.forEach((movieData) => {
       const movieCard = this.createMovieCard(movieData);
       moviesGrid.appendChild(movieCard);
+      this.movieCards.push(movieCard);
     });
 
     this.mainContainer.appendChild(moviesGrid);
@@ -28,6 +54,13 @@ export class MoviesUI extends UIComponent {
     const movieDetails = document.createElement("div");
     movieDetails.id = "movie-details";
     this.mainContainer.appendChild(movieDetails);
+  }
+
+  appendAdditionalData() {
+    this.movieCards.forEach((movieCard) => {
+      const title = movieCard.querySelector("h4");
+      title.textContent = "e";
+    });
   }
 
   createMovieCard(movieData) {
