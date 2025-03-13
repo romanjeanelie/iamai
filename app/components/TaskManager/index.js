@@ -148,8 +148,8 @@ export default class TaskManager {
   }
 
   updateTasksIndex() {
-    this.tasksUI.forEach((taskCard) => {
-      const index = this.tasks.findIndex((task) => task.key === taskCard.task.key);
+    this.tasksUI.forEach((taskCard, index) => {
+      // const index = this.tasks.findIndex((task) => task.key === taskCard.task.key);
       taskCard.updateIndex(index);
     });
   }
@@ -259,14 +259,17 @@ export default class TaskManager {
   }
 
   handleScrollDown(e) {
+    if (this.debugTasks) return;
     // detect if the user scrolled all the way down the container
     const scrollPosition = e.target.scrollTop;
     const scrollHeight = e.target.scrollHeight;
     const clientHeight = e.target.clientHeight;
 
     if (scrollPosition + clientHeight >= scrollHeight - 1 && !this.isFetching) {
+      console.log("handleScrollDOwn");
+
       this.isFetching = true;
-      this.fetcher.getTasks(2);
+      this.fetcher.getTasks(5);
       this.container.scrollTop = scrollPosition + clientHeight;
       setTimeout(() => {
         this.isFetching = false;

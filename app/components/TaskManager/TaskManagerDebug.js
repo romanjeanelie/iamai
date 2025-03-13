@@ -43,6 +43,13 @@ export default class TaskManagerDebug {
       "addTask"
     );
 
+    this.gui.add(
+      {
+        addTasks: () => this.addDebugTasks(),
+      },
+      "addTasks"
+    );
+
     // Adding button to increment the creation date by one day
     this.gui.add(
       {
@@ -134,6 +141,12 @@ export default class TaskManagerDebug {
     this.debugTask.name = `Task ${this.taskManager.tasks.length + 1}`;
     this.debugTask.key = this.taskManager.tasks.length + 1;
     this.taskNameController.setValue(this.debugTask.name);
+  }
+
+  addDebugTasks() {
+    for (let i = 0; i < 9; i++) {
+      this.addDebugTask();
+    }
   }
 
   initializeDebugTasks() {

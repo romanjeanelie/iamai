@@ -60,7 +60,12 @@ function () {
       addTask: function addTask() {
         return _this.addDebugTask();
       }
-    }, "addTask"); // Adding button to increment the creation date by one day
+    }, "addTask");
+    this.gui.add({
+      addTasks: function addTasks() {
+        return _this.addDebugTasks();
+      }
+    }, "addTasks"); // Adding button to increment the creation date by one day
 
     this.gui.add({
       incrementDate: function incrementDate() {
@@ -148,6 +153,13 @@ function () {
       this.debugTask.name = "Task ".concat(this.taskManager.tasks.length + 1);
       this.debugTask.key = this.taskManager.tasks.length + 1;
       this.taskNameController.setValue(this.debugTask.name);
+    }
+  }, {
+    key: "addDebugTasks",
+    value: function addDebugTasks() {
+      for (var i = 0; i < 9; i++) {
+        this.addDebugTask();
+      }
     }
   }, {
     key: "initializeDebugTasks",

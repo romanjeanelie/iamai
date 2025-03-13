@@ -7,6 +7,10 @@ export default class TaskCardAnimations {
   constructor(card) {
     this.card = card;
 
+    // States
+    this.remainingCards = { all: [], beforeCards: [], afterCards: [] };
+
+    // Dom Elements
     this.container = document.querySelector(".task-manager__container");
     this.cardState = this.card.querySelector(".card-state");
     this.fullscreenState = this.card.querySelector(".fullscreen-state");

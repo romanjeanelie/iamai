@@ -13,7 +13,7 @@ export default class TaskManagerCard {
     this.emitter = emitter;
 
     // Index of the task in the tasks array
-    this.debug = import.meta.env.VITE_DEBUG === "true";
+    this.debugTasks = import.meta.env.VITE_DEBUG_TASKS === "true";
     this.index = this.taskManager.tasks.findIndex((t) => t.key == this.task.key);
 
     // States
@@ -37,12 +37,12 @@ export default class TaskManagerCard {
     this.proSearch = new TaskCardStatus({ card: this });
     this.addListeners();
 
-    if (this.debug) {
-      if (this.task.key === 1) {
-        setTimeout(() => {
-          this.expandCardToFullscreen();
-        }, 500);
-      }
+    if (this.debugTasks) {
+      // if (this.task.key === 1) {
+      //   setTimeout(() => {
+      //     this.expandCardToFullscreen();
+      //   }, 500);
+      // }
     }
   }
 
@@ -59,7 +59,7 @@ export default class TaskManagerCard {
       <div class="card-state">
         <div class="task-manager__task-card-content">
           <h3 class="task-manager__task-card-title">
-            ${this.task.name}
+            ${this.task.name} ${this.index}
           </h3>
 
           <div class="task-manager__task-status">
@@ -109,7 +109,6 @@ export default class TaskManagerCard {
 
   updateIndex(index) {
     this.index = index;
-    console.log(this.index, this.cardState);
     this.card.setAttribute("index", index);
   }
 
