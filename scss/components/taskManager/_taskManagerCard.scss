@@ -97,18 +97,24 @@
 
 // ------ Task Card : FULLSCREEN VIEW ------
 .task-manager__task-fullscreen {
-  position: absolute;
-  top: 0;
+  position: fixed;
+  top: 56px;
   left: 0;
   right: 0;
   bottom: 0;
   height: 80vh;
   display: flex;
-  margin: 16;
+
+  margin: 0 auto;
+  max-width: $maxWidth;
+
   pointer-events: none;
 
   &.active {
     pointer-events: auto;
+  }
+  @include media("<tablet") {
+    margin: 0 16px;
   }
 }
 
@@ -118,10 +124,6 @@
   border-radius: 20px;
   pointer-events: auto;
   background: linear-gradient(180deg, #f8f8f8 56%, rgba(248, 248, 248, 0) 97.6%);
-
-  @include media("<tablet") {
-    margin: 0 16px;
-  }
 
   .fullscreen-state {
     display: flex;

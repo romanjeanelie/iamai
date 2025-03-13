@@ -40,15 +40,6 @@ export default class TaskCardAnimations {
       });
     });
 
-    tl.to(
-      this.container,
-      {
-        scrollTo: { y: 0 },
-        duration: 0.4, // Duration in seconds
-        ease: "power2.Out", // Easing function
-      },
-      "<"
-    );
     tl.add(hideDatesTl, "<");
     tl.add(hideRemainingCardsTl, "<");
     tl.to(
