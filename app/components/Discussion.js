@@ -135,6 +135,7 @@ export default class Discussion {
 
   async addUserElement({ text, imgs, debug = false, isFromVideo } = {}) {
     this.emitter.emit("pre-text-animation");
+    console.log("adding user element");
 
     //reduced the duration to save time
     await gsap.to(this.discussionContainer, {
