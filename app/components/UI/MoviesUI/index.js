@@ -4,8 +4,8 @@ import { MovieDetails } from "./MovieDetails";
 export class MoviesUI extends UIComponent {
   constructor(MoviesResultData, emitter) {
     super();
-    this.emitter = emitter;
     this.moviesResultData = MoviesResultData;
+    this.emitter = emitter;
 
     // States
     this.movieCards = [];
@@ -16,21 +16,28 @@ export class MoviesUI extends UIComponent {
 
   async init() {
     this.initUI();
-    const data = await this.fetchData();
-
-    this.appendAdditionalData();
+    // this.fetchAdditionalData();
   }
 
-  async fetchData() {
+  fetchAdditionalData() {
+    this.moviesResultData.forEach(async ({ MovieTitle }) => {
+      const data = await this.fetchData(MovieTitle);
+      console.log(data);
+    });
+  }
+
+  async fetchData(title) {
+    const url = "https://api.themoviedb.org/3";
+
     try {
-      const movieData = await fetch("https://api.themoviedb.org/3/movie/11", {
+      const movieData = await fetch(url + "/search/movie?query=" + title.replace(" ", "%"), {
         method: "GET",
         headers: {
           accept: "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEYS}`,
+          Authorization: `Bearer ${import.meta.env.VITE_TMBD_TOKEN}`,
         },
       });
-      return movieData;
+      return movieData.json();
     } catch (e) {
       console.error(e);
     }
@@ -54,13 +61,6 @@ export class MoviesUI extends UIComponent {
     const movieDetails = document.createElement("div");
     movieDetails.id = "movie-details";
     this.mainContainer.appendChild(movieDetails);
-  }
-
-  appendAdditionalData() {
-    this.movieCards.forEach((movieCard) => {
-      const title = movieCard.querySelector("h4");
-      title.textContent = "e";
-    });
   }
 
   createMovieCard(movieData) {

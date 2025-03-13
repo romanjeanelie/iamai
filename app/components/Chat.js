@@ -253,6 +253,7 @@ class Chat {
           let datas = ui_paramsmap.get(mdata.micro_thread_id);
           if (datas) {
             datas.forEach((data) => {
+              console.log(data);
               const uiElement = getTaskUI(data, this.emitter);
               if (uiElement.isClass) {
                 result = uiElement;
