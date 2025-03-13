@@ -266,7 +266,7 @@ export default class TaskManager {
 
     if (scrollPosition + clientHeight >= scrollHeight - 1 && !this.isFetching) {
       this.isFetching = true;
-      this.fetcher.getTasks(10);
+      this.fetcher.getTasks(2);
       this.container.scrollTop = scrollPosition + clientHeight;
       setTimeout(() => {
         this.isFetching = false;

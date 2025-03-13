@@ -109,6 +109,7 @@ export default class TaskManagerCard {
 
   updateIndex(index) {
     this.index = index;
+    console.log(this.index, this.cardState);
     this.card.setAttribute("index", index);
   }
 

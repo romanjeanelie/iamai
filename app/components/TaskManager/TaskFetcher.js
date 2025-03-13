@@ -9,9 +9,11 @@ const md = getMarked();
 
 export default class TaskFetcher {
   constructor(emitter) {
-    this.startIndex = 0;
-
     this.emitter = emitter;
+
+    this.startIndex = 0;
+    this.defaultSize = 10;
+
     this.debug = import.meta.env.VITE_DEBUG === "true";
 
     if (this.debug) return;
@@ -218,7 +220,7 @@ export default class TaskFetcher {
     return result;
   }
 
-  async getTasks(size = 10, order = "desc") {
+  async getTasks(size = this.defaultSize, order = "desc") {
     const uuid = store.getState().chatId;
     const idToken = await store.getState().user.user.getIdToken(true);
 
