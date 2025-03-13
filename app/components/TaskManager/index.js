@@ -258,6 +258,13 @@ export default class TaskManager {
     }
   }
 
+  scrollToTheTop() {
+    this.container.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
   handleScrollDown(e) {
     if (this.debugTasks) return;
     // detect if the user scrolled all the way down the container
@@ -266,8 +273,6 @@ export default class TaskManager {
     const clientHeight = e.target.clientHeight;
 
     if (scrollPosition + clientHeight >= scrollHeight - 1 && !this.isFetching) {
-      console.log("handleScrollDOwn");
-
       this.isFetching = true;
       this.fetcher.getTasks(5);
       this.container.scrollTop = scrollPosition + clientHeight;
@@ -281,6 +286,7 @@ export default class TaskManager {
     this.container.addEventListener("scroll", this.handleScrollDown.bind(this));
 
     // Emitter
+    this.emitter.on("Navigation:closeTasks", this.scrollToTheTop.bind(this));
     this.emitter.on("taskManager:createTask", (task, textAI, isFromChat) => this.createTask(task, textAI, isFromChat));
     this.emitter.on("taskManager:updateStatus", (taskKey, status, container, workflowID) => {
       this.onStatusUpdate(taskKey, status, container, workflowID);
