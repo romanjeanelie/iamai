@@ -11,7 +11,7 @@ export default class ShaderWaves {
     // States
     this.maxWaves = 7;
     this.currentWaveIndex = 1; // Track which wave to trigger next
-    this.debug = import.meta.env.VITE_DEBUG === "true";
+    this.debug_video = import.meta.env.VITE_DEBUG_VIDEO === "true";
 
     this.sizes = { width: window?.innerWidth, height: window?.innerHeight };
     this.aspectRatio = this.sizes.width / this.sizes.height;
@@ -48,7 +48,7 @@ export default class ShaderWaves {
     this.init();
     this.addEvents();
 
-    if (this.debug) {
+    if (this.debug_video) {
       this.debugGUI = new WavesGUI({
         settings: this.settings,
         material: this.material,
@@ -59,7 +59,7 @@ export default class ShaderWaves {
   }
 
   init() {
-    if (!this.debug) {
+    if (!this.debug_video) {
       this.captureMicrophone();
     }
 

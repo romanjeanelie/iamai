@@ -7,6 +7,7 @@ import HistoryFetcher from "./HistoryFetcher";
 export default class History {
   constructor({ emitter }) {
     this.emitter = emitter;
+    this.debug = import.meta.env.VITE_DEBUG === "true";
 
     // States
     this.dates = [];
@@ -16,7 +17,7 @@ export default class History {
     // DOM Elements
     this.historyContainer = document.querySelector(".history__container");
 
-    // Init Methods
+    // Init Methods-
     this.fetcher = new HistoryFetcher({ emitter: this.emitter });
     this.animations = new HistoryAnimation({ emitter: this.emitter });
     this.addListeners();

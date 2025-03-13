@@ -276,10 +276,10 @@ export default class Discussion {
     store.set("session_id", this.Chat.sessionID);
     store.set("chatId", this.uuid);
 
-    if (this.debug) return;
-
     const isFirstLoad = true;
-    await this.history.updateHistory(isFirstLoad);
+    if (!this.debug) {
+      await this.history.updateHistory(isFirstLoad);
+    }
     this.history.initAnimations();
     this.taskManager.initTaskManager();
 

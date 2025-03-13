@@ -13,6 +13,12 @@ import { getDateLabel } from "../../utils/dateUtils";
 import { getPreviousDayTimestamp } from "../../utils/getPreviousDayTimestamp";
 import TaskFetcher from "./TaskFetcher";
 
+// Debug oriented imports
+import { GUI } from "dat.gui";
+import { ProductUI } from "../UI";
+import { productResultData } from "../../../testData";
+import TaskManagerDebug from "./TaskManagerDebug";
+
 gsap.registerPlugin(Flip);
 
 export default class TaskManager {
@@ -42,30 +48,30 @@ export default class TaskManager {
     this.addListeners();
 
     // Debug
-    this.debug = import.meta.env.VITE_DEBUG === "true";
-    if (this.debug) {
-      // this.gui = new GUI();
-      // this.debugger = new TaskManagerDebug(this);
-      // this.debugger.addDebugTask();
-      // this.onStatusUpdate(this.tasks[0].key, {
-      //   type: API_STATUSES.PROGRESSING,
-      //   title: "Progressing",
-      //   description:
-      //     " Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi maiores, culpa architecto enim autem iusto! Maxime sunt explicabo pariatur corporis accusantium, voluptas excepturi quam inventore dicta, consequatur soluta ipsam doloremque? ",
-      // });
-      // const testProductResult = new ProductUI(productResultData);
-      // // const testMovieResult = new MoviesUI(moviesResultData, this.emitter);
-      // // const testHotelResult = new HotelsUI(hotelSearchData, hotelSearchResultsData, this.emitter);
-      // // const testFlightResult = new FlightUI(flightSearchData, flightSearchResultsData);
-      // this.onStatusUpdate(
-      //   this.tasks[0].key,
-      //   {
-      //     type: API_STATUSES.ANSWERED,
-      //     title: "Ended",
-      //     description: "Task has ended",
-      //   },
-      //   testProductResult
-      // );
+    this.debugTasks = import.meta.env.VITE_DEBUG_TASKS === "true";
+    if (this.debugTasks) {
+      this.gui = new GUI();
+      this.debugger = new TaskManagerDebug(this);
+      this.debugger.addDebugTask();
+      this.onStatusUpdate(this.tasks[0].key, {
+        type: API_STATUSES.PROGRESSING,
+        title: "Progressing",
+        description:
+          " Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi maiores, culpa architecto enim autem iusto! Maxime sunt explicabo pariatur corporis accusantium, voluptas excepturi quam inventore dicta, consequatur soluta ipsam doloremque? ",
+      });
+      const testProductResult = new ProductUI(productResultData);
+      // const testMovieResult = new MoviesUI(moviesResultData, this.emitter);
+      // const testHotelResult = new HotelsUI(hotelSearchData, hotelSearchResultsData, this.emitter);
+      // const testFlightResult = new FlightUI(flightSearchData, flightSearchResultsData);
+      this.onStatusUpdate(
+        this.tasks[0].key,
+        {
+          type: API_STATUSES.ANSWERED,
+          title: "Ended",
+          description: "Task has ended",
+        },
+        testProductResult
+      );
     }
   }
 
