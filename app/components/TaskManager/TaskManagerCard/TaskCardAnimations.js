@@ -1,9 +1,7 @@
 import gsap, { Power3 } from "gsap";
 import { Flip } from "gsap/Flip";
-import ScrollToPlugin from "gsap/ScrollToPlugin";
 
 gsap.registerPlugin(Flip);
-gsap.registerPlugin(ScrollToPlugin);
 
 export default class TaskCardAnimations {
   constructor(card) {
