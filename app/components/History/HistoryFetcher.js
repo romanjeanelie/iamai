@@ -5,7 +5,7 @@ export default class HistoryFetcher {
   constructor({ emitter }) {
     this.emitter = emitter;
 
-    this.defaultSize = 10;
+    this.defaultSize = 20;
     this.elements = null;
     this.isSet = false;
     this.isFetching = false;
