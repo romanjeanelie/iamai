@@ -39,8 +39,8 @@ export default class ShaderWaves {
       g3: 0.03,
     };
 
-    // during debug only - to be removed
-    // this.settings.progress = 1;
+    // during debug only if will to work on idle animation
+    this.settings.progress = 1;
 
     // DOM ELEMENTS
     this.canvas = document.querySelector(".threejs-container");
