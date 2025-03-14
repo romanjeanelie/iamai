@@ -144,13 +144,10 @@ export default class TaskCardAnimations {
     return tl;
   }
 
-  hideRemainingCards = (index) => {
-    const tl = gsap.timeline();
+  selectCardsToAnimate(index) {
     const taskCards = document.querySelectorAll(".task-manager__task-card");
 
-    // Get the cards before and after the current card
-    // using reduce to filter out the current card
-    this.remainingCards = Array.from(taskCards).reduce(
+    const cardsToAnimate = Array.from(taskCards).reduce(
       (acc, card) => {
         const isCardInViewport = isInViewport(card);
         if (!isCardInViewport) return acc;
@@ -170,6 +167,13 @@ export default class TaskCardAnimations {
       },
       { beforeCards: [], afterCards: [], all: [] }
     );
+
+    return cardsToAnimate;
+  }
+
+  hideRemainingCards = (index) => {
+    const tl = gsap.timeline();
+    this.remainingCards = this.selectCardsToAnimate(index);
 
     tl.to(this.remainingCards.beforeCards, {
       y: -100,
