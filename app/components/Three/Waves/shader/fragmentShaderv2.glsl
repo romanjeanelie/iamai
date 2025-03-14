@@ -20,13 +20,13 @@ uniform float uFrequency;
 uniform float uAmplitude;
 uniform float uWaveLength;
 
-uniform float uB1;
-uniform float uB2;
-uniform float uR1;
-uniform float uR2;
-uniform float uG1;
-uniform float uG2;
-uniform float uG3;
+uniform float uR;
+uniform float uG;
+uniform float uB;
+uniform float uIntensityR;
+uniform float uIntensityG;
+uniform float uIntensityB;
+
 
 // Colors
 uniform vec3 uWaveColor;
@@ -121,6 +121,38 @@ vec4 waveAnimation(){
 }
 
 //  ----- IDLE ANIMATION -----
+
+// ----- v1 of the idle animation -------
+// float generateRainbowForm(vec2 uv, float d, float time) {
+//   vec2 center = vec2(0.5, 0. - 0.2);
+//   vec2 pos = uv - center;
+//   float angle = atan(pos.y, pos.x) ;
+//   float radius = length(pos);
+  
+//   float rotatedAngle = angle + time;
+//   float targetRadius = 0.3 + sin(rotatedAngle) * 0.01;
+//   return 1.0 - smoothstep(0., d, abs(radius - targetRadius));
+// }
+
+// vec4 generateRainbowWave(float time) {
+//   float d = 0.05 + abs(sin(time * 0.2)) * 0.15;
+  
+//   // Basic RGB channels
+//   float r = generateRainbowForm(vUv + vec2(d * 0.25, 0.0), d, time * 3.);
+//   float g = generateRainbowForm(vUv - vec2(0.015, 0.005), d, time * 3.);
+//   float b = generateRainbowForm(vUv - vec2(d * 0.5, 0.015), d, time * 3.);
+  
+//   // Option 4: Complementary colors
+//   vec3 complementary = vec3(
+//       b * uB1 + g * uG1,
+//       r * uR2 + b * uB2,
+//       g * uG3 + r * uR2
+//   );
+  
+//   return vec4(complementary, 1.0);                       // Custom mix option
+// }
+
+// ----- v2 of the idle animation -------
 float generateRainbowForm(vec2 uv, float d, float time) {
   vec2 center = vec2(0.5, 0. - 0.2);
   vec2 pos = uv - center;
@@ -136,18 +168,23 @@ vec4 generateRainbowWave(float time) {
   float d = 0.05 + abs(sin(time * 0.2)) * 0.15;
   
   // Basic RGB channels
-  float r = generateRainbowForm(vUv + vec2(d * 0.25, 0.0), d, time * 3.);
-  float g = generateRainbowForm(vUv - vec2(0.015, 0.005), d, time * 3.);
-  float b = generateRainbowForm(vUv - vec2(d * 0.5, 0.015), d, time * 3.);
+ float r = generateRainbowForm(vUv - vec2(0., d * 0.5), d, time * 3.); // Shift red downward
+  float g = generateRainbowForm(vUv - vec2(0.015, 0.005), d, time * 3.); // Center green (for blending)
+  float b = generateRainbowForm(vUv + vec2(0., d * 0.5), d, time * 3.); // Shift blue upward
   
-  // Option 4: Complementary colors
-  vec3 complementary = vec3(
-      b * uB1 + g * uG1,
-      r * uR2 + b * uB2,
-      g * uG3 + r * uR2
+  // Blend colors softly to create a washed-out effect
+  vec3 pastelRainbow = vec3(
+      (r * uR) * uIntensityR, // Reduce saturation
+      (g * uG) * uIntensityG,
+      (b * uB) * uIntensityB
   );
   
-  return vec4(complementary, 1.0);                       // Custom mix option
+    // Blend with white to create a soft, ethereal effect
+  vec3 finalColor = mix(vec3(1.0), pastelRainbow, 0.1); // 40% of color, 60% white
+  finalColor.r += 1.9;
+  // finalColor.b += 1.;
+
+  return vec4(finalColor, 0.6); // Slight transparency for a soft feel                 // Custom mix option
 }
 
 vec4 idleAnimation() {

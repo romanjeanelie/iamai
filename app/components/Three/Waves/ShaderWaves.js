@@ -32,11 +32,12 @@ export default class ShaderWaves {
       backgroundColor: 0xf9f9f9,
 
       // Rainbow - IDLE colors
-      b1: 0.22,
-      g1: 0.79,
-      r2: 0.83,
-      b2: 0,
-      g3: 0.03,
+      r: 0.9,
+      g: 0.5,
+      b: 0.99,
+      intensityR: 2,
+      intensityG: 2,
+      intensityB: 2,
     };
 
     // during debug only if will to work on idle animation
@@ -131,12 +132,12 @@ export default class ShaderWaves {
         uBackgroundColor: { value: new THREE.Color("#f2f5f7") },
 
         // Rainbow - IDLE colors
-        uB1: { value: this.settings.b1 },
-        uG1: { value: this.settings.g1 },
-        uR2: { value: this.settings.r2 },
-        uB2: { value: this.settings.b2 },
-        uG3: { value: this.settings.g3 },
-        uR3: { value: this.settings.r3 },
+        uR: { value: this.settings.r },
+        uG: { value: this.settings.g },
+        uB: { value: this.settings.b },
+        uIntensityR: { value: this.settings.intensityR },
+        uIntensityG: { value: this.settings.intensityG },
+        uIntensityB: { value: this.settings.intensityB },
       },
       transparent: true,
     });

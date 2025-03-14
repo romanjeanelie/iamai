@@ -75,24 +75,32 @@ export default class WavesGUI {
         this.material.uniforms.uBackgroundColor.value.set(value);
       });
     this.gui
-      .add(this.settings, "b1", 0, 1)
-      .onChange((value) => (this.material.uniforms.uB1.value = value))
+      .add(this.settings, "r", 0, 1)
+      .onChange((value) => (this.material.uniforms.uR.value = value))
       .step(0.01);
     this.gui
-      .add(this.settings, "g1", 0, 1)
-      .onChange((value) => (this.material.uniforms.uG1.value = value))
+      .add(this.settings, "g", 0, 1)
+      .onChange((value) => (this.material.uniforms.uG.value = value))
       .step(0.01);
     this.gui
-      .add(this.settings, "r2", 0, 1)
-      .onChange((value) => (this.material.uniforms.uR2.value = value))
+      .add(this.settings, "b", 0, 1)
+      .onChange((value) => (this.material.uniforms.uB.value = value))
+      .step(0.01);
+
+    this.gui
+      .add(this.settings, "intensityR", 0, 5)
+      .onChange((value) => (this.material.uniforms.uIntensityR.value = value))
+      .max(5)
       .step(0.01);
     this.gui
-      .add(this.settings, "b2", 0, 1)
-      .onChange((value) => (this.material.uniforms.uB2.value = value))
+      .add(this.settings, "intensityG", 0, 5)
+      .onChange((value) => (this.material.uniforms.uIntensityG.value = value))
+
       .step(0.01);
     this.gui
-      .add(this.settings, "g3", 0, 1)
-      .onChange((value) => (this.material.uniforms.uG3.value = value))
+      .add(this.settings, "intensityB", 0, 5)
+      .onChange((value) => (this.material.uniforms.uIntensityB.value = value))
+
       .step(0.01);
   }
 
