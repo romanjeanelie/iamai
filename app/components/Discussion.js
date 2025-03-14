@@ -1,4 +1,3 @@
-import { backgroundColorGreyPage } from "../../scss/variables/_colors.module.scss";
 import TypingText from "../TypingText";
 import { getsessionID } from "../User";
 import Chat from "./Chat.js";
@@ -97,7 +96,6 @@ export default class Discussion {
     this.typingText = new TypingText({
       text: "",
       container: this.AIContainer,
-      backgroundColor: backgroundColorGreyPage,
       marginLeft: 16,
     });
 
