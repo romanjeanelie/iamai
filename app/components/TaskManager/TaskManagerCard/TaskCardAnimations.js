@@ -33,7 +33,6 @@ export default class TaskCardAnimations {
     tl.add(() => {
       const state = Flip.getState(this.card);
       this.fullscreenContainer.appendChild(this.card);
-      fullscreenState.style.display = "flex";
       cardState.style.display = "none";
       Flip.from(state, {
         duration: 0.5,
@@ -71,7 +70,6 @@ export default class TaskCardAnimations {
     tl.add(() => {
       const state = Flip.getState(this.card);
       tasks[index].appendChild(this.card);
-      fullscreenState.style.display = "none";
       resultsDetails.style.display = "none";
       cardState.style.display = "flex";
 
