@@ -89,14 +89,14 @@ export default class VoiceConv {
     this.addListeners();
 
     // Debug
-    this.debug = import.meta.env.VITE_DEBUG === "true";
+    this.debugVoice = import.meta.env.VITE_DEBUG_VOICE_CONV === "true";
     this.debugIOSAnim = false;
     this.debugFlights = false;
 
-    if (this.debug) {
-      // this.waves = new Waves();
-      // this.anims.toStartVoiceConv();
-      // this.startConnecting();
+    if (this.debugVoice) {
+      this.waves = new Waves();
+      this.anims.toStartVoiceConv();
+      this.startConnecting();
     }
   }
 

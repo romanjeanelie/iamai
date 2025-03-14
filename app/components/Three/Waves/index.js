@@ -18,7 +18,6 @@ export default class Waves {
     if (isMobile()) {
       this.initLottieAnimation();
     } else {
-      console.log("from Waves init method :", this.inputType);
       this.shaderWaves = new ShaderWaves(this.inputType);
     }
   }
