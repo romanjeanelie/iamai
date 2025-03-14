@@ -5,6 +5,8 @@ export default class UIComponent {
 
     // DOM Elements
     this.mainContainer = document.createElement("div");
+    this.mainContainer.classList.add("ui__component--main-container");
+
     this.resultDetailsContainer = document.createElement("div");
   }
 

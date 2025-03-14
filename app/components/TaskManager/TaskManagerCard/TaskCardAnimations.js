@@ -60,6 +60,7 @@ export default class TaskCardAnimations {
     const tasks = document.querySelectorAll(".task-manager__task-card-container");
     const cardState = this.card.querySelector(".card-state");
     const fullscreenState = this.card.querySelector(".fullscreen-state");
+    const resultsDetails = this.card.querySelector(".task-manager__result-detail");
     const showDatesTl = this.showDates();
 
     const tl = gsap.timeline();
@@ -71,6 +72,7 @@ export default class TaskCardAnimations {
       const state = Flip.getState(this.card);
       tasks[index].appendChild(this.card);
       fullscreenState.style.display = "none";
+      resultsDetails.style.display = "none";
       cardState.style.display = "flex";
 
       Flip.from(state, {
@@ -185,6 +187,8 @@ export default class TaskCardAnimations {
     return tl;
   };
 
+  // This animate from the first section of a task to another
+  //  (for instance if click on a theatre in movies UI, animates to the theatre frame)
   hideFullScreenState(callback) {
     this.hideFullScreenStateTl = gsap.timeline({
       defaults: {
@@ -280,7 +284,7 @@ export default class TaskCardAnimations {
       onReverseComplete: () => {
         resultContainer.style.display = "none";
         resultContainer.innerHTML = "";
-        this.fullscreenState.style.display = "flex";
+        this.fullscreenState.classList.remove("details-state");
         this.showFullScreenState();
       },
     });
