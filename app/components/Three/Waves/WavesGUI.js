@@ -6,6 +6,7 @@ export default class WavesGUI {
     this.material = material;
     this.toggleWaves = toggleWaves;
     this.destroy = destroy;
+
     this.setupGUI();
   }
 
@@ -45,7 +46,7 @@ export default class WavesGUI {
         this.material.uniforms.uWaveSpeed.value = value;
       });
     paramsFolder
-      .add(this.settings, "waveLength", 0, 1)
+      .add(this.settings, "waveLength", 0, 5)
       .name("Wave Length")
       .step(0.01)
       .onChange((value) => {
@@ -53,14 +54,8 @@ export default class WavesGUI {
       });
 
     // Add a button that creates or destroy the waves
-    paramsFolder
-      .add(
-        {
-          add: this.toggleWaves,
-        },
-        "add"
-      )
-      .name("Toggle Waves");
+    paramsFolder;
+
     this.gui
       .add(
         {

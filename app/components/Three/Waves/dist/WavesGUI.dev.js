@@ -55,13 +55,11 @@ function () {
       paramsFolder.add(this.settings, "waveSpeed", 0, 100).name("Wave Speed").onChange(function (value) {
         _this.material.uniforms.uWaveSpeed.value = value;
       });
-      paramsFolder.add(this.settings, "waveLength", 0, 1).name("Wave Length").step(0.01).onChange(function (value) {
+      paramsFolder.add(this.settings, "waveLength", 0, 5).name("Wave Length").step(0.01).onChange(function (value) {
         _this.material.uniforms.uWaveLength.value = value;
       }); // Add a button that creates or destroy the waves
 
-      paramsFolder.add({
-        add: this.toggleWaves
-      }, "add").name("Toggle Waves");
+      paramsFolder;
       this.gui.add({
         add: this.destroy
       }, "add").name("DEstroy"); // create a new gui folder for colors

@@ -12,7 +12,10 @@ export default class ShaderWaves {
     // States
     this.maxWaves = 7;
     this.currentWaveIndex = 1; // Track which wave to trigger next
+
+    this.debug = import.meta.env.VITE_DEBUG === "true";
     this.debug_video = import.meta.env.VITE_DEBUG_VIDEO === "true";
+    this.debug_voice = import.meta.env.VITE_DEBUG_VOICE_CONV === "true";
 
     this.sizes = { width: window?.innerWidth, height: window?.innerHeight };
     this.aspectRatio = this.sizes.width / this.sizes.height;
@@ -20,7 +23,7 @@ export default class ShaderWaves {
       progress: 0,
       fadeProgress: 0,
       frequency: 20,
-      amplitude: 4,
+      amplitude: 2.9,
       waveSpeed: 4,
       waveLength: 2,
 
@@ -50,11 +53,10 @@ export default class ShaderWaves {
     this.init();
     this.addEvents();
 
-    if (this.debug_video) {
+    if (this.debug_video || this.debug_voice) {
       this.debugGUI = new WavesGUI({
         settings: this.settings,
         material: this.material,
-        toggleWaves: () => console.log("toggle waves on and off"),
         destroy: () => this.destroy(),
       });
     }
@@ -299,7 +301,9 @@ export default class ShaderWaves {
 
   addEvents() {
     window.addEventListener("click", () => {
-      this.triggerWave();
+      if (this.debug) {
+        this.triggerWave();
+      }
     });
 
     window.addEventListener("resize", this.handleResize);
