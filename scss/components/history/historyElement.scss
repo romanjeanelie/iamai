@@ -15,6 +15,14 @@
     padding: 16px 0;
     margin-bottom: 0;
     font-weight: 400;
+
+    .discussion__images-container {
+      justify-content: start;
+
+      img {
+        max-height: 48px;
+      }
+    }
   }
 
   // child of the user question container

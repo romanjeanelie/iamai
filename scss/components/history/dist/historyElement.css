@@ -15,6 +15,12 @@
   margin-bottom: 0;
   font-weight: 400;
 }
+.history-element__wrapper .discussion__user .discussion__images-container {
+  justify-content: start;
+}
+.history-element__wrapper .discussion__user .discussion__images-container img {
+  max-height: 48px;
+}
 .history-element__wrapper .discussion__userspan {
   box-shadow: none;
   background: none;

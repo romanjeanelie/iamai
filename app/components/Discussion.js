@@ -135,7 +135,6 @@ export default class Discussion {
 
   async addUserElement({ text, imgs, debug = false, isFromVideo } = {}) {
     this.emitter.emit("pre-text-animation");
-    console.log("adding user element");
 
     //reduced the duration to save time
     await gsap.to(this.discussionContainer, {
@@ -148,21 +147,18 @@ export default class Discussion {
     this.isFirstQuestion = false;
     this.archivePreviousDiscussion();
 
-    if (imgs?.length > 0 && !isFromVideo) {
-      const userContainer = document.createElement("div");
-      userContainer.classList.add("discussion__user");
-      this.discussionContainer.appendChild(userContainer);
+    this.userContainer = document.createElement("div");
+    this.userContainer.classList.add("discussion__user");
 
+    if (imgs?.length > 0 && !isFromVideo) {
       this.media = new DiscussionMedia({
-        container: userContainer,
+        container: this.userContainer,
         emitter: this.emitter,
       });
 
       this.media.addUserImages(imgs.map((img) => img.src));
     }
 
-    this.userContainer = document.createElement("div");
-    this.userContainer.classList.add("discussion__user");
     const userContainerspan = document.createElement("span");
     userContainerspan.classList.add("discussion__userspan");
     userContainerspan.innerHTML = text.replace(/\n/g, "<br>");
