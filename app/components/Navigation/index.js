@@ -49,7 +49,6 @@ export default class Navigation {
     this.anims = new NavigationAnimations();
 
     if (this.debugTasks) {
-      console.log("yo");
       this.toggleTasks();
     }
     if (this.debugVideo) {
@@ -171,12 +170,15 @@ export default class Navigation {
 
     // Emitter
     this.emitter.on("app:initialized", () => {
-      this.anims.showNav();
+      this.anims.introNavAnim();
     });
     this.emitter.on("input:updateImages", this.hideNavButtons.bind(this));
     this.emitter.on("phone:open", this.hideNavButtons.bind(this));
 
     this.emitter.on("phone:close", this.displayNavButtons.bind(this));
     this.emitter.on("input:imagesQuestionAsked", this.displayNavButtons.bind(this));
+
+    this.emitter.on("taskManager:taskOpened", () => this.anims.hideNav());
+    this.emitter.on("taskManager:taskClosed", () => this.anims.showNav());
   }
 }

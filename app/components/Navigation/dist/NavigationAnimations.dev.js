@@ -45,8 +45,8 @@ function () {
       });
     }
   }, {
-    key: "showNav",
-    value: function showNav() {
+    key: "introNavAnim",
+    value: function introNavAnim() {
       var tl = _gsap["default"].timeline({
         defaults: {
           duration: 0.3,
@@ -64,6 +64,45 @@ function () {
         opacity: 1,
         duration: 0.5
       }, "<+=0.1");
+    }
+  }, {
+    key: "showNav",
+    value: function showNav() {
+      var tl = _gsap["default"].timeline({
+        defaults: {
+          duration: 0.3,
+          delay: 0.2,
+          ease: _gsap.Power3.easeOut
+        }
+      });
+
+      tl.to(this.headerNav, {
+        opacity: 1,
+        yPercent: 0
+      });
+      tl.to(this.footerNav, {
+        opacity: 1,
+        yPercent: 0
+      }, "<");
+    }
+  }, {
+    key: "hideNav",
+    value: function hideNav() {
+      var tl = _gsap["default"].timeline({
+        defaults: {
+          duration: 0.2,
+          ease: _gsap.Power4.easeIn
+        }
+      });
+
+      tl.to(this.headerNav, {
+        opacity: 0,
+        yPercent: -100
+      });
+      tl.to(this.footerNav, {
+        opacity: 0,
+        yPercent: 100
+      }, "<");
     }
   }]);
 

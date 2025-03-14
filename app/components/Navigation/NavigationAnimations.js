@@ -1,4 +1,4 @@
-import gsap, { Power3 } from "gsap";
+import gsap, { Power3, Power4 } from "gsap";
 
 export class NavigationAnimations {
   constructor() {
@@ -15,9 +15,21 @@ export class NavigationAnimations {
     gsap.set(this.footerNav, { opacity: 0 });
   }
 
-  showNav() {
+  introNavAnim() {
     const tl = gsap.timeline({ defaults: { duration: 0.3, delay: 0.2, ease: Power3.easeOut } });
     tl.to(this.headerNav, { opacity: 1, yPercent: 0, duration: 0.5 });
     tl.to(this.footerNav, { opacity: 1, duration: 0.5 }, "<+=0.1");
+  }
+
+  showNav() {
+    const tl = gsap.timeline({ defaults: { duration: 0.3, delay: 0.2, ease: Power3.easeOut } });
+    tl.to(this.headerNav, { opacity: 1, yPercent: 0 });
+    tl.to(this.footerNav, { opacity: 1, yPercent: 0 }, "<");
+  }
+
+  hideNav() {
+    const tl = gsap.timeline({ defaults: { duration: 0.2, ease: Power4.easeIn } });
+    tl.to(this.headerNav, { opacity: 0, yPercent: -100 });
+    tl.to(this.footerNav, { opacity: 0, yPercent: 100 }, "<");
   }
 }

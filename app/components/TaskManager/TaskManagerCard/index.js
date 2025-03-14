@@ -166,6 +166,7 @@ export default class TaskManagerCard {
   // From card to fullscreen
   expandCardToFullscreen() {
     if (this.isExpanded) return;
+    this.emitter.emit("taskManager:taskOpened");
     this.isExpanded = true;
     this.container.classList.add("no-scroll");
     this.animations.cardToFullScreen(this.index, () => {
@@ -179,6 +180,8 @@ export default class TaskManagerCard {
 
   closeFullscreen() {
     this.isExpanded = false;
+    this.emitter.emit("taskManager:taskClosed");
+
     this.container.classList.remove("no-scroll");
     this.animations.fullscreenToCard(this.index);
     this.fullscreenContainer.classList.remove("active");
