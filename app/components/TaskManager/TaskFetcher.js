@@ -12,7 +12,7 @@ export default class TaskFetcher {
     this.emitter = emitter;
 
     this.startIndex = 0;
-    this.defaultSize = 4;
+    this.defaultSize = 10;
 
     this.debug = import.meta.env.VITE_DEBUG === "true";
 
