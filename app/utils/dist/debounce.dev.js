@@ -5,7 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.debounce = debounce;
 
-// Debounce function to collect data and trigger createTaskBatch
 function debounce(func, wait) {
   var timeout;
   return function () {

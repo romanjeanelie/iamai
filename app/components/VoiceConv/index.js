@@ -352,6 +352,10 @@ export default class VoiceConv {
         this.myvad = await vad.MicVAD.new({
           positiveSpeechThreshold: 0.9,
           onFrameProcessed: (frame) => {
+            if (this.waves) {
+              this.waves.updateFrames(frame);
+            }
+
             if (!this.micAccessConfirmed) {
               this.micAccessConfirmed = true;
               this.connected();
@@ -364,6 +368,7 @@ export default class VoiceConv {
             this.stopAITalking();
             this.toListening();
           },
+
           onSpeechEnd: (audio) => {
             if (this.debugFlights) return;
             this.isListening = false;

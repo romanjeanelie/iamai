@@ -13,10 +13,19 @@ export default class Waves {
     this.addEvents();
   }
 
+  updateFrames(frame) {
+    this.frame = frame;
+    if (this.shaderWaves) {
+      this.shaderWaves.updateFrames(frame); // we're passing the frames from voiceConv to shaderWave -- WIP
+    }
+  }
+
   init() {
     this.inputWrapper.classList.add("compact-gradient-background");
     if (isMobile()) {
       this.initLottieAnimation();
+      this.shaderWaves.destroy();
+      this.shaderWaves = null;
     } else {
       this.shaderWaves = new ShaderWaves(this.inputType);
     }
@@ -41,7 +50,6 @@ export default class Waves {
   }
 
   async destroy() {
-    console.log("destroying the waves", this.inputType);
     this.inputWrapper.classList.remove("compact-gradient-background");
     await this.shaderWaves?.destroy();
     this.shaderWaves = null;

@@ -1,4 +1,3 @@
-// Debounce function to collect data and trigger createTaskBatch
 export function debounce(func, wait) {
   let timeout;
   return function (...args) {

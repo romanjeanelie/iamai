@@ -1,5 +1,6 @@
 import gsap, { Power3 } from "gsap";
 import * as THREE from "three";
+import { debounce } from "../../../utils/debounce";
 import fragmentShader from "./shader/fragmentShaderv2.glsl";
 import vertexShader from "./shader/vertexShader.glsl";
 import WavesGUI from "./WavesGUI";
@@ -43,6 +44,7 @@ export default class ShaderWaves {
 
     // BINDINGS
     this.handleResize = this.handleResize.bind(this);
+    this.debouncedTriggerWave = debounce(this.triggerWave, 50);
 
     // INIT METHODS
     this.init();
@@ -203,20 +205,14 @@ export default class ShaderWaves {
     this.stream.getTracks().forEach((track) => track.stop());
   }
 
+  updateFrames(frames) {
+    this.frames = frames;
+  }
+
   analyseAudio() {
-    if (!this.analyser) return;
-
-    const bufferLength = this.analyser.frequencyBinCount;
-    const dataArray = new Uint8Array(bufferLength);
-
-    // Get the frequency data
-    this.analyser.getByteFrequencyData(dataArray);
-
-    const avgVolume = dataArray.reduce((sum, value) => sum + value, 0) / bufferLength;
-
     // Trigger the wave if volume exceeds a threshold
-    if (avgVolume > 10) {
-      this.triggerWave();
+    if (this.frames && this.frames.isSpeech > 0.95) {
+      this.debouncedTriggerWave();
     }
   }
 
@@ -244,6 +240,7 @@ export default class ShaderWaves {
   }
 
   triggerWave() {
+    console.log("trigger wave");
     this.increaseWaveIndex();
     const currentIndex = this.currentWaveIndex - 1;
 
