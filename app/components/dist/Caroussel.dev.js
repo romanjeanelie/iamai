@@ -55,17 +55,11 @@ function () {
   function Caroussel() {
     _classCallCheck(this, Caroussel);
 
-    console.log("Caroussel");
     this.carousselEl = document.querySelector(".caroussel__container");
-    console.log(this.carousselEl);
     this.carousselTextEl = this.carousselEl.querySelector(".caroussel__text");
-    console.log(this.carousselTextEl);
     this.nextBtn = this.carousselEl.querySelector("#btn-next");
-    console.log(this.nextBtn);
     this.prevBtn = this.carousselEl.querySelector("#btn-prev");
-    console.log(this.prevBtn);
     this.markerEl = this.carousselEl.querySelector(".caroussel__markers");
-    console.log(this.markerEl);
   }
 
   _createClass(Caroussel, [{
@@ -303,9 +297,13 @@ function () {
       var _this4 = this;
 
       this.nextBtn.addEventListener("click", function () {
+        console.log("next button");
+
         _this4.next();
       });
       this.prevBtn.addEventListener("click", function () {
+        console.log("prev butn");
+
         _this4.prev();
       });
     }

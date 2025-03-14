@@ -1,7 +1,7 @@
 import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from "firebase/auth";
 import { createNanoEvents } from "nanoevents";
 import User, { getUserDataFireDB, saveUserDataFireDB, signOutUser } from "./User";
-import Caroussel from "./components/Caroussel";
+
 import Discussion from "./components/Discussion";
 import HeroBento from "./components/HeroBento";
 import Input from "./components/Input";
@@ -70,11 +70,6 @@ class App {
 
   initNavbar() {
     this.navigation = new Navigation({ user: this.user, emitter: this.emitter });
-  }
-
-  initCaroussel() {
-    this.caroussel = new Caroussel();
-    this.caroussel.init();
   }
 
   initDiscussion() {
