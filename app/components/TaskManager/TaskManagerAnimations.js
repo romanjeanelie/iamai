@@ -26,6 +26,7 @@ export default class TaskManagerAnimations {
 
   hideCards() {
     if (isMobile()) return;
+    console.log("hide cards");
     const cards = document.querySelectorAll(".task-manager__task-card-container");
     gsap.to(cards, { opacity: 0, y: 50, duration: 0.1, stagger: 0.05 });
   }
@@ -45,6 +46,7 @@ export default class TaskManagerAnimations {
     });
   }
 
+  // When a new card is added animation
   cardInOutAnimation(newCard, initialState) {
     Flip.from(initialState, {
       duration: 0.3,

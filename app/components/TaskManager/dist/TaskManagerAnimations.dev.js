@@ -49,6 +49,7 @@ function () {
     key: "hideCards",
     value: function hideCards() {
       if ((0, _isMobile["default"])()) return;
+      console.log("hide cards");
       var cards = document.querySelectorAll(".task-manager__task-card-container");
 
       _gsap["default"].to(cards, {
@@ -79,7 +80,8 @@ function () {
         stagger: 0.05,
         delay: 0.3
       });
-    }
+    } // When a new card is added animation
+
   }, {
     key: "cardInOutAnimation",
     value: function cardInOutAnimation(newCard, initialState) {

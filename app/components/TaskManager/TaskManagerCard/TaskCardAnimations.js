@@ -1,5 +1,6 @@
 import gsap, { Power3 } from "gsap";
 import { Flip } from "gsap/Flip";
+import { isInViewport } from "../../../utils/isInViewport";
 
 gsap.registerPlugin(Flip);
 
@@ -151,6 +152,9 @@ export default class TaskCardAnimations {
     // using reduce to filter out the current card
     this.remainingCards = Array.from(taskCards).reduce(
       (acc, card) => {
+        const isCardInViewport = isInViewport(card);
+        if (!isCardInViewport) return acc;
+
         const cardIndex = parseInt(card.getAttribute("index"));
         // Skip if the current card is the one we're focusing on
         if (cardIndex === index) return acc;
