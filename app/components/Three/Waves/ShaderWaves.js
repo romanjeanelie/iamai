@@ -41,7 +41,7 @@ export default class ShaderWaves {
     };
 
     // during debug only if will to work on idle animation
-    this.settings.progress = 1;
+    // this.settings.progress = 1;
 
     // DOM ELEMENTS
     this.canvas = document.querySelector(".threejs-container");

@@ -1,10 +1,9 @@
-import anim, { asyncAnim } from "./utils/anim.js";
+import { asyncAnim } from "./utils/anim.js";
 
 export default class TypingText {
-  constructor({ text, container, backgroundColor, marginLeft }) {
+  constructor({ text, container, marginLeft }) {
     this.text = text;
     this.container = container;
-    this.backgroundColor = backgroundColor;
     this.marginLeft = marginLeft;
     this.init();
   }
